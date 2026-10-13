@@ -1,0 +1,17 @@
+{
+  "status": "pass",
+  "original_artifacts_and_launchers_unchanged": 36,
+  "nonartifact_baseline_changes": [
+    "AGENTS.md"
+  ],
+  "rea_records": 87,
+  "report_evidence_ids_verified": 9,
+  "primary_programs": 7159,
+  "legacy_programs": 2,
+  "inheritance_matches": 9933,
+  "metadata_errors": 0,
+  "package_member_decode_failures": 1,
+  "negative_decoder_cases_rejected": 11,
+  "target_execution": "none",
+  "scope": "static format and evidence validation; not runtime equivalence"
+}

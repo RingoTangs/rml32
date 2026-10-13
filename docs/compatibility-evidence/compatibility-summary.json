@@ -639,5 +639,8 @@
     "csa": 195,
     "dba": 204,
     "gs": 297
+  },
+  "inheritance_checks": {
+    "match": 9933
   }
 }

@@ -16,20 +16,40 @@ def run():
     api_usage, opcodes = Counter(), Counter()
     api_sources = defaultdict(set)
     service_apis = defaultdict(Counter)
+    inheritance = []
+    by_source = {p['source']:p for p in programs}
+    for p in programs:
+        package = p['source'].split('.pak/',1)[0]+'.pak/'
+        for parent in p['inherits']:
+            name = parent['name'].lstrip('/')
+            if name.endswith('.c'):
+                name = name[:-2]+'.o'
+            resolved = by_source.get(package+name)
+            expected = parent['offsets'][3:]
+            observed = [resolved['constitution_count'],resolved['max_functions'],resolved['max_vars']] if resolved else None
+            status = 'match' if observed == expected else ('count-mismatch' if resolved else 'missing')
+            inheritance.append(dict(child=p['source'],parent=parent['name'],status=status,
+                                    declared_counts=str(expected),resolved_counts=str(observed) if resolved else ''))
+    with (OUT / 'inheritance.csv').open('w',newline='') as stream:
+        writer = csv.DictWriter(stream,fieldnames=list(inheritance[0]))
+        writer.writeheader()
+        writer.writerows(inheritance)
     metadata_errors, unresolved_global_calls = [], []
     totals = Counter()
     listings = ['# 包内字节码证据\n\n由静态加载器格式解码，未执行脚本。偏移均为解压后成员内位置，'
                 '不可当作 ELF 地址或压缩包内指令偏移。efun 名称由固定注册顺序恢复；'
                 '调用指针及跨对象调用保留为未解析，不从附近字符串自动证明目标。\n\n']
-    selected = {'cmd_login','init_service_module','try_start_game_server_service','init_sql_module',
+    selected = {'cmd_login','do_when_cmd_new_connection','init_service_module','try_start_game_server_service','init_sql_module',
                 'xdbc_connect','xdbc_execute','xdbc_query','post_init','init_startup_module'}
     extra_targets = {
-        'gs/daemons/logind.o': {'new_user','do_login','_do_login'},
+        'gs/daemons/logind.o': {'new_user','do_login','_do_login','enter_world'},
         'gs/clone/char/login.o': {'process_command','thread_process_command','_process_command'},
         'daemons/filed.o': {'dba_comm','try_to_connect_dba','create_content','read_content','write_content'},
         'dba/daemons/dbaserver/cmd_create_content.o': {'main'},
         'dba/daemons/dbaserver/cmd_write_content.o': {'main'},
         'dba/daemons/dbaserver/cmd_read_content.o': {'main'},
+        'aaa/daemons/accountd.o': {'account_login','_account_login','check_account_info','query_account_info','auth_all_protect','send_login_result'},
+        'aaa/daemons/pwdprotect_authd.o': {'auth_protect','to_auth_protect','log_auth_result'},
     }
 
     def instructions(p, code):
@@ -91,6 +111,7 @@ def run():
                    efuns_used=len(api_usage),unused_efuns=[v['name'] for v in efuns.values() if v['name'] not in api_usage],
                    metadata_errors=metadata_errors, unresolved_global_calls=unresolved_global_calls,
                    service_efuns_used={k:len(v) for k,v in service_apis.items()})
+    summary['inheritance_checks'] = dict(Counter(row['status'] for row in inheritance))
     (OUT / 'compatibility-summary.json').write_text(json.dumps(summary,indent=2,ensure_ascii=False)+'\n')
     with (OUT / 'efun-usage.csv').open('w',newline='') as stream:
         writer=csv.writer(stream)

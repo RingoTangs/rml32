@@ -15,6 +15,14 @@ def digest(data):
     return hashlib.sha256(data).hexdigest()
 
 
+def verify_input(path, data):
+    manifest = json.loads((OUT / 'input-manifest.json').read_text())
+    relative = str(path.relative_to(ROOT))
+    record = next(record for record in manifest if record['path'] == relative)
+    if digest(data) != record['sha256']:
+        raise ValueError('input changed since investigation baseline: ' + relative)
+
+
 def text(data):
     data = data.split(b"\0", 1)[0]
     try:
@@ -219,6 +227,7 @@ def run():
     summary = []
     for path in sorted(ROOT.glob("*/pack_data/*.pak")):
         blob = path.read_bytes()
+        verify_input(path, blob)
         label = str(path.relative_to(ROOT))
         sign, root_size, unused1, unused2 = struct.unpack_from("<4I", blob)
         if sign != 0x11223344:

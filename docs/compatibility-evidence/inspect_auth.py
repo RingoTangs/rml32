@@ -4,12 +4,13 @@ import gzip
 import json
 import struct
 from pathlib import Path
-from inspect_packages import ROOT, OUT, Reader, digest, text
+from inspect_packages import ROOT, OUT, Reader, digest, text, verify_input
 
 
 class Elf:
     def __init__(self, path):
         self.data = path.read_bytes()
+        verify_input(path, self.data)
         h = struct.unpack_from('<16sHHIIIIIHHHHHH', self.data)
         self.sections = [struct.unpack_from('<10I', self.data, h[6] + i * h[11]) for i in range(h[12])]
         self.symbols, self.function_names = {}, {}
@@ -163,6 +164,7 @@ def run():
     programs = []
     for path in sorted((ROOT / '1/service').glob('*.o')):
         data = path.read_bytes()
+        verify_input(path, data)
         p = old_program(data, instructions)
         p.update(source=str(path.relative_to(ROOT)), sha256=digest(data))
         programs.append(p)

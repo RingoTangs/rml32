@@ -3,6 +3,3064 @@
 由静态加载器格式解码，未执行脚本。偏移均为解压后成员内位置，不可当作 ELF 地址或压缩包内指令偏移。efun 名称由固定注册顺序恢复；调用指针及跨对象调用保留为未解析，不从附近字符串自动证明目标。
 
 
+<a id="aaa-aaa-daemons-pwdprotect_authd-o-auth_protect"></a>
+
+## aaa/pack_data/lib_aaa32.pak/aaa/daemons/pwdprotect_authd.o :: auth_protect
+
+成员 SHA-256：`8f198c297448b2887c83ca737a78c3bae1bc769068070d92e63fed296f6a0923`；函数记录偏移：`0x443`；函数编号：`2`。
+
+```text
+0000 @0x0000062a check_args_num [0] 
+0001 @0x0000062e enter_function [] 
+0002 @0x00000632 push_number(S) [0] 
+0003 @0x00000636 push_shared_string [0] 'result'
+0004 @0x0000063a push_shared_string [1] 'AUTH_OK'
+0005 @0x0000063e push_shared_string [2] 'reason'
+0006 @0x00000642 create_mapping [4] 
+0007 @0x00000646 push_local_vptr [-5] 
+0008 @0x0000064a assign_value [] 
+0009 @0x0000064e pop_stack [] 
+0010 @0x00000652 call_in_user_fun [3, 0] get_status
+0011 @0x00000656 not_value [] 
+0012 @0x0000065a if [2, 2] 
+0013 @0x0000065e push_local_value [-5] 
+0014 @0x00000662 return_from_fun [] 
+0015 @0x00000666 push_local_value [2] 
+0016 @0x0000066a call_in_user_fun [750, -127] convert_to_url_encode
+0017 @0x0000066e push_local_vptr [-3] 
+0018 @0x00000672 assign_value [] 
+0019 @0x00000676 pop_stack [] 
+0020 @0x0000067a push_local_value [-3] 
+0021 @0x0000067e push_obj_var [1] 
+0022 @0x00000682 push_local_value [0] 
+0023 @0x00000686 query_member [0] 
+0024 @0x0000068a push_local_value [1] 
+0025 @0x0000068e push_obj_var [5] 
+0026 @0x00000692 call_in_efun [121, 4] sprintf
+0027 @0x00000696 call_in_efun [211, 1] md5
+0028 @0x0000069a call_in_efun [102, 1] save_string
+0029 @0x0000069e null_action [] 
+0030 @0x000006a2 push_number(S) [1] 
+0031 @0x000006a6 push_number(S) [2] 
+0032 @0x000006aa query_range [1] 
+0033 @0x000006ae push_local_vptr [-2] 
+0034 @0x000006b2 assign_value [] 
+0035 @0x000006b6 pop_stack [] 
+0036 @0x000006ba push_local_value [-2] 
+0037 @0x000006be push_local_value [-3] 
+0038 @0x000006c2 push_obj_var [1] 
+0039 @0x000006c6 push_local_value [0] 
+0040 @0x000006ca query_member [0] 
+0041 @0x000006ce push_local_value [1] 
+0042 @0x000006d2 push_obj_var [6] 
+0043 @0x000006d6 call_in_efun [121, 5] sprintf
+0044 @0x000006da push_local_vptr [-4] 
+0045 @0x000006de assign_value [] 
+0046 @0x000006e2 pop_stack [] 
+0047 @0x000006e6 push_number(S) [1] 
+0048 @0x000006ea push_local_vptr [-1] 
+0049 @0x000006ee assign_value [] 
+0050 @0x000006f2 pop_stack [] 
+0051 @0x000006f6 push_local_vptr [-1] 
+0052 @0x000006fa push_number(S) [3] 
+0053 @0x000006fe push_number(S) [1] 
+0054 @0x00000702 init_for_loop [-6] 
+0055 @0x00000706 cond_jmp_for_loop [25, -6] 
+0056 @0x0000070a push_local_value [-4] 
+0057 @0x0000070e push_local_value [2] 
+0058 @0x00000712 push_local_value [1] 
+0059 @0x00000716 push_local_value [0] 
+0060 @0x0000071a call_in_user_fun [1, 4] to_auth_protect
+0061 @0x0000071e push_local_vptr [-5] 
+0062 @0x00000722 assign_value [] 
+0063 @0x00000726 pop_stack [] 
+0064 @0x0000072a push_local_value [-5] 
+0065 @0x0000072e push_shared_string [0] 'result'
+0066 @0x00000732 query_member [0] 
+0067 @0x00000736 push_number(S) [0] 
+0068 @0x0000073a eq_value [] 
+0069 @0x0000073e if [6, 1] 
+0070 @0x00000742 pop_stack [] 
+0071 @0x00000746 push_local_value [-5] 
+0072 @0x0000074a push_shared_string [0] 'result'
+0073 @0x0000074e query_member [0] 
+0074 @0x00000752 push_number(S) [1] 
+0075 @0x00000756 eq_value [] 
+0076 @0x0000075a if [2, 2] 
+0077 @0x0000075e push_local_value [-5] 
+0078 @0x00000762 return_from_fun [] 
+0079 @0x00000766 null_action [] 
+0080 @0x0000076a step_jmp_for_loop [-25, -6] 
+0081 @0x0000076e push_shared_string [3] 'auth_exception'
+0082 @0x00000772 push_local_value [2] 
+0083 @0x00000776 push_local_value [1] 
+0084 @0x0000077a push_local_value [0] 
+0085 @0x0000077e call_in_user_fun [4, 4] log_auth_result
+0086 @0x00000782 pop_stack [] 
+0087 @0x00000786 push_local_value [-5] 
+0088 @0x0000078a return_from_fun [] 
+0089 @0x0000078e null_action [] 
+0090 @0x00000792 return_from_fun [] 
+```
+
+<a id="aaa-aaa-daemons-pwdprotect_authd-o-log_auth_result"></a>
+
+## aaa/pack_data/lib_aaa32.pak/aaa/daemons/pwdprotect_authd.o :: log_auth_result
+
+成员 SHA-256：`8f198c297448b2887c83ca737a78c3bae1bc769068070d92e63fed296f6a0923`；函数记录偏移：`0x100e`；函数编号：`4`。
+
+```text
+0000 @0x000011d3 check_args_num [0] 
+0001 @0x000011d7 enter_function [] 
+0002 @0x000011db push_obj_var [3] 
+0003 @0x000011df push_local_value [0] 
+0004 @0x000011e3 query_member [0] 
+0005 @0x000011e7 not_value [] 
+0006 @0x000011eb if [1, 2] 
+0007 @0x000011ef return_from_fun [] 
+0008 @0x000011f3 push_shared_string [25] 'adb'
+0009 @0x000011f7 push_shared_string [24] 'assure_connection'
+0010 @0x000011fb push_shared_string [26] '/daemons/dbd.c'
+0011 @0x000011ff call_in_other_fun_ex [4, 1] 
+0012 @0x00001203 push_local_vptr [-1] 
+0013 @0x00001207 assign_value [] 
+0014 @0x0000120b pop_stack [] 
+0015 @0x0000120f push_local_value [-1] 
+0016 @0x00001213 push_number(S) [0] 
+0017 @0x00001217 lt_value [] 
+0018 @0x0000121b if [1, 2] 
+0019 @0x0000121f return_from_fun [] 
+0020 @0x00001223 push_shared_string [27] ''
+0021 @0x00001227 push_local_value [3] 
+0022 @0x0000122b is_type [4] 
+0023 @0x0000122f if [2, 2] 
+0024 @0x00001233 push_local_value [3] 
+0025 @0x00001237 goto [2] 
+0026 @0x0000123b push_local_value [3] 
+0027 @0x0000123f call_in_efun [102, 1] save_string
+0028 @0x00001243 push_obj_var [2] 
+0029 @0x00001247 push_local_value [0] 
+0030 @0x0000124b query_member [0] 
+0031 @0x0000124f push_local_vptr [-3] 
+0032 @0x00001253 assign_value [] 
+0033 @0x00001257 is_type [4] 
+0034 @0x0000125b if [2, 2] 
+0035 @0x0000125f push_local_value [-3] 
+0036 @0x00001263 goto [1] 
+0037 @0x00001267 push_shared_string [28] 'other_auth_result'
+0038 @0x0000126b push_local_value [2] 
+0039 @0x0000126f push_local_value [1] 
+0040 @0x00001273 push_number(S) [3] 
+0041 @0x00001277 call_in_efun [137, 0] time
+0042 @0x0000127b call_in_efun [18, 2] ctime
+0043 @0x0000127f null_action [] 
+0044 @0x00001283 push_number(S) [0] 
+0045 @0x00001287 push_number(S) [13] 
+0046 @0x0000128b query_range [0] 
+0047 @0x0000128f push_shared_string [27] ''
+0048 @0x00001293 push_shared_string [29] 'insert into acc_log(ip, time,account, dist, type, msg, memo) values(?, ?, ?, ?, ?, ?, ?)'
+0049 @0x00001297 call_in_efun [447, 8] mysql_bind_parameters
+0050 @0x0000129b push_local_vptr [-2] 
+0051 @0x0000129f assign_value [] 
+0052 @0x000012a3 pop_stack [] 
+0053 @0x000012a7 push_local_value [-2] 
+0054 @0x000012ab push_local_value [-1] 
+0055 @0x000012af push_global_var [14] 
+0056 @0x000012b3 call_fun_ptr [0, 3] 
+0057 @0x000012b7 pop_stack [] 
+0058 @0x000012bb null_action [] 
+0059 @0x000012bf return_from_fun [] 
+```
+
+<a id="aaa-aaa-daemons-pwdprotect_authd-o-to_auth_protect"></a>
+
+## aaa/pack_data/lib_aaa32.pak/aaa/daemons/pwdprotect_authd.o :: to_auth_protect
+
+成员 SHA-256：`8f198c297448b2887c83ca737a78c3bae1bc769068070d92e63fed296f6a0923`；函数记录偏移：`0x13cf`；函数编号：`1`。
+
+```text
+0000 @0x00001544 check_args_num [0] 
+0001 @0x00001548 enter_function [] 
+0002 @0x0000154c push_obj_var [0] 
+0003 @0x00001550 push_local_value [3] 
+0004 @0x00001554 push_shared_string [4] 'http_get_web'
+0005 @0x00001558 push_shared_string [8] '/daemons/http_clientd.c'
+0006 @0x0000155c call_in_other_fun_ex [4, 2] 
+0007 @0x00001560 push_local_vptr [-1] 
+0008 @0x00001564 assign_value [] 
+0009 @0x00001568 pop_stack [] 
+0010 @0x0000156c push_local_value [-1] 
+0011 @0x00001570 case_check_string [6, 5] 
+0012 @0x00001574 case_check_string [12, 6] 
+0013 @0x00001578 case_check_string [18, 7] 
+0014 @0x0000157c case_check_number [24, -2] 
+0015 @0x00001580 case_check_number [30, -1] 
+0016 @0x00001584 case_check_number [36, -3] 
+0017 @0x00001588 case_default [42] 
+0018 @0x0000158c push_number(S) [0] 
+0019 @0x00001590 push_shared_string [0] 'result'
+0020 @0x00001594 push_shared_string [1] 'AUTH_OK'
+0021 @0x00001598 push_shared_string [2] 'reason'
+0022 @0x0000159c create_mapping [4] 
+0023 @0x000015a0 return_from_fun [] 
+0024 @0x000015a4 null_action [] 
+0025 @0x000015a8 push_number(S) [0] 
+0026 @0x000015ac push_shared_string [0] 'result'
+0027 @0x000015b0 push_shared_string [9] 'AUTH_UNBIND'
+0028 @0x000015b4 push_shared_string [2] 'reason'
+0029 @0x000015b8 create_mapping [4] 
+0030 @0x000015bc return_from_fun [] 
+0031 @0x000015c0 null_action [] 
+0032 @0x000015c4 push_number(S) [1] 
+0033 @0x000015c8 push_shared_string [0] 'result'
+0034 @0x000015cc push_shared_string [10] 'AUTH_ERROR'
+0035 @0x000015d0 push_shared_string [2] 'reason'
+0036 @0x000015d4 create_mapping [4] 
+0037 @0x000015d8 return_from_fun [] 
+0038 @0x000015dc null_action [] 
+0039 @0x000015e0 push_number(S) [2] 
+0040 @0x000015e4 push_shared_string [0] 'result'
+0041 @0x000015e8 push_shared_string [11] 'URL_ERROR'
+0042 @0x000015ec push_shared_string [2] 'reason'
+0043 @0x000015f0 create_mapping [4] 
+0044 @0x000015f4 return_from_fun [] 
+0045 @0x000015f8 null_action [] 
+0046 @0x000015fc push_number(S) [2] 
+0047 @0x00001600 push_shared_string [0] 'result'
+0048 @0x00001604 push_shared_string [12] 'INET_ERROR'
+0049 @0x00001608 push_shared_string [2] 'reason'
+0050 @0x0000160c create_mapping [4] 
+0051 @0x00001610 return_from_fun [] 
+0052 @0x00001614 null_action [] 
+0053 @0x00001618 push_number(S) [2] 
+0054 @0x0000161c push_shared_string [0] 'result'
+0055 @0x00001620 push_shared_string [13] 'TIMEOUT_ERROR'
+0056 @0x00001624 push_shared_string [2] 'reason'
+0057 @0x00001628 create_mapping [4] 
+0058 @0x0000162c return_from_fun [] 
+0059 @0x00001630 null_action [] 
+0060 @0x00001634 push_number(S) [1] 
+0061 @0x00001638 push_shared_string [0] 'result'
+0062 @0x0000163c push_shared_string [14] 'OTHER_ERROR'
+0063 @0x00001640 push_shared_string [2] 'reason'
+0064 @0x00001644 create_mapping [4] 
+0065 @0x00001648 return_from_fun [] 
+0066 @0x0000164c null_action [] 
+0067 @0x00001650 null_action [] 
+0068 @0x00001654 return_from_fun [] 
+```
+
+<a id="aaa-aaa-daemons-accountd-o-account_login"></a>
+
+## aaa/pack_data/lib_aaa32.pak/aaa/daemons/accountd.o :: account_login
+
+成员 SHA-256：`fbad2268542cac34b915222e0e6ba038e390b5098d06295834c707654c4bbd05`；函数记录偏移：`0xcd31`；函数编号：`84`。
+
+```text
+0000 @0x0000d081 check_args_num [6] 
+0001 @0x0000d085 push_shared_string [60] ''
+0002 @0x0000d089 push_shared_string [60] ''
+0003 @0x0000d08d push_number(S) [0] 
+0004 @0x0000d091 push_shared_string [60] ''
+0005 @0x0000d095 push_shared_string [60] ''
+0006 @0x0000d099 resort_stack [] 
+0007 @0x0000d09d enter_function [] 
+0008 @0x0000d0a1 push_local_value [8] 
+0009 @0x0000d0a5 call_in_efun [122, 1] strlen
+0010 @0x0000d0a9 push_number(S) [1] 
+0011 @0x0000d0ad and [] 
+0012 @0x0000d0b1 if [14, 2] 
+0013 @0x0000d0b5 push_number(S) [1] 
+0014 @0x0000d0b9 push_shared_string [119] '你当前的客户端版本与服务器版本不匹配，无法登录游戏。\n请更新到1.60.0905版本。'
+0015 @0x0000d0bd push_number(S) [8165] 
+0016 @0x0000d0c1 push_shared_string [33] 'send_message'
+0017 @0x0000d0c5 push_local_value [0] 
+0018 @0x0000d0c9 call_in_other_fun_ex [4, 3] 
+0019 @0x0000d0cd pop_stack [] 
+0020 @0x0000d0d1 push_number(S) [2] 
+0021 @0x0000d0d5 push_shared_string [110] 'to_be_disconnect'
+0022 @0x0000d0d9 push_local_value [0] 
+0023 @0x0000d0dd call_in_other_fun_ex [4, 1] 
+0024 @0x0000d0e1 pop_stack [] 
+0025 @0x0000d0e5 return_from_fun [] 
+0026 @0x0000d0e9 null_action [] 
+0027 @0x0000d0ed push_number(S) [0] 
+0028 @0x0000d0f1 push_local_vptr [-3] 
+0029 @0x0000d0f5 assign_value [] 
+0030 @0x0000d0f9 pop_stack [] 
+0031 @0x0000d0fd push_local_vptr [-3] 
+0032 @0x0000d101 push_local_value [8] 
+0033 @0x0000d105 call_in_efun [122, 1] strlen
+0034 @0x0000d109 push_number(S) [1] 
+0035 @0x0000d10d sub_value [] 
+0036 @0x0000d111 push_number(S) [1] 
+0037 @0x0000d115 init_for_loop [-4] 
+0038 @0x0000d119 cond_jmp_for_loop [22, -4] 
+0039 @0x0000d11d push_local_value [8] 
+0040 @0x0000d121 push_local_value [-3] 
+0041 @0x0000d125 query_member [0] 
+0042 @0x0000d129 call_in_efun [64, 1] isxdigit
+0043 @0x0000d12d not_value [] 
+0044 @0x0000d131 if [14, 2] 
+0045 @0x0000d135 push_number(S) [1] 
+0046 @0x0000d139 push_shared_string [119] '你当前的客户端版本与服务器版本不匹配，无法登录游戏。\n请更新到1.60.0905版本。'
+0047 @0x0000d13d push_number(S) [8165] 
+0048 @0x0000d141 push_shared_string [33] 'send_message'
+0049 @0x0000d145 push_local_value [0] 
+0050 @0x0000d149 call_in_other_fun_ex [4, 3] 
+0051 @0x0000d14d pop_stack [] 
+0052 @0x0000d151 push_number(S) [2] 
+0053 @0x0000d155 push_shared_string [110] 'to_be_disconnect'
+0054 @0x0000d159 push_local_value [0] 
+0055 @0x0000d15d call_in_other_fun_ex [4, 1] 
+0056 @0x0000d161 pop_stack [] 
+0057 @0x0000d165 return_from_fun [] 
+0058 @0x0000d169 null_action [] 
+0059 @0x0000d16d null_action [] 
+0060 @0x0000d171 step_jmp_for_loop [-22, -4] 
+0061 @0x0000d175 push_shared_string [120] 'abcdef'
+0062 @0x0000d179 push_number(S) [1] 
+0063 @0x0000d17d push_shared_string [121] ':'
+0064 @0x0000d181 push_local_value [8] 
+0065 @0x0000d185 add [] 
+0066 @0x0000d189 push_shared_string [121] ':'
+0067 @0x0000d18d add [] 
+0068 @0x0000d191 call_in_efun [100, 1] restore_value
+0069 @0x0000d195 call_in_efun [210, 3] des
+0070 @0x0000d199 cast_type [4, 0] 
+0071 @0x0000d19d push_local_vptr [8] 
+0072 @0x0000d1a1 assign_value [] 
+0073 @0x0000d1a5 pop_stack [] 
+0074 @0x0000d1a9 push_local_value [7] 
+0075 @0x0000d1ad not_value [] 
+0076 @0x0000d1b1 if [4, 0] 
+0077 @0x0000d1b5 pop_stack [] 
+0078 @0x0000d1b9 push_local_value [8] 
+0079 @0x0000d1bd push_shared_string [122] '1.60.0905'
+0080 @0x0000d1c1 ne_value [] 
+0081 @0x0000d1c5 if [14, 2] 
+0082 @0x0000d1c9 push_number(S) [1] 
+0083 @0x0000d1cd push_shared_string [119] '你当前的客户端版本与服务器版本不匹配，无法登录游戏。\n请更新到1.60.0905版本。'
+0084 @0x0000d1d1 push_number(S) [8165] 
+0085 @0x0000d1d5 push_shared_string [33] 'send_message'
+0086 @0x0000d1d9 push_local_value [0] 
+0087 @0x0000d1dd call_in_other_fun_ex [4, 3] 
+0088 @0x0000d1e1 pop_stack [] 
+0089 @0x0000d1e5 push_number(S) [2] 
+0090 @0x0000d1e9 push_shared_string [110] 'to_be_disconnect'
+0091 @0x0000d1ed push_local_value [0] 
+0092 @0x0000d1f1 call_in_other_fun_ex [4, 1] 
+0093 @0x0000d1f5 pop_stack [] 
+0094 @0x0000d1f9 return_from_fun [] 
+0095 @0x0000d1fd null_action [] 
+0096 @0x0000d201 push_shared_string [123] 'antibot_answer'
+0097 @0x0000d205 push_shared_string [111] 'lite_query_temp'
+0098 @0x0000d209 push_local_value [0] 
+0099 @0x0000d20d call_in_other_fun_ex [4, 1] 
+0100 @0x0000d211 not_value [] 
+0101 @0x0000d215 if [7, 2] 
+0102 @0x0000d219 push_number(S) [0] 
+0103 @0x0000d21d push_shared_string [110] 'to_be_disconnect'
+0104 @0x0000d221 push_local_value [0] 
+0105 @0x0000d225 call_in_other_fun_ex [4, 1] 
+0106 @0x0000d229 pop_stack [] 
+0107 @0x0000d22d return_from_fun [] 
+0108 @0x0000d231 null_action [] 
+0109 @0x0000d235 push_local_value [1] 
+0110 @0x0000d239 push_shared_string [53] 'account'
+0111 @0x0000d23d create_mapping [2] 
+0112 @0x0000d241 push_shared_string [124] '/aaa/clone/account.c'
+0113 @0x0000d245 call_in_efun [359, 2] clone_object
+0114 @0x0000d249 push_local_vptr [-1] 
+0115 @0x0000d24d assign_value [] 
+0116 @0x0000d251 pop_stack [] 
+0117 @0x0000d255 push_local_value [-1] 
+0118 @0x0000d259 push_shared_string [112] 'relay_agent'
+0119 @0x0000d25d push_local_value [0] 
+0120 @0x0000d261 call_in_other_fun_ex [4, 1] 
+0121 @0x0000d265 pop_stack [] 
+0122 @0x0000d269 push_shared_string [125] 'login'
+0123 @0x0000d26d push_local_value [0] 
+0124 @0x0000d271 call_in_user_fun [738, -126] query_dynamic_key
+0125 @0x0000d275 push_shared_string [125] 'login'
+0126 @0x0000d279 push_local_value [-1] 
+0127 @0x0000d27d call_in_user_fun [739, -125] set_dynamic_key
+0128 @0x0000d281 pop_stack [] 
+0129 @0x0000d285 push_shared_string [126] 'qr_code'
+0130 @0x0000d289 push_shared_string [111] 'lite_query_temp'
+0131 @0x0000d28d push_local_value [0] 
+0132 @0x0000d291 call_in_other_fun_ex [4, 1] 
+0133 @0x0000d295 push_local_vptr [-2] 
+0134 @0x0000d299 assign_value [] 
+0135 @0x0000d29d is_type [7] 
+0136 @0x0000d2a1 if [6, 2] 
+0137 @0x0000d2a5 push_local_value [-2] 
+0138 @0x0000d2a9 push_shared_string [126] 'qr_code'
+0139 @0x0000d2ad push_shared_string [32] 'lite_set_temp'
+0140 @0x0000d2b1 push_local_value [-1] 
+0141 @0x0000d2b5 call_in_other_fun_ex [4, 2] 
+0142 @0x0000d2b9 pop_stack [] 
+0143 @0x0000d2bd push_local_value [0] 
+0144 @0x0000d2c1 call_in_efun [361, 1] destruct_object
+0145 @0x0000d2c5 pop_stack [] 
+0146 @0x0000d2c9 push_shared_string [127] 'Client'
+0147 @0x0000d2cd push_shared_string [39] 'type'
+0148 @0x0000d2d1 push_number(S) [4094] 
+0149 @0x0000d2d5 push_shared_string [40] 'size'
+0150 @0x0000d2d9 push_number(S) [-1] 
+0151 @0x0000d2dd push_shared_string [41] 'peek'
+0152 @0x0000d2e1 create_mapping [6] 
+0153 @0x0000d2e5 push_shared_string [113] 'get_client_no'
+0154 @0x0000d2e9 push_local_value [-1] 
+0155 @0x0000d2ed call_in_other_fun_ex [4, 0] 
+0156 @0x0000d2f1 call_in_efun [510, 2] set_client_attrib
+0157 @0x0000d2f5 pop_stack [] 
+0158 @0x0000d2f9 push_local_value [7] 
+0159 @0x0000d2fd push_shared_string [128] 'mobile_client'
+0160 @0x0000d301 push_shared_string [32] 'lite_set_temp'
+0161 @0x0000d305 push_local_value [-1] 
+0162 @0x0000d309 call_in_other_fun_ex [4, 2] 
+0163 @0x0000d30d pop_stack [] 
+0164 @0x0000d311 push_local_value [1] 
+0165 @0x0000d315 is_type [4] 
+0166 @0x0000d319 if [6, 1] 
+0167 @0x0000d31d pop_stack [] 
+0168 @0x0000d321 push_shared_string [129] 'login_info/account'
+0169 @0x0000d325 push_shared_string [114] 'query_temp'
+0170 @0x0000d329 push_local_value [1] 
+0171 @0x0000d32d call_in_other_fun_ex [4, 1] 
+0172 @0x0000d331 is_type [4] 
+0173 @0x0000d335 if [6, 2] 
+0174 @0x0000d339 push_local_value [1] 
+0175 @0x0000d33d call_in_user_fun [659, -127] get_login_info_file
+0176 @0x0000d341 push_shared_string [115] 'assure_log_file'
+0177 @0x0000d345 push_shared_string [91] '/daemons/logd.c'
+0178 @0x0000d349 call_in_other_fun_ex [4, 1] 
+0179 @0x0000d34d pop_stack [] 
+0180 @0x0000d351 push_local_value [1] 
+0181 @0x0000d355 is_type [4] 
+0182 @0x0000d359 if [6, 1] 
+0183 @0x0000d35d pop_stack [] 
+0184 @0x0000d361 push_shared_string [129] 'login_info/account'
+0185 @0x0000d365 push_shared_string [114] 'query_temp'
+0186 @0x0000d369 push_local_value [1] 
+0187 @0x0000d36d call_in_other_fun_ex [4, 1] 
+0188 @0x0000d371 is_type [4] 
+0189 @0x0000d375 if [12, 2] 
+0190 @0x0000d379 push_shared_string [116] 'get_peer_ip'
+0191 @0x0000d37d push_local_value [-1] 
+0192 @0x0000d381 call_in_other_fun_ex [4, 0] 
+0193 @0x0000d385 push_shared_string [130] '------ 客户端从%s登录\n'
+0194 @0x0000d389 call_in_efun [121, 2] sprintf
+0195 @0x0000d38d push_shared_string [125] 'login'
+0196 @0x0000d391 push_local_value [1] 
+0197 @0x0000d395 call_in_user_fun [659, -127] get_login_info_file
+0198 @0x0000d399 push_shared_string [117] 'log_login_info'
+0199 @0x0000d39d push_shared_string [91] '/daemons/logd.c'
+0200 @0x0000d3a1 call_in_other_fun_ex [4, 3] 
+0201 @0x0000d3a5 pop_stack [] 
+0202 @0x0000d3a9 push_number(S) [1] 
+0203 @0x0000d3ad push_local_value [9] 
+0204 @0x0000d3b1 push_local_value [6] 
+0205 @0x0000d3b5 push_local_value [5] 
+0206 @0x0000d3b9 push_local_value [4] 
+0207 @0x0000d3bd push_local_value [3] 
+0208 @0x0000d3c1 push_local_value [2] 
+0209 @0x0000d3c5 push_local_value [1] 
+0210 @0x0000d3c9 push_local_value [-1] 
+0211 @0x0000d3cd create_function_value [100, 9] 
+0212 @0x0000d3d1 push_shared_string [118] 'dispatch_service'
+0213 @0x0000d3d5 push_shared_string [66] '/daemons/threadd.c'
+0214 @0x0000d3d9 call_in_other_fun_ex [4, 1] 
+0215 @0x0000d3dd pop_stack [] 
+0216 @0x0000d3e1 null_action [] 
+0217 @0x0000d3e5 return_from_fun [] 
+```
+
+<a id="aaa-aaa-daemons-accountd-o-send_login_result"></a>
+
+## aaa/pack_data/lib_aaa32.pak/aaa/daemons/accountd.o :: send_login_result
+
+成员 SHA-256：`fbad2268542cac34b915222e0e6ba038e390b5098d06295834c707654c4bbd05`；函数记录偏移：`0x133eb`；函数编号：`96`。
+
+```text
+0000 @0x000134f5 check_args_num [0] 
+0001 @0x000134f9 enter_function [] 
+0002 @0x000134fd push_local_value [3] 
+0003 @0x00013501 push_local_value [2] 
+0004 @0x00013505 push_local_value [1] 
+0005 @0x00013509 push_number(S) [21329] 
+0006 @0x0001350d push_shared_string [33] 'send_message'
+0007 @0x00013511 push_local_value [0] 
+0008 @0x00013515 call_in_other_fun_ex [4, 4] 
+0009 @0x00013519 pop_stack [] 
+0010 @0x0001351d null_action [] 
+0011 @0x00013521 return_from_fun [] 
+```
+
+<a id="aaa-aaa-daemons-accountd-o-_account_login"></a>
+
+## aaa/pack_data/lib_aaa32.pak/aaa/daemons/accountd.o :: _account_login
+
+成员 SHA-256：`fbad2268542cac34b915222e0e6ba038e390b5098d06295834c707654c4bbd05`；函数记录偏移：`0x18935`；函数编号：`100`。
+
+```text
+0000 @0x00018ca2 check_args_num [0] 
+0001 @0x00018ca6 enter_function [] 
+0002 @0x00018caa push_local_value [1] 
+0003 @0x00018cae push_local_value [7] 
+0004 @0x00018cb2 push_local_value [0] 
+0005 @0x00018cb6 push_shared_string [217] 'check_qr_code_login'
+0006 @0x00018cba push_shared_string [203] '/aaa/daemons/qr_coded.c'
+0007 @0x00018cbe call_in_other_fun_ex [4, 3] 
+0008 @0x00018cc2 if [5, 2] 
+0009 @0x00018cc6 push_number(S) [1] 
+0010 @0x00018cca push_local_vptr [-1] 
+0011 @0x00018cce assign_value [] 
+0012 @0x00018cd2 pop_stack [] 
+0013 @0x00018cd6 goto [4] 
+0014 @0x00018cda push_number(S) [0] 
+0015 @0x00018cde push_local_vptr [-1] 
+0016 @0x00018ce2 assign_value [] 
+0017 @0x00018ce6 pop_stack [] 
+0018 @0x00018cea push_local_value [-1] 
+0019 @0x00018cee push_local_value [6] 
+0020 @0x00018cf2 push_local_value [5] 
+0021 @0x00018cf6 push_local_value [4] 
+0022 @0x00018cfa push_local_value [3] 
+0023 @0x00018cfe push_local_value [2] 
+0024 @0x00018d02 push_local_value [1] 
+0025 @0x00018d06 push_local_value [0] 
+0026 @0x00018d0a call_in_user_fun [101, 8] check_account_info
+0027 @0x00018d0e push_local_vptr [-2] 
+0028 @0x00018d12 assign_value [] 
+0029 @0x00018d16 pop_stack [] 
+0030 @0x00018d1a push_local_value [-2] 
+0031 @0x00018d1e is_type [7] 
+0032 @0x00018d22 not_value [] 
+0033 @0x00018d26 if [1, 2] 
+0034 @0x00018d2a return_from_fun [] 
+0035 @0x00018d2e push_number(S) [1] 
+0036 @0x00018d32 push_shared_string [37] 'ok'
+0037 @0x00018d36 push_shared_string [32] 'lite_set_temp'
+0038 @0x00018d3a push_local_value [0] 
+0039 @0x00018d3e call_in_other_fun_ex [4, 2] 
+0040 @0x00018d42 pop_stack [] 
+0041 @0x00018d46 push_local_value [3] 
+0042 @0x00018d4a push_shared_string [218] 'mac_addr'
+0043 @0x00018d4e push_shared_string [32] 'lite_set_temp'
+0044 @0x00018d52 push_local_value [0] 
+0045 @0x00018d56 call_in_other_fun_ex [4, 2] 
+0046 @0x00018d5a pop_stack [] 
+0047 @0x00018d5e push_local_value [5] 
+0048 @0x00018d62 push_shared_string [219] 'para_passpod'
+0049 @0x00018d66 push_shared_string [32] 'lite_set_temp'
+0050 @0x00018d6a push_local_value [0] 
+0051 @0x00018d6e call_in_other_fun_ex [4, 2] 
+0052 @0x00018d72 pop_stack [] 
+0053 @0x00018d76 push_local_value [6] 
+0054 @0x00018d7a push_shared_string [220] 'para_dist'
+0055 @0x00018d7e push_shared_string [32] 'lite_set_temp'
+0056 @0x00018d82 push_local_value [0] 
+0057 @0x00018d86 call_in_other_fun_ex [4, 2] 
+0058 @0x00018d8a pop_stack [] 
+0059 @0x00018d8e push_local_value [-1] 
+0060 @0x00018d92 if [1, 2] 
+0061 @0x00018d96 goto [114] 
+0062 @0x00018d9a push_obj_var [13] 
+0063 @0x00018d9e not_value [] 
+0064 @0x00018da2 if [1, 2] 
+0065 @0x00018da6 goto [110] 
+0066 @0x00018daa push_local_value [-2] 
+0067 @0x00018dae call_in_user_fun [57, 1] is_under_control
+0068 @0x00018db2 if [1, 2] 
+0069 @0x00018db6 goto [106] 
+0070 @0x00018dba push_local_value [1] 
+0071 @0x00018dbe call_in_user_fun [72, 1] query_local_encrypt_info
+0072 @0x00018dc2 push_local_vptr [-5] 
+0073 @0x00018dc6 assign_value [] 
+0074 @0x00018dca is_type [7] 
+0075 @0x00018dce not_value [] 
+0076 @0x00018dd2 if [1, 2] 
+0077 @0x00018dd6 goto [98] 
+0078 @0x00018dda push_local_value [-5] 
+0079 @0x00018dde push_shared_string [221] 'state'
+0080 @0x00018de2 query_member [0] 
+0081 @0x00018de6 cast_type [2, 0] 
+0082 @0x00018dea not_value [] 
+0083 @0x00018dee if [1, 2] 
+0084 @0x00018df2 goto [91] 
+0085 @0x00018df6 push_local_value [-5] 
+0086 @0x00018dfa push_shared_string [222] 'local_encrypt_info'
+0087 @0x00018dfe query_member [0] 
+0088 @0x00018e02 call_in_efun [100, 1] restore_value
+0089 @0x00018e06 push_local_vptr [-6] 
+0090 @0x00018e0a assign_value [] 
+0091 @0x00018e0e pop_stack [] 
+0092 @0x00018e12 push_local_value [-6] 
+0093 @0x00018e16 is_type [7] 
+0094 @0x00018e1a not_value [] 
+0095 @0x00018e1e if [10, 1] 
+0096 @0x00018e22 pop_stack [] 
+0097 @0x00018e26 push_local_value [-5] 
+0098 @0x00018e2a push_shared_string [54] 'checksum'
+0099 @0x00018e2e query_member [0] 
+0100 @0x00018e32 push_local_value [-5] 
+0101 @0x00018e36 push_shared_string [222] 'local_encrypt_info'
+0102 @0x00018e3a query_member [0] 
+0103 @0x00018e3e push_local_value [-5] 
+0104 @0x00018e42 call_in_user_fun [73, 2] calc_local_encrypt_checksum
+0105 @0x00018e46 ne_value [] 
+0106 @0x00018e4a if [31, 2] 
+0107 @0x00018e4e push_shared_string [223] '本地加密系统验证失败。'
+0108 @0x00018e52 push_number(S) [0] 
+0109 @0x00018e56 push_number(S) [0] 
+0110 @0x00018e5a push_local_value [0] 
+0111 @0x00018e5e call_in_user_fun [96, 4] send_login_result
+0112 @0x00018e62 pop_stack [] 
+0113 @0x00018e66 push_number(S) [1] 
+0114 @0x00018e6a push_shared_string [110] 'to_be_disconnect'
+0115 @0x00018e6e push_local_value [0] 
+0116 @0x00018e72 call_in_other_fun_ex [4, 1] 
+0117 @0x00018e76 pop_stack [] 
+0118 @0x00018e7a push_local_value [1] 
+0119 @0x00018e7e is_type [4] 
+0120 @0x00018e82 if [6, 1] 
+0121 @0x00018e86 pop_stack [] 
+0122 @0x00018e8a push_shared_string [129] 'login_info/account'
+0123 @0x00018e8e push_shared_string [114] 'query_temp'
+0124 @0x00018e92 push_local_value [1] 
+0125 @0x00018e96 call_in_other_fun_ex [4, 1] 
+0126 @0x00018e9a is_type [4] 
+0127 @0x00018e9e if [8, 2] 
+0128 @0x00018ea2 push_shared_string [224] '数据库中大文件信息错误\n'
+0129 @0x00018ea6 push_shared_string [125] 'login'
+0130 @0x00018eaa push_local_value [1] 
+0131 @0x00018eae call_in_user_fun [659, -127] get_login_info_file
+0132 @0x00018eb2 push_shared_string [117] 'log_login_info'
+0133 @0x00018eb6 push_shared_string [91] '/daemons/logd.c'
+0134 @0x00018eba call_in_other_fun_ex [4, 3] 
+0135 @0x00018ebe pop_stack [] 
+0136 @0x00018ec2 return_from_fun [] 
+0137 @0x00018ec6 null_action [] 
+0138 @0x00018eca push_local_value [-6] 
+0139 @0x00018ece push_shared_string [225] 'file_length'
+0140 @0x00018ed2 query_member [0] 
+0141 @0x00018ed6 call_in_user_fun [136, 1] get_random_pos
+0142 @0x00018eda push_local_vptr [-3] 
+0143 @0x00018ede assign_value [] 
+0144 @0x00018ee2 pop_stack [] 
+0145 @0x00018ee6 push_local_value [-3] 
+0146 @0x00018eea call_in_user_fun [137, 1] build_local_encrypt_pos_buf
+0147 @0x00018eee push_local_vptr [-4] 
+0148 @0x00018ef2 assign_value [] 
+0149 @0x00018ef6 pop_stack [] 
+0150 @0x00018efa push_local_value [-4] 
+0151 @0x00018efe push_local_value [-5] 
+0152 @0x00018f02 push_shared_string [226] 'file_name'
+0153 @0x00018f06 query_member [0] 
+0154 @0x00018f0a call_in_efun [524, 1] pad_buffer
+0155 @0x00018f0e add [] 
+0156 @0x00018f12 push_number(S) [5025] 
+0157 @0x00018f16 push_shared_string [33] 'send_message'
+0158 @0x00018f1a push_local_value [0] 
+0159 @0x00018f1e call_in_other_fun_ex [4, 2] 
+0160 @0x00018f22 pop_stack [] 
+0161 @0x00018f26 push_local_value [-3] 
+0162 @0x00018f2a push_shared_string [227] 'local_encrypt_pos'
+0163 @0x00018f2e push_shared_string [32] 'lite_set_temp'
+0164 @0x00018f32 push_local_value [0] 
+0165 @0x00018f36 call_in_other_fun_ex [4, 2] 
+0166 @0x00018f3a pop_stack [] 
+0167 @0x00018f3e push_obj_var [18] 
+0168 @0x00018f42 push_shared_string [110] 'to_be_disconnect'
+0169 @0x00018f46 push_local_value [0] 
+0170 @0x00018f4a call_in_other_fun_ex [4, 1] 
+0171 @0x00018f4e pop_stack [] 
+0172 @0x00018f52 return_from_fun [] 
+0173 @0x00018f56 null_action [] 
+0174 @0x00018f5a push_number(S) [0] 
+0175 @0x00018f5e if [-117, 3] 
+0176 @0x00018f62 push_local_value [-1] 
+0177 @0x00018f66 push_local_value [-2] 
+0178 @0x00018f6a push_local_value [1] 
+0179 @0x00018f6e push_local_value [0] 
+0180 @0x00018f72 call_in_user_fun [102, 4] auth_all_protect
+0181 @0x00018f76 pop_stack [] 
+0182 @0x00018f7a null_action [] 
+0183 @0x00018f7e return_from_fun [] 
+```
+
+<a id="aaa-aaa-daemons-accountd-o-query_account_info"></a>
+
+## aaa/pack_data/lib_aaa32.pak/aaa/daemons/accountd.o :: query_account_info
+
+成员 SHA-256：`fbad2268542cac34b915222e0e6ba038e390b5098d06295834c707654c4bbd05`；函数记录偏移：`0x1927e`；函数编号：`41`。
+
+```text
+0000 @0x00019390 check_args_num [0] 
+0001 @0x00019394 enter_function [] 
+0002 @0x00019398 push_shared_string [46] 'adb'
+0003 @0x0001939c push_shared_string [28] 'assure_connection'
+0004 @0x000193a0 push_shared_string [47] '/daemons/dbd.c'
+0005 @0x000193a4 call_in_other_fun_ex [4, 1] 
+0006 @0x000193a8 push_local_vptr [-1] 
+0007 @0x000193ac assign_value [] 
+0008 @0x000193b0 push_number(S) [-1] 
+0009 @0x000193b4 eq_value [] 
+0010 @0x000193b8 if [2, 2] 
+0011 @0x000193bc push_number(S) [0] 
+0012 @0x000193c0 return_from_fun [] 
+0013 @0x000193c4 push_local_value [0] 
+0014 @0x000193c8 push_shared_string [104] 'select * from account where account = ?'
+0015 @0x000193cc call_in_efun [447, 2] mysql_bind_parameters
+0016 @0x000193d0 push_local_vptr [-2] 
+0017 @0x000193d4 assign_value [] 
+0018 @0x000193d8 pop_stack [] 
+0019 @0x000193dc push_local_value [-2] 
+0020 @0x000193e0 push_local_value [-1] 
+0021 @0x000193e4 call_in_user_fun [813, -126] mysql_select_single_result
+0022 @0x000193e8 return_from_fun [] 
+0023 @0x000193ec null_action [] 
+0024 @0x000193f0 return_from_fun [] 
+```
+
+<a id="aaa-aaa-daemons-accountd-o-auth_all_protect"></a>
+
+## aaa/pack_data/lib_aaa32.pak/aaa/daemons/accountd.o :: auth_all_protect
+
+成员 SHA-256：`fbad2268542cac34b915222e0e6ba038e390b5098d06295834c707654c4bbd05`；函数记录偏移：`0x1defd`；函数编号：`102`。
+
+```text
+0000 @0x0001e9e5 check_args_num [2] 
+0001 @0x0001e9e9 push_number(S) [0] 
+0002 @0x0001e9ed resort_stack [] 
+0003 @0x0001e9f1 enter_function [] 
+0004 @0x0001e9f5 push_number(S) [0] 
+0005 @0x0001e9f9 push_local_vptr [-3] 
+0006 @0x0001e9fd assign_value [] 
+0007 @0x0001ea01 pop_stack [] 
+0008 @0x0001ea05 push_shared_string [60] ''
+0009 @0x0001ea09 push_local_vptr [-7] 
+0010 @0x0001ea0d assign_value [] 
+0011 @0x0001ea11 pop_stack [] 
+0012 @0x0001ea15 push_local_value [0] 
+0013 @0x0001ea19 is_type [10] 
+0014 @0x0001ea1d not_value [] 
+0015 @0x0001ea21 if [1, 2] 
+0016 @0x0001ea25 return_from_fun [] 
+0017 @0x0001ea29 call_in_user_fun [77, 0] get_safe_tips_status
+0018 @0x0001ea2d not_value [] 
+0019 @0x0001ea31 if [6, 2] 
+0020 @0x0001ea35 push_number(S) [1] 
+0021 @0x0001ea39 push_shared_string [274] 'safe_status'
+0022 @0x0001ea3d push_shared_string [168] 'lite_set'
+0023 @0x0001ea41 push_local_value [0] 
+0024 @0x0001ea45 call_in_other_fun_ex [4, 2] 
+0025 @0x0001ea49 pop_stack [] 
+0026 @0x0001ea4d push_local_value [1] 
+0027 @0x0001ea51 push_shared_string [166] 'query_account'
+0028 @0x0001ea55 push_local_value [0] 
+0029 @0x0001ea59 call_in_other_fun_ex [4, 0] 
+0030 @0x0001ea5d call_in_efun [125, 2] stricmp
+0031 @0x0001ea61 push_number(S) [0] 
+0032 @0x0001ea65 ne_value [] 
+0033 @0x0001ea69 if [7, 2] 
+0034 @0x0001ea6d push_number(S) [1] 
+0035 @0x0001ea71 push_shared_string [110] 'to_be_disconnect'
+0036 @0x0001ea75 push_local_value [0] 
+0037 @0x0001ea79 call_in_other_fun_ex [4, 1] 
+0038 @0x0001ea7d pop_stack [] 
+0039 @0x0001ea81 return_from_fun [] 
+0040 @0x0001ea85 null_action [] 
+0041 @0x0001ea89 push_shared_string [218] 'mac_addr'
+0042 @0x0001ea8d push_shared_string [111] 'lite_query_temp'
+0043 @0x0001ea91 push_local_value [0] 
+0044 @0x0001ea95 call_in_other_fun_ex [4, 1] 
+0045 @0x0001ea99 push_local_vptr [-12] 
+0046 @0x0001ea9d assign_value [] 
+0047 @0x0001eaa1 pop_stack [] 
+0048 @0x0001eaa5 push_number(S) [1] 
+0049 @0x0001eaa9 push_local_vptr [-5] 
+0050 @0x0001eaad assign_value [] 
+0051 @0x0001eab1 pop_stack [] 
+0052 @0x0001eab5 push_local_value [1] 
+0053 @0x0001eab9 call_in_user_fun [78, 1] query_protect_range
+0054 @0x0001eabd push_local_vptr [-4] 
+0055 @0x0001eac1 assign_value [] 
+0056 @0x0001eac5 pop_stack [] 
+0057 @0x0001eac9 push_local_value [-4] 
+0058 @0x0001eacd push_number(S) [1] 
+0059 @0x0001ead1 eq_value [] 
+0060 @0x0001ead5 if [4, 2] 
+0061 @0x0001ead9 push_number(S) [0] 
+0062 @0x0001eadd push_local_vptr [-5] 
+0063 @0x0001eae1 assign_value [] 
+0064 @0x0001eae5 pop_stack [] 
+0065 @0x0001eae9 push_number(S) [0] 
+0066 @0x0001eaed push_local_vptr [-18] 
+0067 @0x0001eaf1 assign_value [] 
+0068 @0x0001eaf5 pop_stack [] 
+0069 @0x0001eaf9 push_local_value [0] 
+0070 @0x0001eafd is_type [10] 
+0071 @0x0001eb01 not_value [] 
+0072 @0x0001eb05 if [1, 2] 
+0073 @0x0001eb09 return_from_fun [] 
+0074 @0x0001eb0d push_shared_string [220] 'para_dist'
+0075 @0x0001eb11 push_shared_string [111] 'lite_query_temp'
+0076 @0x0001eb15 push_local_value [0] 
+0077 @0x0001eb19 call_in_other_fun_ex [4, 1] 
+0078 @0x0001eb1d push_local_vptr [-16] 
+0079 @0x0001eb21 assign_value [] 
+0080 @0x0001eb25 pop_stack [] 
+0081 @0x0001eb29 push_local_value [3] 
+0082 @0x0001eb2d not_value [] 
+0083 @0x0001eb31 if [8, 0] 
+0084 @0x0001eb35 pop_stack [] 
+0085 @0x0001eb39 push_local_value [2] 
+0086 @0x0001eb3d push_shared_string [69] 'privilege'
+0087 @0x0001eb41 query_member [0] 
+0088 @0x0001eb45 call_in_efun [5, 1] atoi
+0089 @0x0001eb49 push_local_vptr [-19] 
+0090 @0x0001eb4d assign_value [] 
+0091 @0x0001eb51 is_type [2] 
+0092 @0x0001eb55 if [4, 0] 
+0093 @0x0001eb59 pop_stack [] 
+0094 @0x0001eb5d push_local_value [-19] 
+0095 @0x0001eb61 push_number(S) [300] 
+0096 @0x0001eb65 ge_value [] 
+0097 @0x0001eb69 if [6, 0] 
+0098 @0x0001eb6d pop_stack [] 
+0099 @0x0001eb71 push_obj_var [26] 
+0100 @0x0001eb75 push_local_value [-16] 
+0101 @0x0001eb79 call_in_efun [83, 2] member_array
+0102 @0x0001eb7d push_number(S) [0] 
+0103 @0x0001eb81 lt_value [] 
+0104 @0x0001eb85 if [10, 0] 
+0105 @0x0001eb89 pop_stack [] 
+0106 @0x0001eb8d push_local_value [-5] 
+0107 @0x0001eb91 not_value [] 
+0108 @0x0001eb95 if [6, 1] 
+0109 @0x0001eb99 pop_stack [] 
+0110 @0x0001eb9d push_shared_string [275] 'passpod'
+0111 @0x0001eba1 push_local_value [1] 
+0112 @0x0001eba5 call_in_user_fun [58, 2] query_protect_info
+0113 @0x0001eba9 is_type [7] 
+0114 @0x0001ebad not_value [] 
+0115 @0x0001ebb1 if [31, 2] 
+0116 @0x0001ebb5 push_shared_string [276] 'GM帐号未绑定乾坤锁或未设置登录时验证乾坤锁，无法登录。'
+0117 @0x0001ebb9 push_number(S) [0] 
+0118 @0x0001ebbd push_number(S) [0] 
+0119 @0x0001ebc1 push_local_value [0] 
+0120 @0x0001ebc5 call_in_user_fun [96, 4] send_login_result
+0121 @0x0001ebc9 pop_stack [] 
+0122 @0x0001ebcd push_number(S) [2] 
+0123 @0x0001ebd1 push_shared_string [110] 'to_be_disconnect'
+0124 @0x0001ebd5 push_local_value [0] 
+0125 @0x0001ebd9 call_in_other_fun_ex [4, 1] 
+0126 @0x0001ebdd pop_stack [] 
+0127 @0x0001ebe1 push_local_value [1] 
+0128 @0x0001ebe5 is_type [4] 
+0129 @0x0001ebe9 if [6, 1] 
+0130 @0x0001ebed pop_stack [] 
+0131 @0x0001ebf1 push_shared_string [129] 'login_info/account'
+0132 @0x0001ebf5 push_shared_string [114] 'query_temp'
+0133 @0x0001ebf9 push_local_value [1] 
+0134 @0x0001ebfd call_in_other_fun_ex [4, 1] 
+0135 @0x0001ec01 is_type [4] 
+0136 @0x0001ec05 if [8, 2] 
+0137 @0x0001ec09 push_shared_string [276] 'GM帐号未绑定乾坤锁或未设置登录时验证乾坤锁，无法登录。'
+0138 @0x0001ec0d push_shared_string [125] 'login'
+0139 @0x0001ec11 push_local_value [1] 
+0140 @0x0001ec15 call_in_user_fun [659, -127] get_login_info_file
+0141 @0x0001ec19 push_shared_string [117] 'log_login_info'
+0142 @0x0001ec1d push_shared_string [91] '/daemons/logd.c'
+0143 @0x0001ec21 call_in_other_fun_ex [4, 3] 
+0144 @0x0001ec25 pop_stack [] 
+0145 @0x0001ec29 return_from_fun [] 
+0146 @0x0001ec2d null_action [] 
+0147 @0x0001ec31 call_in_user_fun [837, -128] get_auth_spec_game_bits
+0148 @0x0001ec35 push_local_vptr [-18] 
+0149 @0x0001ec39 assign_value [] 
+0150 @0x0001ec3d pop_stack [] 
+0151 @0x0001ec41 push_local_value [3] 
+0152 @0x0001ec45 not_value [] 
+0153 @0x0001ec49 if [2, 0] 
+0154 @0x0001ec4d pop_stack [] 
+0155 @0x0001ec51 push_local_value [-5] 
+0156 @0x0001ec55 if [5, 0] 
+0157 @0x0001ec59 pop_stack [] 
+0158 @0x0001ec5d push_number(S) [4] 
+0159 @0x0001ec61 push_local_value [-18] 
+0160 @0x0001ec65 rev_value [] 
+0161 @0x0001ec69 and [] 
+0162 @0x0001ec6d if [5, 0] 
+0163 @0x0001ec71 pop_stack [] 
+0164 @0x0001ec75 push_shared_string [275] 'passpod'
+0165 @0x0001ec79 push_local_value [1] 
+0166 @0x0001ec7d call_in_user_fun [58, 2] query_protect_info
+0167 @0x0001ec81 is_type [7] 
+0168 @0x0001ec85 if [6, 0] 
+0169 @0x0001ec89 pop_stack [] 
+0170 @0x0001ec8d push_local_value [2] 
+0171 @0x0001ec91 push_shared_string [96] 'org_password'
+0172 @0x0001ec95 query_member [0] 
+0173 @0x0001ec99 push_shared_string [60] ''
+0174 @0x0001ec9d eq_value [] 
+0175 @0x0001eca1 if [6, 0] 
+0176 @0x0001eca5 pop_stack [] 
+0177 @0x0001eca9 push_local_value [2] 
+0178 @0x0001ecad push_local_value [-12] 
+0179 @0x0001ecb1 push_local_value [0] 
+0180 @0x0001ecb5 call_in_user_fun [132, 3] check_skip_protected
+0181 @0x0001ecb9 not_value [] 
+0182 @0x0001ecbd if [184, 2] 
+0183 @0x0001ecc1 push_local_vptr [-14] 
+0184 @0x0001ecc5 push_shared_string [275] 'passpod'
+0185 @0x0001ecc9 push_local_value [1] 
+0186 @0x0001eccd call_in_user_fun [115, 3] deny_by_pwd_protect
+0187 @0x0001ecd1 push_number(S) [2] 
+0188 @0x0001ecd5 lt_value [] 
+0189 @0x0001ecd9 if [13, 2] 
+0190 @0x0001ecdd push_shared_string [277] '该帐号绑定的#R乾坤锁#n已经挂失，无法登录游戏。'
+0191 @0x0001ece1 push_number(S) [0] 
+0192 @0x0001ece5 push_number(S) [6] 
+0193 @0x0001ece9 push_local_value [0] 
+0194 @0x0001eced call_in_user_fun [96, 4] send_login_result
+0195 @0x0001ecf1 pop_stack [] 
+0196 @0x0001ecf5 push_number(S) [2] 
+0197 @0x0001ecf9 push_shared_string [110] 'to_be_disconnect'
+0198 @0x0001ecfd push_local_value [0] 
+0199 @0x0001ed01 call_in_other_fun_ex [4, 1] 
+0200 @0x0001ed05 pop_stack [] 
+0201 @0x0001ed09 return_from_fun [] 
+0202 @0x0001ed0d null_action [] 
+0203 @0x0001ed11 push_shared_string [219] 'para_passpod'
+0204 @0x0001ed15 push_shared_string [111] 'lite_query_temp'
+0205 @0x0001ed19 push_local_value [0] 
+0206 @0x0001ed1d call_in_other_fun_ex [4, 1] 
+0207 @0x0001ed21 push_local_vptr [-17] 
+0208 @0x0001ed25 assign_value [] 
+0209 @0x0001ed29 pop_stack [] 
+0210 @0x0001ed2d push_local_value [-17] 
+0211 @0x0001ed31 push_local_value [1] 
+0212 @0x0001ed35 push_shared_string [271] 'auth_passpod'
+0213 @0x0001ed39 push_shared_string [278] '/aaa/daemons/passpodd.c'
+0214 @0x0001ed3d call_in_other_fun_ex [4, 2] 
+0215 @0x0001ed41 push_local_vptr [-15] 
+0216 @0x0001ed45 assign_value [] 
+0217 @0x0001ed49 pop_stack [] 
+0218 @0x0001ed4d push_local_value [0] 
+0219 @0x0001ed51 is_type [10] 
+0220 @0x0001ed55 not_value [] 
+0221 @0x0001ed59 if [1, 2] 
+0222 @0x0001ed5d return_from_fun [] 
+0223 @0x0001ed61 push_local_value [-15] 
+0224 @0x0001ed65 push_shared_string [137] 'result'
+0225 @0x0001ed69 query_member [0] 
+0226 @0x0001ed6d case_check_number [8, 0] 
+0227 @0x0001ed71 case_check_number [9, 1] 
+0228 @0x0001ed75 case_check_number [30, 3] 
+0229 @0x0001ed79 case_check_number [38, 2] 
+0230 @0x0001ed7d case_check_number [65, 5] 
+0231 @0x0001ed81 case_check_number [77, 6] 
+0232 @0x0001ed85 case_check_number [89, 7] 
+0233 @0x0001ed89 case_check_number [101, 10] 
+0234 @0x0001ed8d case_default [101] 
+0235 @0x0001ed91 goto [113] 
+0236 @0x0001ed95 null_action [] 
+0237 @0x0001ed99 push_shared_string [279] '你输入的乾坤锁密码错误。'
+0238 @0x0001ed9d push_local_vptr [-7] 
+0239 @0x0001eda1 assign_value [] 
+0240 @0x0001eda5 pop_stack [] 
+0241 @0x0001eda9 push_local_vptr [-7] 
+0242 @0x0001edad push_local_value [1] 
+0243 @0x0001edb1 push_local_value [0] 
+0244 @0x0001edb5 call_in_user_fun [90, 3] do_when_password_error
+0245 @0x0001edb9 pop_stack [] 
+0246 @0x0001edbd push_local_value [-7] 
+0247 @0x0001edc1 push_number(S) [0] 
+0248 @0x0001edc5 push_number(S) [6] 
+0249 @0x0001edc9 push_local_value [0] 
+0250 @0x0001edcd call_in_user_fun [96, 4] send_login_result
+0251 @0x0001edd1 pop_stack [] 
+0252 @0x0001edd5 push_number(S) [2] 
+0253 @0x0001edd9 push_shared_string [110] 'to_be_disconnect'
+0254 @0x0001eddd push_local_value [0] 
+0255 @0x0001ede1 call_in_other_fun_ex [4, 1] 
+0256 @0x0001ede5 pop_stack [] 
+0257 @0x0001ede9 return_from_fun [] 
+0258 @0x0001eded null_action [] 
+0259 @0x0001edf1 push_number(S) [1] 
+0260 @0x0001edf5 push_shared_string [280] '你的乾坤锁已经过期，请及时更换。'
+0261 @0x0001edf9 push_number(S) [8165] 
+0262 @0x0001edfd push_shared_string [33] 'send_message'
+0263 @0x0001ee01 push_local_value [0] 
+0264 @0x0001ee05 call_in_other_fun_ex [4, 3] 
+0265 @0x0001ee09 pop_stack [] 
+0266 @0x0001ee0d goto [82] 
+0267 @0x0001ee11 null_action [] 
+0268 @0x0001ee15 push_global_var [67] 
+0269 @0x0001ee19 case_check_number [2, 2] 
+0270 @0x0001ee1d case_check_number [13, 3] 
+0271 @0x0001ee21 case_default [20] 
+0272 @0x0001ee25 new_thread_catch [7] 
+0273 @0x0001ee29 push_local_value [1] 
+0274 @0x0001ee2d push_shared_string [281] 'User not found for passpod(account=%s)\n'
+0275 @0x0001ee31 call_in_efun [28, 2] error
+0276 @0x0001ee35 pop_stack [] 
+0277 @0x0001ee39 push_number(S) [0] 
+0278 @0x0001ee3d end_thread_catch [] 
+0279 @0x0001ee41 goto [1] 
+0280 @0x0001ee45 caught_error [] 
+0281 @0x0001ee49 pop_stack [] 
+0282 @0x0001ee4d goto [11] 
+0283 @0x0001ee51 null_action [] 
+0284 @0x0001ee55 push_local_value [-16] 
+0285 @0x0001ee59 push_local_value [0] 
+0286 @0x0001ee5d push_shared_string [275] 'passpod'
+0287 @0x0001ee61 push_local_value [1] 
+0288 @0x0001ee65 call_in_user_fun [138, 4] cancel_pwd_protect
+0289 @0x0001ee69 pop_stack [] 
+0290 @0x0001ee6d goto [3] 
+0291 @0x0001ee71 null_action [] 
+0292 @0x0001ee75 goto [1] 
+0293 @0x0001ee79 null_action [] 
+0294 @0x0001ee7d goto [54] 
+0295 @0x0001ee81 null_action [] 
+0296 @0x0001ee85 push_shared_string [282] '你的密保已被封停，操作失败。'
+0297 @0x0001ee89 push_number(S) [0] 
+0298 @0x0001ee8d push_number(S) [6] 
+0299 @0x0001ee91 push_local_value [0] 
+0300 @0x0001ee95 call_in_user_fun [96, 4] send_login_result
+0301 @0x0001ee99 pop_stack [] 
+0302 @0x0001ee9d push_number(S) [2] 
+0303 @0x0001eea1 push_shared_string [110] 'to_be_disconnect'
+0304 @0x0001eea5 push_local_value [0] 
+0305 @0x0001eea9 call_in_other_fun_ex [4, 1] 
+0306 @0x0001eead pop_stack [] 
+0307 @0x0001eeb1 return_from_fun [] 
+0308 @0x0001eeb5 null_action [] 
+0309 @0x0001eeb9 push_shared_string [283] '你的乾坤锁当次密码已失效，请稍后再试。'
+0310 @0x0001eebd push_number(S) [0] 
+0311 @0x0001eec1 push_number(S) [6] 
+0312 @0x0001eec5 push_local_value [0] 
+0313 @0x0001eec9 call_in_user_fun [96, 4] send_login_result
+0314 @0x0001eecd pop_stack [] 
+0315 @0x0001eed1 push_number(S) [2] 
+0316 @0x0001eed5 push_shared_string [110] 'to_be_disconnect'
+0317 @0x0001eed9 push_local_value [0] 
+0318 @0x0001eedd call_in_other_fun_ex [4, 1] 
+0319 @0x0001eee1 pop_stack [] 
+0320 @0x0001eee5 return_from_fun [] 
+0321 @0x0001eee9 null_action [] 
+0322 @0x0001eeed push_shared_string [284] '当前乾坤锁输入次数过多，请稍后再试。'
+0323 @0x0001eef1 push_number(S) [0] 
+0324 @0x0001eef5 push_number(S) [6] 
+0325 @0x0001eef9 push_local_value [0] 
+0326 @0x0001eefd call_in_user_fun [96, 4] send_login_result
+0327 @0x0001ef01 pop_stack [] 
+0328 @0x0001ef05 push_number(S) [2] 
+0329 @0x0001ef09 push_shared_string [110] 'to_be_disconnect'
+0330 @0x0001ef0d push_local_value [0] 
+0331 @0x0001ef11 call_in_other_fun_ex [4, 1] 
+0332 @0x0001ef15 pop_stack [] 
+0333 @0x0001ef19 return_from_fun [] 
+0334 @0x0001ef1d null_action [] 
+0335 @0x0001ef21 null_action [] 
+0336 @0x0001ef25 push_shared_string [285] '#R乾坤锁#n密码验证连接失败。（错误编号：1016）\n#R注：如果您已解除乾坤锁，只需要在乾坤锁栏输入任意字符即可破解验证。#n'
+0337 @0x0001ef29 push_number(S) [0] 
+0338 @0x0001ef2d push_number(S) [6] 
+0339 @0x0001ef31 push_local_value [0] 
+0340 @0x0001ef35 call_in_user_fun [96, 4] send_login_result
+0341 @0x0001ef39 pop_stack [] 
+0342 @0x0001ef3d push_number(S) [2] 
+0343 @0x0001ef41 push_shared_string [110] 'to_be_disconnect'
+0344 @0x0001ef45 push_local_value [0] 
+0345 @0x0001ef49 call_in_other_fun_ex [4, 1] 
+0346 @0x0001ef4d pop_stack [] 
+0347 @0x0001ef51 return_from_fun [] 
+0348 @0x0001ef55 null_action [] 
+0349 @0x0001ef59 push_local_value [0] 
+0350 @0x0001ef5d is_type [10] 
+0351 @0x0001ef61 not_value [] 
+0352 @0x0001ef65 if [1, 2] 
+0353 @0x0001ef69 return_from_fun [] 
+0354 @0x0001ef6d push_local_value [-15] 
+0355 @0x0001ef71 push_shared_string [286] 'passpod_type'
+0356 @0x0001ef75 query_member [0] 
+0357 @0x0001ef79 push_shared_string [286] 'passpod_type'
+0358 @0x0001ef7d push_shared_string [168] 'lite_set'
+0359 @0x0001ef81 push_local_value [0] 
+0360 @0x0001ef85 call_in_other_fun_ex [4, 2] 
+0361 @0x0001ef89 pop_stack [] 
+0362 @0x0001ef8d push_number(S) [1] 
+0363 @0x0001ef91 push_local_vptr [-3] 
+0364 @0x0001ef95 assign_value [] 
+0365 @0x0001ef99 pop_stack [] 
+0366 @0x0001ef9d null_action [] 
+0367 @0x0001efa1 push_local_value [2] 
+0368 @0x0001efa5 push_shared_string [78] 'permit_ip'
+0369 @0x0001efa9 query_member [0] 
+0370 @0x0001efad push_local_vptr [-10] 
+0371 @0x0001efb1 assign_value [] 
+0372 @0x0001efb5 pop_stack [] 
+0373 @0x0001efb9 call_in_user_fun [68, 0] is_apex_enabled
+0374 @0x0001efbd if [6, 2] 
+0375 @0x0001efc1 push_local_value [-10] 
+0376 @0x0001efc5 cast_type [4, 0] 
+0377 @0x0001efc9 call_in_efun [141, 1] trim
+0378 @0x0001efcd push_local_vptr [-10] 
+0379 @0x0001efd1 assign_value [] 
+0380 @0x0001efd5 pop_stack [] 
+0381 @0x0001efd9 push_local_value [-10] 
+0382 @0x0001efdd push_shared_string [60] ''
+0383 @0x0001efe1 ne_value [] 
+0384 @0x0001efe5 if [8, 0] 
+0385 @0x0001efe9 pop_stack [] 
+0386 @0x0001efed push_shared_string [287] ',;/'
+0387 @0x0001eff1 push_shared_string [116] 'get_peer_ip'
+0388 @0x0001eff5 push_local_value [0] 
+0389 @0x0001eff9 call_in_other_fun_ex [4, 0] 
+0390 @0x0001effd push_local_value [-10] 
+0391 @0x0001f001 call_in_user_fun [844, -125] check_for_permit
+0392 @0x0001f005 not_value [] 
+0393 @0x0001f009 if [31, 2] 
+0394 @0x0001f00d push_shared_string [288] '对不起，由于您申请了IP绑定服务，当前登录受到限制！'
+0395 @0x0001f011 push_number(S) [0] 
+0396 @0x0001f015 push_number(S) [0] 
+0397 @0x0001f019 push_local_value [0] 
+0398 @0x0001f01d call_in_user_fun [96, 4] send_login_result
+0399 @0x0001f021 pop_stack [] 
+0400 @0x0001f025 push_number(S) [1] 
+0401 @0x0001f029 push_shared_string [110] 'to_be_disconnect'
+0402 @0x0001f02d push_local_value [0] 
+0403 @0x0001f031 call_in_other_fun_ex [4, 1] 
+0404 @0x0001f035 pop_stack [] 
+0405 @0x0001f039 push_local_value [1] 
+0406 @0x0001f03d is_type [4] 
+0407 @0x0001f041 if [6, 1] 
+0408 @0x0001f045 pop_stack [] 
+0409 @0x0001f049 push_shared_string [129] 'login_info/account'
+0410 @0x0001f04d push_shared_string [114] 'query_temp'
+0411 @0x0001f051 push_local_value [1] 
+0412 @0x0001f055 call_in_other_fun_ex [4, 1] 
+0413 @0x0001f059 is_type [4] 
+0414 @0x0001f05d if [8, 2] 
+0415 @0x0001f061 push_shared_string [289] '登录IP和设置的绑定IP不一致，登录失败\n'
+0416 @0x0001f065 push_shared_string [125] 'login'
+0417 @0x0001f069 push_local_value [1] 
+0418 @0x0001f06d call_in_user_fun [659, -127] get_login_info_file
+0419 @0x0001f071 push_shared_string [117] 'log_login_info'
+0420 @0x0001f075 push_shared_string [91] '/daemons/logd.c'
+0421 @0x0001f079 call_in_other_fun_ex [4, 3] 
+0422 @0x0001f07d pop_stack [] 
+0423 @0x0001f081 return_from_fun [] 
+0424 @0x0001f085 null_action [] 
+0425 @0x0001f089 push_local_value [2] 
+0426 @0x0001f08d push_shared_string [79] 'permit_id'
+0427 @0x0001f091 query_member [0] 
+0428 @0x0001f095 push_local_vptr [-11] 
+0429 @0x0001f099 assign_value [] 
+0430 @0x0001f09d pop_stack [] 
+0431 @0x0001f0a1 call_in_user_fun [68, 0] is_apex_enabled
+0432 @0x0001f0a5 if [6, 2] 
+0433 @0x0001f0a9 push_local_value [-11] 
+0434 @0x0001f0ad cast_type [4, 0] 
+0435 @0x0001f0b1 call_in_efun [141, 1] trim
+0436 @0x0001f0b5 push_local_vptr [-11] 
+0437 @0x0001f0b9 assign_value [] 
+0438 @0x0001f0bd pop_stack [] 
+0439 @0x0001f0c1 push_local_value [-11] 
+0440 @0x0001f0c5 push_shared_string [60] ''
+0441 @0x0001f0c9 ne_value [] 
+0442 @0x0001f0cd if [6, 0] 
+0443 @0x0001f0d1 pop_stack [] 
+0444 @0x0001f0d5 push_shared_string [287] ',;/'
+0445 @0x0001f0d9 push_local_value [-12] 
+0446 @0x0001f0dd push_local_value [-11] 
+0447 @0x0001f0e1 call_in_user_fun [844, -125] check_for_permit
+0448 @0x0001f0e5 not_value [] 
+0449 @0x0001f0e9 if [31, 2] 
+0450 @0x0001f0ed push_shared_string [290] '对不起，由于您申请了机器ID绑定服务，当前登录受到限制！'
+0451 @0x0001f0f1 push_number(S) [0] 
+0452 @0x0001f0f5 push_number(S) [0] 
+0453 @0x0001f0f9 push_local_value [0] 
+0454 @0x0001f0fd call_in_user_fun [96, 4] send_login_result
+0455 @0x0001f101 pop_stack [] 
+0456 @0x0001f105 push_number(S) [1] 
+0457 @0x0001f109 push_shared_string [110] 'to_be_disconnect'
+0458 @0x0001f10d push_local_value [0] 
+0459 @0x0001f111 call_in_other_fun_ex [4, 1] 
+0460 @0x0001f115 pop_stack [] 
+0461 @0x0001f119 push_local_value [1] 
+0462 @0x0001f11d is_type [4] 
+0463 @0x0001f121 if [6, 1] 
+0464 @0x0001f125 pop_stack [] 
+0465 @0x0001f129 push_shared_string [129] 'login_info/account'
+0466 @0x0001f12d push_shared_string [114] 'query_temp'
+0467 @0x0001f131 push_local_value [1] 
+0468 @0x0001f135 call_in_other_fun_ex [4, 1] 
+0469 @0x0001f139 is_type [4] 
+0470 @0x0001f13d if [8, 2] 
+0471 @0x0001f141 push_shared_string [291] '登录机器MAC地址和绑定MAC地址不一致，登录失败\n'
+0472 @0x0001f145 push_shared_string [125] 'login'
+0473 @0x0001f149 push_local_value [1] 
+0474 @0x0001f14d call_in_user_fun [659, -127] get_login_info_file
+0475 @0x0001f151 push_shared_string [117] 'log_login_info'
+0476 @0x0001f155 push_shared_string [91] '/daemons/logd.c'
+0477 @0x0001f159 call_in_other_fun_ex [4, 3] 
+0478 @0x0001f15d pop_stack [] 
+0479 @0x0001f161 return_from_fun [] 
+0480 @0x0001f165 null_action [] 
+0481 @0x0001f169 push_number(S) [0] 
+0482 @0x0001f16d push_local_vptr [-22] 
+0483 @0x0001f171 assign_value [] 
+0484 @0x0001f175 pop_stack [] 
+0485 @0x0001f179 push_local_value [3] 
+0486 @0x0001f17d not_value [] 
+0487 @0x0001f181 if [2, 0] 
+0488 @0x0001f185 pop_stack [] 
+0489 @0x0001f189 push_local_value [-5] 
+0490 @0x0001f18d if [5, 0] 
+0491 @0x0001f191 pop_stack [] 
+0492 @0x0001f195 push_number(S) [2] 
+0493 @0x0001f199 push_local_value [-18] 
+0494 @0x0001f19d rev_value [] 
+0495 @0x0001f1a1 and [] 
+0496 @0x0001f1a5 if [214, 2] 
+0497 @0x0001f1a9 push_shared_string [292] 'protect_phone'
+0498 @0x0001f1ad push_shared_string [230] 'get_global_config'
+0499 @0x0001f1b1 push_shared_string [133] '/aaa/daemons/configd.c'
+0500 @0x0001f1b5 call_in_other_fun_ex [4, 1] 
+0501 @0x0001f1b9 push_local_vptr [-21] 
+0502 @0x0001f1bd assign_value [] 
+0503 @0x0001f1c1 pop_stack [] 
+0504 @0x0001f1c5 push_local_value [-21] 
+0505 @0x0001f1c9 is_type [4] 
+0506 @0x0001f1cd not_value [] 
+0507 @0x0001f1d1 if [4, 1] 
+0508 @0x0001f1d5 pop_stack [] 
+0509 @0x0001f1d9 push_local_value [-21] 
+0510 @0x0001f1dd sizeof [] 
+0511 @0x0001f1e1 not_value [] 
+0512 @0x0001f1e5 if [6, 2] 
+0513 @0x0001f1e9 push_shared_string [293] '#R你的帐号已经绑定了电话密保，需解除锁定后才能登录游戏，请拨打电话#n#Y400-811-0495、400-811-0507#n#R如电话忙请尝试拨打#n#Y0531-6677-3523#n#R#R解除锁定，也可编辑短信#n#Y“1”#n#R发送到#n#Y18954164801#n#R解锁。#n'
+0514 @0x0001f1ed push_local_vptr [-14] 
+0515 @0x0001f1f1 assign_value [] 
+0516 @0x0001f1f5 pop_stack [] 
+0517 @0x0001f1f9 goto [49] 
+0518 @0x0001f1fd null_action [] 
+0519 @0x0001f201 new_thread_catch [8] 
+0520 @0x0001f205 push_local_value [-21] 
+0521 @0x0001f209 call_in_efun [100, 1] restore_value
+0522 @0x0001f20d push_local_vptr [-20] 
+0523 @0x0001f211 assign_value [] 
+0524 @0x0001f215 pop_stack [] 
+0525 @0x0001f219 push_number(S) [0] 
+0526 @0x0001f21d end_thread_catch [] 
+0527 @0x0001f221 goto [1] 
+0528 @0x0001f225 caught_error [] 
+0529 @0x0001f229 pop_stack [] 
+0530 @0x0001f22d push_local_value [-20] 
+0531 @0x0001f231 is_type [7] 
+0532 @0x0001f235 not_value [] 
+0533 @0x0001f239 if [4, 1] 
+0534 @0x0001f23d pop_stack [] 
+0535 @0x0001f241 push_local_value [-20] 
+0536 @0x0001f245 sizeof [] 
+0537 @0x0001f249 not_value [] 
+0538 @0x0001f24d if [6, 2] 
+0539 @0x0001f251 push_shared_string [293] '#R你的帐号已经绑定了电话密保，需解除锁定后才能登录游戏，请拨打电话#n#Y400-811-0495、400-811-0507#n#R如电话忙请尝试拨打#n#Y0531-6677-3523#n#R#R解除锁定，也可编辑短信#n#Y“1”#n#R发送到#n#Y18954164801#n#R解锁。#n'
+0540 @0x0001f255 push_local_vptr [-14] 
+0541 @0x0001f259 assign_value [] 
+0542 @0x0001f25d pop_stack [] 
+0543 @0x0001f261 goto [23] 
+0544 @0x0001f265 null_action [] 
+0545 @0x0001f269 push_local_value [-20] 
+0546 @0x0001f26d push_shared_string [294] 'tip'
+0547 @0x0001f271 query_member [0] 
+0548 @0x0001f275 push_local_vptr [-14] 
+0549 @0x0001f279 assign_value [] 
+0550 @0x0001f27d is_type [4] 
+0551 @0x0001f281 not_value [] 
+0552 @0x0001f285 if [4, 1] 
+0553 @0x0001f289 pop_stack [] 
+0554 @0x0001f28d push_local_value [-14] 
+0555 @0x0001f291 sizeof [] 
+0556 @0x0001f295 not_value [] 
+0557 @0x0001f299 if [6, 2] 
+0558 @0x0001f29d push_shared_string [293] '#R你的帐号已经绑定了电话密保，需解除锁定后才能登录游戏，请拨打电话#n#Y400-811-0495、400-811-0507#n#R如电话忙请尝试拨打#n#Y0531-6677-3523#n#R#R解除锁定，也可编辑短信#n#Y“1”#n#R发送到#n#Y18954164801#n#R解锁。#n'
+0559 @0x0001f2a1 push_local_vptr [-14] 
+0560 @0x0001f2a5 assign_value [] 
+0561 @0x0001f2a9 pop_stack [] 
+0562 @0x0001f2ad goto [4] 
+0563 @0x0001f2b1 null_action [] 
+0564 @0x0001f2b5 null_action [] 
+0565 @0x0001f2b9 push_number(S) [0] 
+0566 @0x0001f2bd if [-70, 3] 
+0567 @0x0001f2c1 push_local_value [-16] 
+0568 @0x0001f2c5 push_local_value [0] 
+0569 @0x0001f2c9 push_local_vptr [-14] 
+0570 @0x0001f2cd push_shared_string [295] 'phone'
+0571 @0x0001f2d1 push_local_value [1] 
+0572 @0x0001f2d5 call_in_user_fun [115, 5] deny_by_pwd_protect
+0573 @0x0001f2d9 push_local_vptr [-22] 
+0574 @0x0001f2dd assign_value [] 
+0575 @0x0001f2e1 pop_stack [] 
+0576 @0x0001f2e5 push_local_value [-22] 
+0577 @0x0001f2e9 push_number(S) [2] 
+0578 @0x0001f2ed lt_value [] 
+0579 @0x0001f2f1 if [6, 0] 
+0580 @0x0001f2f5 pop_stack [] 
+0581 @0x0001f2f9 push_local_value [2] 
+0582 @0x0001f2fd push_shared_string [96] 'org_password'
+0583 @0x0001f301 query_member [0] 
+0584 @0x0001f305 push_shared_string [60] ''
+0585 @0x0001f309 eq_value [] 
+0586 @0x0001f30d if [6, 0] 
+0587 @0x0001f311 pop_stack [] 
+0588 @0x0001f315 push_local_value [2] 
+0589 @0x0001f319 push_local_value [-12] 
+0590 @0x0001f31d push_local_value [0] 
+0591 @0x0001f321 call_in_user_fun [132, 3] check_skip_protected
+0592 @0x0001f325 not_value [] 
+0593 @0x0001f329 if [107, 2] 
+0594 @0x0001f32d push_local_value [0] 
+0595 @0x0001f331 is_type [10] 
+0596 @0x0001f335 if [13, 2] 
+0597 @0x0001f339 push_number(S) [1] 
+0598 @0x0001f33d push_local_value [-14] 
+0599 @0x0001f341 push_number(S) [8165] 
+0600 @0x0001f345 push_shared_string [33] 'send_message'
+0601 @0x0001f349 push_local_value [0] 
+0602 @0x0001f34d call_in_other_fun_ex [4, 3] 
+0603 @0x0001f351 pop_stack [] 
+0604 @0x0001f355 push_number(S) [5] 
+0605 @0x0001f359 push_shared_string [110] 'to_be_disconnect'
+0606 @0x0001f35d push_local_value [0] 
+0607 @0x0001f361 call_in_other_fun_ex [4, 1] 
+0608 @0x0001f365 pop_stack [] 
+0609 @0x0001f369 null_action [] 
+0610 @0x0001f36d push_local_value [1] 
+0611 @0x0001f371 is_type [4] 
+0612 @0x0001f375 if [6, 1] 
+0613 @0x0001f379 pop_stack [] 
+0614 @0x0001f37d push_shared_string [129] 'login_info/account'
+0615 @0x0001f381 push_shared_string [114] 'query_temp'
+0616 @0x0001f385 push_local_value [1] 
+0617 @0x0001f389 call_in_other_fun_ex [4, 1] 
+0618 @0x0001f38d is_type [4] 
+0619 @0x0001f391 if [8, 2] 
+0620 @0x0001f395 push_shared_string [296] '帐号绑定电话密保，禁止登录。'
+0621 @0x0001f399 push_shared_string [125] 'login'
+0622 @0x0001f39d push_local_value [1] 
+0623 @0x0001f3a1 call_in_user_fun [659, -127] get_login_info_file
+0624 @0x0001f3a5 push_shared_string [117] 'log_login_info'
+0625 @0x0001f3a9 push_shared_string [91] '/daemons/logd.c'
+0626 @0x0001f3ad call_in_other_fun_ex [4, 3] 
+0627 @0x0001f3b1 pop_stack [] 
+0628 @0x0001f3b5 push_obj_var [5] 
+0629 @0x0001f3b9 push_local_value [1] 
+0630 @0x0001f3bd query_member [0] 
+0631 @0x0001f3c1 is_type [7] 
+0632 @0x0001f3c5 not_value [] 
+0633 @0x0001f3c9 if [6, 2] 
+0634 @0x0001f3cd create_mapping [0] 
+0635 @0x0001f3d1 push_obj_vptr [5] 
+0636 @0x0001f3d5 push_local_value [1] 
+0637 @0x0001f3d9 query_member_ptr [0] 
+0638 @0x0001f3dd assign_value [] 
+0639 @0x0001f3e1 pop_stack [] 
+0640 @0x0001f3e5 call_in_efun [137, 0] time
+0641 @0x0001f3e9 push_obj_var [5] 
+0642 @0x0001f3ed push_local_value [1] 
+0643 @0x0001f3f1 query_member [0] 
+0644 @0x0001f3f5 push_shared_string [153] 'first_time'
+0645 @0x0001f3f9 query_member [0] 
+0646 @0x0001f3fd cast_type [2, 0] 
+0647 @0x0001f401 sub_value [] 
+0648 @0x0001f405 push_number(S) [600] 
+0649 @0x0001f409 gt_value [] 
+0650 @0x0001f40d if [26, 2] 
+0651 @0x0001f411 call_in_efun [137, 0] time
+0652 @0x0001f415 push_obj_vptr [5] 
+0653 @0x0001f419 push_local_value [1] 
+0654 @0x0001f41d query_member_ptr [0] 
+0655 @0x0001f421 push_shared_string [153] 'first_time'
+0656 @0x0001f425 query_member_ptr [0] 
+0657 @0x0001f429 assign_value [] 
+0658 @0x0001f42d pop_stack [] 
+0659 @0x0001f431 push_number(S) [1] 
+0660 @0x0001f435 push_obj_vptr [5] 
+0661 @0x0001f439 push_local_value [1] 
+0662 @0x0001f43d query_member_ptr [0] 
+0663 @0x0001f441 push_shared_string [150] 'times'
+0664 @0x0001f445 query_member_ptr [0] 
+0665 @0x0001f449 assign_value [] 
+0666 @0x0001f44d pop_stack [] 
+0667 @0x0001f451 call_in_efun [137, 0] time
+0668 @0x0001f455 push_obj_vptr [5] 
+0669 @0x0001f459 push_local_value [1] 
+0670 @0x0001f45d query_member_ptr [0] 
+0671 @0x0001f461 push_shared_string [151] 'update_time'
+0672 @0x0001f465 query_member_ptr [0] 
+0673 @0x0001f469 assign_value [] 
+0674 @0x0001f46d pop_stack [] 
+0675 @0x0001f471 null_action [] 
+0676 @0x0001f475 goto [22] 
+0677 @0x0001f479 null_action [] 
+0678 @0x0001f47d null_action [] 
+0679 @0x0001f481 null_action [] 
+0680 @0x0001f485 null_action [] 
+0681 @0x0001f489 null_action [] 
+0682 @0x0001f48d null_action [] 
+0683 @0x0001f491 push_obj_vptr [5] 
+0684 @0x0001f495 push_local_value [1] 
+0685 @0x0001f499 query_member_ptr [0] 
+0686 @0x0001f49d push_shared_string [150] 'times'
+0687 @0x0001f4a1 query_member_ptr [0] 
+0688 @0x0001f4a5 inc_value [1] 
+0689 @0x0001f4a9 null_action [] 
+0690 @0x0001f4ad call_in_efun [137, 0] time
+0691 @0x0001f4b1 push_obj_vptr [5] 
+0692 @0x0001f4b5 push_local_value [1] 
+0693 @0x0001f4b9 query_member_ptr [0] 
+0694 @0x0001f4bd push_shared_string [151] 'update_time'
+0695 @0x0001f4c1 query_member_ptr [0] 
+0696 @0x0001f4c5 assign_value [] 
+0697 @0x0001f4c9 pop_stack [] 
+0698 @0x0001f4cd null_action [] 
+0699 @0x0001f4d1 return_from_fun [] 
+0700 @0x0001f4d5 null_action [] 
+0701 @0x0001f4d9 push_local_value [-22] 
+0702 @0x0001f4dd push_number(S) [3] 
+0703 @0x0001f4e1 eq_value [] 
+0704 @0x0001f4e5 if [5, 2] 
+0705 @0x0001f4e9 push_number(S) [1] 
+0706 @0x0001f4ed push_local_vptr [-3] 
+0707 @0x0001f4f1 assign_value [] 
+0708 @0x0001f4f5 pop_stack [] 
+0709 @0x0001f4f9 null_action [] 
+0710 @0x0001f4fd null_action [] 
+0711 @0x0001f501 push_local_value [3] 
+0712 @0x0001f505 not_value [] 
+0713 @0x0001f509 if [2, 0] 
+0714 @0x0001f50d pop_stack [] 
+0715 @0x0001f511 push_local_value [-5] 
+0716 @0x0001f515 if [5, 0] 
+0717 @0x0001f519 pop_stack [] 
+0718 @0x0001f51d push_number(S) [1] 
+0719 @0x0001f521 push_local_value [-18] 
+0720 @0x0001f525 rev_value [] 
+0721 @0x0001f529 and [] 
+0722 @0x0001f52d if [148, 2] 
+0723 @0x0001f531 push_shared_string [297] '#R你的帐号已经绑定了短信密保，需解除锁定后才能登录游戏，如你是移动用户，请发送#Y8801#R到#Y106653661280#R解除锁定，如你是联通用户，请发送#Y8801#R到#Y106688881280#R解除锁定。'
+0724 @0x0001f535 push_local_vptr [-14] 
+0725 @0x0001f539 assign_value [] 
+0726 @0x0001f53d pop_stack [] 
+0727 @0x0001f541 push_local_value [-16] 
+0728 @0x0001f545 push_local_value [0] 
+0729 @0x0001f549 push_local_vptr [-14] 
+0730 @0x0001f54d push_shared_string [298] 'sm'
+0731 @0x0001f551 push_local_value [1] 
+0732 @0x0001f555 call_in_user_fun [115, 5] deny_by_pwd_protect
+0733 @0x0001f559 push_local_vptr [-22] 
+0734 @0x0001f55d assign_value [] 
+0735 @0x0001f561 pop_stack [] 
+0736 @0x0001f565 push_local_value [-22] 
+0737 @0x0001f569 push_number(S) [2] 
+0738 @0x0001f56d lt_value [] 
+0739 @0x0001f571 if [6, 0] 
+0740 @0x0001f575 pop_stack [] 
+0741 @0x0001f579 push_local_value [2] 
+0742 @0x0001f57d push_shared_string [96] 'org_password'
+0743 @0x0001f581 query_member [0] 
+0744 @0x0001f585 push_shared_string [60] ''
+0745 @0x0001f589 eq_value [] 
+0746 @0x0001f58d if [6, 0] 
+0747 @0x0001f591 pop_stack [] 
+0748 @0x0001f595 push_local_value [2] 
+0749 @0x0001f599 push_local_value [-12] 
+0750 @0x0001f59d push_local_value [0] 
+0751 @0x0001f5a1 call_in_user_fun [132, 3] check_skip_protected
+0752 @0x0001f5a5 not_value [] 
+0753 @0x0001f5a9 if [107, 2] 
+0754 @0x0001f5ad push_local_value [0] 
+0755 @0x0001f5b1 is_type [10] 
+0756 @0x0001f5b5 if [13, 2] 
+0757 @0x0001f5b9 push_number(S) [1] 
+0758 @0x0001f5bd push_local_value [-14] 
+0759 @0x0001f5c1 push_number(S) [8165] 
+0760 @0x0001f5c5 push_shared_string [33] 'send_message'
+0761 @0x0001f5c9 push_local_value [0] 
+0762 @0x0001f5cd call_in_other_fun_ex [4, 3] 
+0763 @0x0001f5d1 pop_stack [] 
+0764 @0x0001f5d5 push_number(S) [5] 
+0765 @0x0001f5d9 push_shared_string [110] 'to_be_disconnect'
+0766 @0x0001f5dd push_local_value [0] 
+0767 @0x0001f5e1 call_in_other_fun_ex [4, 1] 
+0768 @0x0001f5e5 pop_stack [] 
+0769 @0x0001f5e9 null_action [] 
+0770 @0x0001f5ed push_local_value [1] 
+0771 @0x0001f5f1 is_type [4] 
+0772 @0x0001f5f5 if [6, 1] 
+0773 @0x0001f5f9 pop_stack [] 
+0774 @0x0001f5fd push_shared_string [129] 'login_info/account'
+0775 @0x0001f601 push_shared_string [114] 'query_temp'
+0776 @0x0001f605 push_local_value [1] 
+0777 @0x0001f609 call_in_other_fun_ex [4, 1] 
+0778 @0x0001f60d is_type [4] 
+0779 @0x0001f611 if [8, 2] 
+0780 @0x0001f615 push_shared_string [299] '帐号绑定短信密保，禁止登录。'
+0781 @0x0001f619 push_shared_string [125] 'login'
+0782 @0x0001f61d push_local_value [1] 
+0783 @0x0001f621 call_in_user_fun [659, -127] get_login_info_file
+0784 @0x0001f625 push_shared_string [117] 'log_login_info'
+0785 @0x0001f629 push_shared_string [91] '/daemons/logd.c'
+0786 @0x0001f62d call_in_other_fun_ex [4, 3] 
+0787 @0x0001f631 pop_stack [] 
+0788 @0x0001f635 push_obj_var [5] 
+0789 @0x0001f639 push_local_value [1] 
+0790 @0x0001f63d query_member [0] 
+0791 @0x0001f641 is_type [7] 
+0792 @0x0001f645 not_value [] 
+0793 @0x0001f649 if [6, 2] 
+0794 @0x0001f64d create_mapping [0] 
+0795 @0x0001f651 push_obj_vptr [5] 
+0796 @0x0001f655 push_local_value [1] 
+0797 @0x0001f659 query_member_ptr [0] 
+0798 @0x0001f65d assign_value [] 
+0799 @0x0001f661 pop_stack [] 
+0800 @0x0001f665 call_in_efun [137, 0] time
+0801 @0x0001f669 push_obj_var [5] 
+0802 @0x0001f66d push_local_value [1] 
+0803 @0x0001f671 query_member [0] 
+0804 @0x0001f675 push_shared_string [153] 'first_time'
+0805 @0x0001f679 query_member [0] 
+0806 @0x0001f67d cast_type [2, 0] 
+0807 @0x0001f681 sub_value [] 
+0808 @0x0001f685 push_number(S) [600] 
+0809 @0x0001f689 gt_value [] 
+0810 @0x0001f68d if [26, 2] 
+0811 @0x0001f691 call_in_efun [137, 0] time
+0812 @0x0001f695 push_obj_vptr [5] 
+0813 @0x0001f699 push_local_value [1] 
+0814 @0x0001f69d query_member_ptr [0] 
+0815 @0x0001f6a1 push_shared_string [153] 'first_time'
+0816 @0x0001f6a5 query_member_ptr [0] 
+0817 @0x0001f6a9 assign_value [] 
+0818 @0x0001f6ad pop_stack [] 
+0819 @0x0001f6b1 push_number(S) [1] 
+0820 @0x0001f6b5 push_obj_vptr [5] 
+0821 @0x0001f6b9 push_local_value [1] 
+0822 @0x0001f6bd query_member_ptr [0] 
+0823 @0x0001f6c1 push_shared_string [150] 'times'
+0824 @0x0001f6c5 query_member_ptr [0] 
+0825 @0x0001f6c9 assign_value [] 
+0826 @0x0001f6cd pop_stack [] 
+0827 @0x0001f6d1 call_in_efun [137, 0] time
+0828 @0x0001f6d5 push_obj_vptr [5] 
+0829 @0x0001f6d9 push_local_value [1] 
+0830 @0x0001f6dd query_member_ptr [0] 
+0831 @0x0001f6e1 push_shared_string [151] 'update_time'
+0832 @0x0001f6e5 query_member_ptr [0] 
+0833 @0x0001f6e9 assign_value [] 
+0834 @0x0001f6ed pop_stack [] 
+0835 @0x0001f6f1 null_action [] 
+0836 @0x0001f6f5 goto [22] 
+0837 @0x0001f6f9 null_action [] 
+0838 @0x0001f6fd null_action [] 
+0839 @0x0001f701 null_action [] 
+0840 @0x0001f705 null_action [] 
+0841 @0x0001f709 null_action [] 
+0842 @0x0001f70d null_action [] 
+0843 @0x0001f711 push_obj_vptr [5] 
+0844 @0x0001f715 push_local_value [1] 
+0845 @0x0001f719 query_member_ptr [0] 
+0846 @0x0001f71d push_shared_string [150] 'times'
+0847 @0x0001f721 query_member_ptr [0] 
+0848 @0x0001f725 inc_value [1] 
+0849 @0x0001f729 null_action [] 
+0850 @0x0001f72d call_in_efun [137, 0] time
+0851 @0x0001f731 push_obj_vptr [5] 
+0852 @0x0001f735 push_local_value [1] 
+0853 @0x0001f739 query_member_ptr [0] 
+0854 @0x0001f73d push_shared_string [151] 'update_time'
+0855 @0x0001f741 query_member_ptr [0] 
+0856 @0x0001f745 assign_value [] 
+0857 @0x0001f749 pop_stack [] 
+0858 @0x0001f74d null_action [] 
+0859 @0x0001f751 return_from_fun [] 
+0860 @0x0001f755 null_action [] 
+0861 @0x0001f759 push_local_value [-22] 
+0862 @0x0001f75d push_number(S) [3] 
+0863 @0x0001f761 eq_value [] 
+0864 @0x0001f765 if [5, 2] 
+0865 @0x0001f769 push_number(S) [1] 
+0866 @0x0001f76d push_local_vptr [-3] 
+0867 @0x0001f771 assign_value [] 
+0868 @0x0001f775 pop_stack [] 
+0869 @0x0001f779 null_action [] 
+0870 @0x0001f77d null_action [] 
+0871 @0x0001f781 push_local_value [3] 
+0872 @0x0001f785 if [3, 1] 
+0873 @0x0001f789 pop_stack [] 
+0874 @0x0001f78d push_local_value [-5] 
+0875 @0x0001f791 not_value [] 
+0876 @0x0001f795 if [3, 1] 
+0877 @0x0001f799 pop_stack [] 
+0878 @0x0001f79d call_in_user_fun [56, 0] get_matrix_status
+0879 @0x0001f7a1 not_value [] 
+0880 @0x0001f7a5 if [3, 1] 
+0881 @0x0001f7a9 pop_stack [] 
+0882 @0x0001f7ad push_local_value [2] 
+0883 @0x0001f7b1 call_in_user_fun [57, 1] is_under_control
+0884 @0x0001f7b5 if [5, 1] 
+0885 @0x0001f7b9 pop_stack [] 
+0886 @0x0001f7bd push_local_value [2] 
+0887 @0x0001f7c1 push_local_value [-12] 
+0888 @0x0001f7c5 push_local_value [0] 
+0889 @0x0001f7c9 call_in_user_fun [132, 3] check_skip_protected
+0890 @0x0001f7cd if [5, 2] 
+0891 @0x0001f7d1 push_number(S) [2] 
+0892 @0x0001f7d5 push_local_vptr [-2] 
+0893 @0x0001f7d9 assign_value [] 
+0894 @0x0001f7dd pop_stack [] 
+0895 @0x0001f7e1 goto [11] 
+0896 @0x0001f7e5 push_local_value [1] 
+0897 @0x0001f7e9 call_in_user_fun [47, 1] query_matrix_info
+0898 @0x0001f7ed push_local_vptr [-13] 
+0899 @0x0001f7f1 assign_value [] 
+0900 @0x0001f7f5 pop_stack [] 
+0901 @0x0001f7f9 push_local_value [-13] 
+0902 @0x0001f7fd call_in_user_fun [53, 1] get_account_matrix_status
+0903 @0x0001f801 push_local_vptr [-2] 
+0904 @0x0001f805 assign_value [] 
+0905 @0x0001f809 pop_stack [] 
+0906 @0x0001f80d null_action [] 
+0907 @0x0001f811 push_local_value [0] 
+0908 @0x0001f815 is_type [10] 
+0909 @0x0001f819 not_value [] 
+0910 @0x0001f81d if [1, 2] 
+0911 @0x0001f821 return_from_fun [] 
+0912 @0x0001f825 push_local_value [-2] 
+0913 @0x0001f829 push_number(S) [1] 
+0914 @0x0001f82d eq_value [] 
+0915 @0x0001f831 if [31, 2] 
+0916 @0x0001f835 push_shared_string [300] '帐号登录失败。（原因：1014）'
+0917 @0x0001f839 push_number(S) [0] 
+0918 @0x0001f83d push_number(S) [0] 
+0919 @0x0001f841 push_local_value [0] 
+0920 @0x0001f845 call_in_user_fun [96, 4] send_login_result
+0921 @0x0001f849 pop_stack [] 
+0922 @0x0001f84d push_number(S) [2] 
+0923 @0x0001f851 push_shared_string [110] 'to_be_disconnect'
+0924 @0x0001f855 push_local_value [0] 
+0925 @0x0001f859 call_in_other_fun_ex [4, 1] 
+0926 @0x0001f85d pop_stack [] 
+0927 @0x0001f861 push_local_value [1] 
+0928 @0x0001f865 is_type [4] 
+0929 @0x0001f869 if [6, 1] 
+0930 @0x0001f86d pop_stack [] 
+0931 @0x0001f871 push_shared_string [129] 'login_info/account'
+0932 @0x0001f875 push_shared_string [114] 'query_temp'
+0933 @0x0001f879 push_local_value [1] 
+0934 @0x0001f87d call_in_other_fun_ex [4, 1] 
+0935 @0x0001f881 is_type [4] 
+0936 @0x0001f885 if [8, 2] 
+0937 @0x0001f889 push_shared_string [301] '无法确认是否绑定密保卡，登录失败\n'
+0938 @0x0001f88d push_shared_string [125] 'login'
+0939 @0x0001f891 push_local_value [1] 
+0940 @0x0001f895 call_in_user_fun [659, -127] get_login_info_file
+0941 @0x0001f899 push_shared_string [117] 'log_login_info'
+0942 @0x0001f89d push_shared_string [91] '/daemons/logd.c'
+0943 @0x0001f8a1 call_in_other_fun_ex [4, 3] 
+0944 @0x0001f8a5 pop_stack [] 
+0945 @0x0001f8a9 return_from_fun [] 
+0946 @0x0001f8ad null_action [] 
+0947 @0x0001f8b1 push_local_value [2] 
+0948 @0x0001f8b5 push_shared_string [272] 'query_entire_dbase'
+0949 @0x0001f8b9 push_local_value [0] 
+0950 @0x0001f8bd call_in_other_fun_ex [4, 0] 
+0951 @0x0001f8c1 lsh_value [] 
+0952 @0x0001f8c5 push_shared_string [273] 'replace_entire_dbase'
+0953 @0x0001f8c9 push_local_value [0] 
+0954 @0x0001f8cd call_in_other_fun_ex [4, 1] 
+0955 @0x0001f8d1 pop_stack [] 
+0956 @0x0001f8d5 push_local_value [-4] 
+0957 @0x0001f8d9 push_shared_string [302] 'protect_range'
+0958 @0x0001f8dd push_shared_string [168] 'lite_set'
+0959 @0x0001f8e1 push_local_value [0] 
+0960 @0x0001f8e5 call_in_other_fun_ex [4, 2] 
+0961 @0x0001f8e9 pop_stack [] 
+0962 @0x0001f8ed push_local_value [-2] 
+0963 @0x0001f8f1 push_number(S) [2] 
+0964 @0x0001f8f5 eq_value [] 
+0965 @0x0001f8f9 if [126, 2] 
+0966 @0x0001f8fd push_local_value [2] 
+0967 @0x0001f901 call_in_user_fun [57, 1] is_under_control
+0968 @0x0001f905 if [1, 2] 
+0969 @0x0001f909 goto [56] 
+0970 @0x0001f90d push_local_value [-3] 
+0971 @0x0001f911 if [8, 2] 
+0972 @0x0001f915 push_number(S) [1] 
+0973 @0x0001f919 push_shared_string [274] 'safe_status'
+0974 @0x0001f91d push_shared_string [168] 'lite_set'
+0975 @0x0001f921 push_local_value [0] 
+0976 @0x0001f925 call_in_other_fun_ex [4, 2] 
+0977 @0x0001f929 pop_stack [] 
+0978 @0x0001f92d goto [47] 
+0979 @0x0001f931 null_action [] 
+0980 @0x0001f935 push_local_vptr [-7] 
+0981 @0x0001f939 push_local_value [1] 
+0982 @0x0001f93d push_local_value [0] 
+0983 @0x0001f941 call_in_user_fun [129, 3] is_account_controlled_safe
+0984 @0x0001f945 if [38, 2] 
+0985 @0x0001f949 push_local_value [-7] 
+0986 @0x0001f94d is_type [4] 
+0987 @0x0001f951 if [3, 0] 
+0988 @0x0001f955 pop_stack [] 
+0989 @0x0001f959 push_local_value [-7] 
+0990 @0x0001f95d sizeof [] 
+0991 @0x0001f961 if [6, 2] 
+0992 @0x0001f965 push_local_value [-7] 
+0993 @0x0001f969 push_number(S) [0] 
+0994 @0x0001f96d push_number(S) [0] 
+0995 @0x0001f971 push_local_value [0] 
+0996 @0x0001f975 call_in_user_fun [96, 4] send_login_result
+0997 @0x0001f979 pop_stack [] 
+0998 @0x0001f97d push_number(S) [2] 
+0999 @0x0001f981 push_shared_string [110] 'to_be_disconnect'
+1000 @0x0001f985 push_local_value [0] 
+1001 @0x0001f989 call_in_other_fun_ex [4, 1] 
+1002 @0x0001f98d pop_stack [] 
+1003 @0x0001f991 push_local_value [1] 
+1004 @0x0001f995 is_type [4] 
+1005 @0x0001f999 if [6, 1] 
+1006 @0x0001f99d pop_stack [] 
+1007 @0x0001f9a1 push_shared_string [129] 'login_info/account'
+1008 @0x0001f9a5 push_shared_string [114] 'query_temp'
+1009 @0x0001f9a9 push_local_value [1] 
+1010 @0x0001f9ad call_in_other_fun_ex [4, 1] 
+1011 @0x0001f9b1 is_type [4] 
+1012 @0x0001f9b5 if [8, 2] 
+1013 @0x0001f9b9 push_local_value [-7] 
+1014 @0x0001f9bd push_shared_string [125] 'login'
+1015 @0x0001f9c1 push_local_value [1] 
+1016 @0x0001f9c5 call_in_user_fun [659, -127] get_login_info_file
+1017 @0x0001f9c9 push_shared_string [117] 'log_login_info'
+1018 @0x0001f9cd push_shared_string [91] '/daemons/logd.c'
+1019 @0x0001f9d1 call_in_other_fun_ex [4, 3] 
+1020 @0x0001f9d5 pop_stack [] 
+1021 @0x0001f9d9 return_from_fun [] 
+1022 @0x0001f9dd null_action [] 
+1023 @0x0001f9e1 null_action [] 
+1024 @0x0001f9e5 push_number(S) [0] 
+1025 @0x0001f9e9 if [-60, 3] 
+1026 @0x0001f9ed push_local_value [0] 
+1027 @0x0001f9f1 is_type [10] 
+1028 @0x0001f9f5 not_value [] 
+1029 @0x0001f9f9 if [1, 2] 
+1030 @0x0001f9fd return_from_fun [] 
+1031 @0x0001fa01 call_in_user_fun [98, 0] generate_auth_key
+1032 @0x0001fa05 push_local_vptr [-1] 
+1033 @0x0001fa09 assign_value [] 
+1034 @0x0001fa0d pop_stack [] 
+1035 @0x0001fa11 push_local_value [-1] 
+1036 @0x0001fa15 push_shared_string [181] 'auth_key'
+1037 @0x0001fa19 push_shared_string [168] 'lite_set'
+1038 @0x0001fa1d push_local_value [0] 
+1039 @0x0001fa21 call_in_other_fun_ex [4, 2] 
+1040 @0x0001fa25 pop_stack [] 
+1041 @0x0001fa29 push_shared_string [60] ''
+1042 @0x0001fa2d push_local_value [-1] 
+1043 @0x0001fa31 push_obj_var [20] 
+1044 @0x0001fa35 if [2, 2] 
+1045 @0x0001fa39 push_number(S) [7] 
+1046 @0x0001fa3d goto [1] 
+1047 @0x0001fa41 push_number(S) [1] 
+1048 @0x0001fa45 push_local_value [0] 
+1049 @0x0001fa49 call_in_user_fun [96, 4] send_login_result
+1050 @0x0001fa4d pop_stack [] 
+1051 @0x0001fa51 push_number(S) [10] 
+1052 @0x0001fa55 push_obj_var [6] 
+1053 @0x0001fa59 call_in_efun [14, 2] clean_mapping_by_value
+1054 @0x0001fa5d pop_stack [] 
+1055 @0x0001fa61 push_local_value [0] 
+1056 @0x0001fa65 push_obj_vptr [6] 
+1057 @0x0001fa69 push_local_value [-1] 
+1058 @0x0001fa6d query_member_ptr [0] 
+1059 @0x0001fa71 assign_value [] 
+1060 @0x0001fa75 pop_stack [] 
+1061 @0x0001fa79 push_local_value [1] 
+1062 @0x0001fa7d push_local_value [0] 
+1063 @0x0001fa81 call_in_user_fun [91, 2] do_when_password_correct
+1064 @0x0001fa85 pop_stack [] 
+1065 @0x0001fa89 push_obj_var [17] 
+1066 @0x0001fa8d push_shared_string [110] 'to_be_disconnect'
+1067 @0x0001fa91 push_local_value [0] 
+1068 @0x0001fa95 call_in_other_fun_ex [4, 1] 
+1069 @0x0001fa99 pop_stack [] 
+1070 @0x0001fa9d push_local_value [1] 
+1071 @0x0001faa1 is_type [4] 
+1072 @0x0001faa5 if [6, 1] 
+1073 @0x0001faa9 pop_stack [] 
+1074 @0x0001faad push_shared_string [129] 'login_info/account'
+1075 @0x0001fab1 push_shared_string [114] 'query_temp'
+1076 @0x0001fab5 push_local_value [1] 
+1077 @0x0001fab9 call_in_other_fun_ex [4, 1] 
+1078 @0x0001fabd is_type [4] 
+1079 @0x0001fac1 if [10, 2] 
+1080 @0x0001fac5 push_local_value [-1] 
+1081 @0x0001fac9 push_shared_string [303] '登录成功，发送 AUTH_KEY:%d\n'
+1082 @0x0001facd call_in_efun [121, 2] sprintf
+1083 @0x0001fad1 push_shared_string [125] 'login'
+1084 @0x0001fad5 push_local_value [1] 
+1085 @0x0001fad9 call_in_user_fun [659, -127] get_login_info_file
+1086 @0x0001fadd push_shared_string [117] 'log_login_info'
+1087 @0x0001fae1 push_shared_string [91] '/daemons/logd.c'
+1088 @0x0001fae5 call_in_other_fun_ex [4, 3] 
+1089 @0x0001fae9 pop_stack [] 
+1090 @0x0001faed return_from_fun [] 
+1091 @0x0001faf1 null_action [] 
+1092 @0x0001faf5 push_number(S) [1] 
+1093 @0x0001faf9 push_shared_string [274] 'safe_status'
+1094 @0x0001fafd push_shared_string [168] 'lite_set'
+1095 @0x0001fb01 push_local_value [0] 
+1096 @0x0001fb05 call_in_other_fun_ex [4, 2] 
+1097 @0x0001fb09 pop_stack [] 
+1098 @0x0001fb0d push_local_value [1] 
+1099 @0x0001fb11 call_in_user_fun [99, 1] generate_auth_matrix_cookie
+1100 @0x0001fb15 push_local_vptr [-8] 
+1101 @0x0001fb19 assign_value [] 
+1102 @0x0001fb1d pop_stack [] 
+1103 @0x0001fb21 push_local_value [-13] 
+1104 @0x0001fb25 push_shared_string [180] 'used_matrix'
+1105 @0x0001fb29 query_member [0] 
+1106 @0x0001fb2d push_number(S) [3] 
+1107 @0x0001fb31 push_local_value [0] 
+1108 @0x0001fb35 call_in_user_fun [110, 3] generate_random_matrix
+1109 @0x0001fb39 push_local_vptr [-6] 
+1110 @0x0001fb3d assign_value [] 
+1111 @0x0001fb41 pop_stack [] 
+1112 @0x0001fb45 push_local_value [-8] 
+1113 @0x0001fb49 push_shared_string [173] 'matrix_cookie'
+1114 @0x0001fb4d push_shared_string [32] 'lite_set_temp'
+1115 @0x0001fb51 push_local_value [0] 
+1116 @0x0001fb55 call_in_other_fun_ex [4, 2] 
+1117 @0x0001fb59 pop_stack [] 
+1118 @0x0001fb5d push_local_value [-6] 
+1119 @0x0001fb61 push_shared_string [170] 'matrix_random'
+1120 @0x0001fb65 push_shared_string [32] 'lite_set_temp'
+1121 @0x0001fb69 push_local_value [0] 
+1122 @0x0001fb6d call_in_other_fun_ex [4, 2] 
+1123 @0x0001fb71 pop_stack [] 
+1124 @0x0001fb75 push_number(S) [1] 
+1125 @0x0001fb79 push_shared_string [161] 'matrix'
+1126 @0x0001fb7d push_shared_string [32] 'lite_set_temp'
+1127 @0x0001fb81 push_local_value [0] 
+1128 @0x0001fb85 call_in_other_fun_ex [4, 2] 
+1129 @0x0001fb89 pop_stack [] 
+1130 @0x0001fb8d push_shared_string [60] ''
+1131 @0x0001fb91 push_local_vptr [-23] 
+1132 @0x0001fb95 assign_value [] 
+1133 @0x0001fb99 pop_stack [] 
+1134 @0x0001fb9d call_in_user_fun [71, 0] is_matrix_pic_enabled
+1135 @0x0001fba1 if [6, 0] 
+1136 @0x0001fba5 pop_stack [] 
+1137 @0x0001fba9 push_shared_string [128] 'mobile_client'
+1138 @0x0001fbad push_shared_string [111] 'lite_query_temp'
+1139 @0x0001fbb1 push_local_value [0] 
+1140 @0x0001fbb5 call_in_other_fun_ex [4, 1] 
+1141 @0x0001fbb9 not_value [] 
+1142 @0x0001fbbd if [15, 2] 
+1143 @0x0001fbc1 push_shared_string [60] ''
+1144 @0x0001fbc5 push_shared_string [60] ''
+1145 @0x0001fbc9 push_shared_string [60] ''
+1146 @0x0001fbcd push_local_value [-8] 
+1147 @0x0001fbd1 call_in_user_fun [111, 4] encode_matrix_auth_text
+1148 @0x0001fbd5 push_local_vptr [-9] 
+1149 @0x0001fbd9 assign_value [] 
+1150 @0x0001fbdd pop_stack [] 
+1151 @0x0001fbe1 push_local_value [-6] 
+1152 @0x0001fbe5 call_in_user_fun [65, 1] get_matrix_pic
+1153 @0x0001fbe9 push_local_vptr [-23] 
+1154 @0x0001fbed assign_value [] 
+1155 @0x0001fbf1 pop_stack [] 
+1156 @0x0001fbf5 null_action [] 
+1157 @0x0001fbf9 goto [15] 
+1158 @0x0001fbfd push_local_value [-6] 
+1159 @0x0001fc01 push_number(S) [2] 
+1160 @0x0001fc05 query_member [0] 
+1161 @0x0001fc09 push_local_value [-6] 
+1162 @0x0001fc0d push_number(S) [1] 
+1163 @0x0001fc11 query_member [0] 
+1164 @0x0001fc15 push_local_value [-6] 
+1165 @0x0001fc19 push_number(S) [0] 
+1166 @0x0001fc1d query_member [0] 
+1167 @0x0001fc21 push_local_value [-8] 
+1168 @0x0001fc25 call_in_user_fun [111, 4] encode_matrix_auth_text
+1169 @0x0001fc29 push_local_vptr [-9] 
+1170 @0x0001fc2d assign_value [] 
+1171 @0x0001fc31 pop_stack [] 
+1172 @0x0001fc35 null_action [] 
+1173 @0x0001fc39 push_number(S) [0] 
+1174 @0x0001fc3d push_local_value [-23] 
+1175 @0x0001fc41 push_local_value [-9] 
+1176 @0x0001fc45 push_number(S) [4987] 
+1177 @0x0001fc49 push_shared_string [33] 'send_message'
+1178 @0x0001fc4d push_local_value [0] 
+1179 @0x0001fc51 call_in_other_fun_ex [4, 4] 
+1180 @0x0001fc55 pop_stack [] 
+1181 @0x0001fc59 push_obj_var [18] 
+1182 @0x0001fc5d push_shared_string [110] 'to_be_disconnect'
+1183 @0x0001fc61 push_local_value [0] 
+1184 @0x0001fc65 call_in_other_fun_ex [4, 1] 
+1185 @0x0001fc69 pop_stack [] 
+1186 @0x0001fc6d push_local_value [1] 
+1187 @0x0001fc71 is_type [4] 
+1188 @0x0001fc75 if [6, 1] 
+1189 @0x0001fc79 pop_stack [] 
+1190 @0x0001fc7d push_shared_string [129] 'login_info/account'
+1191 @0x0001fc81 push_shared_string [114] 'query_temp'
+1192 @0x0001fc85 push_local_value [1] 
+1193 @0x0001fc89 call_in_other_fun_ex [4, 1] 
+1194 @0x0001fc8d is_type [4] 
+1195 @0x0001fc91 if [8, 2] 
+1196 @0x0001fc95 push_shared_string [304] '确认绑定了密保卡，等待验证密保密码\n'
+1197 @0x0001fc99 push_shared_string [125] 'login'
+1198 @0x0001fc9d push_local_value [1] 
+1199 @0x0001fca1 call_in_user_fun [659, -127] get_login_info_file
+1200 @0x0001fca5 push_shared_string [117] 'log_login_info'
+1201 @0x0001fca9 push_shared_string [91] '/daemons/logd.c'
+1202 @0x0001fcad call_in_other_fun_ex [4, 3] 
+1203 @0x0001fcb1 pop_stack [] 
+1204 @0x0001fcb5 null_action [] 
+1205 @0x0001fcb9 return_from_fun [] 
+```
+
+<a id="aaa-aaa-daemons-accountd-o-check_account_info"></a>
+
+## aaa/pack_data/lib_aaa32.pak/aaa/daemons/accountd.o :: check_account_info
+
+成员 SHA-256：`fbad2268542cac34b915222e0e6ba038e390b5098d06295834c707654c4bbd05`；函数记录偏移：`0x24a3e`；函数编号：`101`。
+
+```text
+0000 @0x0002550a check_args_num [0] 
+0001 @0x0002550e enter_function [] 
+0002 @0x00025512 push_shared_string [60] ''
+0003 @0x00025516 push_local_vptr [-9] 
+0004 @0x0002551a assign_value [] 
+0005 @0x0002551e pop_stack [] 
+0006 @0x00025522 push_local_value [0] 
+0007 @0x00025526 is_type [10] 
+0008 @0x0002552a not_value [] 
+0009 @0x0002552e if [2, 2] 
+0010 @0x00025532 push_number(S) [0] 
+0011 @0x00025536 return_from_fun [] 
+0012 @0x0002553a push_shared_string [113] 'get_client_no'
+0013 @0x0002553e push_local_value [0] 
+0014 @0x00025542 call_in_other_fun_ex [4, 0] 
+0015 @0x00025546 push_local_vptr [-4] 
+0016 @0x0002554a assign_value [] 
+0017 @0x0002554e pop_stack [] 
+0018 @0x00025552 push_local_vptr [-22] 
+0019 @0x00025556 push_local_value [4] 
+0020 @0x0002555a push_shared_string [113] 'get_client_no'
+0021 @0x0002555e push_local_value [0] 
+0022 @0x00025562 call_in_other_fun_ex [4, 0] 
+0023 @0x00025566 push_shared_string [228] 'user_check_data'
+0024 @0x0002556a push_shared_string [202] '/aaa/daemons/antibotd.c'
+0025 @0x0002556e call_in_other_fun_ex [4, 3] 
+0026 @0x00025572 push_local_vptr [-20] 
+0027 @0x00025576 assign_value [] 
+0028 @0x0002557a pop_stack [] 
+0029 @0x0002557e push_local_value [0] 
+0030 @0x00025582 is_type [10] 
+0031 @0x00025586 not_value [] 
+0032 @0x0002558a if [7, 2] 
+0033 @0x0002558e push_local_value [-4] 
+0034 @0x00025592 push_obj_var [16] 
+0035 @0x00025596 call_in_efun [80, 2] map_delete
+0036 @0x0002559a pop_stack [] 
+0037 @0x0002559e push_number(S) [0] 
+0038 @0x000255a2 return_from_fun [] 
+0039 @0x000255a6 null_action [] 
+0040 @0x000255aa push_local_value [-20] 
+0041 @0x000255ae push_shared_string [229] 'get_check_result'
+0042 @0x000255b2 push_shared_string [202] '/aaa/daemons/antibotd.c'
+0043 @0x000255b6 call_in_other_fun_ex [4, 1] 
+0044 @0x000255ba push_local_vptr [-21] 
+0045 @0x000255be assign_value [] 
+0046 @0x000255c2 pop_stack [] 
+0047 @0x000255c6 push_local_value [-20] 
+0048 @0x000255ca push_number(S) [0] 
+0049 @0x000255ce gt_value [] 
+0050 @0x000255d2 if [20, 2] 
+0051 @0x000255d6 push_local_value [-22] 
+0052 @0x000255da push_local_value [-20] 
+0053 @0x000255de push_local_value [1] 
+0054 @0x000255e2 push_shared_string [116] 'get_peer_ip'
+0055 @0x000255e6 push_local_value [0] 
+0056 @0x000255ea call_in_other_fun_ex [4, 0] 
+0057 @0x000255ee call_in_user_fun [131, 4] log_antibot
+0058 @0x000255f2 pop_stack [] 
+0059 @0x000255f6 push_local_value [0] 
+0060 @0x000255fa is_type [10] 
+0061 @0x000255fe not_value [] 
+0062 @0x00025602 if [7, 2] 
+0063 @0x00025606 push_local_value [-4] 
+0064 @0x0002560a push_obj_var [16] 
+0065 @0x0002560e call_in_efun [80, 2] map_delete
+0066 @0x00025612 pop_stack [] 
+0067 @0x00025616 push_number(S) [0] 
+0068 @0x0002561a return_from_fun [] 
+0069 @0x0002561e null_action [] 
+0070 @0x00025622 null_action [] 
+0071 @0x00025626 push_local_value [-21] 
+0072 @0x0002562a push_number(S) [0] 
+0073 @0x0002562e eq_value [] 
+0074 @0x00025632 if [12, 2] 
+0075 @0x00025636 push_local_value [-4] 
+0076 @0x0002563a push_obj_var [16] 
+0077 @0x0002563e call_in_efun [80, 2] map_delete
+0078 @0x00025642 pop_stack [] 
+0079 @0x00025646 push_number(S) [1] 
+0080 @0x0002564a push_shared_string [110] 'to_be_disconnect'
+0081 @0x0002564e push_local_value [0] 
+0082 @0x00025652 call_in_other_fun_ex [4, 1] 
+0083 @0x00025656 pop_stack [] 
+0084 @0x0002565a push_number(S) [0] 
+0085 @0x0002565e return_from_fun [] 
+0086 @0x00025662 null_action [] 
+0087 @0x00025666 push_local_vptr [-9] 
+0088 @0x0002566a push_shared_string [116] 'get_peer_ip'
+0089 @0x0002566e push_local_value [0] 
+0090 @0x00025672 call_in_other_fun_ex [4, 0] 
+0091 @0x00025676 push_local_value [1] 
+0092 @0x0002567a call_in_user_fun [86, 3] check_for_protect_account
+0093 @0x0002567e if [36, 2] 
+0094 @0x00025682 push_local_value [-4] 
+0095 @0x00025686 push_obj_var [16] 
+0096 @0x0002568a call_in_efun [80, 2] map_delete
+0097 @0x0002568e pop_stack [] 
+0098 @0x00025692 push_local_value [-9] 
+0099 @0x00025696 push_number(S) [0] 
+0100 @0x0002569a push_number(S) [0] 
+0101 @0x0002569e push_local_value [0] 
+0102 @0x000256a2 call_in_user_fun [96, 4] send_login_result
+0103 @0x000256a6 pop_stack [] 
+0104 @0x000256aa push_number(S) [1] 
+0105 @0x000256ae push_shared_string [110] 'to_be_disconnect'
+0106 @0x000256b2 push_local_value [0] 
+0107 @0x000256b6 call_in_other_fun_ex [4, 1] 
+0108 @0x000256ba pop_stack [] 
+0109 @0x000256be push_local_value [1] 
+0110 @0x000256c2 is_type [4] 
+0111 @0x000256c6 if [6, 1] 
+0112 @0x000256ca pop_stack [] 
+0113 @0x000256ce push_shared_string [129] 'login_info/account'
+0114 @0x000256d2 push_shared_string [114] 'query_temp'
+0115 @0x000256d6 push_local_value [1] 
+0116 @0x000256da call_in_other_fun_ex [4, 1] 
+0117 @0x000256de is_type [4] 
+0118 @0x000256e2 if [8, 2] 
+0119 @0x000256e6 push_shared_string [231] '该帐号已被暂时禁止从该IP登录\n'
+0120 @0x000256ea push_shared_string [125] 'login'
+0121 @0x000256ee push_local_value [1] 
+0122 @0x000256f2 call_in_user_fun [659, -127] get_login_info_file
+0123 @0x000256f6 push_shared_string [117] 'log_login_info'
+0124 @0x000256fa push_shared_string [91] '/daemons/logd.c'
+0125 @0x000256fe call_in_other_fun_ex [4, 3] 
+0126 @0x00025702 pop_stack [] 
+0127 @0x00025706 push_number(S) [0] 
+0128 @0x0002570a return_from_fun [] 
+0129 @0x0002570e null_action [] 
+0130 @0x00025712 push_local_vptr [-9] 
+0131 @0x00025716 push_local_value [1] 
+0132 @0x0002571a call_in_user_fun [87, 2] check_for_protect_account_ex
+0133 @0x0002571e if [36, 2] 
+0134 @0x00025722 push_local_value [-4] 
+0135 @0x00025726 push_obj_var [16] 
+0136 @0x0002572a call_in_efun [80, 2] map_delete
+0137 @0x0002572e pop_stack [] 
+0138 @0x00025732 push_local_value [-9] 
+0139 @0x00025736 push_number(S) [0] 
+0140 @0x0002573a push_number(S) [0] 
+0141 @0x0002573e push_local_value [0] 
+0142 @0x00025742 call_in_user_fun [96, 4] send_login_result
+0143 @0x00025746 pop_stack [] 
+0144 @0x0002574a push_number(S) [1] 
+0145 @0x0002574e push_shared_string [110] 'to_be_disconnect'
+0146 @0x00025752 push_local_value [0] 
+0147 @0x00025756 call_in_other_fun_ex [4, 1] 
+0148 @0x0002575a pop_stack [] 
+0149 @0x0002575e push_local_value [1] 
+0150 @0x00025762 is_type [4] 
+0151 @0x00025766 if [6, 1] 
+0152 @0x0002576a pop_stack [] 
+0153 @0x0002576e push_shared_string [129] 'login_info/account'
+0154 @0x00025772 push_shared_string [114] 'query_temp'
+0155 @0x00025776 push_local_value [1] 
+0156 @0x0002577a call_in_other_fun_ex [4, 1] 
+0157 @0x0002577e is_type [4] 
+0158 @0x00025782 if [8, 2] 
+0159 @0x00025786 push_shared_string [232] '该帐号在10分钟内重复5次将同一帐号密码输入正确，但都没有成功完成电话（短信）密保解锁，被禁止登录。'
+0160 @0x0002578a push_shared_string [125] 'login'
+0161 @0x0002578e push_local_value [1] 
+0162 @0x00025792 call_in_user_fun [659, -127] get_login_info_file
+0163 @0x00025796 push_shared_string [117] 'log_login_info'
+0164 @0x0002579a push_shared_string [91] '/daemons/logd.c'
+0165 @0x0002579e call_in_other_fun_ex [4, 3] 
+0166 @0x000257a2 pop_stack [] 
+0167 @0x000257a6 push_number(S) [0] 
+0168 @0x000257aa return_from_fun [] 
+0169 @0x000257ae null_action [] 
+0170 @0x000257b2 push_shared_string [46] 'adb'
+0171 @0x000257b6 push_shared_string [28] 'assure_connection'
+0172 @0x000257ba push_shared_string [47] '/daemons/dbd.c'
+0173 @0x000257be call_in_other_fun_ex [4, 1] 
+0174 @0x000257c2 push_local_vptr [-1] 
+0175 @0x000257c6 assign_value [] 
+0176 @0x000257ca push_number(S) [-1] 
+0177 @0x000257ce eq_value [] 
+0178 @0x000257d2 if [39, 2] 
+0179 @0x000257d6 push_local_value [-4] 
+0180 @0x000257da push_obj_var [16] 
+0181 @0x000257de call_in_efun [80, 2] map_delete
+0182 @0x000257e2 pop_stack [] 
+0183 @0x000257e6 push_shared_string [233] '\x1b[1;31m连接 ADB 数据库失败\n\x1b[2;37;0m'
+0184 @0x000257ea call_in_efun [90, 1] printf
+0185 @0x000257ee pop_stack [] 
+0186 @0x000257f2 push_shared_string [234] '帐号登录失败。（原因：1001）'
+0187 @0x000257f6 push_number(S) [0] 
+0188 @0x000257fa push_number(S) [0] 
+0189 @0x000257fe push_local_value [0] 
+0190 @0x00025802 call_in_user_fun [96, 4] send_login_result
+0191 @0x00025806 pop_stack [] 
+0192 @0x0002580a push_number(S) [1] 
+0193 @0x0002580e push_shared_string [110] 'to_be_disconnect'
+0194 @0x00025812 push_local_value [0] 
+0195 @0x00025816 call_in_other_fun_ex [4, 1] 
+0196 @0x0002581a pop_stack [] 
+0197 @0x0002581e push_local_value [1] 
+0198 @0x00025822 is_type [4] 
+0199 @0x00025826 if [6, 1] 
+0200 @0x0002582a pop_stack [] 
+0201 @0x0002582e push_shared_string [129] 'login_info/account'
+0202 @0x00025832 push_shared_string [114] 'query_temp'
+0203 @0x00025836 push_local_value [1] 
+0204 @0x0002583a call_in_other_fun_ex [4, 1] 
+0205 @0x0002583e is_type [4] 
+0206 @0x00025842 if [8, 2] 
+0207 @0x00025846 push_shared_string [235] '连接 ADB 数据库失败，暂时无法提供登录服务\n'
+0208 @0x0002584a push_shared_string [125] 'login'
+0209 @0x0002584e push_local_value [1] 
+0210 @0x00025852 call_in_user_fun [659, -127] get_login_info_file
+0211 @0x00025856 push_shared_string [117] 'log_login_info'
+0212 @0x0002585a push_shared_string [91] '/daemons/logd.c'
+0213 @0x0002585e call_in_other_fun_ex [4, 3] 
+0214 @0x00025862 pop_stack [] 
+0215 @0x00025866 push_number(S) [0] 
+0216 @0x0002586a return_from_fun [] 
+0217 @0x0002586e null_action [] 
+0218 @0x00025872 push_local_value [1] 
+0219 @0x00025876 call_in_user_fun [41, 1] query_account_info
+0220 @0x0002587a push_local_vptr [-19] 
+0221 @0x0002587e assign_value [] 
+0222 @0x00025882 pop_stack [] 
+0223 @0x00025886 push_local_value [0] 
+0224 @0x0002588a is_type [10] 
+0225 @0x0002588e not_value [] 
+0226 @0x00025892 if [7, 2] 
+0227 @0x00025896 push_local_value [-4] 
+0228 @0x0002589a push_obj_var [16] 
+0229 @0x0002589e call_in_efun [80, 2] map_delete
+0230 @0x000258a2 pop_stack [] 
+0231 @0x000258a6 push_number(S) [0] 
+0232 @0x000258aa return_from_fun [] 
+0233 @0x000258ae null_action [] 
+0234 @0x000258b2 push_undefined [] 
+0235 @0x000258b6 push_local_vptr [-14] 
+0236 @0x000258ba assign_value [] 
+0237 @0x000258be pop_stack [] 
+0238 @0x000258c2 push_shared_string [125] 'login'
+0239 @0x000258c6 push_local_value [0] 
+0240 @0x000258ca call_in_user_fun [738, -126] query_dynamic_key
+0241 @0x000258ce push_local_vptr [-14] 
+0242 @0x000258d2 assign_value [] 
+0243 @0x000258d6 pop_stack [] 
+0244 @0x000258da push_local_value [-14] 
+0245 @0x000258de push_shared_string [236] '!*'
+0246 @0x000258e2 push_local_value [2] 
+0247 @0x000258e6 add [] 
+0248 @0x000258ea call_in_user_fun [751, -126] get_raw_password
+0249 @0x000258ee push_local_vptr [2] 
+0250 @0x000258f2 assign_value [] 
+0251 @0x000258f6 pop_stack [] 
+0252 @0x000258fa call_in_user_fun [68, 0] is_apex_enabled
+0253 @0x000258fe if [3, 0] 
+0254 @0x00025902 pop_stack [] 
+0255 @0x00025906 push_local_value [-19] 
+0256 @0x0002590a is_type [7] 
+0257 @0x0002590e if [6, 0] 
+0258 @0x00025912 pop_stack [] 
+0259 @0x00025916 push_local_value [2] 
+0260 @0x0002591a push_local_value [-19] 
+0261 @0x0002591e call_in_user_fun [105, 2] _check_client_apex_status
+0262 @0x00025922 push_number(S) [1] 
+0263 @0x00025926 eq_value [] 
+0264 @0x0002592a if [30, 2] 
+0265 @0x0002592e push_obj_var [16] 
+0266 @0x00025932 push_local_value [-4] 
+0267 @0x00025936 query_member [0] 
+0268 @0x0002593a push_local_vptr [-23] 
+0269 @0x0002593e assign_value [] 
+0270 @0x00025942 pop_stack [] 
+0271 @0x00025946 push_local_value [-23] 
+0272 @0x0002594a is_type [4] 
+0273 @0x0002594e if [9, 0] 
+0274 @0x00025952 pop_stack [] 
+0275 @0x00025956 push_local_value [-23] 
+0276 @0x0002595a push_local_value [2] 
+0277 @0x0002595e call_in_efun [122, 1] strlen
+0278 @0x00025962 push_local_value [2] 
+0279 @0x00025966 call_in_efun [554, 3] get_pwd
+0280 @0x0002596a push_local_vptr [-24] 
+0281 @0x0002596e assign_value [] 
+0282 @0x00025972 is_type [4] 
+0283 @0x00025976 if [5, 0] 
+0284 @0x0002597a pop_stack [] 
+0285 @0x0002597e push_local_value [-24] 
+0286 @0x00025982 call_in_efun [122, 1] strlen
+0287 @0x00025986 push_number(S) [0] 
+0288 @0x0002598a gt_value [] 
+0289 @0x0002598e if [4, 2] 
+0290 @0x00025992 push_local_value [-24] 
+0291 @0x00025996 push_local_vptr [2] 
+0292 @0x0002599a assign_value [] 
+0293 @0x0002599e pop_stack [] 
+0294 @0x000259a2 null_action [] 
+0295 @0x000259a6 push_local_value [-4] 
+0296 @0x000259aa push_obj_var [16] 
+0297 @0x000259ae call_in_efun [80, 2] map_delete
+0298 @0x000259b2 pop_stack [] 
+0299 @0x000259b6 push_local_value [2] 
+0300 @0x000259ba push_local_vptr [-7] 
+0301 @0x000259be assign_value [] 
+0302 @0x000259c2 pop_stack [] 
+0303 @0x000259c6 push_local_value [-19] 
+0304 @0x000259ca is_type [7] 
+0305 @0x000259ce not_value [] 
+0306 @0x000259d2 if [2, 0] 
+0307 @0x000259d6 pop_stack [] 
+0308 @0x000259da call_in_user_fun [45, 0] get_active_account_status
+0309 @0x000259de if [276, 2] 
+0310 @0x000259e2 push_local_value [7] 
+0311 @0x000259e6 if [32, 2] 
+0312 @0x000259ea push_shared_string [237] '您的帐号在此区组尚未激活，初次登录需使用原输入帐号密码方式进行登录。'
+0313 @0x000259ee push_number(S) [0] 
+0314 @0x000259f2 push_number(S) [0] 
+0315 @0x000259f6 push_local_value [0] 
+0316 @0x000259fa call_in_user_fun [96, 4] send_login_result
+0317 @0x000259fe pop_stack [] 
+0318 @0x00025a02 push_number(S) [1] 
+0319 @0x00025a06 push_shared_string [110] 'to_be_disconnect'
+0320 @0x00025a0a push_local_value [0] 
+0321 @0x00025a0e call_in_other_fun_ex [4, 1] 
+0322 @0x00025a12 pop_stack [] 
+0323 @0x00025a16 push_local_value [1] 
+0324 @0x00025a1a is_type [4] 
+0325 @0x00025a1e if [6, 1] 
+0326 @0x00025a22 pop_stack [] 
+0327 @0x00025a26 push_shared_string [129] 'login_info/account'
+0328 @0x00025a2a push_shared_string [114] 'query_temp'
+0329 @0x00025a2e push_local_value [1] 
+0330 @0x00025a32 call_in_other_fun_ex [4, 1] 
+0331 @0x00025a36 is_type [4] 
+0332 @0x00025a3a if [8, 2] 
+0333 @0x00025a3e push_shared_string [238] '未激活帐号不能进行二维码登录，登录失败\n'
+0334 @0x00025a42 push_shared_string [125] 'login'
+0335 @0x00025a46 push_local_value [1] 
+0336 @0x00025a4a call_in_user_fun [659, -127] get_login_info_file
+0337 @0x00025a4e push_shared_string [117] 'log_login_info'
+0338 @0x00025a52 push_shared_string [91] '/daemons/logd.c'
+0339 @0x00025a56 call_in_other_fun_ex [4, 3] 
+0340 @0x00025a5a pop_stack [] 
+0341 @0x00025a5e push_number(S) [0] 
+0342 @0x00025a62 return_from_fun [] 
+0343 @0x00025a66 null_action [] 
+0344 @0x00025a6a push_local_value [1] 
+0345 @0x00025a6e is_type [4] 
+0346 @0x00025a72 if [6, 1] 
+0347 @0x00025a76 pop_stack [] 
+0348 @0x00025a7a push_shared_string [129] 'login_info/account'
+0349 @0x00025a7e push_shared_string [114] 'query_temp'
+0350 @0x00025a82 push_local_value [1] 
+0351 @0x00025a86 call_in_other_fun_ex [4, 1] 
+0352 @0x00025a8a is_type [4] 
+0353 @0x00025a8e if [8, 2] 
+0354 @0x00025a92 push_shared_string [239] '数据库不存在该帐号，尝试自动激活\n'
+0355 @0x00025a96 push_shared_string [125] 'login'
+0356 @0x00025a9a push_local_value [1] 
+0357 @0x00025a9e call_in_user_fun [659, -127] get_login_info_file
+0358 @0x00025aa2 push_shared_string [117] 'log_login_info'
+0359 @0x00025aa6 push_shared_string [91] '/daemons/logd.c'
+0360 @0x00025aaa call_in_other_fun_ex [4, 3] 
+0361 @0x00025aae pop_stack [] 
+0362 @0x00025ab2 push_shared_string [116] 'get_peer_ip'
+0363 @0x00025ab6 push_local_value [0] 
+0364 @0x00025aba call_in_other_fun_ex [4, 0] 
+0365 @0x00025abe push_local_value [-7] 
+0366 @0x00025ac2 push_local_value [1] 
+0367 @0x00025ac6 call_in_user_fun [146, 3] activate_account
+0368 @0x00025aca push_local_vptr [-18] 
+0369 @0x00025ace assign_value [] 
+0370 @0x00025ad2 pop_stack [] 
+0371 @0x00025ad6 push_local_value [-18] 
+0372 @0x00025ada push_shared_string [137] 'result'
+0373 @0x00025ade query_member [0] 
+0374 @0x00025ae2 push_local_vptr [-5] 
+0375 @0x00025ae6 assign_value [] 
+0376 @0x00025aea pop_stack [] 
+0377 @0x00025aee push_local_value [-18] 
+0378 @0x00025af2 push_shared_string [136] 'prompt'
+0379 @0x00025af6 query_member [0] 
+0380 @0x00025afa push_local_vptr [-15] 
+0381 @0x00025afe assign_value [] 
+0382 @0x00025b02 pop_stack [] 
+0383 @0x00025b06 push_local_value [0] 
+0384 @0x00025b0a is_type [10] 
+0385 @0x00025b0e not_value [] 
+0386 @0x00025b12 if [2, 2] 
+0387 @0x00025b16 push_number(S) [0] 
+0388 @0x00025b1a return_from_fun [] 
+0389 @0x00025b1e push_local_value [-5] 
+0390 @0x00025b22 push_number(S) [2] 
+0391 @0x00025b26 eq_value [] 
+0392 @0x00025b2a if [6, 2] 
+0393 @0x00025b2e push_local_vptr [-15] 
+0394 @0x00025b32 push_local_value [1] 
+0395 @0x00025b36 push_local_value [0] 
+0396 @0x00025b3a call_in_user_fun [90, 3] do_when_password_error
+0397 @0x00025b3e pop_stack [] 
+0398 @0x00025b42 goto [4] 
+0399 @0x00025b46 push_local_value [1] 
+0400 @0x00025b4a push_local_value [0] 
+0401 @0x00025b4e call_in_user_fun [91, 2] do_when_password_correct
+0402 @0x00025b52 pop_stack [] 
+0403 @0x00025b56 push_local_value [-5] 
+0404 @0x00025b5a push_number(S) [3] 
+0405 @0x00025b5e eq_value [] 
+0406 @0x00025b62 if [8, 2] 
+0407 @0x00025b66 push_obj_var [19] 
+0408 @0x00025b6a if [2, 2] 
+0409 @0x00025b6e push_number(S) [3] 
+0410 @0x00025b72 goto [1] 
+0411 @0x00025b76 push_number(S) [1] 
+0412 @0x00025b7a push_local_vptr [-5] 
+0413 @0x00025b7e assign_value [] 
+0414 @0x00025b82 pop_stack [] 
+0415 @0x00025b86 push_local_value [-5] 
+0416 @0x00025b8a case_check_number [4, 0] 
+0417 @0x00025b8e case_check_number [5, 2] 
+0418 @0x00025b92 case_check_number [36, 3] 
+0419 @0x00025b96 case_check_number [82, 1] 
+0420 @0x00025b9a case_default [113] 
+0421 @0x00025b9e goto [113] 
+0422 @0x00025ba2 null_action [] 
+0423 @0x00025ba6 push_local_value [-15] 
+0424 @0x00025baa push_number(S) [0] 
+0425 @0x00025bae push_number(S) [3] 
+0426 @0x00025bb2 push_local_value [0] 
+0427 @0x00025bb6 call_in_user_fun [96, 4] send_login_result
+0428 @0x00025bba pop_stack [] 
+0429 @0x00025bbe push_number(S) [1] 
+0430 @0x00025bc2 push_shared_string [110] 'to_be_disconnect'
+0431 @0x00025bc6 push_local_value [0] 
+0432 @0x00025bca call_in_other_fun_ex [4, 1] 
+0433 @0x00025bce pop_stack [] 
+0434 @0x00025bd2 push_local_value [1] 
+0435 @0x00025bd6 is_type [4] 
+0436 @0x00025bda if [6, 1] 
+0437 @0x00025bde pop_stack [] 
+0438 @0x00025be2 push_shared_string [129] 'login_info/account'
+0439 @0x00025be6 push_shared_string [114] 'query_temp'
+0440 @0x00025bea push_local_value [1] 
+0441 @0x00025bee call_in_other_fun_ex [4, 1] 
+0442 @0x00025bf2 is_type [4] 
+0443 @0x00025bf6 if [8, 2] 
+0444 @0x00025bfa push_shared_string [240] '帐号密码不匹配，登录失败\n'
+0445 @0x00025bfe push_shared_string [125] 'login'
+0446 @0x00025c02 push_local_value [1] 
+0447 @0x00025c06 call_in_user_fun [659, -127] get_login_info_file
+0448 @0x00025c0a push_shared_string [117] 'log_login_info'
+0449 @0x00025c0e push_shared_string [91] '/daemons/logd.c'
+0450 @0x00025c12 call_in_other_fun_ex [4, 3] 
+0451 @0x00025c16 pop_stack [] 
+0452 @0x00025c1a push_number(S) [0] 
+0453 @0x00025c1e return_from_fun [] 
+0454 @0x00025c22 null_action [] 
+0455 @0x00025c26 push_shared_string [241] 'aa_url'
+0456 @0x00025c2a push_shared_string [230] 'get_global_config'
+0457 @0x00025c2e push_shared_string [133] '/aaa/daemons/configd.c'
+0458 @0x00025c32 call_in_other_fun_ex [4, 1] 
+0459 @0x00025c36 push_local_vptr [-16] 
+0460 @0x00025c3a assign_value [] 
+0461 @0x00025c3e is_type [4] 
+0462 @0x00025c42 not_value [] 
+0463 @0x00025c46 if [4, 2] 
+0464 @0x00025c4a push_shared_string [242] 'http://account.gyyx.cn/gameAdult/AdultValidate.aspx'
+0465 @0x00025c4e push_local_vptr [-16] 
+0466 @0x00025c52 assign_value [] 
+0467 @0x00025c56 pop_stack [] 
+0468 @0x00025c5a push_local_value [-16] 
+0469 @0x00025c5e push_shared_string [243] '#R您的注册资料未通过防沉迷验证，将被纳入防沉迷系统，无法进入游戏。请点击#n#Y#url这里{%s}#t#n#R补填正确信息。#n'
+0470 @0x00025c62 call_in_efun [121, 2] sprintf
+0471 @0x00025c66 push_number(S) [0] 
+0472 @0x00025c6a push_number(S) [0] 
+0473 @0x00025c6e push_local_value [0] 
+0474 @0x00025c72 call_in_user_fun [96, 4] send_login_result
+0475 @0x00025c76 pop_stack [] 
+0476 @0x00025c7a push_number(S) [5] 
+0477 @0x00025c7e push_shared_string [110] 'to_be_disconnect'
+0478 @0x00025c82 push_local_value [0] 
+0479 @0x00025c86 call_in_other_fun_ex [4, 1] 
+0480 @0x00025c8a pop_stack [] 
+0481 @0x00025c8e push_local_value [1] 
+0482 @0x00025c92 is_type [4] 
+0483 @0x00025c96 if [6, 1] 
+0484 @0x00025c9a pop_stack [] 
+0485 @0x00025c9e push_shared_string [129] 'login_info/account'
+0486 @0x00025ca2 push_shared_string [114] 'query_temp'
+0487 @0x00025ca6 push_local_value [1] 
+0488 @0x00025caa call_in_other_fun_ex [4, 1] 
+0489 @0x00025cae is_type [4] 
+0490 @0x00025cb2 if [8, 2] 
+0491 @0x00025cb6 push_shared_string [244] '自动激活没有通过防沉迷验证，登录失败'
+0492 @0x00025cba push_shared_string [125] 'login'
+0493 @0x00025cbe push_local_value [1] 
+0494 @0x00025cc2 call_in_user_fun [659, -127] get_login_info_file
+0495 @0x00025cc6 push_shared_string [117] 'log_login_info'
+0496 @0x00025cca push_shared_string [91] '/daemons/logd.c'
+0497 @0x00025cce call_in_other_fun_ex [4, 3] 
+0498 @0x00025cd2 pop_stack [] 
+0499 @0x00025cd6 push_number(S) [0] 
+0500 @0x00025cda return_from_fun [] 
+0501 @0x00025cde null_action [] 
+0502 @0x00025ce2 push_local_value [-15] 
+0503 @0x00025ce6 push_number(S) [0] 
+0504 @0x00025cea push_number(S) [0] 
+0505 @0x00025cee push_local_value [0] 
+0506 @0x00025cf2 call_in_user_fun [96, 4] send_login_result
+0507 @0x00025cf6 pop_stack [] 
+0508 @0x00025cfa push_number(S) [1] 
+0509 @0x00025cfe push_shared_string [110] 'to_be_disconnect'
+0510 @0x00025d02 push_local_value [0] 
+0511 @0x00025d06 call_in_other_fun_ex [4, 1] 
+0512 @0x00025d0a pop_stack [] 
+0513 @0x00025d0e push_local_value [1] 
+0514 @0x00025d12 is_type [4] 
+0515 @0x00025d16 if [6, 1] 
+0516 @0x00025d1a pop_stack [] 
+0517 @0x00025d1e push_shared_string [129] 'login_info/account'
+0518 @0x00025d22 push_shared_string [114] 'query_temp'
+0519 @0x00025d26 push_local_value [1] 
+0520 @0x00025d2a call_in_other_fun_ex [4, 1] 
+0521 @0x00025d2e is_type [4] 
+0522 @0x00025d32 if [8, 2] 
+0523 @0x00025d36 push_shared_string [245] '自动激活不成功，登录失败\n'
+0524 @0x00025d3a push_shared_string [125] 'login'
+0525 @0x00025d3e push_local_value [1] 
+0526 @0x00025d42 call_in_user_fun [659, -127] get_login_info_file
+0527 @0x00025d46 push_shared_string [117] 'log_login_info'
+0528 @0x00025d4a push_shared_string [91] '/daemons/logd.c'
+0529 @0x00025d4e call_in_other_fun_ex [4, 3] 
+0530 @0x00025d52 pop_stack [] 
+0531 @0x00025d56 push_number(S) [0] 
+0532 @0x00025d5a return_from_fun [] 
+0533 @0x00025d5e null_action [] 
+0534 @0x00025d62 null_action [] 
+0535 @0x00025d66 push_local_value [1] 
+0536 @0x00025d6a call_in_user_fun [41, 1] query_account_info
+0537 @0x00025d6e push_local_vptr [-19] 
+0538 @0x00025d72 assign_value [] 
+0539 @0x00025d76 pop_stack [] 
+0540 @0x00025d7a push_local_value [1] 
+0541 @0x00025d7e is_type [4] 
+0542 @0x00025d82 if [6, 1] 
+0543 @0x00025d86 pop_stack [] 
+0544 @0x00025d8a push_shared_string [129] 'login_info/account'
+0545 @0x00025d8e push_shared_string [114] 'query_temp'
+0546 @0x00025d92 push_local_value [1] 
+0547 @0x00025d96 call_in_other_fun_ex [4, 1] 
+0548 @0x00025d9a is_type [4] 
+0549 @0x00025d9e if [8, 2] 
+0550 @0x00025da2 push_shared_string [246] '自动激活完成\n'
+0551 @0x00025da6 push_shared_string [125] 'login'
+0552 @0x00025daa push_local_value [1] 
+0553 @0x00025dae call_in_user_fun [659, -127] get_login_info_file
+0554 @0x00025db2 push_shared_string [117] 'log_login_info'
+0555 @0x00025db6 push_shared_string [91] '/daemons/logd.c'
+0556 @0x00025dba call_in_other_fun_ex [4, 3] 
+0557 @0x00025dbe pop_stack [] 
+0558 @0x00025dc2 push_local_value [-19] 
+0559 @0x00025dc6 is_type [7] 
+0560 @0x00025dca if [7, 0] 
+0561 @0x00025dce pop_stack [] 
+0562 @0x00025dd2 push_local_value [-19] 
+0563 @0x00025dd6 push_shared_string [247] 'active_path'
+0564 @0x00025dda query_member [0] 
+0565 @0x00025dde call_in_efun [122, 1] strlen
+0566 @0x00025de2 push_number(S) [1] 
+0567 @0x00025de6 lt_value [] 
+0568 @0x00025dea if [10, 2] 
+0569 @0x00025dee push_number(S) [1] 
+0570 @0x00025df2 push_local_vptr [-19] 
+0571 @0x00025df6 push_shared_string [247] 'active_path'
+0572 @0x00025dfa query_member_ptr [0] 
+0573 @0x00025dfe assign_value [] 
+0574 @0x00025e02 pop_stack [] 
+0575 @0x00025e06 push_local_value [-19] 
+0576 @0x00025e0a call_in_user_fun [42, 1] update_account_info
+0577 @0x00025e0e pop_stack [] 
+0578 @0x00025e12 null_action [] 
+0579 @0x00025e16 push_local_value [0] 
+0580 @0x00025e1a is_type [10] 
+0581 @0x00025e1e not_value [] 
+0582 @0x00025e22 if [2, 2] 
+0583 @0x00025e26 push_number(S) [0] 
+0584 @0x00025e2a return_from_fun [] 
+0585 @0x00025e2e null_action [] 
+0586 @0x00025e32 push_local_value [-19] 
+0587 @0x00025e36 is_type [7] 
+0588 @0x00025e3a not_value [] 
+0589 @0x00025e3e if [32, 2] 
+0590 @0x00025e42 push_shared_string [248] '帐号登录失败。（原因：1007）'
+0591 @0x00025e46 push_number(S) [0] 
+0592 @0x00025e4a push_number(S) [0] 
+0593 @0x00025e4e push_local_value [0] 
+0594 @0x00025e52 call_in_user_fun [96, 4] send_login_result
+0595 @0x00025e56 pop_stack [] 
+0596 @0x00025e5a push_number(S) [1] 
+0597 @0x00025e5e push_shared_string [110] 'to_be_disconnect'
+0598 @0x00025e62 push_local_value [0] 
+0599 @0x00025e66 call_in_other_fun_ex [4, 1] 
+0600 @0x00025e6a pop_stack [] 
+0601 @0x00025e6e push_local_value [1] 
+0602 @0x00025e72 is_type [4] 
+0603 @0x00025e76 if [6, 1] 
+0604 @0x00025e7a pop_stack [] 
+0605 @0x00025e7e push_shared_string [129] 'login_info/account'
+0606 @0x00025e82 push_shared_string [114] 'query_temp'
+0607 @0x00025e86 push_local_value [1] 
+0608 @0x00025e8a call_in_other_fun_ex [4, 1] 
+0609 @0x00025e8e is_type [4] 
+0610 @0x00025e92 if [8, 2] 
+0611 @0x00025e96 push_shared_string [249] '数据库不存在该帐号，登录失败\n'
+0612 @0x00025e9a push_shared_string [125] 'login'
+0613 @0x00025e9e push_local_value [1] 
+0614 @0x00025ea2 call_in_user_fun [659, -127] get_login_info_file
+0615 @0x00025ea6 push_shared_string [117] 'log_login_info'
+0616 @0x00025eaa push_shared_string [91] '/daemons/logd.c'
+0617 @0x00025eae call_in_other_fun_ex [4, 3] 
+0618 @0x00025eb2 pop_stack [] 
+0619 @0x00025eb6 push_number(S) [0] 
+0620 @0x00025eba return_from_fun [] 
+0621 @0x00025ebe null_action [] 
+0622 @0x00025ec2 push_local_value [-19] 
+0623 @0x00025ec6 push_shared_string [54] 'checksum'
+0624 @0x00025eca query_member [0] 
+0625 @0x00025ece push_local_value [-19] 
+0626 @0x00025ed2 call_in_user_fun [38, 1] calc_account_checksum
+0627 @0x00025ed6 ne_value [] 
+0628 @0x00025eda if [18, 2] 
+0629 @0x00025ede push_shared_string [250] '帐号登录失败。（原因：1009）'
+0630 @0x00025ee2 push_number(S) [0] 
+0631 @0x00025ee6 push_number(S) [0] 
+0632 @0x00025eea push_local_value [0] 
+0633 @0x00025eee call_in_user_fun [96, 4] send_login_result
+0634 @0x00025ef2 pop_stack [] 
+0635 @0x00025ef6 push_number(S) [1] 
+0636 @0x00025efa push_shared_string [110] 'to_be_disconnect'
+0637 @0x00025efe push_local_value [0] 
+0638 @0x00025f02 call_in_other_fun_ex [4, 1] 
+0639 @0x00025f06 pop_stack [] 
+0640 @0x00025f0a push_local_value [-19] 
+0641 @0x00025f0e push_local_value [1] 
+0642 @0x00025f12 call_in_user_fun [43, 2] log_bad_checksum_account
+0643 @0x00025f16 pop_stack [] 
+0644 @0x00025f1a push_number(S) [0] 
+0645 @0x00025f1e return_from_fun [] 
+0646 @0x00025f22 null_action [] 
+0647 @0x00025f26 push_local_value [-19] 
+0648 @0x00025f2a call_in_user_fun [57, 1] is_under_control
+0649 @0x00025f2e not_value [] 
+0650 @0x00025f32 if [6, 0] 
+0651 @0x00025f36 pop_stack [] 
+0652 @0x00025f3a push_local_value [-19] 
+0653 @0x00025f3e push_shared_string [251] 'locked'
+0654 @0x00025f42 query_member [0] 
+0655 @0x00025f46 push_shared_string [252] '1'
+0656 @0x00025f4a eq_value [] 
+0657 @0x00025f4e if [32, 2] 
+0658 @0x00025f52 push_shared_string [253] '该帐号已被锁定，请先登录光宇游戏社区解除锁定！（原因：1012）'
+0659 @0x00025f56 push_number(S) [0] 
+0660 @0x00025f5a push_number(S) [5] 
+0661 @0x00025f5e push_local_value [0] 
+0662 @0x00025f62 call_in_user_fun [96, 4] send_login_result
+0663 @0x00025f66 pop_stack [] 
+0664 @0x00025f6a push_number(S) [1] 
+0665 @0x00025f6e push_shared_string [110] 'to_be_disconnect'
+0666 @0x00025f72 push_local_value [0] 
+0667 @0x00025f76 call_in_other_fun_ex [4, 1] 
+0668 @0x00025f7a pop_stack [] 
+0669 @0x00025f7e push_local_value [1] 
+0670 @0x00025f82 is_type [4] 
+0671 @0x00025f86 if [6, 1] 
+0672 @0x00025f8a pop_stack [] 
+0673 @0x00025f8e push_shared_string [129] 'login_info/account'
+0674 @0x00025f92 push_shared_string [114] 'query_temp'
+0675 @0x00025f96 push_local_value [1] 
+0676 @0x00025f9a call_in_other_fun_ex [4, 1] 
+0677 @0x00025f9e is_type [4] 
+0678 @0x00025fa2 if [8, 2] 
+0679 @0x00025fa6 push_shared_string [254] '帐号处于锁定状态，登录失败\n'
+0680 @0x00025faa push_shared_string [125] 'login'
+0681 @0x00025fae push_local_value [1] 
+0682 @0x00025fb2 call_in_user_fun [659, -127] get_login_info_file
+0683 @0x00025fb6 push_shared_string [117] 'log_login_info'
+0684 @0x00025fba push_shared_string [91] '/daemons/logd.c'
+0685 @0x00025fbe call_in_other_fun_ex [4, 3] 
+0686 @0x00025fc2 pop_stack [] 
+0687 @0x00025fc6 push_number(S) [0] 
+0688 @0x00025fca return_from_fun [] 
+0689 @0x00025fce null_action [] 
+0690 @0x00025fd2 push_number(S) [0] 
+0691 @0x00025fd6 push_local_vptr [-25] 
+0692 @0x00025fda assign_value [] 
+0693 @0x00025fde pop_stack [] 
+0694 @0x00025fe2 push_local_value [-19] 
+0695 @0x00025fe6 push_shared_string [61] 'blocked_time'
+0696 @0x00025fea query_member [0] 
+0697 @0x00025fee push_local_vptr [-3] 
+0698 @0x00025ff2 assign_value [] 
+0699 @0x00025ff6 pop_stack [] 
+0700 @0x00025ffa call_in_user_fun [68, 0] is_apex_enabled
+0701 @0x00025ffe if [6, 2] 
+0702 @0x00026002 push_local_value [-3] 
+0703 @0x00026006 cast_type [4, 0] 
+0704 @0x0002600a call_in_efun [141, 1] trim
+0705 @0x0002600e push_local_vptr [-3] 
+0706 @0x00026012 assign_value [] 
+0707 @0x00026016 pop_stack [] 
+0708 @0x0002601a push_local_value [-19] 
+0709 @0x0002601e push_shared_string [57] 'blocked_reason'
+0710 @0x00026022 query_member [0] 
+0711 @0x00026026 push_local_vptr [-12] 
+0712 @0x0002602a assign_value [] 
+0713 @0x0002602e pop_stack [] 
+0714 @0x00026032 push_shared_string [255] '运营中被封闭的帐号'
+0715 @0x00026036 push_local_vptr [-11] 
+0716 @0x0002603a assign_value [] 
+0717 @0x0002603e pop_stack [] 
+0718 @0x00026042 push_number(S) [3] 
+0719 @0x00026046 push_local_value [-3] 
+0720 @0x0002604a call_in_user_fun [684, -126] time_desc_to_int
+0721 @0x0002604e push_local_vptr [-3] 
+0722 @0x00026052 assign_value [] 
+0723 @0x00026056 is_type [0] 
+0724 @0x0002605a if [43, 2] 
+0725 @0x0002605e push_shared_string [256] '运营中被封闭的帐号。（原因：1010）'
+0726 @0x00026062 push_local_vptr [-11] 
+0727 @0x00026066 assign_value [] 
+0728 @0x0002606a pop_stack [] 
+0729 @0x0002606e push_local_vptr [-11] 
+0730 @0x00026072 push_local_value [-12] 
+0731 @0x00026076 push_local_value [-25] 
+0732 @0x0002607a call_in_user_fun [80, 3] get_extra_block_reason_msg
+0733 @0x0002607e pop_stack [] 
+0734 @0x00026082 push_local_value [-11] 
+0735 @0x00026086 push_number(S) [0] 
+0736 @0x0002608a push_number(S) [4] 
+0737 @0x0002608e push_local_value [0] 
+0738 @0x00026092 call_in_user_fun [96, 4] send_login_result
+0739 @0x00026096 pop_stack [] 
+0740 @0x0002609a push_number(S) [1] 
+0741 @0x0002609e push_shared_string [110] 'to_be_disconnect'
+0742 @0x000260a2 push_local_value [0] 
+0743 @0x000260a6 call_in_other_fun_ex [4, 1] 
+0744 @0x000260aa pop_stack [] 
+0745 @0x000260ae push_local_value [1] 
+0746 @0x000260b2 is_type [4] 
+0747 @0x000260b6 if [6, 1] 
+0748 @0x000260ba pop_stack [] 
+0749 @0x000260be push_shared_string [129] 'login_info/account'
+0750 @0x000260c2 push_shared_string [114] 'query_temp'
+0751 @0x000260c6 push_local_value [1] 
+0752 @0x000260ca call_in_other_fun_ex [4, 1] 
+0753 @0x000260ce is_type [4] 
+0754 @0x000260d2 if [10, 2] 
+0755 @0x000260d6 push_shared_string [257] 'block_time字段格式错误'
+0756 @0x000260da push_shared_string [258] '该帐号被封，禁止登录，原因：%O\n'
+0757 @0x000260de call_in_efun [121, 2] sprintf
+0758 @0x000260e2 push_shared_string [125] 'login'
+0759 @0x000260e6 push_local_value [1] 
+0760 @0x000260ea call_in_user_fun [659, -127] get_login_info_file
+0761 @0x000260ee push_shared_string [117] 'log_login_info'
+0762 @0x000260f2 push_shared_string [91] '/daemons/logd.c'
+0763 @0x000260f6 call_in_other_fun_ex [4, 3] 
+0764 @0x000260fa pop_stack [] 
+0765 @0x000260fe push_number(S) [0] 
+0766 @0x00026102 return_from_fun [] 
+0767 @0x00026106 null_action [] 
+0768 @0x0002610a push_local_value [-3] 
+0769 @0x0002610e call_in_efun [137, 0] time
+0770 @0x00026112 gt_value [] 
+0771 @0x00026116 if [89, 2] 
+0772 @0x0002611a push_local_value [-3] 
+0773 @0x0002611e call_in_efun [137, 0] time
+0774 @0x00026122 sub_value [] 
+0775 @0x00026126 push_local_vptr [-26] 
+0776 @0x0002612a assign_value [] 
+0777 @0x0002612e pop_stack [] 
+0778 @0x00026132 push_local_value [-26] 
+0779 @0x00026136 push_number(L) [15552000] 
+0780 @0x0002613a lt_value [] 
+0781 @0x0002613e if [29, 2] 
+0782 @0x00026142 push_local_value [-26] 
+0783 @0x00026146 push_number(L) [86400] 
+0784 @0x0002614a div_value [] 
+0785 @0x0002614e push_local_vptr [-27] 
+0786 @0x00026152 assign_value [] 
+0787 @0x00026156 pop_stack [] 
+0788 @0x0002615a push_local_value [-26] 
+0789 @0x0002615e push_number(L) [86400] 
+0790 @0x00026162 mod_value [] 
+0791 @0x00026166 if [4, 2] 
+0792 @0x0002616a push_local_value [-27] 
+0793 @0x0002616e push_number(S) [1] 
+0794 @0x00026172 add [] 
+0795 @0x00026176 goto [1] 
+0796 @0x0002617a push_local_value [-27] 
+0797 @0x0002617e push_local_vptr [-27] 
+0798 @0x00026182 assign_value [] 
+0799 @0x00026186 pop_stack [] 
+0800 @0x0002618a push_local_value [-27] 
+0801 @0x0002618e push_local_vptr [-25] 
+0802 @0x00026192 assign_value [] 
+0803 @0x00026196 pop_stack [] 
+0804 @0x0002619a push_local_value [-27] 
+0805 @0x0002619e push_shared_string [259] '运营中被封闭的帐号，将于#R%d#n天后解除封闭。'
+0806 @0x000261a2 call_in_efun [121, 2] sprintf
+0807 @0x000261a6 push_local_vptr [-11] 
+0808 @0x000261aa assign_value [] 
+0809 @0x000261ae pop_stack [] 
+0810 @0x000261b2 null_action [] 
+0811 @0x000261b6 push_local_vptr [-28] 
+0812 @0x000261ba push_shared_string [260] 'need_prompt:%s'
+0813 @0x000261be push_local_value [-12] 
+0814 @0x000261c2 call_in_efun [120, 3] sscanf
+0815 @0x000261c6 push_number(S) [1] 
+0816 @0x000261ca eq_value [] 
+0817 @0x000261ce if [4, 2] 
+0818 @0x000261d2 push_local_value [-28] 
+0819 @0x000261d6 push_local_vptr [-11] 
+0820 @0x000261da assign_value [] 
+0821 @0x000261de pop_stack [] 
+0822 @0x000261e2 push_local_vptr [-11] 
+0823 @0x000261e6 push_local_value [-12] 
+0824 @0x000261ea push_local_value [-25] 
+0825 @0x000261ee call_in_user_fun [80, 3] get_extra_block_reason_msg
+0826 @0x000261f2 pop_stack [] 
+0827 @0x000261f6 push_local_value [-11] 
+0828 @0x000261fa push_number(S) [0] 
+0829 @0x000261fe push_number(S) [4] 
+0830 @0x00026202 push_local_value [0] 
+0831 @0x00026206 call_in_user_fun [96, 4] send_login_result
+0832 @0x0002620a pop_stack [] 
+0833 @0x0002620e push_number(S) [1] 
+0834 @0x00026212 push_shared_string [110] 'to_be_disconnect'
+0835 @0x00026216 push_local_value [0] 
+0836 @0x0002621a call_in_other_fun_ex [4, 1] 
+0837 @0x0002621e pop_stack [] 
+0838 @0x00026222 push_local_value [1] 
+0839 @0x00026226 is_type [4] 
+0840 @0x0002622a if [6, 1] 
+0841 @0x0002622e pop_stack [] 
+0842 @0x00026232 push_shared_string [129] 'login_info/account'
+0843 @0x00026236 push_shared_string [114] 'query_temp'
+0844 @0x0002623a push_local_value [1] 
+0845 @0x0002623e call_in_other_fun_ex [4, 1] 
+0846 @0x00026242 is_type [4] 
+0847 @0x00026246 if [10, 2] 
+0848 @0x0002624a push_local_value [-12] 
+0849 @0x0002624e push_shared_string [258] '该帐号被封，禁止登录，原因：%O\n'
+0850 @0x00026252 call_in_efun [121, 2] sprintf
+0851 @0x00026256 push_shared_string [125] 'login'
+0852 @0x0002625a push_local_value [1] 
+0853 @0x0002625e call_in_user_fun [659, -127] get_login_info_file
+0854 @0x00026262 push_shared_string [117] 'log_login_info'
+0855 @0x00026266 push_shared_string [91] '/daemons/logd.c'
+0856 @0x0002626a call_in_other_fun_ex [4, 3] 
+0857 @0x0002626e pop_stack [] 
+0858 @0x00026272 push_number(S) [0] 
+0859 @0x00026276 return_from_fun [] 
+0860 @0x0002627a null_action [] 
+0861 @0x0002627e push_local_value [-3] 
+0862 @0x00026282 push_number(S) [0] 
+0863 @0x00026286 gt_value [] 
+0864 @0x0002628a if [7, 0] 
+0865 @0x0002628e pop_stack [] 
+0866 @0x00026292 push_number(S) [3] 
+0867 @0x00026296 push_local_value [-3] 
+0868 @0x0002629a call_in_efun [18, 2] ctime
+0869 @0x0002629e push_local_vptr [-3] 
+0870 @0x000262a2 assign_value [] 
+0871 @0x000262a6 call_in_efun [122, 1] strlen
+0872 @0x000262aa if [75, 2] 
+0873 @0x000262ae push_shared_string [60] ''
+0874 @0x000262b2 push_local_vptr [-19] 
+0875 @0x000262b6 push_shared_string [61] 'blocked_time'
+0876 @0x000262ba query_member_ptr [0] 
+0877 @0x000262be assign_value [] 
+0878 @0x000262c2 pop_stack [] 
+0879 @0x000262c6 push_shared_string [60] ''
+0880 @0x000262ca push_local_vptr [-19] 
+0881 @0x000262ce push_shared_string [57] 'blocked_reason'
+0882 @0x000262d2 query_member_ptr [0] 
+0883 @0x000262d6 assign_value [] 
+0884 @0x000262da pop_stack [] 
+0885 @0x000262de push_shared_string [116] 'get_peer_ip'
+0886 @0x000262e2 push_local_value [0] 
+0887 @0x000262e6 call_in_other_fun_ex [4, 0] 
+0888 @0x000262ea push_local_vptr [-13] 
+0889 @0x000262ee assign_value [] 
+0890 @0x000262f2 pop_stack [] 
+0891 @0x000262f6 push_shared_string [166] 'query_account'
+0892 @0x000262fa push_local_value [0] 
+0893 @0x000262fe call_in_other_fun_ex [4, 0] 
+0894 @0x00026302 push_local_vptr [1] 
+0895 @0x00026306 assign_value [] 
+0896 @0x0002630a pop_stack [] 
+0897 @0x0002630e push_local_value [-19] 
+0898 @0x00026312 call_in_user_fun [42, 1] update_account_info
+0899 @0x00026316 pop_stack [] 
+0900 @0x0002631a push_number(S) [3] 
+0901 @0x0002631e call_in_efun [137, 0] time
+0902 @0x00026322 call_in_efun [18, 2] ctime
+0903 @0x00026326 push_local_vptr [-2] 
+0904 @0x0002632a assign_value [] 
+0905 @0x0002632e pop_stack [] 
+0906 @0x00026332 push_local_value [1] 
+0907 @0x00026336 is_type [4] 
+0908 @0x0002633a if [6, 1] 
+0909 @0x0002633e pop_stack [] 
+0910 @0x00026342 push_shared_string [129] 'login_info/account'
+0911 @0x00026346 push_shared_string [114] 'query_temp'
+0912 @0x0002634a push_local_value [1] 
+0913 @0x0002634e call_in_other_fun_ex [4, 1] 
+0914 @0x00026352 is_type [4] 
+0915 @0x00026356 if [8, 2] 
+0916 @0x0002635a push_shared_string [261] '超过封号时间，给该帐号解封\n'
+0917 @0x0002635e push_shared_string [125] 'login'
+0918 @0x00026362 push_local_value [1] 
+0919 @0x00026366 call_in_user_fun [659, -127] get_login_info_file
+0920 @0x0002636a push_shared_string [117] 'log_login_info'
+0921 @0x0002636e push_shared_string [91] '/daemons/logd.c'
+0922 @0x00026372 call_in_other_fun_ex [4, 3] 
+0923 @0x00026376 pop_stack [] 
+0924 @0x0002637a push_shared_string [60] ''
+0925 @0x0002637e push_shared_string [262] '封号时间已到，自动解锁'
+0926 @0x00026382 push_shared_string [263] 'auto_unlock_account'
+0927 @0x00026386 push_local_value [-3] 
+0928 @0x0002638a push_local_value [1] 
+0929 @0x0002638e push_local_value [-2] 
+0930 @0x00026392 push_local_value [-13] 
+0931 @0x00026396 push_shared_string [159] 'insert into acc_log(ip, time,account, dist, type, msg, memo) values(?, ?, ?, ?, ?, ?, ?)'
+0932 @0x0002639a call_in_efun [447, 8] mysql_bind_parameters
+0933 @0x0002639e push_local_vptr [-8] 
+0934 @0x000263a2 assign_value [] 
+0935 @0x000263a6 pop_stack [] 
+0936 @0x000263aa push_local_value [-8] 
+0937 @0x000263ae push_local_value [-1] 
+0938 @0x000263b2 push_global_var [14] 
+0939 @0x000263b6 call_fun_ptr [0, 3] 
+0940 @0x000263ba pop_stack [] 
+0941 @0x000263be push_local_value [0] 
+0942 @0x000263c2 is_type [10] 
+0943 @0x000263c6 not_value [] 
+0944 @0x000263ca if [2, 2] 
+0945 @0x000263ce push_number(S) [0] 
+0946 @0x000263d2 return_from_fun [] 
+0947 @0x000263d6 null_action [] 
+0948 @0x000263da push_local_value [7] 
+0949 @0x000263de not_value [] 
+0950 @0x000263e2 if [78, 2] 
+0951 @0x000263e6 push_local_value [-7] 
+0952 @0x000263ea push_local_value [-19] 
+0953 @0x000263ee push_shared_string [53] 'account'
+0954 @0x000263f2 query_member [0] 
+0955 @0x000263f6 call_in_user_fun [44, 2] calc_password_new_md5
+0956 @0x000263fa push_local_vptr [-10] 
+0957 @0x000263fe assign_value [] 
+0958 @0x00026402 pop_stack [] 
+0959 @0x00026406 push_local_value [-10] 
+0960 @0x0002640a push_shared_string [264] 'pass = %s \n'
+0961 @0x0002640e call_in_efun [90, 2] printf
+0962 @0x00026412 pop_stack [] 
+0963 @0x00026416 push_local_value [-10] 
+0964 @0x0002641a push_local_value [-19] 
+0965 @0x0002641e push_shared_string [77] 'password'
+0966 @0x00026422 query_member [0] 
+0967 @0x00026426 call_in_efun [125, 2] stricmp
+0968 @0x0002642a push_number(S) [0] 
+0969 @0x0002642e ne_value [] 
+0970 @0x00026432 if [57, 2] 
+0971 @0x00026436 push_shared_string [265] '帐号和密码不匹配！'
+0972 @0x0002643a push_local_vptr [-9] 
+0973 @0x0002643e assign_value [] 
+0974 @0x00026442 pop_stack [] 
+0975 @0x00026446 push_local_value [-10] 
+0976 @0x0002644a push_local_value [-19] 
+0977 @0x0002644e push_shared_string [96] 'org_password'
+0978 @0x00026452 query_member [0] 
+0979 @0x00026456 call_in_efun [125, 2] stricmp
+0980 @0x0002645a push_number(S) [0] 
+0981 @0x0002645e eq_value [] 
+0982 @0x00026462 if [7, 2] 
+0983 @0x00026466 push_shared_string [266] '对不起，管理人员正在对你的帐号进行操作，暂时无法登录。'
+0984 @0x0002646a push_number(S) [0] 
+0985 @0x0002646e push_number(S) [3] 
+0986 @0x00026472 push_local_value [0] 
+0987 @0x00026476 call_in_user_fun [96, 4] send_login_result
+0988 @0x0002647a pop_stack [] 
+0989 @0x0002647e goto [12] 
+0990 @0x00026482 push_local_vptr [-9] 
+0991 @0x00026486 push_local_value [1] 
+0992 @0x0002648a push_local_value [0] 
+0993 @0x0002648e call_in_user_fun [90, 3] do_when_password_error
+0994 @0x00026492 pop_stack [] 
+0995 @0x00026496 push_local_value [-9] 
+0996 @0x0002649a push_number(S) [0] 
+0997 @0x0002649e push_number(S) [3] 
+0998 @0x000264a2 push_local_value [0] 
+0999 @0x000264a6 call_in_user_fun [96, 4] send_login_result
+1000 @0x000264aa pop_stack [] 
+1001 @0x000264ae null_action [] 
+1002 @0x000264b2 push_number(S) [1] 
+1003 @0x000264b6 push_shared_string [110] 'to_be_disconnect'
+1004 @0x000264ba push_local_value [0] 
+1005 @0x000264be call_in_other_fun_ex [4, 1] 
+1006 @0x000264c2 pop_stack [] 
+1007 @0x000264c6 push_local_value [1] 
+1008 @0x000264ca is_type [4] 
+1009 @0x000264ce if [6, 1] 
+1010 @0x000264d2 pop_stack [] 
+1011 @0x000264d6 push_shared_string [129] 'login_info/account'
+1012 @0x000264da push_shared_string [114] 'query_temp'
+1013 @0x000264de push_local_value [1] 
+1014 @0x000264e2 call_in_other_fun_ex [4, 1] 
+1015 @0x000264e6 is_type [4] 
+1016 @0x000264ea if [8, 2] 
+1017 @0x000264ee push_shared_string [240] '帐号密码不匹配，登录失败\n'
+1018 @0x000264f2 push_shared_string [125] 'login'
+1019 @0x000264f6 push_local_value [1] 
+1020 @0x000264fa call_in_user_fun [659, -127] get_login_info_file
+1021 @0x000264fe push_shared_string [117] 'log_login_info'
+1022 @0x00026502 push_shared_string [91] '/daemons/logd.c'
+1023 @0x00026506 call_in_other_fun_ex [4, 3] 
+1024 @0x0002650a pop_stack [] 
+1025 @0x0002650e push_number(S) [0] 
+1026 @0x00026512 return_from_fun [] 
+1027 @0x00026516 null_action [] 
+1028 @0x0002651a null_action [] 
+1029 @0x0002651e push_obj_var [21] 
+1030 @0x00026522 if [8, 0] 
+1031 @0x00026526 pop_stack [] 
+1032 @0x0002652a push_shared_string [267] 'merge_limit_login'
+1033 @0x0002652e push_shared_string [230] 'get_global_config'
+1034 @0x00026532 push_shared_string [133] '/aaa/daemons/configd.c'
+1035 @0x00026536 call_in_other_fun_ex [4, 1] 
+1036 @0x0002653a push_local_vptr [-17] 
+1037 @0x0002653e assign_value [] 
+1038 @0x00026542 is_type [4] 
+1039 @0x00026546 if [6, 0] 
+1040 @0x0002654a pop_stack [] 
+1041 @0x0002654e push_local_value [-17] 
+1042 @0x00026552 call_in_efun [100, 1] restore_value
+1043 @0x00026556 push_local_vptr [-6] 
+1044 @0x0002655a assign_value [] 
+1045 @0x0002655e is_type [6] 
+1046 @0x00026562 if [5, 0] 
+1047 @0x00026566 pop_stack [] 
+1048 @0x0002656a push_local_value [-19] 
+1049 @0x0002656e push_shared_string [268] 'last_login_time'
+1050 @0x00026572 query_member [0] 
+1051 @0x00026576 is_type [4] 
+1052 @0x0002657a if [17, 0] 
+1053 @0x0002657e pop_stack [] 
+1054 @0x00026582 push_number(S) [3] 
+1055 @0x00026586 push_local_value [-19] 
+1056 @0x0002658a push_shared_string [268] 'last_login_time'
+1057 @0x0002658e query_member [0] 
+1058 @0x00026592 call_in_user_fun [684, -126] time_desc_to_int
+1059 @0x00026596 push_number(S) [3] 
+1060 @0x0002659a push_local_value [-6] 
+1061 @0x0002659e push_number(S) [0] 
+1062 @0x000265a2 query_member [0] 
+1063 @0x000265a6 call_in_user_fun [684, -126] time_desc_to_int
+1064 @0x000265aa push_local_value [-6] 
+1065 @0x000265ae push_number(S) [1] 
+1066 @0x000265b2 query_member [0] 
+1067 @0x000265b6 cast_type [2, 0] 
+1068 @0x000265ba sub_value [] 
+1069 @0x000265be lt_value [] 
+1070 @0x000265c2 if [37, 2] 
+1071 @0x000265c6 push_local_value [-6] 
+1072 @0x000265ca push_number(S) [2] 
+1073 @0x000265ce query_member [0] 
+1074 @0x000265d2 cast_type [4, 0] 
+1075 @0x000265d6 push_shared_string [269] '你的帐号正在进行数据互通处理，需稍后才能进行登录，预计可以登录时间为：%s'
+1076 @0x000265da call_in_efun [121, 2] sprintf
+1077 @0x000265de push_number(S) [0] 
+1078 @0x000265e2 push_number(S) [0] 
+1079 @0x000265e6 push_local_value [0] 
+1080 @0x000265ea call_in_user_fun [96, 4] send_login_result
+1081 @0x000265ee pop_stack [] 
+1082 @0x000265f2 push_number(S) [5] 
+1083 @0x000265f6 push_shared_string [110] 'to_be_disconnect'
+1084 @0x000265fa push_local_value [0] 
+1085 @0x000265fe call_in_other_fun_ex [4, 1] 
+1086 @0x00026602 pop_stack [] 
+1087 @0x00026606 push_local_value [1] 
+1088 @0x0002660a is_type [4] 
+1089 @0x0002660e if [6, 1] 
+1090 @0x00026612 pop_stack [] 
+1091 @0x00026616 push_shared_string [129] 'login_info/account'
+1092 @0x0002661a push_shared_string [114] 'query_temp'
+1093 @0x0002661e push_local_value [1] 
+1094 @0x00026622 call_in_other_fun_ex [4, 1] 
+1095 @0x00026626 is_type [4] 
+1096 @0x0002662a if [8, 2] 
+1097 @0x0002662e push_shared_string [270] '当前帐号正在合服中，禁止登录。\n'
+1098 @0x00026632 push_shared_string [125] 'login'
+1099 @0x00026636 push_local_value [1] 
+1100 @0x0002663a call_in_user_fun [659, -127] get_login_info_file
+1101 @0x0002663e push_shared_string [117] 'log_login_info'
+1102 @0x00026642 push_shared_string [91] '/daemons/logd.c'
+1103 @0x00026646 call_in_other_fun_ex [4, 3] 
+1104 @0x0002664a pop_stack [] 
+1105 @0x0002664e push_number(S) [0] 
+1106 @0x00026652 return_from_fun [] 
+1107 @0x00026656 null_action [] 
+1108 @0x0002665a push_local_value [-19] 
+1109 @0x0002665e return_from_fun [] 
+1110 @0x00026662 null_action [] 
+1111 @0x00026666 return_from_fun [] 
+```
+
 <a id="aaa-__init__"></a>
 
 ## aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o :: __init__
@@ -5435,6 +8493,241 @@
 0042 @0x000049fd pop_stack [] 
 0043 @0x00004a01 null_action [] 
 0044 @0x00004a05 return_from_fun [] 
+```
+
+<a id="gs-gs-daemons-logind-o-enter_world"></a>
+
+## gs/pack_data/lib_gs32.pak/gs/daemons/logind.o :: enter_world
+
+成员 SHA-256：`51a071b4bf5411a7fdf5bddf6ae8b77a33d114ac0f530bd3822960dbb3523f79`；函数记录偏移：`0x9bda`；函数编号：`34`。
+
+```text
+0000 @0x00009da5 check_args_num [0] 
+0001 @0x00009da9 enter_function [] 
+0002 @0x00009dad push_number(S) [1] 
+0003 @0x00009db1 push_local_vptr [-1] 
+0004 @0x00009db5 assign_value [] 
+0005 @0x00009db9 pop_stack [] 
+0006 @0x00009dbd push_local_value [0] 
+0007 @0x00009dc1 is_type [4] 
+0008 @0x00009dc5 if [6, 1] 
+0009 @0x00009dc9 pop_stack [] 
+0010 @0x00009dcd push_shared_string [27] 'login_info/account'
+0011 @0x00009dd1 push_shared_string [24] 'query_temp'
+0012 @0x00009dd5 push_local_value [0] 
+0013 @0x00009dd9 call_in_other_fun_ex [4, 1] 
+0014 @0x00009ddd is_type [4] 
+0015 @0x00009de1 if [15, 2] 
+0016 @0x00009de5 push_shared_string [46] 'get_id'
+0017 @0x00009de9 push_local_value [0] 
+0018 @0x00009ded call_in_other_fun_ex [4, 0] 
+0019 @0x00009df1 push_shared_string [70] 'get_name'
+0020 @0x00009df5 push_local_value [0] 
+0021 @0x00009df9 call_in_other_fun_ex [4, 0] 
+0022 @0x00009dfd push_shared_string [330] '角色%s(%d)正在进入游戏世界\n'
+0023 @0x00009e01 call_in_efun [121, 3] sprintf
+0024 @0x00009e05 push_shared_string [223] 'enter'
+0025 @0x00009e09 push_local_value [0] 
+0026 @0x00009e0d call_in_user_fun [698, -127] get_login_info_file
+0027 @0x00009e11 push_shared_string [25] 'log_login_info'
+0028 @0x00009e15 push_shared_string [30] '/daemons/logd.c'
+0029 @0x00009e19 call_in_other_fun_ex [4, 3] 
+0030 @0x00009e1d pop_stack [] 
+0031 @0x00009e21 push_local_value [0] 
+0032 @0x00009e25 is_type [4] 
+0033 @0x00009e29 if [6, 1] 
+0034 @0x00009e2d pop_stack [] 
+0035 @0x00009e31 push_shared_string [27] 'login_info/account'
+0036 @0x00009e35 push_shared_string [24] 'query_temp'
+0037 @0x00009e39 push_local_value [0] 
+0038 @0x00009e3d call_in_other_fun_ex [4, 1] 
+0039 @0x00009e41 is_type [4] 
+0040 @0x00009e45 if [15, 2] 
+0041 @0x00009e49 push_shared_string [46] 'get_id'
+0042 @0x00009e4d push_local_value [0] 
+0043 @0x00009e51 call_in_other_fun_ex [4, 0] 
+0044 @0x00009e55 push_shared_string [70] 'get_name'
+0045 @0x00009e59 push_local_value [0] 
+0046 @0x00009e5d call_in_other_fun_ex [4, 0] 
+0047 @0x00009e61 push_shared_string [331] '--绑定CHAR<->USER(%s, %d)关系\n'
+0048 @0x00009e65 call_in_efun [121, 3] sprintf
+0049 @0x00009e69 push_shared_string [223] 'enter'
+0050 @0x00009e6d push_local_value [0] 
+0051 @0x00009e71 call_in_user_fun [698, -127] get_login_info_file
+0052 @0x00009e75 push_shared_string [25] 'log_login_info'
+0053 @0x00009e79 push_shared_string [30] '/daemons/logd.c'
+0054 @0x00009e7d call_in_other_fun_ex [4, 3] 
+0055 @0x00009e81 pop_stack [] 
+0056 @0x00009e85 push_local_value [0] 
+0057 @0x00009e89 push_shared_string [70] 'get_name'
+0058 @0x00009e8d push_local_value [0] 
+0059 @0x00009e91 call_in_other_fun_ex [4, 0] 
+0060 @0x00009e95 call_in_user_fun [1014, -126] set_name_user
+0061 @0x00009e99 pop_stack [] 
+0062 @0x00009e9d push_local_value [0] 
+0063 @0x00009ea1 push_shared_string [167] 'get_gid'
+0064 @0x00009ea5 push_local_value [0] 
+0065 @0x00009ea9 call_in_other_fun_ex [4, 0] 
+0066 @0x00009ead call_in_user_fun [657, -126] set_gid_object
+0067 @0x00009eb1 pop_stack [] 
+0068 @0x00009eb5 push_shared_string [44] 'get_client'
+0069 @0x00009eb9 push_local_value [0] 
+0070 @0x00009ebd call_in_other_fun_ex [4, 0] 
+0071 @0x00009ec1 call_in_efun [515, 1] get_client_info
+0072 @0x00009ec5 null_action [] 
+0073 @0x00009ec9 push_shared_string [86] 'remote_address'
+0074 @0x00009ecd query_member [0] 
+0075 @0x00009ed1 cast_type [4, 0] 
+0076 @0x00009ed5 push_local_vptr [-2] 
+0077 @0x00009ed9 assign_value [] 
+0078 @0x00009edd pop_stack [] 
+0079 @0x00009ee1 push_number(S) [1] 
+0080 @0x00009ee5 push_shared_string [128] 'entered_world'
+0081 @0x00009ee9 push_shared_string [65] 'lite_set_temp'
+0082 @0x00009eed push_local_value [0] 
+0083 @0x00009ef1 call_in_other_fun_ex [4, 2] 
+0084 @0x00009ef5 pop_stack [] 
+0085 @0x00009ef9 call_in_efun [137, 0] time
+0086 @0x00009efd push_shared_string [332] 'start_time'
+0087 @0x00009f01 push_shared_string [65] 'lite_set_temp'
+0088 @0x00009f05 push_local_value [0] 
+0089 @0x00009f09 call_in_other_fun_ex [4, 2] 
+0090 @0x00009f0d pop_stack [] 
+0091 @0x00009f11 push_local_value [-2] 
+0092 @0x00009f15 push_shared_string [333] 'login_ip'
+0093 @0x00009f19 push_shared_string [65] 'lite_set_temp'
+0094 @0x00009f1d push_local_value [0] 
+0095 @0x00009f21 call_in_other_fun_ex [4, 2] 
+0096 @0x00009f25 pop_stack [] 
+0097 @0x00009f29 push_local_value [0] 
+0098 @0x00009f2d call_in_user_fun [50, 1] set_newbie_task
+0099 @0x00009f31 pop_stack [] 
+0100 @0x00009f35 push_global_var [64] 
+0101 @0x00009f39 call_in_efun [137, 0] time
+0102 @0x00009f3d push_shared_string [26] 'account'
+0103 @0x00009f41 push_shared_string [75] 'lite_query'
+0104 @0x00009f45 push_local_value [0] 
+0105 @0x00009f49 call_in_other_fun_ex [4, 1] 
+0106 @0x00009f4d push_shared_string [334] 'check_account_online'
+0107 @0x00009f51 push_shared_string [23] '/gs/daemons/logind.c'
+0108 @0x00009f55 push_shared_string [335] 'GS*'
+0109 @0x00009f59 push_shared_string [322] 'broadcast_post'
+0110 @0x00009f5d push_shared_string [336] '/daemons/rpcd.c'
+0111 @0x00009f61 call_in_other_fun_ex [4, 6] 
+0112 @0x00009f65 pop_stack [] 
+0113 @0x00009f69 push_shared_string [258] 'switch_server'
+0114 @0x00009f6d push_shared_string [64] 'lite_query_temp'
+0115 @0x00009f71 push_local_value [0] 
+0116 @0x00009f75 call_in_other_fun_ex [4, 1] 
+0117 @0x00009f79 if [4, 2] 
+0118 @0x00009f7d push_number(S) [8] 
+0119 @0x00009f81 push_local_vptr [-1] 
+0120 @0x00009f85 assign_value [] 
+0121 @0x00009f89 pop_stack [] 
+0122 @0x00009f8d push_local_value [0] 
+0123 @0x00009f91 push_shared_string [323] 'do_effect_when_enter_world'
+0124 @0x00009f95 push_shared_string [337] '/gs/daemons/propd.c'
+0125 @0x00009f99 call_in_other_fun_ex [4, 1] 
+0126 @0x00009f9d pop_stack [] 
+0127 @0x00009fa1 push_local_value [0] 
+0128 @0x00009fa5 call_in_user_fun [630, -127] post_enter_world
+0129 @0x00009fa9 pop_stack [] 
+0130 @0x00009fad push_local_value [0] 
+0131 @0x00009fb1 call_in_user_fun [29, 1] clear_unused_field
+0132 @0x00009fb5 pop_stack [] 
+0133 @0x00009fb9 push_local_value [0] 
+0134 @0x00009fbd push_shared_string [324] 'login_pker'
+0135 @0x00009fc1 push_shared_string [338] '/gs/daemons/pkd.c'
+0136 @0x00009fc5 call_in_other_fun_ex [4, 1] 
+0137 @0x00009fc9 pop_stack [] 
+0138 @0x00009fcd push_number(S) [8] 
+0139 @0x00009fd1 push_local_value [-1] 
+0140 @0x00009fd5 eq_value [] 
+0141 @0x00009fd9 if [24, 2] 
+0142 @0x00009fdd push_local_value [-1] 
+0143 @0x00009fe1 push_local_value [0] 
+0144 @0x00009fe5 push_shared_string [326] 'get_login_log_info'
+0145 @0x00009fe9 push_shared_string [339] '/gs/daemons/easyutild.c'
+0146 @0x00009fed call_in_other_fun_ex [4, 2] 
+0147 @0x00009ff1 push_local_value [-2] 
+0148 @0x00009ff5 push_number(S) [0] 
+0149 @0x00009ff9 push_local_value [-1] 
+0150 @0x00009ffd push_shared_string [70] 'get_name'
+0151 @0x0000a001 push_local_value [0] 
+0152 @0x0000a005 call_in_other_fun_ex [4, 0] 
+0153 @0x0000a009 push_shared_string [26] 'account'
+0154 @0x0000a00d push_shared_string [75] 'lite_query'
+0155 @0x0000a011 push_local_value [0] 
+0156 @0x0000a015 call_in_other_fun_ex [4, 1] 
+0157 @0x0000a019 push_shared_string [340] 'my_id'
+0158 @0x0000a01d push_shared_string [325] 'get_config'
+0159 @0x0000a021 push_shared_string [21] '/daemons/configd.c'
+0160 @0x0000a025 call_in_other_fun_ex [4, 1] 
+0161 @0x0000a029 push_shared_string [327] 'log_switch'
+0162 @0x0000a02d push_shared_string [225] '/daemons/filed.c'
+0163 @0x0000a031 call_in_other_fun_ex [4, 7] 
+0164 @0x0000a035 pop_stack [] 
+0165 @0x0000a039 goto [22] 
+0166 @0x0000a03d push_local_value [-1] 
+0167 @0x0000a041 push_local_value [0] 
+0168 @0x0000a045 push_shared_string [326] 'get_login_log_info'
+0169 @0x0000a049 push_shared_string [339] '/gs/daemons/easyutild.c'
+0170 @0x0000a04d call_in_other_fun_ex [4, 2] 
+0171 @0x0000a051 push_local_value [-2] 
+0172 @0x0000a055 push_number(S) [0] 
+0173 @0x0000a059 push_local_value [-1] 
+0174 @0x0000a05d push_shared_string [195] 'query_privilege'
+0175 @0x0000a061 push_local_value [0] 
+0176 @0x0000a065 call_in_other_fun_ex [4, 0] 
+0177 @0x0000a069 push_shared_string [70] 'get_name'
+0178 @0x0000a06d push_local_value [0] 
+0179 @0x0000a071 call_in_other_fun_ex [4, 0] 
+0180 @0x0000a075 push_shared_string [26] 'account'
+0181 @0x0000a079 push_shared_string [75] 'lite_query'
+0182 @0x0000a07d push_local_value [0] 
+0183 @0x0000a081 call_in_other_fun_ex [4, 1] 
+0184 @0x0000a085 push_shared_string [328] 'log_login'
+0185 @0x0000a089 push_shared_string [225] '/daemons/filed.c'
+0186 @0x0000a08d call_in_other_fun_ex [4, 7] 
+0187 @0x0000a091 pop_stack [] 
+0188 @0x0000a095 push_local_value [0] 
+0189 @0x0000a099 is_type [4] 
+0190 @0x0000a09d if [6, 1] 
+0191 @0x0000a0a1 pop_stack [] 
+0192 @0x0000a0a5 push_shared_string [27] 'login_info/account'
+0193 @0x0000a0a9 push_shared_string [24] 'query_temp'
+0194 @0x0000a0ad push_local_value [0] 
+0195 @0x0000a0b1 call_in_other_fun_ex [4, 1] 
+0196 @0x0000a0b5 is_type [4] 
+0197 @0x0000a0b9 if [15, 2] 
+0198 @0x0000a0bd push_shared_string [46] 'get_id'
+0199 @0x0000a0c1 push_local_value [0] 
+0200 @0x0000a0c5 call_in_other_fun_ex [4, 0] 
+0201 @0x0000a0c9 push_shared_string [70] 'get_name'
+0202 @0x0000a0cd push_local_value [0] 
+0203 @0x0000a0d1 call_in_other_fun_ex [4, 0] 
+0204 @0x0000a0d5 push_shared_string [341] '角色%s(%d)成功进入游戏世界\n'
+0205 @0x0000a0d9 call_in_efun [121, 3] sprintf
+0206 @0x0000a0dd push_shared_string [223] 'enter'
+0207 @0x0000a0e1 push_local_value [0] 
+0208 @0x0000a0e5 call_in_user_fun [698, -127] get_login_info_file
+0209 @0x0000a0e9 push_shared_string [25] 'log_login_info'
+0210 @0x0000a0ed push_shared_string [30] '/daemons/logd.c'
+0211 @0x0000a0f1 call_in_other_fun_ex [4, 3] 
+0212 @0x0000a0f5 pop_stack [] 
+0213 @0x0000a0f9 push_local_value [0] 
+0214 @0x0000a0fd push_shared_string [329] 'check_login'
+0215 @0x0000a101 push_shared_string [342] '/gs/daemons/limit_logind.c'
+0216 @0x0000a105 call_in_other_fun_ex [4, 1] 
+0217 @0x0000a109 pop_stack [] 
+0218 @0x0000a10d push_number(S) [2] 
+0219 @0x0000a111 push_shared_string [128] 'entered_world'
+0220 @0x0000a115 push_shared_string [65] 'lite_set_temp'
+0221 @0x0000a119 push_local_value [0] 
+0222 @0x0000a11d call_in_other_fun_ex [4, 2] 
+0223 @0x0000a121 pop_stack [] 
+0224 @0x0000a125 null_action [] 
+0225 @0x0000a129 return_from_fun [] 
 ```
 
 <a id="gs-gs-daemons-logind-o-do_login"></a>
@@ -12331,6 +15624,162 @@
 0134 @0x001472e9 return_from_fun [] 
 0135 @0x001472ed null_action [] 
 0136 @0x001472f1 return_from_fun [] 
+```
+
+<a id="gs-do_when_cmd_new_connection"></a>
+
+## gs/pack_data/lib_gs32.pak/gs/start_gs.o :: do_when_cmd_new_connection
+
+成员 SHA-256：`2f3ce58bb54584d2ce7bb3d90852893b97fcd5fb55d455b8eccff856fc696174`；函数记录偏移：`0x1762a8`；函数编号：`1207`。
+
+```text
+0000 @0x00176479 check_args_num [0] 
+0001 @0x0017647d enter_function [] 
+0002 @0x00176481 push_global_var [60] 
+0003 @0x00176485 if [11, 2] 
+0004 @0x00176489 push_global_var [62] 
+0005 @0x0017648d push_shared_string [1125] 'do_when_cmd_new_connection'
+0006 @0x00176491 query_member [0] 
+0007 @0x00176495 cast_type [2, 0] 
+0008 @0x00176499 push_number(S) [1] 
+0009 @0x0017649d add [] 
+0010 @0x001764a1 push_global_vptr [62] 
+0011 @0x001764a5 push_shared_string [1125] 'do_when_cmd_new_connection'
+0012 @0x001764a9 query_member_ptr [0] 
+0013 @0x001764ad assign_value [] 
+0014 @0x001764b1 pop_stack [] 
+0015 @0x001764b5 push_global_var [51] 
+0016 @0x001764b9 if [4, 2] 
+0017 @0x001764bd call_in_efun [136, 0] tick
+0018 @0x001764c1 push_local_vptr [-1] 
+0019 @0x001764c5 assign_value [] 
+0020 @0x001764c9 pop_stack [] 
+0021 @0x001764cd create_mapping [0] 
+0022 @0x001764d1 push_local_vptr [-4] 
+0023 @0x001764d5 assign_value [] 
+0024 @0x001764d9 pop_stack [] 
+0025 @0x001764dd push_local_value [0] 
+0026 @0x001764e1 call_in_efun [515, 1] get_client_info
+0027 @0x001764e5 push_local_vptr [-3] 
+0028 @0x001764e9 assign_value [] 
+0029 @0x001764ed is_type [7] 
+0030 @0x001764f1 not_value [] 
+0031 @0x001764f5 if [6, 1] 
+0032 @0x001764f9 pop_stack [] 
+0033 @0x001764fd push_local_value [-3] 
+0034 @0x00176501 push_shared_string [32] 'time_stamp'
+0035 @0x00176505 query_member [0] 
+0036 @0x00176509 push_local_value [1] 
+0037 @0x0017650d ne_value [] 
+0038 @0x00176511 if [2, 2] 
+0039 @0x00176515 return_from_fun [] 
+0040 @0x00176519 null_action [] 
+0041 @0x0017651d push_local_value [-3] 
+0042 @0x00176521 push_shared_string [1126] 'remote_address'
+0043 @0x00176525 query_member [0] 
+0044 @0x00176529 cast_type [4, 0] 
+0045 @0x0017652d push_shared_string [1123] 'check_internal_address'
+0046 @0x00176531 push_shared_string [152] '/daemons/configd.c'
+0047 @0x00176535 call_in_other_fun_ex [4, 1] 
+0048 @0x00176539 if [16, 2] 
+0049 @0x0017653d push_local_value [0] 
+0050 @0x00176541 push_shared_string [1127] 'Enable client %d as internal comm.\n'
+0051 @0x00176545 pop_n_stack [1] 
+0052 @0x00176549 pop_stack [] 
+0053 @0x0017654d push_shared_string [1128] 'internal'
+0054 @0x00176551 push_shared_string [15] 'type'
+0055 @0x00176555 push_number(S) [-1] 
+0056 @0x00176559 push_shared_string [1129] 'peek'
+0057 @0x0017655d push_number(L) [131000] 
+0058 @0x00176561 push_shared_string [1130] 'size'
+0059 @0x00176565 create_mapping [6] 
+0060 @0x00176569 push_local_value [0] 
+0061 @0x0017656d call_in_efun [510, 2] set_client_attrib
+0062 @0x00176571 pop_stack [] 
+0063 @0x00176575 null_action [] 
+0064 @0x00176579 goto [6] 
+0065 @0x0017657d push_number(S) [-1] 
+0066 @0x00176581 push_shared_string [1129] 'peek'
+0067 @0x00176585 create_mapping [2] 
+0068 @0x00176589 push_local_value [0] 
+0069 @0x0017658d call_in_efun [510, 2] set_client_attrib
+0070 @0x00176591 pop_stack [] 
+0071 @0x00176595 push_local_value [0] 
+0072 @0x00176599 push_local_vptr [-4] 
+0073 @0x0017659d push_shared_string [1131] 'client'
+0074 @0x001765a1 query_member_ptr [0] 
+0075 @0x001765a5 assign_value [] 
+0076 @0x001765a9 pop_stack [] 
+0077 @0x001765ad push_local_value [-4] 
+0078 @0x001765b1 push_shared_string [1124] 'new_user'
+0079 @0x001765b5 push_shared_string [1132] '/gs/daemons/logind.c'
+0080 @0x001765b9 call_in_other_fun_ex [4, 1] 
+0081 @0x001765bd push_local_vptr [-2] 
+0082 @0x001765c1 assign_value [] 
+0083 @0x001765c5 pop_stack [] 
+0084 @0x001765c9 push_global_var [51] 
+0085 @0x001765cd if [46, 2] 
+0086 @0x001765d1 push_global_var [50] 
+0087 @0x001765d5 push_shared_string [1125] 'do_when_cmd_new_connection'
+0088 @0x001765d9 query_member [0] 
+0089 @0x001765dd push_local_vptr [-5] 
+0090 @0x001765e1 assign_value [] 
+0091 @0x001765e5 is_type [7] 
+0092 @0x001765e9 not_value [] 
+0093 @0x001765ed if [8, 2] 
+0094 @0x001765f1 call_in_user_fun [665, -128] init_cost_stat
+0095 @0x001765f5 push_global_vptr [50] 
+0096 @0x001765f9 push_shared_string [1125] 'do_when_cmd_new_connection'
+0097 @0x001765fd query_member_ptr [0] 
+0098 @0x00176601 assign_value [] 
+0099 @0x00176605 push_local_vptr [-5] 
+0100 @0x00176609 assign_value [] 
+0101 @0x0017660d pop_stack [] 
+0102 @0x00176611 null_action [] 
+0103 @0x00176615 null_action [] 
+0104 @0x00176619 null_action [] 
+0105 @0x0017661d null_action [] 
+0106 @0x00176621 null_action [] 
+0107 @0x00176625 null_action [] 
+0108 @0x00176629 null_action [] 
+0109 @0x0017662d null_action [] 
+0110 @0x00176631 push_local_vptr [-5] 
+0111 @0x00176635 push_shared_string [163] 'count'
+0112 @0x00176639 query_member_ptr [0] 
+0113 @0x0017663d push_local_value [0] 
+0114 @0x00176641 push_number(S) [10000] 
+0115 @0x00176645 mod_value [] 
+0116 @0x00176649 query_member_ptr [0] 
+0117 @0x0017664d inc_value [1] 
+0118 @0x00176651 null_action [] 
+0119 @0x00176655 push_local_vptr [-5] 
+0120 @0x00176659 push_shared_string [165] 'ticks'
+0121 @0x0017665d query_member_ptr [0] 
+0122 @0x00176661 push_local_value [0] 
+0123 @0x00176665 push_number(S) [10000] 
+0124 @0x00176669 mod_value [] 
+0125 @0x0017666d query_member_ptr [0] 
+0126 @0x00176671 call_in_efun [136, 0] tick
+0127 @0x00176675 push_local_value [-1] 
+0128 @0x00176679 sub_value [] 
+0129 @0x0017667d op_eq_value [2] 
+0130 @0x00176681 pop_stack [] 
+0131 @0x00176685 null_action [] 
+0132 @0x00176689 push_global_var [60] 
+0133 @0x0017668d if [11, 2] 
+0134 @0x00176691 push_global_var [63] 
+0135 @0x00176695 push_shared_string [1125] 'do_when_cmd_new_connection'
+0136 @0x00176699 query_member [0] 
+0137 @0x0017669d cast_type [2, 0] 
+0138 @0x001766a1 push_number(S) [1] 
+0139 @0x001766a5 add [] 
+0140 @0x001766a9 push_global_vptr [63] 
+0141 @0x001766ad push_shared_string [1125] 'do_when_cmd_new_connection'
+0142 @0x001766b1 query_member_ptr [0] 
+0143 @0x001766b5 assign_value [] 
+0144 @0x001766b9 pop_stack [] 
+0145 @0x001766bd null_action [] 
+0146 @0x001766c1 return_from_fun [] 
 ```
 
 <a id="gs-try_start_game_server_service"></a>
