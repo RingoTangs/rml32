@@ -1,0 +1,34 @@
+{
+  "status": "pass",
+  "checked": {
+    "packages": 12,
+    "members": 9527,
+    "programs": 7159,
+    "inheritance": 9933
+  },
+  "summary": {
+    "decoded_files": 8921,
+    "errors": 1,
+    "files": 8922,
+    "functions": 101592,
+    "inheritance_matches": 9933,
+    "instructions": 6474773,
+    "members": 9527,
+    "packages": 12,
+    "programs": 7159
+  },
+  "originals_unchanged": 36,
+  "known_errors": [
+    "dba/pack_data/etc.pak/etc"
+  ],
+  "target_execution": "none",
+  "scope": "static structure; not execution equivalence",
+  "rust_tests": 23,
+  "checks": [
+    "cargo build --offline --locked",
+    "cargo test --offline --locked",
+    "cargo fmt --check",
+    "cargo clippy --offline --locked --all-targets -- -D warnings",
+    "tests/compare_corpus.py"
+  ]
+}

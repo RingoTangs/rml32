@@ -1,0 +1,17 @@
+[package]
+name = "rml32"
+version = "0.1.0"
+edition = "2024"
+description = "Read-only PAK and Magic559 bytecode inspection"
+
+[dependencies]
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+sha2 = "0.11"
+
+[[bin]]
+name = "rml32-inspect"
+path = "src/main.rs"
+
+[lints.rust]
+unsafe_code = "forbid"
