@@ -576,7 +576,7 @@ fn unsupported_program_shapes_fail_explicitly() {
         prepare_program(global).unwrap_err().kind,
         VmErrorKind::UnsupportedFeature
     );
-    for (opcode, b) in [(6, 0), (7, -128), (0x16, 0), (0x0e, 0)] {
+    for (opcode, b) in [(6, 0), (7, -128), (0x44, 0), (0x0e, 0)] {
         let p = image(&[fun(0, 0, 0, 255, &[(0, b, opcode)])], 0, &[]);
         let e = prepare_program(p).unwrap_err();
         assert_eq!(e.kind, VmErrorKind::UnsupportedFeature);
@@ -590,7 +590,7 @@ fn unsupported_program_shapes_fail_explicitly() {
         VmErrorKind::UnsupportedFeature
     );
     let mut real = base;
-    real.functions[0].return_type = 7;
+    real.functions[0].return_type = 5;
     assert_eq!(
         prepare_program(real).unwrap_err().kind,
         VmErrorKind::UnsupportedType
@@ -639,7 +639,7 @@ fn supported_types_have_explicit_legacy_tags() {
         [0, 1, 2, 4, 10]
     );
     let supported: BTreeSet<_> = rml32::prepared::SUPPORTED_OPCODES.iter().collect();
-    assert_eq!(supported.len(), 39);
+    assert_eq!(supported.len(), 43);
     assert_eq!(ByteString::new(b"\xff").bytes, b"\xff");
 }
 
@@ -982,4 +982,280 @@ fn real_branching_and_budget_resume_keep_the_same_result() {
             RunOutcome::Finished(Completion::Returned(Value::Int(expected)))
         );
     }
+}
+
+fn container_run(nodes: &[Node], args: Vec<Value>) -> Result<RunOutcome, rml32::VmError> {
+    let (mut vm, o) = machine(image(&[fun(0, args.len(), 0, 255, nodes)], 0, &[]), vec![]);
+    vm.start(o, 0, args).unwrap();
+    vm.run(1000)
+}
+#[test]
+fn array_constructor_preserves_top_first_order_and_empty_size() {
+    let result = container_run(&[(11, 0, 0x3b), (22, 0, 0x3b), (2, 0, 0x16)], vec![]).unwrap();
+    let RunOutcome::Finished(Completion::Returned(Value::Array(a))) = result else {
+        panic!("array expected")
+    };
+    assert_eq!(a.elements(), &[Value::Int(22), Value::Int(11)]);
+    assert_eq!(
+        container_run(&[(0, 0, 0x16), (0, 0, 0x4f)], vec![]).unwrap(),
+        RunOutcome::Finished(Completion::Returned(Value::Int(0)))
+    );
+}
+#[test]
+fn mapping_constructor_uses_total_value_count_and_oldest_pushed_duplicate_wins() {
+    let nodes = [
+        (11, 0, 0x3b),
+        (7, 0, 0x3b),
+        (22, 0, 0x3b),
+        (7, 0, 0x3b),
+        (4, 0, 0x18),
+        (7, 0, 0x3b),
+        (0, 0, 0x43),
+    ];
+    assert_eq!(
+        container_run(&nodes, vec![]).unwrap(),
+        RunOutcome::Finished(Completion::Returned(Value::Int(11)))
+    );
+    assert_eq!(
+        container_run(&[(0, 0, 0x18), (0, 0, 0x4f)], vec![]).unwrap(),
+        RunOutcome::Finished(Completion::Returned(Value::Int(0)))
+    );
+}
+#[test]
+fn mapping_bytes_are_case_sensitive_non_utf8_and_length_sensitive() {
+    let map = Value::mapping(vec![
+        (Value::bytes(b"A\xff\0"), Value::Int(1)),
+        (Value::bytes(b"a\xff\0"), Value::Int(2)),
+        (Value::bytes(b"A\xff\0"), Value::Int(3)),
+    ])
+    .unwrap();
+    let Value::Mapping(m) = &map else {
+        unreachable!()
+    };
+    assert_eq!(m.entries().len(), 2);
+    for (key, expected) in [
+        (b"A\xff\0".as_slice(), Value::Int(3)),
+        (b"a\xff\0".as_slice(), Value::Int(2)),
+        (b"A\xff".as_slice(), Value::Undefined),
+    ] {
+        assert_eq!(
+            container_run(
+                &[(0, 0, 0x37), (1, 0, 0x37), (0, 0, 0x43)],
+                vec![map.clone(), Value::bytes(key)]
+            )
+            .unwrap(),
+            RunOutcome::Finished(Completion::Returned(expected))
+        );
+    }
+}
+#[test]
+fn array_query_truncates_real_index_and_reports_bounds_with_locations() {
+    let a = Value::array(vec![Value::Int(10), Value::Int(20)]).unwrap();
+    for key in [Value::Int(1), real(1.9)] {
+        assert_eq!(
+            container_run(
+                &[(0, 0, 0x37), (1, 0, 0x37), (0, 0, 0x43)],
+                vec![a.clone(), key]
+            )
+            .unwrap(),
+            RunOutcome::Finished(Completion::Returned(Value::Int(20)))
+        );
+    }
+    for key in [Value::Int(-1), Value::Int(2), real(f32::INFINITY)] {
+        let e = container_run(
+            &[(0, 0, 0x37), (1, 0, 0x37), (0, 0, 0x43)],
+            vec![a.clone(), key],
+        )
+        .unwrap_err();
+        assert_eq!(e.kind, VmErrorKind::Bounds);
+        assert_eq!(e.pc, Some(4));
+        assert!(e.offset.is_some());
+    }
+}
+#[test]
+fn malformed_container_counts_and_underflow_fail_without_panics() {
+    for (nodes, kind) in [
+        (&[(-1, 0, 0x16)][..], VmErrorKind::InvalidProgram),
+        (
+            &[(1, 0, 0x3b), (1, 0, 0x18)][..],
+            VmErrorKind::InvalidProgram,
+        ),
+        (&[(2, 0, 0x16)][..], VmErrorKind::StackUnderflow),
+        (&[(0, 0, 0x43)][..], VmErrorKind::StackUnderflow),
+        (&[(0, 0, 0x4f)][..], VmErrorKind::StackUnderflow),
+    ] {
+        assert_eq!(container_run(nodes, vec![]).unwrap_err().kind, kind);
+    }
+}
+#[test]
+fn container_type_restrictions_and_access_modes_are_explicit() {
+    assert_eq!(
+        Value::mapping(vec![(Value::Undefined, Value::Int(1))])
+            .unwrap_err()
+            .kind,
+        VmErrorKind::UnsupportedType
+    );
+    let a = Value::array(vec![]).unwrap();
+    for op in [1, 0x1c, 0x0d] {
+        let nodes = if op == 0x0d {
+            vec![(0, 0, 0x37), (2, 0, op)]
+        } else {
+            vec![(0, 0, 0x37), (0, 0, 0x37), (0, 0, op)]
+        };
+        assert_eq!(
+            container_run(&nodes, vec![a.clone()]).unwrap_err().kind,
+            VmErrorKind::UnsupportedType
+        );
+    }
+    for flag in [1, 2, -1] {
+        assert_eq!(
+            prepare_program(image(&[fun(0, 0, 0, 255, &[(flag, 0, 0x43)])], 0, &[]))
+                .unwrap_err()
+                .kind,
+            VmErrorKind::UnsupportedFeature
+        );
+    }
+    assert_eq!(
+        container_run(
+            &[(0, 0, 0x37), (1, 0, 0x37), (0, 0, 0x43)],
+            vec![a, Value::bytes(b"bad")]
+        )
+        .unwrap_err()
+        .kind,
+        VmErrorKind::UnsupportedType
+    );
+}
+#[test]
+fn nested_containers_share_identity_and_obey_resource_limits() {
+    let nested = Value::array(vec![
+        Value::mapping(vec![(Value::Int(1), Value::Int(9))]).unwrap(),
+    ])
+    .unwrap();
+    assert_eq!(nested, nested.clone());
+    assert_ne!(nested, Value::array(vec![]).unwrap());
+    assert_eq!(
+        container_run(
+            &[
+                (0, 0, 0x37),
+                (0, 0, 0x3b),
+                (0, 0, 0x43),
+                (1, 0, 0x3b),
+                (0, 0, 0x43)
+            ],
+            vec![nested]
+        )
+        .unwrap(),
+        RunOutcome::Finished(Completion::Returned(Value::Int(9)))
+    );
+    let mut a = Value::Int(0);
+    for _ in 0..64 {
+        a = Value::array(vec![a]).unwrap();
+    }
+    assert_eq!(
+        Value::array(vec![a.clone()]).unwrap_err().kind,
+        VmErrorKind::Limit
+    );
+    assert_eq!(
+        Value::mapping(vec![(Value::Int(0), a)]).unwrap_err().kind,
+        VmErrorKind::Limit
+    );
+    assert!(Value::array(vec![Value::Undefined; 65536]).is_ok());
+    assert_eq!(
+        Value::array(vec![Value::Undefined; 65537])
+            .unwrap_err()
+            .kind,
+        VmErrorKind::Limit
+    );
+}
+#[test]
+fn container_size_tags_truth_and_typed_calls_are_supported() {
+    let values = [
+        Value::array(vec![]).unwrap(),
+        Value::mapping(vec![(Value::Int(1), Value::Int(2))]).unwrap(),
+    ];
+    for v in values {
+        for (op, a, expected) in [
+            (0x24, v.tag() as i16, 1),
+            (0x2d, 0, 0),
+            (0x4f, 0, if v.tag() == 6 { 0 } else { 1 }),
+        ] {
+            assert_eq!(
+                container_run(&[(0, 0, 0x37), (a, 0, op)], vec![v.clone()]).unwrap(),
+                RunOutcome::Finished(Completion::Returned(Value::Int(expected)))
+            );
+        }
+        let mut p = image(
+            &[
+                fun(0, 1, 0, v.tag(), &[(0, 0, 0x37), (1, 1, 0x07)]),
+                fun(1, 1, 0, v.tag(), &[(0, 0, 0x37)]),
+            ],
+            0,
+            &[],
+        );
+        p.functions[1].arguments[0].r#type = v.tag();
+        let (mut vm, o) = machine(p, vec![]);
+        vm.start(o, 0, vec![v.clone()]).unwrap();
+        assert_eq!(vm.run(1).unwrap(), RunOutcome::BudgetExhausted);
+        returns(&mut vm, v);
+    }
+    for (v, n) in [
+        (Value::bytes(b"\xff\0"), 2),
+        (Value::Int(42), 0),
+        (Value::Undefined, 0),
+        (Value::Void, 0),
+    ] {
+        assert_eq!(
+            container_run(&[(0, 0, 0x37), (0, 0, 0x4f)], vec![v]).unwrap(),
+            RunOutcome::Finished(Completion::Returned(Value::Int(n)))
+        );
+    }
+}
+#[test]
+fn reassigning_object_variable_preserves_shared_container_and_object_isolation() {
+    let old = Value::array(vec![Value::Int(7)]).unwrap();
+    let (mut vm, o) = machine(
+        image(&[fun(0, 0, 0, 6, &[(0, 0, 0x16), (0, 0, 0x4e)])], 1, &[]),
+        vec![old.clone()],
+    );
+    let pid = vm.objects().get(o).unwrap().program();
+    let other = vm.objects_mut().create(pid, vec![old.clone()]).unwrap();
+    vm.start(o, 0, vec![]).unwrap();
+    assert!(matches!(
+        vm.run(100).unwrap(),
+        RunOutcome::Finished(Completion::Returned(Value::Array(_)))
+    ));
+    assert_eq!(
+        vm.objects().get(other).unwrap().variables(),
+        std::slice::from_ref(&old)
+    );
+    let Value::Array(a) = old else { unreachable!() };
+    assert_eq!(a.elements(), &[Value::Int(7)]);
+}
+#[test]
+fn member_copy_normalizes_destroyed_object_without_mutating_container() {
+    let p = prepare_program(image(
+        &[fun(
+            0,
+            1,
+            0,
+            255,
+            &[(0, 0, 0x37), (0, 0, 0x3b), (0, 0, 0x43)],
+        )],
+        0,
+        &[],
+    ))
+    .unwrap();
+    let mut store = ObjectStore::new();
+    let pid = store.register_program(p).unwrap();
+    let live = store.create(pid, vec![]).unwrap();
+    let dead = store.create(pid, vec![]).unwrap();
+    store.remove(dead).unwrap();
+    let original = Value::array(vec![Value::Object(dead)]).unwrap();
+    let mut vm = Vm::new(store);
+    vm.start(live, 0, vec![original.clone()]).unwrap();
+    returns(&mut vm, Value::Undefined);
+    let Value::Array(a) = original else {
+        unreachable!()
+    };
+    assert_eq!(a.elements(), &[Value::Object(dead)]);
 }

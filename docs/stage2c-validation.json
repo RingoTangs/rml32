@@ -1,0 +1,67 @@
+{
+  "status": "pass",
+  "date": "2026-10-14",
+  "stage": "2C: immutable containers, synthetic execution only",
+  "supported_opcode_count": 43,
+  "added_opcodes": [
+    "0x16",
+    "0x18",
+    "0x43",
+    "0x4f"
+  ],
+  "tests": {
+    "parser_tests": 23,
+    "vm_tests": 50,
+    "debug_total": 73,
+    "release_total": 73
+  },
+  "checks": [
+    "cargo test --offline --locked",
+    "cargo test --offline --locked --release",
+    "cargo fmt --check",
+    "cargo clippy --offline --locked --all-targets -- -D warnings",
+    "tests/compare_corpus.py"
+  ],
+  "rea": {
+    "provider": "ghidra",
+    "version": "12.1.4",
+    "new_evidence_records": 13,
+    "session_closed": true,
+    "bundle": "vm-container-evidence/rea.json.gz"
+  },
+  "corpus_regression": {
+    "status": "pass",
+    "checked": {
+      "packages": 12,
+      "members": 9527,
+      "programs": 7159,
+      "inheritance": 9933
+    },
+    "summary": {
+      "decoded_files": 8921,
+      "errors": 1,
+      "files": 8922,
+      "functions": 101592,
+      "inheritance_matches": 9933,
+      "instructions": 6474773,
+      "members": 9527,
+      "packages": 12,
+      "programs": 7159
+    },
+    "originals_unchanged": 36,
+    "known_errors": [
+      "dba/pack_data/etc.pak/etc"
+    ],
+    "target_execution": "none",
+    "scope": "static structure; not execution equivalence"
+  },
+  "reference_execution": "none",
+  "synthetic_execution": "Rust tests only",
+  "new_dependencies": [],
+  "limitations": [
+    "immutable containers only; no pointers, member mutation or ranges",
+    "only ordinary query mode 0 and Int/Bytes mapping keys",
+    "resource limits are Rust implementation policy, not native equivalence",
+    "static corpus comparison does not establish business execution equivalence"
+  ]
+}

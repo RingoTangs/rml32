@@ -1,4 +1,4 @@
-//! Magic559 scalar values. Containers and mutable string operations are absent.
+//! Magic559 values with immutable, shared containers.
 use std::rc::Rc;
 
 /// Structural equality preserves bits; VM numeric comparisons are separate.
@@ -42,8 +42,19 @@ pub enum Value {
     Void,
     Bytes(Rc<[u8]>),
     Object(ObjectId),
+    Array(crate::container::ArrayValue),
+    Mapping(crate::container::MappingValue),
 }
 impl Value {
+    /// Construct an immutable array in element order. Clones share identity.
+    pub fn array(elements: Vec<Value>) -> Result<Self, crate::VmError> {
+        crate::container::array(elements)
+    }
+    /// Construct an ordinary immutable mapping; last duplicate key wins.
+    /// Keys support integer values and case-sensitive raw bytes.
+    pub fn mapping(entries: Vec<(Value, Value)>) -> Result<Self, crate::VmError> {
+        crate::container::mapping(entries)
+    }
     pub fn bytes(bytes: impl AsRef<[u8]>) -> Self {
         Self::Bytes(Rc::from(bytes.as_ref()))
     }
@@ -56,6 +67,8 @@ impl Value {
             Self::Real(_) => 3,
             Self::Bytes(_) => 4,
             Self::Object(_) => 10,
+            Self::Array(_) => 6,
+            Self::Mapping(_) => 7,
         }
     }
 }

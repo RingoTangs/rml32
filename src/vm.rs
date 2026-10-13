@@ -336,6 +336,89 @@ impl Vm {
         self.frames.last_mut().unwrap().pc += 1;
         let [a, b] = operands;
         match opcode {
+            0x16 | 0x18 => {
+                let count = usize::try_from(a).map_err(|_| {
+                    err(
+                        VmErrorKind::InvalidProgram,
+                        "negative container input count",
+                    )
+                })?;
+                if opcode == 0x18 && count % 2 != 0 {
+                    return Err(err(
+                        VmErrorKind::InvalidProgram,
+                        "mapping input count must be even",
+                    ));
+                }
+                self.need(count, &frame, f)?;
+                let start = self.stack.len() - count;
+                let values: Vec<Value> = self.stack[start..].iter().rev().cloned().collect();
+                let value = if opcode == 0x16 {
+                    Value::array(values)?
+                } else {
+                    Value::mapping(
+                        values
+                            .as_chunks::<2>()
+                            .0
+                            .iter()
+                            .map(|p| (p[0].clone(), p[1].clone()))
+                            .collect(),
+                    )?
+                };
+                self.stack.truncate(start);
+                self.push(value)
+            }
+            0x43 => {
+                self.need(2, &frame, f)?;
+                let n = self.stack.len();
+                let key = &self.stack[n - 1];
+                let selected = match &self.stack[n - 2] {
+                    Value::Array(array) => {
+                        let index = match key {
+                            Value::Int(i) => *i,
+                            Value::Real(r) => crate::numeric::trunc_i32(r.to_f32()),
+                            _ => {
+                                return Err(err(
+                                    VmErrorKind::UnsupportedType,
+                                    "array index requires a number",
+                                ));
+                            }
+                        };
+                        usize::try_from(index)
+                            .ok()
+                            .and_then(|i| array.elements().get(i))
+                            .ok_or_else(|| {
+                                err(VmErrorKind::Bounds, "array index outside container")
+                            })?
+                            .clone()
+                    }
+                    Value::Mapping(mapping) => {
+                        mapping.get(key)?.cloned().unwrap_or(Value::Undefined)
+                    }
+                    _ => {
+                        return Err(err(
+                            VmErrorKind::UnsupportedType,
+                            "member query requires array or mapping",
+                        ));
+                    }
+                };
+                let selected = self.copy_value(&selected);
+                self.stack.pop();
+                self.stack[n - 2] = selected;
+                Ok(())
+            }
+            0x4f => {
+                self.need(1, &frame, f)?;
+                let size = match self.stack.last().unwrap() {
+                    Value::Array(a) => a.elements().len(),
+                    Value::Mapping(m) => m.entries().len(),
+                    Value::Bytes(b) => b.len(),
+                    _ => 0,
+                };
+                let size = i32::try_from(size)
+                    .map_err(|_| err(VmErrorKind::Limit, "size exceeds legacy integer range"))?;
+                *self.stack.last_mut().unwrap() = Value::Int(size);
+                Ok(())
+            }
             0x01 | 0x19 | 0x28 | 0x29 | 0x51 | 0x1c | 0x1e | 0x20 | 0x25 | 0x27 | 0x02 | 0x30
             | 0x55 | 0x26 | 0x4b | 0x2a => self.binary(opcode, &frame, f),
             0x2b => {

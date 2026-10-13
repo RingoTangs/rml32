@@ -8,9 +8,9 @@ use crate::{
 use std::collections::BTreeMap;
 
 pub const SUPPORTED_OPCODES: &[u8] = &[
-    0x1, 0x2, 0x7, 0xd, 0xf, 0x19, 0x1b, 0x1c, 0x1d, 0x1e, 0x1f, 0x20, 0x21, 0x24, 0x25, 0x26,
-    0x27, 0x28, 0x29, 0x2a, 0x2b, 0x2d, 0x30, 0x32, 0x33, 0x37, 0x3b, 0x3c, 0x3d, 0x3f, 0x40, 0x42,
-    0x49, 0x4a, 0x4b, 0x4d, 0x4e, 0x51, 0x55,
+    0x1, 0x2, 0x7, 0xd, 0xf, 0x16, 0x18, 0x19, 0x1b, 0x1c, 0x1d, 0x1e, 0x1f, 0x20, 0x21, 0x24,
+    0x25, 0x26, 0x27, 0x28, 0x29, 0x2a, 0x2b, 0x2d, 0x30, 0x32, 0x33, 0x37, 0x3b, 0x3c, 0x3d, 0x3f,
+    0x40, 0x42, 0x43, 0x49, 0x4a, 0x4b, 0x4d, 0x4e, 0x4f, 0x51, 0x55,
 ];
 #[derive(Debug, Clone)]
 pub struct Instruction {
@@ -125,9 +125,13 @@ fn instructions(
         }
         let check = if op == 0x0d && (b as u8 & 2 != 0 || ![2, 3].contains(&a)) {
             Err(unsupported("only non-const numeric casts are supported"))
+        } else if op == 0x43 && a != 0 {
+            Err(unsupported(
+                "only ordinary member query mode zero is supported",
+            ))
         } else if !SUPPORTED_OPCODES.contains(&op) {
             Err(unsupported(format!(
-                "opcode 0x{op:02x} is not supported by the scalar VM"
+                "opcode 0x{op:02x} is not supported by the bounded VM"
             )))
         } else if op == 0x40 && (a < 0 || a as usize >= strings) {
             Err(err("shared string index outside pool"))
@@ -184,7 +188,7 @@ fn prepare_function(f: Function, strings: usize, vars: usize) -> Result<Prepared
     if raw[12] & 2 != 0 {
         return Err(unsupported("const return semantics are not supported"));
     }
-    if ![0, 1, 2, 3, 4, 10, 255].contains(&f.return_type) {
+    if ![0, 1, 2, 3, 4, 6, 7, 10, 255].contains(&f.return_type) {
         return Err(VmError::new(
             VmErrorKind::UnsupportedType,
             "return type is not supported",
@@ -197,7 +201,7 @@ fn prepare_function(f: Function, strings: usize, vars: usize) -> Result<Prepared
         if a.flag & 1 != 0 || a.attrib & 2 != 0 {
             return Err(unsupported("reference/const arguments are not supported"));
         }
-        if ![0, 1, 2, 3, 4, 10, 255].contains(&a.r#type) {
+        if ![0, 1, 2, 3, 4, 6, 7, 10, 255].contains(&a.r#type) {
             return Err(VmError::new(
                 VmErrorKind::UnsupportedType,
                 "argument type is not supported",

@@ -1,5 +1,6 @@
 //! Read-only parsers plus a bounded Magic559 core interpreter.
 //! Reference artifacts are only parsed; execution tests use synthetic programs.
+pub mod container;
 pub mod error;
 pub mod inheritance;
 pub mod lzss;
