@@ -1,6 +1,6 @@
 # rml32
 
-对 `magic_Linux32` 进行静态分析，并以 Rust 重写兼容驱动。当前已实现阶段 1：**只读离线 PAK / Magic559 字节码加载器**，尚无解释器或可运行服务端。
+对 `magic_Linux32` 进行静态分析，并以 Rust 重写兼容驱动。当前已实现阶段 1 的**只读离线加载器**和阶段 2A 的**基础 VM 库**。VM 仅在人工构造程序上验证，尚无可运行服务端；`rml32-inspect` 继续只读检查制品。
 
 ## 构建与检查
 
@@ -10,6 +10,7 @@
 cargo fetch
 cargo build --locked
 cargo test --locked
+cargo test --locked --release
 cargo fmt --check
 cargo clippy --locked --all-targets -- -D warnings
 ```
@@ -34,9 +35,10 @@ python3 tests/compare_corpus.py --report target/stage1-validation.json
 
 - [重写路线图](docs/magic_Linux32-rust-rewrite-roadmap.md)
 - [阶段 1 接口、格式策略及验收](docs/rust-offline-loader.md)
+- [阶段 2A VM 语义、证据和接口](docs/vm-core-semantics.md)
 - [服务包与 Rust 兼容性分析](docs/magic_Linux32-rust-compatibility-analysis.md)
 - [Ghidra 静态分析](docs/magic_Linux32-static-analysis.md)
 
-实现位于 `src/`，测试位于 `tests/`。原始 ELF、PAK、`.o` 和启动脚本保持只读；工具不会执行目标代码或字节码。旧 `LegacyAuth389` 格式暂不支持。
+实现位于 `src/`，测试位于 `tests/`。原始 ELF、PAK、`.o` 和启动脚本保持只读；命令行工具不会执行目标代码或字节码，VM 测试仅执行内存中合成的程序。旧 `LegacyAuth389` 格式暂不支持。
 
 原版 `magic_Linux32` 的运行对照需要兼容的 32 位 Linux 环境、`/lib/ld-linux.so.2`、`glibc.i686` 和 `libstdc++.i686`。这些是原版运行依赖，离线 Rust 工具不需要安装它们；本阶段不运行原版。

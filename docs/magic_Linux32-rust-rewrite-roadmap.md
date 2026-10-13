@@ -2,7 +2,7 @@
 
 本文采用“总体方案 → 分阶段实施 → 验收与风险”的总—分结构，面向后续实现兼容运行时的工程师。依据截至 2026-10-13 的 [静态分析](magic_Linux32-static-analysis.md) 与 [服务包兼容性分析](magic_Linux32-rust-compatibility-analysis.md)。本文是实施方案，不表示 Rust 服务端已经实现或原程序已经运行验证。
 
-**实施进度：**阶段 1 的 Rust 离线加载器已建立；接口、使用方式和静态验收见 [阶段 1 文档](rust-offline-loader.md)。解释器、调度和服务端仍未实现。
+**实施进度：**阶段 1 离线加载器见 [阶段 1 文档](rust-offline-loader.md)；阶段 2A 的值模型、对象存储和 28 种指令限定路径见 [VM 核心语义](vm-core-semantics.md)。完整解释器、调度和服务端仍未完成。
 
 ## 一、总体方案
 

@@ -1,16 +1,26 @@
-//! Read-only parsers for the supplied PAK corpus and Magic559 programs.
-//! Parsing never loads native code or interprets bytecode.
+//! Read-only parsers plus a bounded Magic559 core interpreter.
+//! Reference artifacts are only parsed; execution tests use synthetic programs.
 pub mod error;
 pub mod inheritance;
 pub mod lzss;
+pub mod object;
 pub mod pak;
+pub mod prepared;
 pub mod program;
 mod reader;
+pub mod value;
+pub mod vm;
+pub mod vm_error;
 
 pub use error::{ErrorKind, ParseError};
 pub use inheritance::{ProgramDescriptor, ValidationReport, validate_inheritance};
+pub use object::ObjectStore;
 pub use pak::PakArchive;
+pub use prepared::{PreparedProgram, prepare_program};
 pub use program::{AbiProfile, ProgramImage, ProgramMode, parse_program};
+pub use value::{ObjectId, ProgramId, Value};
+pub use vm::{Completion, RunOutcome, Vm, VmLimits};
+pub use vm_error::{VmError, VmErrorKind};
 
 pub fn hex(bytes: &[u8]) -> String {
     const DIGITS: &[u8] = b"0123456789abcdef";

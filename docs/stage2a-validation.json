@@ -1,0 +1,93 @@
+{
+  "status": "pass",
+  "stage": "2A: bounded core, synthetic execution only",
+  "supported_opcodes": [
+    "0x01",
+    "0x07",
+    "0x0f",
+    "0x19",
+    "0x1b",
+    "0x1c",
+    "0x1d",
+    "0x1e",
+    "0x1f",
+    "0x20",
+    "0x21",
+    "0x25",
+    "0x27",
+    "0x28",
+    "0x29",
+    "0x2b",
+    "0x32",
+    "0x33",
+    "0x37",
+    "0x3b",
+    "0x3c",
+    "0x3d",
+    "0x40",
+    "0x42",
+    "0x49",
+    "0x4d",
+    "0x4e",
+    "0x51"
+  ],
+  "tests": {
+    "parser_tests": 23,
+    "vm_core_tests": 27,
+    "debug_total": 50,
+    "release_total": 50
+  },
+  "checks": [
+    "cargo test --offline --locked",
+    "cargo test --offline --locked --release",
+    "cargo fmt --check",
+    "cargo clippy --offline --locked --all-targets -- -D warnings",
+    "tests/compare_corpus.py"
+  ],
+  "rea": {
+    "provider": "ghidra",
+    "version": "12.1.4",
+    "new_evidence_records": 45,
+    "session_closed": true,
+    "bundle": "vm-core-evidence/rea.json.gz"
+  },
+  "corpus_regression": {
+    "status": "pass",
+    "checked": {
+      "packages": 12,
+      "members": 9527,
+      "programs": 7159,
+      "inheritance": 9933
+    },
+    "summary": {
+      "decoded_files": 8921,
+      "errors": 1,
+      "files": 8922,
+      "functions": 101592,
+      "inheritance_matches": 9933,
+      "instructions": 6474773,
+      "members": 9527,
+      "packages": 12,
+      "programs": 7159
+    },
+    "originals_unchanged": 36,
+    "known_errors": [
+      "dba/pack_data/etc.pak/etc"
+    ],
+    "target_execution": "none",
+    "scope": "static structure; not execution equivalence"
+  },
+  "execution": {
+    "reference_elf": "none",
+    "reference_scripts": "none",
+    "reference_business_bytecode": "none",
+    "synthetic_programs": "Rust tests only"
+  },
+  "limitations": [
+    "single-constitution object programs only",
+    "fixed arguments; no reference/const/atomic/variadic/default semantics",
+    "integer arithmetic and comparison only",
+    "no global bootstrap, efun, inheritance execution, cross-object calls, catch, scheduler, compiler, legacy ABI or JIT",
+    "not reference runtime equivalence"
+  ]
+}
