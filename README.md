@@ -1,6 +1,6 @@
 # rml32
 
-对 `magic_Linux32` 进行静态分析，并以 Rust 重写兼容驱动。当前已实现阶段 1 的**只读离线加载器**和阶段 2A 的**基础 VM 库**。VM 仅在人工构造程序上验证，尚无可运行服务端；`rml32-inspect` 继续只读检查制品。
+对 `magic_Linux32` 进行静态分析，并以 Rust 重写兼容驱动。当前已实现**只读离线加载器**和阶段 2B 的**数值 VM 库**，支持 39 种操作码的限定路径。VM 仅在人工构造程序上验证，尚无可运行服务端；`rml32-inspect` 继续只读检查制品。
 
 ## 构建与检查
 
@@ -36,6 +36,7 @@ python3 tests/compare_corpus.py --report target/stage1-validation.json
 - [重写路线图](docs/magic_Linux32-rust-rewrite-roadmap.md)
 - [阶段 1 接口、格式策略及验收](docs/rust-offline-loader.md)
 - [阶段 2A VM 语义、证据和接口](docs/vm-core-semantics.md)
+- [阶段 2B 数值语义与验证](docs/vm-numeric-semantics.md)
 - [服务包与 Rust 兼容性分析](docs/magic_Linux32-rust-compatibility-analysis.md)
 - [Ghidra 静态分析](docs/magic_Linux32-static-analysis.md)
 

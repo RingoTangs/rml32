@@ -242,7 +242,7 @@ impl Vm {
         }
         for (i, arg) in f.args.iter().enumerate() {
             let pos = frame.bp - 1 - i;
-            let value = self.copy_value(&self.stack[pos]);
+            let value = crate::numeric::coerce(self.copy_value(&self.stack[pos]), arg.r#type);
             if arg.r#type != 255
                 && value.tag() != arg.r#type
                 && !(arg.attrib & 8 != 0 && value == Value::Undefined)
@@ -259,39 +259,9 @@ impl Vm {
     fn binary(&mut self, opcode: u8, frame: &Frame, f: &PreparedFunction) -> Result<(), VmError> {
         self.need(2, frame, f)?;
         let len = self.stack.len();
-        let (Value::Int(left), Value::Int(right)) = (&self.stack[len - 2], &self.stack[len - 1])
-        else {
-            return Err(err(
-                VmErrorKind::UnsupportedType,
-                "stage 2A arithmetic/comparison supports only integer operands",
-            ));
-        };
-        let (left, right) = (*left, *right);
-        let number = match opcode {
-            0x01 => left.wrapping_add(right),
-            0x51 => left.wrapping_sub(right),
-            0x29 => left.wrapping_mul(right),
-            0x19 => left.checked_div(right).ok_or_else(|| {
-                err(
-                    VmErrorKind::Arithmetic,
-                    "integer division by zero or x86 IDIV quotient overflow",
-                )
-            })?,
-            0x28 => left.checked_rem(right).ok_or_else(|| {
-                err(
-                    VmErrorKind::Arithmetic,
-                    "integer remainder by zero or x86 IDIV quotient overflow",
-                )
-            })?,
-            0x1c => i32::from(left == right),
-            0x1e => i32::from(left >= right),
-            0x20 => i32::from(left > right),
-            0x25 => i32::from(left <= right),
-            0x27 => i32::from(left < right),
-            _ => unreachable!(),
-        };
+        let result = crate::numeric::binary(opcode, &self.stack[len - 2], &self.stack[len - 1])?;
         self.stack.pop();
-        self.stack[len - 2] = Value::Int(number);
+        self.stack[len - 2] = result;
         Ok(())
     }
     fn return_function(&mut self, frame: &Frame, f: &PreparedFunction) -> Result<(), VmError> {
@@ -330,6 +300,7 @@ impl Vm {
                 ));
             }
         };
+        let result = crate::numeric::coerce(result, f.return_type);
         if f.return_type != 255
             && result.tag() != f.return_type
             && !(f.return_attrib & 8 != 0 && result == Value::Undefined)
@@ -365,23 +336,59 @@ impl Vm {
         self.frames.last_mut().unwrap().pc += 1;
         let [a, b] = operands;
         match opcode {
-            0x01 | 0x19 | 0x28 | 0x29 | 0x51 | 0x1c | 0x1e | 0x20 | 0x25 | 0x27 => {
-                self.binary(opcode, &frame, f)
-            }
+            0x01 | 0x19 | 0x28 | 0x29 | 0x51 | 0x1c | 0x1e | 0x20 | 0x25 | 0x27 | 0x02 | 0x30
+            | 0x55 | 0x26 | 0x4b | 0x2a => self.binary(opcode, &frame, f),
             0x2b => {
                 self.need(1, &frame, f)?;
                 let value = self.stack.last_mut().unwrap();
-                let Value::Int(n) = value else {
-                    return Err(err(
-                        VmErrorKind::UnsupportedType,
-                        "negation supports only integers",
-                    ));
-                };
-                *n = n.wrapping_neg();
+                match value {
+                    Value::Int(n) => *n = n.wrapping_neg(),
+                    Value::Real(r) => *r = crate::RealBits::from_bits(r.bits() ^ 0x80000000),
+                    _ => {
+                        return Err(err(
+                            VmErrorKind::UnsupportedType,
+                            "negation requires numbers",
+                        ));
+                    }
+                }
                 Ok(())
             }
             0x3b | 0x3c => self.push(Value::Int(a)),
             0x42 => self.push(Value::Undefined),
+            0x3f => self.push(Value::Real(crate::RealBits::from_bits(a as u32))),
+            0x0d => {
+                self.need(1, &frame, f)?;
+                if b & 2 != 0 {
+                    return Err(err(
+                        VmErrorKind::UnsupportedFeature,
+                        "const casts are unsupported",
+                    ));
+                }
+                let value = crate::numeric::cast(self.stack.last().unwrap(), a)?;
+                *self.stack.last_mut().unwrap() = value;
+                Ok(())
+            }
+            0x24 | 0x2d | 0x4a => {
+                self.need(1, &frame, f)?;
+                let value = self.copy_value(self.stack.last().unwrap());
+                let result = match opcode {
+                    0x24 => i32::from(i32::from(value.tag()) == a),
+                    0x2d => i32::from(crate::numeric::zero(&value)),
+                    0x4a => {
+                        if let Value::Int(n) = value {
+                            !n
+                        } else {
+                            return Err(err(
+                                VmErrorKind::UnsupportedType,
+                                "bitwise NOT requires integer",
+                            ));
+                        }
+                    }
+                    _ => unreachable!(),
+                };
+                *self.stack.last_mut().unwrap() = Value::Int(result);
+                Ok(())
+            }
             0x40 => {
                 let value = usize::try_from(a)
                     .ok()
@@ -443,7 +450,7 @@ impl Vm {
             0x21 => {
                 self.need(1, &frame, f)?;
                 let value = self.copy_value(self.stack.last().unwrap());
-                let zero = matches!(value, Value::Undefined | Value::Void | Value::Int(0));
+                let zero = crate::numeric::zero(&value);
                 *self.stack.last_mut().unwrap() = value;
                 let jump_on_true = b & 1 != 0;
                 if zero != jump_on_true {

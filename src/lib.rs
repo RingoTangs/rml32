@@ -3,6 +3,7 @@
 pub mod error;
 pub mod inheritance;
 pub mod lzss;
+mod numeric;
 pub mod object;
 pub mod pak;
 pub mod prepared;
@@ -18,7 +19,7 @@ pub use object::ObjectStore;
 pub use pak::PakArchive;
 pub use prepared::{PreparedProgram, prepare_program};
 pub use program::{AbiProfile, ProgramImage, ProgramMode, parse_program};
-pub use value::{ObjectId, ProgramId, Value};
+pub use value::{ObjectId, ProgramId, RealBits, Value};
 pub use vm::{Completion, RunOutcome, Vm, VmLimits};
 pub use vm_error::{VmError, VmErrorKind};
 

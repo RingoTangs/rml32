@@ -8,8 +8,9 @@ use crate::{
 use std::collections::BTreeMap;
 
 pub const SUPPORTED_OPCODES: &[u8] = &[
-    0x01, 0x07, 0x0f, 0x19, 0x1b, 0x1c, 0x1d, 0x1e, 0x1f, 0x20, 0x21, 0x25, 0x27, 0x28, 0x29, 0x2b,
-    0x32, 0x33, 0x37, 0x3b, 0x3c, 0x3d, 0x40, 0x42, 0x49, 0x4d, 0x4e, 0x51,
+    0x1, 0x2, 0x7, 0xd, 0xf, 0x19, 0x1b, 0x1c, 0x1d, 0x1e, 0x1f, 0x20, 0x21, 0x24, 0x25, 0x26,
+    0x27, 0x28, 0x29, 0x2a, 0x2b, 0x2d, 0x30, 0x32, 0x33, 0x37, 0x3b, 0x3c, 0x3d, 0x3f, 0x40, 0x42,
+    0x49, 0x4a, 0x4b, 0x4d, 0x4e, 0x51, 0x55,
 ];
 #[derive(Debug, Clone)]
 pub struct Instruction {
@@ -103,17 +104,30 @@ fn instructions(
             )
             .ok_or_else(|| err("node offset overflow"))?;
         let mut operands = [i32::from(a), i32::from(b)];
-        if op == 0x3c {
+        if matches!(op, 0x3c | 0x3f) {
             let pos = (i32::from(b) << 16) | i32::from(a);
             let raw = usize::try_from(pos)
                 .ok()
-                .and_then(|pos| pos.checked_add(4).and_then(|end| metadata.get(pos..end)))
-                .ok_or_else(|| err("invalid long integer metadata operand"))?;
-            operands[0] = i32::from_le_bytes(raw.try_into().unwrap());
+                .and_then(|pos| {
+                    pos.checked_add(if op == 0x3f { 8 } else { 4 })
+                        .and_then(|end| metadata.get(pos..end))
+                })
+                .ok_or_else(|| {
+                    let mut e = err("numeric metadata operand is truncated or outside segment");
+                    e.pc = Some(pc);
+                    e.offset = Some(offset);
+                    e
+                })?;
+            operands[0] = i32::from_le_bytes(raw[..4].try_into().unwrap());
+            if op == 0x3f {
+                operands[1] = i32::from_le_bytes(raw[4..8].try_into().unwrap());
+            }
         }
-        let check = if !SUPPORTED_OPCODES.contains(&op) {
+        let check = if op == 0x0d && (b as u8 & 2 != 0 || ![2, 3].contains(&a)) {
+            Err(unsupported("only non-const numeric casts are supported"))
+        } else if !SUPPORTED_OPCODES.contains(&op) {
             Err(unsupported(format!(
-                "opcode 0x{op:02x} is not supported by stage 2A"
+                "opcode 0x{op:02x} is not supported by the scalar VM"
             )))
         } else if op == 0x40 && (a < 0 || a as usize >= strings) {
             Err(err("shared string index outside pool"))
@@ -170,7 +184,7 @@ fn prepare_function(f: Function, strings: usize, vars: usize) -> Result<Prepared
     if raw[12] & 2 != 0 {
         return Err(unsupported("const return semantics are not supported"));
     }
-    if ![0, 1, 2, 4, 10, 255].contains(&f.return_type) {
+    if ![0, 1, 2, 3, 4, 10, 255].contains(&f.return_type) {
         return Err(VmError::new(
             VmErrorKind::UnsupportedType,
             "return type is not supported",
@@ -183,7 +197,7 @@ fn prepare_function(f: Function, strings: usize, vars: usize) -> Result<Prepared
         if a.flag & 1 != 0 || a.attrib & 2 != 0 {
             return Err(unsupported("reference/const arguments are not supported"));
         }
-        if ![0, 1, 2, 4, 10, 255].contains(&a.r#type) {
+        if ![0, 1, 2, 3, 4, 10, 255].contains(&a.r#type) {
             return Err(VmError::new(
                 VmErrorKind::UnsupportedType,
                 "argument type is not supported",

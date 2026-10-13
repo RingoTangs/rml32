@@ -2,6 +2,8 @@
 
 阶段 2A 在离线加载器上增加值模型、对象存储、程序准备和基础解释器。当前支持 **28 种操作码的限定类型路径**，不是完整 73 种指令或可启动的服务端。所有执行测试使用内存中人工构造的程序，没有执行原版 ELF、启动脚本或业务包字节码。
 
+本文保留阶段 2A 的交付快照；后续阶段 2B 的实数、数值转换及 39 种指令支持范围见 [数值语义](vm-numeric-semantics.md)。
+
 ## 证据与适用范围
 
 本轮使用 REA MCP，显式选择 Ghidra 12.1.4，对同一 ELF SHA-256 `5d4ebac58d8c415d9cf95bbcdd50f78afac91adf4f7e667ea3afc6f5336a6f34` 做静态反编译与汇编核对。保存 [45 条规范 Evidence](vm-core-evidence/rea.json.gz) 和 [可读反编译／汇编](vm-core-evidence/functions.md)；REA 会话已关闭。旧证据复用 [动作表](evidence/actions.csv)、[执行分派和调用](evidence/functions.md)、[二进制加载器](compatibility-evidence/main-rea-functions.md)。

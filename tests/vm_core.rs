@@ -590,7 +590,7 @@ fn unsupported_program_shapes_fail_explicitly() {
         VmErrorKind::UnsupportedFeature
     );
     let mut real = base;
-    real.functions[0].return_type = 3;
+    real.functions[0].return_type = 7;
     assert_eq!(
         prepare_program(real).unwrap_err().kind,
         VmErrorKind::UnsupportedType
@@ -639,7 +639,7 @@ fn supported_types_have_explicit_legacy_tags() {
         [0, 1, 2, 4, 10]
     );
     let supported: BTreeSet<_> = rml32::prepared::SUPPORTED_OPCODES.iter().collect();
-    assert_eq!(supported.len(), 28);
+    assert_eq!(supported.len(), 39);
     assert_eq!(ByteString::new(b"\xff").bytes, b"\xff");
 }
 
@@ -694,4 +694,292 @@ fn nullable_prototypes_allow_undefined_without_numeric_conversion() {
     let (mut vm, o) = machine(p, vec![]);
     vm.start(o, 0, vec![Value::Undefined]).unwrap();
     returns(&mut vm, Value::Undefined);
+}
+
+fn real(x: f32) -> Value {
+    Value::Real(rml32::RealBits::from_f32(x))
+}
+fn numeric_run(op: u8, left: Value, right: Value) -> Value {
+    let p = image(
+        &[fun(0, 2, 0, 255, &[(0, 0, 0x37), (1, 0, 0x37), (0, 0, op)])],
+        0,
+        &[],
+    );
+    let (mut vm, o) = machine(p, vec![]);
+    vm.start(o, 0, vec![left, right]).unwrap();
+    let RunOutcome::Finished(Completion::Returned(v)) = vm.run(100).unwrap() else {
+        panic!("not returned");
+    };
+    v
+}
+#[test]
+fn mixed_arithmetic_preserves_left_type_except_remainder() {
+    for (op, integer, float) in [
+        (1, 9, 9.5),
+        (0x51, 4, 4.5),
+        (0x29, 17, 17.5),
+        (0x19, 2, 2.8),
+    ] {
+        assert_eq!(
+            numeric_run(op, Value::Int(7), real(2.5)),
+            Value::Int(integer)
+        );
+        assert_eq!(numeric_run(op, real(7.0), real(2.5)), real(float));
+    }
+    assert_eq!(numeric_run(1, real(2.5), Value::Int(7)), real(9.5));
+    assert_eq!(numeric_run(0x28, Value::Int(7), real(2.5)), real(2.0));
+    assert_eq!(numeric_run(0x28, real(-7.0), Value::Int(3)), real(-1.0));
+}
+#[test]
+fn mixed_integer_arithmetic_does_not_round_integer_before_x87_operation() {
+    assert_eq!(
+        numeric_run(0x51, Value::Int(16_777_217), real(16_777_216.0)),
+        Value::Int(1)
+    );
+    assert_eq!(
+        numeric_run(0x51, real(16_777_216.0), Value::Int(16_777_217)),
+        real(-1.0)
+    );
+    assert_eq!(
+        numeric_run(0x28, Value::Int(16_777_217), real(2.0)),
+        real(0.0)
+    );
+}
+#[test]
+fn mixed_product_avoids_binary64_double_rounding_at_binary32_midpoint() {
+    // Exact integer products, rounded directly to binary32 with nearest-even:
+    // 16777215*1090519041 -> 0x5a81ffff; 8388609*1619001343 -> 0x5a410001.
+    for (r, i, bits) in [
+        (16777215.0, 1090519041, 0x5a81ffff),
+        (8388609.0, 1619001343, 0x5a410001),
+    ] {
+        assert_eq!(
+            numeric_run(0x29, real(r), Value::Int(i)),
+            Value::Real(rml32::RealBits::from_bits(bits))
+        );
+    }
+}
+#[test]
+fn real_constant_uses_first_word_only_and_retains_nan_and_signed_zero_bits() {
+    for bits in [0x80000000u32, 0x7fc01234, 0x3fc00000] {
+        let mut f = fun(0, 0, 0, 3, &[(0, 0, 0x3f)]);
+        f.meta.extend(bits.to_le_bytes());
+        f.meta.extend(0xdeadbeefu32.to_le_bytes());
+        let p = image(&[f], 0, &[]);
+        let (mut vm, o) = machine(p, vec![]);
+        vm.start(o, 0, vec![]).unwrap();
+        returns(&mut vm, Value::Real(rml32::RealBits::from_bits(bits)));
+    }
+    let mut p = image(&[fun(0, 0, 0, 255, &[])], 0, &[]);
+    p.functions[0].code.nodes[2] = (0, 0, 0x3f);
+    p.functions[0].code.metadata_hex = "00000000".into();
+    assert!(prepare_program(p).is_err());
+}
+#[test]
+fn float_to_integer_conversion_uses_indefinite_min_instead_of_rust_saturation() {
+    for (input, expected) in [
+        (1.9, 1),
+        (-1.9, -1),
+        (f32::NAN, i32::MIN),
+        (f32::INFINITY, i32::MIN),
+        (2147483648.0, i32::MIN),
+        (-2147483648.0, i32::MIN),
+    ] {
+        let p = image(&[fun(0, 1, 0, 2, &[(0, 0, 0x37), (2, 0, 0x0d)])], 0, &[]);
+        let (mut vm, o) = machine(p, vec![]);
+        vm.start(o, 0, vec![real(input)]).unwrap();
+        returns(&mut vm, Value::Int(expected));
+        let p = image(&[fun(0, 1, 0, 2, &[(0, 0, 0x37)])], 0, &[]);
+        let (mut vm, o) = machine(p, vec![]);
+        vm.start(o, 0, vec![real(input)]).unwrap();
+        returns(&mut vm, Value::Int(expected));
+    }
+}
+#[test]
+fn typed_real_parameters_and_returns_coerce_numbers_and_preserve_nullable() {
+    let mut p = image(&[fun(0, 1, 0, 3, &[(0, 0, 0x37)])], 0, &[]);
+    p.functions[0].arguments[0].r#type = 3;
+    let (mut vm, o) = machine(p, vec![]);
+    vm.start(o, 0, vec![Value::Int(16777217)]).unwrap();
+    returns(&mut vm, real(16777216.0));
+    let mut p = image(&[fun(0, 1, 0, 2, &[(0, 0, 0x37)])], 0, &[]);
+    p.functions[0].arguments[0].r#type = 2;
+    let (mut vm, o) = machine(p, vec![]);
+    vm.start(o, 0, vec![real(-2.9)]).unwrap();
+    returns(&mut vm, Value::Int(-2));
+}
+#[test]
+fn numeric_comparisons_round_integer_inputs_and_nan_is_unordered() {
+    assert_eq!(
+        numeric_run(0x1c, Value::Int(16777217), real(16777216.0)),
+        Value::Int(1)
+    );
+    for op in [0x1c, 0x1e, 0x20, 0x25, 0x27, 0x2a] {
+        for (a, b) in [
+            (real(f32::NAN), Value::Int(1)),
+            (Value::Int(1), real(f32::NAN)),
+        ] {
+            assert_eq!(numeric_run(op, a, b), Value::Int(i32::from(op == 0x2a)));
+        }
+    }
+    assert_eq!(numeric_run(0x1c, real(-0.0), real(0.0)), Value::Int(1));
+    assert_ne!(real(-0.0), real(0.0)); // structural equality deliberately differs
+}
+#[test]
+fn real_zero_division_errors_but_libm_remainder_zero_produces_nan() {
+    for rhs in [0.0, -0.0] {
+        let p = image(
+            &[fun(
+                0,
+                2,
+                0,
+                255,
+                &[(0, 0, 0x37), (1, 0, 0x37), (0, 0, 0x19)],
+            )],
+            0,
+            &[],
+        );
+        let (mut vm, o) = machine(p, vec![]);
+        vm.start(o, 0, vec![real(1.0), real(rhs)]).unwrap();
+        assert_eq!(vm.run(100).unwrap_err().kind, VmErrorKind::Arithmetic);
+        let Value::Real(result) = numeric_run(0x28, real(1.0), real(rhs)) else {
+            panic!();
+        };
+        assert!(result.to_f32().is_nan());
+    }
+    let Value::Real(result) = numeric_run(0x19, real(1.0), real(f32::NAN)) else {
+        panic!();
+    };
+    assert!(result.to_f32().is_nan());
+}
+#[test]
+fn bitwise_operations_and_logical_right_shift_follow_guarded_native_counts() {
+    for (op, a, b, result) in [
+        (2, 0x55, 0x0f, 5),
+        (0x30, 0x50, 0x0f, 0x5f),
+        (0x55, 0x55, 0x0f, 0x5a),
+        (0x26, 1, 31, i32::MIN),
+        (0x4b, -1, 1, i32::MAX),
+    ] {
+        assert_eq!(
+            numeric_run(op, Value::Int(a), Value::Int(b)),
+            Value::Int(result)
+        );
+    }
+    for op in [0x26, 0x4b] {
+        for count in [-1, 32, 33, i32::MAX] {
+            assert_eq!(
+                numeric_run(op, Value::Int(-1), Value::Int(count)),
+                Value::Int(0)
+            );
+        }
+    }
+}
+#[test]
+fn unary_numeric_type_and_truth_operations_handle_real_values() {
+    for (op, a, input, expected) in [
+        (0x4a, 0, Value::Int(0), Value::Int(-1)),
+        (0x2b, 0, real(0.0), real(-0.0)),
+        (0x2d, 0, real(-0.0), Value::Int(1)),
+        (0x2d, 0, real(f32::NAN), Value::Int(0)),
+        (0x24, 3, real(1.0), Value::Int(1)),
+        (0x24, 255, real(1.0), Value::Int(0)),
+    ] {
+        let p = image(&[fun(0, 1, 0, 255, &[(0, 0, 0x37), (a, 0, op)])], 0, &[]);
+        let (mut vm, o) = machine(p, vec![]);
+        vm.start(o, 0, vec![input]).unwrap();
+        returns(&mut vm, expected);
+    }
+    for target in [2, 3] {
+        let p = image(
+            &[fun(0, 0, 0, 255, &[(0, 0, 0x42), (target, 0, 0x0d)])],
+            0,
+            &[],
+        );
+        let (mut vm, o) = machine(p, vec![]);
+        vm.start(o, 0, vec![]).unwrap();
+        returns(
+            &mut vm,
+            if target == 2 {
+                Value::Int(0)
+            } else {
+                real(0.0)
+            },
+        );
+    }
+}
+
+#[test]
+fn subnormal_signed_zero_and_infinite_arithmetic_are_preserved() {
+    let tiny = Value::Real(rml32::RealBits::from_bits(1));
+    assert_eq!(
+        numeric_run(1, tiny.clone(), tiny.clone()),
+        Value::Real(rml32::RealBits::from_bits(2))
+    );
+    assert_eq!(numeric_run(0x19, tiny.clone(), real(2.0)), real(0.0));
+    assert_eq!(numeric_run(0x19, real(-0.0), real(2.0)), real(-0.0));
+    assert_eq!(
+        numeric_run(0x29, real(f32::MAX), real(2.0)),
+        real(f32::INFINITY)
+    );
+    let Value::Real(nan) = numeric_run(0x51, real(f32::INFINITY), real(f32::INFINITY)) else {
+        panic!();
+    };
+    assert!(nan.to_f32().is_nan());
+    assert_eq!(rml32::RealBits::from_bits(1).bits(), 1);
+}
+
+#[test]
+fn numeric_casts_reject_non_numeric_sources_and_const_attributes() {
+    let p = image(&[fun(0, 1, 0, 255, &[(0, 0, 0x37), (3, 0, 0x0d)])], 0, &[]);
+    let (mut vm, o) = machine(p, vec![]);
+    vm.start(o, 0, vec![Value::bytes(b"1.5")]).unwrap();
+    assert_eq!(vm.run(100).unwrap_err().kind, VmErrorKind::UnsupportedType);
+    let p = image(&[fun(0, 0, 0, 255, &[(1, 0, 0x3b), (2, 2, 0x0d)])], 0, &[]);
+    let e = prepare_program(p).unwrap_err();
+    assert_eq!(e.kind, VmErrorKind::UnsupportedFeature);
+    assert_eq!(e.pc, Some(3));
+}
+
+#[test]
+fn real_branching_and_budget_resume_keep_the_same_result() {
+    for (input, expected) in [
+        (real(-0.0), 10),
+        (real(0.0), 10),
+        (real(f32::NAN), 20),
+        (real(1.0), 20),
+    ] {
+        let p = image(
+            &[fun(
+                0,
+                1,
+                0,
+                2,
+                &[
+                    (0, 0, 0x37),
+                    (2, 3, 0x21),
+                    (10, 0, 0x3b),
+                    (1, 0, 0x1f),
+                    (20, 0, 0x3b),
+                ],
+            )],
+            0,
+            &[],
+        );
+        let (mut vm, o) = machine(p, vec![]);
+        vm.start(o, 0, vec![input]).unwrap();
+        for _ in 0..20 {
+            match vm.run(1).unwrap() {
+                RunOutcome::BudgetExhausted => {}
+                RunOutcome::Finished(c) => {
+                    assert_eq!(c, Completion::Returned(Value::Int(expected)));
+                    break;
+                }
+            }
+        }
+        assert_eq!(
+            vm.run(0).unwrap(),
+            RunOutcome::Finished(Completion::Returned(Value::Int(expected)))
+        );
+    }
 }
