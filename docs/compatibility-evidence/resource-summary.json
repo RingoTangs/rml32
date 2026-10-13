@@ -1,0 +1,284 @@
+[
+  {
+    "package": "aaa/pack_data/etc.pak",
+    "members": [
+      {
+        "path": "config.sql",
+        "sha256": "46531009c0b6456e0d9100dcfb237872391aebb9d9c1ff143467fd5fb29028a6",
+        "size": 15070,
+        "create_tables": [],
+        "xml_tags": []
+      },
+      {
+        "path": "dbase_config.xml",
+        "sha256": "1364a1818bcf54a1f81a35bc69ec4e4987bd7a7f246a1c8cc0b4c709dbb6aefd",
+        "size": 281110,
+        "create_tables": [],
+        "xml_tags": [
+          "aaa",
+          "abnormal_degree",
+          "abnormal_round",
+          "acc_blocked_time",
+          "acc_comp",
+          "acc_info",
+          "acc_log",
+          "access_adb_password",
+          "access_adb_user",
+          "account",
+          "account1",
+          "account2",
+          "account_basic",
+          "account_coin_trade",
+          "account_from",
+          "account_id",
+          "account_to",
+          "achieve",
+          "achieve_task",
+          "action",
+          "activate_aaa_ip",
+          "activate_url",
+          "activate_user_data",
+          "active_path",
+          "active_time",
+          "activity",
+          "activity_account",
+          "activity_info",
+          "activity_log",
+          "adb"
+        ]
+      },
+      {
+        "path": "global_file_dependence.list",
+        "sha256": "2377a6d2301f5bf591980cc710d7d14db4da5984e50ad7e1745d5a7966b9e6f0",
+        "size": 130,
+        "create_tables": [],
+        "xml_tags": []
+      },
+      {
+        "path": "file_dependence.list",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size": 0,
+        "create_tables": [],
+        "xml_tags": []
+      },
+      {
+        "path": "comm_desc.txt",
+        "sha256": "792c51dd5d44af1f1594d99dfa93c4c6e037afacd63dd8415e2fbdda683b60d6",
+        "size": 32709,
+        "create_tables": [],
+        "xml_tags": []
+      }
+    ]
+  },
+  {
+    "package": "ccs/pack_data/etc.pak",
+    "members": [
+      {
+        "path": "dbase_config.xml",
+        "sha256": "1364a1818bcf54a1f81a35bc69ec4e4987bd7a7f246a1c8cc0b4c709dbb6aefd",
+        "size": 281110,
+        "create_tables": [],
+        "xml_tags": [
+          "aaa",
+          "abnormal_degree",
+          "abnormal_round",
+          "acc_blocked_time",
+          "acc_comp",
+          "acc_info",
+          "acc_log",
+          "access_adb_password",
+          "access_adb_user",
+          "account",
+          "account1",
+          "account2",
+          "account_basic",
+          "account_coin_trade",
+          "account_from",
+          "account_id",
+          "account_to",
+          "achieve",
+          "achieve_task",
+          "action",
+          "activate_aaa_ip",
+          "activate_url",
+          "activate_user_data",
+          "active_path",
+          "active_time",
+          "activity",
+          "activity_account",
+          "activity_info",
+          "activity_log",
+          "adb"
+        ]
+      },
+      {
+        "path": "file_dependence.list",
+        "sha256": "b3f8fc9d7e9ed1e3a33c29ec0e3a90cddd64321a857a56670323990201a428af",
+        "size": 356,
+        "create_tables": [],
+        "xml_tags": []
+      },
+      {
+        "path": "global_file_dependence.list",
+        "sha256": "2377a6d2301f5bf591980cc710d7d14db4da5984e50ad7e1745d5a7966b9e6f0",
+        "size": 130,
+        "create_tables": [],
+        "xml_tags": []
+      }
+    ]
+  },
+  {
+    "package": "csa/pack_data/etc.pak",
+    "members": [
+      {
+        "path": "config.sql",
+        "sha256": "46531009c0b6456e0d9100dcfb237872391aebb9d9c1ff143467fd5fb29028a6",
+        "size": 15070,
+        "create_tables": [],
+        "xml_tags": []
+      },
+      {
+        "path": "dbase_config.xml",
+        "sha256": "1364a1818bcf54a1f81a35bc69ec4e4987bd7a7f246a1c8cc0b4c709dbb6aefd",
+        "size": 281110,
+        "create_tables": [],
+        "xml_tags": [
+          "aaa",
+          "abnormal_degree",
+          "abnormal_round",
+          "acc_blocked_time",
+          "acc_comp",
+          "acc_info",
+          "acc_log",
+          "access_adb_password",
+          "access_adb_user",
+          "account",
+          "account1",
+          "account2",
+          "account_basic",
+          "account_coin_trade",
+          "account_from",
+          "account_id",
+          "account_to",
+          "achieve",
+          "achieve_task",
+          "action",
+          "activate_aaa_ip",
+          "activate_url",
+          "activate_user_data",
+          "active_path",
+          "active_time",
+          "activity",
+          "activity_account",
+          "activity_info",
+          "activity_log",
+          "adb"
+        ]
+      },
+      {
+        "path": "global_file_dependence.list",
+        "sha256": "2377a6d2301f5bf591980cc710d7d14db4da5984e50ad7e1745d5a7966b9e6f0",
+        "size": 130,
+        "create_tables": [],
+        "xml_tags": []
+      },
+      {
+        "path": "comm_desc.txt",
+        "sha256": "792c51dd5d44af1f1594d99dfa93c4c6e037afacd63dd8415e2fbdda683b60d6",
+        "size": 32709,
+        "create_tables": [],
+        "xml_tags": []
+      }
+    ]
+  },
+  {
+    "package": "dba/pack_data/etc.pak",
+    "members": [
+      {
+        "path": "file_dependence.list",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size": 0,
+        "create_tables": [],
+        "xml_tags": []
+      },
+      {
+        "path": "config.sql",
+        "sha256": "46531009c0b6456e0d9100dcfb237872391aebb9d9c1ff143467fd5fb29028a6",
+        "size": 15070,
+        "create_tables": [],
+        "xml_tags": []
+      },
+      {
+        "path": "comm_desc.txt",
+        "sha256": "792c51dd5d44af1f1594d99dfa93c4c6e037afacd63dd8415e2fbdda683b60d6",
+        "size": 32709,
+        "create_tables": [],
+        "xml_tags": []
+      },
+      {
+        "path": "global_file_dependence.list",
+        "sha256": "2377a6d2301f5bf591980cc710d7d14db4da5984e50ad7e1745d5a7966b9e6f0",
+        "size": 130,
+        "create_tables": [],
+        "xml_tags": []
+      },
+      {
+        "path": "dbase_config.xml",
+        "sha256": "1364a1818bcf54a1f81a35bc69ec4e4987bd7a7f246a1c8cc0b4c709dbb6aefd",
+        "size": 281110,
+        "create_tables": [],
+        "xml_tags": [
+          "aaa",
+          "abnormal_degree",
+          "abnormal_round",
+          "acc_blocked_time",
+          "acc_comp",
+          "acc_info",
+          "acc_log",
+          "access_adb_password",
+          "access_adb_user",
+          "account",
+          "account1",
+          "account2",
+          "account_basic",
+          "account_coin_trade",
+          "account_from",
+          "account_id",
+          "account_to",
+          "achieve",
+          "achieve_task",
+          "action",
+          "activate_aaa_ip",
+          "activate_url",
+          "activate_user_data",
+          "active_path",
+          "active_time",
+          "activity",
+          "activity_account",
+          "activity_info",
+          "activity_log",
+          "adb"
+        ]
+      }
+    ]
+  },
+  {
+    "package": "gs/pack_data/etc.pak",
+    "members": [
+      {
+        "path": "file_dependence.list",
+        "sha256": "e362b9e9c12f908939ea584114a69f37873f44e21c99f5e23d7e663c8a7d96eb",
+        "size": 3076,
+        "create_tables": [],
+        "xml_tags": []
+      },
+      {
+        "path": "global_file_dependence.list",
+        "sha256": "2377a6d2301f5bf591980cc710d7d14db4da5984e50ad7e1745d5a7966b9e6f0",
+        "size": 130,
+        "create_tables": [],
+        "xml_tags": []
+      }
+    ]
+  }
+]

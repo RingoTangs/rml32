@@ -1,0 +1,224 @@
+[
+  {
+    "path": "1/1",
+    "size": 63,
+    "sha256": "90b9e191e6fd78a3d4b10e6bbe2ced1c80bd1be81c957b87b224ef5821f13e99",
+    "first16": "2e2f647269766572202d722073657276"
+  },
+  {
+    "path": "1/clients.cfg",
+    "size": 829,
+    "sha256": "3e8569d54ba8d71acc2106b35d8ffcf6d2240b58ee3a7e1019f253540d6b25cb",
+    "first16": "2320cbf9d3d0d1e9d6a4bfcdbba7b6cb"
+  },
+  {
+    "path": "1/driver",
+    "size": 3751597,
+    "sha256": "cf4967c010af494f7ce9ec4626661df09bc7ef46028f019ba5447965fb82a6c7",
+    "first16": "7f454c46010101000000000000000000"
+  },
+  {
+    "path": "1/service/auth_srv.o",
+    "size": 15358,
+    "sha256": "707ece9d4487f728159e136f4d1633ecf785e61adedd9c70063071404e1682ab",
+    "first16": "01000100b0440e4b8501000001000000"
+  },
+  {
+    "path": "1/service/clients.cfg",
+    "size": 893,
+    "sha256": "c903b069d5748bfdcd220df0eec6139740468f387532ce3c71aafe0798d8b9d9",
+    "first16": "2320cbf9d3d0d1e9d6a4bfcdbba7b6cb"
+  },
+  {
+    "path": "1/service/pwd.o",
+    "size": 239,
+    "sha256": "3fb71a8846aa68d41b5e5bc01a5279e54e2b018abfb650a77fba20776cd16609",
+    "first16": "01000100fc440e4b9201000002000000"
+  },
+  {
+    "path": "AGENTS.md",
+    "size": 2519,
+    "sha256": "f929fe3ccc2fad52c2ebc3276d1d9d1b37c62edea7c3574797ddd4402c82226b",
+    "first16": "23205265706f7369746f727920477569"
+  },
+  {
+    "path": "aaa/.DS_Store",
+    "size": 6148,
+    "sha256": "a2d0afa4ac613c15eb255185c51d0c9f12ff7e89f56aa0e84579481de353d824",
+    "first16": "00000001427564310000100000000800"
+  },
+  {
+    "path": "aaa/aaa.ini",
+    "size": 169,
+    "sha256": "dfc3e20df2394a5a046729248d53d00051da8ab41033b66d8a14874491e85d5f",
+    "first16": "5b4d655d0a4e616d65203d206161615f"
+  },
+  {
+    "path": "aaa/pack_data/etc.pak",
+    "size": 18448880,
+    "sha256": "ebb5e8947654fdfb517edfc5c2d0d618f6d2de8e150e8910b9953365db50eccc",
+    "first16": "44332211000400000000000000000000"
+  },
+  {
+    "path": "aaa/pack_data/lib_aaa32.pak",
+    "size": 606428,
+    "sha256": "204dac3efb2e47db6766d16e6581193a712d9c77ec210b33d1b225b36ba72749",
+    "first16": "44332211800100000000000000000000"
+  },
+  {
+    "path": "ccs/ccs.ini",
+    "size": 373,
+    "sha256": "1490445e66ec37b3f2c199e2b25d667ac77050287db94e7423131d00a6e846be",
+    "first16": "5b4144425d0a486f73743d34372e3937"
+  },
+  {
+    "path": "ccs/ccsmem.cfg",
+    "size": 200,
+    "sha256": "3895e193385931f80ad79ea6a08b637d94ff1f4c92d0ddc8135709d02992e660",
+    "first16": "2320c4dab4e6bfe92020202020cafdc1"
+  },
+  {
+    "path": "ccs/pack_data/etc.pak",
+    "size": 3998566,
+    "sha256": "3a51ca23d77cd61e379999b0bffb1afd899fcbeb1b8e14388b4bf02353d03b7b",
+    "first16": "44332211c02200000000000000000000"
+  },
+  {
+    "path": "ccs/pack_data/lib_ccs32.pak",
+    "size": 1811721,
+    "sha256": "75e62ee0efabd659abc00c65f87caddff3ff3755c8cd7ee8dc92478c10949eb5",
+    "first16": "44332211800100000000000000000000"
+  },
+  {
+    "path": "csa/csa.ini",
+    "size": 374,
+    "sha256": "053c96ea9dce28ad10d07c3d467ef88797dec94b7fd62f243bbe41e715b134a4",
+    "first16": "5b4144425d0a486f73743d34372e3937"
+  },
+  {
+    "path": "csa/pack_data/etc.pak",
+    "size": 6956437,
+    "sha256": "152cbc8745f1cf481c95b45dd7e3185ad538a87f960ce0e4c33ba0948e66d134",
+    "first16": "44332211000400000000000000000000"
+  },
+  {
+    "path": "csa/pack_data/lib_csa32.pak",
+    "size": 667936,
+    "sha256": "b4332da310e0105834340de8f544db3ef60c12eb65754dc44686646a5f86216a",
+    "first16": "44332211800100000000000000000000"
+  },
+  {
+    "path": "dba/dba.ini",
+    "size": 276,
+    "sha256": "ec1ec3d1db1c9ceda61dda8033433b85983c74f7bffe7ca295214473b6d7f445",
+    "first16": "0a5b4d44425d0a486f73743d34372e39"
+  },
+  {
+    "path": "dba/pack_data/etc.pak",
+    "size": 6947514,
+    "sha256": "bd09650465fe14de35a3873d3e055995469f44cf8b8f687358297d1cce2f5546",
+    "first16": "44332211800200000000000000000000"
+  },
+  {
+    "path": "dba/pack_data/lib_dba32.pak",
+    "size": 512375,
+    "sha256": "2ce6b1aafc3c70156e0a053fea117e9579b30d209c11c5194bd2863ba5deee5c",
+    "first16": "44332211800100000000000000000000"
+  },
+  {
+    "path": "gs/gs1.ini",
+    "size": 220,
+    "sha256": "15c95e6771d8b319751ed1bfeeaa03f62cfc3691eb8db35cef0f58696942b4b2",
+    "first16": "5b4d655d0a4e616d653dd2bbcfdf0a41"
+  },
+  {
+    "path": "gs/gs2.ini",
+    "size": 230,
+    "sha256": "b579df07ce4c4ec3f3543d3962d71e73151a2788f4db5636e560ae0f28c43399",
+    "first16": "5b4d655d0a4e616d653dcdf2c0efb3a4"
+  },
+  {
+    "path": "gs/gs3.ini",
+    "size": 230,
+    "sha256": "ead5829c8a298f598ca68d439d139552c9eff03a203ef237f128068acca2b9b3",
+    "first16": "5b4d655d0a4e616d653dcdf2c0efb3a4"
+  },
+  {
+    "path": "gs/gsmem.cfg",
+    "size": 208,
+    "sha256": "fb21bfeaab57825e51563503160b6b71f30d40f7ca95e25f29eb744d639b3f50",
+    "first16": "2320c4dab4e6bfe92020202020cafdc1"
+  },
+  {
+    "path": "gs/pack_data/etc.pak",
+    "size": 19355054,
+    "sha256": "12bf7231b62cfb4a0a9d573620d4077a1934d4fc34514b2125143ffdd46ae5f4",
+    "first16": "44332211405c01000000000000000000"
+  },
+  {
+    "path": "gs/pack_data/lib_gs32.pak",
+    "size": 40217936,
+    "sha256": "63a3779f14f7ce8e21a0642a67c80b39c9546d4997cc462d8cb2a37f35b6db3a",
+    "first16": "44332211800100000000000000000000"
+  },
+  {
+    "path": "gs/pack_data/server_animates.pak",
+    "size": 6439,
+    "sha256": "32bd78e55f756669111710ca0122c0a0b202bee946fdaa13bdbc63b628a0f90f",
+    "first16": "44332211000800000000000000000000"
+  },
+  {
+    "path": "gs/pack_data/server_maps.pak",
+    "size": 215176,
+    "sha256": "c058886b1971f4bb501f98d863f44abab6b0b24fe0aa02fb96e3b306ec42ead0",
+    "first16": "44332211402700000000000000000000"
+  },
+  {
+    "path": "magic_Linux32",
+    "size": 7827072,
+    "sha256": "5d4ebac58d8c415d9cf95bbcdd50f78afac91adf4f7e667ea3afc6f5336a6f34",
+    "first16": "7f454c46010101000000000000000000"
+  },
+  {
+    "path": "runaaa",
+    "size": 307,
+    "sha256": "81a9865faad12fbdc3038f4011c63b0cff99f10b699c9748b91e2f3d109176da",
+    "first16": "23212f62696e2f73680a756c696d6974"
+  },
+  {
+    "path": "runccs",
+    "size": 290,
+    "sha256": "9687a93f81224e7866f0c86907175caa9aec230f31e0ca62861e7a280b884417",
+    "first16": "23212f62696e2f73680a0a756c696d69"
+  },
+  {
+    "path": "runcsa",
+    "size": 261,
+    "sha256": "56f3a21fbd13baa957e3f695865a7209f7549ab2f6b6d414a5dde67741c5b2f9",
+    "first16": "23212f62696e2f73680a756c696d6974"
+  },
+  {
+    "path": "rundba",
+    "size": 325,
+    "sha256": "71fbd29a9a7948550e11077146b428d5e2486c25a0c7b6a46a358d04a99032bb",
+    "first16": "23212f62696e2f73680a0a756c696d69"
+  },
+  {
+    "path": "rungs1",
+    "size": 331,
+    "sha256": "0cf5ee2a43f46ae03a9f00e2e9caa2930baf75e8629f1d5ac465d893e92614ac",
+    "first16": "23212f62696e2f73680a0a756c696d69"
+  },
+  {
+    "path": "rungs2",
+    "size": 331,
+    "sha256": "f6c408fb61e8b8016fcec3e6c79300f16f9b0a0ca7384bcbb090a88c37687a21",
+    "first16": "23212f62696e2f73680a0a756c696d69"
+  },
+  {
+    "path": "rungs3",
+    "size": 331,
+    "sha256": "dc05ac38c03c2af17167033615928620a5a8c9592e3e7164fec5fdd60a2733f3",
+    "first16": "23212f62696e2f73680a0a756c696d69"
+  }
+]

@@ -1,0 +1,59 @@
+# main-rea：Evidence 索引
+
+| 操作 | 参数 | Evidence ID |
+|---|---|---|
+| analyze_function | `{"procedure": "vm_initSqliteEfun"}` | `ev_11144b055a8786e11b5440df6e78342f067f062c28b9c7c4406dc30846b80b0e` |
+| analyze_function | `{"procedure": "fm_unpack"}` | `ev_14ecbc2d3556c5e3a775b1b2fd7154aabd4a64448fa6cda902a3aedf7f8087bc` |
+| analyze_function | `{"procedure": "vm_getDirInPackedFs"}` | `ev_1bf904a7f739f5af38dd308db493c7e0214879cb798b7acf03dcb4d922960bc8` |
+| analyze_function | `{"procedure": "vm_initIdentifiers"}` | `ev_22f100323748feab029789e6127317398048c5dacbd93c84c0581a7a990ca1e2` |
+| analyze_function | `{"procedure": "vm_copyIdentsName"}` | `ev_27d4f096ce0e369419a02e49215d067382b851eec94ea52f0bfbcd31f552e7df` |
+| analyze_function | `{"procedure": "vm_loadNumber32ToIntR"}` | `ev_282e4e866ce9d66f64c9e2044b10a8dba0089a2c9be788e4f6a5d1fbbd77a452` |
+| analyze_function | `{"procedure": "vm_countIdents"}` | `ev_306524523f9592c0f501cacdae774ec5f9c9df0f55ced600d747da959a48d9e8` |
+| inspect_native_data_type | `{"type": "/DWARF/vm_lex.h/Vm_Ident_Unit/anon_struct_8_2_e648a62a_for_uf/Vm_Fun"}` | `ev_33ea558ebefb2a8d0862c0211e7eb1fce84a781d76915551cc7a5113440a3c7e` |
+| analyze_function | `{"procedure": "vm_loadString"}` | `ev_350b1ce0544fc3fedbf29319e35770e7207764d9db261b94d05c9700049c03de` |
+| inspect_native_data_type | `{"type": "/DWARF/vm_lex.h/Vm_Dlt"}` | `ev_3688d42c31f50614f06153173b2453adafae4876f403e03381a84b970c1e28c4` |
+| inspect_native_data_type | `{"type": "/DWARF/vm_fun.h/Vm_Fun_Arg"}` | `ev_3a2145a4ec5bf063ceb5de533653f40d5ce70cd826ccb17d03b9892fc915df74` |
+| analyze_function | `{"procedure": "vm_initEfun"}` | `ev_3cf4b7b4c241ad44b0d360927454293628555da474b2ebb560fa890a525285fb` |
+| inspect_native_data_type | `{"type": "/DWARF/vm_filem.h/Fm_Header"}` | `ev_3d02239b05ef41b84e2f152cc25662957de9218617992f41408e979c92907208` |
+| analyze_function | `{"procedure": "vm_initVerigenEfun"}` | `ev_46c386bff284585bfc1f32e3348bdeb327a6ce7b17d40908470b83ed8584ad20` |
+| analyze_function | `{"procedure": "vm_loadVmIndex"}` | `ev_46fdeb0c10ac16e3a6861136515a5e3f0381cec5fb3d4195a661da88ffac6dcb` |
+| analyze_function | `{"procedure": "vm_initDbMysql"}` | `ev_480cdf3727c7bab9994611a03a982dcc23aba7ff40b3b7d86dd0704fa7d39423` |
+| inspect_native_data_type | `{"type": "/DWARF/vm_filem.h/Fm_Catalog"}` | `ev_536fe11b9021d07306bd665891edb9b1ed1ebe0a7334c83c44de5e8aba02f55b` |
+| inspect_native_data_type | `{"type": "/DWARF/vm_filem.h/Fm_Catalog_T"}` | `ev_68f0d6b56b51bebebdc40cf51fbc88b9db834b7f81baf1b1dc43fb7f93068238` |
+| analyze_function | `{"procedure": "vm_updateEfuns"}` | `ev_7207caf3da50797137c81e701dc99f43fd5d54403b7e8d8d6cc36d973f82013b` |
+| analyze_function | `{"procedure": "vm_loadNumber32"}` | `ev_725f935a25e45fd1f376358fb6154c704a5a08faae486db835259ab6ce73f664` |
+| analyze_function | `{"procedure": "vm_initLanguageEfun"}` | `ev_7a07253866de1f05a3e6441c47e26256781ffda62935a574ea49df39e4273fc0` |
+| analyze_function | `{"procedure": "vm_loadComment"}` | `ev_803e5760107de0c73e61fb24936c6deba731d532dbc47f36f46b37b258c23502` |
+| analyze_function | `{"procedure": "vm_saveInheritPrograms"}` | `ev_8193669355a4347a34113c3b4841384f62ffab0bf23a100b32bbb58a14ca0dbd` |
+| inspect_native_data_type | `{"type": "/DWARF/vm_fun.h/Vm_Fun_Arg_T"}` | `ev_81b2b91d8098c3d46320a56895d7a311cf3adfe16fef44f17543ac1f285cd0d2` |
+| inspect_native_data_type | `{"type": "/DWARF/vm_lex.h/Vm_Efun"}` | `ev_90e022a12e46a32130db85b532ccec54c144779ce53cee6ee3c0c3ca14399450` |
+| analyze_function | `{"procedure": "vm_loadNumber16"}` | `ev_9a7a1e0aa59614769460ed8f84beaf7dfdf57e53a3b8515fc53be210fc6f5fed` |
+| inspect_native_data_type | `{"type": "/DWARF/vm_fun.h/Vm_Fun_T"}` | `ev_9abc40d50269c7de5b2a54455cdf0a9e946644b3a8cf3c8720fc4b213d33707d` |
+| analyze_function | `{"procedure": "vm_addEfuns"}` | `ev_a83bf890b4b1b7b1e670ffd84e2caf433106c4b1521c658ee8c18bbdb826b9a1` |
+| analyze_function | `{"procedure": "vm_saveIdentifiers"}` | `ev_acf474413a54525974ac2ae0eb8283c700d2ca17b77dd68e321b3381d4c4c984` |
+| analyze_function | `{"procedure": "vm_buildEfunOffset"}` | `ev_ad29fecd1081a867ce5d7533e223fa837e48dd3eaf530c6dd6564a7ee43c6fba` |
+| analyze_function | `{"procedure": "vm_loadInheritPrograms"}` | `ev_af5958529d07c6f0f0b9b287dbdec72c60a8ad5632f6fd5b362a60f8d3a4b489` |
+| analyze_function | `{"procedure": "vm_initTinyXmlEfun"}` | `ev_af94176c9cda62c8068c39bbb3d3ca76fc01a181379c1fc27cea60d8f23a9e4c` |
+| inspect_native_data_type | `{"type": "/DWARF/vm_filem.h/Fm_Header_T"}` | `ev_b2ab04c39011cda27e8273e0686d75748e6947d9a8ff35cef8165e7498a2bc4c` |
+| analyze_function | `{"procedure": "vm_efunInit"}` | `ev_b2d45cb973e52b4210ddcc74678d5047c43df09614a8155ae610ba664dbfaf62` |
+| analyze_function | `{"procedure": "vm_packedFsFetch"}` | `ev_b366b2140b2fa506c432a2677891e3265aeb0cf5a913f43e08a0ff23e2a104a3` |
+| inspect_native_data_type | `{"type": "/DWARF/vm_lex.h/Vm_Dlt_T"}` | `ev_b470ba6d7746690406c1092137e446cd12a32fc94a900d6c7109e77295854011` |
+| analyze_function | `{"procedure": "vm_loadFun"}` | `ev_b513e6242f5447517c22636c5c877a93b397b974851b7928f195106d957a1079` |
+| inspect_native_data_type | `{"type": "/DWARF/vm_lex.h/Vm_Efun_T"}` | `ev_b646853851188c38de47bf394024cbbd73decadce86b376206acf44bd75470a4` |
+| analyze_function | `{"procedure": "vm_loadIdentifiers"}` | `ev_b786ac699461a76c0683ddb2f8254575187db56f002088762956ac65e57e9528` |
+| analyze_function | `{"procedure": "vm_registerMysql"}` | `ev_b90c279bf69f0154893812efeaa2a21b5093fb737f08632894669ea47534c9b4` |
+| analyze_function | `{"procedure": "vm_loadDefines"}` | `ev_b99359e12a3a7ffb2aa95244d4382f00482591b3035c1ec7e358124c5f56e024` |
+| analyze_function | `{"procedure": "vm_getActionInfo"}` | `ev_bcb6905e685879e86d98526c252dafd8952d139f64a42ad75143174fb5998ef1` |
+| analyze_function | `{"procedure": "vm_packedFsFileOpen"}` | `ev_c003de595bf5c47c226e25b04bee116d1c5c27cccbb72333f60ae8a2d30feeb7` |
+| analyze_function | `{"procedure": "vm_loadBinaryInherit"}` | `ev_c41c22c1afd1192242c38bb59ffa5cc3402d157828307978e735721a4489e3d0` |
+| analyze_function | `{"procedure": "fm_readCatalog"}` | `ev_cc310fbbb5402e75d2c6ecae8ccd0be9312414b23edd2556b0d93fe81d2004fa` |
+| analyze_function | `{"procedure": "vm_efunDebugInit"}` | `ev_cfffcc2bf9e79390ad720cae98403ef18bbf49e2c69ab7c5ff062cc96461c29a` |
+| analyze_function | `{"procedure": "vm_saveBinary"}` | `ev_d34902dd8325b033fe28dc4d312b31a3c6345f983ae345459553f9f3ed0ed9b4` |
+| analyze_function | `{"procedure": "vm_loadBinary"}` | `ev_d36be5e76af4173eaa042416c1354f4ac89d5b3a1f9e8e0ac7a3de77088f54d0` |
+| analyze_function | `{"procedure": "vm_loadTempString"}` | `ev_eb3f82761c65f9f0fdd6fb57ee9f5317ef2192a291ea73c6304d9eabf8ded020` |
+| analyze_function | `{"procedure": "vm_loadCodeSegment"}` | `ev_edcc9ae3360df89029b6c17c970dcbe35359f22edebb0f04fe7b3757b2f81681` |
+| analyze_function | `{"procedure": "initMysqlEfun"}` | `ev_f2755060e3cc73aedf5df1a4b4154acad03373ed1c9d3778601464f92db4a127` |
+| analyze_function | `{"procedure": "vm_callInEfun"}` | `ev_f7a9dddeb7edb2f09a574fb30d22a4cf7af8ca2f93f06fb113081ac12811e04f` |
+| analyze_function | `{"procedure": "vm_efunPerformanceProfileInit"}` | `ev_f80064bb3dc88680ac1e5eb8869d3f56ed19da389cdad9320405ecca784fab3b` |
+
+原始 JSON SHA-256：`b6ed4cd8044366965cdb587dfdd33251195ce01b6d70ffd13ec521d602437b85`

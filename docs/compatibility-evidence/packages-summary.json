@@ -1,0 +1,176 @@
+{
+  "packages": [
+    {
+      "package": "aaa/pack_data/etc.pak",
+      "sha256": "ebb5e8947654fdfb517edfc5c2d0d618f6d2de8e150e8910b9953365db50eccc",
+      "header": [
+        287454020,
+        1024,
+        0,
+        0
+      ],
+      "members": 16,
+      "files": 16,
+      "bytecodes": 0
+    },
+    {
+      "package": "aaa/pack_data/lib_aaa32.pak",
+      "sha256": "204dac3efb2e47db6766d16e6581193a712d9c77ec210b33d1b225b36ba72749",
+      "header": [
+        287454020,
+        384,
+        0,
+        0
+      ],
+      "members": 221,
+      "files": 202,
+      "bytecodes": 202
+    },
+    {
+      "package": "ccs/pack_data/etc.pak",
+      "sha256": "3a51ca23d77cd61e379999b0bffb1afd899fcbeb1b8e14388b4bf02353d03b7b",
+      "header": [
+        287454020,
+        8896,
+        0,
+        0
+      ],
+      "members": 139,
+      "files": 139,
+      "bytecodes": 0
+    },
+    {
+      "package": "ccs/pack_data/lib_ccs32.pak",
+      "sha256": "75e62ee0efabd659abc00c65f87caddff3ff3755c8cd7ee8dc92478c10949eb5",
+      "header": [
+        287454020,
+        384,
+        0,
+        0
+      ],
+      "members": 332,
+      "files": 309,
+      "bytecodes": 309
+    },
+    {
+      "package": "csa/pack_data/etc.pak",
+      "sha256": "152cbc8745f1cf481c95b45dd7e3185ad538a87f960ce0e4c33ba0948e66d134",
+      "header": [
+        287454020,
+        1024,
+        0,
+        0
+      ],
+      "members": 16,
+      "files": 16,
+      "bytecodes": 0
+    },
+    {
+      "package": "csa/pack_data/lib_csa32.pak",
+      "sha256": "b4332da310e0105834340de8f544db3ef60c12eb65754dc44686646a5f86216a",
+      "header": [
+        287454020,
+        384,
+        0,
+        0
+      ],
+      "members": 182,
+      "files": 154,
+      "bytecodes": 154
+    },
+    {
+      "package": "dba/pack_data/etc.pak",
+      "sha256": "bd09650465fe14de35a3873d3e055995469f44cf8b8f687358297d1cce2f5546",
+      "header": [
+        287454020,
+        640,
+        0,
+        0
+      ],
+      "members": 10,
+      "files": 10,
+      "bytecodes": 0
+    },
+    {
+      "package": "dba/pack_data/lib_dba32.pak",
+      "sha256": "2ce6b1aafc3c70156e0a053fea117e9579b30d209c11c5194bd2863ba5deee5c",
+      "header": [
+        287454020,
+        384,
+        0,
+        0
+      ],
+      "members": 204,
+      "files": 187,
+      "bytecodes": 187
+    },
+    {
+      "package": "gs/pack_data/etc.pak",
+      "sha256": "12bf7231b62cfb4a0a9d573620d4077a1934d4fc34514b2125143ffdd46ae5f4",
+      "header": [
+        287454020,
+        89152,
+        0,
+        0
+      ],
+      "members": 1393,
+      "files": 1393,
+      "bytecodes": 0
+    },
+    {
+      "package": "gs/pack_data/lib_gs32.pak",
+      "sha256": "63a3779f14f7ce8e21a0642a67c80b39c9546d4997cc462d8cb2a37f35b6db3a",
+      "header": [
+        287454020,
+        384,
+        0,
+        0
+      ],
+      "members": 6825,
+      "files": 6307,
+      "bytecodes": 6307
+    },
+    {
+      "package": "gs/pack_data/server_animates.pak",
+      "sha256": "32bd78e55f756669111710ca0122c0a0b202bee946fdaa13bdbc63b628a0f90f",
+      "header": [
+        287454020,
+        2048,
+        0,
+        0
+      ],
+      "members": 32,
+      "files": 32,
+      "bytecodes": 0
+    },
+    {
+      "package": "gs/pack_data/server_maps.pak",
+      "sha256": "c058886b1971f4bb501f98d863f44abab6b0b24fe0aa02fb96e3b306ec42ead0",
+      "header": [
+        287454020,
+        10048,
+        0,
+        0
+      ],
+      "members": 157,
+      "files": 157,
+      "bytecodes": 0
+    }
+  ],
+  "programs": 7159,
+  "parse_issues": [
+    {
+      "source": "dba/pack_data/etc.pak/etc",
+      "kind": "member-decompression",
+      "error": "LZSS size mismatch 0 != 7829223"
+    },
+    {
+      "source": "1/service/auth_srv.o",
+      "error": "invalid read 301989889 at 0x14f / invalid read 301989889 at 0x14f"
+    },
+    {
+      "source": "1/service/pwd.o",
+      "error": "invalid count -1216208172 at 0x82 / invalid count -1216208172 at 0x82"
+    }
+  ]
+}
