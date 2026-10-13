@@ -1,0 +1,54 @@
+{
+  "sample_sha256": "5d4ebac58d8c415d9cf95bbcdd50f78afac91adf4f7e667ea3afc6f5336a6f34",
+  "elf_type": 2,
+  "machine": 3,
+  "entry": "0x804bc70",
+  "needed_libraries": [
+    "libcrypt.so.1",
+    "libm.so.6",
+    "libc.so.6",
+    "libpthread.so.0",
+    "libstdc++.so.6",
+    "libdl.so.2",
+    "libresolv.so.2",
+    "libgcc_s.so.1"
+  ],
+  "undefined_dynamic_symbols": 230,
+  "command_records": 925,
+  "action_records": 87,
+  "embedded": [
+    {
+      "name": "auth_1980.c",
+      "address": "0x83cd9a0",
+      "file_offset": "0x3849a0",
+      "stored_bytes": 3295,
+      "decompressed_bytes": 9950,
+      "decoded_bytes": 9949,
+      "obfuscation": "marker !, XOR 0xa5",
+      "stored_sha256": "991dcbc0d041eb9a8fd5d6a7934005d8f70c26d5dca538bd4997e1a6cc048ca3",
+      "decoded_sha256": "c7543a36dedf5caea6abab8f9fb24f2addb08fd0ed74cd261369289bb3e4fc2c"
+    },
+    {
+      "name": "pwd_gen_1980.c",
+      "address": "0x83cd700",
+      "file_offset": "0x384700",
+      "stored_bytes": 671,
+      "decompressed_bytes": 977,
+      "decoded_bytes": 976,
+      "obfuscation": "marker !, XOR 0xa5",
+      "stored_sha256": "0de76c838f2bab9351663fdf47ab61a416de68ece38d7ddbd66a8f01427326ed",
+      "decoded_sha256": "b1f590995a398fa88dbc762718447d5a36939a2021446a98d76e509bae8506cd"
+    },
+    {
+      "name": "telnet_shell.c",
+      "address": "0x83cd340",
+      "file_offset": "0x384340",
+      "stored_bytes": 933,
+      "decompressed_bytes": 1767,
+      "decoded_bytes": 1766,
+      "obfuscation": "marker !, XOR 0xa5",
+      "stored_sha256": "b0b50002926e21fe45bc3673fc6b89e84a8af38204e0fcfcbd8859fd3c6e15e2",
+      "decoded_sha256": "4b8ccb86be4e949979611185abfa25ab81dbd5e9cb70251d98dcd8730d078674"
+    }
+  ]
+}

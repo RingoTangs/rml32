@@ -1,0 +1,26 @@
+record,module,entry,name,shutdown,flag
+0x83cf960,Global buffers,0x80bd614,vm_initGlobalBuf,0x80bd6b4,0
+0x83cf970,Sync routines,0x80bed1c,vm_initSyncRoutine,0x80bed3c,0
+0x83cf980,Shared String,0x80bd1d8,vm_initSharedStrings,0x80bd228,0
+0x83cf990,Jit base,0x80c9f2c,vm_initJitBase,0x80c9fe4,0
+0x83cf9a0,Jit native,0x80ca360,vm_initJitNative,0x80ca404,0
+0x83cf9b0,Variable Manager,0x8089ef0,vm_initVar,0x808c2f4,0
+0x83cf9c0,Object,0x80b0ee4,vm_initObject,0x80b1bd0,0
+0x83cf9d0,Socket,0x80afcf8,vm_initSocket,0x80af3c8,0
+0x83cf9e0,File path,0x80bd854,vm_initFilePath,0x80bd860,0
+0x83cf9f0,DBFS,0x80bfa1c,vm_initDbfs,0x80bf994,0
+0x83cfa00,I/O,0x809f2b4,vm_initIo,0x80a07b8,0
+0x83cfa10,I/O buffer,0x80c3b0c,vm_initIoBuffer,0x80c3ba4,0
+0x83cfa20,Identifiers,0x8086678,vm_initIdentifiers,0x808697c,0
+0x83cfa30,Actions,0x8095df0,vm_initActions,0x8095e50,0
+0x83cfa40,Trace,0x80ba844,vm_initTrace,0x80ba8fc,0
+0x83cfa50,Shell,0x8097c3c,vm_initShell,0x8097cd8,0
+0x83cfa60,Resource,0x80c35cc,vm_initResource,0x80c2d28,0
+0x83cfa70,Temp stack,0x80c375c,vm_initTempStack,0x80c37bc,0
+0x83cfa80,Thread info,0x80a3584,vm_initThreadInfo,0x80a35d4,0
+0x83cfa90,Scheduler,0x80a89a8,vm_initScheduler,0x80ae0e8,0
+0x83cfaa0,Service threads,0x80be31c,vm_initServiceThreads,0x80be8c0,0
+0x83cfab0,Performance profiler,0x80baf08,vm_initPerformanceProfiler,0x80baf94,0
+0x83cfac0,Debugger,0x80c3e30,vm_initDebugger,0x80c3e08,0
+0x83cfad0,Telnet server,0x80a48f8,vm_initTelnetServer,0x80a4f80,0
+0x83cfae0,Pkt interface,0x80c0838,vm_initPktAnalyser,0x80c12ac,0
