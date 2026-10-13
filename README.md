@@ -1,0 +1,1 @@
+二进制分析 magic_Linux32，尝试使用 rust 重写。
