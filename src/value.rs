@@ -1,4 +1,4 @@
-//! Magic559 values with immutable, shared containers.
+//! Magic559 values with shared, acyclic containers.
 use std::rc::Rc;
 
 /// Structural equality preserves bits; VM numeric comparisons are separate.
@@ -46,11 +46,11 @@ pub enum Value {
     Mapping(crate::container::MappingValue),
 }
 impl Value {
-    /// Construct an immutable array in element order. Clones share identity.
+    /// Construct a shared array in element order. Clones share identity.
     pub fn array(elements: Vec<Value>) -> Result<Self, crate::VmError> {
         crate::container::array(elements)
     }
-    /// Construct an ordinary immutable mapping; last duplicate key wins.
+    /// Construct an ordinary shared mapping; last duplicate key wins.
     /// Keys support integer values and case-sensitive raw bytes.
     pub fn mapping(entries: Vec<(Value, Value)>) -> Result<Self, crate::VmError> {
         crate::container::mapping(entries)

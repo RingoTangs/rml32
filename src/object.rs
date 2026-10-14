@@ -9,14 +9,14 @@ use std::{collections::BTreeMap, rc::Rc};
 #[derive(Debug)]
 pub struct Object {
     pub(crate) program: ProgramId,
-    pub(crate) variables: Vec<Value>,
+    pub(crate) variables: Vec<Rc<crate::cell::Cell>>,
 }
 impl Object {
     pub fn program(&self) -> ProgramId {
         self.program
     }
-    pub fn variables(&self) -> &[Value] {
-        &self.variables
+    pub fn variables(&self) -> Result<Vec<Value>, VmError> {
+        self.variables.iter().map(|c| c.read()).collect()
     }
 }
 #[derive(Debug, Default)]
@@ -60,7 +60,10 @@ impl ObjectStore {
             id,
             Object {
                 program,
-                variables: initial_values,
+                variables: initial_values
+                    .into_iter()
+                    .map(crate::cell::Cell::new)
+                    .collect::<Result<_, _>>()?,
             },
         );
         Ok(id)
@@ -76,11 +79,6 @@ impl ObjectStore {
         self.objects
             .remove(&id)
             .map(|_| ())
-            .ok_or_else(|| VmError::new(VmErrorKind::InvalidObject, "object is missing or deleted"))
-    }
-    pub(crate) fn get_mut(&mut self, id: ObjectId) -> Result<&mut Object, VmError> {
-        self.objects
-            .get_mut(&id)
             .ok_or_else(|| VmError::new(VmErrorKind::InvalidObject, "object is missing or deleted"))
     }
     pub(crate) fn program(&self, id: ProgramId) -> Result<Rc<PreparedProgram>, VmError> {

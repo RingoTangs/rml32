@@ -4,6 +4,8 @@
 
 **实施进度：**阶段 1 离线加载器见 [阶段 1 文档](rust-offline-loader.md)；阶段 2A 的值模型、对象存储和 28 种指令限定路径见 [VM 核心语义](vm-core-semantics.md)。完整解释器、调度和服务端仍未完成。
 
+阶段 2E 已完成稳定值槽、引用与成员标量写入，共 50 种限定指令路径；API 迁移和限制见 [受限引用运行时](vm-reference-runtime.md)。阶段 2D 的原始证据与设计见 [引用静态分析](vm-reference-semantics.md)。
+
 阶段 2C 已实现不可变数组和普通映射，共 43 种限定指令路径；见 [容器语义文档](vm-container-semantics.md)。
 
 阶段 2B 已扩展至 39 种限定指令路径，实数、数值转换与位运算的证据和限制见 [数值语义文档](vm-numeric-semantics.md)。执行验证仍限人工构造程序。

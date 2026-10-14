@@ -1,12 +1,15 @@
-//! Bounded core interpreter. Only synthetic tests execute in this repository workflow.
+//! Bounded Magic559 interpreter; reference artifacts are never executed by tests.
 use crate::{
+    cell::Cell,
     object::ObjectStore,
     prepared::{Instruction, PreparedFunction, PreparedProgram},
     value::{ObjectId, ProgramId, Value},
     vm_error::{VmError, VmErrorKind},
 };
-use std::rc::Rc;
-
+use std::{
+    collections::BTreeMap,
+    rc::{Rc, Weak},
+};
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum Completion {
     Returned(Value),
@@ -21,23 +24,71 @@ pub enum RunOutcome {
 pub struct VmLimits {
     pub max_stack: usize,
     pub max_frames: usize,
+    pub max_reference_cells: usize,
 }
 impl Default for VmLimits {
     fn default() -> Self {
         Self {
             max_stack: 65536,
             max_frames: 1024,
+            max_reference_cells: 65536,
         }
     }
 }
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum ReferenceKind {
+    Local,
+    Object,
+    ArrayMember,
+    MappingMember,
+    Temporary,
+}
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub enum StackSnapshot {
+    Value(Value),
+    Reference {
+        kind: ReferenceKind,
+        target_id: u64,
+        valid: bool,
+    },
+}
+#[derive(Debug, Clone)]
+enum Target {
+    Local { frame: u64, cell: Weak<Cell> },
+    Object { object: ObjectId, cell: Weak<Cell> },
+    Owned { cell: Rc<Cell>, kind: ReferenceKind },
+}
+#[derive(Debug, Clone)]
+struct Reference {
+    id: u64,
+    target: Target,
+    readonly: bool,
+    _lease: Option<Rc<()>>,
+}
+impl Reference {
+    fn kind(&self) -> ReferenceKind {
+        match &self.target {
+            Target::Local { .. } => ReferenceKind::Local,
+            Target::Object { .. } => ReferenceKind::Object,
+            Target::Owned { kind, .. } => *kind,
+        }
+    }
+    fn id(&self) -> u64 {
+        self.id
+    }
+}
+#[derive(Debug, Clone)]
+enum StackEntry {
+    Value(Rc<Cell>),
+    Reference(Reference),
+}
 #[derive(Debug, Clone)]
 struct Frame {
+    id: u64,
     program: ProgramId,
     object: ObjectId,
     function: i16,
     pc: usize,
-    // Ascending Vec equivalent of old descending-stack bp: arg 0 is bp-1;
-    // slot no is bp-1-no. Negative slots are locals/evaluation values.
     bp: usize,
     argc: usize,
     entered: bool,
@@ -45,9 +96,11 @@ struct Frame {
 #[derive(Debug)]
 pub struct Vm {
     objects: ObjectStore,
-    stack: Vec<Value>,
+    stack: Vec<StackEntry>,
     frames: Vec<Frame>,
     limits: VmLimits,
+    next_frame: u64,
+    reference_cells: BTreeMap<u64, Weak<()>>,
     completion: Option<Completion>,
     failure: Option<VmError>,
 }
@@ -58,9 +111,11 @@ impl Vm {
     pub fn new(objects: ObjectStore) -> Self {
         Self {
             objects,
-            stack: Vec::new(),
-            frames: Vec::new(),
+            stack: vec![],
+            frames: vec![],
             limits: VmLimits::default(),
+            next_frame: 0,
+            reference_cells: BTreeMap::new(),
             completion: None,
             failure: None,
         }
@@ -80,17 +135,124 @@ impl Vm {
     pub fn into_objects(self) -> ObjectStore {
         self.objects
     }
-    pub fn stack(&self) -> &[Value] {
-        &self.stack
-    }
     pub fn frame_depth(&self) -> usize {
         self.frames.len()
+    }
+    pub fn stack(&self) -> Result<Vec<StackSnapshot>, VmError> {
+        self.stack
+            .iter()
+            .map(|e| match e {
+                StackEntry::Value(c) => Ok(StackSnapshot::Value(c.read()?)),
+                StackEntry::Reference(r) => Ok(StackSnapshot::Reference {
+                    kind: r.kind(),
+                    target_id: r.id(),
+                    valid: self.resolve(r).is_ok(),
+                }),
+            })
+            .collect()
+    }
+    fn frame_id(&mut self) -> Result<u64, VmError> {
+        let id = self.next_frame;
+        self.next_frame = id
+            .checked_add(1)
+            .ok_or_else(|| err(VmErrorKind::Limit, "frame ID space exhausted"))?;
+        Ok(id)
     }
     fn copy_value(&self, value: &Value) -> Value {
         match value {
             Value::Object(id) if self.objects.get(*id).is_err() => Value::Undefined,
             _ => value.clone(),
         }
+    }
+    fn value(&self, pos: usize) -> Result<Value, VmError> {
+        match &self.stack[pos] {
+            StackEntry::Value(c) => c.read(),
+            StackEntry::Reference(_) => Err(err(
+                VmErrorKind::UnsupportedFeature,
+                "reference requires explicit dereference; reference escape is unsupported",
+            )),
+        }
+    }
+    fn set(&mut self, pos: usize, value: Value) -> Result<(), VmError> {
+        match &self.stack[pos] {
+            StackEntry::Value(c) => c.replace(value),
+            StackEntry::Reference(_) => {
+                self.stack[pos] = StackEntry::Value(Cell::new(value)?);
+                Ok(())
+            }
+        }
+    }
+    fn push_entry(&mut self, e: StackEntry) -> Result<(), VmError> {
+        if self.stack.len() >= self.limits.max_stack {
+            return Err(err(VmErrorKind::Limit, "value stack limit exceeded"));
+        }
+        self.stack.push(e);
+        Ok(())
+    }
+    fn push(&mut self, v: Value) -> Result<(), VmError> {
+        self.push_entry(StackEntry::Value(Cell::new(v)?))
+    }
+    fn reference(&self, pos: usize) -> Result<Reference, VmError> {
+        match &self.stack[pos] {
+            StackEntry::Reference(r) => Ok(r.clone()),
+            _ => Err(err(
+                VmErrorKind::UnsupportedType,
+                "instruction requires a reference",
+            )),
+        }
+    }
+    fn resolve(&self, r: &Reference) -> Result<Rc<Cell>, VmError> {
+        match &r.target {
+            Target::Local { frame, cell } => {
+                if !self.frames.iter().any(|f| f.id == *frame) {
+                    return Err(err(VmErrorKind::InvalidState, "reference frame has exited"));
+                }
+                cell.upgrade()
+                    .ok_or_else(|| err(VmErrorKind::InvalidState, "reference slot was consumed"))
+            }
+            Target::Object { object, cell } => {
+                self.objects.get(*object)?;
+                cell.upgrade()
+                    .ok_or_else(|| err(VmErrorKind::InvalidObject, "object slot was removed"))
+            }
+            Target::Owned { cell, .. } => Ok(cell.clone()),
+        }
+    }
+    fn reserve_reference(&mut self, id: Option<u64>) -> Result<(), VmError> {
+        // Bound registry memory without scanning all live slots on every query.
+        if self.reference_cells.len() >= self.limits.max_reference_cells {
+            self.reference_cells.retain(|_, w| w.strong_count() != 0);
+        }
+        if id.is_none_or(|id| !self.reference_cells.contains_key(&id))
+            && self.reference_cells.len() >= self.limits.max_reference_cells
+        {
+            return Err(err(
+                VmErrorKind::Limit,
+                "live temporary/member reference cell limit exceeded",
+            ));
+        }
+        Ok(())
+    }
+    fn owned_reference(
+        &mut self,
+        cell: Rc<Cell>,
+        kind: ReferenceKind,
+    ) -> Result<Reference, VmError> {
+        self.reserve_reference(Some(cell.id()))?;
+        let lease =
+            if let Some(token) = self.reference_cells.get(&cell.id()).and_then(Weak::upgrade) {
+                token
+            } else {
+                let t = Rc::new(());
+                self.reference_cells.insert(cell.id(), Rc::downgrade(&t));
+                t
+            };
+        Ok(Reference {
+            id: cell.id(),
+            target: Target::Owned { cell, kind },
+            readonly: false,
+            _lease: Some(lease),
+        })
     }
     pub fn start(
         &mut self,
@@ -104,8 +266,7 @@ impl Vm {
                 "an execution is already active",
             ));
         }
-        let o = self.objects.get(object)?;
-        let program = o.program();
+        let program = self.objects.get(object)?.program();
         let p = self.objects.program(program)?;
         if !p.functions.contains_key(&function_index) {
             return Err(err(
@@ -116,9 +277,15 @@ impl Vm {
         if self.limits.max_frames == 0 || arguments.len() > self.limits.max_stack {
             return Err(err(VmErrorKind::Limit, "entry exceeds VM limits"));
         }
-        let arguments: Vec<_> = arguments.iter().rev().map(|v| self.copy_value(v)).collect();
+        let arguments = arguments
+            .iter()
+            .rev()
+            .map(|v| Cell::new(self.copy_value(v)).map(StackEntry::Value))
+            .collect::<Result<Vec<_>, _>>()?;
+        let id = self.frame_id()?;
         self.stack = arguments;
         self.frames = vec![Frame {
+            id,
             program,
             object,
             function: function_index,
@@ -127,6 +294,7 @@ impl Vm {
             argc: self.stack.len(),
             entered: false,
         }];
+        self.reference_cells.clear();
         self.completion = None;
         self.failure = None;
         Ok(())
@@ -168,13 +336,6 @@ impl Vm {
         }
         Ok(RunOutcome::BudgetExhausted)
     }
-    fn push(&mut self, value: Value) -> Result<(), VmError> {
-        if self.stack.len() >= self.limits.max_stack {
-            return Err(err(VmErrorKind::Limit, "value stack limit exceeded"));
-        }
-        self.stack.push(value);
-        Ok(())
-    }
     fn context(&self) -> Result<(Frame, Rc<PreparedProgram>), VmError> {
         let frame = self
             .frames
@@ -182,24 +343,12 @@ impl Vm {
             .ok_or_else(|| err(VmErrorKind::InvalidState, "missing call frame"))?
             .clone();
         self.objects.get(frame.object)?;
-        let program = self.objects.program(frame.program)?;
-        Ok((frame, program))
+        let p = self.objects.program(frame.program)?;
+        Ok((frame, p))
     }
-    fn eval_floor(frame: &Frame, function: &PreparedFunction) -> usize {
-        frame.bp
-            + if frame.entered {
-                function.local_count
-            } else {
-                0
-            }
-    }
-    fn need(&self, n: usize, frame: &Frame, function: &PreparedFunction) -> Result<(), VmError> {
-        if self
-            .stack
-            .len()
-            .saturating_sub(Self::eval_floor(frame, function))
-            < n
-        {
+    fn need(&self, n: usize, frame: &Frame, f: &PreparedFunction) -> Result<(), VmError> {
+        let floor = frame.bp + if frame.entered { f.local_count } else { 0 };
+        if self.stack.len().saturating_sub(floor) < n {
             return Err(err(
                 VmErrorKind::StackUnderflow,
                 "instruction would consume argument/local storage",
@@ -226,6 +375,13 @@ impl Vm {
         let pos = frame.bp as i64 - 1 - i64::from(no);
         (pos >= 0 && pos < self.stack.len() as i64).then_some(pos as usize)
     }
+    fn object_cell(&self, frame: &Frame, index: i32) -> Result<Rc<Cell>, VmError> {
+        usize::try_from(index)
+            .ok()
+            .and_then(|i| self.objects.get(frame.object).ok()?.variables.get(i))
+            .cloned()
+            .ok_or_else(|| err(VmErrorKind::Bounds, "object variable index outside storage"))
+    }
     fn check_args(&mut self, frame: &Frame, f: &PreparedFunction) -> Result<(), VmError> {
         if f.args.len() != f.argument_count || frame.bp < frame.argc || self.stack.len() < frame.bp
         {
@@ -242,7 +398,7 @@ impl Vm {
         }
         for (i, arg) in f.args.iter().enumerate() {
             let pos = frame.bp - 1 - i;
-            let value = crate::numeric::coerce(self.copy_value(&self.stack[pos]), arg.r#type);
+            let value = crate::numeric::coerce(self.copy_value(&self.value(pos)?), arg.r#type);
             if arg.r#type != 255
                 && value.tag() != arg.r#type
                 && !(arg.attrib & 8 != 0 && value == Value::Undefined)
@@ -252,16 +408,8 @@ impl Vm {
                     format!("argument {i} type does not match prototype"),
                 ));
             }
-            self.stack[pos] = value;
+            self.set(pos, value)?;
         }
-        Ok(())
-    }
-    fn binary(&mut self, opcode: u8, frame: &Frame, f: &PreparedFunction) -> Result<(), VmError> {
-        self.need(2, frame, f)?;
-        let len = self.stack.len();
-        let result = crate::numeric::binary(opcode, &self.stack[len - 2], &self.stack[len - 1])?;
-        self.stack.pop();
-        self.stack[len - 2] = result;
         Ok(())
     }
     fn return_function(&mut self, frame: &Frame, f: &PreparedFunction) -> Result<(), VmError> {
@@ -271,13 +419,16 @@ impl Vm {
                 "local storage was never entered",
             ));
         }
-        let floor = frame.bp + f.local_count;
-        let count = self.stack.len().checked_sub(floor).ok_or_else(|| {
-            err(
-                VmErrorKind::StackUnderflow,
-                "function frame storage was damaged",
-            )
-        })?;
+        let count = self
+            .stack
+            .len()
+            .checked_sub(frame.bp + f.local_count)
+            .ok_or_else(|| {
+                err(
+                    VmErrorKind::StackUnderflow,
+                    "function frame storage was damaged",
+                )
+            })?;
         let result = match (f.return_type, count) {
             (1, 0) | (255, 0) => Value::Void,
             (1, _) => {
@@ -286,7 +437,7 @@ impl Vm {
                     "void function returned a value",
                 ));
             }
-            (_, 1) => self.copy_value(self.stack.last().unwrap()),
+            (_, 1) => self.copy_value(&self.value(self.stack.len() - 1)?),
             (_, 0) => {
                 return Err(err(
                     VmErrorKind::InvalidProgram,
@@ -319,6 +470,31 @@ impl Vm {
             self.push(result)
         }
     }
+    fn array_index(
+        array: &crate::container::ArrayValue,
+        key: &Value,
+        mode: i32,
+    ) -> Result<usize, VmError> {
+        let i = match key {
+            Value::Int(i) => *i,
+            Value::Real(r) => crate::numeric::trunc_i32(r.to_f32()),
+            _ => {
+                return Err(err(
+                    VmErrorKind::UnsupportedType,
+                    "array index requires a number",
+                ));
+            }
+        };
+        let i = if mode == 1 {
+            array.len() as i64 - i64::from(i)
+        } else {
+            i64::from(i)
+        };
+        if i < 0 || i >= array.len() as i64 {
+            return Err(err(VmErrorKind::Bounds, "array index outside container"));
+        }
+        Ok(i as usize)
+    }
     fn step(&mut self) -> Result<(), VmError> {
         let (frame, p) = self.context()?;
         let f = p
@@ -332,10 +508,145 @@ impl Vm {
             .get(frame.pc)
             .ok_or_else(|| err(VmErrorKind::Bounds, "program counter outside function code"))?
             .clone();
-        // regularProcessor @0x08097950 increments before dispatch.
+        // vm_regularProcessor @0x080978c4 increments IP before dispatch.
         self.frames.last_mut().unwrap().pc += 1;
         let [a, b] = operands;
+        let n = self.stack.len();
         match opcode {
+            0x03 | 0x04 => {
+                self.need(2, &frame, f)?;
+                let (target, source) = if opcode == 3 {
+                    (n - 1, n - 2)
+                } else {
+                    (n - 2, n - 1)
+                };
+                let reference = self.reference(target)?;
+                if reference.readonly {
+                    return Err(err(
+                        VmErrorKind::UnsupportedFeature,
+                        "cannot modify const reference",
+                    ));
+                }
+                let cell = self.resolve(&reference)?;
+                let value = self.copy_value(&self.value(source)?);
+                if matches!(
+                    reference.kind(),
+                    ReferenceKind::ArrayMember | ReferenceKind::MappingMember
+                ) && matches!(value, Value::Array(_) | Value::Mapping(_))
+                {
+                    return Err(err(
+                        VmErrorKind::UnsupportedType,
+                        "container member writes require scalar values",
+                    ));
+                }
+                // Allocate the result before committing the write.
+                let result = StackEntry::Value(Cell::new(value.clone())?);
+                cell.replace(value)?;
+                self.stack.truncate(n - 2);
+                self.push_entry(result)
+            }
+            0x39 => {
+                let pos = self
+                    .slot(a, &frame)
+                    .ok_or_else(|| err(VmErrorKind::Bounds, "no such local/argument slot"))?;
+                let StackEntry::Value(c) = &self.stack[pos] else {
+                    return Err(err(
+                        VmErrorKind::UnsupportedFeature,
+                        "reference arguments are unsupported",
+                    ));
+                };
+                let r = Reference {
+                    id: c.id(),
+                    target: Target::Local {
+                        frame: frame.id,
+                        cell: Rc::downgrade(c),
+                    },
+                    readonly: false,
+                    _lease: None,
+                };
+                self.push_entry(StackEntry::Reference(r))
+            }
+            0x3e => {
+                let cell = self.object_cell(&frame, a)?;
+                let r = Reference {
+                    id: cell.id(),
+                    target: Target::Object {
+                        object: frame.object,
+                        cell: Rc::downgrade(&cell),
+                    },
+                    readonly: false,
+                    _lease: None,
+                };
+                self.push_entry(StackEntry::Reference(r))
+            }
+            0x13 => {
+                self.need(1, &frame, f)?;
+                if matches!(self.stack[n - 1], StackEntry::Reference(_)) {
+                    return Ok(());
+                }
+                let value = self.value(n - 1)?;
+                if !matches!(value, Value::Array(_) | Value::Mapping(_)) {
+                    return Err(err(
+                        VmErrorKind::UnsupportedType,
+                        "pointer conversion requires array or mapping",
+                    ));
+                }
+                self.reserve_reference(None)?;
+                let cell = Cell::new(value)?;
+                let r = self.owned_reference(cell, ReferenceKind::Temporary)?;
+                self.stack[n - 1] = StackEntry::Reference(r);
+                Ok(())
+            }
+            0x14 => {
+                self.need(1, &frame, f)?;
+                let r = self.reference(n - 1)?;
+                let value = self.copy_value(&self.resolve(&r)?.read()?);
+                self.set(n - 1, value)
+            }
+            0x44 => {
+                self.need(2, &frame, f)?;
+                let old = self.reference(n - 2)?;
+                if old.readonly {
+                    return Err(err(
+                        VmErrorKind::UnsupportedFeature,
+                        "cannot modify const reference",
+                    ));
+                }
+                let key = self.value(n - 1)?;
+                // This scope must release the temporary owner Value/header before
+                // the original reference is consumed, matching native lifetimes.
+                let (cell, kind) = {
+                    let owner = self.resolve(&old)?.read()?;
+                    match owner {
+                        Value::Array(array) => {
+                            let i = Self::array_index(&array, &key, a)?;
+                            let cell = array.cell(i)?;
+                            self.reserve_reference(Some(cell.id()))?;
+                            (cell, ReferenceKind::ArrayMember)
+                        }
+                        Value::Mapping(mapping) => {
+                            let missing = mapping.insertion_needed(&key)?;
+                            if missing {
+                                self.reserve_reference(None)?;
+                            } else {
+                                let c = mapping.member(&key)?;
+                                self.reserve_reference(Some(c.id()))?;
+                            }
+                            (mapping.member(&key)?, ReferenceKind::MappingMember)
+                        }
+                        _ => {
+                            return Err(err(
+                                VmErrorKind::UnsupportedType,
+                                "member reference requires array or mapping",
+                            ));
+                        }
+                    }
+                };
+                let reference = self.owned_reference(cell, kind)?;
+                self.stack.pop();
+                self.stack[n - 2] = StackEntry::Reference(reference);
+                Ok(())
+            }
             0x16 | 0x18 => {
                 let count = usize::try_from(a).map_err(|_| {
                     err(
@@ -350,8 +661,13 @@ impl Vm {
                     ));
                 }
                 self.need(count, &frame, f)?;
-                let start = self.stack.len() - count;
-                let values: Vec<Value> = self.stack[start..].iter().rev().cloned().collect();
+                if count == 0 && n >= self.limits.max_stack {
+                    return Err(err(VmErrorKind::Limit, "value stack limit exceeded"));
+                }
+                let values = (n - count..n)
+                    .rev()
+                    .map(|i| self.value(i))
+                    .collect::<Result<Vec<_>, _>>()?;
                 let value = if opcode == 0x16 {
                     Value::array(values)?
                 } else {
@@ -364,36 +680,17 @@ impl Vm {
                             .collect(),
                     )?
                 };
-                self.stack.truncate(start);
+                self.stack.truncate(n - count);
                 self.push(value)
             }
             0x43 => {
                 self.need(2, &frame, f)?;
-                let n = self.stack.len();
-                let key = &self.stack[n - 1];
-                let selected = match &self.stack[n - 2] {
+                let key = self.value(n - 1)?;
+                let selected = match self.value(n - 2)? {
                     Value::Array(array) => {
-                        let index = match key {
-                            Value::Int(i) => *i,
-                            Value::Real(r) => crate::numeric::trunc_i32(r.to_f32()),
-                            _ => {
-                                return Err(err(
-                                    VmErrorKind::UnsupportedType,
-                                    "array index requires a number",
-                                ));
-                            }
-                        };
-                        usize::try_from(index)
-                            .ok()
-                            .and_then(|i| array.elements().get(i))
-                            .ok_or_else(|| {
-                                err(VmErrorKind::Bounds, "array index outside container")
-                            })?
-                            .clone()
+                        array.cell(Self::array_index(&array, &key, a)?)?.read()?
                     }
-                    Value::Mapping(mapping) => {
-                        mapping.get(key)?.cloned().unwrap_or(Value::Undefined)
-                    }
+                    Value::Mapping(mapping) => mapping.get(&key)?.unwrap_or(Value::Undefined),
                     _ => {
                         return Err(err(
                             VmErrorKind::UnsupportedType,
@@ -403,63 +700,61 @@ impl Vm {
                 };
                 let selected = self.copy_value(&selected);
                 self.stack.pop();
-                self.stack[n - 2] = selected;
-                Ok(())
+                self.set(n - 2, selected)
             }
             0x4f => {
                 self.need(1, &frame, f)?;
-                let size = match self.stack.last().unwrap() {
-                    Value::Array(a) => a.elements().len(),
-                    Value::Mapping(m) => m.entries().len(),
+                let size = match self.value(n - 1)? {
+                    Value::Array(a) => a.len(),
+                    Value::Mapping(m) => m.len()?,
                     Value::Bytes(b) => b.len(),
                     _ => 0,
                 };
                 let size = i32::try_from(size)
                     .map_err(|_| err(VmErrorKind::Limit, "size exceeds legacy integer range"))?;
-                *self.stack.last_mut().unwrap() = Value::Int(size);
-                Ok(())
+                self.set(n - 1, Value::Int(size))
             }
             0x01 | 0x19 | 0x28 | 0x29 | 0x51 | 0x1c | 0x1e | 0x20 | 0x25 | 0x27 | 0x02 | 0x30
-            | 0x55 | 0x26 | 0x4b | 0x2a => self.binary(opcode, &frame, f),
+            | 0x55 | 0x26 | 0x4b | 0x2a => {
+                self.need(2, &frame, f)?;
+                let result =
+                    crate::numeric::binary(opcode, &self.value(n - 2)?, &self.value(n - 1)?)?;
+                self.stack.pop();
+                self.set(n - 2, result)
+            }
             0x2b => {
                 self.need(1, &frame, f)?;
-                let value = self.stack.last_mut().unwrap();
-                match value {
-                    Value::Int(n) => *n = n.wrapping_neg(),
-                    Value::Real(r) => *r = crate::RealBits::from_bits(r.bits() ^ 0x80000000),
+                let result = match self.value(n - 1)? {
+                    Value::Int(i) => Value::Int(i.wrapping_neg()),
+                    Value::Real(r) => {
+                        Value::Real(crate::RealBits::from_bits(r.bits() ^ 0x80000000))
+                    }
                     _ => {
                         return Err(err(
                             VmErrorKind::UnsupportedType,
                             "negation requires numbers",
                         ));
                     }
-                }
-                Ok(())
+                };
+                self.set(n - 1, result)
             }
             0x3b | 0x3c => self.push(Value::Int(a)),
             0x42 => self.push(Value::Undefined),
             0x3f => self.push(Value::Real(crate::RealBits::from_bits(a as u32))),
             0x0d => {
                 self.need(1, &frame, f)?;
-                if b & 2 != 0 {
-                    return Err(err(
-                        VmErrorKind::UnsupportedFeature,
-                        "const casts are unsupported",
-                    ));
-                }
-                let value = crate::numeric::cast(self.stack.last().unwrap(), a)?;
-                *self.stack.last_mut().unwrap() = value;
-                Ok(())
+                let v = crate::numeric::cast(&self.value(n - 1)?, a)?;
+                self.set(n - 1, v)
             }
             0x24 | 0x2d | 0x4a => {
                 self.need(1, &frame, f)?;
-                let value = self.copy_value(self.stack.last().unwrap());
+                let value = self.copy_value(&self.value(n - 1)?);
                 let result = match opcode {
                     0x24 => i32::from(i32::from(value.tag()) == a),
                     0x2d => i32::from(crate::numeric::zero(&value)),
-                    0x4a => {
-                        if let Value::Int(n) = value {
-                            !n
+                    _ => {
+                        if let Value::Int(i) = value {
+                            !i
                         } else {
                             return Err(err(
                                 VmErrorKind::UnsupportedType,
@@ -467,10 +762,8 @@ impl Vm {
                             ));
                         }
                     }
-                    _ => unreachable!(),
                 };
-                *self.stack.last_mut().unwrap() = Value::Int(result);
-                Ok(())
+                self.set(n - 1, Value::Int(result))
             }
             0x40 => {
                 let value = usize::try_from(a)
@@ -483,60 +776,46 @@ impl Vm {
                 self.push(value.clone())
             }
             0x32 | 0x33 => {
-                let n = if opcode == 0x33 { 1 } else { a.max(0) as usize };
-                self.need(n, &frame, f)?;
-                self.stack.truncate(self.stack.len() - n);
+                let count = if opcode == 0x33 { 1 } else { a.max(0) as usize };
+                self.need(count, &frame, f)?;
+                self.stack.truncate(n - count);
                 Ok(())
             }
             0x37 => {
-                let value = self
-                    .slot(a, &frame)
-                    .map_or(Value::Undefined, |n| self.copy_value(&self.stack[n]));
-                self.push(value)
+                let v = if let Some(pos) = self.slot(a, &frame) {
+                    self.copy_value(&self.value(pos)?)
+                } else {
+                    Value::Undefined
+                };
+                self.push(v)
             }
             0x4d => {
                 self.need(1, &frame, f)?;
                 let pos = self
                     .slot(a, &frame)
                     .ok_or_else(|| err(VmErrorKind::Bounds, "no such local/argument slot"))?;
-                self.stack[pos] = self.copy_value(self.stack.last().unwrap());
-                Ok(())
+                let value = self.copy_value(&self.value(n - 1)?);
+                // Reference-parameter forwarding is outside this bounded core.
+                self.value(pos)?;
+                self.set(pos, value)
             }
             0x3d => {
-                let value = usize::try_from(a)
-                    .ok()
-                    .and_then(|n| self.objects.get(frame.object).ok()?.variables.get(n))
-                    .ok_or_else(|| {
-                        err(VmErrorKind::Bounds, "object variable index outside storage")
-                    })?;
-                self.push(self.copy_value(value))
+                let value = self.copy_value(&self.object_cell(&frame, a)?.read()?);
+                self.push(value)
             }
             0x4e => {
                 self.need(1, &frame, f)?;
-                let value = self.copy_value(self.stack.last().unwrap());
-                let slot = usize::try_from(a)
-                    .ok()
-                    .and_then(|n| {
-                        self.objects
-                            .get_mut(frame.object)
-                            .ok()?
-                            .variables
-                            .get_mut(n)
-                    })
-                    .ok_or_else(|| {
-                        err(VmErrorKind::Bounds, "object variable index outside storage")
-                    })?;
-                *slot = value;
-                Ok(())
+                let cell = self.object_cell(&frame, a)?;
+                let value = self.copy_value(&self.value(n - 1)?);
+                cell.replace(value)
             }
             0x1f => self.jump(a, f.instructions.len()),
             0x21 => {
                 self.need(1, &frame, f)?;
-                let value = self.copy_value(self.stack.last().unwrap());
+                let value = self.copy_value(&self.value(n - 1)?);
                 let zero = crate::numeric::zero(&value);
-                *self.stack.last_mut().unwrap() = value;
-                let jump_on_true = b & 1 != 0;
-                if zero != jump_on_true {
+                self.set(n - 1, value)?;
+                if zero != (b & 1 != 0) {
                     self.jump(a, f.instructions.len())?;
                 }
                 if b & 2 != 0 {
@@ -552,16 +831,13 @@ impl Vm {
                 if frame.entered {
                     return Err(err(VmErrorKind::InvalidProgram, "function entered twice"));
                 }
-                if self.stack.len() != frame.bp {
+                if n != frame.bp {
                     return Err(err(
                         VmErrorKind::InvalidProgram,
                         "function entry has unexpected evaluation values",
                     ));
                 }
-                if self
-                    .stack
-                    .len()
-                    .checked_add(f.local_count)
+                if n.checked_add(f.local_count)
                     .is_none_or(|n| n > self.limits.max_stack)
                 {
                     return Err(err(
@@ -569,20 +845,19 @@ impl Vm {
                         "local allocation exceeds stack limit",
                     ));
                 }
-                self.stack
-                    .resize(self.stack.len() + f.local_count, Value::Undefined);
+                let locals = (0..f.local_count)
+                    .map(|_| Cell::new(Value::Undefined).map(StackEntry::Value))
+                    .collect::<Result<Vec<_>, _>>()?;
+                self.stack.extend(locals);
                 self.frames.last_mut().unwrap().entered = true;
                 Ok(())
             }
             0x07 => {
-                if b & 0x80 != 0 {
-                    return Err(err(
-                        VmErrorKind::UnsupportedFeature,
-                        "global calls are unsupported",
-                    ));
-                }
                 let argc = (b & 0x3f) as usize;
                 self.need(argc, &frame, f)?;
+                for i in n - argc..n {
+                    self.value(i)?;
+                }
                 if self.frames.len() >= self.limits.max_frames {
                     return Err(err(VmErrorKind::Limit, "call frame limit exceeded"));
                 }
@@ -593,12 +868,14 @@ impl Vm {
                         "local function index does not exist",
                     ));
                 }
+                let id = self.frame_id()?;
                 self.frames.push(Frame {
+                    id,
                     program: frame.program,
                     object: frame.object,
                     function: index,
                     pc: 0,
-                    bp: self.stack.len(),
+                    bp: n,
                     argc,
                     entered: false,
                 });
@@ -614,5 +891,81 @@ impl Vm {
                 format!("opcode {opcode:#x} is unsupported"),
             )),
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    #[test]
+    fn local_reference_cannot_revive_after_frame_exit_or_slot_reuse() {
+        let mut vm = Vm::new(ObjectStore::new());
+        let id = vm.frame_id().unwrap();
+        let cell = Cell::new(Value::Int(7)).unwrap();
+        let reference = Reference {
+            id: cell.id(),
+            target: Target::Local {
+                frame: id,
+                cell: Rc::downgrade(&cell),
+            },
+            readonly: false,
+            _lease: None,
+        };
+        vm.frames.push(Frame {
+            id,
+            program: ProgramId(0),
+            object: ObjectId(0),
+            function: 0,
+            pc: 0,
+            bp: 0,
+            argc: 0,
+            entered: true,
+        });
+        assert_eq!(
+            vm.resolve(&reference).unwrap().read().unwrap(),
+            Value::Int(7)
+        );
+        vm.frames.clear();
+        let new_id = vm.frame_id().unwrap();
+        assert_ne!(id, new_id);
+        vm.frames.push(Frame {
+            id: new_id,
+            program: ProgramId(0),
+            object: ObjectId(0),
+            function: 0,
+            pc: 0,
+            bp: 0,
+            argc: 0,
+            entered: true,
+        });
+        assert_eq!(
+            vm.resolve(&reference).unwrap_err().kind,
+            VmErrorKind::InvalidState
+        );
+        vm.frames[0].id = id;
+        drop(cell);
+        assert_eq!(
+            vm.resolve(&reference).unwrap_err().kind,
+            VmErrorKind::InvalidState
+        );
+        assert_ne!(reference.id(), 0);
+    }
+    #[test]
+    fn object_reference_resolve_checks_the_owner_even_if_cell_is_retained() {
+        let vm = Vm::new(ObjectStore::new());
+        let cell = Cell::new(Value::Int(7)).unwrap();
+        let reference = Reference {
+            id: cell.id(),
+            target: Target::Object {
+                object: ObjectId(0),
+                cell: Rc::downgrade(&cell),
+            },
+            readonly: false,
+            _lease: None,
+        };
+        assert_eq!(
+            vm.resolve(&reference).unwrap_err().kind,
+            VmErrorKind::InvalidObject
+        );
     }
 }

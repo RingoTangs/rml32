@@ -1,14 +1,11 @@
-//! Immutable, acyclic container storage. Native mutation/refcount APIs are not exposed.
-use crate::{Value, VmError, VmErrorKind};
-use std::collections::BTreeMap;
-use std::rc::Rc;
-
+//! Shared acyclic containers with private stable slots and owned read snapshots.
+use crate::{Value, VmError, VmErrorKind, cell::Cell};
+use std::{cell::RefCell, collections::BTreeMap, rc::Rc};
 const MAX_ITEMS: usize = 65536;
 const MAX_DEPTH: usize = 64;
 #[derive(Debug)]
 struct ArrayData {
-    elements: Vec<Value>,
-    depth: usize,
+    elements: Vec<Rc<Cell>>,
 }
 #[derive(Debug, Clone)]
 pub struct ArrayValue(Rc<ArrayData>);
@@ -19,21 +16,40 @@ impl PartialEq for ArrayValue {
 }
 impl Eq for ArrayValue {}
 impl ArrayValue {
-    pub fn elements(&self) -> &[Value] {
-        &self.0.elements
+    /// Shallow snapshot: nested containers continue to share their identity.
+    pub fn elements(&self) -> Result<Vec<Value>, VmError> {
+        self.0.elements.iter().map(|c| c.read()).collect()
     }
-    pub fn depth(&self) -> usize {
-        self.0.depth
+    pub fn depth(&self) -> Result<usize, VmError> {
+        depth(&Value::Array(self.clone()), &mut BTreeMap::new())
+    }
+    pub(crate) fn len(&self) -> usize {
+        self.0.elements.len()
+    }
+    pub(crate) fn cell(&self, index: usize) -> Result<Rc<Cell>, VmError> {
+        self.0
+            .elements
+            .get(index)
+            .cloned()
+            .ok_or_else(|| VmError::new(VmErrorKind::Bounds, "array index outside container"))
     }
 }
 #[derive(Debug)]
 struct MappingData {
-    entries: Vec<(Value, Value)>,
+    entries: Vec<(Value, Rc<Cell>)>,
     index: BTreeMap<Key, usize>,
-    depth: usize,
+}
+impl Drop for MappingData {
+    fn drop(&mut self) {
+        // Native vm_freeNode clears values even when external member references
+        // retain their cells. No Cell guards can be held across header drops.
+        for (_, cell) in &self.entries {
+            cell.clear_on_owner_drop();
+        }
+    }
 }
 #[derive(Debug, Clone)]
-pub struct MappingValue(Rc<MappingData>);
+pub struct MappingValue(Rc<RefCell<MappingData>>);
 impl PartialEq for MappingValue {
     fn eq(&self, other: &Self) -> bool {
         Rc::ptr_eq(&self.0, &other.0)
@@ -41,26 +57,84 @@ impl PartialEq for MappingValue {
 }
 impl Eq for MappingValue {}
 impl MappingValue {
-    pub fn entries(&self) -> &[(Value, Value)] {
-        &self.0.entries
+    pub fn entries(&self) -> Result<Vec<(Value, Value)>, VmError> {
+        let data = self.0.try_borrow().map_err(|_| borrow_error())?;
+        data.entries
+            .iter()
+            .map(|(k, c)| Ok((k.clone(), c.read()?)))
+            .collect()
     }
-    pub fn depth(&self) -> usize {
-        self.0.depth
+    pub fn get(&self, key: &Value) -> Result<Option<Value>, VmError> {
+        self.lookup(key)?.map(|c| c.read()).transpose()
     }
-    pub fn get(&self, key: &Value) -> Result<Option<&Value>, VmError> {
+    pub fn depth(&self) -> Result<usize, VmError> {
+        depth(&Value::Mapping(self.clone()), &mut BTreeMap::new())
+    }
+    pub(crate) fn len(&self) -> Result<usize, VmError> {
         Ok(self
             .0
-            .index
-            .get(&Key::new(key)?)
-            .map(|&i| &self.0.entries[i].1))
+            .try_borrow()
+            .map_err(|_| borrow_error())?
+            .entries
+            .len())
+    }
+    fn lookup(&self, key: &Value) -> Result<Option<Rc<Cell>>, VmError> {
+        let key = Key::new(key)?;
+        let data = self.0.try_borrow().map_err(|_| borrow_error())?;
+        Ok(data.index.get(&key).map(|&i| data.entries[i].1.clone()))
+    }
+    pub(crate) fn insertion_needed(&self, key: &Value) -> Result<bool, VmError> {
+        let missing = self.lookup(key)?.is_none();
+        if missing && self.len()? >= MAX_ITEMS {
+            return Err(VmError::new(
+                VmErrorKind::Limit,
+                "mapping item limit exceeded",
+            ));
+        }
+        Ok(missing)
+    }
+    pub(crate) fn member(&self, key: &Value) -> Result<Rc<Cell>, VmError> {
+        if let Some(c) = self.lookup(key)? {
+            return Ok(c);
+        }
+        self.insertion_needed(key)?;
+        let k = Key::new(key)?;
+        let cell = Cell::new(Value::Undefined)?;
+        let mut data = self.0.try_borrow_mut().map_err(|_| borrow_error())?;
+        let i = data.entries.len();
+        data.entries.push((key.clone(), cell.clone()));
+        data.index.insert(k, i);
+        Ok(cell)
     }
 }
-fn depth(value: &Value) -> usize {
-    match value {
-        Value::Array(a) => a.depth(),
-        Value::Mapping(m) => m.depth(),
-        _ => 0,
+fn borrow_error() -> VmError {
+    VmError::new(VmErrorKind::InvalidState, "mapping is borrowed")
+}
+fn depth(value: &Value, memo: &mut BTreeMap<(u8, usize), usize>) -> Result<usize, VmError> {
+    let (key, values) = match value {
+        Value::Array(a) => {
+            let key = (6, Rc::as_ptr(&a.0) as usize);
+            if let Some(&d) = memo.get(&key) {
+                return Ok(d);
+            }
+            (key, a.elements()?)
+        }
+        Value::Mapping(m) => {
+            let key = (7, Rc::as_ptr(&m.0) as usize);
+            if let Some(&d) = memo.get(&key) {
+                return Ok(d);
+            }
+            (key, m.entries()?.into_iter().map(|(_, v)| v).collect())
+        }
+        _ => return Ok(0),
+    };
+    let mut d = 1;
+    for v in values {
+        d = d.max(depth(&v, memo)? + 1);
     }
+    validate(0, d)?;
+    memo.insert(key, d);
+    Ok(d)
 }
 fn validate(count: usize, depth: usize) -> Result<(), VmError> {
     if count > MAX_ITEMS || depth > MAX_DEPTH {
@@ -71,15 +145,26 @@ fn validate(count: usize, depth: usize) -> Result<(), VmError> {
     }
     Ok(())
 }
+fn validate_values<'a>(
+    count: usize,
+    values: impl Iterator<Item = &'a Value>,
+) -> Result<(), VmError> {
+    validate(count, 1)?;
+    let mut memo = BTreeMap::new();
+    for v in values {
+        validate(count, depth(v, &mut memo)? + 1)?;
+    }
+    Ok(())
+}
 pub(crate) fn array(elements: Vec<Value>) -> Result<Value, VmError> {
-    let depth = elements.iter().map(depth).max().unwrap_or(0) + 1;
-    validate(elements.len(), depth)?;
+    validate_values(elements.len(), elements.iter())?;
     Ok(Value::Array(ArrayValue(Rc::new(ArrayData {
-        elements,
-        depth,
+        elements: elements
+            .into_iter()
+            .map(Cell::new)
+            .collect::<Result<_, _>>()?,
     }))))
 }
-
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
 enum Key {
     Int(i32),
@@ -97,7 +182,6 @@ impl Key {
         }
     }
 }
-/// Entries are consumed in encounter order; the last value for a key wins.
 pub(crate) fn mapping(entries: Vec<(Value, Value)>) -> Result<Value, VmError> {
     validate(entries.len(), 1)?;
     let mut index = BTreeMap::new();
@@ -111,11 +195,12 @@ pub(crate) fn mapping(entries: Vec<(Value, Value)>) -> Result<Value, VmError> {
             unique.push((key, value));
         }
     }
-    let depth = unique.iter().map(|(_, v)| depth(v)).max().unwrap_or(0) + 1;
-    validate(unique.len(), depth)?;
-    Ok(Value::Mapping(MappingValue(Rc::new(MappingData {
-        entries: unique,
-        index,
-        depth,
-    }))))
+    validate_values(unique.len(), unique.iter().map(|(_, v)| v))?;
+    let entries = unique
+        .into_iter()
+        .map(|(k, v)| Ok((k, Cell::new(v)?)))
+        .collect::<Result<_, VmError>>()?;
+    Ok(Value::Mapping(MappingValue(Rc::new(RefCell::new(
+        MappingData { entries, index },
+    )))))
 }

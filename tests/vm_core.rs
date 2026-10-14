@@ -301,7 +301,7 @@ fn nested_calls_preserve_argument_order_and_cleanup_frame_storage() {
     let (mut vm, o) = machine(image(&[caller, callee], 0, &[]), vec![]);
     vm.start(o, 0, vec![]).unwrap();
     returns(&mut vm, Value::Int(97));
-    assert!(vm.stack().is_empty());
+    assert!(vm.stack().unwrap().is_empty());
     assert_eq!(vm.frame_depth(), 0);
 }
 #[test]
@@ -431,7 +431,10 @@ fn budget_exhaustion_preserves_loop_state_and_can_resume() {
         vm.run(0).unwrap(),
         RunOutcome::Finished(Completion::Returned(Value::Int(3)))
     );
-    assert_eq!(vm.objects().get(o).unwrap().variables(), &[Value::Int(3)]);
+    assert_eq!(
+        vm.objects().get(o).unwrap().variables().unwrap(),
+        &[Value::Int(3)]
+    );
     let (mut full, o) = machine(p, vec![Value::Int(0)]);
     full.start(o, 0, vec![]).unwrap();
     returns(&mut full, Value::Int(3));
@@ -452,7 +455,10 @@ fn object_variables_are_isolated_and_handles_are_not_reused() {
     let mut vm = Vm::new(store);
     vm.start(a, 0, vec![]).unwrap();
     returns(&mut vm, Value::Int(1));
-    assert_eq!(vm.objects().get(b).unwrap().variables(), &[Value::Int(9)]);
+    assert_eq!(
+        vm.objects().get(b).unwrap().variables().unwrap(),
+        &[Value::Int(9)]
+    );
     vm.objects_mut().remove(a).unwrap();
     assert_eq!(
         vm.objects().get(a).unwrap_err().kind,
@@ -501,7 +507,10 @@ fn finish_stops_the_action_without_fabricating_a_return_value() {
         vm.run(100).unwrap(),
         RunOutcome::Finished(Completion::ActionFinished)
     );
-    assert_eq!(vm.stack(), &[Value::Int(9)]);
+    assert_eq!(
+        vm.stack().unwrap(),
+        &[rml32::StackSnapshot::Value(Value::Int(9))]
+    );
 }
 #[test]
 fn fixed_argument_check_skips_default_code_count_and_validates_types() {
@@ -543,6 +552,7 @@ fn frame_and_stack_limits_terminate_recursion_and_allocation() {
     let mut vm = Vm::with_limits(
         vm.into_objects(),
         VmLimits {
+            max_reference_cells: 65536,
             max_stack: 5,
             max_frames: 3,
         },
@@ -554,6 +564,7 @@ fn frame_and_stack_limits_terminate_recursion_and_allocation() {
     let mut vm = Vm::with_limits(
         vm.into_objects(),
         VmLimits {
+            max_reference_cells: 65536,
             max_stack: 1,
             max_frames: 3,
         },
@@ -576,7 +587,7 @@ fn unsupported_program_shapes_fail_explicitly() {
         prepare_program(global).unwrap_err().kind,
         VmErrorKind::UnsupportedFeature
     );
-    for (opcode, b) in [(6, 0), (7, -128), (0x44, 0), (0x0e, 0)] {
+    for (opcode, b) in [(6, 0), (7, -128), (0x46, 0), (0x0e, 0)] {
         let p = image(&[fun(0, 0, 0, 255, &[(0, b, opcode)])], 0, &[]);
         let e = prepare_program(p).unwrap_err();
         assert_eq!(e.kind, VmErrorKind::UnsupportedFeature);
@@ -639,7 +650,7 @@ fn supported_types_have_explicit_legacy_tags() {
         [0, 1, 2, 4, 10]
     );
     let supported: BTreeSet<_> = rml32::prepared::SUPPORTED_OPCODES.iter().collect();
-    assert_eq!(supported.len(), 43);
+    assert_eq!(supported.len(), 50);
     assert_eq!(ByteString::new(b"\xff").bytes, b"\xff");
 }
 
@@ -995,7 +1006,7 @@ fn array_constructor_preserves_top_first_order_and_empty_size() {
     let RunOutcome::Finished(Completion::Returned(Value::Array(a))) = result else {
         panic!("array expected")
     };
-    assert_eq!(a.elements(), &[Value::Int(22), Value::Int(11)]);
+    assert_eq!(a.elements().unwrap(), &[Value::Int(22), Value::Int(11)]);
     assert_eq!(
         container_run(&[(0, 0, 0x16), (0, 0, 0x4f)], vec![]).unwrap(),
         RunOutcome::Finished(Completion::Returned(Value::Int(0)))
@@ -1032,7 +1043,7 @@ fn mapping_bytes_are_case_sensitive_non_utf8_and_length_sensitive() {
     let Value::Mapping(m) = &map else {
         unreachable!()
     };
-    assert_eq!(m.entries().len(), 2);
+    assert_eq!(m.entries().unwrap().len(), 2);
     for (key, expected) in [
         (b"A\xff\0".as_slice(), Value::Int(3)),
         (b"a\xff\0".as_slice(), Value::Int(2)),
@@ -1107,7 +1118,7 @@ fn container_type_restrictions_and_access_modes_are_explicit() {
             VmErrorKind::UnsupportedType
         );
     }
-    for flag in [1, 2, -1] {
+    for flag in [2, -1] {
         assert_eq!(
             prepare_program(image(&[fun(0, 0, 0, 255, &[(flag, 0, 0x43)])], 0, &[]))
                 .unwrap_err()
@@ -1225,11 +1236,11 @@ fn reassigning_object_variable_preserves_shared_container_and_object_isolation()
         RunOutcome::Finished(Completion::Returned(Value::Array(_)))
     ));
     assert_eq!(
-        vm.objects().get(other).unwrap().variables(),
+        vm.objects().get(other).unwrap().variables().unwrap(),
         std::slice::from_ref(&old)
     );
     let Value::Array(a) = old else { unreachable!() };
-    assert_eq!(a.elements(), &[Value::Int(7)]);
+    assert_eq!(a.elements().unwrap(), &[Value::Int(7)]);
 }
 #[test]
 fn member_copy_normalizes_destroyed_object_without_mutating_container() {
@@ -1257,5 +1268,537 @@ fn member_copy_normalizes_destroyed_object_without_mutating_container() {
     let Value::Array(a) = original else {
         unreachable!()
     };
-    assert_eq!(a.elements(), &[Value::Object(dead)]);
+    assert_eq!(a.elements().unwrap(), &[Value::Object(dead)]);
+}
+
+#[test]
+fn reference_assignments_preserve_result_and_update_stable_local_slots() {
+    for nodes in [
+        vec![(9, 0, 0x3b), (-1, 0, 0x39), (0, 0, 0x03)],
+        vec![(-1, 0, 0x39), (9, 0, 0x3b), (0, 0, 0x04)],
+    ] {
+        let (mut vm, o) = machine(image(&[fun(0, 0, 1, 2, &nodes)], 0, &[]), vec![]);
+        vm.start(o, 0, vec![]).unwrap();
+        returns(&mut vm, Value::Int(9));
+    }
+    let nodes = [
+        (9, 0, 0x3b),
+        (0, 0, 0x39),
+        (0, 0, 0x03),
+        (0, 0, 0x33),
+        (0, 0, 0x37),
+    ];
+    assert_eq!(
+        container_run(&nodes, vec![Value::Int(1)]).unwrap(),
+        RunOutcome::Finished(Completion::Returned(Value::Int(9)))
+    );
+}
+#[test]
+fn object_reference_assignment_keeps_objects_isolated_and_allows_container_rebinding() {
+    let array = Value::array(vec![Value::Int(4)]).unwrap();
+    let nodes = [(0, 0, 0x37), (0, 0, 0x3e), (0, 0, 0x03)];
+    let (mut vm, a) = machine(
+        image(&[fun(0, 1, 0, 6, &nodes)], 1, &[]),
+        vec![Value::Int(1)],
+    );
+    let pid = vm.objects().get(a).unwrap().program();
+    let b = vm.objects_mut().create(pid, vec![Value::Int(2)]).unwrap();
+    vm.start(a, 0, vec![array.clone()]).unwrap();
+    returns(&mut vm, array.clone());
+    assert_eq!(
+        vm.objects().get(a).unwrap().variables().unwrap(),
+        vec![array]
+    );
+    assert_eq!(
+        vm.objects().get(b).unwrap().variables().unwrap(),
+        vec![Value::Int(2)]
+    );
+}
+#[test]
+fn shared_array_and_mapping_member_writes_are_visible_to_aliases() {
+    for container in [
+        Value::array(vec![Value::Int(1)]).unwrap(),
+        Value::mapping(vec![(Value::Int(0), Value::Int(1))]).unwrap(),
+    ] {
+        let nodes = [
+            (9, 0, 0x3b),
+            (0, 0, 0x3e),
+            (0, 0, 0x3b),
+            (0, 0, 0x44),
+            (0, 0, 0x03),
+            (0, 0, 0x33),
+            (1, 0, 0x3d),
+            (0, 0, 0x3b),
+            (0, 0, 0x43),
+        ];
+        let (mut vm, o) = machine(
+            image(&[fun(0, 0, 0, 2, &nodes)], 2, &[]),
+            vec![container.clone(), container.clone()],
+        );
+        vm.start(o, 0, vec![]).unwrap();
+        returns(&mut vm, Value::Int(9));
+        assert_eq!(
+            vm.objects().get(o).unwrap().variables().unwrap(),
+            vec![container.clone(), container]
+        );
+    }
+}
+#[test]
+fn member_refs_keep_old_slots_after_variable_rebinding_with_native_release_difference() {
+    for (old, new, expected) in [
+        (
+            Value::array(vec![Value::Int(8)]).unwrap(),
+            Value::array(vec![]).unwrap(),
+            Value::Int(8),
+        ),
+        (
+            Value::mapping(vec![(Value::Int(0), Value::Int(8))]).unwrap(),
+            Value::mapping(vec![]).unwrap(),
+            Value::Undefined,
+        ),
+    ] {
+        // No host copy of old header is retained. The member Ref alone survives.
+        let nodes = [
+            (0, 0, 0x3e),
+            (0, 0, 0x3b),
+            (0, 0, 0x44),
+            (0, 0, 0x37),
+            (0, 0, 0x4e),
+            (0, 0, 0x33),
+            (0, 0, 0x14),
+        ];
+        let (mut vm, o) = machine(image(&[fun(0, 1, 0, 255, &nodes)], 1, &[]), vec![old]);
+        vm.start(o, 0, vec![new]).unwrap();
+        returns(&mut vm, expected);
+    }
+}
+#[test]
+fn temporary_array_and_mapping_conversion_release_headers_at_the_right_time() {
+    for (op, key, expected) in [(0x16, 0, Value::Int(9)), (0x18, 7, Value::Undefined)] {
+        let mut nodes = vec![(9, 0, 0x3b)];
+        if op == 0x18 {
+            nodes.push((7, 0, 0x3b));
+        }
+        nodes.extend([
+            (if op == 0x16 { 1 } else { 2 }, 0, op),
+            (0, 0, 0x13),
+            (0, 0, 0x13),
+            (key, 0, 0x3b),
+            (0, 0, 0x44),
+            (0, 0, 0x14),
+        ]);
+        assert_eq!(
+            container_run(&nodes, vec![]).unwrap(),
+            RunOutcome::Finished(Completion::Returned(expected))
+        );
+    }
+}
+#[test]
+fn missing_mapping_reference_inserts_undefined_before_assignment() {
+    let m = Value::mapping(vec![]).unwrap();
+    let nodes = [(0, 0, 0x3e), (7, 0, 0x3b), (1, 0, 0x44), (0, 0, 0x14)];
+    let (mut vm, o) = machine(image(&[fun(0, 0, 0, 255, &nodes)], 1, &[]), vec![m.clone()]);
+    vm.start(o, 0, vec![]).unwrap();
+    returns(&mut vm, Value::Undefined);
+    let Value::Mapping(m) = m else { unreachable!() };
+    assert_eq!(
+        m.entries().unwrap(),
+        vec![(Value::Int(7), Value::Undefined)]
+    );
+}
+#[test]
+fn failed_member_container_write_preserves_value_and_successful_prior_insertion() {
+    for existing in [false, true] {
+        let m = Value::mapping(if existing {
+            vec![(Value::Int(7), Value::Int(5))]
+        } else {
+            vec![]
+        })
+        .unwrap();
+        let nodes = [
+            (0, 0, 0x37),
+            (0, 0, 0x3e),
+            (7, 0, 0x3b),
+            (0, 0, 0x44),
+            (0, 0, 0x03),
+        ];
+        let (mut vm, o) = machine(image(&[fun(0, 1, 0, 255, &nodes)], 1, &[]), vec![m.clone()]);
+        vm.start(o, 0, vec![Value::array(vec![]).unwrap()]).unwrap();
+        let e = vm.run(100).unwrap_err();
+        assert_eq!(e.kind, VmErrorKind::UnsupportedType);
+        assert_eq!(e.pc, Some(6));
+        assert!(
+            e.program.is_some() && e.object.is_some() && e.function.is_some() && e.offset.is_some()
+        );
+        assert_eq!(vm.run(100).unwrap_err(), e);
+        let Value::Mapping(m) = m else { unreachable!() };
+        assert_eq!(
+            m.get(&Value::Int(7)).unwrap(),
+            Some(if existing {
+                Value::Int(5)
+            } else {
+                Value::Undefined
+            })
+        );
+    }
+}
+#[test]
+fn nested_member_writes_and_depth_recompute_follow_shared_identity() {
+    let inner = Value::array(vec![Value::Int(1)]).unwrap();
+    let outer = Value::array(vec![inner.clone()]).unwrap();
+    let nodes = [
+        (9, 0, 0x3b),
+        (0, 0, 0x3e),
+        (0, 0, 0x3b),
+        (0, 0, 0x44),
+        (0, 0, 0x3b),
+        (0, 0, 0x44),
+        (0, 0, 0x03),
+    ];
+    let (mut vm, o) = machine(
+        image(&[fun(0, 0, 0, 2, &nodes)], 1, &[]),
+        vec![outer.clone()],
+    );
+    vm.start(o, 0, vec![]).unwrap();
+    returns(&mut vm, Value::Int(9));
+    let Value::Array(inner) = inner else {
+        unreachable!()
+    };
+    assert_eq!(inner.elements().unwrap(), vec![Value::Int(9)]);
+    // Replace the nested container itself with a scalar: no new graph edges.
+    let nodes = [
+        (3, 0, 0x3b),
+        (0, 0, 0x3e),
+        (0, 0, 0x3b),
+        (0, 0, 0x44),
+        (0, 0, 0x03),
+    ];
+    let (mut vm, o) = machine(
+        image(&[fun(0, 0, 0, 2, &nodes)], 1, &[]),
+        vec![outer.clone()],
+    );
+    vm.start(o, 0, vec![]).unwrap();
+    returns(&mut vm, Value::Int(3));
+    let Value::Array(a) = outer else {
+        unreachable!()
+    };
+    assert_eq!(a.depth().unwrap(), 1);
+}
+#[test]
+fn depth_memoizes_shared_subgraphs_and_obeys_existing_limit() {
+    let mut value = Value::Int(0);
+    for _ in 0..64 {
+        value = Value::array(vec![value.clone(), value]).unwrap();
+    }
+    let Value::Array(a) = &value else {
+        unreachable!()
+    };
+    assert_eq!(a.depth().unwrap(), 64);
+    assert!(Value::array(vec![value]).is_err());
+}
+#[test]
+fn reverse_array_modes_read_and_write_with_truncated_real_indices() {
+    for key in [Value::Int(1), real(1.9)] {
+        let a = Value::array(vec![Value::Int(4), Value::Int(5), Value::Int(6)]).unwrap();
+        assert_eq!(
+            container_run(
+                &[(0, 0, 0x37), (1, 0, 0x37), (1, 0, 0x43)],
+                vec![a.clone(), key.clone()]
+            )
+            .unwrap(),
+            RunOutcome::Finished(Completion::Returned(Value::Int(6)))
+        );
+        let nodes = [
+            (9, 0, 0x3b),
+            (0, 0, 0x3e),
+            (0, 0, 0x37),
+            (1, 0, 0x44),
+            (0, 0, 0x03),
+        ];
+        let (mut vm, o) = machine(image(&[fun(0, 1, 0, 2, &nodes)], 1, &[]), vec![a.clone()]);
+        vm.start(o, 0, vec![key]).unwrap();
+        returns(&mut vm, Value::Int(9));
+        let Value::Array(a) = a else { unreachable!() };
+        assert_eq!(
+            a.elements().unwrap(),
+            vec![Value::Int(4), Value::Int(5), Value::Int(9)]
+        );
+    }
+    for key in [0, 4, -1] {
+        assert_eq!(
+            container_run(
+                &[(0, 0, 0x37), (key, 0, 0x3b), (1, 0, 0x43)],
+                vec![Value::array(vec![Value::Int(1); 3]).unwrap()]
+            )
+            .unwrap_err()
+            .kind,
+            VmErrorKind::Bounds
+        );
+    }
+}
+#[test]
+fn reference_writes_preserve_raw_byte_keys_and_scalar_types() {
+    for value in [
+        Value::Int(2),
+        real(2.5),
+        Value::Undefined,
+        Value::Void,
+        Value::bytes(b"\xff\0"),
+    ] {
+        let m = Value::mapping(vec![(Value::bytes(b"A\xff"), Value::Int(1))]).unwrap();
+        let nodes = [
+            (0, 0, 0x37),
+            (0, 0, 0x3e),
+            (1, 0, 0x37),
+            (0, 0, 0x44),
+            (0, 0, 0x03),
+        ];
+        let (mut vm, o) = machine(image(&[fun(0, 2, 0, 255, &nodes)], 1, &[]), vec![m.clone()]);
+        vm.start(o, 0, vec![value.clone(), Value::bytes(b"a\xff")])
+            .unwrap();
+        returns(&mut vm, value.clone());
+        let Value::Mapping(m) = m else { unreachable!() };
+        assert_eq!(m.entries().unwrap().len(), 2);
+        assert_eq!(m.get(&Value::bytes(b"A\xff")).unwrap(), Some(Value::Int(1)));
+        assert_eq!(m.get(&Value::bytes(b"a\xff")).unwrap(), Some(value));
+    }
+}
+#[test]
+fn reference_snapshot_and_budget_resume_keep_stable_target_identity() {
+    let nodes = [(0, 0, 0x39), (0, 0, 0x14)];
+    let (mut vm, o) = machine(image(&[fun(0, 1, 0, 2, &nodes)], 0, &[]), vec![]);
+    vm.start(o, 0, vec![Value::Int(8)]).unwrap();
+    assert_eq!(vm.run(3).unwrap(), RunOutcome::BudgetExhausted);
+    let before = vm.stack().unwrap();
+    assert!(
+        matches!(before.last(),Some(rml32::StackSnapshot::Reference {kind:rml32::ReferenceKind::Local,valid:true,target_id,..}) if *target_id!=0)
+    );
+    assert_eq!(vm.run(0).unwrap(), RunOutcome::BudgetExhausted);
+    assert_eq!(vm.stack().unwrap(), before);
+    returns(&mut vm, Value::Int(8));
+}
+#[test]
+fn pending_references_survive_nested_calls_without_being_passed_as_arguments() {
+    let f0 = fun(0, 0, 1, 2, &[(-1, 0, 0x39), (1, 0, 0x07), (0, 0, 0x04)]);
+    let f1 = fun(1, 0, 0, 2, &[(9, 0, 0x3b)]);
+    let (mut vm, o) = machine(image(&[f0, f1], 0, &[]), vec![]);
+    vm.start(o, 0, vec![]).unwrap();
+    returns(&mut vm, Value::Int(9));
+}
+#[test]
+fn references_cannot_escape_via_returns_arguments_or_containers() {
+    for nodes in [
+        vec![(0, 0, 0x39)],
+        vec![(0, 0, 0x39), (1, 0, 0x16)],
+        vec![(0, 0, 0x39), (0, 1, 0x07)],
+        vec![(0, 0, 0x39), (0, 0, 0x4d)],
+        vec![(0, 0, 0x42), (-1, 0, 0x39), (9, 0, 0x3b), (-2, 0, 0x4d)],
+    ] {
+        assert_eq!(
+            container_run(&nodes, vec![Value::Int(1)]).unwrap_err().kind,
+            VmErrorKind::UnsupportedFeature
+        );
+    }
+    for op in [0x03, 0x04, 0x13, 0x14, 0x44] {
+        assert_eq!(
+            container_run(&[(0, 0, op)], vec![]).unwrap_err().kind,
+            VmErrorKind::StackUnderflow
+        );
+    }
+    assert_eq!(
+        container_run(&[(1, 0, 0x3b), (0, 0, 0x13)], vec![])
+            .unwrap_err()
+            .kind,
+        VmErrorKind::UnsupportedType
+    );
+    assert_eq!(
+        container_run(&[(1, 0, 0x3b), (0, 0, 0x14)], vec![])
+            .unwrap_err()
+            .kind,
+        VmErrorKind::UnsupportedType
+    );
+}
+#[test]
+fn deleting_object_invalidates_pending_object_reference_and_does_not_reuse_id() {
+    let nodes = [(0, 0, 0x3e), (0, 0, 0x14)];
+    let (mut vm, o) = machine(
+        image(&[fun(0, 0, 0, 255, &nodes)], 1, &[]),
+        vec![Value::Int(1)],
+    );
+    vm.start(o, 0, vec![]).unwrap();
+    vm.run(3).unwrap();
+    let pid = vm.objects().get(o).unwrap().program();
+    let before = vm.stack().unwrap();
+    vm.objects_mut().remove(o).unwrap();
+    let other = vm.objects_mut().create(pid, vec![Value::Int(2)]).unwrap();
+    assert_ne!(o, other);
+    let after = vm.stack().unwrap();
+    match (&before[0], &after[0]) {
+        (
+            rml32::StackSnapshot::Reference {
+                target_id: a,
+                valid: true,
+                ..
+            },
+            rml32::StackSnapshot::Reference {
+                target_id: b,
+                valid: false,
+                ..
+            },
+        ) => assert_eq!(a, b),
+        _ => panic!("reference snapshots expected"),
+    };
+    assert_eq!(vm.run(1).unwrap_err().kind, VmErrorKind::InvalidObject);
+}
+#[test]
+fn temporary_reference_cell_limit_fails_before_mutation_and_releases_capacity() {
+    let nodes = [(0, 0, 0x16), (0, 0, 0x13)];
+    let (mut vm, o) = machine(image(&[fun(0, 0, 0, 255, &nodes)], 0, &[]), vec![]);
+    vm = Vm::with_limits(
+        vm.into_objects(),
+        VmLimits {
+            max_reference_cells: 0,
+            ..VmLimits::default()
+        },
+    );
+    vm.start(o, 0, vec![]).unwrap();
+    assert_eq!(vm.run(100).unwrap_err().kind, VmErrorKind::Limit);
+    let nodes = [
+        (0, 0, 0x16),
+        (0, 0, 0x13),
+        (0, 0, 0x33),
+        (0, 0, 0x16),
+        (0, 0, 0x13),
+        (0, 0, 0x14),
+    ];
+    let (mut vm, o) = machine(image(&[fun(0, 0, 0, 6, &nodes)], 0, &[]), vec![]);
+    vm = Vm::with_limits(
+        vm.into_objects(),
+        VmLimits {
+            max_reference_cells: 1,
+            ..VmLimits::default()
+        },
+    );
+    vm.start(o, 0, vec![]).unwrap();
+    assert!(matches!(
+        vm.run(100).unwrap(),
+        RunOutcome::Finished(Completion::Returned(Value::Array(_)))
+    ));
+}
+#[test]
+fn reference_limit_does_not_insert_missing_mapping_key_when_query_fails() {
+    let map = Value::mapping(vec![]).unwrap();
+    let nodes = [(0, 0, 0x3e), (7, 0, 0x3b), (0, 0, 0x44)];
+    let (vm, o) = machine(
+        image(&[fun(0, 0, 0, 255, &nodes)], 1, &[]),
+        vec![map.clone()],
+    );
+    let mut vm = Vm::with_limits(
+        vm.into_objects(),
+        VmLimits {
+            max_reference_cells: 0,
+            ..VmLimits::default()
+        },
+    );
+    vm.start(o, 0, vec![]).unwrap();
+    assert_eq!(vm.run(100).unwrap_err().kind, VmErrorKind::Limit);
+    let Value::Mapping(m) = map else {
+        unreachable!()
+    };
+    assert!(m.entries().unwrap().is_empty());
+}
+#[test]
+fn mapping_capacity_and_member_bounds_errors_leave_containers_unchanged() {
+    let map = Value::mapping(
+        (0..65536)
+            .map(|i| (Value::Int(i), Value::Undefined))
+            .collect(),
+    )
+    .unwrap();
+    let nodes = [(0, 0, 0x3e), (0, 0, 0x37), (0, 0, 0x44)];
+    let (mut vm, o) = machine(
+        image(&[fun(0, 1, 0, 255, &nodes)], 1, &[]),
+        vec![map.clone()],
+    );
+    vm.start(o, 0, vec![Value::Int(65536)]).unwrap();
+    assert_eq!(vm.run(100).unwrap_err().kind, VmErrorKind::Limit);
+    let Value::Mapping(m) = map else {
+        unreachable!()
+    };
+    assert_eq!(m.entries().unwrap().len(), 65536);
+    for (value, key) in [
+        (Value::array(vec![]).unwrap(), Value::Int(0)),
+        (Value::array(vec![Value::Int(1)]).unwrap(), Value::Int(-1)),
+    ] {
+        let (mut vm, o) = machine(image(&[fun(0, 1, 0, 255, &nodes)], 1, &[]), vec![value]);
+        vm.start(o, 0, vec![key]).unwrap();
+        assert_eq!(vm.run(100).unwrap_err().kind, VmErrorKind::Bounds);
+    }
+}
+#[test]
+fn mapping_insertion_keeps_existing_member_reference_stable() {
+    let map = Value::mapping(vec![(Value::Int(7), Value::Int(3))]).unwrap();
+    let nodes = [
+        (0, 0, 0x3e),
+        (7, 0, 0x3b),
+        (0, 0, 0x44), // retain old member Ref
+        (0, 0, 0x3e),
+        (8, 0, 0x3b),
+        (0, 0, 0x44),
+        (0, 0, 0x33), // insert another key
+        (9, 0, 0x3b),
+        (0, 0, 0x04),
+    ];
+    let (mut vm, o) = machine(image(&[fun(0, 0, 0, 2, &nodes)], 1, &[]), vec![map.clone()]);
+    vm.start(o, 0, vec![]).unwrap();
+    returns(&mut vm, Value::Int(9));
+    let Value::Mapping(m) = map else {
+        unreachable!()
+    };
+    assert_eq!(m.get(&Value::Int(7)).unwrap(), Some(Value::Int(9)));
+    assert_eq!(m.get(&Value::Int(8)).unwrap(), Some(Value::Undefined));
+}
+#[test]
+fn member_write_can_store_live_object_and_rejects_cycles_before_change() {
+    let a = Value::array(vec![Value::Int(1)]).unwrap();
+    let nodes = [
+        (0, 0, 0x37),
+        (0, 0, 0x3e),
+        (0, 0, 0x3b),
+        (0, 0, 0x44),
+        (0, 0, 0x03),
+    ];
+    let (mut vm, o) = machine(image(&[fun(0, 1, 0, 255, &nodes)], 1, &[]), vec![a.clone()]);
+    vm.start(o, 0, vec![Value::Object(o)]).unwrap();
+    returns(&mut vm, Value::Object(o));
+    vm.start(o, 0, vec![a.clone()]).unwrap();
+    assert_eq!(vm.run(100).unwrap_err().kind, VmErrorKind::UnsupportedType);
+    let Value::Array(a) = a else { unreachable!() };
+    assert_eq!(a.elements().unwrap(), vec![Value::Object(o)]);
+}
+#[test]
+fn reference_modes_invalid_targets_and_invalid_keys_fail_explicitly() {
+    for value in [Value::bytes(b"x"), Value::Int(1)] {
+        let nodes = [(0, 0, 0x3e), (0, 0, 0x3b), (0, 0, 0x44)];
+        let (mut vm, o) = machine(image(&[fun(0, 0, 0, 255, &nodes)], 1, &[]), vec![value]);
+        vm.start(o, 0, vec![]).unwrap();
+        assert_eq!(vm.run(100).unwrap_err().kind, VmErrorKind::UnsupportedType);
+    }
+    for op in [0x43, 0x44] {
+        for mode in [-1, 2] {
+            assert_eq!(
+                prepare_program(image(&[fun(0, 0, 0, 255, &[(mode, 0, op)])], 0, &[]))
+                    .unwrap_err()
+                    .kind,
+                VmErrorKind::UnsupportedFeature
+            );
+        }
+    }
+    let nodes = [(0, 0, 0x3e), (0, 0, 0x42), (0, 0, 0x44)];
+    let (mut vm, o) = machine(
+        image(&[fun(0, 0, 0, 255, &nodes)], 1, &[]),
+        vec![Value::mapping(vec![]).unwrap()],
+    );
+    vm.start(o, 0, vec![]).unwrap();
+    assert_eq!(vm.run(100).unwrap_err().kind, VmErrorKind::UnsupportedType);
 }
