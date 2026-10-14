@@ -1,0 +1,358 @@
+[
+  {
+    "name": "vm_condJmpForLoop",
+    "address": "0x80bcdc8",
+    "evidence_id": "ev_2d0596b38377275abb8795f88716adc8a7d78bec1ef3c3ad3b34ba14eb6df030",
+    "body": {
+      "available": true,
+      "contains_entry": true,
+      "non_contiguous": false,
+      "provenance": "ghidra-function-body-address-set",
+      "ranges": [
+        {
+          "end": "0x80bcdd5",
+          "start": "0x80bcdc8"
+        }
+      ],
+      "span_bytes": 14,
+      "total_bytes": 14
+    },
+    "pseudocode_limitations": [
+      "Unresolved computed or indirect flows without target addresses are not represented as reference edges.",
+      "Thunk and external classifications are Ghidra FunctionManager observations; they do not resolve targetless calls.",
+      "Pseudocode and assembly are Ghidra-specific representations, not original source or Hopper-equivalent text.",
+      "Synthetic Ghidra entry-point references without actionable memory sources are omitted.",
+      "Ghidra Listing reports a terminal call at 0x80bcdd1 to 0x80bcae0 vm_cmpAndJmpInLoop (external=false, thunk=false, hasNoReturn=false); fallthrough is excluded by Ghidra's flow model. The reason for the terminal flow is not established by this observation."
+    ],
+    "confidence": "observed static representation; not runtime observation"
+  },
+  {
+    "name": "vm_caseDefault",
+    "address": "0x8097584",
+    "evidence_id": "ev_2dce3eed228dccaaf1d1e67dc9a39c962724b0af9866210b68ecba6102befc83",
+    "body": {
+      "available": true,
+      "contains_entry": true,
+      "non_contiguous": false,
+      "provenance": "ghidra-function-body-address-set",
+      "ranges": [
+        {
+          "end": "0x809759c",
+          "start": "0x8097584"
+        }
+      ],
+      "span_bytes": 25,
+      "total_bytes": 25
+    },
+    "pseudocode_limitations": [
+      "Unresolved computed or indirect flows without target addresses are not represented as reference edges.",
+      "Thunk and external classifications are Ghidra FunctionManager observations; they do not resolve targetless calls.",
+      "Pseudocode and assembly are Ghidra-specific representations, not original source or Hopper-equivalent text.",
+      "Synthetic Ghidra entry-point references without actionable memory sources are omitted."
+    ],
+    "confidence": "observed static representation; not runtime observation"
+  },
+  {
+    "name": "vm_cmpAndJmpInLoop",
+    "address": "0x80bcae0",
+    "evidence_id": "ev_2f7c7986819c8b0acae9e1cddb895fded61ac3d31a2c036489d87c95592ebcce",
+    "body": {
+      "available": true,
+      "contains_entry": true,
+      "non_contiguous": true,
+      "provenance": "ghidra-function-body-address-set",
+      "ranges": [
+        {
+          "end": "0x80bcb50",
+          "start": "0x80bcae0"
+        },
+        {
+          "end": "0x80bcb60",
+          "start": "0x80bcb54"
+        },
+        {
+          "end": "0x80bcc0d",
+          "start": "0x80bcb64"
+        },
+        {
+          "end": "0x80bcc3a",
+          "start": "0x80bcc10"
+        },
+        {
+          "end": "0x80bcd4e",
+          "start": "0x80bcc3c"
+        },
+        {
+          "end": "0x80bcdae",
+          "start": "0x80bcd50"
+        }
+      ],
+      "span_bytes": 719,
+      "total_bytes": 709
+    },
+    "pseudocode_limitations": [
+      "Unresolved computed or indirect flows without target addresses are not represented as reference edges.",
+      "Thunk and external classifications are Ghidra FunctionManager observations; they do not resolve targetless calls.",
+      "Pseudocode and assembly are Ghidra-specific representations, not original source or Hopper-equivalent text.",
+      "Synthetic Ghidra entry-point references without actionable memory sources are omitted."
+    ],
+    "confidence": "observed static representation; not runtime observation"
+  },
+  {
+    "name": "vm_initForLoop",
+    "address": "0x80bc8f0",
+    "evidence_id": "ev_6493fcdaf5956b81b156c8fbb9cf5987c216a53b856561a1e6351de2ad42af92",
+    "body": {
+      "available": true,
+      "contains_entry": true,
+      "non_contiguous": true,
+      "provenance": "ghidra-function-body-address-set",
+      "ranges": [
+        {
+          "end": "0x80bca0c",
+          "start": "0x80bc8f0"
+        },
+        {
+          "end": "0x80bcade",
+          "start": "0x80bca10"
+        }
+      ],
+      "span_bytes": 495,
+      "total_bytes": 492
+    },
+    "pseudocode_limitations": [
+      "Unresolved computed or indirect flows without target addresses are not represented as reference edges.",
+      "Thunk and external classifications are Ghidra FunctionManager observations; they do not resolve targetless calls.",
+      "Pseudocode and assembly are Ghidra-specific representations, not original source or Hopper-equivalent text.",
+      "Synthetic Ghidra entry-point references without actionable memory sources are omitted.",
+      "Ghidra Listing reports a terminal call at 0x80bc98f to 0x8091ab0 vm_popNStack (external=false, thunk=false, hasNoReturn=false); fallthrough is excluded by Ghidra's flow model. The reason for the terminal flow is not established by this observation.",
+      "Ghidra Listing reports a terminal call at 0x80bca63 to 0x8091ab0 vm_popNStack (external=false, thunk=false, hasNoReturn=false); fallthrough is excluded by Ghidra's flow model. The reason for the terminal flow is not established by this observation."
+    ],
+    "confidence": "observed static representation; not runtime observation"
+  },
+  {
+    "name": "vm_caseCheckString",
+    "address": "0x80974fc",
+    "evidence_id": "ev_64fb48253351112793bb3171542d795d713e0d2879a2cf900617f8c6f7873a9e",
+    "body": {
+      "available": true,
+      "contains_entry": true,
+      "non_contiguous": true,
+      "provenance": "ghidra-function-body-address-set",
+      "ranges": [
+        {
+          "end": "0x8097548",
+          "start": "0x80974fc"
+        },
+        {
+          "end": "0x8097581",
+          "start": "0x809754c"
+        }
+      ],
+      "span_bytes": 134,
+      "total_bytes": 131
+    },
+    "pseudocode_limitations": [
+      "Unresolved computed or indirect flows without target addresses are not represented as reference edges.",
+      "Thunk and external classifications are Ghidra FunctionManager observations; they do not resolve targetless calls.",
+      "Pseudocode and assembly are Ghidra-specific representations, not original source or Hopper-equivalent text.",
+      "Synthetic Ghidra entry-point references without actionable memory sources are omitted."
+    ],
+    "confidence": "observed static representation; not runtime observation"
+  },
+  {
+    "name": "vm_copyValue",
+    "address": "0x808be24",
+    "evidence_id": "ev_69a23ae044935ae6f7450097987faa71f641c62091f885fc4b4b5f8d5b1929f4",
+    "body": {
+      "available": true,
+      "contains_entry": true,
+      "non_contiguous": false,
+      "provenance": "ghidra-function-body-address-set",
+      "ranges": [
+        {
+          "end": "0x808bee8",
+          "start": "0x808be24"
+        }
+      ],
+      "span_bytes": 197,
+      "total_bytes": 197
+    },
+    "pseudocode_limitations": [
+      "Unresolved computed or indirect flows without target addresses are not represented as reference edges.",
+      "Thunk and external classifications are Ghidra FunctionManager observations; they do not resolve targetless calls.",
+      "Pseudocode and assembly are Ghidra-specific representations, not original source or Hopper-equivalent text.",
+      "Synthetic Ghidra entry-point references without actionable memory sources are omitted."
+    ],
+    "confidence": "observed static representation; not runtime observation"
+  },
+  {
+    "name": "vm_caseCheckNumber",
+    "address": "0x80974c0",
+    "evidence_id": "ev_77292c326eb595efcfe5597edb1f65f303464f58775e3435dac02ee78a721f7f",
+    "body": {
+      "available": true,
+      "contains_entry": true,
+      "non_contiguous": true,
+      "provenance": "ghidra-function-body-address-set",
+      "ranges": [
+        {
+          "end": "0x80974de",
+          "start": "0x80974c0"
+        },
+        {
+          "end": "0x80974fa",
+          "start": "0x80974e0"
+        }
+      ],
+      "span_bytes": 59,
+      "total_bytes": 58
+    },
+    "pseudocode_limitations": [
+      "Unresolved computed or indirect flows without target addresses are not represented as reference edges.",
+      "Thunk and external classifications are Ghidra FunctionManager observations; they do not resolve targetless calls.",
+      "Pseudocode and assembly are Ghidra-specific representations, not original source or Hopper-equivalent text.",
+      "Synthetic Ghidra entry-point references without actionable memory sources are omitted."
+    ],
+    "confidence": "observed static representation; not runtime observation"
+  },
+  {
+    "name": "vm_freeLoopValue",
+    "address": "0x80bc884",
+    "evidence_id": "ev_7c730bb3ca6a220df55353b514f3cfe7e4d79e6347771e672ae459058017f177",
+    "body": {
+      "available": true,
+      "contains_entry": true,
+      "non_contiguous": true,
+      "provenance": "ghidra-function-body-address-set",
+      "ranges": [
+        {
+          "end": "0x80bc8b6",
+          "start": "0x80bc884"
+        },
+        {
+          "end": "0x80bc8ef",
+          "start": "0x80bc8b8"
+        }
+      ],
+      "span_bytes": 108,
+      "total_bytes": 107
+    },
+    "pseudocode_limitations": [
+      "Unresolved computed or indirect flows without target addresses are not represented as reference edges.",
+      "Thunk and external classifications are Ghidra FunctionManager observations; they do not resolve targetless calls.",
+      "Pseudocode and assembly are Ghidra-specific representations, not original source or Hopper-equivalent text.",
+      "Synthetic Ghidra entry-point references without actionable memory sources are omitted."
+    ],
+    "confidence": "observed static representation; not runtime observation"
+  },
+  {
+    "name": "vm_isSameString",
+    "address": "0x808c8b8",
+    "evidence_id": "ev_aae7e66b585e97e76f5365bf919a10c74ddeca801427441bf6bece82930403e9",
+    "body": {
+      "available": true,
+      "contains_entry": true,
+      "non_contiguous": true,
+      "provenance": "ghidra-function-body-address-set",
+      "ranges": [
+        {
+          "end": "0x808c8e1",
+          "start": "0x808c8b8"
+        },
+        {
+          "end": "0x808c907",
+          "start": "0x808c8e4"
+        }
+      ],
+      "span_bytes": 80,
+      "total_bytes": 78
+    },
+    "pseudocode_limitations": [
+      "Unresolved computed or indirect flows without target addresses are not represented as reference edges.",
+      "Thunk and external classifications are Ghidra FunctionManager observations; they do not resolve targetless calls.",
+      "Pseudocode and assembly are Ghidra-specific representations, not original source or Hopper-equivalent text.",
+      "Synthetic Ghidra entry-point references without actionable memory sources are omitted."
+    ],
+    "confidence": "observed static representation; not runtime observation"
+  },
+  {
+    "name": "vm_takeOffValueFromStack",
+    "address": "0x8092008",
+    "evidence_id": "ev_b8168f2c625c87c5cab8326205b0560cd7db940a32c06abbbda3dcdb7a839535",
+    "body": {
+      "available": true,
+      "contains_entry": true,
+      "non_contiguous": false,
+      "provenance": "ghidra-function-body-address-set",
+      "ranges": [
+        {
+          "end": "0x80920e7",
+          "start": "0x8092008"
+        }
+      ],
+      "span_bytes": 224,
+      "total_bytes": 224
+    },
+    "pseudocode_limitations": [
+      "Unresolved computed or indirect flows without target addresses are not represented as reference edges.",
+      "Thunk and external classifications are Ghidra FunctionManager observations; they do not resolve targetless calls.",
+      "Pseudocode and assembly are Ghidra-specific representations, not original source or Hopper-equivalent text.",
+      "Synthetic Ghidra entry-point references without actionable memory sources are omitted."
+    ],
+    "confidence": "observed static representation; not runtime observation"
+  },
+  {
+    "name": "vm_popNStack",
+    "address": "0x8091ab0",
+    "evidence_id": "ev_e1d24b79fb397b943d57fc71f60c961852e9a969ae6f32b18bc0203f254b6ed4",
+    "body": {
+      "available": true,
+      "contains_entry": true,
+      "non_contiguous": false,
+      "provenance": "ghidra-function-body-address-set",
+      "ranges": [
+        {
+          "end": "0x8091aee",
+          "start": "0x8091ab0"
+        }
+      ],
+      "span_bytes": 63,
+      "total_bytes": 63
+    },
+    "pseudocode_limitations": [
+      "Unresolved computed or indirect flows without target addresses are not represented as reference edges.",
+      "Thunk and external classifications are Ghidra FunctionManager observations; they do not resolve targetless calls.",
+      "Pseudocode and assembly are Ghidra-specific representations, not original source or Hopper-equivalent text.",
+      "Synthetic Ghidra entry-point references without actionable memory sources are omitted."
+    ],
+    "confidence": "observed static representation; not runtime observation"
+  },
+  {
+    "name": "vm_stepJmpForLoop",
+    "address": "0x80bcdb0",
+    "evidence_id": "ev_e744e3e38e0be2946efa9fff437a287f867a4093ee99c36e5c78ddfbdad478bd",
+    "body": {
+      "available": true,
+      "contains_entry": true,
+      "non_contiguous": false,
+      "provenance": "ghidra-function-body-address-set",
+      "ranges": [
+        {
+          "end": "0x80bcdc5",
+          "start": "0x80bcdb0"
+        }
+      ],
+      "span_bytes": 22,
+      "total_bytes": 22
+    },
+    "pseudocode_limitations": [
+      "Unresolved computed or indirect flows without target addresses are not represented as reference edges.",
+      "Thunk and external classifications are Ghidra FunctionManager observations; they do not resolve targetless calls.",
+      "Pseudocode and assembly are Ghidra-specific representations, not original source or Hopper-equivalent text.",
+      "Synthetic Ghidra entry-point references without actionable memory sources are omitted.",
+      "Ghidra Listing reports a terminal call at 0x80bcdc1 to 0x80bcae0 vm_cmpAndJmpInLoop (external=false, thunk=false, hasNoReturn=false); fallthrough is excluded by Ghidra's flow model. The reason for the terminal flow is not established by this observation."
+    ],
+    "confidence": "observed static representation; not runtime observation"
+  }
+]

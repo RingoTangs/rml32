@@ -4,6 +4,8 @@
 
 阶段 2Q 已实现08直接对象调用和41 thisObject，支持显式方法目录、private/default_interface、参数及引用转发、上下文恢复和预算暂停，237项Rust测试通过。见[跨对象调用运行时](docs/vm-cross-object-runtime.md)和[当前逐操作码矩阵](docs/stage2q-evidence/matrix.md)。主语料73种中交集57种、缺16种；阶段2尚未完成，编号比例不是整体功能完成率。阶段2P评估及其证据保持历史快照。
 
+阶段2R已完成[六条控制流指令静态取证与后续设计](docs/vm-control-flow-semantics.md)，确认switch逐条匹配及整数/集合循环契约；本轮运行时不变，下一批先实现switch三条，循环和mapping顺序限制见报告。
+
 ## 构建与检查
 
 需要 Rust / Cargo；当前验证环境为 Rust 1.99.0。依赖为 `serde`、`serde_json`、`sha2`，版本由 `Cargo.lock` 固定。
@@ -35,6 +37,7 @@ python3 tests/compare_corpus.py --report target/stage1-validation.json
 
 ## 文档与边界
 
+- [阶段 2R 控制流静态语义与实施设计](docs/vm-control-flow-semantics.md)
 - [阶段 2Q 跨对象调用运行时](docs/vm-cross-object-runtime.md)
 - [阶段 2P 历史完成度评估](docs/stage2-completion-assessment.md)
 - [重写路线图](docs/magic_Linux32-rust-rewrite-roadmap.md)
