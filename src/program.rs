@@ -33,6 +33,8 @@ pub struct Argument {
     pub r#type: u8,
     pub attrib: u8,
     pub index: i16,
+    /// Serialized instruction count at +0x0a; retained signed, validated by preparation.
+    pub default_action_count: i16,
 }
 #[derive(Debug, Clone, serde::Serialize)]
 pub struct Inherit {
@@ -186,6 +188,7 @@ fn arguments(r: &mut Reader<'_>) -> Result<Vec<Argument>, ParseError> {
             r#type: raw[5],
             attrib: raw[6],
             index: short(raw, 8),
+            default_action_count: short(raw, 10),
         });
     }
     Ok(out)
@@ -415,3 +418,27 @@ pub fn parse_program_with_profile(
 }
 
 include!("baseline.rs");
+
+#[cfg(test)]
+mod argument_tests {
+    use super::*;
+
+    #[test]
+    fn default_instruction_counts_are_decoded_as_signed_little_endian() {
+        let values = [i16::MIN, -1, 0, 1, i16::MAX];
+        let mut input = (values.len() as i16).to_le_bytes().to_vec();
+        for value in values {
+            let mut record = [0; 20];
+            record[10..12].copy_from_slice(&value.to_le_bytes());
+            input.extend(record);
+            input.extend(0i32.to_le_bytes()); // absent name
+        }
+        let args = arguments(&mut Reader::new(&input)).unwrap();
+        assert_eq!(
+            args.iter()
+                .map(|arg| arg.default_action_count)
+                .collect::<Vec<_>>(),
+            values
+        );
+    }
+}

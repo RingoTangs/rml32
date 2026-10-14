@@ -7,11 +7,15 @@ Only the newly built rml32-inspect is started. Existing analysis tools are not r
 import argparse
 import csv
 import gzip
+import importlib.util
+import struct
 import hashlib
 import json
 from pathlib import Path
 import subprocess
 import sys
+
+sys.dont_write_bytecode = True
 
 ROOT = Path(__file__).resolve().parents[1]
 EVIDENCE = ROOT / "docs/compatibility-evidence"
@@ -54,6 +58,42 @@ def compare(expected, actual, context):
         raise AssertionError(f"{context}: {expected!r} != {actual!r}")
 
 
+def check_default_fields(baseline, actual, source_members, package_cache, decoder):
+    """Expected signed16 fields come from original bytes, never Rust raw_hex."""
+    source = baseline['source']
+    member = source_members.get(source)
+    if member:
+        package = member['package']
+        if package not in package_cache:
+            package_cache[package] = (ROOT / package).read_bytes()
+        blob = package_cache[package]
+        start = member['data_offset']
+        raw = (blob[start:start + member['original_bytes']] if member['attrib'] & 0x80000000
+               else decoder.lzss(blob[start:start + member['stored_bytes']], member['original_bytes']))
+    else:
+        raw = (ROOT / source).read_bytes()
+    if hashlib.sha256(raw).hexdigest() != baseline['sha256']:
+        raise AssertionError(f'{source}: independent member SHA mismatch')
+    checked = 0
+    for kind in ('functions', 'hidden'):
+        for expected, found in zip(baseline[kind], actual[kind]):
+            reader = decoder.Reader(raw)
+            reader.pos = expected['offset'] + 64
+            reader.string()
+            for group in ('arguments', 'locals'):
+                count = reader.i16()
+                if count != len(expected[group]) or count != len(found[group]):
+                    raise AssertionError(f'{source}: independent descriptor count mismatch')
+                for index in range(count):
+                    record = reader.take(20)
+                    reader.string()
+                    value = struct.unpack_from('<h', record, 10)[0]
+                    if found[group][index].get('default_action_count') != value:
+                        raise AssertionError(f'{source}: {kind}/{expected["offset"]}/{group}/{index}: default field differs')
+                    checked += 1
+    return checked
+
+
 def run(binary, report):
     manifest = json.loads((EVIDENCE / "input-manifest.json").read_text())
     originals = [entry for entry in manifest if entry["path"] != "AGENTS.md"]
@@ -63,6 +103,12 @@ def run(binary, report):
             raise AssertionError(f"original changed: {entry['path']}")
     members = {(m["package"], m["path"]): m for m in load_gzip("members.json.gz")}
     programs = {p["source"]: p for p in load_gzip("programs.json.gz")}
+    source_members = {package + '/' + path: member for (package, path), member in members.items()}
+    spec = importlib.util.spec_from_file_location('independent_decoder', EVIDENCE / 'inspect_packages.py')
+    decoder = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(decoder)
+    package_cache = {}
+    checked_default_fields = 0
     package_summary = json.loads((EVIDENCE / "packages-summary.json").read_text())
     packages = {p["package"]: p for p in package_summary["packages"]}
     with (EVIDENCE / "inheritance.csv").open(newline="") as stream:
@@ -97,7 +143,9 @@ def run(binary, report):
                     compare(baseline, data, str(key))
                     checked["members"] += 1
                 elif kind == "program":
-                    compare(programs.pop(data["source"]), data, data["source"])
+                    baseline = programs.pop(data["source"])
+                    compare(baseline, data, data["source"])
+                    checked_default_fields += check_default_fields(baseline, data, source_members, package_cache, decoder)
                     checked["programs"] += 1
                 elif kind == "inheritance":
                     baseline = inheritance.pop((data["child"], data["parent"]))
@@ -133,6 +181,7 @@ def run(binary, report):
             raise AssertionError(f"original changed during check: {entry['path']}")
     result = {"status": "pass", "checked": checked, "summary": summary,
               "originals_unchanged": len(originals), "known_errors": sorted(errors),
+              "default_action_fields_checked": checked_default_fields,
               "target_execution": "none", "scope": "static structure; not execution equivalence"}
     if report:
         report.parent.mkdir(parents=True, exist_ok=True)

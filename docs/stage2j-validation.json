@@ -1,0 +1,127 @@
+{
+  "stage": "2J",
+  "date": "2026-10-14",
+  "implementation": "optional mixed, linear default expressions and variadic current-object calls",
+  "supported_opcodes": 55,
+  "new_opcodes": [
+    "0x15",
+    "0x34",
+    "0x47"
+  ],
+  "tests": {
+    "command": "cargo test --locked",
+    "passed": true,
+    "total": 150,
+    "library": 7,
+    "parsers_loader": 23,
+    "synthetic_vm": 120,
+    "baseline": 132,
+    "added": 18
+  },
+  "checks": [
+    {
+      "command": "cargo fmt --check",
+      "passed": true
+    },
+    {
+      "command": "cargo clippy --locked --all-targets -- -D warnings",
+      "passed": true
+    },
+    {
+      "command": "cargo build --locked --bin rml32-inspect",
+      "passed": true
+    },
+    {
+      "command": "python3 tests/compare_corpus.py --report target/stage2j-corpus-validation.json",
+      "passed": true
+    },
+    {
+      "command": "git diff --check",
+      "passed": true
+    }
+  ],
+  "corpus_validation": {
+    "status": "pass",
+    "checked": {
+      "packages": 12,
+      "members": 9527,
+      "programs": 7159,
+      "inheritance": 9933
+    },
+    "summary": {
+      "decoded_files": 8921,
+      "errors": 1,
+      "files": 8922,
+      "functions": 101592,
+      "inheritance_matches": 9933,
+      "instructions": 6474773,
+      "members": 9527,
+      "packages": 12,
+      "programs": 7159
+    },
+    "originals_unchanged": 36,
+    "known_errors": [
+      "dba/pack_data/etc.pak/etc"
+    ],
+    "default_action_fields_checked": 358411,
+    "target_execution": "none",
+    "scope": "static structure; not execution equivalence"
+  },
+  "public_interface_changes": [
+    "program::Argument.default_action_count: i16; JSON adds same field",
+    "Vm::start now rejects wrong argument counts before establishing a frame"
+  ],
+  "unchanged_interfaces": [
+    "Vm::start signature",
+    "public Value variants"
+  ],
+  "default_opcode_subset": [
+    "0x3b",
+    "0x3c",
+    "0x3f",
+    "0x40",
+    "0x42",
+    "0x3d",
+    "0x16",
+    "0x18"
+  ],
+  "compatibility_limits": [
+    "no calls or branches in defaults",
+    "no omitted reference parameters or middle default holes",
+    "no atomic, const, inheritance, global or cross-object calls",
+    "value/mixed/extra parameters reject Reference",
+    "atomic argument checks differ from native per-argument partial side effects",
+    "terminal errors; no native catch recovery"
+  ],
+  "reference_execution": false,
+  "startup_script_execution": false,
+  "shipped_bytecode_execution": false,
+  "new_dependencies": false,
+  "original_manifest_files_checked": 36,
+  "original_hashes_match": true,
+  "prior_stage2i_files_unchanged": true,
+  "prior_evidence_unchanged": true,
+  "cargo_and_agents_unchanged": true,
+  "existing_tracked_file_count": 159,
+  "modified_tracked_files": [
+    "README.md",
+    "docs/magic_Linux32-rust-rewrite-roadmap.md",
+    "src/prepared.rs",
+    "src/program.rs",
+    "src/vm.rs",
+    "tests/compare_corpus.py",
+    "tests/vm_core.rs"
+  ],
+  "local_links_checked": 38,
+  "runtime_business_coverage_measured": false,
+  "files_sha256": {
+    "README.md": "45b89a191849bd324faa654d271ec1437d6bc978f68c1457be31aa09859c0486",
+    "docs/magic_Linux32-rust-rewrite-roadmap.md": "f57b1023a0119b0d74a2a0df5be16fa28fcb51df369d0c00934f83f9aee9d0a8",
+    "src/prepared.rs": "69b54a0460dcc6e202d6dc09c2109ac32797b3be58f49615c98255c5f4fe1fbe",
+    "src/program.rs": "716b4435fd655f8d0b6fdfd3fc0e6666f0eef9929d5f024c2a5d7a65010aa4eb",
+    "src/vm.rs": "876ada3c317ed3821ebffc4c7b3cda687c24a5082c011f47edf842fac1d14bc0",
+    "tests/compare_corpus.py": "79432f458a84587eb1ace595be48cf9bafb86f173f8e528fc59c7a428876e81b",
+    "tests/vm_core.rs": "9522d5aa924061887aaf5b899297d17dae4bf1f202a0d431ac5a21a382a8b485",
+    "docs/vm-optional-arguments-runtime.md": "cf6c47e49523d53036ca5d363d2a2f2158ed350c7ec08fec2a9bd47a39180fd7"
+  }
+}

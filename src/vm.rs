@@ -82,6 +82,13 @@ enum StackEntry {
     Value(Rc<Cell>),
     Reference(Reference),
 }
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+enum EntryPhase {
+    Unchecked,
+    Defaults { expected: usize },
+    Ready,
+    Body,
+}
 #[derive(Debug, Clone)]
 struct Frame {
     id: u64,
@@ -92,6 +99,7 @@ struct Frame {
     bp: usize,
     argc: usize,
     entered: bool,
+    phase: EntryPhase,
 }
 #[derive(Debug)]
 pub struct Vm {
@@ -342,6 +350,7 @@ impl Vm {
                 "reference entry requires an internal wrapper call",
             ));
         }
+        Self::argument_plan(&p.functions[&function_index], arguments.len())?;
         if self.limits.max_frames == 0 || arguments.len() > self.limits.max_stack {
             return Err(err(VmErrorKind::Limit, "entry exceeds VM limits"));
         }
@@ -361,6 +370,7 @@ impl Vm {
             bp: self.stack.len(),
             argc: self.stack.len(),
             entered: false,
+            phase: EntryPhase::Unchecked,
         }];
         self.reference_cells.clear();
         self.completion = None;
@@ -450,22 +460,89 @@ impl Vm {
             .cloned()
             .ok_or_else(|| err(VmErrorKind::Bounds, "object variable index outside storage"))
     }
+    // Returns the skipped default instruction count and number of new slots.
+    fn argument_plan(f: &PreparedFunction, argc: usize) -> Result<(usize, usize), VmError> {
+        if argc < f.min_args || (!f.variadic && argc > f.max_args) {
+            return Err(err(
+                VmErrorKind::ArgumentCount,
+                "argument count outside prototype range",
+            ));
+        }
+        let mut gap = false;
+        let mut expected = 0;
+        for arg in f.args.iter().skip(argc) {
+            if arg.flag == 1 {
+                return Err(err(
+                    VmErrorKind::UnsupportedFeature,
+                    "omitted reference parameter",
+                ));
+            }
+            if arg.default_action_count == 0 {
+                if arg.r#type != 255 {
+                    return Err(err(
+                        VmErrorKind::InvalidProgram,
+                        "missing typed argument has no default",
+                    ));
+                }
+                gap = true;
+            } else {
+                if gap {
+                    return Err(err(
+                        VmErrorKind::UnsupportedFeature,
+                        "default results would leave a parameter hole",
+                    ));
+                }
+                expected += 1;
+            }
+        }
+        let skip = f
+            .args
+            .iter()
+            .take(argc)
+            .map(|a| a.default_action_count as usize)
+            .sum();
+        Ok((skip, expected))
+    }
+    fn argument_array(&mut self, frame: &Frame) -> Result<(), VmError> {
+        if self.stack.len() >= self.limits.max_stack {
+            return Err(err(
+                VmErrorKind::Limit,
+                "argument array result exceeds stack limit",
+            ));
+        }
+        let mut values = Vec::with_capacity(frame.argc);
+        let mut updates = BTreeMap::new();
+        for i in 0..frame.argc {
+            let pos = frame.bp - 1 - i;
+            let value = match &self.stack[pos] {
+                StackEntry::Value(cell) => self.copy_value(&cell.read()?),
+                StackEntry::Reference(r) => {
+                    let cell = self.resolve(r)?;
+                    let original = cell.read()?;
+                    let value = self.copy_value(&original);
+                    if value != original {
+                        updates.insert(cell.id(), (cell, value.clone()));
+                    }
+                    value
+                }
+            };
+            values.push(value);
+        }
+        let result = StackEntry::Value(Cell::new(Value::array(values)?)?);
+        Cell::replace_batch(&updates.into_values().collect::<Vec<_>>())?;
+        self.stack.push(result);
+        Ok(())
+    }
     fn check_args(&mut self, frame: &Frame, f: &PreparedFunction) -> Result<(), VmError> {
-        if f.args.len() != f.argument_count || frame.bp < frame.argc || self.stack.len() < frame.bp
-        {
+        if f.args.len() != f.max_args || frame.bp < frame.argc || self.stack.len() < frame.bp {
             return Err(err(
                 VmErrorKind::InvalidProgram,
                 "invalid frame argument storage",
             ));
         }
-        if frame.argc != f.argument_count {
-            return Err(err(
-                VmErrorKind::ArgumentCount,
-                "fixed argument count does not match prototype",
-            ));
-        }
+        Self::argument_plan(f, frame.argc)?;
         let mut updates = BTreeMap::new();
-        for (i, arg) in f.args.iter().enumerate() {
+        for (i, arg) in f.args.iter().enumerate().take(frame.argc) {
             let pos = frame.bp - 1 - i;
             let (cell, value) = if arg.flag == 1 {
                 let reference = self.reference(pos)?;
@@ -645,6 +722,22 @@ impl Vm {
             .get(frame.pc)
             .ok_or_else(|| err(VmErrorKind::Bounds, "program counter outside function code"))?
             .clone();
+        if let Some(entry) = &f.entry {
+            let valid = match frame.phase {
+                EntryPhase::Unchecked => frame.pc == 0,
+                EntryPhase::Defaults { .. } => {
+                    frame.pc > 0 && entry.resort.is_some_and(|pc| frame.pc <= pc)
+                }
+                EntryPhase::Ready => frame.pc == entry.enter,
+                EntryPhase::Body => frame.pc > entry.enter,
+            };
+            if !valid {
+                return Err(err(
+                    VmErrorKind::InvalidProgram,
+                    "invalid function initialization state",
+                ));
+            }
+        }
         // vm_regularProcessor @0x080978c4 increments IP before dispatch.
         self.frames.last_mut().unwrap().pc += 1;
         let [a, b] = operands;
@@ -977,18 +1070,83 @@ impl Vm {
                 }
                 Ok(())
             }
+            0x34 => self.push(Value::Int(i32::try_from(frame.argc).map_err(|_| {
+                err(VmErrorKind::Limit, "argument count exceeds integer range")
+            })?)),
+            0x15 => self.argument_array(&frame),
+            0x47 => {
+                let entry = f.entry.as_ref().ok_or_else(|| {
+                    err(VmErrorKind::InvalidProgram, "resort outside default entry")
+                })?;
+                let EntryPhase::Defaults { expected } = frame.phase else {
+                    return Err(err(
+                        VmErrorKind::InvalidProgram,
+                        "duplicate or unprepared resort",
+                    ));
+                };
+                if frame.entered
+                    || entry.resort != Some(frame.pc)
+                    || n.checked_sub(frame.bp) != Some(expected)
+                    || self.stack[frame.bp..]
+                        .iter()
+                        .any(|v| matches!(v, StackEntry::Reference(_)))
+                {
+                    return Err(err(VmErrorKind::InvalidProgram, "invalid default results"));
+                }
+                let floor = frame.bp - frame.argc;
+                // Reverse default evaluation order, then place it below old args.
+                self.stack[frame.bp..].reverse();
+                self.stack[floor..].rotate_right(expected);
+                let current = self.frames.last_mut().unwrap();
+                current.argc += expected;
+                current.bp = n;
+                current.phase = EntryPhase::Ready;
+                Ok(())
+            }
             0x0f => {
-                let target = frame.pc as i64 + 1 + i64::from(a);
-                if target < 0 || target >= f.instructions.len() as i64 {
+                let (skip, expected) = Self::argument_plan(f, frame.argc)?;
+                let target = if let Some(entry) = &f.entry {
+                    if frame.phase != EntryPhase::Unchecked || n != frame.bp {
+                        return Err(err(
+                            VmErrorKind::InvalidProgram,
+                            "duplicate or damaged argument entry",
+                        ));
+                    }
+                    if frame.argc < f.max_args {
+                        1 + skip
+                    } else {
+                        entry.enter
+                    }
+                } else {
+                    usize::try_from(frame.pc as i64 + 1 + i64::from(a)).map_err(|_| {
+                        err(VmErrorKind::Bounds, "branch target outside function code")
+                    })?
+                };
+                if target >= f.instructions.len() {
                     return Err(err(
                         VmErrorKind::Bounds,
                         "branch target outside function code",
                     ));
                 }
                 self.check_args(&frame, f)?;
-                self.jump(a, f.instructions.len())
+                let current = self.frames.last_mut().unwrap();
+                current.pc = target;
+                if let Some(entry) = &f.entry {
+                    current.phase = if target == entry.enter {
+                        EntryPhase::Ready
+                    } else {
+                        EntryPhase::Defaults { expected }
+                    };
+                }
+                Ok(())
             }
             0x1b => {
+                if f.entry.is_some() && frame.phase != EntryPhase::Ready {
+                    return Err(err(
+                        VmErrorKind::InvalidProgram,
+                        "initialization was not completed",
+                    ));
+                }
                 if frame.entered {
                     return Err(err(VmErrorKind::InvalidProgram, "function entered twice"));
                 }
@@ -1011,6 +1169,7 @@ impl Vm {
                     .collect::<Result<Vec<_>, _>>()?;
                 self.stack.extend(locals);
                 self.frames.last_mut().unwrap().entered = true;
+                self.frames.last_mut().unwrap().phase = EntryPhase::Body;
                 Ok(())
             }
             0x07 => {
@@ -1027,14 +1186,10 @@ impl Vm {
                     ));
                 }
                 let target = &p.functions[&index];
-                if argc != target.argument_count {
-                    return Err(err(
-                        VmErrorKind::ArgumentCount,
-                        "fixed argument count does not match prototype",
-                    ));
-                }
-                for (i, arg) in target.args.iter().enumerate() {
-                    match (&self.stack[n - 1 - i], arg.flag) {
+                Self::argument_plan(target, argc)?;
+                for i in 0..argc {
+                    let flag = target.args.get(i).map_or(0, |arg| arg.flag);
+                    match (&self.stack[n - 1 - i], flag) {
                         (StackEntry::Reference(r), 1) => self.validate_binding(r)?,
                         (StackEntry::Value(_), 0) => {}
                         _ => {
@@ -1055,6 +1210,7 @@ impl Vm {
                     bp: n,
                     argc,
                     entered: false,
+                    phase: EntryPhase::Unchecked,
                 });
                 Ok(())
             }
@@ -1097,6 +1253,7 @@ mod tests {
             bp: 0,
             argc: 0,
             entered: true,
+            phase: EntryPhase::Body,
         });
         assert_eq!(
             vm.resolve(&reference).unwrap().read().unwrap(),
@@ -1114,6 +1271,7 @@ mod tests {
             bp: 0,
             argc: 0,
             entered: true,
+            phase: EntryPhase::Body,
         });
         assert_eq!(
             vm.resolve(&reference).unwrap_err().kind,
@@ -1156,6 +1314,7 @@ mod tests {
             bp: 0,
             argc: 0,
             entered: true,
+            phase: EntryPhase::Body,
         };
         let function = PreparedFunction {
             index: 0,
@@ -1163,7 +1322,10 @@ mod tests {
             instructions: vec![],
             local_count: 0,
             args: vec![],
-            argument_count: 0,
+            min_args: 0,
+            max_args: 0,
+            variadic: false,
+            entry: None,
             return_type: 255,
             return_attrib: 0,
         };

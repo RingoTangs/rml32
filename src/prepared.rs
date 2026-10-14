@@ -8,10 +8,10 @@ use crate::{
 use std::collections::BTreeMap;
 
 pub const SUPPORTED_OPCODES: &[u8] = &[
-    0x1, 0x2, 0x3, 0x4, 0x7, 0xd, 0xf, 0x13, 0x14, 0x16, 0x18, 0x19, 0x1b, 0x1c, 0x1d, 0x1e, 0x1f,
-    0x20, 0x21, 0x22, 0x24, 0x25, 0x26, 0x27, 0x28, 0x29, 0x2a, 0x2b, 0x2d, 0x2f, 0x30, 0x32, 0x33,
-    0x37, 0x39, 0x3b, 0x3c, 0x3d, 0x3e, 0x3f, 0x40, 0x42, 0x43, 0x44, 0x49, 0x4a, 0x4b, 0x4d, 0x4e,
-    0x4f, 0x51, 0x55,
+    0x1, 0x2, 0x3, 0x4, 0x7, 0xd, 0xf, 0x13, 0x14, 0x15, 0x16, 0x18, 0x19, 0x1b, 0x1c, 0x1d, 0x1e,
+    0x1f, 0x20, 0x21, 0x22, 0x24, 0x25, 0x26, 0x27, 0x28, 0x29, 0x2a, 0x2b, 0x2d, 0x2f, 0x30, 0x32,
+    0x33, 0x34, 0x37, 0x39, 0x3b, 0x3c, 0x3d, 0x3e, 0x3f, 0x40, 0x42, 0x43, 0x44, 0x47, 0x49, 0x4a,
+    0x4b, 0x4d, 0x4e, 0x4f, 0x51, 0x55,
 ];
 #[derive(Debug, Clone)]
 pub struct Instruction {
@@ -31,13 +31,21 @@ impl Instruction {
     }
 }
 #[derive(Debug, Clone)]
+pub(crate) struct EntryLayout {
+    pub enter: usize,
+    pub resort: Option<usize>,
+}
+#[derive(Debug, Clone)]
 pub struct PreparedFunction {
     pub(crate) index: i16,
     pub(crate) name: Option<Vec<u8>>,
     pub(crate) instructions: Vec<Instruction>,
     pub(crate) local_count: usize,
     pub(crate) args: Vec<Argument>,
-    pub(crate) argument_count: usize,
+    pub(crate) min_args: usize,
+    pub(crate) max_args: usize,
+    pub(crate) variadic: bool,
+    pub(crate) entry: Option<EntryLayout>,
     pub(crate) return_type: u8,
     pub(crate) return_attrib: u8,
 }
@@ -172,6 +180,74 @@ fn instructions(
     }
     Ok(result)
 }
+// The first implementation accepts only linear, ordinary-value default code.
+fn prepare_entry(
+    code: &[Instruction],
+    args: &[crate::program::Argument],
+) -> Result<EntryLayout, VmError> {
+    if code.first().is_none_or(|i| i.opcode != 0x0f) {
+        return Err(unsupported(
+            "optional/variadic functions must start with check_args",
+        ));
+    }
+    let mut cursor = 1usize;
+    for arg in args {
+        let end = cursor
+            .checked_add(arg.default_action_count as usize)
+            .filter(|end| *end <= code.len())
+            .ok_or_else(|| err("default segment outside code"))?;
+        let mut depth = 0usize;
+        for instruction in &code[cursor..end] {
+            match instruction.opcode {
+                0x3b | 0x3c | 0x3f | 0x40 | 0x42 | 0x3d => depth += 1,
+                0x16 | 0x18 => {
+                    let count = usize::try_from(instruction.operands[0])
+                        .map_err(|_| err("negative default container count"))?;
+                    if depth < count || (instruction.opcode == 0x18 && count % 2 != 0) {
+                        return Err(err("default container consumes outside expression"));
+                    }
+                    depth = depth - count + 1;
+                }
+                _ => {
+                    return Err(unsupported(
+                        "default expression opcode is outside the linear subset",
+                    ));
+                }
+            }
+        }
+        if end > cursor && depth != 1 {
+            return Err(err("default expression must produce one value"));
+        }
+        cursor = end;
+    }
+    let resort = (cursor > 1).then_some(cursor);
+    if resort.is_some() {
+        if code.get(cursor).is_none_or(|i| i.opcode != 0x47) {
+            return Err(err("missing default resort opcode"));
+        }
+        cursor += 1;
+    }
+    if code[0].operands[0] != (cursor - 1) as i32
+        || code.get(cursor).is_none_or(|i| i.opcode != 0x1b)
+    {
+        return Err(err("default entry length or enter opcode mismatch"));
+    }
+    for (pc, instruction) in code.iter().enumerate().skip(cursor + 1) {
+        if matches!(instruction.opcode, 0x0f | 0x1b | 0x47) {
+            return Err(err("function body re-enters initialization"));
+        }
+        if matches!(instruction.opcode, 0x1f | 0x21)
+            && pc as i64 + 1 + i64::from(instruction.operands[0]) <= cursor as i64
+        {
+            return Err(err("body branch targets initialization"));
+        }
+    }
+    Ok(EntryLayout {
+        enter: cursor,
+        resort,
+    })
+}
+
 fn prepare_function(f: Function, strings: usize, vars: usize) -> Result<PreparedFunction, VmError> {
     let index = f
         .index
@@ -179,10 +255,11 @@ fn prepare_function(f: Function, strings: usize, vars: usize) -> Result<Prepared
     if index < 0 || f.local_count < 0 {
         return Err(err("negative function index or local count"));
     }
-    if f.attrib & 3 != 0 || f.min_args != f.max_args {
-        return Err(unsupported(
-            "variadic, atomic and default-argument functions are not supported",
-        ));
+    if f.attrib & 2 != 0 {
+        return Err(unsupported("atomic functions are not supported"));
+    }
+    if f.min_args > f.max_args || f.max_args > 127 {
+        return Err(err("invalid signed native argument range"));
     }
     let raw = bytes(&f.raw_hex)?;
     if raw.len() != 64 {
@@ -198,7 +275,7 @@ fn prepare_function(f: Function, strings: usize, vars: usize) -> Result<Prepared
         ));
     }
     if f.arguments.len() != usize::from(f.max_args) {
-        return Err(err("fixed argument descriptors do not match prototype"));
+        return Err(err("argument descriptors do not match maximum prototype"));
     }
     for (i, a) in f.arguments.iter().enumerate() {
         if a.flag & !1 != 0 || a.attrib & !8 != 0 {
@@ -212,6 +289,9 @@ fn prepare_function(f: Function, strings: usize, vars: usize) -> Result<Prepared
                 "argument type is not supported",
             ));
         }
+        if a.default_action_count < 0 {
+            return Err(err("negative default instruction count"));
+        }
         if a.index != i as i16 {
             return Err(err("argument descriptor index does not match position"));
         }
@@ -224,13 +304,27 @@ fn prepare_function(f: Function, strings: usize, vars: usize) -> Result<Prepared
             "reference functions must start with check_args (0x0f)",
         ));
     }
+    let extended = f.min_args != f.max_args
+        || f.attrib & 1 != 0
+        || f.arguments.iter().any(|a| a.default_action_count != 0);
+    let entry = if extended {
+        Some(prepare_entry(&instructions, &f.arguments)?)
+    } else {
+        if instructions.iter().any(|i| i.opcode == 0x47) {
+            return Err(unsupported("resort requires a validated default entry"));
+        }
+        None
+    };
     Ok(PreparedFunction {
         index,
         name: f.name.map(|s| s.bytes),
         instructions,
         local_count: f.local_count as usize,
         args: f.arguments,
-        argument_count: usize::from(f.max_args),
+        min_args: usize::from(f.min_args),
+        max_args: usize::from(f.max_args),
+        variadic: f.attrib & 1 != 0,
+        entry,
         return_type: f.return_type,
         return_attrib: raw[12],
     })

@@ -520,8 +520,10 @@ fn fixed_argument_check_skips_default_code_count_and_validates_types() {
     let mut p = image(&[f], 0, &[]);
     p.functions[0].arguments[0].r#type = 2;
     let (mut vm, o) = machine(p, vec![]);
-    vm.start(o, 0, vec![]).unwrap();
-    assert_eq!(vm.run(100).unwrap_err().kind, VmErrorKind::ArgumentCount);
+    assert_eq!(
+        vm.start(o, 0, vec![]).unwrap_err().kind,
+        VmErrorKind::ArgumentCount
+    );
     vm.start(o, 0, vec![Value::bytes(b"bad")]).unwrap();
     assert_eq!(vm.run(100).unwrap_err().kind, VmErrorKind::UnsupportedType);
     vm.start(o, 0, vec![Value::Int(8)]).unwrap();
@@ -598,7 +600,7 @@ fn unsupported_program_shapes_fail_explicitly() {
     optional.functions[0].max_args = 1;
     assert_eq!(
         prepare_program(optional).unwrap_err().kind,
-        VmErrorKind::UnsupportedFeature
+        VmErrorKind::InvalidProgram
     );
     let mut real = base;
     real.functions[0].return_type = 5;
@@ -650,7 +652,7 @@ fn supported_types_have_explicit_legacy_tags() {
         [0, 1, 2, 4, 10]
     );
     let supported: BTreeSet<_> = rml32::prepared::SUPPORTED_OPCODES.iter().collect();
-    assert_eq!(supported.len(), 52);
+    assert_eq!(supported.len(), 55);
     assert_eq!(ByteString::new(b"\xff").bytes, b"\xff");
 }
 
@@ -672,7 +674,7 @@ fn noninteger_arithmetic_and_deleted_execution_object_fail_explicitly() {
 }
 
 #[test]
-fn unknown_flags_const_atomic_and_variadic_prototypes_are_rejected() {
+fn unknown_flags_const_and_atomic_prototypes_are_rejected() {
     let base = image(&[fun(0, 1, 0, 255, &[(0, 0, 0x37)])], 0, &[]);
     let mut reference = base.clone();
     reference.functions[0].arguments[0].flag = 2;
@@ -680,13 +682,11 @@ fn unknown_flags_const_atomic_and_variadic_prototypes_are_rejected() {
     constant.functions[0].arguments[0].attrib = 2;
     let mut atomic = base.clone();
     atomic.functions[0].attrib = 2;
-    let mut variadic = base.clone();
-    variadic.functions[0].attrib = 1;
     let mut const_return = base;
     let mut raw = vec![0; 64];
     raw[12] = 2;
     const_return.functions[0].raw_hex = rml32::hex(&raw);
-    for p in [reference, constant, atomic, variadic, const_return] {
+    for p in [reference, constant, atomic, const_return] {
         assert_eq!(
             prepare_program(p).unwrap_err().kind,
             VmErrorKind::UnsupportedFeature
@@ -2866,4 +2866,502 @@ fn reference_read_stack_limit_does_not_normalize_dead_source() {
     assert_eq!(vm.run(1).unwrap_err().kind, VmErrorKind::Limit);
     assert_eq!(vm.stack().unwrap(), before);
     assert_eq!(object_values(&vm, caller), vec![Value::Object(o)]);
+}
+
+// Stage 2J: optional/variadic entry metadata and code are synthesized together.
+fn optional_fun(
+    index: i16,
+    args: usize,
+    locals: usize,
+    ret: u8,
+    defaults: &[Vec<Node>],
+    body: &[Node],
+) -> Fun {
+    let mut f = fun(index, args, locals, ret, &[]);
+    let count: usize = defaults.iter().map(Vec::len).sum();
+    f.nodes = vec![((count + usize::from(count > 0)) as i16, 0, 0x0f)];
+    for block in defaults {
+        f.nodes.extend(block);
+    }
+    if count > 0 {
+        f.nodes.push((0, 0, 0x47));
+    }
+    f.nodes.push((0, 0, 0x1b));
+    f.nodes.extend(body);
+    f.nodes.push((0, 0, 0x49));
+    f
+}
+fn optional_meta(p: &mut ProgramImage, function: usize, min: u8, variadic: bool, lengths: &[i16]) {
+    let f = &mut p.functions[function];
+    f.min_args = min;
+    f.attrib = i16::from(variadic);
+    let mut raw = vec![0; 64];
+    raw[10..12].copy_from_slice(&f.local_count.to_le_bytes());
+    raw[13] = f.return_type;
+    raw[14] = f.max_args;
+    raw[15] = min;
+    raw[8..10].copy_from_slice(&f.attrib.to_le_bytes());
+    f.raw_hex = rml32::hex(&raw);
+    for (arg, length) in f.arguments.iter_mut().zip(lengths) {
+        arg.default_action_count = *length;
+        let mut raw = vec![0; 20];
+        raw[5] = arg.r#type;
+        raw[8..10].copy_from_slice(&arg.index.to_le_bytes());
+        raw[10..12].copy_from_slice(&length.to_le_bytes());
+        arg.raw_hex = rml32::hex(&raw);
+    }
+}
+fn returned_array(vm: &mut Vm) -> Vec<Value> {
+    let RunOutcome::Finished(Completion::Returned(Value::Array(a))) = vm.run(1000).unwrap() else {
+        panic!("array expected")
+    };
+    a.elements().unwrap()
+}
+
+#[test]
+fn defaults_preserve_declaration_order_for_every_accepted_arity() {
+    for provided in 0usize..=3 {
+        let defaults = vec![
+            vec![(10, 0, 0x3b)],
+            vec![(20, 0, 0x3b)],
+            vec![(30, 0, 0x3b)],
+        ];
+        let f = optional_fun(0, 3, 0, 255, &defaults, &[(0, 0, 0x15)]);
+        let mut p = image(&[f], 0, &[]);
+        optional_meta(&mut p, 0, 0, false, &[1, 1, 1]);
+        let (mut vm, o) = machine(p, vec![]);
+        let args = (0..provided).map(|i| Value::Int(100 + i as i32)).collect();
+        vm.start(o, 0, args).unwrap();
+        let expected = (0..3)
+            .map(|i| {
+                Value::Int(if i < provided {
+                    100 + i as i32
+                } else {
+                    10 * (i + 1) as i32
+                })
+            })
+            .collect::<Vec<_>>();
+        assert_eq!(returned_array(&mut vm), expected);
+        assert_eq!(vm.frame_depth(), 0);
+    }
+}
+
+#[test]
+fn optional_mixed_parameters_keep_actual_count_and_have_no_writable_slot() {
+    for provided in 0..=2 {
+        let f = optional_fun(
+            0,
+            2,
+            0,
+            255,
+            &[],
+            &[(2, 0, 0x37), (0, 0, 0x34), (2, 0, 0x16)],
+        );
+        let mut p = image(&[f], 0, &[]);
+        optional_meta(&mut p, 0, 0, false, &[0, 0]);
+        let (mut vm, o) = machine(p, vec![]);
+        vm.start(o, 0, vec![Value::Int(7); provided]).unwrap();
+        assert_eq!(
+            returned_array(&mut vm),
+            vec![Value::Int(provided as i32), Value::Undefined]
+        );
+    }
+    for op in [0x39, 0x4d] {
+        let nodes = if op == 0x4d {
+            vec![(7, 0, 0x3b), (0, 0, op)]
+        } else {
+            vec![(0, 0, op)]
+        };
+        let mut p = image(&[optional_fun(0, 1, 0, 255, &[], &nodes)], 0, &[]);
+        optional_meta(&mut p, 0, 0, false, &[0]);
+        let (mut vm, o) = machine(p, vec![]);
+        vm.start(o, 0, vec![]).unwrap();
+        assert_eq!(vm.run(100).unwrap_err().kind, VmErrorKind::Bounds);
+    }
+}
+
+#[test]
+fn default_results_do_not_fill_trailing_mixed_and_are_not_retyped_at_resort() {
+    let f = optional_fun(0, 2, 0, 255, &[vec![(7, 0, 0x3b)], vec![]], &[(0, 0, 0x34)]);
+    let mut p = image(&[f], 0, &[]);
+    optional_meta(&mut p, 0, 0, false, &[1, 0]);
+    p.functions[0].arguments[0].r#type = 4; // Native resort does not re-check defaults.
+    let (mut vm, o) = machine(p, vec![]);
+    vm.start(o, 0, vec![]).unwrap();
+    returns(&mut vm, Value::Int(1));
+    vm.start(o, 0, vec![Value::bytes(b"nine")]).unwrap();
+    vm.run(1).unwrap(); // argc < max but all explicit defaults supplied: visit 47.
+    let before = vm.stack().unwrap();
+    vm.run(1).unwrap();
+    assert_eq!(vm.stack().unwrap(), before);
+    returns(&mut vm, Value::Int(1));
+}
+
+#[test]
+fn variadic_extras_are_direct_slots_and_explicit_array_keeps_argument_order() {
+    for min in [0, 1] {
+        let mut p = image(&[optional_fun(0, 1, 0, 255, &[], &[(0, 0, 0x15)])], 0, &[]);
+        optional_meta(&mut p, 0, min, true, &[0]);
+        let (mut vm, o) = machine(p, vec![]);
+        let args = vec![Value::Int(1), Value::bytes(b"two"), real(3.0)];
+        vm.start(o, 0, args.clone()).unwrap();
+        assert_eq!(returned_array(&mut vm), args);
+        if min == 0 {
+            vm.start(o, 0, vec![]).unwrap();
+            assert_eq!(returned_array(&mut vm), Vec::<Value>::new());
+        }
+    }
+    let mut p = image(&[optional_fun(0, 0, 0, 255, &[], &[(2, 0, 0x37)])], 0, &[]);
+    optional_meta(&mut p, 0, 0, true, &[]);
+    let (mut vm, o) = machine(p, vec![]);
+    vm.start(o, 0, vec![Value::Int(1), Value::Int(2), Value::Int(3)])
+        .unwrap();
+    returns(&mut vm, Value::Int(3));
+}
+
+#[test]
+fn variadic_default_calls_keep_count_for_missing_full_and_extra_arguments() {
+    for argc in 0..=3 {
+        let f = optional_fun(0, 1, 0, 2, &[vec![(7, 0, 0x3b)]], &[(0, 0, 0x34)]);
+        let mut p = image(&[f], 0, &[]);
+        optional_meta(&mut p, 0, 0, true, &[1]);
+        let (mut vm, o) = machine(p, vec![]);
+        vm.start(o, 0, vec![Value::Int(9); argc]).unwrap();
+        returns(&mut vm, Value::Int(argc.max(1) as i32));
+    }
+}
+
+#[test]
+fn optional_calls_preserve_caller_prefix_and_reference_identity_during_resort() {
+    let caller = fun(
+        0,
+        1,
+        0,
+        255,
+        &[(0, 0, 0x39), (1, 1, 0x07), (0, 0, 0x33), (0, 0, 0x37)],
+    );
+    let leaf = optional_fun(
+        1,
+        3,
+        0,
+        1,
+        &[vec![], vec![(20, 0, 0x3b)], vec![(30, 0, 0x3b)]],
+        &[(0, 0, 0x39), (2, 0, 0x22)],
+    );
+    let mut p = image(&[caller, leaf], 0, &[]);
+    optional_meta(&mut p, 1, 1, false, &[0, 1, 1]);
+    ref_arg(&mut p, 1, 0, 2, 0);
+    let (mut vm, o) = machine(p, vec![]);
+    vm.start(o, 0, vec![Value::Int(5)]).unwrap();
+    vm.run(4).unwrap();
+    let before = vm.stack().unwrap();
+    let id = match before.last().unwrap() {
+        rml32::StackSnapshot::Reference { target_id, .. } => *target_id,
+        _ => panic!(),
+    };
+    vm.run(4).unwrap();
+    assert!(
+        vm.stack()
+            .unwrap()
+            .iter()
+            .any(|e| matches!(e,rml32::StackSnapshot::Reference{target_id,..}if *target_id==id))
+    );
+    returns(&mut vm, Value::Int(7));
+}
+
+#[test]
+fn defaults_can_pause_at_each_instruction_without_repeating_initialization() {
+    let f = optional_fun(
+        0,
+        2,
+        1,
+        255,
+        &[vec![(10, 0, 0x3b)], vec![(20, 0, 0x3b)]],
+        &[(0, 0, 0x15)],
+    );
+    let mut p = image(&[f], 0, &[]);
+    optional_meta(&mut p, 0, 0, false, &[1, 1]);
+    let (mut vm, o) = machine(p, vec![]);
+    vm.start(o, 0, vec![]).unwrap();
+    for step in 0..6 {
+        assert_eq!(vm.run(1).unwrap(), RunOutcome::BudgetExhausted);
+        let before = vm.stack().unwrap();
+        assert_eq!(vm.run(0).unwrap(), RunOutcome::BudgetExhausted);
+        assert_eq!(vm.stack().unwrap(), before, "step {step}");
+    }
+    assert_eq!(
+        returned_array(&mut vm),
+        vec![Value::Int(10), Value::Int(20)]
+    );
+}
+
+#[test]
+fn default_object_and_container_values_use_existing_shared_identity() {
+    let defaults = vec![
+        vec![(0, 0, 0x3d)],
+        vec![(1, 0, 0x3b), (1, 0, 0x16)],
+        vec![(0, 0, 0x18)],
+    ];
+    let mut p = image(
+        &[optional_fun(0, 3, 0, 255, &defaults, &[(0, 0, 0x15)])],
+        1,
+        &[],
+    );
+    optional_meta(&mut p, 0, 0, false, &[1, 2, 1]);
+    let shared = Value::array(vec![Value::Int(5)]).unwrap();
+    let (mut vm, o) = machine(p, vec![shared.clone()]);
+    vm.start(o, 0, vec![]).unwrap();
+    let result = returned_array(&mut vm);
+    assert_eq!(result[0], shared);
+    let Value::Array(a) = &result[1] else {
+        panic!()
+    };
+    assert_eq!(a.elements().unwrap(), vec![Value::Int(1)]);
+    let Value::Mapping(m) = &result[2] else {
+        panic!()
+    };
+    assert_eq!(m.entries().unwrap().len(), 0);
+}
+
+#[test]
+fn optional_entry_arity_checks_do_not_replace_previous_completed_state() {
+    let mut p = image(&[optional_fun(0, 2, 0, 255, &[], &[])], 0, &[]);
+    optional_meta(&mut p, 0, 1, false, &[0, 0]);
+    let (mut vm, o) = machine(p, vec![]);
+    vm.start(o, 0, vec![Value::Int(5)]).unwrap();
+    returns(&mut vm, Value::Void);
+    let before = vm.stack().unwrap();
+    for args in [vec![], vec![Value::Int(1); 3]] {
+        assert_eq!(
+            vm.start(o, 0, args).unwrap_err().kind,
+            VmErrorKind::ArgumentCount
+        );
+        assert_eq!(vm.stack().unwrap(), before);
+        assert_eq!(vm.frame_depth(), 0);
+    }
+}
+
+#[test]
+fn omitted_reference_and_unbound_variadic_reference_are_rejected_before_call() {
+    for omitted in [true, false] {
+        let caller = fun(0, 1, 0, 255, &[(0, 0, 0x39), (1, 1, 0x07)]);
+        let leaf = optional_fun(1, if omitted { 2 } else { 0 }, 0, 255, &[], &[]);
+        let mut p = image(&[caller, leaf], 0, &[]);
+        optional_meta(&mut p, 1, 0, !omitted, if omitted { &[0, 0] } else { &[] });
+        if omitted {
+            ref_arg(&mut p, 1, 1, 255, 0);
+        }
+        let (mut vm, o) = machine(p, vec![]);
+        vm.start(o, 0, vec![Value::Int(1)]).unwrap();
+        vm.run(3).unwrap();
+        let before = vm.stack().unwrap();
+        let e = vm.run(1).unwrap_err();
+        assert_eq!(e.kind, VmErrorKind::UnsupportedFeature);
+        assert_eq!(e.pc, Some(3));
+        assert_eq!(vm.stack().unwrap(), before);
+        assert_eq!(vm.frame_depth(), 1);
+    }
+}
+
+#[test]
+fn unsupported_default_code_and_invalid_layouts_fail_preparation() {
+    for case in 0..10 {
+        let block = match case {
+            0 => vec![(0, 0, 0x07)],
+            1 => vec![(0, 0, 0x1f)],
+            2 => vec![(1, 0, 0x16)],
+            3 => vec![(1, 0, 0x3b), (2, 0, 0x3b)],
+            _ => vec![(1, 0, 0x3b)],
+        };
+        let mut p = image(
+            &[optional_fun(
+                0,
+                1,
+                0,
+                255,
+                std::slice::from_ref(&block),
+                &[],
+            )],
+            0,
+            &[],
+        );
+        optional_meta(&mut p, 0, 0, false, &[block.len() as i16]);
+        match case {
+            4 => p.functions[0].arguments[0].default_action_count = -1,
+            5 => p.functions[0].arguments[0].default_action_count = 100,
+            6 => p.functions[0].code.nodes[0].0 = 0,
+            7 => p.functions[0].code.nodes[2].2 = 0x1b,
+            8 => p.functions[0].code.nodes.insert(4, (0, 0, 0x47)),
+            9 => p.functions[0].code.nodes.insert(4, (-5, 0, 0x1f)),
+            _ => {}
+        }
+        assert!(prepare_program(p).is_err(), "case {case}");
+    }
+}
+
+#[test]
+fn mixed_holes_before_later_defaults_are_rejected_per_invocation() {
+    let mut p = image(
+        &[optional_fun(
+            0,
+            2,
+            0,
+            255,
+            &[vec![], vec![(8, 0, 0x3b)]],
+            &[(0, 0, 0x15)],
+        )],
+        0,
+        &[],
+    );
+    optional_meta(&mut p, 0, 0, false, &[0, 1]);
+    let (mut vm, o) = machine(p, vec![]);
+    assert_eq!(
+        vm.start(o, 0, vec![]).unwrap_err().kind,
+        VmErrorKind::UnsupportedFeature
+    );
+    vm.start(o, 0, vec![Value::Int(1)]).unwrap();
+    assert_eq!(returned_array(&mut vm), vec![Value::Int(1), Value::Int(8)]);
+}
+
+#[test]
+fn default_stack_limit_and_deleted_object_leave_prior_results_for_diagnostics() {
+    let mut p = image(
+        &[optional_fun(
+            0,
+            2,
+            0,
+            255,
+            &[vec![(8, 0, 0x3b)], vec![(0, 0, 0x3d)]],
+            &[],
+        )],
+        1,
+        &[],
+    );
+    optional_meta(&mut p, 0, 0, false, &[1, 1]);
+    let (vm, o) = machine(p, vec![Value::Int(5)]);
+    let mut vm = Vm::with_limits(
+        vm.into_objects(),
+        VmLimits {
+            max_stack: 1,
+            ..VmLimits::default()
+        },
+    );
+    vm.start(o, 0, vec![]).unwrap();
+    vm.run(2).unwrap();
+    let before = vm.stack().unwrap();
+    let e = vm.run(1).unwrap_err();
+    assert_eq!((e.kind, e.pc), (VmErrorKind::Limit, Some(2)));
+    assert_eq!(vm.stack().unwrap(), before);
+    vm.start(o, 0, vec![]).unwrap();
+    vm.run(2).unwrap();
+    vm.objects_mut().remove(o).unwrap();
+    assert_eq!(vm.run(1).unwrap_err().kind, VmErrorKind::InvalidObject);
+}
+
+#[test]
+fn argument_array_failure_does_not_normalize_reference_targets() {
+    let caller = fun(0, 0, 0, 255, &[(0, 0, 0x3e), (1, 1, 0x07)]);
+    let leaf = optional_fun(1, 1, 0, 255, &[], &[(0, 0, 0x15)]);
+    let mut p = image(&[caller, leaf], 1, &[]);
+    optional_meta(&mut p, 1, 1, true, &[0]);
+    ref_arg(&mut p, 1, 0, 255, 0);
+    let (vm, o) = machine(p, vec![Value::Undefined]);
+    let mut vm = Vm::with_limits(
+        vm.into_objects(),
+        VmLimits {
+            max_stack: 1,
+            ..VmLimits::default()
+        },
+    );
+    let pid = vm.objects().get(o).unwrap().program();
+    let caller = vm
+        .objects_mut()
+        .create(pid, vec![Value::Object(o)])
+        .unwrap();
+    vm.start(caller, 0, vec![]).unwrap();
+    vm.run(6).unwrap();
+    vm.objects_mut().remove(o).unwrap();
+    let before = vm.stack().unwrap();
+    assert_eq!(vm.run(1).unwrap_err().kind, VmErrorKind::Limit);
+    assert_eq!(object_values(&vm, caller), vec![Value::Object(o)]);
+    assert_eq!(vm.stack().unwrap(), before);
+}
+
+#[test]
+fn argument_array_success_normalizes_reference_targets_and_dereferences_them() {
+    let caller = fun(0, 0, 0, 255, &[(0, 0, 0x3e), (1, 1, 0x07)]);
+    let leaf = optional_fun(1, 1, 0, 255, &[], &[(0, 0, 0x15)]);
+    let mut p = image(&[caller, leaf], 1, &[]);
+    optional_meta(&mut p, 1, 1, true, &[0]);
+    ref_arg(&mut p, 1, 0, 255, 0);
+    let (mut vm, o) = machine(p, vec![Value::Undefined]);
+    let pid = vm.objects().get(o).unwrap().program();
+    let caller = vm
+        .objects_mut()
+        .create(pid, vec![Value::Object(o)])
+        .unwrap();
+    vm.start(caller, 0, vec![]).unwrap();
+    vm.run(6).unwrap();
+    vm.objects_mut().remove(o).unwrap();
+    assert_eq!(returned_array(&mut vm), vec![Value::Undefined]);
+    assert_eq!(object_values(&vm, caller), vec![Value::Undefined]);
+}
+
+#[test]
+fn default_literals_decode_numeric_metadata_strings_and_undefined() {
+    let mut f = optional_fun(
+        0,
+        4,
+        0,
+        255,
+        &[
+            vec![(0, 0, 0x3c)],
+            vec![(4, 0, 0x3f)],
+            vec![(0, 0, 0x40)],
+            vec![(0, 0, 0x42)],
+        ],
+        &[(0, 0, 0x15)],
+    );
+    f.meta.extend(123456i32.to_le_bytes());
+    f.meta.extend(1.5f32.to_bits().to_le_bytes());
+    f.meta.extend(0u32.to_le_bytes());
+    let mut p = image(&[f], 0, &[b"literal\0"]);
+    optional_meta(&mut p, 0, 0, false, &[1, 1, 1, 1]);
+    let (mut vm, o) = machine(p, vec![]);
+    vm.start(o, 0, vec![]).unwrap();
+    assert_eq!(
+        returned_array(&mut vm),
+        vec![
+            Value::Int(123456),
+            real(1.5),
+            Value::bytes(b"literal"),
+            Value::Undefined
+        ]
+    );
+}
+
+#[test]
+fn optional_type_check_is_atomic_before_any_default_is_evaluated() {
+    let mut p = image(
+        &[optional_fun(
+            0,
+            3,
+            0,
+            255,
+            &[vec![], vec![], vec![(7, 0, 0x3b)]],
+            &[],
+        )],
+        0,
+        &[],
+    );
+    optional_meta(&mut p, 0, 2, false, &[0, 0, 1]);
+    p.functions[0].arguments[0].r#type = 3;
+    p.functions[0].arguments[1].r#type = 2;
+    let (mut vm, o) = machine(p, vec![]);
+    vm.start(o, 0, vec![Value::Int(5), Value::bytes(b"bad")])
+        .unwrap();
+    let before = vm.stack().unwrap();
+    let e = vm.run(1).unwrap_err();
+    assert_eq!((e.kind, e.pc), (VmErrorKind::UnsupportedType, Some(0)));
+    assert_eq!(vm.stack().unwrap(), before);
 }
