@@ -21,6 +21,8 @@ pub struct VmError {
     pub program: Option<ProgramId>,
     pub object: Option<ObjectId>,
     pub function: Option<i16>,
+    /// Constitution of the active initialization task, including nested calls.
+    pub initialization: Option<usize>,
     pub pc: Option<usize>,
     pub offset: Option<usize>,
     pub message: String,
@@ -33,6 +35,7 @@ impl VmError {
             program: None,
             object: None,
             function: None,
+            initialization: None,
             pc: None,
             offset: None,
             message: message.into(),
@@ -43,8 +46,14 @@ impl fmt::Display for VmError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(
             f,
-            "{} function {:?} pc {:?} offset {:?}: {:?}: {}",
-            self.source, self.function, self.pc, self.offset, self.kind, self.message
+            "{} function {:?} initialization {:?} pc {:?} offset {:?}: {:?}: {}",
+            self.source,
+            self.function,
+            self.initialization,
+            self.pc,
+            self.offset,
+            self.kind,
+            self.message
         )
     }
 }

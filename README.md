@@ -1,6 +1,6 @@
 # rml32
 
-对 `magic_Linux32` 进行静态分析，并以 Rust 重写兼容驱动。当前已实现**只读离线加载器**和阶段 2L 的**数值、共享容器、引用参数、受限默认/可变参数及继承链接 VM 库**，支持 55 种操作码的限定路径。VM 仅在人工构造程序上验证，尚无可运行服务端；`rml32-inspect` 继续只读检查制品。
+对 `magic_Linux32` 进行静态分析，并以 Rust 重写兼容驱动。当前已实现**只读离线加载器**和阶段 2N 的**数值、共享容器、引用参数、受限默认/可变参数、继承链接及对象初始化 VM 库**，支持 57 种操作码的限定路径。VM 仅在人工构造程序上验证，尚无可运行服务端；`rml32-inspect` 继续只读检查制品。
 
 ## 构建与检查
 
@@ -48,6 +48,7 @@ python3 tests/compare_corpus.py --report target/stage1-validation.json
 - [阶段 2K 继承静态证据与设计](docs/vm-inheritance-linking.md)
 - [阶段 2L 受限继承链接与执行](docs/vm-inheritance-runtime.md)
 - [阶段 2M 对象生命周期静态分析与设计](docs/vm-object-lifecycle.md)
+- [阶段 2N 受限对象初始化运行时](docs/vm-initialization-runtime.md)
 - [服务包与 Rust 兼容性分析](docs/magic_Linux32-rust-compatibility-analysis.md)
 - [Ghidra 静态分析](docs/magic_Linux32-static-analysis.md)
 

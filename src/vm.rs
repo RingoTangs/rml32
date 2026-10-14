@@ -1,8 +1,8 @@
 //! Bounded Magic559 interpreter; reference artifacts are never executed by tests.
 use crate::{
     cell::Cell,
-    object::ObjectStore,
-    prepared::{Instruction, PreparedFunction, PreparedProgram},
+    object::{InitializationState, ObjectStore},
+    prepared::{EntryLayout, Instruction, PreparedFunction, PreparedProgram},
     value::{ObjectId, ProgramId, Value},
     vm_error::{VmError, VmErrorKind},
 };
@@ -14,6 +14,8 @@ use std::{
 pub enum Completion {
     Returned(Value),
     ActionFinished,
+    /// All initialization segments returned; no create/destruct functions were run.
+    Initialized(ObjectId),
 }
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum RunOutcome {
@@ -89,12 +91,92 @@ enum EntryPhase {
     Ready,
     Body,
 }
+#[derive(Debug, Clone, Copy)]
+enum FrameBody {
+    Function(i16),
+    Initialization(usize),
+}
+impl FrameBody {
+    fn function(self) -> Option<i16> {
+        match self {
+            Self::Function(i) => Some(i),
+            Self::Initialization(_) => None,
+        }
+    }
+}
+struct CodeView<'a> {
+    instructions: &'a [Instruction],
+    source: &'a str,
+    pool: Option<&'a Vec<Option<Value>>>,
+    function_base: i16,
+    variable_base: i16,
+    local_count: usize,
+    entry: Option<&'a EntryLayout>,
+    function: Option<&'a PreparedFunction>,
+}
+impl<'a> CodeView<'a> {
+    fn function(&self) -> Result<&'a PreparedFunction, VmError> {
+        self.function.ok_or_else(|| {
+            err(
+                VmErrorKind::UnsupportedFeature,
+                "ordinary function operation in initialization",
+            )
+        })
+    }
+    fn get(program: &'a PreparedProgram, body: FrameBody) -> Result<Self, VmError> {
+        match body {
+            FrameBody::Function(index) => {
+                let f = program.functions.get(&index).ok_or_else(|| {
+                    err(VmErrorKind::InvalidProgram, "current function is missing")
+                })?;
+                Ok(Self {
+                    instructions: &f.instructions,
+                    source: f.origin.as_deref().unwrap_or(&program.source),
+                    pool: f.pool.as_deref(),
+                    function_base: f.function_base,
+                    variable_base: f.variable_base,
+                    local_count: f.local_count,
+                    entry: f.entry.as_ref(),
+                    function: Some(f),
+                })
+            }
+            FrameBody::Initialization(index) => {
+                let init = program
+                    .initializations
+                    .as_ref()
+                    .and_then(|v| v.get(index))
+                    .ok_or_else(|| {
+                        err(
+                            VmErrorKind::InvalidProgram,
+                            "initialization body is missing",
+                        )
+                    })?;
+                Ok(Self {
+                    instructions: &init.instructions,
+                    source: &init.source,
+                    pool: Some(&init.pool),
+                    function_base: init.function_base,
+                    variable_base: init.variable_base,
+                    local_count: 0,
+                    entry: None,
+                    function: None,
+                })
+            }
+        }
+    }
+}
+#[derive(Debug)]
+struct InitializationTask {
+    object: ObjectId,
+    position: usize,
+    constitution: usize,
+}
 #[derive(Debug, Clone)]
 struct Frame {
     id: u64,
     program: ProgramId,
     object: ObjectId,
-    function: i16,
+    body: FrameBody,
     pc: usize,
     bp: usize,
     argc: usize,
@@ -111,6 +193,7 @@ pub struct Vm {
     reference_cells: BTreeMap<u64, Weak<()>>,
     completion: Option<Completion>,
     failure: Option<VmError>,
+    initialization: Option<InitializationTask>,
 }
 fn err(kind: VmErrorKind, message: impl Into<String>) -> VmError {
     VmError::new(kind, message)
@@ -126,6 +209,7 @@ impl Vm {
             reference_cells: BTreeMap::new(),
             completion: None,
             failure: None,
+            initialization: None,
         }
     }
     pub fn with_limits(objects: ObjectStore, limits: VmLimits) -> Self {
@@ -140,8 +224,119 @@ impl Vm {
     pub fn objects_mut(&mut self) -> &mut ObjectStore {
         &mut self.objects
     }
-    pub fn into_objects(self) -> ObjectStore {
+    /// Extract storage, cancelling and deleting any unfinished initialization object.
+    pub fn into_objects(mut self) -> ObjectStore {
+        self.cleanup_initialization();
         self.objects
+    }
+    fn cleanup_initialization(&mut self) {
+        if let Some(task) = self.initialization.take() {
+            // Frames and references must release their owners before object storage.
+            self.frames.clear();
+            self.stack.clear();
+            self.reference_cells.clear();
+            let _ = self.objects.remove(task.object);
+        }
+    }
+    /// Allocate a new object and start only its bounded initialization segments.
+    pub fn begin_initialize(&mut self, program: ProgramId) -> Result<ObjectId, VmError> {
+        if self.initialization.is_some()
+            || (!self.frames.is_empty() && self.completion.is_none() && self.failure.is_none())
+        {
+            return Err(err(
+                VmErrorKind::InvalidState,
+                "an execution is already active",
+            ));
+        }
+        let p = self.objects.program(program)?;
+        if !p.is_initializable() {
+            return Err(err(
+                VmErrorKind::UnsupportedFeature,
+                "program was not prepared for initialization",
+            ));
+        }
+        if self.limits.max_frames == 0 {
+            return Err(err(
+                VmErrorKind::Limit,
+                "initialization exceeds frame limit",
+            ));
+        }
+        let constitution = *p
+            .init_order
+            .first()
+            .ok_or_else(|| err(VmErrorKind::InvalidProgram, "missing initialization order"))?;
+        let id = self.frame_id()?;
+        let object = self
+            .objects
+            .create(program, vec![Value::Undefined; p.variable_count])?;
+        self.objects
+            .set_initialization(object, InitializationState::Initializing)?;
+        self.stack.clear();
+        self.reference_cells.clear();
+        self.frames = vec![Self::initialization_frame(
+            id,
+            program,
+            object,
+            constitution,
+        )];
+        self.initialization = Some(InitializationTask {
+            object,
+            position: 0,
+            constitution,
+        });
+        self.completion = None;
+        self.failure = None;
+        Ok(object)
+    }
+    fn initialization_frame(
+        id: u64,
+        program: ProgramId,
+        object: ObjectId,
+        constitution: usize,
+    ) -> Frame {
+        Frame {
+            id,
+            program,
+            object,
+            body: FrameBody::Initialization(constitution),
+            pc: 0,
+            bp: 0,
+            argc: 0,
+            entered: false,
+            phase: EntryPhase::Body,
+        }
+    }
+    fn return_initialization(&mut self, frame: &Frame, p: &PreparedProgram) -> Result<(), VmError> {
+        if !matches!(frame.body, FrameBody::Initialization(_))
+            || self.frames.len() != 1
+            || self.stack.len() != frame.bp
+        {
+            return Err(err(
+                VmErrorKind::InvalidProgram,
+                "initialization return requires a balanced root initialization frame",
+            ));
+        }
+        let task = self
+            .initialization
+            .as_ref()
+            .ok_or_else(|| err(VmErrorKind::InvalidState, "missing initialization task"))?;
+        let position = task.position + 1;
+        if let Some(&constitution) = p.init_order.get(position) {
+            let id = self.frame_id()?;
+            self.frames[0] =
+                Self::initialization_frame(id, frame.program, frame.object, constitution);
+            let task = self.initialization.as_mut().unwrap();
+            task.position = position;
+            task.constitution = constitution;
+        } else {
+            self.objects
+                .set_initialization(frame.object, InitializationState::Initialized)?;
+            self.frames.clear();
+            self.reference_cells.clear();
+            self.initialization = None;
+            self.completion = Some(Completion::Initialized(frame.object));
+        }
+        Ok(())
     }
     pub fn frame_depth(&self) -> usize {
         self.frames.len()
@@ -256,7 +451,7 @@ impl Vm {
                 .ok_or_else(|| err(VmErrorKind::InvalidState, "reference frame has exited"))?;
             let program = self.objects.program(owner.program)?;
             let locals = if owner.entered {
-                program.functions[&owner.function].local_count
+                CodeView::get(&program, owner.body)?.local_count
             } else {
                 0
             };
@@ -332,6 +527,12 @@ impl Vm {
                 "an execution is already active",
             ));
         }
+        if self.objects.get(object)?.initialization_state() == InitializationState::Initializing {
+            return Err(err(
+                VmErrorKind::InvalidState,
+                "object initialization is incomplete",
+            ));
+        }
         let program = self.objects.get(object)?.program();
         let p = self.objects.program(program)?;
         if p.unimplemented.contains(&function_index) {
@@ -371,7 +572,7 @@ impl Vm {
             id,
             program,
             object,
-            function: function_index,
+            body: FrameBody::Function(function_index),
             pc: 0,
             bp: self.stack.len(),
             argc: self.stack.len(),
@@ -398,23 +599,20 @@ impl Vm {
         }
         for _ in 0..instruction_budget {
             let frame = self.frames.last().unwrap().clone();
+            let initialization = self.initialization.as_ref().map(|t| t.constitution);
             if let Err(mut e) = self.step() {
                 e.program = Some(frame.program);
                 e.object = Some(frame.object);
-                e.function = Some(frame.function);
+                e.function = frame.body.function();
+                e.initialization = initialization;
                 e.pc = Some(frame.pc);
-                if let Ok(p) = self.objects.program(frame.program) {
-                    e.source = p
-                        .functions
-                        .get(&frame.function)
-                        .and_then(|f| f.origin.clone())
-                        .unwrap_or_else(|| p.source.clone());
-                    e.offset = p
-                        .functions
-                        .get(&frame.function)
-                        .and_then(|f| f.instructions.get(frame.pc))
-                        .map(|i| i.offset);
+                if let Ok(p) = self.objects.program(frame.program)
+                    && let Ok(code) = CodeView::get(&p, frame.body)
+                {
+                    e.source = code.source.to_owned();
+                    e.offset = code.instructions.get(frame.pc).map(|i| i.offset);
                 }
+                self.cleanup_initialization();
                 self.failure = Some(e.clone());
                 return Err(e);
             }
@@ -434,8 +632,8 @@ impl Vm {
         let p = self.objects.program(frame.program)?;
         Ok((frame, p))
     }
-    fn need(&self, n: usize, frame: &Frame, f: &PreparedFunction) -> Result<(), VmError> {
-        let floor = frame.bp + if frame.entered { f.local_count } else { 0 };
+    fn need(&self, n: usize, frame: &Frame, local_count: usize) -> Result<(), VmError> {
+        let floor = frame.bp + if frame.entered { local_count } else { 0 };
         if self.stack.len().saturating_sub(floor) < n {
             return Err(err(
                 VmErrorKind::StackUnderflow,
@@ -465,10 +663,7 @@ impl Vm {
     }
     fn object_cell(&self, frame: &Frame, index: i32) -> Result<Rc<Cell>, VmError> {
         let p = self.objects.program(frame.program)?;
-        let base = p
-            .functions
-            .get(&frame.function)
-            .map_or(0, |f| f.variable_base);
+        let base = CodeView::get(&p, frame.body)?.variable_base;
         usize::try_from(index + i32::from(base))
             .ok()
             .and_then(|i| self.objects.get(frame.object).ok()?.variables.get(i))
@@ -701,10 +896,10 @@ impl Vm {
         opcode: u8,
         operand: i32,
         frame: &Frame,
-        function: &PreparedFunction,
+        local_count: usize,
     ) -> Result<(), VmError> {
         let count = if opcode == 0x22 { 1 } else { 2 };
-        self.need(count, frame, function)?;
+        self.need(count, frame, local_count)?;
         let n = self.stack.len();
         let reference = self.reference(n - count)?;
         if reference.readonly {
@@ -736,10 +931,7 @@ impl Vm {
     }
     fn step(&mut self) -> Result<(), VmError> {
         let (frame, p) = self.context()?;
-        let f = p
-            .functions
-            .get(&frame.function)
-            .ok_or_else(|| err(VmErrorKind::InvalidProgram, "current function is missing"))?;
+        let f = CodeView::get(&p, frame.body)?;
         let Instruction {
             opcode, operands, ..
         } = f
@@ -768,9 +960,9 @@ impl Vm {
         let [a, b] = operands;
         let n = self.stack.len();
         match opcode {
-            0x22 | 0x2f => self.numeric_update(opcode, a, &frame, f),
+            0x22 | 0x2f => self.numeric_update(opcode, a, &frame, f.local_count),
             0x03 | 0x04 => {
-                self.need(2, &frame, f)?;
+                self.need(2, &frame, f.local_count)?;
                 let (target, source) = if opcode == 3 {
                     (n - 1, n - 2)
                 } else {
@@ -826,7 +1018,7 @@ impl Vm {
                 self.push_entry(StackEntry::Reference(r))
             }
             0x13 => {
-                self.need(1, &frame, f)?;
+                self.need(1, &frame, f.local_count)?;
                 if matches!(self.stack[n - 1], StackEntry::Reference(_)) {
                     return Ok(());
                 }
@@ -844,14 +1036,14 @@ impl Vm {
                 Ok(())
             }
             0x14 => {
-                self.need(1, &frame, f)?;
+                self.need(1, &frame, f.local_count)?;
                 let r = self.reference(n - 1)?;
                 let entry = self.read_reference(&r)?;
                 self.stack[n - 1] = entry;
                 Ok(())
             }
             0x44 => {
-                self.need(2, &frame, f)?;
+                self.need(2, &frame, f.local_count)?;
                 let old = self.reference(n - 2)?;
                 if old.readonly {
                     return Err(err(
@@ -907,7 +1099,7 @@ impl Vm {
                         "mapping input count must be even",
                     ));
                 }
-                self.need(count, &frame, f)?;
+                self.need(count, &frame, f.local_count)?;
                 if count == 0 && n >= self.limits.max_stack {
                     return Err(err(VmErrorKind::Limit, "value stack limit exceeded"));
                 }
@@ -931,7 +1123,7 @@ impl Vm {
                 self.push(value)
             }
             0x43 => {
-                self.need(2, &frame, f)?;
+                self.need(2, &frame, f.local_count)?;
                 let key = self.value(n - 1)?;
                 let selected = match self.value(n - 2)? {
                     Value::Array(array) => {
@@ -950,7 +1142,7 @@ impl Vm {
                 self.set(n - 2, selected)
             }
             0x4f => {
-                self.need(1, &frame, f)?;
+                self.need(1, &frame, f.local_count)?;
                 let size = match self.value(n - 1)? {
                     Value::Array(a) => a.len(),
                     Value::Mapping(m) => m.len()?,
@@ -963,14 +1155,14 @@ impl Vm {
             }
             0x01 | 0x19 | 0x28 | 0x29 | 0x51 | 0x1c | 0x1e | 0x20 | 0x25 | 0x27 | 0x02 | 0x30
             | 0x55 | 0x26 | 0x4b | 0x2a => {
-                self.need(2, &frame, f)?;
+                self.need(2, &frame, f.local_count)?;
                 let result =
                     crate::numeric::binary(opcode, &self.value(n - 2)?, &self.value(n - 1)?)?;
                 self.stack.pop();
                 self.set(n - 2, result)
             }
             0x2b => {
-                self.need(1, &frame, f)?;
+                self.need(1, &frame, f.local_count)?;
                 let result = match self.value(n - 1)? {
                     Value::Int(i) => Value::Int(i.wrapping_neg()),
                     Value::Real(r) => {
@@ -989,12 +1181,12 @@ impl Vm {
             0x42 => self.push(Value::Undefined),
             0x3f => self.push(Value::Real(crate::RealBits::from_bits(a as u32))),
             0x0d => {
-                self.need(1, &frame, f)?;
+                self.need(1, &frame, f.local_count)?;
                 let v = crate::numeric::cast(&self.value(n - 1)?, a)?;
                 self.set(n - 1, v)
             }
             0x24 | 0x2d | 0x4a => {
-                self.need(1, &frame, f)?;
+                self.need(1, &frame, f.local_count)?;
                 let value = self.copy_value(&self.value(n - 1)?);
                 let result = match opcode {
                     0x24 => i32::from(i32::from(value.tag()) == a),
@@ -1015,7 +1207,7 @@ impl Vm {
             0x40 => {
                 let value = usize::try_from(a)
                     .ok()
-                    .and_then(|n| f.pool.as_deref().unwrap_or(&p.strings).get(n))
+                    .and_then(|n| f.pool.unwrap_or(&p.strings).get(n))
                     .and_then(Option::as_ref)
                     .ok_or_else(|| {
                         err(VmErrorKind::Bounds, "shared string is absent or invalid")
@@ -1024,7 +1216,7 @@ impl Vm {
             }
             0x32 | 0x33 => {
                 let count = if opcode == 0x33 { 1 } else { a.max(0) as usize };
-                self.need(count, &frame, f)?;
+                self.need(count, &frame, f.local_count)?;
                 self.stack.truncate(n - count);
                 Ok(())
             }
@@ -1053,7 +1245,7 @@ impl Vm {
                 self.push_entry(entry)
             }
             0x4d => {
-                self.need(1, &frame, f)?;
+                self.need(1, &frame, f.local_count)?;
                 let pos = self
                     .slot(a, &frame)
                     .ok_or_else(|| err(VmErrorKind::Bounds, "no such local/argument slot"))?;
@@ -1076,14 +1268,14 @@ impl Vm {
                 self.push(value)
             }
             0x4e => {
-                self.need(1, &frame, f)?;
+                self.need(1, &frame, f.local_count)?;
                 let cell = self.object_cell(&frame, a)?;
                 let value = self.copy_value(&self.value(n - 1)?);
                 cell.replace(value)
             }
             0x1f => self.jump(a, f.instructions.len()),
             0x21 => {
-                self.need(1, &frame, f)?;
+                self.need(1, &frame, f.local_count)?;
                 let value = self.copy_value(&self.value(n - 1)?);
                 let zero = crate::numeric::zero(&value);
                 self.set(n - 1, value)?;
@@ -1129,7 +1321,7 @@ impl Vm {
                 Ok(())
             }
             0x0f => {
-                let (skip, expected) = Self::argument_plan(f, frame.argc)?;
+                let (skip, expected) = Self::argument_plan(f.function()?, frame.argc)?;
                 let target = if let Some(entry) = &f.entry {
                     if frame.phase != EntryPhase::Unchecked || n != frame.bp {
                         return Err(err(
@@ -1137,7 +1329,7 @@ impl Vm {
                             "duplicate or damaged argument entry",
                         ));
                     }
-                    if frame.argc < f.max_args {
+                    if frame.argc < f.function()?.max_args {
                         1 + skip
                     } else {
                         entry.enter
@@ -1153,7 +1345,7 @@ impl Vm {
                         "branch target outside function code",
                     ));
                 }
-                self.check_args(&frame, f)?;
+                self.check_args(&frame, f.function()?)?;
                 let current = self.frames.last_mut().unwrap();
                 current.pc = target;
                 if let Some(entry) = &f.entry {
@@ -1199,7 +1391,7 @@ impl Vm {
             }
             0x07 => {
                 let argc = (b & 0x3f) as usize;
-                self.need(argc, &frame, f)?;
+                self.need(argc, &frame, f.local_count)?;
                 if self.frames.len() >= self.limits.max_frames {
                     return Err(err(VmErrorKind::Limit, "call frame limit exceeded"));
                 }
@@ -1237,7 +1429,7 @@ impl Vm {
                     id,
                     program: frame.program,
                     object: frame.object,
-                    function: index,
+                    body: FrameBody::Function(index),
                     pc: 0,
                     bp: n,
                     argc,
@@ -1246,8 +1438,16 @@ impl Vm {
                 });
                 Ok(())
             }
-            0x49 => self.return_function(&frame, f),
+            0x2e => Ok(()),
+            0x48 => self.return_initialization(&frame, &p),
+            0x49 => self.return_function(&frame, f.function()?),
             0x1d => {
+                if self.initialization.is_some() {
+                    return Err(err(
+                        VmErrorKind::UnsupportedFeature,
+                        "finishAction cannot complete an initialization task",
+                    ));
+                }
                 self.completion = Some(Completion::ActionFinished);
                 Ok(())
             }
@@ -1280,7 +1480,7 @@ mod tests {
             id,
             program: ProgramId(0),
             object: ObjectId(0),
-            function: 0,
+            body: FrameBody::Function(0),
             pc: 0,
             bp: 0,
             argc: 0,
@@ -1298,7 +1498,7 @@ mod tests {
             id: new_id,
             program: ProgramId(0),
             object: ObjectId(0),
-            function: 0,
+            body: FrameBody::Function(0),
             pc: 0,
             bp: 0,
             argc: 0,
@@ -1341,7 +1541,7 @@ mod tests {
             id: 0,
             program: ProgramId(0),
             object: ObjectId(0),
-            function: 0,
+            body: FrameBody::Function(0),
             pc: 0,
             bp: 0,
             argc: 0,
@@ -1408,7 +1608,7 @@ mod tests {
                         opcode,
                         if opcode == 0x22 { 1 } else { 2 },
                         &frame,
-                        &function,
+                        function.local_count,
                     )
                     .unwrap_err();
                 assert_eq!(error.kind, kind);

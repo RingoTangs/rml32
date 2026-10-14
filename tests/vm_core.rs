@@ -652,7 +652,7 @@ fn supported_types_have_explicit_legacy_tags() {
         [0, 1, 2, 4, 10]
     );
     let supported: BTreeSet<_> = rml32::prepared::SUPPORTED_OPCODES.iter().collect();
-    assert_eq!(supported.len(), 55);
+    assert_eq!(supported.len(), 57);
     assert_eq!(ByteString::new(b"\xff").bytes, b"\xff");
 }
 
@@ -3907,6 +3907,629 @@ fn linked_name_matching_is_byte_exact_and_upper_candidates_are_used() {
     let (mut vm, o) = linked_vm(&linked_catalog(p, c));
     assert_eq!(
         vm.start(o, 0, vec![]).unwrap_err().kind,
+        VmErrorKind::UnsupportedFeature
+    );
+}
+
+// Stage 2N: opted-in initialization executes only these in-memory fixtures.
+fn set_init(p: &mut ProgramImage, nodes: &[Node]) {
+    p.init.nodes = nodes.to_vec();
+    p.init.nodes_offset = 9000;
+    p.init.metadata_hex.clear();
+}
+fn init_catalog(p: ProgramImage) -> rml32::ProgramCatalog {
+    let mut c = rml32::ProgramCatalog::new();
+    c.insert("root", p).unwrap();
+    c
+}
+fn prepare_init(
+    c: &rml32::ProgramCatalog,
+    root: &str,
+) -> Result<rml32::PreparedProgram, rml32::VmError> {
+    rml32::prepare_initializable_program(c, root, rml32::LinkLimits::default())
+}
+fn init_vm(c: &rml32::ProgramCatalog, root: &str) -> (Vm, rml32::ProgramId) {
+    let p = prepare_init(c, root).unwrap();
+    assert!(p.is_initializable());
+    let mut store = ObjectStore::new();
+    let id = store.register_program(p).unwrap();
+    (Vm::new(store), id)
+}
+#[test]
+fn initialization_creates_undefined_values_and_finishes_exactly_on_48() {
+    let mut p = image(&[fun(0, 0, 0, 255, &[(0, 0, 0x3d)])], 2, &[]);
+    set_init(&mut p, &[(0, 0, 0x2e), (0, 0, 0x48), (0, 0, 0x1d)]);
+    let (mut vm, id) = init_vm(&init_catalog(p), "root");
+    let o = vm.begin_initialize(id).unwrap();
+    assert_eq!(object_values(&vm, o), vec![Value::Undefined; 2]);
+    assert_eq!(
+        vm.objects().get(o).unwrap().initialization_state(),
+        rml32::InitializationState::Initializing
+    );
+    assert_eq!(vm.run(0).unwrap(), RunOutcome::BudgetExhausted);
+    assert_eq!(vm.run(1).unwrap(), RunOutcome::BudgetExhausted);
+    assert_eq!(
+        vm.run(1).unwrap(),
+        RunOutcome::Finished(Completion::Initialized(o))
+    );
+    assert_eq!(vm.frame_depth(), 0);
+    assert!(vm.stack().unwrap().is_empty());
+    assert_eq!(
+        vm.objects().get(o).unwrap().initialization_state(),
+        rml32::InitializationState::Initialized
+    );
+    assert_eq!(
+        vm.run(0).unwrap(),
+        RunOutcome::Finished(Completion::Initialized(o))
+    );
+    vm.start(o, 0, vec![]).unwrap();
+    assert_eq!(
+        vm.run(100).unwrap(),
+        RunOutcome::Finished(Completion::Returned(Value::Undefined))
+    );
+}
+#[test]
+fn initialization_is_opt_in_and_existing_prepare_interfaces_ignore_init() {
+    let mut p = image(&[fun(0, 0, 0, 255, &[(5, 0, 0x3b)])], 0, &[]);
+    set_init(&mut p, &[(0, 0, 0x06)]);
+    let plain = prepare_program(p.clone()).unwrap();
+    assert!(!plain.is_initializable());
+    let c = init_catalog(p);
+    assert!(
+        !rml32::prepare_linked_program(&c, "root", Default::default())
+            .unwrap()
+            .is_initializable()
+    );
+    assert_eq!(
+        prepare_init(&c, "root").unwrap_err().kind,
+        VmErrorKind::UnsupportedFeature
+    );
+    let mut store = ObjectStore::new();
+    let id = store.register_program(plain).unwrap();
+    let o = store.create(id, vec![]).unwrap();
+    let mut vm = Vm::new(store);
+    vm.start(o, 0, vec![]).unwrap();
+    assert_eq!(
+        vm.run(100).unwrap(),
+        RunOutcome::Finished(Completion::Returned(Value::Int(5)))
+    );
+    assert_eq!(
+        vm.begin_initialize(id).unwrap_err().kind,
+        VmErrorKind::UnsupportedFeature
+    );
+    assert_eq!(
+        vm.run(0).unwrap(),
+        RunOutcome::Finished(Completion::Returned(Value::Int(5)))
+    );
+}
+#[test]
+fn initialization_preparation_rejects_empty_missing_return_and_function_only_nodes() {
+    for (nodes, kind) in [
+        (vec![], VmErrorKind::InvalidProgram),
+        (vec![(0, 0, 0x2e)], VmErrorKind::InvalidProgram),
+    ] {
+        let mut p = image(&[], 0, &[]);
+        set_init(&mut p, &nodes);
+        let e = prepare_init(&init_catalog(p), "root").unwrap_err();
+        assert_eq!(e.kind, kind);
+        assert_eq!(e.initialization, Some(0));
+        assert_eq!(e.function, None);
+        assert_eq!(e.source, "root");
+    }
+    for op in [0x0f, 0x1b, 0x47, 0x49, 0x34, 0x15, 0x37, 0x39, 0x4d, 0x06] {
+        let mut p = image(&[], 0, &[]);
+        set_init(&mut p, &[(0, 0, op), (0, 0, 0x48)]);
+        let e = prepare_init(&init_catalog(p), "root").unwrap_err();
+        assert_eq!(e.kind, VmErrorKind::UnsupportedFeature, "{op:x}");
+        assert_eq!(e.pc, Some(0));
+        assert_eq!(e.offset, Some(9000));
+    }
+}
+#[test]
+fn initialization_rejects_ordinary_function_48_but_allows_null_action() {
+    let p = image(&[fun(0, 0, 0, 255, &[(0, 0, 0x48)])], 0, &[]);
+    assert_eq!(
+        prepare_program(p).unwrap_err().kind,
+        VmErrorKind::UnsupportedFeature
+    );
+    let (mut vm, o) = machine(
+        image(&[fun(0, 0, 0, 255, &[(0, 0, 0x2e), (6, 0, 0x3b)])], 0, &[]),
+        vec![],
+    );
+    vm.start(o, 0, vec![]).unwrap();
+    assert_eq!(
+        vm.run(100).unwrap(),
+        RunOutcome::Finished(Completion::Returned(Value::Int(6)))
+    );
+}
+#[test]
+fn initialization_balance_failure_removes_only_owned_object_and_is_sticky() {
+    let mut p = image(&[], 1, &[]);
+    set_init(&mut p, &[(7, 0, 0x3b), (0, 0, 0x48)]);
+    let (mut vm, id) = init_vm(&init_catalog(p), "root");
+    let manual = vm.objects_mut().create(id, vec![Value::Int(99)]).unwrap();
+    assert_eq!(
+        vm.objects().get(manual).unwrap().initialization_state(),
+        rml32::InitializationState::Manual
+    );
+    let o = vm.begin_initialize(id).unwrap();
+    let e = vm.run(100).unwrap_err();
+    assert_eq!(e.kind, VmErrorKind::InvalidProgram);
+    assert_eq!(e.function, None);
+    assert_eq!(e.initialization, Some(0));
+    assert_eq!(e.object, Some(o));
+    assert_eq!(e.program, Some(id));
+    assert_eq!(e.source, "root");
+    assert_eq!(e.pc, Some(1));
+    assert_eq!(e.offset, Some(9004));
+    assert!(vm.objects().get(o).is_err());
+    assert_eq!(object_values(&vm, manual), vec![Value::Int(99)]);
+    assert_eq!(vm.frame_depth(), 0);
+    assert!(vm.stack().unwrap().is_empty());
+    assert_eq!(vm.run(1).unwrap_err(), e);
+    let again = vm.begin_initialize(id).unwrap();
+    assert_ne!(again, o);
+    assert_eq!(vm.run(100).unwrap_err().object, Some(again));
+}
+#[test]
+fn initialization_finish_action_is_failure_even_inside_called_function() {
+    for nested in [false, true] {
+        let mut p = image(&[fun(0, 0, 0, 255, &[(0, 0, 0x1d)])], 0, &[]);
+        set_init(
+            &mut p,
+            &[(0, 0, if nested { 0x07 } else { 0x1d }), (0, 0, 0x48)],
+        );
+        let (mut vm, id) = init_vm(&init_catalog(p), "root");
+        let o = vm.begin_initialize(id).unwrap();
+        let e = vm.run(100).unwrap_err();
+        assert_eq!(e.kind, VmErrorKind::UnsupportedFeature);
+        assert_eq!(e.initialization, Some(0));
+        assert_eq!(e.function, if nested { Some(0) } else { None });
+        assert!(vm.objects().get(o).is_err());
+    }
+}
+#[test]
+fn initialization_external_delete_and_into_objects_cancel_owned_storage() {
+    let mut p = image(&[], 0, &[]);
+    set_init(&mut p, &[(0, 0, 0x2e), (0, 0, 0x48)]);
+    let c = init_catalog(p);
+    let (mut vm, id) = init_vm(&c, "root");
+    let o = vm.begin_initialize(id).unwrap();
+    vm.objects_mut().remove(o).unwrap();
+    let e = vm.run(1).unwrap_err();
+    assert_eq!(e.kind, VmErrorKind::InvalidObject);
+    assert_eq!(e.initialization, Some(0));
+    assert_eq!(vm.frame_depth(), 0);
+    let (mut vm, id) = init_vm(&c, "root");
+    let manual = vm.objects_mut().create(id, vec![]).unwrap();
+    let o = vm.begin_initialize(id).unwrap();
+    assert_eq!(vm.run(1).unwrap(), RunOutcome::BudgetExhausted);
+    let store = vm.into_objects();
+    assert!(store.get(o).is_err());
+    assert!(store.get(manual).is_ok());
+}
+#[test]
+fn initialization_excludes_concurrent_starts_and_preflight_preserves_paused_work() {
+    let mut p = image(&[fun(0, 0, 0, 255, &[])], 0, &[]);
+    set_init(&mut p, &[(0, 0, 0x2e), (0, 0, 0x48)]);
+    let (mut vm, id) = init_vm(&init_catalog(p), "root");
+    let o = vm.begin_initialize(id).unwrap();
+    assert_eq!(
+        vm.start(o, 0, vec![]).unwrap_err().kind,
+        VmErrorKind::InvalidState
+    );
+    assert_eq!(
+        vm.begin_initialize(id).unwrap_err().kind,
+        VmErrorKind::InvalidState
+    );
+    assert_eq!(
+        vm.run(2).unwrap(),
+        RunOutcome::Finished(Completion::Initialized(o))
+    );
+    vm.start(o, 0, vec![]).unwrap();
+    assert_eq!(
+        vm.begin_initialize(id).unwrap_err().kind,
+        VmErrorKind::InvalidState
+    );
+    assert_eq!(
+        vm.run(100).unwrap(),
+        RunOutcome::Finished(Completion::Returned(Value::Void))
+    );
+}
+
+fn initializing_family() -> rml32::ProgramCatalog {
+    let mut a = image(&[], 1, &[b"a\0"]);
+    set_init(
+        &mut a,
+        &[
+            (0, 0, 0x40),
+            (0, 0, 0x4e),
+            (0, 0, 0x33),
+            (0, 0, 0x48),
+            (0, 0, 0x1d),
+        ],
+    );
+    let mut b = a.clone();
+    b.strings = vec![Some(ByteString::new(b"b\0"))];
+    let mut c = a.clone();
+    c.strings = vec![Some(ByteString::new(b"root\0"))];
+    c.max_vars = 3;
+    c.constitution_count = Some(3);
+    inherit(&mut c, &a, b"a", [1, 0, 1]);
+    inherit(&mut c, &b, b"b", [2, 0, 2]);
+    let mut catalog = rml32::ProgramCatalog::new();
+    catalog.insert("a", a).unwrap();
+    catalog.insert("b", b).unwrap();
+    catalog.insert("root", c).unwrap();
+    catalog.bind_inherit("root", b"a", "a");
+    catalog.bind_inherit("root", b"b", "b");
+    catalog
+}
+#[test]
+fn initialization_multiple_parents_share_root_storage_and_keep_source_pools() {
+    let (mut vm, id) = init_vm(&initializing_family(), "root");
+    let o = vm.begin_initialize(id).unwrap();
+    assert_eq!(vm.run(4).unwrap(), RunOutcome::BudgetExhausted);
+    assert_eq!(
+        object_values(&vm, o),
+        vec![Value::Undefined, Value::bytes(b"a"), Value::Undefined]
+    );
+    assert_eq!(vm.run(4).unwrap(), RunOutcome::BudgetExhausted);
+    assert_eq!(
+        object_values(&vm, o),
+        vec![Value::Undefined, Value::bytes(b"a"), Value::bytes(b"b")]
+    );
+    assert_eq!(
+        vm.run(4).unwrap(),
+        RunOutcome::Finished(Completion::Initialized(o))
+    );
+    assert_eq!(
+        object_values(&vm, o),
+        vec![
+            Value::bytes(b"root"),
+            Value::bytes(b"a"),
+            Value::bytes(b"b")
+        ]
+    );
+    let other = vm.begin_initialize(id).unwrap();
+    assert_eq!(object_values(&vm, other), vec![Value::Undefined; 3]);
+    vm.run(100).unwrap();
+    assert_eq!(object_values(&vm, o), object_values(&vm, other));
+}
+#[test]
+fn initialization_multilevel_relocates_calls_variables_and_metadata() {
+    let mut base = image(&[fun(0, 0, 0, 255, &[(83, 0, 0x3b)])], 1, &[]);
+    set_init(
+        &mut base,
+        &[(0, 0, 0x07), (0, 0, 0x4e), (0, 0, 0x33), (0, 0, 0x48)],
+    );
+    let mut mid = image(&[], 2, &[]);
+    mid.max_functions = 2;
+    mid.constitution_count = Some(2);
+    inherit(&mut mid, &base, b"base", [1, 1, 1]);
+    set_init(
+        &mut mid,
+        &[(0, 0, 0x3c), (0, 0, 0x4e), (0, 0, 0x33), (0, 0, 0x48)],
+    );
+    mid.init.metadata_hex = rml32::hex(&17i32.to_le_bytes());
+    let mut root = image(&[], 3, &[]);
+    root.max_functions = 3;
+    root.constitution_count = Some(3);
+    inherit(&mut root, &mid, b"middle", [1, 1, 1]);
+    set_init(
+        &mut root,
+        &[
+            (1, 0, 0x3d),
+            (2, 0, 0x3d),
+            (0, 0, 0x01),
+            (0, 0, 0x4e),
+            (0, 0, 0x33),
+            (0, 0, 0x48),
+        ],
+    );
+    let mut c = rml32::ProgramCatalog::new();
+    c.insert("base", base).unwrap();
+    c.insert("mid", mid).unwrap();
+    c.insert("root", root).unwrap();
+    c.bind_inherit("mid", b"base", "base");
+    c.bind_inherit("root", b"middle", "mid");
+    let (mut vm, id) = init_vm(&c, "root");
+    let o = vm.begin_initialize(id).unwrap();
+    let mut ticks = 0;
+    loop {
+        ticks += 1;
+        if vm.run(1).unwrap() != RunOutcome::BudgetExhausted {
+            break;
+        }
+        assert!(ticks < 40);
+    }
+    assert_eq!(
+        object_values(&vm, o),
+        vec![Value::Int(100), Value::Int(17), Value::Int(83)]
+    );
+    assert_eq!(ticks, 18);
+}
+#[test]
+fn initialization_failure_in_each_constitution_cleans_frames_and_preserves_source() {
+    for (key, index) in [("a", 1), ("b", 2), ("root", 0)] {
+        // Rebuild explicitly to change one source's code; catalog remains opaque.
+        let mut a = image(&[], 0, &[]);
+        set_init(&mut a, &[(0, 0, 0x2e), (0, 0, 0x48)]);
+        let mut b = a.clone();
+        let mut root = a.clone();
+        root.constitution_count = Some(3);
+        inherit(&mut root, &a, b"a", [1, 0, 0]);
+        inherit(&mut root, &b, b"b", [2, 0, 0]);
+        let failing = match key {
+            "a" => &mut a,
+            "b" => &mut b,
+            _ => &mut root,
+        };
+        set_init(failing, &[(0, 0, 0x33), (0, 0, 0x48)]);
+        let mut c = rml32::ProgramCatalog::new();
+        for (k, p) in [("a", a), ("b", b), ("root", root)] {
+            c.insert(k, p).unwrap();
+        }
+        c.bind_inherit("root", b"a", "a");
+        c.bind_inherit("root", b"b", "b");
+        let (mut vm, id) = init_vm(&c, "root");
+        let o = vm.begin_initialize(id).unwrap();
+        let e = vm.run(100).unwrap_err();
+        assert_eq!(e.kind, VmErrorKind::StackUnderflow);
+        assert_eq!(e.source, key);
+        assert_eq!(e.initialization, Some(index));
+        assert_eq!(e.function, None);
+        assert_eq!(e.pc, Some(0));
+        assert_eq!(e.offset, Some(9000));
+        assert!(vm.objects().get(o).is_err());
+        assert_eq!(vm.frame_depth(), 0);
+    }
+}
+#[test]
+fn initialization_calls_reference_and_optional_functions_then_restores_context() {
+    let mut defaults = optional_fun(1, 1, 0, 255, &[vec![(7, 0, 0x3b)]], &[(0, 0, 0x37)]);
+    defaults.meta = vec![];
+    let mut p = image(
+        &[
+            fun(0, 1, 0, 1, &[(9, 0, 0x3b), (0, 0, 0x4d), (0, 0, 0x33)]),
+            defaults,
+        ],
+        2,
+        &[],
+    );
+    ref_arg(&mut p, 0, 0, 2, 0);
+    optional_meta(&mut p, 1, 0, false, &[1]);
+    set_init(
+        &mut p,
+        &[
+            (2, 0, 0x3b),
+            (0, 0, 0x4e),
+            (0, 0, 0x33),
+            (0, 0, 0x3e),
+            (0, 1, 0x07),
+            (0, 0, 0x33),
+            (1, 0, 0x07),
+            (1, 0, 0x4e),
+            (0, 0, 0x33),
+            (0, 0, 0x48),
+        ],
+    );
+    let (mut vm, id) = init_vm(&init_catalog(p), "root");
+    let o = vm.begin_initialize(id).unwrap();
+    assert_eq!(
+        vm.run(100).unwrap(),
+        RunOutcome::Finished(Completion::Initialized(o))
+    );
+    assert_eq!(object_values(&vm, o), vec![Value::Int(9), Value::Int(7)]);
+}
+#[test]
+fn initialization_nested_error_retains_function_diagnostic_and_task_constitution() {
+    let mut p = image(&[fun(0, 0, 0, 255, &[(0, 0, 0x33)])], 0, &[]);
+    set_init(&mut p, &[(0, 0, 0x07), (0, 0, 0x48)]);
+    let mut root = image(&[], 0, &[]);
+    root.max_functions = 1;
+    root.constitution_count = Some(2);
+    inherit(&mut root, &p, b"parent\0", [1, 0, 0]);
+    set_init(&mut root, &[(0, 0, 0x48)]);
+    let c = linked_catalog(p, root);
+    let (mut vm, id) = init_vm(&c, "child");
+    let o = vm.begin_initialize(id).unwrap();
+    let e = vm.run(100).unwrap_err();
+    assert_eq!(e.source, "parent");
+    assert_eq!(e.function, Some(0));
+    assert_eq!(e.initialization, Some(1));
+    assert_eq!(e.pc, Some(2));
+    assert!(e.offset.unwrap() < 9000);
+    assert!(vm.objects().get(o).is_err());
+}
+#[test]
+fn initialization_preparation_reports_source_operand_metadata_and_branch_bounds() {
+    for case in 0..4 {
+        let mut p = image(&[], 0, &[]);
+        set_init(
+            &mut p,
+            &[
+                (
+                    0,
+                    0,
+                    match case {
+                        0 => 0x40,
+                        1 => 0x3d,
+                        2 => 0x3c,
+                        _ => 0x1f,
+                    },
+                ),
+                (0, 0, 0x48),
+            ],
+        );
+        if case == 3 {
+            p.init.nodes[0].0 = 9;
+        }
+        let e = prepare_init(&init_catalog(p), "root").unwrap_err();
+        assert_eq!(e.kind, VmErrorKind::InvalidProgram);
+        assert_eq!(e.source, "root");
+        assert_eq!(e.initialization, Some(0));
+        assert_eq!(e.pc, Some(0));
+        assert_eq!(e.offset, Some(9000));
+    }
+}
+#[test]
+fn initialization_frame_and_stack_limits_fail_without_leaving_owned_objects() {
+    let mut p = image(&[], 0, &[]);
+    set_init(&mut p, &[(1, 0, 0x3b), (0, 0, 0x33), (0, 0, 0x48)]);
+    let prepared = prepare_init(&init_catalog(p), "root").unwrap();
+    let mut store = ObjectStore::new();
+    let id = store.register_program(prepared).unwrap();
+    let mut vm = Vm::with_limits(
+        store,
+        VmLimits {
+            max_frames: 0,
+            ..Default::default()
+        },
+    );
+    assert_eq!(
+        vm.begin_initialize(id).unwrap_err().kind,
+        VmErrorKind::Limit
+    );
+    let mut vm = Vm::with_limits(
+        vm.into_objects(),
+        VmLimits {
+            max_stack: 0,
+            ..Default::default()
+        },
+    );
+    let o = vm.begin_initialize(id).unwrap();
+    assert_eq!(vm.run(1).unwrap_err().kind, VmErrorKind::Limit);
+    assert!(vm.objects().get(o).is_err());
+}
+
+#[test]
+fn initialization_never_runs_lifecycle_functions_or_allows_explicit_lifecycle_call() {
+    let mut p = image(
+        &[
+            fun(0, 0, 0, 1, &[(99, 0, 0x3b), (0, 0, 0x4e), (0, 0, 0x33)]),
+            fun(1, 0, 0, 1, &[]),
+        ],
+        1,
+        &[],
+    );
+    p.functions[0].name = Some(ByteString::new(b"create\0"));
+    p.functions[1].name = Some(ByteString::new(b"destruct\0"));
+    set_init(
+        &mut p,
+        &[(7, 0, 0x3b), (0, 0, 0x4e), (0, 0, 0x33), (0, 0, 0x48)],
+    );
+    let (mut vm, id) = init_vm(&init_catalog(p), "root");
+    let o = vm.begin_initialize(id).unwrap();
+    vm.run(100).unwrap();
+    assert_eq!(object_values(&vm, o), vec![Value::Int(7)]);
+    for slot in [0, 1] {
+        assert_eq!(
+            vm.start(o, slot, vec![]).unwrap_err().kind,
+            VmErrorKind::UnsupportedFeature
+        );
+    }
+    assert_eq!(
+        vm.run(0).unwrap(),
+        RunOutcome::Finished(Completion::Initialized(o))
+    );
+}
+#[test]
+fn initialization_variadic_call_and_numeric_comparison_keep_task_context() {
+    let mut p = image(&[optional_fun(0, 0, 0, 255, &[], &[(0, 0, 0x34)])], 1, &[]);
+    optional_meta(&mut p, 0, 0, true, &[]);
+    set_init(
+        &mut p,
+        &[
+            (3, 0, 0x3b),
+            (4, 0, 0x3b),
+            (0, 2, 0x07),
+            (2, 0, 0x3b),
+            (0, 0, 0x1c),
+            (0, 0, 0x4e),
+            (0, 0, 0x33),
+            (0, 0, 0x48),
+        ],
+    );
+    let (mut vm, id) = init_vm(&init_catalog(p), "root");
+    let o = vm.begin_initialize(id).unwrap();
+    assert_eq!(
+        vm.run(100).unwrap(),
+        RunOutcome::Finished(Completion::Initialized(o))
+    );
+    assert_eq!(object_values(&vm, o), vec![Value::Int(1)]);
+}
+#[test]
+fn initialization_failure_releases_temporary_reference_quota_for_new_tasks() {
+    let mut p = image(
+        &[fun(
+            0,
+            0,
+            0,
+            255,
+            &[(0, 0, 0x16), (0, 0, 0x13), (0, 0, 0x33), (7, 0, 0x3b)],
+        )],
+        0,
+        &[],
+    );
+    set_init(&mut p, &[(0, 0, 0x16), (0, 0, 0x13), (0, 0, 0x48)]);
+    let (vm, id) = init_vm(&init_catalog(p), "root");
+    let mut vm = Vm::with_limits(
+        vm.into_objects(),
+        VmLimits {
+            max_reference_cells: 1,
+            ..Default::default()
+        },
+    );
+    for _ in 0..2 {
+        let o = vm.begin_initialize(id).unwrap();
+        assert_eq!(vm.run(100).unwrap_err().kind, VmErrorKind::InvalidProgram);
+        assert!(vm.objects().get(o).is_err());
+    }
+    let manual = vm.objects_mut().create(id, vec![]).unwrap();
+    vm.start(manual, 0, vec![]).unwrap();
+    assert_eq!(
+        vm.run(100).unwrap(),
+        RunOutcome::Finished(Completion::Returned(Value::Int(7)))
+    );
+}
+#[test]
+fn initialization_nested_call_frame_limit_cleans_owned_object() {
+    let mut p = image(&[fun(0, 0, 0, 255, &[])], 0, &[]);
+    set_init(&mut p, &[(0, 0, 0x07), (0, 0, 0x33), (0, 0, 0x48)]);
+    let (vm, id) = init_vm(&init_catalog(p), "root");
+    let mut vm = Vm::with_limits(
+        vm.into_objects(),
+        VmLimits {
+            max_frames: 1,
+            ..Default::default()
+        },
+    );
+    let o = vm.begin_initialize(id).unwrap();
+    let e = vm.run(1).unwrap_err();
+    assert_eq!(e.kind, VmErrorKind::Limit);
+    assert_eq!(e.initialization, Some(0));
+    assert_eq!(e.function, None);
+    assert!(vm.objects().get(o).is_err());
+    assert_eq!(vm.frame_depth(), 0);
+}
+#[test]
+fn initialization_loops_obey_budget_and_global_input_is_rejected() {
+    let mut p = image(&[], 0, &[]);
+    set_init(&mut p, &[(-1, 0, 0x1f), (0, 0, 0x48)]);
+    let (mut vm, id) = init_vm(&init_catalog(p.clone()), "root");
+    let o = vm.begin_initialize(id).unwrap();
+    for _ in 0..3 {
+        assert_eq!(vm.run(5).unwrap(), RunOutcome::BudgetExhausted);
+        assert_eq!(
+            vm.objects().get(o).unwrap().initialization_state(),
+            rml32::InitializationState::Initializing
+        );
+    }
+    assert!(vm.into_objects().get(o).is_err());
+    p.mode = ProgramMode::Global;
+    assert_eq!(
+        prepare_init(&init_catalog(p), "root").unwrap_err().kind,
         VmErrorKind::UnsupportedFeature
     );
 }

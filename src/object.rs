@@ -6,12 +6,23 @@ use crate::{
 };
 use std::{collections::BTreeMap, rc::Rc};
 
+/// Initialization status only; `Initialized` does not mean constructors ran.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum InitializationState {
+    Manual,
+    Initializing,
+    Initialized,
+}
 #[derive(Debug)]
 pub struct Object {
     pub(crate) program: ProgramId,
+    pub(crate) initialization: InitializationState,
     pub(crate) variables: Vec<Rc<crate::cell::Cell>>,
 }
 impl Object {
+    pub fn initialization_state(&self) -> InitializationState {
+        self.initialization
+    }
     pub fn program(&self) -> ProgramId {
         self.program
     }
@@ -60,6 +71,7 @@ impl ObjectStore {
             id,
             Object {
                 program,
+                initialization: InitializationState::Manual,
                 variables: initial_values
                     .into_iter()
                     .map(crate::cell::Cell::new)
@@ -74,6 +86,19 @@ impl ObjectStore {
             e.object = Some(id);
             e
         })
+    }
+    pub(crate) fn set_initialization(
+        &mut self,
+        id: ObjectId,
+        state: InitializationState,
+    ) -> Result<(), VmError> {
+        self.objects
+            .get_mut(&id)
+            .ok_or_else(|| {
+                VmError::new(VmErrorKind::InvalidObject, "object is missing or deleted")
+            })?
+            .initialization = state;
+        Ok(())
     }
     pub fn remove(&mut self, id: ObjectId) -> Result<(), VmError> {
         self.objects

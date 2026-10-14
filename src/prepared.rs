@@ -12,9 +12,9 @@ use std::{
 
 pub const SUPPORTED_OPCODES: &[u8] = &[
     0x1, 0x2, 0x3, 0x4, 0x7, 0xd, 0xf, 0x13, 0x14, 0x15, 0x16, 0x18, 0x19, 0x1b, 0x1c, 0x1d, 0x1e,
-    0x1f, 0x20, 0x21, 0x22, 0x24, 0x25, 0x26, 0x27, 0x28, 0x29, 0x2a, 0x2b, 0x2d, 0x2f, 0x30, 0x32,
-    0x33, 0x34, 0x37, 0x39, 0x3b, 0x3c, 0x3d, 0x3e, 0x3f, 0x40, 0x42, 0x43, 0x44, 0x47, 0x49, 0x4a,
-    0x4b, 0x4d, 0x4e, 0x4f, 0x51, 0x55,
+    0x1f, 0x20, 0x21, 0x22, 0x24, 0x25, 0x26, 0x27, 0x28, 0x29, 0x2a, 0x2b, 0x2d, 0x2e, 0x2f, 0x30,
+    0x32, 0x33, 0x34, 0x37, 0x39, 0x3b, 0x3c, 0x3d, 0x3e, 0x3f, 0x40, 0x42, 0x43, 0x44, 0x47, 0x48,
+    0x49, 0x4a, 0x4b, 0x4d, 0x4e, 0x4f, 0x51, 0x55,
 ];
 #[derive(Debug, Clone)]
 pub struct Instruction {
@@ -68,6 +68,15 @@ impl PreparedFunction {
         &self.instructions
     }
 }
+/// A real initialization code segment, independent of function dispatch slots.
+#[derive(Debug)]
+pub(crate) struct PreparedInitialization {
+    pub instructions: Rc<Vec<Instruction>>,
+    pub source: String,
+    pub pool: Rc<Vec<Option<Value>>>,
+    pub function_base: i16,
+    pub variable_base: i16,
+}
 #[derive(Debug)]
 pub struct PreparedProgram {
     pub(crate) source: String,
@@ -75,10 +84,16 @@ pub struct PreparedProgram {
     pub(crate) strings: Vec<Option<Value>>,
     pub(crate) functions: BTreeMap<i16, PreparedFunction>,
     pub(crate) unimplemented: BTreeSet<i16>,
+    pub(crate) initializations: Option<Vec<PreparedInitialization>>,
+    pub(crate) init_order: Vec<usize>,
 }
 impl PreparedProgram {
     pub fn source(&self) -> &str {
         &self.source
+    }
+    /// True only when all inherited initialization bodies were explicitly prepared.
+    pub fn is_initializable(&self) -> bool {
+        self.initializations.is_some()
     }
     pub fn variable_count(&self) -> usize {
         self.variable_count
@@ -110,6 +125,7 @@ fn instructions(
     segment: &CodeSegment,
     strings: usize,
     vars: usize,
+    initialization: bool,
 ) -> Result<Vec<Instruction>, VmError> {
     let metadata = bytes(&segment.metadata_hex)?;
     let mut result = Vec::new();
@@ -141,7 +157,18 @@ fn instructions(
                 operands[1] = i32::from_le_bytes(raw[4..8].try_into().unwrap());
             }
         }
-        let check = if op == 0x0d && (b as u8 & 2 != 0 || ![2, 3].contains(&a)) {
+        let check = if op == 0x48 && !initialization {
+            Err(unsupported("initialization return in ordinary function"))
+        } else if initialization
+            && matches!(
+                op,
+                0x0f | 0x1b | 0x47 | 0x49 | 0x34 | 0x15 | 0x37 | 0x39 | 0x4d
+            )
+        {
+            Err(unsupported(
+                "function arguments, locals or return are unavailable in initialization",
+            ))
+        } else if op == 0x0d && (b as u8 & 2 != 0 || ![2, 3].contains(&a)) {
             Err(unsupported("only non-const numeric casts are supported"))
         } else if op == 0x2f && !(2..=11).contains(&a) {
             Err(unsupported("compound operator selector must be in 2..=11"))
@@ -305,7 +332,7 @@ fn prepare_function(f: Function, strings: usize, vars: usize) -> Result<Prepared
             return Err(err("argument descriptor index does not match position"));
         }
     }
-    let instructions = instructions(&f.code, strings, vars)?;
+    let instructions = instructions(&f.code, strings, vars, false)?;
     if f.arguments.iter().any(|arg| arg.flag == 1)
         && instructions.first().is_none_or(|i| i.opcode != 0x0f)
     {
@@ -391,6 +418,8 @@ pub fn prepare_program(image: ProgramImage) -> Result<PreparedProgram, VmError> 
                 .collect(),
             functions,
             unimplemented: BTreeSet::new(),
+            initializations: None,
+            init_order: vec![],
         })
     };
     build().map_err(|mut e| {
@@ -459,6 +488,7 @@ struct LinkSlot {
 struct Linked {
     constitutions: Vec<Constitution>,
     slots: Vec<Option<LinkSlot>>,
+    init_order: Vec<usize>,
 }
 fn add_base(a: i16, b: i16) -> Result<i16, VmError> {
     a.checked_add(b)
@@ -550,6 +580,8 @@ impl Linker<'_> {
                 alias: false,
             });
         }
+        let mut init_order = vec![None; count];
+        init_order[count - 1] = Some(0);
         let mut occupied_functions = BTreeSet::new();
         let mut occupied_variables = BTreeSet::new();
         for (ordinal, inherit) in image.inherits.iter().enumerate() {
@@ -585,6 +617,9 @@ impl Linker<'_> {
                 };
                 let parent = build(self)?;
                 let [cb, fb, vb, nc, nf, nv] = inherit.offsets;
+                if cb < 1 {
+                    return Err(err("inherited constitution overwrites self"));
+                }
                 for (base, len, capacity) in [
                     (cb, nc, count),
                     (fb, nf, slots.len()),
@@ -603,6 +638,9 @@ impl Linker<'_> {
                     if !occupied_variables.insert(i) {
                         return Err(err("overlapping variable interval"));
                     }
+                }
+                for (j, value) in parent.init_order.into_iter().enumerate() {
+                    init_order[cb as usize + j - 1] = Some(cb as usize + value);
                 }
                 for (j, c) in parent.constitutions.into_iter().enumerate() {
                     let target = cb as usize + j;
@@ -670,6 +708,10 @@ impl Linker<'_> {
         Ok(Linked {
             constitutions,
             slots,
+            init_order: init_order
+                .into_iter()
+                .collect::<Option<Vec<_>>>()
+                .ok_or_else(|| err("initialization order hole"))?,
         })
     }
 }
@@ -678,6 +720,22 @@ pub fn prepare_linked_program(
     catalog: &ProgramCatalog,
     root: &str,
     limits: LinkLimits,
+) -> Result<PreparedProgram, VmError> {
+    prepare_catalog(catalog, root, limits, false)
+}
+/// Opt in to bounded initialization preparation; never executes any code.
+pub fn prepare_initializable_program(
+    catalog: &ProgramCatalog,
+    root: &str,
+    limits: LinkLimits,
+) -> Result<PreparedProgram, VmError> {
+    prepare_catalog(catalog, root, limits, true)
+}
+fn prepare_catalog(
+    catalog: &ProgramCatalog,
+    root: &str,
+    limits: LinkLimits,
+    initialize: bool,
 ) -> Result<PreparedProgram, VmError> {
     let build = || {
         let linked = Linker {
@@ -707,6 +765,43 @@ pub fn prepare_linked_program(
                 )
             });
         }
+        let initializations = if initialize {
+            Some(
+                linked
+                    .constitutions
+                    .iter()
+                    .enumerate()
+                    .map(|(index, c)| {
+                        let image = &catalog.programs[&c.key];
+                        let prepare = || {
+                            let code = instructions(
+                                &image.init,
+                                image.strings.len(),
+                                image.max_vars as usize,
+                                true,
+                            )?;
+                            if !code.iter().any(|i| i.opcode == 0x48) {
+                                return Err(err("initialization has no return (48)"));
+                            }
+                            Ok(PreparedInitialization {
+                                instructions: Rc::new(code),
+                                source: c.key.clone(),
+                                pool: pools[&c.key].clone(),
+                                function_base: c.function_base,
+                                variable_base: c.variable_base,
+                            })
+                        };
+                        prepare().map_err(|mut e: VmError| {
+                            e.source = c.key.clone();
+                            e.initialization = Some(index);
+                            e
+                        })
+                    })
+                    .collect::<Result<Vec<_>, VmError>>()?,
+            )
+        } else {
+            None
+        };
         let mut functions = BTreeMap::new();
         let mut unimplemented = BTreeSet::new();
         let mut bodies = BTreeMap::<(String, i16), PreparedFunction>::new();
@@ -748,6 +843,12 @@ pub fn prepare_linked_program(
             strings: vec![],
             functions,
             unimplemented,
+            initializations,
+            init_order: if initialize {
+                linked.init_order
+            } else {
+                vec![]
+            },
         })
     };
     build().map_err(|mut e: VmError| {
