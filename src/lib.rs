@@ -20,8 +20,9 @@ pub use inheritance::{ProgramDescriptor, ValidationReport, validate_inheritance}
 pub use object::{InitializationState, LifecycleState, ObjectStore};
 pub use pak::PakArchive;
 pub use prepared::{
-    LifecycleBinding, LinkLimits, PreparedProgram, ProgramCatalog, prepare_constructible_program,
-    prepare_initializable_program, prepare_linked_program, prepare_program,
+    LifecycleBinding, LinkLimits, MethodBinding, PreparedProgram, ProgramCatalog,
+    prepare_constructible_program, prepare_initializable_program, prepare_linked_program,
+    prepare_program,
 };
 pub use program::{AbiProfile, ProgramImage, ProgramMode, parse_program};
 pub use value::{ObjectId, ProgramId, RealBits, Value};

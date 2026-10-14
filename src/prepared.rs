@@ -11,10 +11,10 @@ use std::{
 };
 
 pub const SUPPORTED_OPCODES: &[u8] = &[
-    0x1, 0x2, 0x3, 0x4, 0x7, 0xd, 0xf, 0x13, 0x14, 0x15, 0x16, 0x18, 0x19, 0x1b, 0x1c, 0x1d, 0x1e,
-    0x1f, 0x20, 0x21, 0x22, 0x24, 0x25, 0x26, 0x27, 0x28, 0x29, 0x2a, 0x2b, 0x2d, 0x2e, 0x2f, 0x30,
-    0x32, 0x33, 0x34, 0x37, 0x39, 0x3b, 0x3c, 0x3d, 0x3e, 0x3f, 0x40, 0x42, 0x43, 0x44, 0x47, 0x48,
-    0x49, 0x4a, 0x4b, 0x4d, 0x4e, 0x4f, 0x51, 0x55,
+    0x1, 0x2, 0x3, 0x4, 0x7, 0x8, 0xd, 0xf, 0x13, 0x14, 0x15, 0x16, 0x18, 0x19, 0x1b, 0x1c, 0x1d,
+    0x1e, 0x1f, 0x20, 0x21, 0x22, 0x24, 0x25, 0x26, 0x27, 0x28, 0x29, 0x2a, 0x2b, 0x2d, 0x2e, 0x2f,
+    0x30, 0x32, 0x33, 0x34, 0x37, 0x39, 0x3b, 0x3c, 0x3d, 0x3e, 0x3f, 0x40, 0x41, 0x42, 0x43, 0x44,
+    0x47, 0x48, 0x49, 0x4a, 0x4b, 0x4d, 0x4e, 0x4f, 0x51, 0x55,
 ];
 #[derive(Debug, Clone)]
 pub struct Instruction {
@@ -42,6 +42,7 @@ pub(crate) struct EntryLayout {
 pub struct PreparedFunction {
     pub(crate) index: i16,
     pub(crate) name: Option<Vec<u8>>,
+    pub(crate) private: bool,
     pub(crate) instructions: Rc<Vec<Instruction>>,
     // Immutable dispatch context: the caller frame retains its own slot on return.
     pub(crate) origin: Option<String>,
@@ -56,6 +57,12 @@ pub struct PreparedFunction {
     pub(crate) entry: Option<EntryLayout>,
     pub(crate) return_type: u8,
     pub(crate) return_attrib: u8,
+}
+/// An explicit entry in a complete, synthetic method namespace, not native lookup reconstruction.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct MethodBinding {
+    pub name: Vec<u8>,
+    pub slot: i16,
 }
 impl PreparedFunction {
     pub fn index(&self) -> i16 {
@@ -87,6 +94,7 @@ pub struct PreparedProgram {
     pub(crate) initializations: Option<Vec<PreparedInitialization>>,
     pub(crate) init_order: Vec<usize>,
     pub(crate) lifecycles: Option<Vec<LifecycleBinding>>,
+    pub(crate) methods: Option<BTreeMap<Vec<u8>, i16>>,
 }
 impl PreparedProgram {
     pub fn source(&self) -> &str {
@@ -109,6 +117,41 @@ impl PreparedProgram {
     pub fn with_source(mut self, source: impl Into<String>) -> Self {
         self.source = source.into();
         self
+    }
+    /// Supply the complete method namespace. An empty list deliberately means no methods.
+    /// Names are case-sensitive raw bytes without NUL; private comes from the function body.
+    pub fn with_methods(mut self, bindings: Vec<MethodBinding>) -> Result<Self, VmError> {
+        let mut methods = BTreeMap::new();
+        for binding in bindings {
+            if binding.name.is_empty() || binding.name.contains(&0) {
+                return Err(err("method name must be nonempty and contain no NUL"));
+            }
+            let f = self.functions.get(&binding.slot).ok_or_else(|| {
+                err("method binding must select an implemented final function slot")
+            })?;
+            if f.instructions.first().is_none_or(|i| i.opcode != 0x0f) {
+                return Err(unsupported(
+                    "method functions must start with check_args (0f)",
+                ));
+            }
+            if matches!(binding.name.as_slice(), b"create" | b"destruct")
+                || f.name.as_ref().is_some_and(|n| {
+                    matches!(n.split(|b| *b == 0).next(), Some(b"create" | b"destruct"))
+                })
+                || self.lifecycles.as_ref().is_some_and(|bindings| {
+                    bindings
+                        .iter()
+                        .any(|b| b.create == Some(binding.slot) || b.destruct == Some(binding.slot))
+                })
+            {
+                return Err(unsupported("lifecycle method binding is unsupported"));
+            }
+            if methods.insert(binding.name, binding.slot).is_some() {
+                return Err(err("duplicate method name"));
+            }
+        }
+        self.methods = Some(methods);
+        Ok(self)
     }
 }
 fn err(message: impl Into<String>) -> VmError {
@@ -162,7 +205,15 @@ fn instructions(
                 operands[1] = i32::from_le_bytes(raw[4..8].try_into().unwrap());
             }
         }
-        let check = if op == 0x48 && !initialization {
+        let check = if op == 0x08 && initialization {
+            Err(unsupported(
+                "cross-object calls during initialization are unsupported",
+            ))
+        } else if op == 0x08 && (!matches!(a, 0 | 2 | 4 | 6) || b < 0) {
+            Err(unsupported(
+                "cross-object call requires flags 0/2/4/6 and nonnegative argc",
+            ))
+        } else if op == 0x48 && !initialization {
             Err(unsupported("initialization return in ordinary function"))
         } else if initialization
             && matches!(
@@ -359,6 +410,7 @@ fn prepare_function(f: Function, strings: usize, vars: usize) -> Result<Prepared
     Ok(PreparedFunction {
         index,
         name: f.name.map(|s| s.bytes),
+        private: f.attrib & 4 != 0,
         instructions: Rc::new(instructions),
         origin: None,
         pool: None,
@@ -426,6 +478,7 @@ pub fn prepare_program(image: ProgramImage) -> Result<PreparedProgram, VmError> 
             initializations: None,
             init_order: vec![],
             lifecycles: None,
+            methods: None,
         })
     };
     build().map_err(|mut e| {
@@ -869,6 +922,16 @@ fn prepare_catalog(
             }
             let c = &linked.constitutions[slot.constitution];
             let image = &catalog.programs[&c.key];
+            if initialize && let Some(pc) = slot.body.code.nodes.iter().position(|n| n.2 == 0x08) {
+                let mut e = unsupported(
+                    "cross-object calls in lifecycle-prepared programs are unsupported",
+                );
+                e.source = c.key.clone();
+                e.function = Some(i as i16);
+                e.pc = Some(pc);
+                e.offset = Some(slot.body.code.nodes_offset + pc * 4);
+                return Err(e);
+            }
             let id = (c.key.clone(), slot.body.index.unwrap());
             if !bodies.contains_key(&id) {
                 let mut body = (*slot.body).clone();
@@ -905,6 +968,7 @@ fn prepare_catalog(
             unimplemented,
             initializations,
             lifecycles,
+            methods: None,
             init_order: if initialize {
                 linked.init_order
             } else {

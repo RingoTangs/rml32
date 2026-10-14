@@ -652,7 +652,7 @@ fn supported_types_have_explicit_legacy_tags() {
         [0, 1, 2, 4, 10]
     );
     let supported: BTreeSet<_> = rml32::prepared::SUPPORTED_OPCODES.iter().collect();
-    assert_eq!(supported.len(), 57);
+    assert_eq!(supported.len(), 59);
     assert_eq!(ByteString::new(b"\xff").bytes, b"\xff");
 }
 
@@ -5314,4 +5314,936 @@ fn construction_rejects_missing_dependency_binding_and_inherited_slot_selection(
     )
     .unwrap();
     assert!(rml32::prepare_constructible_program(&c, "child", Default::default()).is_err());
+}
+
+// Stage 2Q: complete method namespaces and all executable inputs are synthetic.
+fn method(name: &[u8], slot: i16) -> rml32::MethodBinding {
+    rml32::MethodBinding {
+        name: name.to_vec(),
+        slot,
+    }
+}
+fn other_wrapper(argc: usize, flags: i16) -> Fun {
+    let mut nodes: Vec<_> = (0..argc).rev().map(|i| ((i + 2) as i16, 0, 0x37)).collect();
+    nodes.extend([(1, 0, 0x37), (0, 0, 0x37), (flags, argc as i8, 0x08)]);
+    fun(0, argc + 2, 0, 255, &nodes)
+}
+fn other_machine(
+    caller: ProgramImage,
+    target: rml32::PreparedProgram,
+    caller_values: Vec<Value>,
+    target_values: Vec<Value>,
+) -> (Vm, rml32::ObjectId, rml32::ObjectId) {
+    let mut store = ObjectStore::new();
+    let a = store
+        .register_program(prepare_program(caller).unwrap().with_source("caller"))
+        .unwrap();
+    let b = store
+        .register_program(target.with_source("target"))
+        .unwrap();
+    let a = store.create(a, caller_values).unwrap();
+    let b = store.create(b, target_values).unwrap();
+    (Vm::new(store), a, b)
+}
+fn other_target(p: ProgramImage, bindings: Vec<rml32::MethodBinding>) -> rml32::PreparedProgram {
+    prepare_program(p).unwrap().with_methods(bindings).unwrap()
+}
+
+#[test]
+fn other_methods_validate_explicit_names_slots_and_lifecycle_entries() {
+    let p = image(&[fun(0, 0, 0, 255, &[])], 0, &[]);
+    for bindings in [
+        vec![method(b"", 0)],
+        vec![method(b"a\0b", 0)],
+        vec![method(b"a", -1)],
+        vec![method(b"a", 8)],
+        vec![method(b"a", 0), method(b"a", 0)],
+    ] {
+        assert_eq!(
+            prepare_program(p.clone())
+                .unwrap()
+                .with_methods(bindings)
+                .unwrap_err()
+                .kind,
+            VmErrorKind::InvalidProgram
+        );
+    }
+    assert!(
+        prepare_program(p.clone())
+            .unwrap()
+            .with_methods(vec![method(b"a", 0), method(b"A", 0), method(b"\xff", 0)])
+            .is_ok()
+    );
+    for name in [b"create".as_slice(), b"destruct"] {
+        assert_eq!(
+            prepare_program(p.clone())
+                .unwrap()
+                .with_methods(vec![method(name, 0)])
+                .unwrap_err()
+                .kind,
+            VmErrorKind::UnsupportedFeature
+        );
+        let mut named = p.clone();
+        lifecycle_name(&mut named, 0, &[name, b"\0"].concat());
+        assert_eq!(
+            prepare_program(named)
+                .unwrap()
+                .with_methods(vec![method(b"alias", 0)])
+                .unwrap_err()
+                .kind,
+            VmErrorKind::UnsupportedFeature
+        );
+    }
+    let (mut parent, child) = inherited_pair(&[], &[]);
+    parent.functions[0].code.nodes.clear();
+    let linked = link(&linked_catalog(parent, child)).unwrap();
+    assert_eq!(
+        linked
+            .with_methods(vec![method(b"missing", 0)])
+            .unwrap_err()
+            .kind,
+        VmErrorKind::InvalidProgram
+    );
+}
+
+#[test]
+fn other_call_changes_this_object_and_restores_caller() {
+    let caller = image(
+        &[fun(
+            0,
+            1,
+            0,
+            255,
+            &[
+                (0, 0, 0x40),
+                (0, 0, 0x37),
+                (0, 0, 0x08),
+                (0, 0, 0x41),
+                (2, 0, 0x16),
+            ],
+        )],
+        0,
+        &[b"who\0"],
+    );
+    let target = other_target(
+        image(
+            &[
+                fun(0, 0, 0, 255, &[(1, 0, 0x07)]),
+                fun(1, 0, 0, 255, &[(0, 0, 0x41)]),
+            ],
+            0,
+            &[],
+        ),
+        vec![method(b"who", 0)],
+    );
+    let (mut vm, a, b) = other_machine(caller, target, vec![], vec![]);
+    vm.start(a, 0, vec![Value::Object(b)]).unwrap();
+    assert_eq!(
+        returned_array(&mut vm),
+        vec![Value::Object(a), Value::Object(b)]
+    );
+    assert_eq!(vm.frame_depth(), 0);
+    assert!(vm.stack().unwrap().is_empty());
+}
+
+#[test]
+fn other_call_same_program_keeps_instances_and_variable_banks_separate() {
+    let p = image(
+        &[
+            other_wrapper(0, 0),
+            fun(1, 0, 0, 255, &[(0, 0, 0x3d), (0, 0, 0x41), (2, 0, 0x16)]),
+        ],
+        1,
+        &[],
+    );
+    let mut store = ObjectStore::new();
+    let id = store
+        .register_program(other_target(p, vec![method(b"read", 1)]))
+        .unwrap();
+    let a = store.create(id, vec![Value::Int(11)]).unwrap();
+    let b = store.create(id, vec![Value::Int(22)]).unwrap();
+    let mut vm = Vm::new(store);
+    vm.start(a, 0, vec![Value::Object(b), Value::bytes(b"read")])
+        .unwrap();
+    assert_eq!(
+        returned_array(&mut vm),
+        vec![Value::Object(b), Value::Int(22)]
+    );
+    assert_eq!(object_values(&vm, a), vec![Value::Int(11)]);
+}
+
+#[test]
+fn other_call_round_trip_restores_program_pool_and_object() {
+    let a = image(
+        &[
+            fun(
+                0,
+                1,
+                0,
+                255,
+                &[
+                    (0, 0, 0x41),
+                    (0, 0, 0x40),
+                    (0, 0, 0x37),
+                    (0, 1, 0x08),
+                    (1, 0, 0x40),
+                    (0, 0, 0x41),
+                    (3, 0, 0x16),
+                ],
+            ),
+            fun(1, 0, 0, 255, &[(0, 0, 0x41), (1, 0, 0x40), (2, 0, 0x16)]),
+        ],
+        0,
+        &[b"bounce\0", b"A\0"],
+    );
+    let b = image(
+        &[fun(
+            0,
+            1,
+            0,
+            255,
+            &[
+                (0, 0, 0x40),
+                (0, 0, 0x37),
+                (0, 0, 0x08),
+                (1, 0, 0x40),
+                (0, 0, 0x41),
+                (3, 0, 0x16),
+            ],
+        )],
+        0,
+        &[b"back\0", b"B\0"],
+    );
+    let mut store = ObjectStore::new();
+    let pa = store
+        .register_program(other_target(a, vec![method(b"back", 1)]))
+        .unwrap();
+    let pb = store
+        .register_program(other_target(b, vec![method(b"bounce", 0)]))
+        .unwrap();
+    let a = store.create(pa, vec![]).unwrap();
+    let b = store.create(pb, vec![]).unwrap();
+    let mut vm = Vm::new(store);
+    vm.start(a, 0, vec![Value::Object(b)]).unwrap();
+    let result = returned_array(&mut vm);
+    let Value::Array(mid) = &result[2] else {
+        panic!("middle result")
+    };
+    let mid = mid.elements().unwrap();
+    let Value::Array(inner) = &mid[2] else {
+        panic!("inner result")
+    };
+    assert_eq!(
+        inner.elements().unwrap(),
+        vec![Value::bytes(b"A"), Value::Object(a)]
+    );
+    assert_eq!(mid[..2], [Value::Object(b), Value::bytes(b"B")]);
+    assert_eq!(result[..2], [Value::Object(a), Value::bytes(b"A")]);
+}
+
+#[test]
+fn other_call_inherited_body_uses_target_bases_and_source_pool() {
+    let (parent, child) = inherited_pair(
+        &[(0, 0, 0x3d), (0, 0, 0x40), (0, 0, 0x41), (3, 0, 0x16)],
+        &[],
+    );
+    let target = link(&linked_catalog(parent, child))
+        .unwrap()
+        .with_methods(vec![method(b"read", 0)])
+        .unwrap();
+    let caller = image(&[other_wrapper(0, 0)], 0, &[]);
+    let (mut vm, a, b) = other_machine(caller, target, vec![], vec![Value::Int(1), Value::Int(9)]);
+    vm.start(a, 0, vec![Value::Object(b), Value::bytes(b"read")])
+        .unwrap();
+    assert_eq!(
+        returned_array(&mut vm),
+        vec![Value::Object(b), Value::bytes(b"parent"), Value::Int(9)]
+    );
+}
+
+#[test]
+fn other_call_private_lookup_and_fallback_preserve_method_argument() {
+    for flags in [0, 2, 4, 6] {
+        let mut p = image(
+            &[
+                fun(0, 0, 0, 255, &[(10, 0, 0x3b)]),
+                fun(1, 1, 0, 255, &[(0, 0, 0x37)]),
+            ],
+            0,
+            &[],
+        );
+        p.functions[0].attrib |= 4;
+        let target = other_target(
+            p,
+            vec![method(b"secret", 0), method(b"default_interface", 1)],
+        );
+        let (mut vm, a, b) = other_machine(
+            image(&[other_wrapper(0, flags)], 0, &[]),
+            target,
+            vec![],
+            vec![],
+        );
+        vm.start(a, 0, vec![Value::Object(b), Value::bytes(b"secret")])
+            .unwrap();
+        returns(
+            &mut vm,
+            if flags & 2 != 0 {
+                Value::Int(10)
+            } else {
+                Value::bytes(b"secret")
+            },
+        );
+    }
+}
+
+#[test]
+fn other_call_private_fallback_obeys_same_access_flag() {
+    for flags in [0, 2, 4, 6] {
+        let mut p = image(&[fun(0, 1, 0, 255, &[(0, 0, 0x37)])], 0, &[]);
+        p.functions[0].attrib |= 4;
+        let target = other_target(p, vec![method(b"default_interface", 0)]);
+        let (mut vm, a, b) = other_machine(
+            image(&[other_wrapper(0, flags)], 0, &[]),
+            target,
+            vec![],
+            vec![],
+        );
+        vm.start(a, 0, vec![Value::Object(b), Value::bytes(b"absent")])
+            .unwrap();
+        if flags & 2 != 0 {
+            returns(&mut vm, Value::bytes(b"absent"));
+        } else if flags & 4 != 0 {
+            returns(&mut vm, Value::Void);
+        } else {
+            assert_eq!(vm.run(100).unwrap_err().kind, VmErrorKind::InvalidProgram);
+        }
+    }
+}
+
+#[test]
+fn other_call_argument_and_fallback_orders_match_native_stack() {
+    for fallback in [false, true] {
+        let f = fun(0, if fallback { 3 } else { 2 }, 0, 255, &[(0, 0, 0x15)]);
+        let target = other_target(
+            image(&[f], 0, &[]),
+            vec![method(
+                if fallback {
+                    b"default_interface"
+                } else {
+                    b"method"
+                },
+                0,
+            )],
+        );
+        let (mut vm, a, b) = other_machine(
+            image(&[other_wrapper(2, 0)], 0, &[]),
+            target,
+            vec![],
+            vec![],
+        );
+        vm.start(
+            a,
+            0,
+            vec![
+                Value::Object(b),
+                Value::bytes(b"method"),
+                Value::Int(7),
+                Value::Int(8),
+            ],
+        )
+        .unwrap();
+        let mut expected = vec![Value::Int(7), Value::Int(8)];
+        if fallback {
+            expected.insert(0, Value::bytes(b"method"));
+        }
+        assert_eq!(returned_array(&mut vm), expected);
+        assert_eq!(vm.frame_depth(), 0);
+    }
+}
+
+#[test]
+fn other_call_missing_method_cleans_only_call_operands_and_pushes_void() {
+    let caller = image(
+        &[fun(
+            0,
+            1,
+            0,
+            255,
+            &[
+                (99, 0, 0x3b),
+                (7, 0, 0x3b),
+                (0, 0, 0x40),
+                (0, 0, 0x37),
+                (4, 1, 0x08),
+                (2, 0, 0x16),
+            ],
+        )],
+        0,
+        &[b"absent\0"],
+    );
+    let target = other_target(image(&[], 0, &[]), vec![]);
+    let (mut vm, a, b) = other_machine(caller, target, vec![], vec![]);
+    vm.start(a, 0, vec![Value::Object(b)]).unwrap();
+    assert_eq!(returned_array(&mut vm), vec![Value::Void, Value::Int(99)]);
+}
+
+#[test]
+fn other_call_unprovided_namespace_is_not_suppressed_missing_method() {
+    for explicit in [false, true] {
+        let p = prepare_program(image(&[], 0, &[])).unwrap();
+        let target = if explicit {
+            p.with_methods(vec![]).unwrap()
+        } else {
+            p
+        };
+        let (mut vm, a, b) = other_machine(
+            image(&[other_wrapper(0, 4)], 0, &[]),
+            target,
+            vec![],
+            vec![],
+        );
+        vm.start(a, 0, vec![Value::Object(b), Value::bytes(b"missing")])
+            .unwrap();
+        if explicit {
+            returns(&mut vm, Value::Void);
+        } else {
+            vm.run(4).unwrap();
+            let before = vm.stack().unwrap();
+            assert_eq!(vm.run(1).unwrap_err().kind, VmErrorKind::UnsupportedFeature);
+            assert_eq!(vm.stack().unwrap(), before);
+            assert_eq!(vm.frame_depth(), 1);
+        }
+    }
+}
+
+#[test]
+fn other_call_names_are_case_sensitive_raw_bytes_and_nul_is_rejected() {
+    for name in [b"name".as_slice(), b"NAME", b"\xff", b"name\0tail"] {
+        let target = other_target(
+            image(&[fun(0, 0, 0, 255, &[(6, 0, 0x3b)])], 0, &[]),
+            vec![method(b"name", 0), method(b"\xff", 0)],
+        );
+        let (mut vm, a, b) = other_machine(
+            image(&[other_wrapper(0, 4)], 0, &[]),
+            target,
+            vec![],
+            vec![],
+        );
+        vm.start(a, 0, vec![Value::Object(b), Value::bytes(name)])
+            .unwrap();
+        if name.contains(&0) {
+            assert_eq!(
+                vm.run(100).unwrap_err().kind,
+                VmErrorKind::UnsupportedFeature
+            );
+        } else {
+            returns(
+                &mut vm,
+                if name == b"NAME" {
+                    Value::Void
+                } else {
+                    Value::Int(6)
+                },
+            );
+        }
+    }
+}
+
+#[test]
+fn other_call_bad_targets_and_names_are_not_suppressed() {
+    for (target_value, name, kind) in [
+        (
+            Value::Int(0),
+            Value::bytes(b"m"),
+            VmErrorKind::UnsupportedType,
+        ),
+        (
+            Value::bytes(b"object"),
+            Value::bytes(b"m"),
+            VmErrorKind::UnsupportedFeature,
+        ),
+        (
+            Value::array(vec![]).unwrap(),
+            Value::bytes(b"m"),
+            VmErrorKind::UnsupportedFeature,
+        ),
+    ] {
+        let target = other_target(image(&[], 0, &[]), vec![]);
+        let (mut vm, a, _) = other_machine(
+            image(&[other_wrapper(0, 4)], 0, &[]),
+            target,
+            vec![],
+            vec![],
+        );
+        vm.start(a, 0, vec![target_value, name]).unwrap();
+        vm.run(4).unwrap();
+        let before = vm.stack().unwrap();
+        let e = vm.run(1).unwrap_err();
+        assert_eq!((e.kind, e.source.as_str(), e.pc), (kind, "caller", Some(4)));
+        assert_eq!(vm.stack().unwrap(), before);
+    }
+    let target = other_target(image(&[], 0, &[]), vec![]);
+    let (mut vm, a, b) = other_machine(
+        image(&[other_wrapper(0, 4)], 0, &[]),
+        target,
+        vec![],
+        vec![],
+    );
+    vm.start(a, 0, vec![Value::Object(b), Value::Int(1)])
+        .unwrap();
+    assert_eq!(vm.run(100).unwrap_err().kind, VmErrorKind::UnsupportedType);
+}
+
+#[test]
+fn other_call_deleted_target_fails_before_consuming_operands() {
+    let target = other_target(image(&[], 0, &[]), vec![]);
+    let (mut vm, a, b) = other_machine(
+        image(&[other_wrapper(0, 4)], 0, &[]),
+        target,
+        vec![],
+        vec![],
+    );
+    vm.start(a, 0, vec![Value::Object(b), Value::bytes(b"m")])
+        .unwrap();
+    vm.run(4).unwrap();
+    let before = vm.stack().unwrap();
+    vm.objects_mut().remove(b).unwrap();
+    assert_eq!(vm.run(1).unwrap_err().kind, VmErrorKind::InvalidObject);
+    assert_eq!(vm.stack().unwrap(), before);
+}
+
+#[test]
+fn other_call_rejects_bad_flags_negative_argc_and_underflow() {
+    for (flags, argc) in [(1, 0), (3, 0), (8, 0), (-1, 0), (0x800, 0), (0, -1)] {
+        let p = image(&[fun(0, 0, 0, 255, &[(flags, argc, 0x08)])], 0, &[]);
+        let e = prepare_program(p).unwrap_err();
+        assert_eq!((e.kind, e.pc), (VmErrorKind::UnsupportedFeature, Some(2)));
+    }
+    for nodes in [vec![(0, 0, 0x08)], vec![(0, 0, 0x41), (0, 0, 0x08)]] {
+        let (mut vm, a) = machine(image(&[fun(0, 0, 1, 255, &nodes)], 0, &[]), vec![]);
+        vm.start(a, 0, vec![]).unwrap();
+        assert_eq!(vm.run(100).unwrap_err().kind, VmErrorKind::StackUnderflow);
+    }
+}
+
+#[test]
+fn other_call_reference_owner_survives_cross_program_and_nested_forwarding() {
+    for local in [false, true] {
+        let mut nodes = if local {
+            vec![(7, 0, 0x3b), (-1, 0, 0x4d), (0, 0, 0x33)]
+        } else {
+            vec![]
+        };
+        nodes.extend([
+            (
+                if local { -1 } else { 0 },
+                0,
+                if local { 0x39 } else { 0x3e },
+            ),
+            (1, 0, 0x37),
+            (0, 0, 0x37),
+            (0, 1, 0x08),
+            (0, 0, 0x33),
+            (
+                if local { -1 } else { 0 },
+                0,
+                if local { 0x37 } else { 0x3d },
+            ),
+        ]);
+        let caller = image(&[fun(0, 2, usize::from(local), 255, &nodes)], 1, &[]);
+        let mut target = image(
+            &[
+                fun(0, 1, 0, 255, &[(0, 0, 0x39), (1, 1, 0x07)]),
+                fun(1, 1, 0, 255, &[(21, 0, 0x3b), (0, 0, 0x39), (0, 0, 0x03)]),
+            ],
+            1,
+            &[],
+        );
+        ref_arg(&mut target, 0, 0, 2, 0);
+        ref_arg(&mut target, 1, 0, 2, 0);
+        let target = other_target(target, vec![method(b"write", 0)]);
+        let (mut vm, a, b) =
+            other_machine(caller, target, vec![Value::Int(7)], vec![Value::Int(4)]);
+        vm.start(a, 0, vec![Value::Object(b), Value::bytes(b"write")])
+            .unwrap();
+        returns(&mut vm, Value::Int(21));
+        assert_eq!(
+            object_values(&vm, a),
+            vec![Value::Int(if local { 7 } else { 21 })]
+        );
+        assert_eq!(object_values(&vm, b), vec![Value::Int(4)]);
+        assert_eq!(vm.frame_depth(), 0);
+        assert!(vm.stack().unwrap().is_empty());
+    }
+}
+
+#[test]
+fn other_call_member_reference_quota_is_released_after_return() {
+    let mut nodes = Vec::new();
+    for _ in 0..2 {
+        nodes.extend([
+            (0, 0, 0x3e),
+            (0, 0, 0x3b),
+            (0, 0, 0x44),
+            (1, 0, 0x37),
+            (0, 0, 0x37),
+            (0, 1, 0x08),
+            (0, 0, 0x33),
+        ]);
+    }
+    nodes.extend([(0, 0, 0x3d), (0, 0, 0x3b), (0, 0, 0x43)]);
+    let caller = image(&[fun(0, 2, 0, 255, &nodes)], 1, &[]);
+    let mut target = image(
+        &[fun(
+            0,
+            1,
+            0,
+            255,
+            &[(0, 0, 0x39), (1, 0, 0x22), (0, 0, 0x37)],
+        )],
+        0,
+        &[],
+    );
+    ref_arg(&mut target, 0, 0, 2, 0);
+    let target = other_target(target, vec![method(b"inc", 0)]);
+    let (vm, a, b) = other_machine(
+        caller,
+        target,
+        vec![Value::array(vec![Value::Int(5)]).unwrap()],
+        vec![],
+    );
+    let mut vm = Vm::with_limits(
+        vm.into_objects(),
+        VmLimits {
+            max_reference_cells: 1,
+            ..Default::default()
+        },
+    );
+    vm.start(a, 0, vec![Value::Object(b), Value::bytes(b"inc")])
+        .unwrap();
+    returns(&mut vm, Value::Int(7));
+}
+
+#[test]
+fn other_call_entry_failures_preserve_operands_and_reference_targets() {
+    for scenario in 0..4 {
+        let caller = image(&[other_wrapper(1, 0)], 0, &[]);
+        let mut p = image(
+            &[fun(0, if scenario == 0 { 0 } else { 1 }, 0, 255, &[])],
+            1,
+            &[],
+        );
+        if scenario == 1 {
+            ref_arg(&mut p, 0, 0, 2, 0);
+        }
+        if scenario == 2 {
+            p.functions[0].arguments[0].r#type = 2;
+        }
+        let target = other_target(
+            p,
+            if scenario == 3 {
+                vec![]
+            } else {
+                vec![method(b"m", 0)]
+            },
+        );
+        let (mut vm, a, b) = other_machine(caller, target, vec![], vec![Value::Int(9)]);
+        vm.start(
+            a,
+            0,
+            vec![Value::Object(b), Value::bytes(b"m"), Value::bytes(b"bad")],
+        )
+        .unwrap();
+        vm.run(5).unwrap();
+        let before = vm.stack().unwrap();
+        let e = vm.run(1).unwrap_err();
+        assert_eq!(
+            e.kind,
+            match scenario {
+                0 => VmErrorKind::ArgumentCount,
+                1 => VmErrorKind::UnsupportedFeature,
+                2 => VmErrorKind::UnsupportedType,
+                _ => VmErrorKind::InvalidProgram,
+            }
+        );
+        assert_eq!(
+            (e.object, e.source.as_str(), e.pc),
+            (Some(a), "caller", Some(5))
+        );
+        assert_eq!(vm.stack().unwrap(), before);
+        assert_eq!(vm.frame_depth(), 1);
+        assert_eq!(object_values(&vm, b), vec![Value::Int(9)]);
+        assert_eq!(vm.run(10).unwrap_err(), e);
+    }
+}
+
+#[test]
+fn other_call_optional_variadic_and_numeric_entry_contracts_are_reused() {
+    for provided in 0..=3 {
+        let f = optional_fun(
+            0,
+            2,
+            0,
+            255,
+            &[vec![(10, 0, 0x3b)], vec![(20, 0, 0x3b)]],
+            &[(0, 0, 0x15)],
+        );
+        let mut p = image(&[f], 0, &[]);
+        optional_meta(&mut p, 0, 0, true, &[1, 1]);
+        p.functions[0].arguments[0].r#type = 3;
+        let target = other_target(p, vec![method(b"m", 0)]);
+        let (mut vm, a, b) = other_machine(
+            image(&[other_wrapper(provided, 0)], 0, &[]),
+            target,
+            vec![],
+            vec![],
+        );
+        let mut args = vec![Value::Object(b), Value::bytes(b"m")];
+        args.extend((0..provided).map(|i| Value::Int(100 + i as i32)));
+        vm.start(a, 0, args).unwrap();
+        let expected = if provided == 0 {
+            vec![Value::Int(10), Value::Int(20)]
+        } else {
+            let mut values: Vec<_> = (0..provided).map(|i| Value::Int(100 + i as i32)).collect();
+            values[0] = real(100.0);
+            if provided == 1 {
+                values.push(Value::Int(20));
+            }
+            values
+        };
+        assert_eq!(returned_array(&mut vm), expected);
+    }
+}
+
+#[test]
+fn other_call_budget_pause_preserves_callee_and_restores_return_context() {
+    let target = other_target(
+        image(&[fun(0, 0, 0, 255, &[(0, 0, 0x41)])], 0, &[]),
+        vec![method(b"m", 0)],
+    );
+    let (mut vm, a, b) = other_machine(
+        image(&[other_wrapper(0, 0)], 0, &[]),
+        target,
+        vec![],
+        vec![],
+    );
+    vm.start(a, 0, vec![Value::Object(b), Value::bytes(b"m")])
+        .unwrap();
+    vm.run(5).unwrap(); // call has installed target frame, no target instruction has run
+    assert_eq!(vm.frame_depth(), 2);
+    let before = vm.stack().unwrap();
+    assert_eq!(vm.run(0).unwrap(), RunOutcome::BudgetExhausted);
+    assert_eq!(vm.stack().unwrap(), before);
+    for _ in 0..3 {
+        assert_eq!(vm.run(1).unwrap(), RunOutcome::BudgetExhausted);
+    }
+    assert_eq!(vm.frame_depth(), 2);
+    assert_eq!(vm.run(1).unwrap(), RunOutcome::BudgetExhausted); // target return
+    assert_eq!(vm.frame_depth(), 1);
+    returns(&mut vm, Value::Object(b));
+}
+
+#[test]
+fn other_call_frame_limit_is_atomic_and_local_limit_is_a_callee_error() {
+    for frame_limit in [1, 2] {
+        let target = other_target(
+            image(&[fun(0, 0, 10, 255, &[])], 0, &[]),
+            vec![method(b"m", 0)],
+        );
+        let (vm, a, b) = other_machine(
+            image(&[other_wrapper(0, 0)], 0, &[]),
+            target,
+            vec![],
+            vec![],
+        );
+        let mut vm = Vm::with_limits(
+            vm.into_objects(),
+            VmLimits {
+                max_frames: frame_limit,
+                max_stack: 4,
+                ..Default::default()
+            },
+        );
+        vm.start(a, 0, vec![Value::Object(b), Value::bytes(b"m")])
+            .unwrap();
+        vm.run(4).unwrap();
+        let before = vm.stack().unwrap();
+        let e = vm.run(10).unwrap_err();
+        assert_eq!(e.kind, VmErrorKind::Limit);
+        if frame_limit == 1 {
+            assert_eq!(vm.stack().unwrap(), before);
+            assert_eq!(e.object, Some(a));
+            assert_eq!(vm.frame_depth(), 1);
+        } else {
+            assert_eq!(
+                (e.object, e.source.as_str(), e.pc),
+                (Some(b), "target", Some(1))
+            );
+            assert_eq!(vm.frame_depth(), 2);
+        }
+    }
+}
+
+#[test]
+fn other_call_return_type_errors_retain_target_diagnostic_and_frames() {
+    let target = other_target(
+        image(&[fun(0, 0, 0, 2, &[(0, 0, 0x40)])], 0, &[b"bad\0"]),
+        vec![method(b"m", 0)],
+    );
+    let (mut vm, a, b) = other_machine(
+        image(&[other_wrapper(0, 0)], 0, &[]),
+        target,
+        vec![],
+        vec![],
+    );
+    vm.start(a, 0, vec![Value::Object(b), Value::bytes(b"m")])
+        .unwrap();
+    let e = vm.run(100).unwrap_err();
+    assert_eq!(
+        (e.kind, e.object, e.source.as_str(), e.pc),
+        (VmErrorKind::UnsupportedType, Some(b), "target", Some(3))
+    );
+    assert_eq!(vm.frame_depth(), 2);
+    assert_eq!(vm.run(100).unwrap_err(), e);
+}
+
+#[test]
+fn other_call_lifecycle_preparation_rejects_direct_and_helper_calls() {
+    for helper in [false, true] {
+        let mut p = image(
+            &[fun(
+                0,
+                0,
+                0,
+                255,
+                if helper { &[(0, 0, 0x08)] } else { &[] },
+            )],
+            0,
+            &[],
+        );
+        set_init(
+            &mut p,
+            if helper {
+                &[(0, 0, 0x48)]
+            } else {
+                &[(0, 0, 0x08), (0, 0, 0x48)]
+            },
+        );
+        let mut catalog = init_catalog(p);
+        catalog
+            .bind_lifecycle("root", rml32::LifecycleBinding::default())
+            .unwrap();
+        for construct in [false, true] {
+            let result = if construct {
+                rml32::prepare_constructible_program(&catalog, "root", Default::default())
+            } else {
+                prepare_init(&catalog, "root")
+            };
+            let e = result.unwrap_err();
+            assert_eq!(
+                (e.kind, e.source.as_str()),
+                (VmErrorKind::UnsupportedFeature, "root")
+            );
+            assert_eq!(e.pc, Some(if helper { 2 } else { 0 }));
+            if helper {
+                assert_eq!(e.function, Some(0));
+            }
+        }
+    }
+    let (parent, child) = inherited_pair(&[(0, 0, 0x08)], &[]);
+    let mut parent = parent;
+    let mut child = child;
+    set_init(&mut parent, &[(0, 0, 0x48)]);
+    set_init(&mut child, &[(0, 0, 0x48)]);
+    let e = prepare_init(&linked_catalog(parent, child), "child").unwrap_err();
+    assert_eq!(
+        (e.kind, e.source.as_str(), e.function),
+        (VmErrorKind::UnsupportedFeature, "parent", Some(0))
+    );
+}
+
+#[test]
+fn this_object_works_during_initialization_and_obeys_stack_limit() {
+    let mut p = image(&[], 1, &[]);
+    set_init(
+        &mut p,
+        &[(0, 0, 0x41), (0, 0, 0x4e), (0, 0, 0x33), (0, 0, 0x48)],
+    );
+    let (mut vm, id) = init_vm(&init_catalog(p), "root");
+    let o = vm.begin_initialize(id).unwrap();
+    assert!(matches!(vm.run(100).unwrap(), RunOutcome::Finished(_)));
+    assert_eq!(object_values(&vm, o), vec![Value::Object(o)]);
+    let (vm, o) = machine(image(&[fun(0, 0, 0, 255, &[(0, 0, 0x41)])], 0, &[]), vec![]);
+    let mut vm = Vm::with_limits(
+        vm.into_objects(),
+        VmLimits {
+            max_stack: 0,
+            ..Default::default()
+        },
+    );
+    vm.start(o, 0, vec![]).unwrap();
+    assert_eq!(vm.run(100).unwrap_err().kind, VmErrorKind::Limit);
+}
+
+#[test]
+fn other_method_binding_requires_checked_entry_for_numeric_coercion() {
+    let mut f = fun(0, 1, 0, 255, &[(0, 0, 0x37)]);
+    f.nodes.remove(0); // fixed value-only functions can otherwise omit 0f
+    let p = prepare_program(image(&[f], 0, &[])).unwrap();
+    assert_eq!(
+        p.with_methods(vec![method(b"m", 0)]).unwrap_err().kind,
+        VmErrorKind::UnsupportedFeature
+    );
+}
+
+#[test]
+fn other_call_inherited_private_body_and_recursive_frame_limit_are_bounded() {
+    for flags in [0, 2] {
+        let (mut parent, child) = inherited_pair(&[(42, 0, 0x3b)], &[]);
+        parent.functions[0].attrib |= 4;
+        let target = link(&linked_catalog(parent, child))
+            .unwrap()
+            .with_methods(vec![method(b"m", 0)])
+            .unwrap();
+        let (mut vm, a, b) = other_machine(
+            image(&[other_wrapper(0, flags)], 0, &[]),
+            target,
+            vec![],
+            vec![Value::Int(0); 2],
+        );
+        vm.start(a, 0, vec![Value::Object(b), Value::bytes(b"m")])
+            .unwrap();
+        if flags == 2 {
+            returns(&mut vm, Value::Int(42));
+        } else {
+            assert_eq!(vm.run(100).unwrap_err().kind, VmErrorKind::InvalidProgram);
+        }
+    }
+    let p = other_target(
+        image(
+            &[fun(
+                0,
+                0,
+                0,
+                255,
+                &[(0, 0, 0x40), (0, 0, 0x41), (0, 0, 0x08)],
+            )],
+            0,
+            &[b"recur\0"],
+        ),
+        vec![method(b"recur", 0)],
+    );
+    let mut store = ObjectStore::new();
+    let p = store.register_program(p).unwrap();
+    let o = store.create(p, vec![]).unwrap();
+    let mut vm = Vm::with_limits(
+        store,
+        VmLimits {
+            max_frames: 2,
+            ..Default::default()
+        },
+    );
+    vm.start(o, 0, vec![]).unwrap();
+    assert_eq!(vm.run(100).unwrap_err().kind, VmErrorKind::Limit);
+    assert_eq!(vm.frame_depth(), 2);
 }

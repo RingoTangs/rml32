@@ -2,7 +2,9 @@
 
 本文采用“总体方案 → 分阶段实施 → 验收与风险”的总—分结构，面向后续实现兼容运行时的工程师。依据截至 2026-10-13 的 [静态分析](magic_Linux32-static-analysis.md) 与 [服务包兼容性分析](magic_Linux32-rust-compatibility-analysis.md)。本文是实施方案，不表示 Rust 服务端已经实现或原程序已经运行验证。
 
-**当前统一状态（阶段 2P，2026-10-14）：**阶段2尚未完成；保持57种限定操作码、212项Rust测试。主语料73种中交集55种，缺18种，另有合成路径4d/4e；编号比例不代表整体完成率。见[完成度评估](stage2-completion-assessment.md)、[逐指令矩阵](stage2-completion-evidence/matrix.md)和[跨对象调用下一批设计](stage2-completion-evidence/cross-object-design.md)。后续依次补调用、控制流、值/buffer/范围/循环、通用catch及完整生命周期、全局/06宿主契约，再进入阶段3实际efun/bootstrap/调度。以下2A—2O条目保留各历史阶段的实现范围及当时测试数。
+**当前统一状态（阶段2Q）：**已实现受限08跨对象调用、41 thisObject及显式方法目录，59种限定操作码、237项Rust测试；主语料交集57种、缺16种。见[跨对象调用运行时](vm-cross-object-runtime.md)与[当前矩阵](stage2q-evidence/matrix.md)。阶段2仍未完成，字符串/数组目标、原生命名表、函数值、全局和完整异常/生命周期尚有缺口。后续先补控制流，再推进值/buffer/范围、通用catch和对象生命周期及全局/宿主契约。
+
+**阶段 2P 历史基线（2026-10-14）：**阶段2尚未完成；保持57种限定操作码、212项Rust测试。主语料73种中交集55种，缺18种，另有合成路径4d/4e；编号比例不代表整体完成率。见[完成度评估](stage2-completion-assessment.md)、[逐指令矩阵](stage2-completion-evidence/matrix.md)和[跨对象调用下一批设计](stage2-completion-evidence/cross-object-design.md)。后续依次补调用、控制流、值/buffer/范围/循环、通用catch及完整生命周期、全局/06宿主契约，再进入阶段3实际efun/bootstrap/调度。以下2A—2O条目保留各历史阶段的实现范围及当时测试数。
 
 **实施进度：**阶段 1 离线加载器见 [阶段 1 文档](rust-offline-loader.md)；阶段 2A 的值模型、对象存储和 28 种指令限定路径见 [VM 核心语义](vm-core-semantics.md)。完整解释器、调度和服务端仍未完成。
 

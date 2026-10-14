@@ -1004,7 +1004,11 @@ impl Vm {
         self.stack.push(result);
         Ok(())
     }
-    fn check_args(&mut self, frame: &Frame, f: &PreparedFunction) -> Result<(), VmError> {
+    fn argument_updates(
+        &self,
+        frame: &Frame,
+        f: &PreparedFunction,
+    ) -> Result<BTreeMap<u64, (Rc<Cell>, Value)>, VmError> {
         if f.args.len() != f.max_args || frame.bp < frame.argc || self.stack.len() < frame.bp {
             return Err(err(
                 VmErrorKind::InvalidProgram,
@@ -1046,7 +1050,141 @@ impl Vm {
             }
             updates.insert(cell.id(), (cell, value));
         }
-        Cell::replace_batch(&updates.into_values().collect::<Vec<_>>())?;
+        Ok(updates)
+    }
+    fn check_args(&mut self, frame: &Frame, f: &PreparedFunction) -> Result<(), VmError> {
+        let updates = self.argument_updates(frame, f)?;
+        Cell::replace_batch(&updates.into_values().collect::<Vec<_>>())
+    }
+    fn call_other(
+        &mut self,
+        frame: &Frame,
+        local_count: usize,
+        flags: i32,
+        argc: i32,
+    ) -> Result<(), VmError> {
+        // vm_callInOtherFun @0x08094cd8, vm_callInOtherFunEx @0x080bd0fc.
+        // Only the scalar, non-efun path is enabled; its return callback is a no-op.
+        if self.initialization.is_some() || self.construction.is_some() {
+            return Err(err(
+                VmErrorKind::UnsupportedFeature,
+                "cross-object lifecycle calls are unsupported",
+            ));
+        }
+        if !matches!(flags, 0 | 2 | 4 | 6) || argc < 0 {
+            return Err(err(
+                VmErrorKind::UnsupportedFeature,
+                "unsupported cross-object flags or argc",
+            ));
+        }
+        let argc = argc as usize;
+        self.need(argc + 2, frame, local_count)?;
+        let n = self.stack.len();
+        let object = match self.value(n - 1)? {
+            Value::Object(object) => object,
+            Value::Bytes(_) | Value::Array(_) => {
+                return Err(err(
+                    VmErrorKind::UnsupportedFeature,
+                    "string and array call targets are unsupported",
+                ));
+            }
+            _ => {
+                return Err(err(
+                    VmErrorKind::UnsupportedType,
+                    "call target requires an Object",
+                ));
+            }
+        };
+        let target_object = self.objects.get(object)?;
+        if target_object.initialization_state() == InitializationState::Initializing
+            || matches!(
+                target_object.lifecycle_state(),
+                LifecycleState::Constructing | LifecycleState::RollingBack
+            )
+        {
+            return Err(err(
+                VmErrorKind::InvalidState,
+                "call target initialization is incomplete",
+            ));
+        }
+        let program = target_object.program();
+        let p = self.objects.program(program)?;
+        let Value::Bytes(method) = self.value(n - 2)? else {
+            return Err(err(
+                VmErrorKind::UnsupportedType,
+                "method name requires a String",
+            ));
+        };
+        if method.contains(&0) {
+            return Err(err(
+                VmErrorKind::UnsupportedFeature,
+                "method names containing NUL are unsupported",
+            ));
+        }
+        let methods = p.methods.as_ref().ok_or_else(|| {
+            err(
+                VmErrorKind::UnsupportedFeature,
+                "call target has no explicit complete method namespace",
+            )
+        })?;
+        let lookup = |name: &[u8]| {
+            methods
+                .get(name)
+                .copied()
+                .filter(|slot| flags & 2 != 0 || !p.functions[slot].private)
+        };
+        let (index, removed, argc) = if let Some(slot) = lookup(&method) {
+            (slot, 2, argc)
+        } else if let Some(slot) = lookup(b"default_interface") {
+            // Pop only target: the original method cell becomes the new arg0.
+            (slot, 1, argc + 1)
+        } else if flags & 4 != 0 {
+            let result = StackEntry::Value(Cell::new(Value::Void)?);
+            self.stack.truncate(n - argc - 2);
+            return self.push_entry(result);
+        } else {
+            return Err(err(
+                VmErrorKind::InvalidProgram,
+                "method and default_interface not found",
+            ));
+        };
+        if self.frames.len() >= self.limits.max_frames {
+            return Err(err(VmErrorKind::Limit, "call frame limit exceeded"));
+        }
+        let target = &p.functions[&index];
+        Self::check_user_entry(target)?;
+        Self::argument_plan(target, argc)?;
+        let bp = n - removed;
+        for i in 0..argc {
+            let flag = target.args.get(i).map_or(0, |a| a.flag);
+            match (&self.stack[bp - 1 - i], flag) {
+                (StackEntry::Reference(r), 1) => self.validate_binding(r)?,
+                (StackEntry::Value(_), 0) => {}
+                _ => {
+                    return Err(err(
+                        VmErrorKind::UnsupportedFeature,
+                        "argument binding does not match value/reference parameter",
+                    ));
+                }
+            }
+        }
+        let next = Frame {
+            id: self.next_frame,
+            program,
+            object,
+            body: FrameBody::Function(index),
+            pc: 0,
+            bp,
+            argc,
+            entered: false,
+            phase: EntryPhase::Unchecked,
+        };
+        // Preflight types without consuming operands or normalizing caller-owned slots.
+        // The ordinary 0f entry performs the batch commit after the frame is installed.
+        self.argument_updates(&next, target)?;
+        self.frame_id()?;
+        self.stack.truncate(bp);
+        self.frames.push(next);
         Ok(())
     }
     fn return_function(&mut self, frame: &Frame, f: &PreparedFunction) -> Result<(), VmError> {
@@ -1214,6 +1352,9 @@ impl Vm {
         let [a, b] = operands;
         let n = self.stack.len();
         match opcode {
+            0x08 => self.call_other(&frame, f.local_count, a, b),
+            // vm_pushThisObject @0x080975d8. All currently accepted frames own an Object.
+            0x41 => self.push(Value::Object(frame.object)),
             0x22 | 0x2f => self.numeric_update(opcode, a, &frame, f.local_count),
             0x03 | 0x04 => {
                 self.need(2, &frame, f.local_count)?;
@@ -1804,6 +1945,7 @@ mod tests {
             phase: EntryPhase::Body,
         };
         let function = PreparedFunction {
+            private: false,
             origin: None,
             pool: None,
             function_base: 0,

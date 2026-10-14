@@ -1,8 +1,8 @@
 # rml32
 
-对 `magic_Linux32` 进行静态分析，并以 Rust 重写兼容驱动。当前已实现**只读离线加载器**和阶段 2O 的**数值、共享容器、引用参数、受限默认/可变参数、继承链接、初始化及构造回滚 VM 库**，支持 57 种操作码的限定路径。VM 仅在人工构造程序上验证，尚无可运行服务端；`rml32-inspect` 继续只读检查制品。
+对 `magic_Linux32` 进行静态分析，并以 Rust 重写兼容驱动。当前已实现**只读离线加载器**和阶段 2Q 的**数值、共享容器、引用参数、受限默认/可变参数、继承链接、初始化、构造回滚及受限跨对象调用 VM 库**，支持 59 种操作码的限定路径。VM 仅在人工构造程序上验证，尚无可运行服务端；`rml32-inspect` 继续只读检查制品。
 
-阶段 2P 已完成[阶段 2 完成度评估](docs/stage2-completion-assessment.md)、[逐操作码矩阵](docs/stage2-completion-evidence/matrix.md)与[跨对象调用证据和下一批设计](docs/stage2-completion-evidence/cross-object-design.md)。本轮没有修改运行时；阶段 2 尚未完成，下一批先补受限08/41。主语料73种指令中交集55种、缺18种，不能据此计算整体功能完成率。
+阶段 2Q 已实现08直接对象调用和41 thisObject，支持显式方法目录、private/default_interface、参数及引用转发、上下文恢复和预算暂停，237项Rust测试通过。见[跨对象调用运行时](docs/vm-cross-object-runtime.md)和[当前逐操作码矩阵](docs/stage2q-evidence/matrix.md)。主语料73种中交集57种、缺16种；阶段2尚未完成，编号比例不是整体功能完成率。阶段2P评估及其证据保持历史快照。
 
 ## 构建与检查
 
@@ -35,7 +35,8 @@ python3 tests/compare_corpus.py --report target/stage1-validation.json
 
 ## 文档与边界
 
-- [阶段 2P 完成度评估与下一步](docs/stage2-completion-assessment.md)
+- [阶段 2Q 跨对象调用运行时](docs/vm-cross-object-runtime.md)
+- [阶段 2P 历史完成度评估](docs/stage2-completion-assessment.md)
 - [重写路线图](docs/magic_Linux32-rust-rewrite-roadmap.md)
 - [阶段 1 接口、格式策略及验收](docs/rust-offline-loader.md)
 - [阶段 2A VM 语义、证据和接口](docs/vm-core-semantics.md)
