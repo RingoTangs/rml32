@@ -2,6 +2,8 @@
 
 本文采用“总体方案 → 分阶段实施 → 验收与风险”的总—分结构，面向后续实现兼容运行时的工程师。依据截至 2026-10-13 的 [静态分析](magic_Linux32-static-analysis.md) 与 [服务包兼容性分析](magic_Linux32-rust-compatibility-analysis.md)。本文是实施方案，不表示 Rust 服务端已经实现或原程序已经运行验证。
 
+**当前统一状态（阶段 2P，2026-10-14）：**阶段2尚未完成；保持57种限定操作码、212项Rust测试。主语料73种中交集55种，缺18种，另有合成路径4d/4e；编号比例不代表整体完成率。见[完成度评估](stage2-completion-assessment.md)、[逐指令矩阵](stage2-completion-evidence/matrix.md)和[跨对象调用下一批设计](stage2-completion-evidence/cross-object-design.md)。后续依次补调用、控制流、值/buffer/范围/循环、通用catch及完整生命周期、全局/06宿主契约，再进入阶段3实际efun/bootstrap/调度。以下2A—2O条目保留各历史阶段的实现范围及当时测试数。
+
 **实施进度：**阶段 1 离线加载器见 [阶段 1 文档](rust-offline-loader.md)；阶段 2A 的值模型、对象存储和 28 种指令限定路径见 [VM 核心语义](vm-core-semantics.md)。完整解释器、调度和服务端仍未完成。
 
 阶段 2O 已实现显式生命周期绑定、完整初始化后的顺序create、失败时逆序destruct回滚及局部错误恢复；保持57种限定操作码，212项Rust测试通过。见[构造运行时](vm-construction-runtime.md)。主动析构、全局catch和调度器延迟删除仍未开放。
@@ -203,7 +205,7 @@ flowchart TD
 | 原程序对照 | 另行授权后，在隔离兼容环境进行差分 | 记录环境与输入，对照输出、状态、时序及数据结果 |
 | 性能与恢复 | 正确性稳定后建立负载和故障场景 | 根据实测要求确定指标，再决定优化或新 JIT |
 
-未来 Cargo 项目建立后使用 `cargo test`、`cargo fmt --check`、`cargo clippy --all-targets`；这些不是当前仓库已有的构建流程。每阶段保留可复现测试和限制说明，原程序对照未完成时不得称已证明行为等价。
+当前 Cargo 项目使用 `cargo test --locked`、`cargo fmt --check`、`cargo clippy --locked --all-targets -- -D warnings`；阶段2P另有矩阵重算与只读语料校验。每阶段保留可复现测试和限制说明，原程序对照未完成时不得称已证明行为等价。
 
 ### 3.2 实施时优先回查的证据
 
