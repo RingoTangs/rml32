@@ -86,10 +86,15 @@ pub struct PreparedProgram {
     pub(crate) unimplemented: BTreeSet<i16>,
     pub(crate) initializations: Option<Vec<PreparedInitialization>>,
     pub(crate) init_order: Vec<usize>,
+    pub(crate) lifecycles: Option<Vec<LifecycleBinding>>,
 }
 impl PreparedProgram {
     pub fn source(&self) -> &str {
         &self.source
+    }
+    /// True only when all source-local lifecycle bindings were explicitly prepared.
+    pub fn is_constructible(&self) -> bool {
+        self.lifecycles.is_some()
     }
     /// True only when all inherited initialization bodies were explicitly prepared.
     pub fn is_initializable(&self) -> bool {
@@ -420,6 +425,7 @@ pub fn prepare_program(image: ProgramImage) -> Result<PreparedProgram, VmError> 
             unimplemented: BTreeSet::new(),
             initializations: None,
             init_order: vec![],
+            lifecycles: None,
         })
     };
     build().map_err(|mut e| {
@@ -428,11 +434,18 @@ pub fn prepare_program(image: ProgramImage) -> Result<PreparedProgram, VmError> 
     })
 }
 
+/// Explicit source-local lifecycle function indices; absence is intentional.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Default)]
+pub struct LifecycleBinding {
+    pub create: Option<i16>,
+    pub destruct: Option<i16>,
+}
 /// Explicit dependency namespace. Names are matched as bytes without path inference.
 #[derive(Debug, Default)]
 pub struct ProgramCatalog {
     programs: BTreeMap<String, ProgramImage>,
     bindings: BTreeMap<(String, Vec<u8>), BTreeSet<String>>,
+    lifecycles: BTreeMap<String, LifecycleBinding>,
 }
 impl ProgramCatalog {
     pub fn new() -> Self {
@@ -444,6 +457,18 @@ impl ProgramCatalog {
             return Err(err("duplicate catalog key"));
         }
         self.programs.insert(key, image);
+        Ok(())
+    }
+    pub fn bind_lifecycle(
+        &mut self,
+        source: impl Into<String>,
+        binding: LifecycleBinding,
+    ) -> Result<(), VmError> {
+        let source = source.into();
+        if self.lifecycles.contains_key(&source) {
+            return Err(err("duplicate lifecycle binding"));
+        }
+        self.lifecycles.insert(source, binding);
         Ok(())
     }
     pub fn bind_inherit(
@@ -666,7 +691,8 @@ impl Linker<'_> {
                     "{key} inherit[{ordinal}] name={:?}: {}",
                     inherit.name.as_ref().map(|n| &n.bytes_hex),
                     e.message
-                );
+                )
+                .into_boxed_str();
                 e
             })?;
         }
@@ -721,7 +747,7 @@ pub fn prepare_linked_program(
     root: &str,
     limits: LinkLimits,
 ) -> Result<PreparedProgram, VmError> {
-    prepare_catalog(catalog, root, limits, false)
+    prepare_catalog(catalog, root, limits, false, false)
 }
 /// Opt in to bounded initialization preparation; never executes any code.
 pub fn prepare_initializable_program(
@@ -729,13 +755,22 @@ pub fn prepare_initializable_program(
     root: &str,
     limits: LinkLimits,
 ) -> Result<PreparedProgram, VmError> {
-    prepare_catalog(catalog, root, limits, true)
+    prepare_catalog(catalog, root, limits, true, false)
+}
+/// Prepare initialization plus explicitly bound, bounded construction and rollback.
+pub fn prepare_constructible_program(
+    catalog: &ProgramCatalog,
+    root: &str,
+    limits: LinkLimits,
+) -> Result<PreparedProgram, VmError> {
+    prepare_catalog(catalog, root, limits, true, true)
 }
 fn prepare_catalog(
     catalog: &ProgramCatalog,
     root: &str,
     limits: LinkLimits,
     initialize: bool,
+    construct: bool,
 ) -> Result<PreparedProgram, VmError> {
     let build = || {
         let linked = Linker {
@@ -745,6 +780,25 @@ fn prepare_catalog(
             slots: 0,
         }
         .link(root, 0)?;
+        let lifecycles = if construct {
+            Some(
+                linked
+                    .constitutions
+                    .iter()
+                    .enumerate()
+                    .map(|(cons, c)| {
+                        validate_lifecycle_binding(catalog, &linked, cons, c).map_err(|mut e| {
+                            e.source = c.key.clone();
+                            e.message =
+                                format!("constitution {cons}: {}", e.message).into_boxed_str();
+                            e
+                        })
+                    })
+                    .collect::<Result<Vec<_>, VmError>>()?,
+            )
+        } else {
+            None
+        };
         let mut pools = BTreeMap::new();
         for c in &linked.constitutions {
             pools.entry(c.key.clone()).or_insert_with(|| {
@@ -817,16 +871,22 @@ fn prepare_catalog(
             let image = &catalog.programs[&c.key];
             let id = (c.key.clone(), slot.body.index.unwrap());
             if !bodies.contains_key(&id) {
-                let mut f = prepare_function(
-                    (*slot.body).clone(),
-                    image.strings.len(),
-                    image.max_vars as usize,
-                )
-                .map_err(|mut e| {
-                    e.source = c.key.clone();
-                    e.function = Some(i as i16);
-                    e
-                })?;
+                let mut body = (*slot.body).clone();
+                if construct {
+                    let binding = catalog.lifecycles[&c.key];
+                    if body.index == binding.create {
+                        body.attrib |= 1 | 4;
+                    }
+                    if body.index == binding.destruct {
+                        body.attrib |= 4;
+                    }
+                }
+                let mut f = prepare_function(body, image.strings.len(), image.max_vars as usize)
+                    .map_err(|mut e| {
+                        e.source = c.key.clone();
+                        e.function = Some(i as i16);
+                        e
+                    })?;
                 f.origin = Some(c.key.clone());
                 f.pool = Some(pools[&c.key].clone());
                 bodies.insert(id.clone(), f);
@@ -844,6 +904,7 @@ fn prepare_catalog(
             functions,
             unimplemented,
             initializations,
+            lifecycles,
             init_order: if initialize {
                 linked.init_order
             } else {
@@ -856,5 +917,79 @@ fn prepare_catalog(
             e.source = root.into();
         }
         e
+    })
+}
+
+fn validate_lifecycle_binding(
+    catalog: &ProgramCatalog,
+    linked: &Linked,
+    cons: usize,
+    constitution: &Constitution,
+) -> Result<LifecycleBinding, VmError> {
+    let image = &catalog.programs[&constitution.key];
+    let binding = *catalog
+        .lifecycles
+        .get(&constitution.key)
+        .ok_or_else(|| err("missing explicit lifecycle binding"))?;
+    for (name, index) in [
+        (b"create".as_slice(), binding.create),
+        (b"destruct".as_slice(), binding.destruct),
+    ] {
+        let named: Vec<_> = image
+            .functions
+            .iter()
+            .filter(|f| f.name.as_ref().is_some_and(|n| n.c_bytes() == name))
+            .collect();
+        if named.iter().any(|f| f.code.nodes.is_empty()) {
+            return Err(unsupported("lifecycle declarations are unsupported"));
+        }
+        let Some(index) = index else {
+            if !named.is_empty() {
+                return Err(err("None lifecycle binding hides a local lifecycle record"));
+            }
+            continue;
+        };
+        let function = named
+            .iter()
+            .find(|f| f.index == Some(index))
+            .ok_or_else(|| err("lifecycle binding must select a named local implementation"))?;
+        if function.return_type != 1
+            || function.arguments.iter().any(|a| a.flag != 0)
+            || (name == b"create"
+                && (function.max_args > 1
+                    || function
+                        .arguments
+                        .iter()
+                        .any(|a| !matches!(a.r#type, 7 | 255))))
+            || (name == b"destruct"
+                && (function.max_args != 0
+                    || function.min_args != 0
+                    || !function.arguments.is_empty()))
+        {
+            return Err(unsupported(
+                "lifecycle prototype outside bounded void/value subset",
+            ));
+        }
+        let target = add_base(constitution.function_base, index)? as usize;
+        let slot = linked
+            .slots
+            .get(target)
+            .and_then(Option::as_ref)
+            .ok_or_else(|| err("missing lifecycle implementation slot"))?;
+        if slot.alias || slot.constitution != cons || slot.body.index != Some(index) {
+            return Err(unsupported(
+                "lifecycle binding cannot select an inherited alias",
+            ));
+        }
+    }
+    Ok(LifecycleBinding {
+        create: binding
+            .create
+            .map(|i| add_base(constitution.function_base, i))
+            .transpose()?,
+        destruct: binding
+            .destruct
+            .map(|i| add_base(constitution.function_base, i))
+            .transpose()?,
     })
 }

@@ -1,0 +1,119 @@
+{
+  "stage": "2O",
+  "date": "2026-10-14",
+  "scope": "explicit source-local construction and bounded failure rollback",
+  "runtime_modified": true,
+  "public_api_modified": true,
+  "dependencies_modified": false,
+  "unsafe_added": false,
+  "reference_executed": false,
+  "startup_scripts_executed": false,
+  "shipped_init_or_business_bytecode_executed": false,
+  "native_evidence": "Existing stage2M REA/Ghidra records reused; no new native session",
+  "supported_opcodes": 57,
+  "new_opcodes": [],
+  "checks": {
+    "cargo test --locked": {
+      "passed": true,
+      "tests": 212,
+      "baseline_tests": 191,
+      "new_synthetic_tests": 21,
+      "baseline_integration_test_names_retained": 161
+    },
+    "cargo fmt --check": {
+      "passed": true
+    },
+    "cargo clippy --locked --all-targets -- -D warnings": {
+      "passed": true
+    },
+    "cargo build --locked --bin rml32-inspect": {
+      "passed": true
+    },
+    "git diff --check": {
+      "passed": true
+    }
+  },
+  "corpus": {
+    "status": "pass",
+    "checked": {
+      "packages": 12,
+      "members": 9527,
+      "programs": 7159,
+      "inheritance": 9933
+    },
+    "summary": {
+      "decoded_files": 8921,
+      "errors": 1,
+      "files": 8922,
+      "functions": 101592,
+      "inheritance_matches": 9933,
+      "instructions": 6474773,
+      "members": 9527,
+      "packages": 12,
+      "programs": 7159
+    },
+    "originals_unchanged": 36,
+    "known_errors": [
+      "dba/pack_data/etc.pak/etc"
+    ],
+    "default_action_fields_checked": 358411,
+    "target_execution": "none",
+    "scope": "static structure; not execution equivalence"
+  },
+  "existing_files_checked": 189,
+  "existing_files_unchanged": 181,
+  "intentional_existing_edits": [
+    "README.md",
+    "tests/vm_core.rs",
+    "docs/magic_Linux32-rust-rewrite-roadmap.md",
+    "src/prepared.rs",
+    "src/vm.rs",
+    "src/lib.rs",
+    "src/object.rs",
+    "src/vm_error.rs"
+  ],
+  "prior_protected_file_maps_verified": {
+    "docs/stage2k-validation.json": 10,
+    "docs/stage2l-validation.json": 1,
+    "docs/stage2m-validation.json": 12,
+    "docs/stage2n-validation.json": 1
+  },
+  "public_api_additions": [
+    "LifecycleBinding and ProgramCatalog::bind_lifecycle",
+    "prepare_constructible_program and is_constructible",
+    "Vm::begin_construct(ProgramId, Option<Value>)",
+    "Completion::Constructed(ObjectId)",
+    "LifecycleState and Object::lifecycle_state",
+    "Vm::rollback_errors",
+    "LifecyclePhase, LifecycleContext and VmError::lifecycle"
+  ],
+  "compatibility_changes": [
+    "VmError.message is Box<str> to retain compact Result error storage without lint suppression",
+    "VmError.lifecycle is Option<Box<LifecycleContext>>",
+    "Completion exhaustive matches and VmError struct literals require updates",
+    "Existing preparation and initialization interfaces do not require lifecycle bindings"
+  ],
+  "limitations": [
+    "Only explicit local concrete lifecycle slots; no inherited/alias method inference",
+    "Only void lifecycle returns and zero/one ordinary mapping/mixed constructor parameter",
+    "Host construction input only None or Mapping",
+    "No public active destruction, general catch, reentry or scheduler deferred deletion",
+    "Host cancellation deletes the task object without running business destructors",
+    "Shared mapping writes are not rolled back",
+    "Static corpus comparison is not runtime equivalence"
+  ],
+  "cited_stage2m_evidence_verified": true,
+  "files_sha256": {
+    "README.md": "b019d9827df0e39ccb729af9476758ad7e8b3380b3e8221e23ff211e1587d001",
+    "docs/magic_Linux32-rust-rewrite-roadmap.md": "1cf0dbeda060bbc4aa13c0835c986ead6a7acac30f0ddf0e6912ac32d8f5ed1e",
+    "docs/vm-construction-runtime.md": "78e503e76c28c461e0a000c29bd1cff3536e0fab766fec17b049634f4752b5d7",
+    "src/lib.rs": "9f6f99360a6d1c8356c0f6c82b6dfb9befdabca323f571c9cf4c58b619c04fc6",
+    "src/object.rs": "ec2262e797b6fe8de7ef3096a4cac9ec80783dcd0444eff13a486509ff2ac090",
+    "src/prepared.rs": "45a0109b561063e0b3990c5d9161513bef2013b3f0e2602ac15360a09d517ca8",
+    "src/vm.rs": "7202fb0181644b9eff52dbbc4d64f51f2e1a718a70c6ab726b36b1b058b538a6",
+    "src/vm_error.rs": "a7ad83ea21fba73139e8fcd9225dd9016298692c8f2ad561f1108577d815a46d",
+    "tests/vm_core.rs": "e75dbaf530757bfc789b29a423b71b4d0e70809b248110148413cb8a34b000a5"
+  },
+  "local_links_checked": 4,
+  "files_sha256_verified": true
+}

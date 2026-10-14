@@ -4533,3 +4533,785 @@ fn initialization_loops_obey_budget_and_global_input_is_rejected() {
         VmErrorKind::UnsupportedFeature
     );
 }
+
+// Stage 2O lifecycle fixtures: shared mapping is an observable synthetic trace.
+fn lifecycle_name(p: &mut ProgramImage, position: usize, name: &[u8]) {
+    p.functions[position].name = Some(ByteString::new(name));
+}
+fn lifecycle_log(marker: i16) -> Vec<Node> {
+    vec![
+        (0, 0, 0x3e),
+        (0, 0, 0x3b),
+        (0, 0, 0x44),
+        (1, 0, 0x22),
+        (0, 0, 0x3e),
+        (marker, 0, 0x3b),
+        (0, 0, 0x44),
+        (0, 0, 0x3d),
+        (0, 0, 0x3b),
+        (0, 0, 0x43),
+        (0, 0, 0x04),
+        (0, 0, 0x33),
+    ]
+}
+fn lifecycle_image(
+    create_index: i16,
+    destruct_index: i16,
+    marker: i16,
+    vars: usize,
+    fail_create: bool,
+    fail_destruct: bool,
+) -> ProgramImage {
+    let mut create = vec![(0, 0, 0x37), (0, 0, 0x4e), (0, 0, 0x33)];
+    create.extend(lifecycle_log(marker));
+    if fail_create {
+        create.push((0, 0, 0x33));
+    }
+    let mut destruct = lifecycle_log(marker + 10);
+    if fail_destruct {
+        destruct.push((0, 0, 0x33));
+    }
+    let mut p = image(
+        &[
+            fun(create_index, 1, 0, 1, &create),
+            fun(destruct_index, 0, 0, 1, &destruct),
+        ],
+        vars,
+        &[],
+    );
+    lifecycle_name(&mut p, 0, b"create\0");
+    lifecycle_name(&mut p, 1, b"destruct\0");
+    set_init(
+        &mut p,
+        &[(7, 0, 0x3b), (0, 0, 0x4e), (0, 0, 0x33), (0, 0, 0x48)],
+    );
+    p
+}
+fn construct_family(fail: Option<usize>, destruct_fail: bool) -> rml32::ProgramCatalog {
+    let a = lifecycle_image(0, 1, 1, 1, fail == Some(0), destruct_fail);
+    let b = lifecycle_image(0, 1, 2, 1, fail == Some(1), destruct_fail);
+    let mut root = lifecycle_image(4, 5, 3, 3, fail == Some(2), destruct_fail);
+    root.constitution_count = Some(3);
+    inherit(&mut root, &a, b"a", [1, 0, 1]);
+    inherit(&mut root, &b, b"b", [2, 2, 2]);
+    let mut c = rml32::ProgramCatalog::new();
+    for (key, p, create, destruct) in [("a", a, 0, 1), ("b", b, 0, 1), ("root", root, 4, 5)] {
+        c.insert(key, p).unwrap();
+        c.bind_lifecycle(
+            key,
+            rml32::LifecycleBinding {
+                create: Some(create),
+                destruct: Some(destruct),
+            },
+        )
+        .unwrap();
+    }
+    c.bind_inherit("root", b"a", "a");
+    c.bind_inherit("root", b"b", "b");
+    c
+}
+fn construct_vm(c: &rml32::ProgramCatalog, root: &str) -> (Vm, rml32::ProgramId) {
+    let p = rml32::prepare_constructible_program(c, root, Default::default()).unwrap();
+    assert!(p.is_constructible());
+    assert!(p.is_initializable());
+    let mut s = ObjectStore::new();
+    let id = s.register_program(p).unwrap();
+    (Vm::new(s), id)
+}
+fn trace_mapping() -> Value {
+    Value::mapping(vec![(Value::Int(0), Value::Int(0))]).unwrap()
+}
+fn trace_value(trace: &Value, key: i32) -> Option<Value> {
+    let Value::Mapping(m) = trace else {
+        unreachable!()
+    };
+    m.get(&Value::Int(key)).unwrap()
+}
+#[test]
+fn construction_initializes_all_sources_then_runs_creates_in_order() {
+    let (mut vm, id) = construct_vm(&construct_family(None, false), "root");
+    let trace = trace_mapping();
+    let o = vm.begin_construct(id, Some(trace.clone())).unwrap();
+    assert_eq!(
+        vm.objects().get(o).unwrap().lifecycle_state(),
+        rml32::LifecycleState::Constructing
+    );
+    assert_eq!(vm.run(12).unwrap(), RunOutcome::BudgetExhausted);
+    assert_eq!(object_values(&vm, o), vec![Value::Int(7); 3]);
+    assert_eq!(
+        vm.objects().get(o).unwrap().initialization_state(),
+        rml32::InitializationState::Initialized
+    );
+    assert_eq!(trace_value(&trace, 0), Some(Value::Int(0)));
+    loop {
+        if vm.run(1).unwrap() != RunOutcome::BudgetExhausted {
+            break;
+        }
+    }
+    assert_eq!(
+        vm.run(0).unwrap(),
+        RunOutcome::Finished(Completion::Constructed(o))
+    );
+    assert_eq!(
+        vm.objects().get(o).unwrap().lifecycle_state(),
+        rml32::LifecycleState::Constructed
+    );
+    for marker in 1..=3 {
+        assert_eq!(trace_value(&trace, marker), Some(Value::Int(marker)));
+        assert_eq!(trace_value(&trace, marker + 10), None);
+    }
+    assert!(vm.rollback_errors().is_empty());
+    assert!(vm.stack().unwrap().is_empty());
+    assert_eq!(
+        vm.start(o, 4, vec![trace]).unwrap_err().kind,
+        VmErrorKind::UnsupportedFeature
+    );
+}
+#[test]
+fn construction_failure_rolls_back_failing_layer_and_previous_layers_in_reverse() {
+    for failed in 0..3 {
+        let (mut vm, id) = construct_vm(&construct_family(Some(failed), false), "root");
+        let trace = trace_mapping();
+        let o = vm.begin_construct(id, Some(trace.clone())).unwrap();
+        let e = vm.run(1000).unwrap_err();
+        assert_eq!(e.kind, VmErrorKind::StackUnderflow);
+        assert_eq!(
+            e.lifecycle.as_ref().unwrap().phase,
+            rml32::LifecyclePhase::Create
+        );
+        assert_eq!(
+            e.lifecycle.as_ref().unwrap().constitution,
+            [1, 2, 0][failed]
+        );
+        assert_eq!(e.source, ["a", "b", "root"][failed]);
+        assert_eq!(e.function, Some([0, 2, 4][failed]));
+        assert!(vm.objects().get(o).is_err());
+        for k in 0..=failed {
+            assert_eq!(
+                trace_value(&trace, k as i32 + 1),
+                Some(Value::Int(k as i32 + 1))
+            );
+            assert_eq!(
+                trace_value(&trace, k as i32 + 11),
+                Some(Value::Int((failed + 1 + failed - k + 1) as i32))
+            );
+        }
+        assert!(vm.rollback_errors().is_empty());
+        assert_eq!(vm.run(0).unwrap_err(), e);
+        assert_eq!(vm.frame_depth(), 0);
+    }
+}
+#[test]
+fn construction_preserves_primary_error_and_continues_after_multiple_destruct_failures() {
+    let (mut vm, id) = construct_vm(&construct_family(Some(2), true), "root");
+    let trace = trace_mapping();
+    let o = vm.begin_construct(id, Some(trace.clone())).unwrap();
+    let e = vm.run(1000).unwrap_err();
+    assert_eq!(
+        e.lifecycle.as_ref().unwrap().phase,
+        rml32::LifecyclePhase::Create
+    );
+    assert_eq!(vm.rollback_errors().len(), 3);
+    for (err, source) in vm.rollback_errors().iter().zip(["root", "b", "a"]) {
+        assert_eq!(err.source, source);
+        assert_eq!(
+            err.lifecycle.as_ref().unwrap().phase,
+            rml32::LifecyclePhase::RollbackDestruct
+        );
+        assert_eq!(err.kind, VmErrorKind::StackUnderflow);
+    }
+    assert_eq!(trace_value(&trace, 13), Some(Value::Int(4)));
+    assert_eq!(trace_value(&trace, 12), Some(Value::Int(5)));
+    assert_eq!(trace_value(&trace, 11), Some(Value::Int(6)));
+    assert!(vm.objects().get(o).is_err());
+    let again = vm.begin_construct(id, Some(trace_mapping())).unwrap();
+    assert_ne!(again, o);
+    assert!(vm.rollback_errors().is_empty());
+}
+#[test]
+fn construction_rollback_can_pause_and_host_cancellation_does_not_run_more_destructors() {
+    let (mut vm, id) = construct_vm(&construct_family(Some(1), false), "root");
+    let trace = trace_mapping();
+    let o = vm.begin_construct(id, Some(trace.clone())).unwrap();
+    loop {
+        assert_eq!(vm.run(1).unwrap(), RunOutcome::BudgetExhausted);
+        if vm.objects().get(o).unwrap().lifecycle_state() == rml32::LifecycleState::RollingBack {
+            break;
+        }
+    }
+    assert_eq!(vm.run(0).unwrap(), RunOutcome::BudgetExhausted);
+    assert_eq!(trace_value(&trace, 12), None);
+    assert_eq!(
+        vm.start(o, 4, vec![]).unwrap_err().kind,
+        VmErrorKind::InvalidState
+    );
+    assert_eq!(
+        vm.begin_construct(id, None).unwrap_err().kind,
+        VmErrorKind::InvalidState
+    );
+    let s = vm.into_objects();
+    assert!(s.get(o).is_err());
+    assert_eq!(trace_value(&trace, 12), None);
+}
+#[test]
+fn construction_external_delete_preserves_primary_during_rollback() {
+    let (mut vm, id) = construct_vm(&construct_family(Some(0), false), "root");
+    let o = vm.begin_construct(id, Some(trace_mapping())).unwrap();
+    while vm.objects().get(o).unwrap().lifecycle_state() != rml32::LifecycleState::RollingBack {
+        vm.run(1).unwrap();
+    }
+    vm.objects_mut().remove(o).unwrap();
+    let e = vm.run(1).unwrap_err();
+    assert_eq!(e.kind, VmErrorKind::StackUnderflow);
+    assert_eq!(
+        e.lifecycle.as_ref().unwrap().phase,
+        rml32::LifecyclePhase::Create
+    );
+    assert_eq!(
+        vm.rollback_errors().last().unwrap().kind,
+        VmErrorKind::InvalidObject
+    );
+    assert_eq!(vm.frame_depth(), 0);
+}
+#[test]
+fn lifecycle_bindings_are_required_and_none_cannot_hide_local_functions() {
+    let p = lifecycle_image(0, 1, 1, 1, false, false);
+    let mut c = init_catalog(p.clone());
+    assert!(
+        rml32::prepare_constructible_program(&c, "root", Default::default())
+            .unwrap_err()
+            .message
+            .contains("missing")
+    );
+    c.bind_lifecycle("root", Default::default()).unwrap();
+    assert!(c.bind_lifecycle("root", Default::default()).is_err());
+    assert!(
+        rml32::prepare_constructible_program(&c, "root", Default::default())
+            .unwrap_err()
+            .message
+            .contains("hides")
+    );
+    for binding in [
+        rml32::LifecycleBinding {
+            create: Some(1),
+            destruct: Some(1),
+        },
+        rml32::LifecycleBinding {
+            create: Some(-1),
+            destruct: Some(1),
+        },
+        rml32::LifecycleBinding {
+            create: Some(7),
+            destruct: Some(1),
+        },
+    ] {
+        let mut c = init_catalog(p.clone());
+        c.bind_lifecycle("root", binding).unwrap();
+        assert!(rml32::prepare_constructible_program(&c, "root", Default::default()).is_err());
+    }
+}
+#[test]
+fn lifecycle_preparation_rejects_declarations_atomic_and_unsupported_prototypes() {
+    for case in 0..6 {
+        let mut p = lifecycle_image(0, 1, 1, 1, false, false);
+        match case {
+            0 => p.functions[0].code.nodes.clear(),
+            1 => p.functions[0].attrib |= 2,
+            2 => p.functions[0].return_type = 255,
+            3 => ref_arg(&mut p, 0, 0, 255, 0),
+            4 => p.functions[0].arguments[0].r#type = 2,
+            _ => p.functions[1].max_args = 1,
+        };
+        let mut c = init_catalog(p);
+        c.bind_lifecycle(
+            "root",
+            rml32::LifecycleBinding {
+                create: Some(0),
+                destruct: Some(1),
+            },
+        )
+        .unwrap();
+        assert!(
+            rml32::prepare_constructible_program(&c, "root", Default::default()).is_err(),
+            "case {case}"
+        );
+    }
+}
+
+fn single_construct_catalog(
+    p: ProgramImage,
+    binding: rml32::LifecycleBinding,
+) -> rml32::ProgramCatalog {
+    let mut c = init_catalog(p);
+    c.bind_lifecycle("root", binding).unwrap();
+    c
+}
+#[test]
+fn construction_without_lifecycle_methods_finishes_after_initialization() {
+    let mut p = image(&[], 1, &[]);
+    set_init(&mut p, &[(0, 0, 0x48)]);
+    let c = single_construct_catalog(p, Default::default());
+    let (mut vm, id) = construct_vm(&c, "root");
+    let o = vm.begin_construct(id, None).unwrap();
+    assert_eq!(vm.run(0).unwrap(), RunOutcome::BudgetExhausted);
+    assert_eq!(
+        vm.run(1).unwrap(),
+        RunOutcome::Finished(Completion::Constructed(o))
+    );
+    assert_eq!(object_values(&vm, o), vec![Value::Undefined]);
+    let store = vm.into_objects();
+    assert_eq!(
+        store.get(o).unwrap().lifecycle_state(),
+        rml32::LifecycleState::Constructed
+    );
+}
+#[test]
+fn construction_skipped_create_layer_still_participates_in_failure_rollback() {
+    let mut parent = image(&[fun(0, 0, 0, 1, &[(0, 0, 0x33)])], 0, &[]);
+    lifecycle_name(&mut parent, 0, b"destruct");
+    set_init(&mut parent, &[(0, 0, 0x48)]);
+    let mut root = image(&[fun(1, 0, 0, 1, &[(0, 0, 0x33)])], 0, &[]);
+    lifecycle_name(&mut root, 0, b"create");
+    set_init(&mut root, &[(0, 0, 0x48)]);
+    root.constitution_count = Some(2);
+    inherit(&mut root, &parent, b"parent\0", [1, 0, 0]);
+    let mut c = linked_catalog(parent, root);
+    c.bind_lifecycle(
+        "parent",
+        rml32::LifecycleBinding {
+            create: None,
+            destruct: Some(0),
+        },
+    )
+    .unwrap();
+    c.bind_lifecycle(
+        "child",
+        rml32::LifecycleBinding {
+            create: Some(1),
+            destruct: None,
+        },
+    )
+    .unwrap();
+    let (mut vm, id) = construct_vm(&c, "child");
+    let o = vm.begin_construct(id, None).unwrap();
+    let e = vm.run(100).unwrap_err();
+    assert_eq!(e.source, "child");
+    assert_eq!(vm.rollback_errors().len(), 1);
+    assert_eq!(vm.rollback_errors()[0].source, "parent");
+    assert_eq!(vm.rollback_errors()[0].function, Some(0));
+    assert_eq!(
+        vm.rollback_errors()[0]
+            .lifecycle
+            .as_ref()
+            .unwrap()
+            .constitution,
+        1
+    );
+    assert!(vm.objects().get(o).is_err());
+}
+#[test]
+fn construction_zero_declared_parameters_accept_shared_mapping_as_native_extra() {
+    let mut p = image(
+        &[fun(0, 0, 0, 1, &[(0, 0, 0x34), (0, 0, 0x4e), (0, 0, 0x33)])],
+        1,
+        &[],
+    );
+    lifecycle_name(&mut p, 0, b"create");
+    set_init(&mut p, &[(0, 0, 0x48)]);
+    let c = single_construct_catalog(
+        p,
+        rml32::LifecycleBinding {
+            create: Some(0),
+            destruct: None,
+        },
+    );
+    let (mut vm, id) = construct_vm(&c, "root");
+    for (parameter, count) in [(None, 0), (Some(trace_mapping()), 1)] {
+        let o = vm.begin_construct(id, parameter).unwrap();
+        assert_eq!(
+            vm.run(100).unwrap(),
+            RunOutcome::Finished(Completion::Constructed(o))
+        );
+        assert_eq!(object_values(&vm, o), vec![Value::Int(count)]);
+    }
+}
+#[test]
+fn construction_optional_mapping_defaults_and_required_argument_entry_failure() {
+    let mut p = image(
+        &[optional_fun(
+            0,
+            1,
+            0,
+            1,
+            &[vec![(0, 0, 0x18)]],
+            &[(0, 0, 0x37), (0, 0, 0x4e), (0, 0, 0x33)],
+        )],
+        1,
+        &[],
+    );
+    optional_meta(&mut p, 0, 0, false, &[1]);
+    p.functions[0].arguments[0].r#type = 7;
+    lifecycle_name(&mut p, 0, b"create");
+    set_init(&mut p, &[(0, 0, 0x48)]);
+    let c = single_construct_catalog(
+        p,
+        rml32::LifecycleBinding {
+            create: Some(0),
+            destruct: None,
+        },
+    );
+    let (mut vm, id) = construct_vm(&c, "root");
+    let o = vm.begin_construct(id, None).unwrap();
+    assert_eq!(
+        vm.run(100).unwrap(),
+        RunOutcome::Finished(Completion::Constructed(o))
+    );
+    let Value::Mapping(m) = &object_values(&vm, o)[0] else {
+        panic!("mapping expected")
+    };
+    assert_eq!(m.entries().unwrap().len(), 0);
+    let mut p = lifecycle_image(0, 1, 1, 1, false, false);
+    p.functions[1].code.nodes = vec![(0, 0, 0x0f), (0, 0, 0x1b), (0, 0, 0x33), (0, 0, 0x49)];
+    let c = single_construct_catalog(
+        p,
+        rml32::LifecycleBinding {
+            create: Some(0),
+            destruct: Some(1),
+        },
+    );
+    let (mut vm, id) = construct_vm(&c, "root");
+    let o = vm.begin_construct(id, None).unwrap();
+    let e = vm.run(100).unwrap_err();
+    assert_eq!(e.kind, VmErrorKind::ArgumentCount);
+    assert_eq!(e.function, Some(0));
+    assert_eq!(e.pc, None);
+    assert_eq!(e.offset, None);
+    assert_eq!(
+        e.lifecycle.as_ref().unwrap().phase,
+        rml32::LifecyclePhase::Create
+    );
+    assert_eq!(vm.rollback_errors().len(), 1);
+    assert!(vm.objects().get(o).is_err());
+}
+#[test]
+fn construction_initialization_failure_never_runs_destruct_and_retains_context() {
+    let mut p = lifecycle_image(0, 1, 1, 1, false, true);
+    set_init(&mut p, &[(0, 0, 0x33), (0, 0, 0x48)]);
+    let c = single_construct_catalog(
+        p,
+        rml32::LifecycleBinding {
+            create: Some(0),
+            destruct: Some(1),
+        },
+    );
+    let (mut vm, id) = construct_vm(&c, "root");
+    let manual = vm.objects_mut().create(id, vec![Value::Int(42)]).unwrap();
+    let trace = trace_mapping();
+    let o = vm.begin_construct(id, Some(trace.clone())).unwrap();
+    let e = vm.run(1).unwrap_err();
+    assert_eq!(
+        e.lifecycle.as_ref().unwrap().phase,
+        rml32::LifecyclePhase::Initialize
+    );
+    assert_eq!(e.initialization, Some(0));
+    assert!(vm.rollback_errors().is_empty());
+    assert_eq!(trace_value(&trace, 0), Some(Value::Int(0)));
+    assert!(vm.objects().get(o).is_err());
+    assert_eq!(object_values(&vm, manual), vec![Value::Int(42)]);
+}
+#[test]
+fn construction_user_calls_cannot_enter_lifecycle_functions() {
+    for target in [0, 1] {
+        let mut p = lifecycle_image(0, 1, 1, 1, false, false);
+        let wrapper = fun(2, 0, 0, 1, &[(target, 0, 0x07), (0, 0, 0x33)]);
+        let mut extra = image(&[wrapper], 1, &[]);
+        p.functions.push(extra.functions.remove(0));
+        p.max_functions = 3;
+        let c = single_construct_catalog(
+            p,
+            rml32::LifecycleBinding {
+                create: Some(0),
+                destruct: Some(1),
+            },
+        );
+        let (mut vm, id) = construct_vm(&c, "root");
+        let o = vm.objects_mut().create(id, vec![trace_mapping()]).unwrap();
+        vm.start(o, 2, vec![]).unwrap();
+        assert_eq!(
+            vm.run(100).unwrap_err().kind,
+            VmErrorKind::UnsupportedFeature
+        );
+    }
+}
+#[test]
+fn construction_preflight_errors_do_not_change_prior_completion_or_objects() {
+    let (mut vm, id) = construct_vm(&construct_family(None, false), "root");
+    let o = vm.begin_construct(id, Some(trace_mapping())).unwrap();
+    vm.run(1000).unwrap();
+    assert_eq!(
+        vm.begin_construct(id, Some(Value::Int(3)))
+            .unwrap_err()
+            .kind,
+        VmErrorKind::UnsupportedType
+    );
+    assert_eq!(
+        vm.run(0).unwrap(),
+        RunOutcome::Finished(Completion::Constructed(o))
+    );
+    let plain = vm
+        .objects_mut()
+        .register_program(prepare_program(image(&[], 0, &[])).unwrap())
+        .unwrap();
+    assert_eq!(
+        vm.begin_construct(plain, None).unwrap_err().kind,
+        VmErrorKind::UnsupportedFeature
+    );
+    assert_eq!(
+        vm.objects().get(o).unwrap().lifecycle_state(),
+        rml32::LifecycleState::Constructed
+    );
+}
+
+#[test]
+fn construction_nested_failure_unwinds_temporaries_and_allows_rollback_with_same_quota() {
+    let mut p = image(
+        &[
+            fun(0, 0, 0, 1, &[(0, 0, 0x16), (0, 0, 0x13), (2, 0, 0x07)]),
+            fun(1, 0, 0, 1, &[(0, 0, 0x16), (0, 0, 0x13), (0, 0, 0x33)]),
+            fun(2, 0, 0, 1, &[(0, 0, 0x33)]),
+        ],
+        0,
+        &[],
+    );
+    lifecycle_name(&mut p, 0, b"create");
+    lifecycle_name(&mut p, 1, b"destruct");
+    set_init(&mut p, &[(0, 0, 0x48)]);
+    let c = single_construct_catalog(
+        p,
+        rml32::LifecycleBinding {
+            create: Some(0),
+            destruct: Some(1),
+        },
+    );
+    let (vm, id) = construct_vm(&c, "root");
+    let mut vm = Vm::with_limits(
+        vm.into_objects(),
+        VmLimits {
+            max_reference_cells: 1,
+            ..Default::default()
+        },
+    );
+    for _ in 0..2 {
+        let o = vm.begin_construct(id, None).unwrap();
+        let e = vm.run(100).unwrap_err();
+        assert_eq!(e.kind, VmErrorKind::StackUnderflow);
+        assert_eq!(e.function, Some(2));
+        assert_eq!(
+            e.lifecycle.as_ref().unwrap().phase,
+            rml32::LifecyclePhase::Create
+        );
+        assert!(vm.rollback_errors().is_empty());
+        assert!(vm.objects().get(o).is_err());
+        assert_eq!(vm.frame_depth(), 0);
+        assert!(vm.stack().unwrap().is_empty());
+    }
+}
+#[test]
+fn construction_frame_limit_failure_still_executes_root_rollback() {
+    let mut p = image(
+        &[
+            fun(0, 0, 0, 1, &[(2, 0, 0x07)]),
+            fun(1, 0, 0, 1, &[]),
+            fun(2, 0, 0, 1, &[]),
+        ],
+        0,
+        &[],
+    );
+    lifecycle_name(&mut p, 0, b"create");
+    lifecycle_name(&mut p, 1, b"destruct");
+    set_init(&mut p, &[(0, 0, 0x48)]);
+    let c = single_construct_catalog(
+        p,
+        rml32::LifecycleBinding {
+            create: Some(0),
+            destruct: Some(1),
+        },
+    );
+    let (vm, id) = construct_vm(&c, "root");
+    let mut vm = Vm::with_limits(
+        vm.into_objects(),
+        VmLimits {
+            max_frames: 1,
+            ..Default::default()
+        },
+    );
+    let o = vm.begin_construct(id, None).unwrap();
+    let e = vm.run(100).unwrap_err();
+    assert_eq!(e.kind, VmErrorKind::Limit);
+    assert_eq!(e.function, Some(0));
+    assert!(vm.rollback_errors().is_empty());
+    assert!(vm.objects().get(o).is_err());
+}
+#[test]
+fn construction_rollback_resume_finishes_with_original_error_and_retains_shared_writes() {
+    let (mut vm, id) = construct_vm(&construct_family(Some(1), false), "root");
+    let trace = trace_mapping();
+    let o = vm.begin_construct(id, Some(trace.clone())).unwrap();
+    while vm.objects().get(o).unwrap().lifecycle_state() != rml32::LifecycleState::RollingBack {
+        assert_eq!(vm.run(1).unwrap(), RunOutcome::BudgetExhausted);
+    }
+    assert_eq!(vm.run(0).unwrap(), RunOutcome::BudgetExhausted);
+    let e = loop {
+        match vm.run(1) {
+            Ok(RunOutcome::BudgetExhausted) => {}
+            Err(e) => break e,
+            other => panic!("unexpected {other:?}"),
+        }
+    };
+    assert_eq!(e.source, "b");
+    assert_eq!(trace_value(&trace, 12), Some(Value::Int(3)));
+    assert_eq!(trace_value(&trace, 11), Some(Value::Int(4)));
+    assert!(vm.objects().get(o).is_err());
+    assert!(vm.rollback_errors().is_empty());
+}
+#[test]
+fn construction_multilevel_uses_each_source_pool_and_relocated_lifecycle_slots() {
+    let mut base = image(
+        &[fun(0, 0, 0, 1, &[(0, 0, 0x40), (0, 0, 0x4e), (0, 0, 0x33)])],
+        1,
+        &[b"base\0"],
+    );
+    lifecycle_name(&mut base, 0, b"create");
+    set_init(&mut base, &[(0, 0, 0x48)]);
+    let mut mid = image(
+        &[fun(1, 0, 0, 1, &[(0, 0, 0x40), (0, 0, 0x4e), (0, 0, 0x33)])],
+        2,
+        &[b"mid\0"],
+    );
+    lifecycle_name(&mut mid, 0, b"create");
+    mid.constitution_count = Some(2);
+    inherit(&mut mid, &base, b"base", [1, 0, 1]);
+    set_init(&mut mid, &[(0, 0, 0x48)]);
+    let mut root = image(
+        &[fun(2, 0, 0, 1, &[(0, 0, 0x40), (0, 0, 0x4e), (0, 0, 0x33)])],
+        3,
+        &[b"root\0"],
+    );
+    lifecycle_name(&mut root, 0, b"create");
+    root.constitution_count = Some(3);
+    inherit(&mut root, &mid, b"mid", [1, 0, 1]);
+    set_init(&mut root, &[(0, 0, 0x48)]);
+    let mut c = rml32::ProgramCatalog::new();
+    for (key, p, slot) in [("base", base, 0), ("mid", mid, 1), ("root", root, 2)] {
+        c.insert(key, p).unwrap();
+        c.bind_lifecycle(
+            key,
+            rml32::LifecycleBinding {
+                create: Some(slot),
+                destruct: None,
+            },
+        )
+        .unwrap();
+    }
+    c.bind_inherit("mid", b"base", "base");
+    c.bind_inherit("root", b"mid", "mid");
+    let (mut vm, id) = construct_vm(&c, "root");
+    let o = vm.begin_construct(id, None).unwrap();
+    assert_eq!(
+        vm.run(100).unwrap(),
+        RunOutcome::Finished(Completion::Constructed(o))
+    );
+    assert_eq!(
+        object_values(&vm, o),
+        vec![
+            Value::bytes(b"root"),
+            Value::bytes(b"mid"),
+            Value::bytes(b"base")
+        ]
+    );
+}
+#[test]
+fn construction_external_delete_during_initialization_and_create_is_terminal() {
+    for ticks in [0, 12] {
+        let (mut vm, id) = construct_vm(&construct_family(None, false), "root");
+        let o = vm.begin_construct(id, Some(trace_mapping())).unwrap();
+        vm.run(ticks).unwrap();
+        vm.objects_mut().remove(o).unwrap();
+        let e = vm.run(1).unwrap_err();
+        assert_eq!(e.kind, VmErrorKind::InvalidObject);
+        assert_eq!(
+            e.lifecycle.as_ref().unwrap().phase,
+            if ticks == 0 {
+                rml32::LifecyclePhase::Initialize
+            } else {
+                rml32::LifecyclePhase::Create
+            }
+        );
+        assert!(vm.rollback_errors().is_empty());
+        assert_eq!(vm.frame_depth(), 0);
+    }
+}
+#[test]
+fn construction_opt_in_does_not_change_initialize_only_tasks() {
+    let (mut vm, id) = construct_vm(&construct_family(Some(0), true), "root");
+    let o = vm.begin_initialize(id).unwrap();
+    assert_eq!(
+        vm.run(100).unwrap(),
+        RunOutcome::Finished(Completion::Initialized(o))
+    );
+    assert_eq!(
+        vm.objects().get(o).unwrap().lifecycle_state(),
+        rml32::LifecycleState::Unmanaged
+    );
+    assert!(vm.rollback_errors().is_empty());
+    assert_eq!(object_values(&vm, o), vec![Value::Int(7); 3]);
+}
+#[test]
+fn construction_rejects_missing_dependency_binding_and_inherited_slot_selection() {
+    let mut p = lifecycle_image(0, 1, 1, 1, false, false);
+    set_init(&mut p, &[(0, 0, 0x48)]);
+    let mut root = image(&[], 1, &[]);
+    root.max_functions = 2;
+    root.constitution_count = Some(2);
+    inherit(&mut root, &p, b"parent\0", [1, 0, 0]);
+    set_init(&mut root, &[(0, 0, 0x48)]);
+    let mut c = linked_catalog(p, root);
+    c.bind_lifecycle("child", Default::default()).unwrap();
+    let e = rml32::prepare_constructible_program(&c, "child", Default::default()).unwrap_err();
+    assert_eq!(e.source, "parent");
+    assert!(e.message.contains("missing"));
+    c.bind_lifecycle(
+        "parent",
+        rml32::LifecycleBinding {
+            create: Some(0),
+            destruct: Some(1),
+        },
+    )
+    .unwrap();
+    assert!(rml32::prepare_constructible_program(&c, "child", Default::default()).is_ok());
+    let mut root = image(&[], 0, &[]);
+    root.max_functions = 2;
+    root.constitution_count = Some(2);
+    let mut p = lifecycle_image(0, 1, 1, 0, false, false);
+    set_init(&mut p, &[(0, 0, 0x48)]);
+    inherit(&mut root, &p, b"parent\0", [1, 0, 0]);
+    set_init(&mut root, &[(0, 0, 0x48)]);
+    let mut c = linked_catalog(p, root);
+    c.bind_lifecycle(
+        "parent",
+        rml32::LifecycleBinding {
+            create: Some(0),
+            destruct: Some(1),
+        },
+    )
+    .unwrap();
+    c.bind_lifecycle(
+        "child",
+        rml32::LifecycleBinding {
+            create: Some(0),
+            destruct: None,
+        },
+    )
+    .unwrap();
+    assert!(rml32::prepare_constructible_program(&c, "child", Default::default()).is_err());
+}

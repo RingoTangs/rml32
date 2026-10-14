@@ -13,13 +13,24 @@ pub enum InitializationState {
     Initializing,
     Initialized,
 }
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum LifecycleState {
+    Unmanaged,
+    Constructing,
+    RollingBack,
+    Constructed,
+}
 #[derive(Debug)]
 pub struct Object {
     pub(crate) program: ProgramId,
     pub(crate) initialization: InitializationState,
+    pub(crate) lifecycle: LifecycleState,
     pub(crate) variables: Vec<Rc<crate::cell::Cell>>,
 }
 impl Object {
+    pub fn lifecycle_state(&self) -> LifecycleState {
+        self.lifecycle
+    }
     pub fn initialization_state(&self) -> InitializationState {
         self.initialization
     }
@@ -72,6 +83,7 @@ impl ObjectStore {
             Object {
                 program,
                 initialization: InitializationState::Manual,
+                lifecycle: LifecycleState::Unmanaged,
                 variables: initial_values
                     .into_iter()
                     .map(crate::cell::Cell::new)
@@ -98,6 +110,19 @@ impl ObjectStore {
                 VmError::new(VmErrorKind::InvalidObject, "object is missing or deleted")
             })?
             .initialization = state;
+        Ok(())
+    }
+    pub(crate) fn set_lifecycle(
+        &mut self,
+        id: ObjectId,
+        state: LifecycleState,
+    ) -> Result<(), VmError> {
+        self.objects
+            .get_mut(&id)
+            .ok_or_else(|| {
+                VmError::new(VmErrorKind::InvalidObject, "object is missing or deleted")
+            })?
+            .lifecycle = state;
         Ok(())
     }
     pub fn remove(&mut self, id: ObjectId) -> Result<(), VmError> {

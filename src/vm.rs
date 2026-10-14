@@ -1,10 +1,10 @@
 //! Bounded Magic559 interpreter; reference artifacts are never executed by tests.
 use crate::{
     cell::Cell,
-    object::{InitializationState, ObjectStore},
+    object::{InitializationState, LifecycleState, ObjectStore},
     prepared::{EntryLayout, Instruction, PreparedFunction, PreparedProgram},
     value::{ObjectId, ProgramId, Value},
-    vm_error::{VmError, VmErrorKind},
+    vm_error::{LifecycleContext, LifecyclePhase, VmError, VmErrorKind},
 };
 use std::{
     collections::BTreeMap,
@@ -16,6 +16,7 @@ pub enum Completion {
     ActionFinished,
     /// All initialization segments returned; no create/destruct functions were run.
     Initialized(ObjectId),
+    Constructed(ObjectId),
 }
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum RunOutcome {
@@ -171,6 +172,16 @@ struct InitializationTask {
     position: usize,
     constitution: usize,
 }
+#[derive(Debug)]
+struct ConstructionTask {
+    object: ObjectId,
+    program: ProgramId,
+    phase: LifecyclePhase,
+    position: usize,
+    constitution: usize,
+    parameter: Option<Value>,
+    primary: Option<VmError>,
+}
 #[derive(Debug, Clone)]
 struct Frame {
     id: u64,
@@ -194,6 +205,8 @@ pub struct Vm {
     completion: Option<Completion>,
     failure: Option<VmError>,
     initialization: Option<InitializationTask>,
+    construction: Option<ConstructionTask>,
+    rollback_errors: Vec<VmError>,
 }
 fn err(kind: VmErrorKind, message: impl Into<String>) -> VmError {
     VmError::new(kind, message)
@@ -210,6 +223,8 @@ impl Vm {
             completion: None,
             failure: None,
             initialization: None,
+            construction: None,
+            rollback_errors: vec![],
         }
     }
     pub fn with_limits(objects: ObjectStore, limits: VmLimits) -> Self {
@@ -224,23 +239,26 @@ impl Vm {
     pub fn objects_mut(&mut self) -> &mut ObjectStore {
         &mut self.objects
     }
-    /// Extract storage, cancelling and deleting any unfinished initialization object.
+    /// Extract storage, cancelling and deleting any unfinished managed lifecycle object.
     pub fn into_objects(mut self) -> ObjectStore {
         self.cleanup_initialization();
         self.objects
     }
     fn cleanup_initialization(&mut self) {
-        if let Some(task) = self.initialization.take() {
-            // Frames and references must release their owners before object storage.
-            self.frames.clear();
-            self.stack.clear();
-            self.reference_cells.clear();
-            let _ = self.objects.remove(task.object);
+        let init = self.initialization.take();
+        let construct = self.construction.take();
+        if let Some(object) = construct
+            .map(|t| t.object)
+            .or_else(|| init.map(|t| t.object))
+        {
+            self.clear_task_frames();
+            let _ = self.objects.remove(object);
         }
     }
     /// Allocate a new object and start only its bounded initialization segments.
     pub fn begin_initialize(&mut self, program: ProgramId) -> Result<ObjectId, VmError> {
         if self.initialization.is_some()
+            || self.construction.is_some()
             || (!self.frames.is_empty() && self.completion.is_none() && self.failure.is_none())
         {
             return Err(err(
@@ -286,6 +304,7 @@ impl Vm {
         });
         self.completion = None;
         self.failure = None;
+        self.rollback_errors.clear();
         Ok(object)
     }
     fn initialization_frame(
@@ -334,9 +353,219 @@ impl Vm {
             self.frames.clear();
             self.reference_cells.clear();
             self.initialization = None;
-            self.completion = Some(Completion::Initialized(frame.object));
+            if let Some(task) = self.construction.as_mut() {
+                task.phase = LifecyclePhase::Create;
+                task.position = 0;
+                self.advance_construction();
+            } else {
+                self.completion = Some(Completion::Initialized(frame.object));
+            }
         }
         Ok(())
+    }
+    /// Errors suppressed while attempting the remaining rollback destructors.
+    pub fn rollback_errors(&self) -> &[VmError] {
+        &self.rollback_errors
+    }
+    /// Allocate, initialize and construct a new object; only mapping parameters are accepted.
+    pub fn begin_construct(
+        &mut self,
+        program: ProgramId,
+        parameter: Option<Value>,
+    ) -> Result<ObjectId, VmError> {
+        let p = self.objects.program(program)?;
+        if !p.is_constructible() {
+            return Err(err(
+                VmErrorKind::UnsupportedFeature,
+                "program was not prepared for construction",
+            ));
+        }
+        if parameter
+            .as_ref()
+            .is_some_and(|v| !matches!(v, Value::Mapping(_)))
+        {
+            return Err(err(
+                VmErrorKind::UnsupportedType,
+                "construction parameter must be a mapping",
+            ));
+        }
+        let object = self.begin_initialize(program)?;
+        self.objects
+            .set_lifecycle(object, LifecycleState::Constructing)?;
+        let constitution = self.initialization.as_ref().unwrap().constitution;
+        self.construction = Some(ConstructionTask {
+            object,
+            program,
+            phase: LifecyclePhase::Initialize,
+            position: 0,
+            constitution,
+            parameter,
+            primary: None,
+        });
+        Ok(object)
+    }
+    fn clear_task_frames(&mut self) {
+        self.frames.clear();
+        self.stack.clear();
+        self.reference_cells.clear();
+    }
+    fn lifecycle_context(&self) -> Option<Box<LifecycleContext>> {
+        self.construction.as_ref().map(|t| {
+            Box::new(LifecycleContext {
+                phase: t.phase,
+                constitution: if t.phase == LifecyclePhase::Initialize {
+                    self.initialization
+                        .as_ref()
+                        .map_or(t.constitution, |i| i.constitution)
+                } else {
+                    t.constitution
+                },
+            })
+        })
+    }
+    fn finish_construction_failure(&mut self) {
+        let task = self.construction.take().unwrap();
+        let primary = task
+            .primary
+            .expect("failed construction has a primary error");
+        self.initialization = None;
+        self.clear_task_frames();
+        let _ = self.objects.remove(task.object);
+        self.failure = Some(primary);
+    }
+    fn construction_error(&mut self, error: VmError) {
+        let task = self.construction.as_mut().unwrap();
+        let missing = self.objects.get(task.object).is_err();
+        if task.primary.is_none() {
+            task.primary = Some(error);
+        } else {
+            self.rollback_errors.push(error);
+        }
+        self.clear_task_frames();
+        if missing || self.construction.as_ref().unwrap().phase == LifecyclePhase::Initialize {
+            self.finish_construction_failure();
+        } else {
+            self.construction.as_mut().unwrap().phase = LifecyclePhase::RollbackDestruct;
+            let object = self.construction.as_ref().unwrap().object;
+            let _ = self
+                .objects
+                .set_lifecycle(object, LifecycleState::RollingBack);
+        }
+    }
+    fn lifecycle_entry_error(&self, mut e: VmError, p: &PreparedProgram, slot: i16) -> VmError {
+        let task = self.construction.as_ref().unwrap();
+        e.program = Some(task.program);
+        e.object = Some(task.object);
+        e.function = Some(slot);
+        e.lifecycle = self.lifecycle_context();
+        e.source = p
+            .functions
+            .get(&slot)
+            .and_then(|f| f.origin.clone())
+            .unwrap_or_else(|| p.source.clone());
+        e.pc = None;
+        e.offset = None;
+        e
+    }
+    fn enter_lifecycle(
+        &mut self,
+        p: &PreparedProgram,
+        slot: i16,
+        parameter: Option<Value>,
+    ) -> Result<(), VmError> {
+        let f = p.functions.get(&slot).ok_or_else(|| {
+            err(
+                VmErrorKind::InvalidProgram,
+                "missing bound lifecycle function",
+            )
+        })?;
+        let argc = usize::from(parameter.is_some());
+        Self::argument_plan(f, argc)?;
+        if self.limits.max_frames == 0 || argc > self.limits.max_stack {
+            return Err(err(VmErrorKind::Limit, "lifecycle entry exceeds VM limits"));
+        }
+        let arguments = parameter
+            .into_iter()
+            .map(|v| Cell::new(v).map(StackEntry::Value))
+            .collect::<Result<Vec<_>, _>>()?;
+        let id = self.frame_id()?;
+        let task = self.construction.as_ref().unwrap();
+        self.frames = vec![Frame {
+            id,
+            program: task.program,
+            object: task.object,
+            body: FrameBody::Function(slot),
+            pc: 0,
+            bp: argc,
+            argc,
+            entered: false,
+            phase: EntryPhase::Unchecked,
+        }];
+        self.stack = arguments;
+        Ok(())
+    }
+    // Metadata transitions are bounded by the already validated constitution count.
+    fn advance_construction(&mut self) {
+        while self.construction.is_some() && self.frames.is_empty() {
+            let task = self.construction.as_ref().unwrap();
+            let p = self
+                .objects
+                .program(task.program)
+                .expect("registered task program remains present");
+            if self.objects.get(task.object).is_err() {
+                let mut e = err(
+                    VmErrorKind::InvalidObject,
+                    "construction object was removed",
+                );
+                e.program = Some(task.program);
+                e.object = Some(task.object);
+                e.lifecycle = self.lifecycle_context();
+                e.source = p.source.clone();
+                self.construction_error(e);
+                return;
+            }
+            let phase = task.phase;
+            let position = task.position;
+            if phase == LifecyclePhase::Create && position == p.init_order.len() {
+                let object = task.object;
+                self.objects
+                    .set_lifecycle(object, LifecycleState::Constructed)
+                    .expect("task object is present");
+                self.construction = None;
+                self.completion = Some(Completion::Constructed(object));
+                return;
+            }
+            if phase == LifecyclePhase::RollbackDestruct && position == 0 {
+                self.finish_construction_failure();
+                return;
+            }
+            let next = if phase == LifecyclePhase::Create {
+                position
+            } else {
+                position - 1
+            };
+            let constitution = p.init_order[next];
+            let task = self.construction.as_mut().unwrap();
+            task.constitution = constitution;
+            task.position = if phase == LifecyclePhase::Create {
+                position + 1
+            } else {
+                next
+            };
+            let binding = p.lifecycles.as_ref().unwrap()[constitution];
+            let (slot, parameter) = if phase == LifecyclePhase::Create {
+                (binding.create, task.parameter.clone())
+            } else {
+                (binding.destruct, None)
+            };
+            let Some(slot) = slot else {
+                continue;
+            };
+            if let Err(e) = self.enter_lifecycle(&p, slot, parameter) {
+                let e = self.lifecycle_entry_error(e, &p, slot);
+                self.construction_error(e);
+            }
+        }
     }
     pub fn frame_depth(&self) -> usize {
         self.frames.len()
@@ -527,7 +756,12 @@ impl Vm {
                 "an execution is already active",
             ));
         }
-        if self.objects.get(object)?.initialization_state() == InitializationState::Initializing {
+        if self.objects.get(object)?.initialization_state() == InitializationState::Initializing
+            || matches!(
+                self.objects.get(object)?.lifecycle_state(),
+                LifecycleState::Constructing | LifecycleState::RollingBack
+            )
+        {
             return Err(err(
                 VmErrorKind::InvalidState,
                 "object initialization is incomplete",
@@ -557,6 +791,7 @@ impl Vm {
                 "reference entry requires an internal wrapper call",
             ));
         }
+        Self::check_user_entry(&p.functions[&function_index])?;
         Self::argument_plan(&p.functions[&function_index], arguments.len())?;
         if self.limits.max_frames == 0 || arguments.len() > self.limits.max_stack {
             return Err(err(VmErrorKind::Limit, "entry exceeds VM limits"));
@@ -582,6 +817,7 @@ impl Vm {
         self.reference_cells.clear();
         self.completion = None;
         self.failure = None;
+        self.rollback_errors.clear();
         Ok(())
     }
     pub fn run(&mut self, instruction_budget: usize) -> Result<RunOutcome, VmError> {
@@ -605,6 +841,7 @@ impl Vm {
                 e.object = Some(frame.object);
                 e.function = frame.body.function();
                 e.initialization = initialization;
+                e.lifecycle = self.lifecycle_context();
                 e.pc = Some(frame.pc);
                 if let Ok(p) = self.objects.program(frame.program)
                     && let Ok(code) = CodeView::get(&p, frame.body)
@@ -612,9 +849,20 @@ impl Vm {
                     e.source = code.source.to_owned();
                     e.offset = code.instructions.get(frame.pc).map(|i| i.offset);
                 }
-                self.cleanup_initialization();
-                self.failure = Some(e.clone());
-                return Err(e);
+                if self.construction.is_some() {
+                    self.construction_error(e);
+                    self.advance_construction();
+                    if let Some(e) = &self.failure {
+                        return Err(e.clone());
+                    }
+                } else {
+                    self.cleanup_initialization();
+                    self.failure = Some(e.clone());
+                    return Err(e);
+                }
+            }
+            if let Some(e) = &self.failure {
+                return Err(e.clone());
             }
             if let Some(c) = &self.completion {
                 return Ok(RunOutcome::Finished(c.clone()));
@@ -671,7 +919,7 @@ impl Vm {
             .ok_or_else(|| err(VmErrorKind::Bounds, "object variable index outside storage"))
     }
     // Returns the skipped default instruction count and number of new slots.
-    fn argument_plan(f: &PreparedFunction, argc: usize) -> Result<(usize, usize), VmError> {
+    fn check_user_entry(f: &PreparedFunction) -> Result<(), VmError> {
         if f.origin.is_some()
             && f.name.as_ref().is_some_and(|n| {
                 matches!(n.split(|b| *b == 0).next(), Some(b"create" | b"destruct"))
@@ -682,6 +930,9 @@ impl Vm {
                 "linked lifecycle execution is unsupported",
             ));
         }
+        Ok(())
+    }
+    fn argument_plan(f: &PreparedFunction, argc: usize) -> Result<(usize, usize), VmError> {
         if argc < f.min_args || (!f.variadic && argc > f.max_args) {
             return Err(err(
                 VmErrorKind::ArgumentCount,
@@ -860,6 +1111,9 @@ impl Vm {
         self.frames.pop();
         if let Some(entry) = result_entry {
             self.stack.push(entry);
+        } else if self.construction.is_some() {
+            self.reference_cells.clear();
+            self.advance_construction();
         } else {
             self.completion = Some(Completion::Returned(result));
         }
@@ -1410,6 +1664,7 @@ impl Vm {
                     ));
                 }
                 let target = &p.functions[&index];
+                Self::check_user_entry(target)?;
                 Self::argument_plan(target, argc)?;
                 for i in 0..argc {
                     let flag = target.args.get(i).map_or(0, |arg| arg.flag);
@@ -1442,7 +1697,7 @@ impl Vm {
             0x48 => self.return_initialization(&frame, &p),
             0x49 => self.return_function(&frame, f.function()?),
             0x1d => {
-                if self.initialization.is_some() {
+                if self.initialization.is_some() || self.construction.is_some() {
                     return Err(err(
                         VmErrorKind::UnsupportedFeature,
                         "finishAction cannot complete an initialization task",

@@ -17,16 +17,16 @@ pub mod vm_error;
 
 pub use error::{ErrorKind, ParseError};
 pub use inheritance::{ProgramDescriptor, ValidationReport, validate_inheritance};
-pub use object::{InitializationState, ObjectStore};
+pub use object::{InitializationState, LifecycleState, ObjectStore};
 pub use pak::PakArchive;
 pub use prepared::{
-    LinkLimits, PreparedProgram, ProgramCatalog, prepare_initializable_program,
-    prepare_linked_program, prepare_program,
+    LifecycleBinding, LinkLimits, PreparedProgram, ProgramCatalog, prepare_constructible_program,
+    prepare_initializable_program, prepare_linked_program, prepare_program,
 };
 pub use program::{AbiProfile, ProgramImage, ProgramMode, parse_program};
 pub use value::{ObjectId, ProgramId, RealBits, Value};
 pub use vm::{Completion, ReferenceKind, RunOutcome, StackSnapshot, Vm, VmLimits};
-pub use vm_error::{VmError, VmErrorKind};
+pub use vm_error::{LifecycleContext, LifecyclePhase, VmError, VmErrorKind};
 
 pub fn hex(bytes: &[u8]) -> String {
     const DIGITS: &[u8] = b"0123456789abcdef";
