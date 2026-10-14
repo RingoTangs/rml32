@@ -1,0 +1,46 @@
+{
+  "status": "pass",
+  "date": "2026-10-14",
+  "stage": "2D: static reference/assignment semantics and next-stage design only",
+  "target_sha256": "5d4ebac58d8c415d9cf95bbcdd50f78afac91adf4f7e667ea3afc6f5336a6f34",
+  "reference_execution": "none",
+  "runtime_source_changes": false,
+  "public_api_changes": false,
+  "preexisting_tracked_files_unchanged": 120,
+  "original_inputs_unchanged": 36,
+  "rea": {
+    "provider": "ghidra",
+    "version": "12.1.4",
+    "records": 68,
+    "pseudocode_records": 45,
+    "reused_dispatch_records": 1,
+    "session_closed": true,
+    "bundle": "vm-reference-evidence/rea.json.gz",
+    "reused_bundle": "vm-reference-evidence/reused-dispatch.json.gz"
+  },
+  "corpus": {
+    "programs": 7159,
+    "functions": 101592,
+    "instructions": 6474773,
+    "selected_opcodes_independently_recounted": 21,
+    "count_and_program_count_match": true,
+    "source_sha256_verified": true,
+    "scope": "static serialized node counts, not execution or reachability"
+  },
+  "documentation": {
+    "local_links_and_anchors_checked": 20,
+    "evidence_target_ids_verified": true
+  },
+  "tests": {
+    "new_runtime_tests": 0,
+    "runtime_tests_rerun": false,
+    "stage2c_baseline_total": 73,
+    "reason": "documentation/evidence only; source and existing test hashes unchanged"
+  },
+  "limitations": [
+    "No execution equivalence established.",
+    "Escaping local/object references are not proven safe in native runtime.",
+    "GC behavior for arbitrary reference graphs and full const enforcement remain unresolved.",
+    "Next-stage APIs, supported writes and synthetic tests are designs, not implemented behavior."
+  ]
+}
