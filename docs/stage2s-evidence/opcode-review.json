@@ -1,0 +1,2190 @@
+{
+  "schema_version": 1,
+  "review_policy": "Manual subsystem review of current source and named tests; bounded is never full compatibility. Counts do not measure functional completion.",
+  "rows": [
+    {
+      "opcode": "01",
+      "name": "vm_addValue",
+      "native_address": "0x808e3b8",
+      "semantic_status": "bounded",
+      "test_scope": "related synthetic tests; not complete per-opcode branch coverage",
+      "group": "numeric_arithmetic_comparison",
+      "implemented_cases": [
+        "Int wrapping add; Int/Real numeric add with left-type result policy"
+      ],
+      "excluded_cases": [
+        "String/container arithmetic; all other native value-type branches; native floating environment equivalence"
+      ],
+      "related_tests": [
+        "executes_all_integer_arithmetic_and_comparison_operations",
+        "mixed_arithmetic_preserves_left_type_except_remainder",
+        "numeric_comparisons_round_integer_inputs_and_nan_is_unordered"
+      ],
+      "evidence": [
+        "docs/vm-numeric-semantics.md",
+        "docs/evidence/actions.csv"
+      ],
+      "dependencies": [
+        "full value model"
+      ],
+      "exit_criteria": "Audit native dispatch for every operand tag pair; test accepted pairs, rejection and numeric edge policies.",
+      "subsystem_envelope": [
+        "i32 wrapping arithmetic; checked divide/remainder faults; bounded Int/Real arithmetic and comparisons"
+      ]
+    },
+    {
+      "opcode": "02",
+      "name": "vm_andValue",
+      "native_address": "0x808ea10",
+      "semantic_status": "bounded",
+      "test_scope": "related synthetic tests; not complete per-opcode branch coverage",
+      "group": "integer_bitwise",
+      "implemented_cases": [
+        "Int bitwise AND"
+      ],
+      "excluded_cases": [
+        "non-Int operands; complete native coercion claims"
+      ],
+      "related_tests": [
+        "bitwise_operations_and_logical_right_shift_follow_guarded_native_counts"
+      ],
+      "evidence": [
+        "docs/vm-numeric-semantics.md",
+        "docs/evidence/actions.csv"
+      ],
+      "dependencies": [
+        "numeric operand matrix"
+      ],
+      "exit_criteria": "Verify all shift boundaries and native non-Int behavior; preserve explicit rejection policy.",
+      "subsystem_envelope": [
+        "Int operands; shift outside 0..31 yields zero"
+      ]
+    },
+    {
+      "opcode": "03",
+      "name": "vm_assignValue",
+      "native_address": "0x808f634",
+      "semantic_status": "bounded",
+      "test_scope": "related synthetic tests; not complete per-opcode branch coverage",
+      "group": "references",
+      "implemented_cases": [
+        "value,Ref assignment writes stable target and leaves value"
+      ],
+      "excluded_cases": [
+        "reference escape; Buffer/String member writes; range refs; native full release timing; cycles"
+      ],
+      "related_tests": [
+        "reference_assignments_preserve_result_and_update_stable_local_slots",
+        "shared_array_and_mapping_member_writes_are_visible_to_aliases",
+        "references_cannot_escape_via_returns_arguments_or_containers",
+        "reference_modes_invalid_targets_and_invalid_keys_fail_explicitly"
+      ],
+      "evidence": [
+        "docs/vm-reference-semantics.md",
+        "docs/evidence/actions.csv"
+      ],
+      "dependencies": [
+        "full value model",
+        "object lifetime"
+      ],
+      "exit_criteria": "Verify owner lifetime and type-specific cleanup across cross-object calls, catch and active deletion.",
+      "subsystem_envelope": [
+        "stable local/object/member cells; bounded Array/Mapping temporary references; mode 0/1 member access; owner/readonly checks"
+      ]
+    },
+    {
+      "opcode": "04",
+      "name": "vm_assignValueReverse",
+      "native_address": "0x808e914",
+      "semantic_status": "bounded",
+      "test_scope": "related synthetic tests; not complete per-opcode branch coverage",
+      "group": "references",
+      "implemented_cases": [
+        "Ref,value reverse assignment writes target and leaves value"
+      ],
+      "excluded_cases": [
+        "reference escape; Buffer/String member writes; range refs; native full release timing; cycles"
+      ],
+      "related_tests": [
+        "reference_assignments_preserve_result_and_update_stable_local_slots",
+        "shared_array_and_mapping_member_writes_are_visible_to_aliases",
+        "references_cannot_escape_via_returns_arguments_or_containers",
+        "reference_modes_invalid_targets_and_invalid_keys_fail_explicitly"
+      ],
+      "evidence": [
+        "docs/vm-reference-semantics.md",
+        "docs/evidence/actions.csv"
+      ],
+      "dependencies": [
+        "full value model",
+        "object lifetime"
+      ],
+      "exit_criteria": "Verify owner lifetime and type-specific cleanup across cross-object calls, catch and active deletion.",
+      "subsystem_envelope": [
+        "stable local/object/member cells; bounded Array/Mapping temporary references; mode 0/1 member access; owner/readonly checks"
+      ]
+    },
+    {
+      "opcode": "05",
+      "name": "vm_callFunPtr",
+      "native_address": "0x809441c",
+      "semantic_status": "unimplemented",
+      "test_scope": "no semantic execution tests claimed",
+      "group": "function_values",
+      "implemented_cases": [],
+      "excluded_cases": [
+        "opcode rejected by bounded preparation; no runtime semantic implementation"
+      ],
+      "related_tests": [],
+      "evidence": [
+        "docs/evidence/actions.csv"
+      ],
+      "dependencies": [
+        "Function value representation",
+        "indirect call context"
+      ],
+      "exit_criteria": "Recover native vm_callFunPtr semantics and operand branches; implement with synthetic success, failure, budget-resume and nested-cleanup tests."
+    },
+    {
+      "opcode": "06",
+      "name": "vm_callInEfun",
+      "native_address": "0x8093d98",
+      "semantic_status": "unimplemented",
+      "test_scope": "no semantic execution tests claimed",
+      "group": "host_dispatch",
+      "implemented_cases": [],
+      "excluded_cases": [
+        "opcode rejected by bounded preparation; no runtime semantic implementation"
+      ],
+      "related_tests": [],
+      "evidence": [
+        "docs/evidence/actions.csv"
+      ],
+      "dependencies": [
+        "host registry",
+        "efun ABI and argument/result contract"
+      ],
+      "exit_criteria": "Recover native vm_callInEfun semantics and operand branches; implement with synthetic success, failure, budget-resume and nested-cleanup tests."
+    },
+    {
+      "opcode": "07",
+      "name": "vm_callInUserFun",
+      "native_address": "0x8094080",
+      "semantic_status": "bounded",
+      "test_scope": "related synthetic tests; not complete per-opcode branch coverage",
+      "group": "local_inherited_call",
+      "implemented_cases": [
+        "local current-object call; signed current-constitution function base; actual implementation source context"
+      ],
+      "excluded_cases": [
+        "global bit",
+        "cross-object dispatch via 07 (08 is separately bounded)",
+        "lifecycle user entry",
+        "hidden functions",
+        "diamond inheritance"
+      ],
+      "related_tests": [
+        "linked_multilevel_calls_add_function_bases",
+        "linked_calls_use_body_string_pool_and_restore_caller",
+        "linked_reference_parameters_keep_object_cell_identity"
+      ],
+      "evidence": [
+        "docs/vm-inheritance-runtime.md",
+        "docs/evidence/actions.csv",
+        "docs/vm-cross-object-runtime.md"
+      ],
+      "dependencies": [
+        "method lookup",
+        "global program namespace"
+      ],
+      "exit_criteria": "Add global dispatch and extend mixed 07/08 return/error/ref-owner tests without weakening bounded entry checks.",
+      "subsystem_envelope": [
+        "current object dispatch; signed function-base relocation; explicit catalog inheritance; ordinary/reference/default/variadic arguments"
+      ]
+    },
+    {
+      "opcode": "08",
+      "name": "vm_callInOtherFunEx",
+      "native_address": "0x80bd0fc",
+      "semantic_status": "bounded",
+      "test_scope": "related synthetic tests; not complete per-opcode branch coverage",
+      "group": "cross_object_call",
+      "implemented_cases": [
+        "Direct live Object targets; explicit complete method namespace; flags 0/2/4/6 and signed nonnegative argc; private lookup and default_interface argument insertion; Void on suppressed miss; cross-program/inherited frame restoration; ordinary return and budget resume"
+      ],
+      "excluded_cases": [
+        "String/Array targets; embedded NUL method names; efun mode/other flags; lifecycle task cross-calls; automatic native name table construction; active destruction/delayed deletion and general catch"
+      ],
+      "related_tests": [
+        "other_call_round_trip_restores_program_pool_and_object",
+        "other_call_private_lookup_and_fallback_preserve_method_argument",
+        "other_call_argument_and_fallback_orders_match_native_stack",
+        "other_call_reference_owner_survives_cross_program_and_nested_forwarding",
+        "other_call_entry_failures_preserve_operands_and_reference_targets",
+        "other_call_budget_pause_preserves_callee_and_restores_return_context"
+      ],
+      "evidence": [
+        "docs/evidence/actions.csv",
+        "docs/stage2-completion-evidence/cross-object-design.md",
+        "docs/stage2-completion-evidence/rea-functions.md",
+        "docs/vm-cross-object-runtime.md"
+      ],
+      "dependencies": [
+        "native final method table and namespace generation",
+        "full lifecycle and catch model"
+      ],
+      "exit_criteria": "Recover and implement excluded target/mode branches with native evidence and combined success/error/cleanup tests; explicit directory does not prove native lookup equivalence.",
+      "subsystem_envelope": [
+        "Bounded synthetic method directory and direct-object cross-call semantics"
+      ]
+    },
+    {
+      "opcode": "0a",
+      "name": "vm_caseCheckNumber",
+      "native_address": "0x80974c0",
+      "semantic_status": "bounded",
+      "test_scope": "related synthetic tests; not complete per-opcode branch coverage",
+      "group": "switch",
+      "implemented_cases": [
+        "Signed fixed8B metadata [delta,i32 literal]; exact Int match; pop and pc+1+delta on hit; retain other Values on miss"
+      ],
+      "excluded_cases": [
+        "Reference selectors; direct initialization case nodes; branching default expressions; noncanonical native shared-string identity"
+      ],
+      "related_tests": [
+        "switch_number_cases_match_only_exact_ints_and_default_consumes_selector",
+        "switch_miss_preserves_selector_and_hit_pops_exactly_one_value",
+        "switch_preparation_checks_metadata_sign_extension_truncation_and_offsets",
+        "switch_budget_pause_commits_case_only_once_and_zero_budget_is_inert"
+      ],
+      "evidence": [
+        "docs/evidence/actions.csv",
+        "docs/vm-control-flow-semantics.md",
+        "docs/vm-control-flow-evidence/rea-functions.md",
+        "docs/vm-switch-runtime.md"
+      ],
+      "dependencies": [
+        "full native selector/reference semantics",
+        "global and general catch integration"
+      ],
+      "exit_criteria": "Extend excluded branches only with native evidence and combined cleanup/context tests; no full source-language switch or business compatibility claim.",
+      "subsystem_envelope": [
+        "Ordinary Value selectors, fixed metadata records and source-body pools"
+      ]
+    },
+    {
+      "opcode": "0b",
+      "name": "vm_caseCheckString",
+      "native_address": "0x80974fc",
+      "semantic_status": "bounded",
+      "test_scope": "related synthetic tests; not complete per-opcode branch coverage",
+      "group": "switch",
+      "implemented_cases": [
+        "Fixed8B metadata [delta,pool index]; validate nonnull source-body pool; raw Bytes equality; hit pops and jumps, miss retains"
+      ],
+      "excluded_cases": [
+        "Reference selectors; direct initialization case nodes; branching default expressions; noncanonical native shared-string identity"
+      ],
+      "related_tests": [
+        "switch_string_cases_compare_length_and_raw_bytes_without_coercion",
+        "switch_preparation_rejects_bad_string_pool_before_selector_type",
+        "switch_inherited_bodies_validate_and_use_their_own_string_pools",
+        "switch_cross_object_calls_use_target_pool_and_restore_caller_case_context"
+      ],
+      "evidence": [
+        "docs/evidence/actions.csv",
+        "docs/vm-control-flow-semantics.md",
+        "docs/vm-control-flow-evidence/rea-functions.md",
+        "docs/vm-switch-runtime.md"
+      ],
+      "dependencies": [
+        "full native selector/reference semantics",
+        "global and general catch integration"
+      ],
+      "exit_criteria": "Extend excluded branches only with native evidence and combined cleanup/context tests; no full source-language switch or business compatibility claim.",
+      "subsystem_envelope": [
+        "Ordinary Value selectors, fixed metadata records and source-body pools"
+      ]
+    },
+    {
+      "opcode": "0c",
+      "name": "vm_caseDefault",
+      "native_address": "0x8097584",
+      "semantic_status": "bounded",
+      "test_scope": "related synthetic tests; not complete per-opcode branch coverage",
+      "group": "switch",
+      "implemented_cases": [
+        "Pop one calculation Value and jump by signed par16; ignore par8; no implicit switch state"
+      ],
+      "excluded_cases": [
+        "Reference selectors; direct initialization case nodes; branching default expressions; noncanonical native shared-string identity"
+      ],
+      "related_tests": [
+        "switch_sequential_mixed_cases_and_default_choose_first_matching_case",
+        "switch_without_default_and_nested_selectors_need_no_hidden_state",
+        "switch_empty_calculation_region_and_reference_selectors_fail_without_consumption"
+      ],
+      "evidence": [
+        "docs/evidence/actions.csv",
+        "docs/vm-control-flow-semantics.md",
+        "docs/vm-control-flow-evidence/rea-functions.md",
+        "docs/vm-switch-runtime.md"
+      ],
+      "dependencies": [
+        "full native selector/reference semantics",
+        "global and general catch integration"
+      ],
+      "exit_criteria": "Extend excluded branches only with native evidence and combined cleanup/context tests; no full source-language switch or business compatibility claim.",
+      "subsystem_envelope": [
+        "Ordinary Value selectors, fixed metadata records and source-body pools"
+      ]
+    },
+    {
+      "opcode": "0d",
+      "name": "vm_castType",
+      "native_address": "0x809006c",
+      "semantic_status": "bounded",
+      "test_scope": "related synthetic tests; not complete per-opcode branch coverage",
+      "group": "numeric_cast",
+      "implemented_cases": [
+        "non-const cast to Int/Real; Undefined/Void to zero; numeric coercion"
+      ],
+      "excluded_cases": [
+        "const attributes and nonnumeric targets/sources"
+      ],
+      "related_tests": [
+        "numeric_casts_reject_non_numeric_sources_and_const_attributes",
+        "float_to_integer_conversion_uses_indefinite_min_instead_of_rust_saturation"
+      ],
+      "evidence": [
+        "docs/vm-numeric-semantics.md",
+        "docs/evidence/actions.csv"
+      ],
+      "dependencies": [
+        "full value model"
+      ],
+      "exit_criteria": "Specify all cast target/attribute combinations before extending support.",
+      "subsystem_envelope": [
+        "non-const Int/Real destination; Undefined/Void numeric zero conversion"
+      ]
+    },
+    {
+      "opcode": "0e",
+      "name": "vm_caughtError",
+      "native_address": "0x80ab020",
+      "semantic_status": "unimplemented",
+      "test_scope": "no semantic execution tests claimed",
+      "group": "catch",
+      "implemented_cases": [],
+      "excluded_cases": [
+        "opcode rejected by bounded preparation; no runtime semantic implementation"
+      ],
+      "related_tests": [],
+      "evidence": [
+        "docs/evidence/actions.csv"
+      ],
+      "dependencies": [
+        "caught error value",
+        "catch resume and diagnostics"
+      ],
+      "exit_criteria": "Recover native vm_caughtError semantics and operand branches; implement with synthetic success, failure, budget-resume and nested-cleanup tests."
+    },
+    {
+      "opcode": "0f",
+      "name": "vm_checkArgNum",
+      "native_address": "0x809521c",
+      "semantic_status": "bounded",
+      "test_scope": "related synthetic tests; not complete per-opcode branch coverage",
+      "group": "function_entry_return",
+      "implemented_cases": [
+        "validate/coerce supplied ordinary args atomically; exact typed refs; skip/evaluate bounded defaults"
+      ],
+      "excluded_cases": [
+        "atomic function attribute; reference returns; non-linear defaults; omitted refs; general catch/hooks"
+      ],
+      "related_tests": [
+        "defaults_preserve_declaration_order_for_every_accepted_arity",
+        "variadic_extras_are_direct_slots_and_explicit_array_keeps_argument_order",
+        "optional_calls_preserve_caller_prefix_and_reference_identity_during_resort",
+        "return_shape_and_type_errors_do_not_silently_succeed"
+      ],
+      "evidence": [
+        "docs/vm-optional-arguments.md",
+        "docs/evidence/actions.csv"
+      ],
+      "dependencies": [
+        "exception unwinding",
+        "full callable types"
+      ],
+      "exit_criteria": "Close prototype flags, entry layouts, return hooks and failure cleanup under nested calls.",
+      "subsystem_envelope": [
+        "bounded prototypes; atomic argument validation; linear default spans; effective argc; argument arrays; frame-local cleanup and typed return"
+      ]
+    },
+    {
+      "opcode": "10",
+      "name": "vm_checkIsRefType",
+      "native_address": "0x8091750",
+      "semantic_status": "unimplemented",
+      "test_scope": "no semantic execution tests claimed",
+      "group": "reference_type_check",
+      "implemented_cases": [],
+      "excluded_cases": [
+        "opcode rejected by bounded preparation; no runtime semantic implementation"
+      ],
+      "related_tests": [],
+      "evidence": [
+        "docs/evidence/actions.csv"
+      ],
+      "dependencies": [
+        "argument/local reference introspection"
+      ],
+      "exit_criteria": "Recover native vm_checkIsRefType semantics and operand branches; implement with synthetic success, failure, budget-resume and nested-cleanup tests."
+    },
+    {
+      "opcode": "12",
+      "name": "vm_condJmpForLoop",
+      "native_address": "0x80bcdc8",
+      "semantic_status": "unimplemented",
+      "test_scope": "no semantic execution tests claimed",
+      "group": "integer_collection_loop",
+      "implemented_cases": [],
+      "excluded_cases": [
+        "opcode rejected by bounded preparation; no runtime semantic implementation"
+      ],
+      "related_tests": [],
+      "evidence": [
+        "docs/evidence/actions.csv",
+        "docs/vm-control-flow-semantics.md"
+      ],
+      "dependencies": [
+        "hidden local slot payload and immediate overwrite cleanup",
+        "inclusive +/-1 numeric and header-retained Array traversal",
+        "native Mapping hash traversal order"
+      ],
+      "exit_criteria": "Implement confirmed integer/Array paths with hidden-slot ownership, budget and cleanup regressions; reject Mapping until native hash order and mutation semantics are recovered."
+    },
+    {
+      "opcode": "13",
+      "name": "vm_convertToPtr",
+      "native_address": "0x808a220",
+      "semantic_status": "bounded",
+      "test_scope": "related synthetic tests; not complete per-opcode branch coverage",
+      "group": "references",
+      "implemented_cases": [
+        "Array/Mapping value to owned temporary cell reference; existing reference unchanged"
+      ],
+      "excluded_cases": [
+        "reference escape; Buffer/String member writes; range refs; native full release timing; cycles"
+      ],
+      "related_tests": [
+        "reference_assignments_preserve_result_and_update_stable_local_slots",
+        "shared_array_and_mapping_member_writes_are_visible_to_aliases",
+        "references_cannot_escape_via_returns_arguments_or_containers",
+        "reference_modes_invalid_targets_and_invalid_keys_fail_explicitly"
+      ],
+      "evidence": [
+        "docs/vm-reference-semantics.md",
+        "docs/evidence/actions.csv"
+      ],
+      "dependencies": [
+        "full value model",
+        "object lifetime"
+      ],
+      "exit_criteria": "Verify owner lifetime and type-specific cleanup across cross-object calls, catch and active deletion.",
+      "subsystem_envelope": [
+        "stable local/object/member cells; bounded Array/Mapping temporary references; mode 0/1 member access; owner/readonly checks"
+      ]
+    },
+    {
+      "opcode": "14",
+      "name": "vm_convertToValue",
+      "native_address": "0x808c028",
+      "semantic_status": "bounded",
+      "test_scope": "related synthetic tests; not complete per-opcode branch coverage",
+      "group": "references",
+      "implemented_cases": [
+        "single explicit reference dereference with owner checks and dead-object normalization"
+      ],
+      "excluded_cases": [
+        "reference escape; Buffer/String member writes; range refs; native full release timing; cycles"
+      ],
+      "related_tests": [
+        "reference_assignments_preserve_result_and_update_stable_local_slots",
+        "shared_array_and_mapping_member_writes_are_visible_to_aliases",
+        "references_cannot_escape_via_returns_arguments_or_containers",
+        "reference_modes_invalid_targets_and_invalid_keys_fail_explicitly"
+      ],
+      "evidence": [
+        "docs/vm-reference-semantics.md",
+        "docs/evidence/actions.csv"
+      ],
+      "dependencies": [
+        "full value model",
+        "object lifetime"
+      ],
+      "exit_criteria": "Verify owner lifetime and type-specific cleanup across cross-object calls, catch and active deletion.",
+      "subsystem_envelope": [
+        "stable local/object/member cells; bounded Array/Mapping temporary references; mode 0/1 member access; owner/readonly checks"
+      ]
+    },
+    {
+      "opcode": "15",
+      "name": "vm_createArgumentArray",
+      "native_address": "0x8091fb4",
+      "semantic_status": "bounded",
+      "test_scope": "related synthetic tests; not complete per-opcode branch coverage",
+      "group": "function_entry_return",
+      "implemented_cases": [
+        "create array of effective args in declaration order; dereference reference params atomically"
+      ],
+      "excluded_cases": [
+        "atomic function attribute; reference returns; non-linear defaults; omitted refs; general catch/hooks"
+      ],
+      "related_tests": [
+        "defaults_preserve_declaration_order_for_every_accepted_arity",
+        "variadic_extras_are_direct_slots_and_explicit_array_keeps_argument_order",
+        "optional_calls_preserve_caller_prefix_and_reference_identity_during_resort",
+        "return_shape_and_type_errors_do_not_silently_succeed"
+      ],
+      "evidence": [
+        "docs/vm-optional-arguments.md",
+        "docs/evidence/actions.csv"
+      ],
+      "dependencies": [
+        "exception unwinding",
+        "full callable types"
+      ],
+      "exit_criteria": "Close prototype flags, entry layouts, return hooks and failure cleanup under nested calls.",
+      "subsystem_envelope": [
+        "bounded prototypes; atomic argument validation; linear default spans; effective argc; argument arrays; frame-local cleanup and typed return"
+      ]
+    },
+    {
+      "opcode": "16",
+      "name": "vm_createArray",
+      "native_address": "0x80918c8",
+      "semantic_status": "bounded",
+      "test_scope": "related synthetic tests; not complete per-opcode branch coverage",
+      "group": "containers",
+      "implemented_cases": [
+        "construct Array from top-first values; empty count allowed"
+      ],
+      "excluded_cases": [
+        "Buffer and range operations; arbitrary key types; circular containers; string indexing"
+      ],
+      "related_tests": [
+        "array_constructor_preserves_top_first_order_and_empty_size",
+        "mapping_constructor_uses_total_value_count_and_oldest_pushed_duplicate_wins",
+        "container_type_restrictions_and_access_modes_are_explicit"
+      ],
+      "evidence": [
+        "docs/vm-container-semantics.md",
+        "docs/evidence/actions.csv"
+      ],
+      "dependencies": [
+        "full value model"
+      ],
+      "exit_criteria": "Close native container type/mode matrix and combined alias, bounds and cleanup tests.",
+      "subsystem_envelope": [
+        "acyclic shared arrays/mappings; scalar or raw-byte mapping keys; member query modes 0/1; size for Array/Mapping/Bytes"
+      ]
+    },
+    {
+      "opcode": "17",
+      "name": "vm_createFunctionValue",
+      "native_address": "0x8091f34",
+      "semantic_status": "unimplemented",
+      "test_scope": "no semantic execution tests claimed",
+      "group": "function_values",
+      "implemented_cases": [],
+      "excluded_cases": [
+        "opcode rejected by bounded preparation; no runtime semantic implementation"
+      ],
+      "related_tests": [],
+      "evidence": [
+        "docs/evidence/actions.csv"
+      ],
+      "dependencies": [
+        "Function value representation",
+        "capture ownership"
+      ],
+      "exit_criteria": "Recover native vm_createFunctionValue semantics and operand branches; implement with synthetic success, failure, budget-resume and nested-cleanup tests."
+    },
+    {
+      "opcode": "18",
+      "name": "vm_createMapping",
+      "native_address": "0x8091af0",
+      "semantic_status": "bounded",
+      "test_scope": "related synthetic tests; not complete per-opcode branch coverage",
+      "group": "containers",
+      "implemented_cases": [
+        "construct Mapping using total key/value input count; bounded Int/Bytes keys; duplicate update policy"
+      ],
+      "excluded_cases": [
+        "Buffer and range operations; arbitrary key types; circular containers; string indexing"
+      ],
+      "related_tests": [
+        "array_constructor_preserves_top_first_order_and_empty_size",
+        "mapping_constructor_uses_total_value_count_and_oldest_pushed_duplicate_wins",
+        "container_type_restrictions_and_access_modes_are_explicit"
+      ],
+      "evidence": [
+        "docs/vm-container-semantics.md",
+        "docs/evidence/actions.csv"
+      ],
+      "dependencies": [
+        "full value model"
+      ],
+      "exit_criteria": "Close native container type/mode matrix and combined alias, bounds and cleanup tests.",
+      "subsystem_envelope": [
+        "acyclic shared arrays/mappings; scalar or raw-byte mapping keys; member query modes 0/1; size for Array/Mapping/Bytes"
+      ]
+    },
+    {
+      "opcode": "19",
+      "name": "vm_divValue",
+      "native_address": "0x808e1a4",
+      "semantic_status": "bounded",
+      "test_scope": "related synthetic tests; not complete per-opcode branch coverage",
+      "group": "numeric_arithmetic_comparison",
+      "implemented_cases": [
+        "checked integer divide; mixed numeric divide; zero division is controlled error"
+      ],
+      "excluded_cases": [
+        "String/container arithmetic; all other native value-type branches; native floating environment equivalence"
+      ],
+      "related_tests": [
+        "executes_all_integer_arithmetic_and_comparison_operations",
+        "mixed_arithmetic_preserves_left_type_except_remainder",
+        "numeric_comparisons_round_integer_inputs_and_nan_is_unordered"
+      ],
+      "evidence": [
+        "docs/vm-numeric-semantics.md",
+        "docs/evidence/actions.csv"
+      ],
+      "dependencies": [
+        "full value model"
+      ],
+      "exit_criteria": "Audit native dispatch for every operand tag pair; test accepted pairs, rejection and numeric edge policies.",
+      "subsystem_envelope": [
+        "i32 wrapping arithmetic; checked divide/remainder faults; bounded Int/Real arithmetic and comparisons"
+      ]
+    },
+    {
+      "opcode": "1a",
+      "name": "vm_endThreadCatch",
+      "native_address": "0x80aae08",
+      "semantic_status": "unimplemented",
+      "test_scope": "no semantic execution tests claimed",
+      "group": "catch",
+      "implemented_cases": [],
+      "excluded_cases": [
+        "opcode rejected by bounded preparation; no runtime semantic implementation"
+      ],
+      "related_tests": [],
+      "evidence": [
+        "docs/evidence/actions.csv"
+      ],
+      "dependencies": [
+        "exception scope",
+        "frame/stack/reference unwind"
+      ],
+      "exit_criteria": "Recover native vm_endThreadCatch semantics and operand branches; implement with synthetic success, failure, budget-resume and nested-cleanup tests."
+    },
+    {
+      "opcode": "1b",
+      "name": "vm_enterFunction",
+      "native_address": "0x80955e8",
+      "semantic_status": "bounded",
+      "test_scope": "related synthetic tests; not complete per-opcode branch coverage",
+      "group": "function_entry_return",
+      "implemented_cases": [
+        "allocate declared local Undefined cells once after argument/default entry"
+      ],
+      "excluded_cases": [
+        "atomic function attribute; reference returns; non-linear defaults; omitted refs; general catch/hooks"
+      ],
+      "related_tests": [
+        "defaults_preserve_declaration_order_for_every_accepted_arity",
+        "variadic_extras_are_direct_slots_and_explicit_array_keeps_argument_order",
+        "optional_calls_preserve_caller_prefix_and_reference_identity_during_resort",
+        "return_shape_and_type_errors_do_not_silently_succeed"
+      ],
+      "evidence": [
+        "docs/vm-optional-arguments.md",
+        "docs/evidence/actions.csv"
+      ],
+      "dependencies": [
+        "exception unwinding",
+        "full callable types"
+      ],
+      "exit_criteria": "Close prototype flags, entry layouts, return hooks and failure cleanup under nested calls.",
+      "subsystem_envelope": [
+        "bounded prototypes; atomic argument validation; linear default spans; effective argc; argument arrays; frame-local cleanup and typed return"
+      ]
+    },
+    {
+      "opcode": "1c",
+      "name": "vm_eqValue",
+      "native_address": "0x808eed4",
+      "semantic_status": "bounded",
+      "test_scope": "related synthetic tests; not complete per-opcode branch coverage",
+      "group": "numeric_arithmetic_comparison",
+      "implemented_cases": [
+        "numeric equality only; mixed numeric operands compare after binary32 conversion"
+      ],
+      "excluded_cases": [
+        "String/container arithmetic; all other native value-type branches; native floating environment equivalence"
+      ],
+      "related_tests": [
+        "executes_all_integer_arithmetic_and_comparison_operations",
+        "mixed_arithmetic_preserves_left_type_except_remainder",
+        "numeric_comparisons_round_integer_inputs_and_nan_is_unordered"
+      ],
+      "evidence": [
+        "docs/vm-numeric-semantics.md",
+        "docs/evidence/actions.csv"
+      ],
+      "dependencies": [
+        "full value model"
+      ],
+      "exit_criteria": "Audit native dispatch for every operand tag pair; test accepted pairs, rejection and numeric edge policies.",
+      "subsystem_envelope": [
+        "i32 wrapping arithmetic; checked divide/remainder faults; bounded Int/Real arithmetic and comparisons"
+      ]
+    },
+    {
+      "opcode": "1d",
+      "name": "vm_finishAction",
+      "native_address": "0x8097460",
+      "semantic_status": "bounded",
+      "test_scope": "related synthetic tests; not complete per-opcode branch coverage",
+      "group": "action_initialization",
+      "implemented_cases": [
+        "finish current action without fabricating return; fails initialization/construction tasks"
+      ],
+      "excluded_cases": [
+        "ordinary-function 48; successful init on finish; full native backend hooks; active destruction"
+      ],
+      "related_tests": [
+        "finish_stops_the_action_without_fabricating_a_return_value",
+        "initialization_finish_action_is_failure_even_inside_called_function",
+        "initialization_balance_failure_removes_only_owned_object_and_is_sticky",
+        "construction_failure_rolls_back_failing_layer_and_previous_layers_in_reverse"
+      ],
+      "evidence": [
+        "docs/vm-initialization-runtime.md",
+        "docs/evidence/actions.csv"
+      ],
+      "dependencies": [
+        "scheduler boundary",
+        "active destruction"
+      ],
+      "exit_criteria": "Validate full backend lifecycle hooks separately; retain task cancellation/failure policy distinctions.",
+      "subsystem_envelope": [
+        "finish action; nop; initialization-only fake return; resumable synthetic initialization and construct rollback"
+      ]
+    },
+    {
+      "opcode": "1e",
+      "name": "vm_geValue",
+      "native_address": "0x808ef88",
+      "semantic_status": "bounded",
+      "test_scope": "related synthetic tests; not complete per-opcode branch coverage",
+      "group": "numeric_arithmetic_comparison",
+      "implemented_cases": [
+        "numeric greater-or-equal; mixed operands binary32 compare"
+      ],
+      "excluded_cases": [
+        "String/container arithmetic; all other native value-type branches; native floating environment equivalence"
+      ],
+      "related_tests": [
+        "executes_all_integer_arithmetic_and_comparison_operations",
+        "mixed_arithmetic_preserves_left_type_except_remainder",
+        "numeric_comparisons_round_integer_inputs_and_nan_is_unordered"
+      ],
+      "evidence": [
+        "docs/vm-numeric-semantics.md",
+        "docs/evidence/actions.csv"
+      ],
+      "dependencies": [
+        "full value model"
+      ],
+      "exit_criteria": "Audit native dispatch for every operand tag pair; test accepted pairs, rejection and numeric edge policies.",
+      "subsystem_envelope": [
+        "i32 wrapping arithmetic; checked divide/remainder faults; bounded Int/Real arithmetic and comparisons"
+      ]
+    },
+    {
+      "opcode": "1f",
+      "name": "vm_goto",
+      "native_address": "0x809744c",
+      "semantic_status": "bounded",
+      "test_scope": "related synthetic tests; not complete per-opcode branch coverage",
+      "group": "branches_stack",
+      "implemented_cases": [
+        "signed relative jump from next PC within same code body"
+      ],
+      "excluded_cases": [
+        "foreach/catch control state; arbitrary stack region mutation"
+      ],
+      "related_tests": [
+        "conditional_flags_choose_direction_and_pop_independently",
+        "pop_n_handles_nonpositive_counts_without_consuming_slots",
+        "budget_exhaustion_preserves_loop_state_and_can_resume"
+      ],
+      "evidence": [
+        "docs/vm-core-semantics.md",
+        "docs/evidence/actions.csv"
+      ],
+      "dependencies": [
+        "control-frame model"
+      ],
+      "exit_criteria": "Add structured-control combined tests with cleanup and paused execution.",
+      "subsystem_envelope": [
+        "relative next-PC branches; if direction/pop bits; calculation-area-only pop; budget resume"
+      ]
+    },
+    {
+      "opcode": "20",
+      "name": "vm_gtValue",
+      "native_address": "0x808f340",
+      "semantic_status": "bounded",
+      "test_scope": "related synthetic tests; not complete per-opcode branch coverage",
+      "group": "numeric_arithmetic_comparison",
+      "implemented_cases": [
+        "numeric greater-than; mixed operands binary32 compare"
+      ],
+      "excluded_cases": [
+        "String/container arithmetic; all other native value-type branches; native floating environment equivalence"
+      ],
+      "related_tests": [
+        "executes_all_integer_arithmetic_and_comparison_operations",
+        "mixed_arithmetic_preserves_left_type_except_remainder",
+        "numeric_comparisons_round_integer_inputs_and_nan_is_unordered"
+      ],
+      "evidence": [
+        "docs/vm-numeric-semantics.md",
+        "docs/evidence/actions.csv"
+      ],
+      "dependencies": [
+        "full value model"
+      ],
+      "exit_criteria": "Audit native dispatch for every operand tag pair; test accepted pairs, rejection and numeric edge policies.",
+      "subsystem_envelope": [
+        "i32 wrapping arithmetic; checked divide/remainder faults; bounded Int/Real arithmetic and comparisons"
+      ]
+    },
+    {
+      "opcode": "21",
+      "name": "vm_if",
+      "native_address": "0x809746c",
+      "semantic_status": "bounded",
+      "test_scope": "related synthetic tests; not complete per-opcode branch coverage",
+      "group": "branches_stack",
+      "implemented_cases": [
+        "truth-conditional relative jump with independent direction/pop flags"
+      ],
+      "excluded_cases": [
+        "foreach/catch control state; arbitrary stack region mutation"
+      ],
+      "related_tests": [
+        "conditional_flags_choose_direction_and_pop_independently",
+        "pop_n_handles_nonpositive_counts_without_consuming_slots",
+        "budget_exhaustion_preserves_loop_state_and_can_resume"
+      ],
+      "evidence": [
+        "docs/vm-core-semantics.md",
+        "docs/evidence/actions.csv"
+      ],
+      "dependencies": [
+        "control-frame model"
+      ],
+      "exit_criteria": "Add structured-control combined tests with cleanup and paused execution.",
+      "subsystem_envelope": [
+        "relative next-PC branches; if direction/pop bits; calculation-area-only pop; budget resume"
+      ]
+    },
+    {
+      "opcode": "22",
+      "name": "vm_incValue",
+      "native_address": "0x808dea4",
+      "semantic_status": "bounded",
+      "test_scope": "related synthetic tests; not complete per-opcode branch coverage",
+      "group": "numeric_reference_updates",
+      "implemented_cases": [
+        "consume writable numeric reference; add signed operand; no expression result"
+      ],
+      "excluded_cases": [
+        "non-numeric compound operators; const writes; other selector values"
+      ],
+      "related_tests": [
+        "compound_selectors_cover_all_ten_operations_and_leave_result",
+        "numeric_update_errors_preserve_target_and_operand_stack_with_locations"
+      ],
+      "evidence": [
+        "docs/vm-numeric-updates.md",
+        "docs/evidence/actions.csv"
+      ],
+      "dependencies": [
+        "numeric operand matrix",
+        "reference lifetime"
+      ],
+      "exit_criteria": "Audit each selector/type pair and preserve atomic target/stack behavior on errors.",
+      "subsystem_envelope": [
+        "Int/Real target; increment; compound selectors 2..11; commit after preflight"
+      ]
+    },
+    {
+      "opcode": "23",
+      "name": "vm_initForLoop",
+      "native_address": "0x80bc8f0",
+      "semantic_status": "unimplemented",
+      "test_scope": "no semantic execution tests claimed",
+      "group": "integer_collection_loop",
+      "implemented_cases": [],
+      "excluded_cases": [
+        "opcode rejected by bounded preparation; no runtime semantic implementation"
+      ],
+      "related_tests": [],
+      "evidence": [
+        "docs/evidence/actions.csv",
+        "docs/vm-control-flow-semantics.md"
+      ],
+      "dependencies": [
+        "hidden local slot payload and immediate overwrite cleanup",
+        "inclusive +/-1 numeric and header-retained Array traversal",
+        "native Mapping hash traversal order"
+      ],
+      "exit_criteria": "Implement confirmed integer/Array paths with hidden-slot ownership, budget and cleanup regressions; reject Mapping until native hash order and mutation semantics are recovered."
+    },
+    {
+      "opcode": "24",
+      "name": "vm_isType",
+      "native_address": "0x808f100",
+      "semantic_status": "bounded",
+      "test_scope": "related synthetic tests; not complete per-opcode branch coverage",
+      "group": "unary_type_truth",
+      "implemented_cases": [
+        "test explicit supported Value tag against operand; mixed tag is not wildcard"
+      ],
+      "excluded_cases": [
+        "missing Buffer/Function/Range value types; full attribute semantics"
+      ],
+      "related_tests": [
+        "unary_numeric_type_and_truth_operations_handle_real_values",
+        "supported_types_have_explicit_legacy_tags",
+        "empty_strings_are_truthy_and_undefined_is_false"
+      ],
+      "evidence": [
+        "docs/vm-numeric-semantics.md",
+        "docs/evidence/actions.csv"
+      ],
+      "dependencies": [
+        "full value model"
+      ],
+      "exit_criteria": "Test each actual Value variant, deleted objects, tags and unsupported native kinds.",
+      "subsystem_envelope": [
+        "numeric sign inversion; explicit supported tags; supported-value truth"
+      ]
+    },
+    {
+      "opcode": "25",
+      "name": "vm_leValue",
+      "native_address": "0x808f1c0",
+      "semantic_status": "bounded",
+      "test_scope": "related synthetic tests; not complete per-opcode branch coverage",
+      "group": "numeric_arithmetic_comparison",
+      "implemented_cases": [
+        "numeric less-or-equal; mixed operands binary32 compare"
+      ],
+      "excluded_cases": [
+        "String/container arithmetic; all other native value-type branches; native floating environment equivalence"
+      ],
+      "related_tests": [
+        "executes_all_integer_arithmetic_and_comparison_operations",
+        "mixed_arithmetic_preserves_left_type_except_remainder",
+        "numeric_comparisons_round_integer_inputs_and_nan_is_unordered"
+      ],
+      "evidence": [
+        "docs/vm-numeric-semantics.md",
+        "docs/evidence/actions.csv"
+      ],
+      "dependencies": [
+        "full value model"
+      ],
+      "exit_criteria": "Audit native dispatch for every operand tag pair; test accepted pairs, rejection and numeric edge policies.",
+      "subsystem_envelope": [
+        "i32 wrapping arithmetic; checked divide/remainder faults; bounded Int/Real arithmetic and comparisons"
+      ]
+    },
+    {
+      "opcode": "26",
+      "name": "vm_lshValue",
+      "native_address": "0x808df54",
+      "semantic_status": "bounded",
+      "test_scope": "related synthetic tests; not complete per-opcode branch coverage",
+      "group": "integer_bitwise",
+      "implemented_cases": [
+        "Int wrapping left shift for counts0..31; otherwise zero"
+      ],
+      "excluded_cases": [
+        "non-Int operands; complete native coercion claims"
+      ],
+      "related_tests": [
+        "bitwise_operations_and_logical_right_shift_follow_guarded_native_counts"
+      ],
+      "evidence": [
+        "docs/vm-numeric-semantics.md",
+        "docs/evidence/actions.csv"
+      ],
+      "dependencies": [
+        "numeric operand matrix"
+      ],
+      "exit_criteria": "Verify all shift boundaries and native non-Int behavior; preserve explicit rejection policy.",
+      "subsystem_envelope": [
+        "Int operands; shift outside 0..31 yields zero"
+      ]
+    },
+    {
+      "opcode": "27",
+      "name": "vm_ltValue",
+      "native_address": "0x808f4c8",
+      "semantic_status": "bounded",
+      "test_scope": "related synthetic tests; not complete per-opcode branch coverage",
+      "group": "numeric_arithmetic_comparison",
+      "implemented_cases": [
+        "numeric less-than; mixed operands binary32 compare"
+      ],
+      "excluded_cases": [
+        "String/container arithmetic; all other native value-type branches; native floating environment equivalence"
+      ],
+      "related_tests": [
+        "executes_all_integer_arithmetic_and_comparison_operations",
+        "mixed_arithmetic_preserves_left_type_except_remainder",
+        "numeric_comparisons_round_integer_inputs_and_nan_is_unordered"
+      ],
+      "evidence": [
+        "docs/vm-numeric-semantics.md",
+        "docs/evidence/actions.csv"
+      ],
+      "dependencies": [
+        "full value model"
+      ],
+      "exit_criteria": "Audit native dispatch for every operand tag pair; test accepted pairs, rejection and numeric edge policies.",
+      "subsystem_envelope": [
+        "i32 wrapping arithmetic; checked divide/remainder faults; bounded Int/Real arithmetic and comparisons"
+      ]
+    },
+    {
+      "opcode": "28",
+      "name": "vm_modValue",
+      "native_address": "0x808e7bc",
+      "semantic_status": "bounded",
+      "test_scope": "related synthetic tests; not complete per-opcode branch coverage",
+      "group": "numeric_arithmetic_comparison",
+      "implemented_cases": [
+        "integer checked remainder or numeric fmod adapter returning Real"
+      ],
+      "excluded_cases": [
+        "String/container arithmetic; all other native value-type branches; native floating environment equivalence"
+      ],
+      "related_tests": [
+        "executes_all_integer_arithmetic_and_comparison_operations",
+        "mixed_arithmetic_preserves_left_type_except_remainder",
+        "numeric_comparisons_round_integer_inputs_and_nan_is_unordered"
+      ],
+      "evidence": [
+        "docs/vm-numeric-semantics.md",
+        "docs/evidence/actions.csv"
+      ],
+      "dependencies": [
+        "full value model"
+      ],
+      "exit_criteria": "Audit native dispatch for every operand tag pair; test accepted pairs, rejection and numeric edge policies.",
+      "subsystem_envelope": [
+        "i32 wrapping arithmetic; checked divide/remainder faults; bounded Int/Real arithmetic and comparisons"
+      ]
+    },
+    {
+      "opcode": "29",
+      "name": "vm_mulValue",
+      "native_address": "0x808e2f8",
+      "semantic_status": "bounded",
+      "test_scope": "related synthetic tests; not complete per-opcode branch coverage",
+      "group": "numeric_arithmetic_comparison",
+      "implemented_cases": [
+        "wrapping Int multiply; bounded Int/Real multiply preserving left-type policy"
+      ],
+      "excluded_cases": [
+        "String/container arithmetic; all other native value-type branches; native floating environment equivalence"
+      ],
+      "related_tests": [
+        "executes_all_integer_arithmetic_and_comparison_operations",
+        "mixed_arithmetic_preserves_left_type_except_remainder",
+        "numeric_comparisons_round_integer_inputs_and_nan_is_unordered"
+      ],
+      "evidence": [
+        "docs/vm-numeric-semantics.md",
+        "docs/evidence/actions.csv"
+      ],
+      "dependencies": [
+        "full value model"
+      ],
+      "exit_criteria": "Audit native dispatch for every operand tag pair; test accepted pairs, rejection and numeric edge policies.",
+      "subsystem_envelope": [
+        "i32 wrapping arithmetic; checked divide/remainder faults; bounded Int/Real arithmetic and comparisons"
+      ]
+    },
+    {
+      "opcode": "2a",
+      "name": "vm_neValue",
+      "native_address": "0x808ef28",
+      "semantic_status": "bounded",
+      "test_scope": "related synthetic tests; not complete per-opcode branch coverage",
+      "group": "numeric_arithmetic_comparison",
+      "implemented_cases": [
+        "numeric inequality; NaN behavior follows numeric comparison policy"
+      ],
+      "excluded_cases": [
+        "String/container arithmetic; all other native value-type branches; native floating environment equivalence"
+      ],
+      "related_tests": [
+        "executes_all_integer_arithmetic_and_comparison_operations",
+        "mixed_arithmetic_preserves_left_type_except_remainder",
+        "numeric_comparisons_round_integer_inputs_and_nan_is_unordered"
+      ],
+      "evidence": [
+        "docs/vm-numeric-semantics.md",
+        "docs/evidence/actions.csv"
+      ],
+      "dependencies": [
+        "full value model"
+      ],
+      "exit_criteria": "Audit native dispatch for every operand tag pair; test accepted pairs, rejection and numeric edge policies.",
+      "subsystem_envelope": [
+        "i32 wrapping arithmetic; checked divide/remainder faults; bounded Int/Real arithmetic and comparisons"
+      ]
+    },
+    {
+      "opcode": "2b",
+      "name": "vm_negValue",
+      "native_address": "0x808e8bc",
+      "semantic_status": "bounded",
+      "test_scope": "related synthetic tests; not complete per-opcode branch coverage",
+      "group": "unary_type_truth",
+      "implemented_cases": [
+        "wrapping Int negate or Real sign-bit inversion"
+      ],
+      "excluded_cases": [
+        "missing Buffer/Function/Range value types; full attribute semantics"
+      ],
+      "related_tests": [
+        "unary_numeric_type_and_truth_operations_handle_real_values",
+        "supported_types_have_explicit_legacy_tags",
+        "empty_strings_are_truthy_and_undefined_is_false"
+      ],
+      "evidence": [
+        "docs/vm-numeric-semantics.md",
+        "docs/evidence/actions.csv"
+      ],
+      "dependencies": [
+        "full value model"
+      ],
+      "exit_criteria": "Test each actual Value variant, deleted objects, tags and unsupported native kinds.",
+      "subsystem_envelope": [
+        "numeric sign inversion; explicit supported tags; supported-value truth"
+      ]
+    },
+    {
+      "opcode": "2c",
+      "name": "vm_newThreadCatch",
+      "native_address": "0x80aaf84",
+      "semantic_status": "unimplemented",
+      "test_scope": "no semantic execution tests claimed",
+      "group": "catch",
+      "implemented_cases": [],
+      "excluded_cases": [
+        "opcode rejected by bounded preparation; no runtime semantic implementation"
+      ],
+      "related_tests": [],
+      "evidence": [
+        "docs/evidence/actions.csv"
+      ],
+      "dependencies": [
+        "exception transfer",
+        "error value and hooks"
+      ],
+      "exit_criteria": "Recover native vm_newThreadCatch semantics and operand branches; implement with synthetic success, failure, budget-resume and nested-cleanup tests."
+    },
+    {
+      "opcode": "2d",
+      "name": "vm_notValue",
+      "native_address": "0x808e994",
+      "semantic_status": "bounded",
+      "test_scope": "related synthetic tests; not complete per-opcode branch coverage",
+      "group": "unary_type_truth",
+      "implemented_cases": [
+        "logical NOT using supported-value truth (empty Bytes remains true)"
+      ],
+      "excluded_cases": [
+        "missing Buffer/Function/Range value types; full attribute semantics"
+      ],
+      "related_tests": [
+        "unary_numeric_type_and_truth_operations_handle_real_values",
+        "supported_types_have_explicit_legacy_tags",
+        "empty_strings_are_truthy_and_undefined_is_false"
+      ],
+      "evidence": [
+        "docs/vm-numeric-semantics.md",
+        "docs/evidence/actions.csv"
+      ],
+      "dependencies": [
+        "full value model"
+      ],
+      "exit_criteria": "Test each actual Value variant, deleted objects, tags and unsupported native kinds.",
+      "subsystem_envelope": [
+        "numeric sign inversion; explicit supported tags; supported-value truth"
+      ]
+    },
+    {
+      "opcode": "2e",
+      "name": "vm_nullAction",
+      "native_address": "0x8097444",
+      "semantic_status": "bounded",
+      "test_scope": "related synthetic tests; not complete per-opcode branch coverage",
+      "group": "action_initialization",
+      "implemented_cases": [
+        "no operation, consumes one instruction budget unit"
+      ],
+      "excluded_cases": [
+        "ordinary-function 48; successful init on finish; full native backend hooks; active destruction"
+      ],
+      "related_tests": [
+        "initialization_loops_obey_budget_and_global_input_is_rejected"
+      ],
+      "evidence": [
+        "docs/vm-initialization-runtime.md",
+        "docs/evidence/actions.csv"
+      ],
+      "dependencies": [
+        "scheduler boundary",
+        "active destruction"
+      ],
+      "exit_criteria": "Validate full backend lifecycle hooks separately; retain task cancellation/failure policy distinctions.",
+      "subsystem_envelope": [
+        "finish action; nop; initialization-only fake return; resumable synthetic initialization and construct rollback"
+      ]
+    },
+    {
+      "opcode": "2f",
+      "name": "vm_opEqValue",
+      "native_address": "0x808eb68",
+      "semantic_status": "bounded",
+      "test_scope": "related synthetic tests; not complete per-opcode branch coverage",
+      "group": "numeric_reference_updates",
+      "implemented_cases": [
+        "compound numeric selectors2..11; preflight and commit writable reference; leaves result"
+      ],
+      "excluded_cases": [
+        "non-numeric compound operators; const writes; other selector values"
+      ],
+      "related_tests": [
+        "compound_selectors_cover_all_ten_operations_and_leave_result",
+        "numeric_update_errors_preserve_target_and_operand_stack_with_locations"
+      ],
+      "evidence": [
+        "docs/vm-numeric-updates.md",
+        "docs/evidence/actions.csv"
+      ],
+      "dependencies": [
+        "numeric operand matrix",
+        "reference lifetime"
+      ],
+      "exit_criteria": "Audit each selector/type pair and preserve atomic target/stack behavior on errors.",
+      "subsystem_envelope": [
+        "Int/Real target; increment; compound selectors 2..11; commit after preflight"
+      ]
+    },
+    {
+      "opcode": "30",
+      "name": "vm_orValue",
+      "native_address": "0x808eabc",
+      "semantic_status": "bounded",
+      "test_scope": "related synthetic tests; not complete per-opcode branch coverage",
+      "group": "integer_bitwise",
+      "implemented_cases": [
+        "Int bitwise OR"
+      ],
+      "excluded_cases": [
+        "non-Int operands; complete native coercion claims"
+      ],
+      "related_tests": [
+        "bitwise_operations_and_logical_right_shift_follow_guarded_native_counts"
+      ],
+      "evidence": [
+        "docs/vm-numeric-semantics.md",
+        "docs/evidence/actions.csv"
+      ],
+      "dependencies": [
+        "numeric operand matrix"
+      ],
+      "exit_criteria": "Verify all shift boundaries and native non-Int behavior; preserve explicit rejection policy.",
+      "subsystem_envelope": [
+        "Int operands; shift outside 0..31 yields zero"
+      ]
+    },
+    {
+      "opcode": "32",
+      "name": "vm_popNStack",
+      "native_address": "0x8091ab0",
+      "semantic_status": "bounded",
+      "test_scope": "related synthetic tests; not complete per-opcode branch coverage",
+      "group": "branches_stack",
+      "implemented_cases": [
+        "pop positive operand count from calculation region; nonpositive no-op"
+      ],
+      "excluded_cases": [
+        "foreach/catch control state; arbitrary stack region mutation"
+      ],
+      "related_tests": [
+        "conditional_flags_choose_direction_and_pop_independently",
+        "pop_n_handles_nonpositive_counts_without_consuming_slots",
+        "budget_exhaustion_preserves_loop_state_and_can_resume"
+      ],
+      "evidence": [
+        "docs/vm-core-semantics.md",
+        "docs/evidence/actions.csv"
+      ],
+      "dependencies": [
+        "control-frame model"
+      ],
+      "exit_criteria": "Add structured-control combined tests with cleanup and paused execution.",
+      "subsystem_envelope": [
+        "relative next-PC branches; if direction/pop bits; calculation-area-only pop; budget resume"
+      ]
+    },
+    {
+      "opcode": "33",
+      "name": "vm_popStack",
+      "native_address": "0x809061c",
+      "semantic_status": "bounded",
+      "test_scope": "related synthetic tests; not complete per-opcode branch coverage",
+      "group": "branches_stack",
+      "implemented_cases": [
+        "pop one calculation value without consuming declared locals/args"
+      ],
+      "excluded_cases": [
+        "foreach/catch control state; arbitrary stack region mutation"
+      ],
+      "related_tests": [
+        "conditional_flags_choose_direction_and_pop_independently",
+        "pop_n_handles_nonpositive_counts_without_consuming_slots",
+        "budget_exhaustion_preserves_loop_state_and_can_resume"
+      ],
+      "evidence": [
+        "docs/vm-core-semantics.md",
+        "docs/evidence/actions.csv"
+      ],
+      "dependencies": [
+        "control-frame model"
+      ],
+      "exit_criteria": "Add structured-control combined tests with cleanup and paused execution.",
+      "subsystem_envelope": [
+        "relative next-PC branches; if direction/pop bits; calculation-area-only pop; budget resume"
+      ]
+    },
+    {
+      "opcode": "34",
+      "name": "vm_pushArgNum",
+      "native_address": "0x80916cc",
+      "semantic_status": "bounded",
+      "test_scope": "related synthetic tests; not complete per-opcode branch coverage",
+      "group": "function_entry_return",
+      "implemented_cases": [
+        "push effective actual argument count after bounded default resort"
+      ],
+      "excluded_cases": [
+        "atomic function attribute; reference returns; non-linear defaults; omitted refs; general catch/hooks"
+      ],
+      "related_tests": [
+        "defaults_preserve_declaration_order_for_every_accepted_arity",
+        "variadic_extras_are_direct_slots_and_explicit_array_keeps_argument_order",
+        "optional_calls_preserve_caller_prefix_and_reference_identity_during_resort",
+        "return_shape_and_type_errors_do_not_silently_succeed"
+      ],
+      "evidence": [
+        "docs/vm-optional-arguments.md",
+        "docs/evidence/actions.csv"
+      ],
+      "dependencies": [
+        "exception unwinding",
+        "full callable types"
+      ],
+      "exit_criteria": "Close prototype flags, entry layouts, return hooks and failure cleanup under nested calls.",
+      "subsystem_envelope": [
+        "bounded prototypes; atomic argument validation; linear default spans; effective argc; argument arrays; frame-local cleanup and typed return"
+      ]
+    },
+    {
+      "opcode": "35",
+      "name": "vm_pushGlobalVar",
+      "native_address": "0x809113c",
+      "semantic_status": "unimplemented",
+      "test_scope": "no semantic execution tests claimed",
+      "group": "global_storage",
+      "implemented_cases": [],
+      "excluded_cases": [
+        "opcode rejected by bounded preparation; no runtime semantic implementation"
+      ],
+      "related_tests": [],
+      "evidence": [
+        "docs/evidence/actions.csv"
+      ],
+      "dependencies": [
+        "global program namespace",
+        "global variable cells"
+      ],
+      "exit_criteria": "Recover native vm_pushGlobalVar semantics and operand branches; implement with synthetic success, failure, budget-resume and nested-cleanup tests."
+    },
+    {
+      "opcode": "36",
+      "name": "vm_pushGlobalVptr",
+      "native_address": "0x80910d0",
+      "semantic_status": "unimplemented",
+      "test_scope": "no semantic execution tests claimed",
+      "group": "global_storage",
+      "implemented_cases": [],
+      "excluded_cases": [
+        "opcode rejected by bounded preparation; no runtime semantic implementation"
+      ],
+      "related_tests": [],
+      "evidence": [
+        "docs/evidence/actions.csv"
+      ],
+      "dependencies": [
+        "global program namespace",
+        "global reference ownership"
+      ],
+      "exit_criteria": "Recover native vm_pushGlobalVptr semantics and operand branches; implement with synthetic success, failure, budget-resume and nested-cleanup tests."
+    },
+    {
+      "opcode": "37",
+      "name": "vm_pushLocalVar",
+      "native_address": "0x80914dc",
+      "semantic_status": "bounded",
+      "test_scope": "related synthetic tests; not complete per-opcode branch coverage",
+      "group": "variable_slots",
+      "implemented_cases": [
+        "copy argument/local; dereference bound ref params; invalid slot yields Undefined"
+      ],
+      "excluded_cases": [
+        "global slots; arbitrary native attributes; lifecycle destruction timing"
+      ],
+      "related_tests": [
+        "assignment_preserves_top_and_argument_local_slots_have_distinct_directions",
+        "linked_variables_relocate_and_objects_remain_isolated",
+        "unallocated_local_read_returns_undefined_but_write_errors"
+      ],
+      "evidence": [
+        "docs/vm-inheritance-runtime.md",
+        "docs/evidence/actions.csv"
+      ],
+      "dependencies": [
+        "global storage",
+        "object lifetime"
+      ],
+      "exit_criteria": "Verify local/object/global slot semantics across all call types and deletion/unwind.",
+      "subsystem_envelope": [
+        "stable local/argument or root object slots; constitution variable-base relocation; non-pop assignments"
+      ]
+    },
+    {
+      "opcode": "39",
+      "name": "vm_pushLocalVptr",
+      "native_address": "0x809134c",
+      "semantic_status": "bounded",
+      "test_scope": "related synthetic tests; not complete per-opcode branch coverage",
+      "group": "references",
+      "implemented_cases": [
+        "reference valid argument/local cell or forward bound reference parameter identity"
+      ],
+      "excluded_cases": [
+        "reference escape; Buffer/String member writes; range refs; native full release timing; cycles"
+      ],
+      "related_tests": [
+        "reference_assignments_preserve_result_and_update_stable_local_slots",
+        "shared_array_and_mapping_member_writes_are_visible_to_aliases",
+        "references_cannot_escape_via_returns_arguments_or_containers",
+        "reference_modes_invalid_targets_and_invalid_keys_fail_explicitly"
+      ],
+      "evidence": [
+        "docs/vm-reference-semantics.md",
+        "docs/evidence/actions.csv"
+      ],
+      "dependencies": [
+        "full value model",
+        "object lifetime"
+      ],
+      "exit_criteria": "Verify owner lifetime and type-specific cleanup across cross-object calls, catch and active deletion.",
+      "subsystem_envelope": [
+        "stable local/object/member cells; bounded Array/Mapping temporary references; mode 0/1 member access; owner/readonly checks"
+      ]
+    },
+    {
+      "opcode": "3b",
+      "name": "vm_pushShortNumber",
+      "native_address": "0x8090ae8",
+      "semantic_status": "bounded",
+      "test_scope": "related synthetic tests; not complete per-opcode branch coverage",
+      "group": "literals",
+      "implemented_cases": [
+        "push signed short integer operand"
+      ],
+      "excluded_cases": [
+        "live business execution equivalence; full native string interning identity"
+      ],
+      "related_tests": [
+        "default_literals_decode_numeric_metadata_strings_and_undefined",
+        "real_constant_uses_first_word_only_and_retains_nan_and_signed_zero_bits",
+        "pool_strings_use_c_termination_without_utf8_conversion"
+      ],
+      "evidence": [
+        "docs/vm-core-semantics.md",
+        "docs/evidence/actions.csv"
+      ],
+      "dependencies": [
+        "source context preservation"
+      ],
+      "exit_criteria": "Retain exact metadata/pool source in all future call forms and test malformed operands.",
+      "subsystem_envelope": [
+        "signed short/int metadata; first Real word; source-program C-terminated raw strings; Undefined"
+      ]
+    },
+    {
+      "opcode": "3c",
+      "name": "vm_pushNumber",
+      "native_address": "0x8090b3c",
+      "semantic_status": "bounded",
+      "test_scope": "related synthetic tests; not complete per-opcode branch coverage",
+      "group": "literals",
+      "implemented_cases": [
+        "push little-endian signed32 metadata integer"
+      ],
+      "excluded_cases": [
+        "live business execution equivalence; full native string interning identity"
+      ],
+      "related_tests": [
+        "default_literals_decode_numeric_metadata_strings_and_undefined",
+        "real_constant_uses_first_word_only_and_retains_nan_and_signed_zero_bits",
+        "pool_strings_use_c_termination_without_utf8_conversion"
+      ],
+      "evidence": [
+        "docs/vm-core-semantics.md",
+        "docs/evidence/actions.csv"
+      ],
+      "dependencies": [
+        "source context preservation"
+      ],
+      "exit_criteria": "Retain exact metadata/pool source in all future call forms and test malformed operands.",
+      "subsystem_envelope": [
+        "signed short/int metadata; first Real word; source-program C-terminated raw strings; Undefined"
+      ]
+    },
+    {
+      "opcode": "3d",
+      "name": "vm_pushObjVar",
+      "native_address": "0x8091224",
+      "semantic_status": "bounded",
+      "test_scope": "related synthetic tests; not complete per-opcode branch coverage",
+      "group": "variable_slots",
+      "implemented_cases": [
+        "copy root object cell at current constitution variable base plus operand"
+      ],
+      "excluded_cases": [
+        "global slots; arbitrary native attributes; lifecycle destruction timing"
+      ],
+      "related_tests": [
+        "assignment_preserves_top_and_argument_local_slots_have_distinct_directions",
+        "linked_variables_relocate_and_objects_remain_isolated",
+        "unallocated_local_read_returns_undefined_but_write_errors"
+      ],
+      "evidence": [
+        "docs/vm-inheritance-runtime.md",
+        "docs/evidence/actions.csv"
+      ],
+      "dependencies": [
+        "global storage",
+        "object lifetime"
+      ],
+      "exit_criteria": "Verify local/object/global slot semantics across all call types and deletion/unwind.",
+      "subsystem_envelope": [
+        "stable local/argument or root object slots; constitution variable-base relocation; non-pop assignments"
+      ]
+    },
+    {
+      "opcode": "3e",
+      "name": "vm_pushObjVptr",
+      "native_address": "0x80911a8",
+      "semantic_status": "bounded",
+      "test_scope": "related synthetic tests; not complete per-opcode branch coverage",
+      "group": "references",
+      "implemented_cases": [
+        "reference root object cell at current constitution variable base plus operand"
+      ],
+      "excluded_cases": [
+        "reference escape; Buffer/String member writes; range refs; native full release timing; cycles"
+      ],
+      "related_tests": [
+        "reference_assignments_preserve_result_and_update_stable_local_slots",
+        "shared_array_and_mapping_member_writes_are_visible_to_aliases",
+        "references_cannot_escape_via_returns_arguments_or_containers",
+        "reference_modes_invalid_targets_and_invalid_keys_fail_explicitly"
+      ],
+      "evidence": [
+        "docs/vm-reference-semantics.md",
+        "docs/evidence/actions.csv"
+      ],
+      "dependencies": [
+        "full value model",
+        "object lifetime"
+      ],
+      "exit_criteria": "Verify owner lifetime and type-specific cleanup across cross-object calls, catch and active deletion.",
+      "subsystem_envelope": [
+        "stable local/object/member cells; bounded Array/Mapping temporary references; mode 0/1 member access; owner/readonly checks"
+      ]
+    },
+    {
+      "opcode": "3f",
+      "name": "vm_pushRealFromWord",
+      "native_address": "0x8090be4",
+      "semantic_status": "bounded",
+      "test_scope": "related synthetic tests; not complete per-opcode branch coverage",
+      "group": "literals",
+      "implemented_cases": [
+        "push RealBits from first word of metadata pair; preserve raw NaN/zero bits"
+      ],
+      "excluded_cases": [
+        "live business execution equivalence; full native string interning identity"
+      ],
+      "related_tests": [
+        "default_literals_decode_numeric_metadata_strings_and_undefined",
+        "real_constant_uses_first_word_only_and_retains_nan_and_signed_zero_bits",
+        "pool_strings_use_c_termination_without_utf8_conversion"
+      ],
+      "evidence": [
+        "docs/vm-core-semantics.md",
+        "docs/evidence/actions.csv"
+      ],
+      "dependencies": [
+        "source context preservation"
+      ],
+      "exit_criteria": "Retain exact metadata/pool source in all future call forms and test malformed operands.",
+      "subsystem_envelope": [
+        "signed short/int metadata; first Real word; source-program C-terminated raw strings; Undefined"
+      ]
+    },
+    {
+      "opcode": "40",
+      "name": "vm_pushSharedString",
+      "native_address": "0x8090cf8",
+      "semantic_status": "bounded",
+      "test_scope": "related synthetic tests; not complete per-opcode branch coverage",
+      "group": "literals",
+      "implemented_cases": [
+        "push actual source-program C-terminated raw-byte shared string pool value"
+      ],
+      "excluded_cases": [
+        "live business execution equivalence; full native string interning identity"
+      ],
+      "related_tests": [
+        "default_literals_decode_numeric_metadata_strings_and_undefined",
+        "real_constant_uses_first_word_only_and_retains_nan_and_signed_zero_bits",
+        "pool_strings_use_c_termination_without_utf8_conversion"
+      ],
+      "evidence": [
+        "docs/vm-core-semantics.md",
+        "docs/evidence/actions.csv"
+      ],
+      "dependencies": [
+        "source context preservation"
+      ],
+      "exit_criteria": "Retain exact metadata/pool source in all future call forms and test malformed operands.",
+      "subsystem_envelope": [
+        "signed short/int metadata; first Real word; source-program C-terminated raw strings; Undefined"
+      ]
+    },
+    {
+      "opcode": "41",
+      "name": "vm_pushThisObject",
+      "native_address": "0x80975d8",
+      "semantic_status": "bounded",
+      "test_scope": "related synthetic tests; not complete per-opcode branch coverage",
+      "group": "cross_object_call",
+      "implemented_cases": [
+        "Push current Object in ordinary, inherited, cross-object and initialization frames; stack limit checked"
+      ],
+      "excluded_cases": [
+        "Global/no-object frames (native Int(0) path not reachable in current VM); active destruction/delayed deletion"
+      ],
+      "related_tests": [
+        "other_call_changes_this_object_and_restores_caller",
+        "other_call_same_program_keeps_instances_and_variable_banks_separate",
+        "this_object_works_during_initialization_and_obeys_stack_limit"
+      ],
+      "evidence": [
+        "docs/evidence/actions.csv",
+        "docs/stage2-completion-evidence/cross-object-design.md",
+        "docs/stage2-completion-evidence/rea-functions.md",
+        "docs/vm-cross-object-runtime.md"
+      ],
+      "dependencies": [
+        "global frame model",
+        "object lifetime"
+      ],
+      "exit_criteria": "Implement native no-object Int(0) behavior when global frames are introduced; verify active deletion interactions.",
+      "subsystem_envelope": [
+        "Object-owned execution frames"
+      ]
+    },
+    {
+      "opcode": "42",
+      "name": "vm_pushUndefined",
+      "native_address": "0x8090f6c",
+      "semantic_status": "bounded",
+      "test_scope": "related synthetic tests; not complete per-opcode branch coverage",
+      "group": "literals",
+      "implemented_cases": [
+        "push Undefined"
+      ],
+      "excluded_cases": [
+        "live business execution equivalence; full native string interning identity"
+      ],
+      "related_tests": [
+        "default_literals_decode_numeric_metadata_strings_and_undefined",
+        "real_constant_uses_first_word_only_and_retains_nan_and_signed_zero_bits",
+        "pool_strings_use_c_termination_without_utf8_conversion"
+      ],
+      "evidence": [
+        "docs/vm-core-semantics.md",
+        "docs/evidence/actions.csv"
+      ],
+      "dependencies": [
+        "source context preservation"
+      ],
+      "exit_criteria": "Retain exact metadata/pool source in all future call forms and test malformed operands.",
+      "subsystem_envelope": [
+        "signed short/int metadata; first Real word; source-program C-terminated raw strings; Undefined"
+      ]
+    },
+    {
+      "opcode": "43",
+      "name": "vm_queryMember",
+      "native_address": "0x808fa60",
+      "semantic_status": "bounded",
+      "test_scope": "related synthetic tests; not complete per-opcode branch coverage",
+      "group": "containers",
+      "implemented_cases": [
+        "Array/Mapping member copy; modes0/1; truncate numeric array index; missing map key Undefined"
+      ],
+      "excluded_cases": [
+        "Buffer and range operations; arbitrary key types; circular containers; string indexing"
+      ],
+      "related_tests": [
+        "array_constructor_preserves_top_first_order_and_empty_size",
+        "mapping_constructor_uses_total_value_count_and_oldest_pushed_duplicate_wins",
+        "container_type_restrictions_and_access_modes_are_explicit"
+      ],
+      "evidence": [
+        "docs/vm-container-semantics.md",
+        "docs/evidence/actions.csv"
+      ],
+      "dependencies": [
+        "full value model"
+      ],
+      "exit_criteria": "Close native container type/mode matrix and combined alias, bounds and cleanup tests.",
+      "subsystem_envelope": [
+        "acyclic shared arrays/mappings; scalar or raw-byte mapping keys; member query modes 0/1; size for Array/Mapping/Bytes"
+      ]
+    },
+    {
+      "opcode": "44",
+      "name": "vm_queryMemberPtr",
+      "native_address": "0x808f8e4",
+      "semantic_status": "bounded",
+      "test_scope": "related synthetic tests; not complete per-opcode branch coverage",
+      "group": "references",
+      "implemented_cases": [
+        "writable Array/Mapping member ref; modes0/1; missing map key inserts Undefined; stable cell identity"
+      ],
+      "excluded_cases": [
+        "reference escape; Buffer/String member writes; range refs; native full release timing; cycles"
+      ],
+      "related_tests": [
+        "reference_assignments_preserve_result_and_update_stable_local_slots",
+        "shared_array_and_mapping_member_writes_are_visible_to_aliases",
+        "references_cannot_escape_via_returns_arguments_or_containers",
+        "reference_modes_invalid_targets_and_invalid_keys_fail_explicitly"
+      ],
+      "evidence": [
+        "docs/vm-reference-semantics.md",
+        "docs/evidence/actions.csv"
+      ],
+      "dependencies": [
+        "full value model",
+        "object lifetime"
+      ],
+      "exit_criteria": "Verify owner lifetime and type-specific cleanup across cross-object calls, catch and active deletion.",
+      "subsystem_envelope": [
+        "stable local/object/member cells; bounded Array/Mapping temporary references; mode 0/1 member access; owner/readonly checks"
+      ]
+    },
+    {
+      "opcode": "45",
+      "name": "vm_queryRange",
+      "native_address": "0x808fd04",
+      "semantic_status": "unimplemented",
+      "test_scope": "no semantic execution tests claimed",
+      "group": "range_values",
+      "implemented_cases": [],
+      "excluded_cases": [
+        "opcode rejected by bounded preparation; no runtime semantic implementation"
+      ],
+      "related_tests": [],
+      "evidence": [
+        "docs/evidence/actions.csv"
+      ],
+      "dependencies": [
+        "Buffer/Range value model",
+        "copy and bounds semantics"
+      ],
+      "exit_criteria": "Recover native vm_queryRange semantics and operand branches; implement with synthetic success, failure, budget-resume and nested-cleanup tests."
+    },
+    {
+      "opcode": "47",
+      "name": "vm_resortStack",
+      "native_address": "0x80954a8",
+      "semantic_status": "bounded",
+      "test_scope": "related synthetic tests; not complete per-opcode branch coverage",
+      "group": "function_entry_return",
+      "implemented_cases": [
+        "reverse newly evaluated defaults, rotate stable cells below prior args, update argc/bp once"
+      ],
+      "excluded_cases": [
+        "atomic function attribute; reference returns; non-linear defaults; omitted refs; general catch/hooks"
+      ],
+      "related_tests": [
+        "defaults_preserve_declaration_order_for_every_accepted_arity",
+        "variadic_extras_are_direct_slots_and_explicit_array_keeps_argument_order",
+        "optional_calls_preserve_caller_prefix_and_reference_identity_during_resort",
+        "return_shape_and_type_errors_do_not_silently_succeed"
+      ],
+      "evidence": [
+        "docs/vm-optional-arguments.md",
+        "docs/evidence/actions.csv"
+      ],
+      "dependencies": [
+        "exception unwinding",
+        "full callable types"
+      ],
+      "exit_criteria": "Close prototype flags, entry layouts, return hooks and failure cleanup under nested calls.",
+      "subsystem_envelope": [
+        "bounded prototypes; atomic argument validation; linear default spans; effective argc; argument arrays; frame-local cleanup and typed return"
+      ]
+    },
+    {
+      "opcode": "48",
+      "name": "vm_returnFromFakeFun",
+      "native_address": "0x8094374",
+      "semantic_status": "bounded",
+      "test_scope": "related synthetic tests; not complete per-opcode branch coverage",
+      "group": "action_initialization",
+      "implemented_cases": [
+        "initialization-frame-only balanced return; advance task constitution or finish"
+      ],
+      "excluded_cases": [
+        "ordinary-function 48; successful init on finish; full native backend hooks; active destruction"
+      ],
+      "related_tests": [
+        "finish_stops_the_action_without_fabricating_a_return_value",
+        "initialization_finish_action_is_failure_even_inside_called_function",
+        "initialization_balance_failure_removes_only_owned_object_and_is_sticky",
+        "construction_failure_rolls_back_failing_layer_and_previous_layers_in_reverse"
+      ],
+      "evidence": [
+        "docs/vm-initialization-runtime.md",
+        "docs/evidence/actions.csv"
+      ],
+      "dependencies": [
+        "scheduler boundary",
+        "active destruction"
+      ],
+      "exit_criteria": "Validate full backend lifecycle hooks separately; retain task cancellation/failure policy distinctions.",
+      "subsystem_envelope": [
+        "finish action; nop; initialization-only fake return; resumable synthetic initialization and construct rollback"
+      ]
+    },
+    {
+      "opcode": "49",
+      "name": "vm_returnFromFun",
+      "native_address": "0x8094978",
+      "semantic_status": "bounded",
+      "test_scope": "related synthetic tests; not complete per-opcode branch coverage",
+      "group": "function_entry_return",
+      "implemented_cases": [
+        "validate return shape/type; remove callee args/locals; restore caller or lifecycle task"
+      ],
+      "excluded_cases": [
+        "atomic function attribute; reference returns; non-linear defaults; omitted refs; general catch/hooks"
+      ],
+      "related_tests": [
+        "defaults_preserve_declaration_order_for_every_accepted_arity",
+        "variadic_extras_are_direct_slots_and_explicit_array_keeps_argument_order",
+        "optional_calls_preserve_caller_prefix_and_reference_identity_during_resort",
+        "return_shape_and_type_errors_do_not_silently_succeed"
+      ],
+      "evidence": [
+        "docs/vm-optional-arguments.md",
+        "docs/evidence/actions.csv"
+      ],
+      "dependencies": [
+        "exception unwinding",
+        "full callable types"
+      ],
+      "exit_criteria": "Close prototype flags, entry layouts, return hooks and failure cleanup under nested calls.",
+      "subsystem_envelope": [
+        "bounded prototypes; atomic argument validation; linear default spans; effective argc; argument arrays; frame-local cleanup and typed return"
+      ]
+    },
+    {
+      "opcode": "4a",
+      "name": "vm_revValue",
+      "native_address": "0x808e9cc",
+      "semantic_status": "bounded",
+      "test_scope": "related synthetic tests; not complete per-opcode branch coverage",
+      "group": "integer_bitwise",
+      "implemented_cases": [
+        "Int bitwise NOT"
+      ],
+      "excluded_cases": [
+        "non-Int operands; complete native coercion claims"
+      ],
+      "related_tests": [
+        "bitwise_operations_and_logical_right_shift_follow_guarded_native_counts"
+      ],
+      "evidence": [
+        "docs/vm-numeric-semantics.md",
+        "docs/evidence/actions.csv"
+      ],
+      "dependencies": [
+        "numeric operand matrix"
+      ],
+      "exit_criteria": "Verify all shift boundaries and native non-Int behavior; preserve explicit rejection policy.",
+      "subsystem_envelope": [
+        "Int operands; shift outside 0..31 yields zero"
+      ]
+    },
+    {
+      "opcode": "4b",
+      "name": "vm_rshValue",
+      "native_address": "0x808e020",
+      "semantic_status": "bounded",
+      "test_scope": "related synthetic tests; not complete per-opcode branch coverage",
+      "group": "integer_bitwise",
+      "implemented_cases": [
+        "Int logical right shift for counts0..31; otherwise zero"
+      ],
+      "excluded_cases": [
+        "non-Int operands; complete native coercion claims"
+      ],
+      "related_tests": [
+        "bitwise_operations_and_logical_right_shift_follow_guarded_native_counts"
+      ],
+      "evidence": [
+        "docs/vm-numeric-semantics.md",
+        "docs/evidence/actions.csv"
+      ],
+      "dependencies": [
+        "numeric operand matrix"
+      ],
+      "exit_criteria": "Verify all shift boundaries and native non-Int behavior; preserve explicit rejection policy.",
+      "subsystem_envelope": [
+        "Int operands; shift outside 0..31 yields zero"
+      ]
+    },
+    {
+      "opcode": "4d",
+      "name": "vm_setLocalVar",
+      "native_address": "0x808f6dc",
+      "semantic_status": "bounded",
+      "test_scope": "related synthetic tests; not complete per-opcode branch coverage",
+      "group": "variable_slots",
+      "implemented_cases": [
+        "non-pop assignment to valid local/arg; reference params write through"
+      ],
+      "excluded_cases": [
+        "global slots; arbitrary native attributes; lifecycle destruction timing"
+      ],
+      "related_tests": [
+        "assignment_preserves_top_and_argument_local_slots_have_distinct_directions",
+        "linked_variables_relocate_and_objects_remain_isolated",
+        "unallocated_local_read_returns_undefined_but_write_errors"
+      ],
+      "evidence": [
+        "docs/vm-inheritance-runtime.md",
+        "docs/evidence/actions.csv"
+      ],
+      "dependencies": [
+        "global storage",
+        "object lifetime"
+      ],
+      "exit_criteria": "Verify local/object/global slot semantics across all call types and deletion/unwind.",
+      "subsystem_envelope": [
+        "stable local/argument or root object slots; constitution variable-base relocation; non-pop assignments"
+      ]
+    },
+    {
+      "opcode": "4e",
+      "name": "vm_setObjVar",
+      "native_address": "0x808f7f8",
+      "semantic_status": "bounded",
+      "test_scope": "related synthetic tests; not complete per-opcode branch coverage",
+      "group": "variable_slots",
+      "implemented_cases": [
+        "non-pop assignment to object cell using current constitution variable base"
+      ],
+      "excluded_cases": [
+        "global slots; arbitrary native attributes; lifecycle destruction timing"
+      ],
+      "related_tests": [
+        "assignment_preserves_top_and_argument_local_slots_have_distinct_directions",
+        "linked_variables_relocate_and_objects_remain_isolated",
+        "unallocated_local_read_returns_undefined_but_write_errors"
+      ],
+      "evidence": [
+        "docs/vm-inheritance-runtime.md",
+        "docs/evidence/actions.csv"
+      ],
+      "dependencies": [
+        "global storage",
+        "object lifetime"
+      ],
+      "exit_criteria": "Verify local/object/global slot semantics across all call types and deletion/unwind.",
+      "subsystem_envelope": [
+        "stable local/argument or root object slots; constitution variable-base relocation; non-pop assignments"
+      ]
+    },
+    {
+      "opcode": "4f",
+      "name": "vm_sizeof",
+      "native_address": "0x808f840",
+      "semantic_status": "bounded",
+      "test_scope": "related synthetic tests; not complete per-opcode branch coverage",
+      "group": "containers",
+      "implemented_cases": [
+        "Array/Mapping/Bytes size; other currently represented ordinary types zero"
+      ],
+      "excluded_cases": [
+        "Buffer and range operations; arbitrary key types; circular containers; string indexing"
+      ],
+      "related_tests": [
+        "array_constructor_preserves_top_first_order_and_empty_size",
+        "mapping_constructor_uses_total_value_count_and_oldest_pushed_duplicate_wins",
+        "container_type_restrictions_and_access_modes_are_explicit"
+      ],
+      "evidence": [
+        "docs/vm-container-semantics.md",
+        "docs/evidence/actions.csv"
+      ],
+      "dependencies": [
+        "full value model"
+      ],
+      "exit_criteria": "Close native container type/mode matrix and combined alias, bounds and cleanup tests.",
+      "subsystem_envelope": [
+        "acyclic shared arrays/mappings; scalar or raw-byte mapping keys; member query modes 0/1; size for Array/Mapping/Bytes"
+      ]
+    },
+    {
+      "opcode": "50",
+      "name": "vm_stepJmpForLoop",
+      "native_address": "0x80bcdb0",
+      "semantic_status": "unimplemented",
+      "test_scope": "no semantic execution tests claimed",
+      "group": "integer_collection_loop",
+      "implemented_cases": [],
+      "excluded_cases": [
+        "opcode rejected by bounded preparation; no runtime semantic implementation"
+      ],
+      "related_tests": [],
+      "evidence": [
+        "docs/evidence/actions.csv",
+        "docs/vm-control-flow-semantics.md"
+      ],
+      "dependencies": [
+        "hidden local slot payload and immediate overwrite cleanup",
+        "inclusive +/-1 numeric and header-retained Array traversal",
+        "native Mapping hash traversal order"
+      ],
+      "exit_criteria": "Implement confirmed integer/Array paths with hidden-slot ownership, budget and cleanup regressions; reject Mapping until native hash order and mutation semantics are recovered."
+    },
+    {
+      "opcode": "51",
+      "name": "vm_subValue",
+      "native_address": "0x808e654",
+      "semantic_status": "bounded",
+      "test_scope": "related synthetic tests; not complete per-opcode branch coverage",
+      "group": "numeric_arithmetic_comparison",
+      "implemented_cases": [
+        "wrapping Int subtract; bounded Int/Real subtraction preserving left-type policy"
+      ],
+      "excluded_cases": [
+        "String/container arithmetic; all other native value-type branches; native floating environment equivalence"
+      ],
+      "related_tests": [
+        "executes_all_integer_arithmetic_and_comparison_operations",
+        "mixed_arithmetic_preserves_left_type_except_remainder",
+        "numeric_comparisons_round_integer_inputs_and_nan_is_unordered"
+      ],
+      "evidence": [
+        "docs/vm-numeric-semantics.md",
+        "docs/evidence/actions.csv"
+      ],
+      "dependencies": [
+        "full value model"
+      ],
+      "exit_criteria": "Audit native dispatch for every operand tag pair; test accepted pairs, rejection and numeric edge policies.",
+      "subsystem_envelope": [
+        "i32 wrapping arithmetic; checked divide/remainder faults; bounded Int/Real arithmetic and comparisons"
+      ]
+    },
+    {
+      "opcode": "55",
+      "name": "vm_xorValue",
+      "native_address": "0x808e134",
+      "semantic_status": "bounded",
+      "test_scope": "related synthetic tests; not complete per-opcode branch coverage",
+      "group": "integer_bitwise",
+      "implemented_cases": [
+        "Int bitwise XOR"
+      ],
+      "excluded_cases": [
+        "non-Int operands; complete native coercion claims"
+      ],
+      "related_tests": [
+        "bitwise_operations_and_logical_right_shift_follow_guarded_native_counts"
+      ],
+      "evidence": [
+        "docs/vm-numeric-semantics.md",
+        "docs/evidence/actions.csv"
+      ],
+      "dependencies": [
+        "numeric operand matrix"
+      ],
+      "exit_criteria": "Verify all shift boundaries and native non-Int behavior; preserve explicit rejection policy.",
+      "subsystem_envelope": [
+        "Int operands; shift outside 0..31 yields zero"
+      ]
+    }
+  ]
+}

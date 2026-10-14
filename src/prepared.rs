@@ -11,10 +11,10 @@ use std::{
 };
 
 pub const SUPPORTED_OPCODES: &[u8] = &[
-    0x1, 0x2, 0x3, 0x4, 0x7, 0x8, 0xd, 0xf, 0x13, 0x14, 0x15, 0x16, 0x18, 0x19, 0x1b, 0x1c, 0x1d,
-    0x1e, 0x1f, 0x20, 0x21, 0x22, 0x24, 0x25, 0x26, 0x27, 0x28, 0x29, 0x2a, 0x2b, 0x2d, 0x2e, 0x2f,
-    0x30, 0x32, 0x33, 0x34, 0x37, 0x39, 0x3b, 0x3c, 0x3d, 0x3e, 0x3f, 0x40, 0x41, 0x42, 0x43, 0x44,
-    0x47, 0x48, 0x49, 0x4a, 0x4b, 0x4d, 0x4e, 0x4f, 0x51, 0x55,
+    0x1, 0x2, 0x3, 0x4, 0x7, 0x8, 0xa, 0xb, 0xc, 0xd, 0xf, 0x13, 0x14, 0x15, 0x16, 0x18, 0x19,
+    0x1b, 0x1c, 0x1d, 0x1e, 0x1f, 0x20, 0x21, 0x22, 0x24, 0x25, 0x26, 0x27, 0x28, 0x29, 0x2a, 0x2b,
+    0x2d, 0x2e, 0x2f, 0x30, 0x32, 0x33, 0x34, 0x37, 0x39, 0x3b, 0x3c, 0x3d, 0x3e, 0x3f, 0x40, 0x41,
+    0x42, 0x43, 0x44, 0x47, 0x48, 0x49, 0x4a, 0x4b, 0x4d, 0x4e, 0x4f, 0x51, 0x55,
 ];
 #[derive(Debug, Clone)]
 pub struct Instruction {
@@ -171,7 +171,7 @@ fn bytes(hex: &str) -> Result<Vec<u8>, VmError> {
 }
 fn instructions(
     segment: &CodeSegment,
-    strings: usize,
+    strings: &[Option<crate::ByteString>],
     vars: usize,
     initialization: bool,
 ) -> Result<Vec<Instruction>, VmError> {
@@ -186,26 +186,30 @@ fn instructions(
             )
             .ok_or_else(|| err("node offset overflow"))?;
         let mut operands = [i32::from(a), i32::from(b)];
-        if matches!(op, 0x3c | 0x3f) {
+        if matches!(op, 0x0a | 0x0b | 0x3c | 0x3f) {
             let pos = (i32::from(b) << 16) | i32::from(a);
             let raw = usize::try_from(pos)
                 .ok()
                 .and_then(|pos| {
-                    pos.checked_add(if op == 0x3f { 8 } else { 4 })
+                    pos.checked_add(if op == 0x3c { 4 } else { 8 })
                         .and_then(|end| metadata.get(pos..end))
                 })
                 .ok_or_else(|| {
-                    let mut e = err("numeric metadata operand is truncated or outside segment");
+                    let mut e = err("metadata operand is truncated or outside segment");
                     e.pc = Some(pc);
                     e.offset = Some(offset);
                     e
                 })?;
             operands[0] = i32::from_le_bytes(raw[..4].try_into().unwrap());
-            if op == 0x3f {
+            if op != 0x3c {
                 operands[1] = i32::from_le_bytes(raw[4..8].try_into().unwrap());
             }
         }
-        let check = if op == 0x08 && initialization {
+        let check = if initialization && matches!(op, 0x0a..=0x0c) {
+            Err(unsupported(
+                "case instructions are unavailable in initialization",
+            ))
+        } else if op == 0x08 && initialization {
             Err(unsupported(
                 "cross-object calls during initialization are unsupported",
             ))
@@ -236,8 +240,15 @@ fn instructions(
             Err(unsupported(format!(
                 "opcode 0x{op:02x} is not supported by the bounded VM"
             )))
-        } else if op == 0x40 && (a < 0 || a as usize >= strings) {
+        } else if op == 0x40 && (a < 0 || a as usize >= strings.len()) {
             Err(err("shared string index outside pool"))
+        } else if op == 0x0b
+            && usize::try_from(operands[1])
+                .ok()
+                .and_then(|i| strings.get(i))
+                .is_none_or(Option::is_none)
+        {
+            Err(err("case string index is outside pool or empty"))
         } else if matches!(op, 0x3d | 0x3e | 0x4e) && (a < 0 || a as usize >= vars) {
             Err(err("object variable index outside capacity"))
         } else if op == 0x07 && (b as u8 & 0x80 != 0) {
@@ -252,7 +263,7 @@ fn instructions(
             e.offset = Some(offset);
             return Err(e);
         }
-        if matches!(op, 0x1f | 0x21 | 0x0f) {
+        if matches!(op, 0x0a..=0x0c | 0x1f | 0x21 | 0x0f) {
             let target = (pc as i64) + 1 + i64::from(operands[0]);
             if target < 0 || target >= segment.nodes.len() as i64 {
                 let mut e = err("relative branch target outside code");
@@ -340,7 +351,11 @@ fn prepare_entry(
     })
 }
 
-fn prepare_function(f: Function, strings: usize, vars: usize) -> Result<PreparedFunction, VmError> {
+fn prepare_function(
+    f: Function,
+    strings: &[Option<crate::ByteString>],
+    vars: usize,
+) -> Result<PreparedFunction, VmError> {
     let index = f
         .index
         .ok_or_else(|| unsupported("hidden functions are not supported"))?;
@@ -446,7 +461,7 @@ pub fn prepare_program(image: ProgramImage) -> Result<PreparedProgram, VmError> 
         let mut functions = BTreeMap::new();
         for function in image.functions {
             let index = function.index;
-            let prepared = prepare_function(function, image.strings.len(), image.max_vars as usize)
+            let prepared = prepare_function(function, &image.strings, image.max_vars as usize)
                 .map_err(|mut e| {
                     e.function = index;
                     e
@@ -883,7 +898,7 @@ fn prepare_catalog(
                         let prepare = || {
                             let code = instructions(
                                 &image.init,
-                                image.strings.len(),
+                                &image.strings,
                                 image.max_vars as usize,
                                 true,
                             )?;
@@ -944,7 +959,7 @@ fn prepare_catalog(
                         body.attrib |= 4;
                     }
                 }
-                let mut f = prepare_function(body, image.strings.len(), image.max_vars as usize)
+                let mut f = prepare_function(body, &image.strings, image.max_vars as usize)
                     .map_err(|mut e| {
                         e.source = c.key.clone();
                         e.function = Some(i as i16);

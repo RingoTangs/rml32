@@ -1,10 +1,8 @@
 # rml32
 
-对 `magic_Linux32` 进行静态分析，并以 Rust 重写兼容驱动。当前已实现**只读离线加载器**和阶段 2Q 的**数值、共享容器、引用参数、受限默认/可变参数、继承链接、初始化、构造回滚及受限跨对象调用 VM 库**，支持 59 种操作码的限定路径。VM 仅在人工构造程序上验证，尚无可运行服务端；`rml32-inspect` 继续只读检查制品。
+对 `magic_Linux32` 进行静态分析，并以 Rust 重写兼容驱动。当前已实现**只读离线加载器**和阶段 2S 的**数值、共享容器、引用参数、受限默认/可变参数、继承链接、初始化、构造回滚及受限跨对象调用及 switch VM 库**，支持 62 种操作码的限定路径。VM 仅在人工构造程序上验证，尚无可运行服务端；`rml32-inspect` 继续只读检查制品。
 
-阶段 2Q 已实现08直接对象调用和41 thisObject，支持显式方法目录、private/default_interface、参数及引用转发、上下文恢复和预算暂停，237项Rust测试通过。见[跨对象调用运行时](docs/vm-cross-object-runtime.md)和[当前逐操作码矩阵](docs/stage2q-evidence/matrix.md)。主语料73种中交集57种、缺16种；阶段2尚未完成，编号比例不是整体功能完成率。阶段2P评估及其证据保持历史快照。
-
-阶段2R已完成[六条控制流指令静态取证与后续设计](docs/vm-control-flow-semantics.md)，确认switch逐条匹配及整数/集合循环契约；本轮运行时不变，下一批先实现switch三条，循环和mapping顺序限制见报告。
+阶段2S已实现0a/0b/0c逐条case匹配与default跳转，254项Rust测试通过。见[switch运行时](docs/vm-switch-runtime.md)与[当前矩阵](docs/stage2s-evidence/matrix.md)。主语料73种中交集60种、缺13种，阶段2尚未完成；编号比例不是功能完成率。2P/2Q/2R报告与证据保留历史快照。循环后续需先完善隐藏Cell载荷，mapping仍受原生哈希顺序约束。
 
 ## 构建与检查
 
@@ -37,6 +35,7 @@ python3 tests/compare_corpus.py --report target/stage1-validation.json
 
 ## 文档与边界
 
+- [阶段 2S switch 运行时](docs/vm-switch-runtime.md)
 - [阶段 2R 控制流静态语义与实施设计](docs/vm-control-flow-semantics.md)
 - [阶段 2Q 跨对象调用运行时](docs/vm-cross-object-runtime.md)
 - [阶段 2P 历史完成度评估](docs/stage2-completion-assessment.md)

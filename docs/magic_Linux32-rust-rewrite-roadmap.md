@@ -2,9 +2,11 @@
 
 本文采用“总体方案 → 分阶段实施 → 验收与风险”的总—分结构，面向后续实现兼容运行时的工程师。依据截至 2026-10-13 的 [静态分析](magic_Linux32-static-analysis.md) 与 [服务包兼容性分析](magic_Linux32-rust-compatibility-analysis.md)。本文是实施方案，不表示 Rust 服务端已经实现或原程序已经运行验证。
 
-**阶段2R静态进展：**已取得0a/0b/0c与23/12/50及辅助函数的Ghidra证据，确认case固定metadata对、±1整数闭区间及997集合循环、隐藏控制槽与header清理。见[控制流语义与下一批设计](vm-control-flow-semantics.md)。运行时继续为59种限定操作码、237项Rust测试；下一实现批次先补switch三条，再设计隐藏Cell载荷并补整数/数组循环，mapping等待原生哈希顺序兼容证据。既有2P/2Q快照保持冻结。
+**当前统一状态（阶段2S）：**已实现受限0a/0b/0c，62种限定操作码、254项Rust测试；主语料交集60种、缺13种。见[switch运行时](vm-switch-runtime.md)与[当前矩阵](stage2s-evidence/matrix.md)。阶段2仍未完成；下一批先处理隐藏Cell载荷及整数/数组循环，mapping等待原生哈希顺序兼容，随后推进值/范围、通用catch及对象生命周期、全局/宿主契约。以下阶段条目保留其历史范围与测试数。
 
-**当前统一状态（阶段2Q）：**已实现受限08跨对象调用、41 thisObject及显式方法目录，59种限定操作码、237项Rust测试；主语料交集57种、缺16种。见[跨对象调用运行时](vm-cross-object-runtime.md)与[当前矩阵](stage2q-evidence/matrix.md)。阶段2仍未完成，字符串/数组目标、原生命名表、函数值、全局和完整异常/生命周期尚有缺口。后续先补控制流，再推进值/buffer/范围、通用catch和对象生命周期及全局/宿主契约。
+**阶段2R历史静态进展：**已取得0a/0b/0c与23/12/50及辅助函数的Ghidra证据，确认case固定metadata对、±1整数闭区间及997集合循环、隐藏控制槽与header清理。见[控制流语义与下一批设计](vm-control-flow-semantics.md)。运行时继续为59种限定操作码、237项Rust测试；下一实现批次先补switch三条，再设计隐藏Cell载荷并补整数/数组循环，mapping等待原生哈希顺序兼容证据。既有2P/2Q快照保持冻结。
+
+**阶段2Q历史基线：**已实现受限08跨对象调用、41 thisObject及显式方法目录，59种限定操作码、237项Rust测试；主语料交集57种、缺16种。见[跨对象调用运行时](vm-cross-object-runtime.md)与[当前矩阵](stage2q-evidence/matrix.md)。阶段2仍未完成，字符串/数组目标、原生命名表、函数值、全局和完整异常/生命周期尚有缺口。后续先补控制流，再推进值/buffer/范围、通用catch和对象生命周期及全局/宿主契约。
 
 **阶段 2P 历史基线（2026-10-14）：**阶段2尚未完成；保持57种限定操作码、212项Rust测试。主语料73种中交集55种，缺18种，另有合成路径4d/4e；编号比例不代表整体完成率。见[完成度评估](stage2-completion-assessment.md)、[逐指令矩阵](stage2-completion-evidence/matrix.md)和[跨对象调用下一批设计](stage2-completion-evidence/cross-object-design.md)。后续依次补调用、控制流、值/buffer/范围/循环、通用catch及完整生命周期、全局/06宿主契约，再进入阶段3实际efun/bootstrap/调度。以下2A—2O条目保留各历史阶段的实现范围及当时测试数。
 

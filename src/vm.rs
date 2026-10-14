@@ -1353,6 +1353,37 @@ impl Vm {
         let n = self.stack.len();
         match opcode {
             0x08 => self.call_other(&frame, f.local_count, a, b),
+            // vm_caseCheckNumber/String/Default @0x080974c0/4fc/584.
+            0x0a..=0x0c => {
+                self.need(1, &frame, f.local_count)?;
+                // Native 0b checks the body-specific pool before testing the selector tag.
+                let literal = if opcode == 0x0b {
+                    Some(
+                        f.pool
+                            .unwrap_or(&p.strings)
+                            .get(b as usize)
+                            .and_then(Option::as_ref)
+                            .ok_or_else(|| {
+                                err(VmErrorKind::InvalidProgram, "case string is unavailable")
+                            })?,
+                    )
+                } else {
+                    None
+                };
+                let selector = self.value(n - 1)?; // Reference selectors remain unsupported.
+                let matched = match opcode {
+                    0x0a => matches!(selector, Value::Int(value) if value == b),
+                    0x0b => {
+                        matches!((&selector, literal), (Value::Bytes(value), Some(Value::Bytes(expected))) if value == expected)
+                    }
+                    _ => true,
+                };
+                if matched {
+                    self.jump(a, f.instructions.len())?;
+                    self.stack.pop();
+                }
+                Ok(())
+            }
             // vm_pushThisObject @0x080975d8. All currently accepted frames own an Object.
             0x41 => self.push(Value::Object(frame.object)),
             0x22 | 0x2f => self.numeric_update(opcode, a, &frame, f.local_count),

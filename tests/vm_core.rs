@@ -652,7 +652,7 @@ fn supported_types_have_explicit_legacy_tags() {
         [0, 1, 2, 4, 10]
     );
     let supported: BTreeSet<_> = rml32::prepared::SUPPORTED_OPCODES.iter().collect();
-    assert_eq!(supported.len(), 59);
+    assert_eq!(supported.len(), 62);
     assert_eq!(ByteString::new(b"\xff").bytes, b"\xff");
 }
 
@@ -6246,4 +6246,470 @@ fn other_call_inherited_private_body_and_recursive_frame_limit_are_bounded() {
     vm.start(o, 0, vec![]).unwrap();
     assert_eq!(vm.run(100).unwrap_err().kind, VmErrorKind::Limit);
     assert_eq!(vm.frame_depth(), 2);
+}
+
+// Stage 2S: case instructions execute only synthetic code and metadata.
+fn switch_image(op: u8, literal: i32, strings: &[&[u8]]) -> ProgramImage {
+    let mut f = fun(
+        0,
+        1,
+        0,
+        255,
+        &[
+            (0, 0, 0x37),
+            (0, 0, op),
+            (0, 99, 0x0c),
+            (10, 0, 0x3b),
+            (0, 0, 0x49),
+            (20, 0, 0x3b),
+        ],
+    );
+    f.meta.extend(3i32.to_le_bytes()); // pc3 -> pc7; a miss reaches default at pc4
+    f.meta.extend(literal.to_le_bytes());
+    image(&[f], 0, strings)
+}
+
+#[test]
+fn switch_number_cases_match_only_exact_ints_and_default_consumes_selector() {
+    for literal in [i32::MIN, -3, 0, i32::MAX] {
+        for (value, matched) in [
+            (Value::Int(literal), true),
+            (Value::Int(literal.wrapping_add(1)), false),
+            (real(literal as f32), false),
+            (Value::bytes(literal.to_string()), false),
+            (Value::Void, false),
+            (Value::Undefined, false),
+            (Value::array(vec![]).unwrap(), false),
+            (Value::mapping(vec![]).unwrap(), false),
+        ] {
+            let (mut vm, o) = machine(switch_image(0x0a, literal, &[]), vec![]);
+            vm.start(o, 0, vec![value]).unwrap();
+            returns(&mut vm, Value::Int(if matched { 20 } else { 10 }));
+            assert!(vm.stack().unwrap().is_empty());
+        }
+    }
+}
+
+#[test]
+fn switch_string_cases_compare_length_and_raw_bytes_without_coercion() {
+    for (pool, selector, matched) in [
+        (b"abc\0".as_slice(), Value::bytes(b"abc"), true),
+        (b"abc\0", Value::bytes(b"ABC"), false),
+        (b"abc\0", Value::bytes(b"abcd"), false),
+        (b"abc\0", Value::bytes(b"abc\0"), false),
+        (b"\0", Value::bytes(b""), true),
+        (b"\xff\xfe\0", Value::bytes(b"\xff\xfe"), true),
+        (b"\xff\0ignored\0", Value::bytes(b"\xff"), true),
+        (b"3\0", Value::Int(3), false),
+        (b"3\0", real(3.0), false),
+        (b"abc\0", Value::Void, false),
+    ] {
+        let (mut vm, o) = machine(switch_image(0x0b, 0, &[pool]), vec![]);
+        vm.start(o, 0, vec![selector]).unwrap();
+        returns(&mut vm, Value::Int(if matched { 20 } else { 10 }));
+    }
+}
+
+#[test]
+fn switch_miss_preserves_selector_and_hit_pops_exactly_one_value() {
+    for matched in [false, true] {
+        let mut f = fun(
+            0,
+            1,
+            0,
+            255,
+            &[
+                (77, 0, 0x3b),
+                (0, 0, 0x37),
+                (0, 0, 0x0a),
+                (0, 0, 0x33),
+                (0, 0, 0x49),
+            ],
+        );
+        f.meta.extend(1i32.to_le_bytes()); // case pc4 -> pc6 return; miss pop at pc5
+        f.meta.extend(3i32.to_le_bytes());
+        let (mut vm, o) = machine(image(&[f], 0, &[]), vec![]);
+        vm.start(o, 0, vec![Value::Int(if matched { 3 } else { 4 })])
+            .unwrap();
+        vm.run(4).unwrap();
+        let before = vm.stack().unwrap();
+        vm.run(1).unwrap();
+        if matched {
+            assert_eq!(vm.stack().unwrap().len(), before.len() - 1);
+        } else {
+            assert_eq!(vm.stack().unwrap(), before);
+        }
+        returns(&mut vm, Value::Int(77));
+    }
+}
+
+#[test]
+fn switch_sequential_mixed_cases_and_default_choose_first_matching_case() {
+    let mut f = fun(
+        0,
+        1,
+        0,
+        255,
+        &[
+            (0, 0, 0x37),
+            (0, 0, 0x0a),
+            (8, 0, 0x0b),
+            (4, -7, 0x0c),
+            (11, 0, 0x3b),
+            (0, 0, 0x49),
+            (22, 0, 0x3b),
+            (0, 0, 0x49),
+            (33, 0, 0x3b),
+        ],
+    );
+    for pair in [[2i32, 7], [3, 0]] {
+        for v in pair {
+            f.meta.extend(v.to_le_bytes());
+        }
+    }
+    for (selector, expected) in [
+        (Value::Int(7), 11),
+        (Value::bytes(b"yes"), 22),
+        (Value::Int(8), 33),
+    ] {
+        let (mut vm, o) = machine(image(&[f.clone()], 0, &[b"yes\0"]), vec![]);
+        vm.start(o, 0, vec![selector]).unwrap();
+        returns(&mut vm, Value::Int(expected));
+    }
+}
+
+#[test]
+fn switch_without_default_and_nested_selectors_need_no_hidden_state() {
+    let mut f = fun(
+        0,
+        0,
+        0,
+        255,
+        &[
+            (90, 0, 0x3b),
+            (3, 0, 0x3b),
+            (0, 0, 0x0a),
+            (0, 0, 0x33),
+            (0, 0, 0x0c),
+            (0, 0, 0x49),
+        ],
+    );
+    f.meta.extend(0i32.to_le_bytes());
+    f.meta.extend(8i32.to_le_bytes());
+    // Inner miss keeps3, explicit33 drops it; default pops outer90. ReturnVoid.
+    let (mut vm, o) = machine(image(&[f], 0, &[]), vec![]);
+    vm.start(o, 0, vec![]).unwrap();
+    returns(&mut vm, Value::Void);
+}
+
+#[test]
+fn switch_budget_pause_commits_case_only_once_and_zero_budget_is_inert() {
+    let (mut vm, o) = machine(switch_image(0x0a, 3, &[]), vec![]);
+    vm.start(o, 0, vec![Value::Int(3)]).unwrap();
+    vm.run(3).unwrap(); // immediately before case
+    let before = vm.stack().unwrap();
+    assert_eq!(vm.run(0).unwrap(), RunOutcome::BudgetExhausted);
+    assert_eq!(vm.stack().unwrap(), before);
+    assert_eq!(vm.run(1).unwrap(), RunOutcome::BudgetExhausted);
+    assert_eq!(vm.stack().unwrap().len(), before.len() - 1);
+    assert_eq!(vm.run(0).unwrap(), RunOutcome::BudgetExhausted);
+    returns(&mut vm, Value::Int(20));
+}
+
+#[test]
+fn switch_empty_calculation_region_and_reference_selectors_fail_without_consumption() {
+    for op in [0x0a, 0x0b, 0x0c] {
+        for reference in [false, true] {
+            let mut body = if reference {
+                vec![(-1, 0, 0x39)]
+            } else {
+                vec![]
+            };
+            body.push((0, 0, op));
+            let mut f = fun(0, 0, 1, 255, &body);
+            f.meta.extend([0; 8]);
+            let (mut vm, o) = machine(image(&[f], 0, &[b"x\0"]), vec![]);
+            vm.start(o, 0, vec![]).unwrap();
+            vm.run(if reference { 3 } else { 2 }).unwrap();
+            let before = vm.stack().unwrap();
+            let e = vm.run(1).unwrap_err();
+            assert_eq!(
+                e.kind,
+                if reference {
+                    VmErrorKind::UnsupportedFeature
+                } else {
+                    VmErrorKind::StackUnderflow
+                }
+            );
+            assert_eq!(vm.stack().unwrap(), before);
+            assert_eq!(vm.run(1).unwrap_err(), e);
+        }
+    }
+}
+
+#[test]
+fn switch_preparation_checks_metadata_sign_extension_truncation_and_offsets() {
+    for (a, b, len) in [
+        (-1, 0, 8),
+        (0, -1, 8),
+        (0, 0, 7),
+        (8, 0, 8),
+        (-32768, 1, 65544),
+    ] {
+        for op in [0x0a, 0x0b] {
+            let mut p = switch_image(op, 0, &[b"x\0"]);
+            let f = &mut p.functions[0];
+            f.code.nodes[3] = (a, b, op);
+            f.code.metadata_hex = rml32::hex(&vec![0; len]);
+            let e = prepare_program(p).unwrap_err();
+            assert_eq!((e.kind, e.pc), (VmErrorKind::InvalidProgram, Some(3)));
+            assert!(e.offset.is_some());
+        }
+    }
+}
+
+#[test]
+fn switch_preparation_rejects_bad_string_pool_before_selector_type() {
+    for index in [-1, 1, i32::MAX, 0] {
+        let mut p = switch_image(0x0b, index, &[b"x\0"]);
+        if index == 0 {
+            p.strings[0] = None;
+        }
+        assert_eq!(
+            prepare_program(p).unwrap_err().kind,
+            VmErrorKind::InvalidProgram
+        );
+    }
+    // Unreachable case still has its pool checked during preparation.
+    let mut p = switch_image(0x0b, -1, &[b"x\0"]);
+    p.functions[0].code.nodes[2] = (1, 0, 0x3b); // an Int selector cannot hide invalid pool metadata
+    assert_eq!(prepare_program(p).unwrap_err().pc, Some(3));
+}
+
+#[test]
+fn switch_preparation_validates_all_targets_including_unreachable_cases() {
+    for delta in [i32::MIN, -5, 100, i32::MAX] {
+        let mut p = switch_image(0x0a, 3, &[]);
+        let mut meta = Vec::new();
+        meta.extend(delta.to_le_bytes());
+        meta.extend(3i32.to_le_bytes());
+        p.functions[0].code.metadata_hex = rml32::hex(&meta);
+        assert_eq!(prepare_program(p).unwrap_err().pc, Some(3));
+    }
+    for a in [-32768, 32767] {
+        let p = image(&[fun(0, 0, 0, 255, &[(a, 0, 0x0c)])], 0, &[]);
+        assert_eq!(prepare_program(p).unwrap_err().pc, Some(2));
+    }
+}
+
+#[test]
+fn switch_metadata_allows_unaligned_shared_and_overlapping_records() {
+    let mut f = fun(
+        0,
+        0,
+        0,
+        255,
+        &[(0, 0, 0x3b), (1, 0, 0x0a), (1, 0, 0x0a), (5, 0, 0x0a)],
+    );
+    // Records at1 and5 overlap by4 bytes: both decode [0,0].
+    f.meta = vec![0; 13];
+    let p = prepare_program(image(&[f], 0, &[])).unwrap();
+    for i in &p.function(0).unwrap().instructions()[3..6] {
+        assert_eq!(i.operands(), [0, 0]);
+    }
+    // Positive high byte participates in the signed address expression.
+    let mut f = fun(0, 0, 0, 255, &[(0, 1, 0x0a)]);
+    f.meta = vec![0; 65544];
+    assert_eq!(
+        prepare_program(image(&[f], 0, &[]))
+            .unwrap()
+            .function(0)
+            .unwrap()
+            .instructions()[2]
+            .operands(),
+        [0, 0]
+    );
+}
+
+#[test]
+fn switch_accepts_first_and_last_node_targets_without_cfg_inference() {
+    for (op, delta) in [(0x0a, -4i32), (0x0a, 4), (0x0b, -4), (0x0b, 4)] {
+        let mut p = switch_image(op, 0, &[b"x\0"]);
+        let mut meta = Vec::new();
+        meta.extend(delta.to_le_bytes());
+        meta.extend(0i32.to_le_bytes());
+        p.functions[0].code.metadata_hex = rml32::hex(&meta);
+        assert!(prepare_program(p).is_ok()); // length9: targets0 or8
+    }
+}
+
+#[test]
+fn switch_inherited_bodies_validate_and_use_their_own_string_pools() {
+    let (mut p, mut c) = inherited_pair(
+        &[
+            (0, 0, 0x40),
+            (0, 0, 0x2e),
+            (0, 0, 0x0c),
+            (10, 0, 0x3b),
+            (0, 0, 0x49),
+            (20, 0, 0x3b),
+        ],
+        &[
+            (0, 0, 0x07),
+            (0, 0, 0x40),
+            (0, 0, 0x2e),
+            (0, 0, 0x0c),
+            (30, 0, 0x3b),
+            (1, 0, 0x21),
+            (40, 0, 0x3b),
+            (2, 0, 0x16),
+        ],
+    );
+    p.functions[0].code.nodes[3] = (0, 0, 0x0b);
+    c.functions[0].code.nodes[4] = (0, 0, 0x0b);
+    for f in [&mut p.functions[0], &mut c.functions[0]] {
+        let mut meta = Vec::new();
+        meta.extend(3i32.to_le_bytes());
+        meta.extend(0i32.to_le_bytes());
+        f.code.metadata_hex = rml32::hex(&meta);
+    }
+    let (mut vm, o) = linked_vm(&linked_catalog(p.clone(), c.clone()));
+    vm.start(o, 1, vec![]).unwrap();
+    assert_eq!(
+        returned_array(&mut vm),
+        vec![Value::Int(40), Value::Int(20)]
+    );
+    p.strings[0] = None;
+    let e = link(&linked_catalog(p, c)).unwrap_err();
+    assert_eq!(
+        (e.kind, e.source.as_str(), e.function, e.pc),
+        (VmErrorKind::InvalidProgram, "parent", Some(0), Some(3))
+    );
+}
+
+#[test]
+fn switch_cross_object_calls_use_target_pool_and_restore_caller_case_context() {
+    let target = other_target(
+        switch_image(0x0b, 0, &[b"target\0"]),
+        vec![method(b"choose", 0)],
+    );
+    let mut caller = fun(
+        0,
+        1,
+        0,
+        255,
+        &[
+            (0, 0, 0x40),
+            (1, 0, 0x40),
+            (0, 0, 0x37),
+            (0, 1, 0x08),
+            (0, 0, 0x0a),
+            (0, 0, 0x0c),
+            (10, 0, 0x3b),
+            (0, 0, 0x49),
+            (30, 0, 0x3b),
+        ],
+    );
+    caller.meta.extend(3i32.to_le_bytes());
+    caller.meta.extend(20i32.to_le_bytes());
+    let (mut vm, a, b) = other_machine(
+        image(&[caller], 0, &[b"target\0", b"choose\0"]),
+        target,
+        vec![],
+        vec![],
+    );
+    vm.start(a, 0, vec![Value::Object(b)]).unwrap();
+    returns(&mut vm, Value::Int(30));
+    assert_eq!(vm.frame_depth(), 0);
+}
+
+#[test]
+fn switch_initialization_rejects_direct_cases_but_can_call_ordinary_helpers() {
+    for op in [0x0a, 0x0b, 0x0c] {
+        let mut p = image(&[], 0, &[b"x\0"]);
+        set_init(&mut p, &[(0, 0, op), (0, 0, 0x48)]);
+        p.init.metadata_hex = "0000000000000000".into();
+        let e = prepare_init(&init_catalog(p), "root").unwrap_err();
+        assert_eq!(
+            (e.kind, e.initialization, e.pc),
+            (VmErrorKind::UnsupportedFeature, Some(0), Some(0))
+        );
+    }
+    let mut p = switch_image(0x0a, 3, &[]);
+    p.max_vars = 1;
+    set_init(
+        &mut p,
+        &[
+            (3, 0, 0x3b),
+            (0, 1, 0x07),
+            (0, 0, 0x4e),
+            (0, 0, 0x33),
+            (0, 0, 0x48),
+        ],
+    );
+    let (mut vm, id) = init_vm(&init_catalog(p), "root");
+    let o = vm.begin_initialize(id).unwrap();
+    assert!(matches!(vm.run(100).unwrap(), RunOutcome::Finished(_)));
+    assert_eq!(object_values(&vm, o), vec![Value::Int(20)]);
+}
+
+#[test]
+fn switch_construction_helpers_and_failure_rollback_keep_existing_task_contract() {
+    for fail in [false, true] {
+        let mut p = switch_image(0x0a, 3, &[]);
+        let create = image(
+            &[fun(
+                1,
+                0,
+                0,
+                1,
+                &[(3, 0, 0x3b), (0, 1, 0x07), (0, 0, 0x4e), (0, 0, 0x33)],
+            )],
+            1,
+            &[],
+        )
+        .functions
+        .remove(0);
+        p.functions.push(create);
+        p.max_functions = 2;
+        p.max_vars = 1;
+        lifecycle_name(&mut p, 1, b"create\0");
+        if fail {
+            p.functions[1].code.nodes.insert(6, (0, 0, 0x33));
+        }
+        set_init(&mut p, &[(0, 0, 0x48)]);
+        let mut c = init_catalog(p);
+        c.bind_lifecycle(
+            "root",
+            rml32::LifecycleBinding {
+                create: Some(1),
+                destruct: None,
+            },
+        )
+        .unwrap();
+        let (mut vm, id) = construct_vm(&c, "root");
+        let o = vm.begin_construct(id, None).unwrap();
+        if fail {
+            let e = vm.run(100).unwrap_err();
+            assert_eq!(e.kind, VmErrorKind::StackUnderflow);
+            assert!(vm.objects().get(o).is_err());
+            assert_eq!(vm.frame_depth(), 0);
+        } else {
+            assert!(matches!(vm.run(100).unwrap(), RunOutcome::Finished(_)));
+            assert_eq!(object_values(&vm, o), vec![Value::Int(20)]);
+        }
+    }
+}
+
+#[test]
+fn switch_does_not_expand_default_expression_whitelist() {
+    let mut f = optional_fun(0, 1, 0, 255, &[vec![(0, 0, 0x0a)]], &[]);
+    f.meta.extend(0i32.to_le_bytes());
+    f.meta.extend(3i32.to_le_bytes());
+    let mut p = image(&[f], 0, &[]);
+    optional_meta(&mut p, 0, 0, false, &[1]);
+    assert_eq!(
+        prepare_program(p).unwrap_err().kind,
+        VmErrorKind::UnsupportedFeature
+    );
 }
