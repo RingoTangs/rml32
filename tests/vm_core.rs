@@ -652,7 +652,7 @@ fn supported_types_have_explicit_legacy_tags() {
         [0, 1, 2, 4, 10]
     );
     let supported: BTreeSet<_> = rml32::prepared::SUPPORTED_OPCODES.iter().collect();
-    assert_eq!(supported.len(), 62);
+    assert_eq!(supported.len(), 65);
     assert_eq!(ByteString::new(b"\xff").bytes, b"\xff");
 }
 
@@ -6712,4 +6712,548 @@ fn switch_does_not_expand_default_expression_whitelist() {
         prepare_program(p).unwrap_err().kind,
         VmErrorKind::UnsupportedFeature
     );
+}
+
+// Stage2T: all loop bytecode below is synthesized; no shipped program executes.
+fn numeric_loop(start: i16, end: i16, step: i16, body: &[Node]) -> Fun {
+    let mut nodes = vec![
+        (start, 0, 0x3b),
+        (-1, 0, 0x4d),
+        (0, 0, 0x33),
+        (-1, 0, 0x39),
+        (end, 0, 0x3b),
+        (step, 0, 0x3b),
+        (-2, 0, 0x23),
+    ];
+    // cond is pc9, body starts pc10; step back to body, not to cond.
+    nodes.push(((body.len() + 1) as i16, -2, 0x12));
+    nodes.extend(body);
+    nodes.push((-((body.len() + 1) as i16), -2, 0x50));
+    nodes.push((-1, 0, 0x37));
+    fun(0, 0, 2, 255, &nodes)
+}
+fn array_loop(body: &[Node]) -> Fun {
+    let mut nodes = vec![
+        (-1, 0, 0x39),
+        (0, 0, 0x37),
+        (997, 0, 0x3b),
+        (-2, 0, 0x23),
+        ((body.len() + 1) as i16, -2, 0x12),
+    ];
+    nodes.extend(body);
+    nodes.extend([(-((body.len() + 1) as i16), -2, 0x50), (-1, 0, 0x37)]);
+    fun(0, 1, 2, 255, &nodes)
+}
+#[test]
+fn loops_numeric_closed_ranges_include_end_and_write_failed_check_value() {
+    for (start, end, step, count, last) in [
+        (1, 3, 1, 3, 4),
+        (3, 1, -1, 3, 0),
+        (3, 3, 1, 1, 4),
+        (3, 3, -1, 1, 2),
+        (4, 3, 1, 0, 4),
+        (2, 3, -1, 0, 2),
+    ] {
+        let f = numeric_loop(start, end, step, &[(0, 0, 0x3e), (1, 0, 0x22)]);
+        let (mut vm, o) = machine(image(&[f], 1, &[]), vec![Value::Int(0)]);
+        vm.start(o, 0, vec![]).unwrap();
+        returns(&mut vm, Value::Int(last));
+        assert_eq!(object_values(&vm, o), vec![Value::Int(count)]);
+    }
+}
+#[test]
+fn loops_numeric_i32_endpoints_wrap_once_without_reentering() {
+    for (start, end, step, last) in [
+        (i32::MAX, i32::MAX, 1, i32::MIN),
+        (i32::MIN, i32::MIN, -1, i32::MAX),
+    ] {
+        let mut p = image(&[numeric_loop(0, 0, step, &[])], 0, &[]);
+        p.functions[0].code.nodes[2] = (0, 0, 0x37); // initial value from arg0
+        p.functions[0].code.nodes[6] = (1, 0, 0x37); // end from arg1
+        let args = image(&[fun(0, 2, 0, 255, &[])], 0, &[]).functions.remove(0);
+        p.functions[0].arguments = args.arguments;
+        p.functions[0].min_args = 2;
+        p.functions[0].max_args = 2;
+        let (mut vm, o) = machine(p, vec![]);
+        vm.start(o, 0, vec![Value::Int(start), Value::Int(end)])
+            .unwrap();
+        returns(&mut vm, Value::Int(last));
+    }
+}
+#[test]
+fn loops_numeric_body_write_does_not_change_internal_counter() {
+    let f = numeric_loop(
+        1,
+        3,
+        1,
+        &[
+            (99, 0, 0x3b),
+            (-1, 0, 0x4d),
+            (0, 0, 0x33),
+            (0, 0, 0x3e),
+            (1, 0, 0x22),
+        ],
+    );
+    let (mut vm, o) = machine(image(&[f], 1, &[]), vec![Value::Int(0)]);
+    vm.start(o, 0, vec![]).unwrap();
+    returns(&mut vm, Value::Int(4));
+    assert_eq!(object_values(&vm, o), vec![Value::Int(3)]);
+}
+#[test]
+fn loops_array_empty_single_and_multiple_copy_current_values() {
+    for values in [
+        vec![],
+        vec![Value::Int(7)],
+        vec![Value::Int(7), Value::bytes(b"last")],
+    ] {
+        let f = array_loop(&[(0, 0, 0x3e), (1, 0, 0x22)]);
+        let (mut vm, o) = machine(image(&[f], 1, &[]), vec![Value::Int(0)]);
+        vm.start(o, 0, vec![Value::array(values.clone()).unwrap()])
+            .unwrap();
+        returns(&mut vm, values.last().cloned().unwrap_or(Value::Undefined));
+        assert_eq!(object_values(&vm, o), vec![Value::Int(values.len() as i32)]);
+    }
+}
+#[test]
+fn loops_array_reads_live_cells_but_retains_original_header_after_rebinding() {
+    let f = array_loop(&[
+        (0, 0, 0x39),
+        (1, 0, 0x3b),
+        (0, 0, 0x44),
+        (99, 0, 0x3b),
+        (0, 0, 0x04),
+        (0, 0, 0x33),
+    ]);
+    let source = Value::array(vec![Value::Int(1), Value::Int(2)]).unwrap();
+    let (mut vm, o) = machine(image(&[f], 0, &[]), vec![]);
+    vm.start(o, 0, vec![source]).unwrap();
+    returns(&mut vm, Value::Int(99));
+    let f = array_loop(&[(0, 0, 0x42), (0, 0, 0x4d), (0, 0, 0x33)]); // arg0 becomes Undefined
+    let (mut vm, o) = machine(image(&[f], 0, &[]), vec![]);
+    vm.start(
+        o,
+        0,
+        vec![Value::array(vec![Value::Int(1), Value::Int(2)]).unwrap()],
+    )
+    .unwrap();
+    returns(&mut vm, Value::Int(2));
+}
+#[test]
+fn loops_control_reads_project_undefined_without_destroying_iteration() {
+    let f = numeric_loop(
+        1,
+        2,
+        1,
+        &[
+            (-2, 0, 0x37),
+            (0, 0, 0x33),
+            (-2, 0, 0x39),
+            (0, 0, 0x14),
+            (0, 0, 0x33),
+        ],
+    );
+    let (mut vm, o) = machine(image(&[f], 0, &[]), vec![]);
+    vm.start(o, 0, vec![]).unwrap();
+    returns(&mut vm, Value::Int(3));
+}
+#[test]
+fn loops_control_overwrite_invalidates_next_check_and_failure_is_sticky() {
+    let f = numeric_loop(1, 2, 1, &[(0, 0, 0x42), (-2, 0, 0x4d), (0, 0, 0x33)]);
+    let (mut vm, o) = machine(image(&[f], 0, &[]), vec![]);
+    vm.start(o, 0, vec![]).unwrap();
+    let e = vm.run(100).unwrap_err();
+    assert_eq!(e.kind, VmErrorKind::InvalidState);
+    assert_eq!(vm.run(100).unwrap_err(), e);
+    assert_eq!(vm.frame_depth(), 1);
+    vm.start(o, 0, vec![]).unwrap();
+    assert_eq!(vm.run(0).unwrap(), RunOutcome::BudgetExhausted);
+}
+#[test]
+fn loops_budget_single_step_matches_uninterrupted_execution() {
+    let p = image(
+        &[numeric_loop(-2, 2, 1, &[(0, 0, 0x3e), (1, 0, 0x22)])],
+        1,
+        &[],
+    );
+    let (mut vm, o) = machine(p, vec![Value::Int(0)]);
+    vm.start(o, 0, vec![]).unwrap();
+    for _ in 0..100 {
+        let before = vm.stack().unwrap();
+        assert_eq!(vm.run(0).unwrap(), RunOutcome::BudgetExhausted);
+        assert_eq!(vm.stack().unwrap(), before);
+        if let RunOutcome::Finished(c) = vm.run(1).unwrap() {
+            assert_eq!(c, Completion::Returned(Value::Int(3)));
+            assert_eq!(object_values(&vm, o), vec![Value::Int(5)]);
+            return;
+        }
+    }
+    panic!("loop failed to finish");
+}
+#[test]
+fn loops_bad_modes_sources_aliases_and_missing_state_preserve_operands() {
+    for mode in [0, 2, 997] {
+        let mut f = numeric_loop(1, 2, 1, &[]);
+        f.nodes[7] = (mode, 0, 0x3b);
+        let (mut vm, o) = machine(image(&[f], 0, &[]), vec![]);
+        vm.start(o, 0, vec![]).unwrap();
+        vm.run(8).unwrap();
+        let before = vm.stack().unwrap();
+        assert!(vm.run(1).is_err());
+        assert_eq!(vm.stack().unwrap(), before);
+    }
+    let mut f = numeric_loop(1, 2, 1, &[]);
+    f.nodes[5] = (-2, 0, 0x39);
+    let (mut vm, o) = machine(image(&[f], 0, &[]), vec![]);
+    vm.start(o, 0, vec![]).unwrap();
+    vm.run(8).unwrap();
+    let before = vm.stack().unwrap();
+    assert_eq!(vm.run(1).unwrap_err().kind, VmErrorKind::UnsupportedFeature);
+    assert_eq!(vm.stack().unwrap(), before);
+    let (mut vm, o) = machine(
+        image(&[fun(0, 0, 1, 255, &[(0, -1, 0x12)])], 0, &[]),
+        vec![],
+    );
+    vm.start(o, 0, vec![]).unwrap();
+    assert_eq!(vm.run(100).unwrap_err().kind, VmErrorKind::InvalidState);
+}
+#[test]
+fn loops_mapping_mode_and_member_binding_remain_explicitly_unsupported() {
+    let (mut vm, o) = machine(image(&[array_loop(&[])], 0, &[]), vec![]);
+    vm.start(o, 0, vec![Value::mapping(vec![]).unwrap()])
+        .unwrap();
+    assert_eq!(
+        vm.run(100).unwrap_err().kind,
+        VmErrorKind::UnsupportedFeature
+    );
+    let f = fun(
+        0,
+        1,
+        1,
+        255,
+        &[
+            (0, 0, 0x39),
+            (0, 0, 0x3b),
+            (0, 0, 0x44),
+            (3, 0, 0x3b),
+            (1, 0, 0x3b),
+            (-1, 0, 0x23),
+        ],
+    );
+    let (mut vm, o) = machine(image(&[f], 0, &[]), vec![]);
+    vm.start(o, 0, vec![Value::array(vec![Value::Int(1)]).unwrap()])
+        .unwrap();
+    assert_eq!(
+        vm.run(100).unwrap_err().kind,
+        VmErrorKind::UnsupportedFeature
+    );
+}
+#[test]
+fn loops_preparation_checks_slots_targets_and_lifecycle_helpers() {
+    for node in [
+        (0, 0, 0x23),
+        (-2, 0, 0x23),
+        (0, 0, 0x12),
+        (0, -2, 0x50),
+        (32767, -1, 0x12),
+    ] {
+        let p = image(&[fun(0, 0, 1, 255, &[node])], 0, &[]);
+        assert_eq!(
+            prepare_program(p).unwrap_err().kind,
+            VmErrorKind::InvalidProgram
+        );
+    }
+    for op in [0x12, 0x23, 0x50] {
+        let mut p = image(
+            &[fun(
+                0,
+                0,
+                1,
+                255,
+                &[(
+                    if op == 0x23 { -1 } else { 0 },
+                    if op == 0x23 { 0 } else { -1 },
+                    op,
+                )],
+            )],
+            0,
+            &[],
+        );
+        set_init(&mut p, &[(0, 0, 0x48)]);
+        let mut c = init_catalog(p.clone());
+        c.bind_lifecycle("root", Default::default()).unwrap();
+        assert_eq!(
+            prepare_init(&c, "root").unwrap_err().kind,
+            VmErrorKind::UnsupportedFeature
+        );
+        assert_eq!(
+            rml32::prepare_constructible_program(&c, "root", Default::default())
+                .unwrap_err()
+                .kind,
+            VmErrorKind::UnsupportedFeature
+        );
+        p.functions.clear();
+        p.init.nodes.insert(0, (-1, 0, op));
+        assert_eq!(
+            prepare_init(&init_catalog(p), "root").unwrap_err().kind,
+            VmErrorKind::UnsupportedFeature
+        );
+    }
+}
+#[test]
+fn loops_object_binding_rechecks_deleted_owner_before_committing() {
+    let caller = fun(
+        0,
+        0,
+        1,
+        255,
+        &[
+            (0, 0, 0x3e),
+            (3, 0, 0x3b),
+            (1, 0, 0x3b),
+            (-1, 0, 0x23),
+            (1, -1, 0x12),
+            (0, -1, 0x50),
+        ],
+    );
+    let (mut vm, o) = machine(image(&[caller], 1, &[]), vec![Value::Int(1)]);
+    vm.start(o, 0, vec![]).unwrap();
+    vm.run(6).unwrap();
+    vm.objects_mut().remove(o).unwrap();
+    assert_eq!(vm.run(1).unwrap_err().kind, VmErrorKind::InvalidObject);
+}
+#[test]
+fn loops_hidden_control_cannot_bind_function_reference_parameters() {
+    let caller = numeric_loop(1, 2, 1, &[(-2, 0, 0x39), (1, 1, 0x07), (0, 0, 0x33)]);
+    let mut p = image(&[caller, fun(1, 1, 0, 255, &[])], 0, &[]);
+    ref_arg(&mut p, 1, 0, 255, 0);
+    let (mut vm, o) = machine(p, vec![]);
+    vm.start(o, 0, vec![]).unwrap();
+    assert_eq!(
+        vm.run(100).unwrap_err().kind,
+        VmErrorKind::UnsupportedFeature
+    );
+}
+
+#[test]
+fn loops_nested_cursors_and_calls_do_not_share_state() {
+    // Outer 1..2, inner1..3; each inner body calls an ordinary helper.
+    let mut nodes = vec![
+        (1, 0, 0x3b),
+        (-1, 0, 0x4d),
+        (0, 0, 0x33),
+        (-1, 0, 0x39),
+        (2, 0, 0x3b),
+        (1, 0, 0x3b),
+        (-2, 0, 0x23),
+    ];
+    let cond_outer = nodes.len();
+    nodes.push((0, -2, 0x12));
+    let outer_body = nodes.len();
+    nodes.extend([
+        (1, 0, 0x3b),
+        (-3, 0, 0x4d),
+        (0, 0, 0x33),
+        (-3, 0, 0x39),
+        (3, 0, 0x3b),
+        (1, 0, 0x3b),
+        (-4, 0, 0x23),
+    ]);
+    let cond_inner = nodes.len();
+    nodes.push((0, -4, 0x12));
+    let inner_body = nodes.len();
+    nodes.extend([(1, 0, 0x07), (0, 0, 0x33)]);
+    let step_inner = nodes.len();
+    nodes.push(((inner_body as i16) - (step_inner as i16) - 1, -4, 0x50));
+    let step_outer = nodes.len();
+    nodes.push(((outer_body as i16) - (step_outer as i16) - 1, -2, 0x50));
+    nodes[cond_inner].0 = (step_outer - cond_inner - 1) as i16;
+    nodes[cond_outer].0 = (nodes.len() - cond_outer - 1) as i16;
+    nodes.push((0, 0, 0x3d));
+    let p = image(
+        &[
+            fun(0, 0, 4, 255, &nodes),
+            fun(1, 0, 0, 255, &[(0, 0, 0x3e), (1, 0, 0x22)]),
+        ],
+        1,
+        &[],
+    );
+    let (mut vm, o) = machine(p, vec![Value::Int(0)]);
+    vm.start(o, 0, vec![]).unwrap();
+    returns(&mut vm, Value::Int(6));
+}
+#[test]
+fn loops_cross_object_call_and_default_in_body_preserve_local_control() {
+    let mut loopfun = numeric_loop(
+        1,
+        3,
+        1,
+        &[(0, 0, 0x40), (0, 0, 0x3d), (0, 0, 0x08), (0, 0, 0x0c)],
+    );
+    loopfun.index = 1;
+    let caller = image(
+        &[
+            fun(
+                0,
+                1,
+                0,
+                255,
+                &[(0, 0, 0x37), (0, 0, 0x4e), (0, 0, 0x33), (1, 0, 0x07)],
+            ),
+            loopfun,
+        ],
+        1,
+        &[b"inc\0"],
+    );
+    let target = other_target(
+        image(&[fun(0, 0, 0, 255, &[(0, 0, 0x3e), (1, 0, 0x22)])], 1, &[]),
+        vec![method(b"inc", 0)],
+    );
+    let (mut next, a, b) =
+        other_machine(caller, target, vec![Value::Undefined], vec![Value::Int(0)]);
+    next.start(a, 0, vec![Value::Object(b)]).unwrap();
+    returns(&mut next, Value::Int(4));
+    assert_eq!(object_values(&next, b), vec![Value::Int(3)]);
+}
+
+#[test]
+fn loops_recursive_calls_hit_frame_limit_and_restart_discards_old_controls() {
+    let p = image(
+        &[numeric_loop(1, 2, 1, &[(0, 0, 0x07), (0, 0, 0x33)])],
+        0,
+        &[],
+    );
+    let (vm, o) = machine(p, vec![]);
+    let mut vm = Vm::with_limits(
+        vm.into_objects(),
+        VmLimits {
+            max_frames: 3,
+            ..Default::default()
+        },
+    );
+    vm.start(o, 0, vec![]).unwrap();
+    assert_eq!(vm.run(100).unwrap_err().kind, VmErrorKind::Limit);
+    assert_eq!(vm.frame_depth(), 3);
+    vm.start(o, 0, vec![]).unwrap();
+    assert_eq!(vm.frame_depth(), 1);
+    assert_eq!(vm.run(0).unwrap(), RunOutcome::BudgetExhausted);
+}
+#[test]
+fn loops_early_break_and_return_do_not_require_exhaustion() {
+    for early_return in [false, true] {
+        let body = if early_return {
+            vec![(-1, 0, 0x37), (0, 0, 0x49)]
+        } else {
+            vec![(1, 0, 0x1f)]
+        };
+        let (mut vm, o) = machine(image(&[array_loop(&body)], 0, &[]), vec![]);
+        vm.start(
+            o,
+            0,
+            vec![Value::array(vec![Value::Int(8), Value::Int(9)]).unwrap()],
+        )
+        .unwrap();
+        returns(&mut vm, Value::Int(8));
+        assert_eq!(vm.frame_depth(), 0);
+        assert!(vm.stack().unwrap().is_empty());
+    }
+}
+#[test]
+fn loops_bound_object_deleted_during_cross_call_does_not_advance_controller() {
+    let caller = image(
+        &[fun(
+            0,
+            1,
+            0,
+            255,
+            &[(0, 0, 0x3e), (0, 0, 0x40), (0, 0, 0x37), (0, 1, 0x08)],
+        )],
+        1,
+        &[b"loop\0"],
+    );
+    let mut target = image(
+        &[fun(
+            0,
+            1,
+            1,
+            255,
+            &[
+                (0, 0, 0x39),
+                (3, 0, 0x3b),
+                (1, 0, 0x3b),
+                (-1, 0, 0x23),
+                (1, -1, 0x12),
+                (0, -1, 0x50),
+            ],
+        )],
+        0,
+        &[],
+    );
+    ref_arg(&mut target, 0, 0, 2, 0);
+    let (mut vm, a, b) = other_machine(
+        caller,
+        other_target(target, vec![method(b"loop", 0)]),
+        vec![Value::Int(1)],
+        vec![],
+    );
+    vm.start(a, 0, vec![Value::Object(b)]).unwrap();
+    vm.run(12).unwrap();
+    assert_eq!(vm.frame_depth(), 2);
+    vm.objects_mut().remove(a).unwrap();
+    let before = vm.stack().unwrap();
+    let e = vm.run(1).unwrap_err();
+    assert_eq!((e.kind, e.object), (VmErrorKind::InvalidObject, Some(b)));
+    assert_eq!(vm.stack().unwrap(), before);
+    assert_eq!(vm.run(1).unwrap_err(), e);
+}
+#[test]
+fn loops_stack_and_local_allocation_limits_fail_without_bypassing_guards() {
+    for stack_limit in [1, 4] {
+        let (vm, o) = machine(image(&[numeric_loop(1, 2, 1, &[])], 0, &[]), vec![]);
+        let mut vm = Vm::with_limits(
+            vm.into_objects(),
+            VmLimits {
+                max_stack: stack_limit,
+                ..Default::default()
+            },
+        );
+        vm.start(o, 0, vec![]).unwrap();
+        assert_eq!(vm.run(100).unwrap_err().kind, VmErrorKind::Limit);
+    }
+}
+
+#[test]
+fn loops_array_copy_normalizes_dead_object_source_atomically() {
+    let (mut vm, o) = machine(image(&[array_loop(&[])], 0, &[]), vec![]);
+    let p = vm.objects().get(o).unwrap().program();
+    let victim = vm.objects_mut().create(p, vec![]).unwrap();
+    let source = Value::array(vec![Value::Object(victim)]).unwrap();
+    vm.start(o, 0, vec![source.clone()]).unwrap();
+    vm.objects_mut().remove(victim).unwrap();
+    returns(&mut vm, Value::Undefined);
+    let Value::Array(a) = source else {
+        unreachable!()
+    };
+    assert_eq!(a.elements().unwrap(), vec![Value::Undefined]);
+}
+
+#[test]
+fn loops_inherited_body_keeps_local_control_and_relocated_object_binding() {
+    let parent = image(
+        &[numeric_loop(1, 3, 1, &[(0, 0, 0x3e), (1, 0, 0x22)])],
+        1,
+        &[],
+    );
+    let mut child = image(&[fun(1, 0, 0, 255, &[(0, 0, 0x07)])], 2, &[]);
+    child.constitution_count = Some(2);
+    inherit(&mut child, &parent, b"parent\0", [1, 0, 1]);
+    let p = link(&linked_catalog(parent, child)).unwrap();
+    let mut store = ObjectStore::new();
+    let p = store.register_program(p).unwrap();
+    let o = store
+        .create(p, vec![Value::Int(100), Value::Int(0)])
+        .unwrap();
+    let mut vm = Vm::new(store);
+    vm.start(o, 1, vec![]).unwrap();
+    returns(&mut vm, Value::Int(4));
+    assert_eq!(object_values(&vm, o), vec![Value::Int(100), Value::Int(3)]);
 }

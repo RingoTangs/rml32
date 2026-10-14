@@ -1,6 +1,6 @@
 //! Bounded Magic559 interpreter; reference artifacts are never executed by tests.
 use crate::{
-    cell::Cell,
+    cell::{Cell, SlotPayload},
     object::{InitializationState, LifecycleState, ObjectStore},
     prepared::{EntryLayout, Instruction, PreparedFunction, PreparedProgram},
     value::{ObjectId, ProgramId, Value},
@@ -79,6 +79,42 @@ impl Reference {
     fn id(&self) -> u64 {
         self.id
     }
+}
+/// Private native tag-20 payload; never represented by a public Value.
+#[derive(Debug, Clone)]
+pub(crate) struct LoopControl {
+    bound: Reference,
+    state: LoopState,
+}
+#[cfg(test)]
+impl LoopControl {
+    pub(crate) fn for_test(owner: crate::container::ArrayValue) -> Self {
+        Self {
+            bound: Reference {
+                id: 0,
+                target: Target::Local {
+                    frame: 0,
+                    cell: Weak::new(),
+                },
+                readonly: false,
+                _lease: None,
+            },
+            state: LoopState::Array { owner, index: 0 },
+        }
+    }
+}
+#[derive(Debug, Clone)]
+enum LoopState {
+    Numeric {
+        next: i32,
+        end: i32,
+        step: i32,
+        finished: bool,
+    },
+    Array {
+        owner: crate::container::ArrayValue,
+        index: u32,
+    },
 }
 #[derive(Debug, Clone)]
 enum StackEntry {
@@ -672,6 +708,12 @@ impl Vm {
     }
     fn validate_binding(&self, r: &Reference) -> Result<(), VmError> {
         let cell = self.resolve(r)?;
+        if cell.is_loop()? {
+            return Err(err(
+                VmErrorKind::UnsupportedFeature,
+                "hidden loop controls cannot bind reference parameters or loop variables",
+            ));
+        }
         if let Target::Local { frame, .. } = r.target {
             let owner = self
                 .frames
@@ -1321,6 +1363,166 @@ impl Vm {
         }
         Ok(())
     }
+    fn control_cell(
+        &self,
+        frame: &Frame,
+        local_count: usize,
+        slot: i32,
+    ) -> Result<Rc<Cell>, VmError> {
+        if !frame.entered || slot >= 0 || i64::from(slot) < -(local_count as i64) {
+            return Err(err(
+                VmErrorKind::Bounds,
+                "loop control requires an allocated local slot",
+            ));
+        }
+        let pos = self
+            .slot(slot, frame)
+            .ok_or_else(|| err(VmErrorKind::Bounds, "invalid loop slot"))?;
+        match &self.stack[pos] {
+            StackEntry::Value(c) => Ok(c.clone()),
+            _ => Err(err(
+                VmErrorKind::UnsupportedFeature,
+                "loop control requires a value slot",
+            )),
+        }
+    }
+    fn loop_instruction(
+        &mut self,
+        frame: &Frame,
+        code: &CodeView<'_>,
+        opcode: u8,
+        a: i32,
+        b: i32,
+    ) -> Result<(), VmError> {
+        if self.initialization.is_some() || self.construction.is_some() {
+            return Err(err(
+                VmErrorKind::UnsupportedFeature,
+                "loop lifecycle execution is unsupported",
+            ));
+        }
+        let cell =
+            self.control_cell(frame, code.local_count, if opcode == 0x23 { a } else { b })?;
+        if opcode == 0x23 {
+            self.need(3, frame, code.local_count)?;
+            let n = self.stack.len();
+            let bound = self.reference(n - 3)?;
+            if matches!(bound.target, Target::Owned { .. }) || bound.id == cell.id() {
+                return Err(err(
+                    VmErrorKind::UnsupportedFeature,
+                    "unsupported loop binding or control alias",
+                ));
+            }
+            self.validate_binding(&bound)?;
+            let target = self.resolve(&bound)?;
+            let source = self.value(n - 2)?;
+            let mode = self.value(n - 1)?;
+            self.writable(&bound, &Value::Undefined)?;
+            let state = match (mode, source) {
+                (Value::Int(step @ (1 | -1)), Value::Int(end)) => {
+                    let Value::Int(next) = target.read()? else {
+                        return Err(err(
+                            VmErrorKind::UnsupportedType,
+                            "integer loop requires an Int initial value",
+                        ));
+                    };
+                    LoopState::Numeric {
+                        next,
+                        end,
+                        step,
+                        finished: false,
+                    }
+                }
+                (Value::Int(997), Value::Array(owner)) => LoopState::Array { owner, index: 0 },
+                (Value::Int(997), Value::Mapping(_)) => {
+                    return Err(err(
+                        VmErrorKind::UnsupportedFeature,
+                        "mapping loop order is unsupported",
+                    ));
+                }
+                (Value::Int(1 | -1 | 997), _) => {
+                    return Err(err(
+                        VmErrorKind::UnsupportedType,
+                        "invalid loop source/end type",
+                    ));
+                }
+                _ => {
+                    return Err(err(
+                        VmErrorKind::UnsupportedFeature,
+                        "loop mode requires +/-1 or Array mode997",
+                    ));
+                }
+            };
+            Cell::replace_payload_batch(vec![(
+                cell,
+                SlotPayload::Loop(Box::new(LoopControl { bound, state })),
+            )])?;
+            self.stack.truncate(n - 3);
+            return Ok(());
+        }
+        let mut control = cell.loop_control()?;
+        self.validate_binding(&control.bound)?;
+        let mut output = None;
+        let mut source_update = None;
+        let valid = match &mut control.state {
+            LoopState::Numeric {
+                next,
+                end,
+                step,
+                finished,
+            } => {
+                let value = *next;
+                *next = next.wrapping_add(*step);
+                let valid = !*finished
+                    && if *step > 0 {
+                        value <= *end
+                    } else {
+                        value >= *end
+                    };
+                if value == *end {
+                    *finished = true;
+                }
+                output = Some(Value::Int(value));
+                valid
+            }
+            LoopState::Array { owner, index } => {
+                let i = *index;
+                *index = index.wrapping_add(1);
+                if (i as usize) < owner.len() {
+                    let source = owner.cell(i as usize)?;
+                    let original = source.read()?;
+                    let value = self.copy_value(&original);
+                    if original != value {
+                        source_update = Some((source, SlotPayload::Value(value.clone())));
+                    }
+                    output = Some(value);
+                    true
+                } else {
+                    false
+                }
+            }
+        };
+        let delta = if (opcode == 0x12 && !valid) || (opcode == 0x50 && valid) {
+            a
+        } else {
+            0
+        };
+        let pc = self.frames.last().unwrap().pc as i64 + i64::from(delta);
+        if pc < 0 || pc >= code.instructions.len() as i64 {
+            return Err(err(VmErrorKind::Bounds, "loop branch outside code"));
+        }
+        // Recheck owner and readonly even on exhaustion, without retaining guards.
+        let target = self.writable(&control.bound, output.as_ref().unwrap_or(&Value::Undefined))?;
+        let mut updates = vec![(cell, SlotPayload::Loop(Box::new(control)))];
+        if let Some(value) = output {
+            updates.push((target, SlotPayload::Value(value)));
+        }
+        if let Some(update) = source_update {
+            updates.push(update);
+        }
+        Cell::replace_payload_batch(updates)?;
+        self.frames.last_mut().unwrap().pc = pc as usize;
+        Ok(())
+    }
     fn step(&mut self) -> Result<(), VmError> {
         let (frame, p) = self.context()?;
         let f = CodeView::get(&p, frame.body)?;
@@ -1352,6 +1554,7 @@ impl Vm {
         let [a, b] = operands;
         let n = self.stack.len();
         match opcode {
+            0x12 | 0x23 | 0x50 => self.loop_instruction(&frame, &f, opcode, a, b),
             0x08 => self.call_other(&frame, f.local_count, a, b),
             // vm_caseCheckNumber/String/Default @0x080974c0/4fc/584.
             0x0a..=0x0c => {
@@ -2080,5 +2283,111 @@ mod tests {
             }
             assert_eq!(cell.read().unwrap(), Value::Int(5));
         }
+    }
+    #[test]
+    fn loop_readonly_binding_and_invalidated_owner_preserve_control_state() {
+        let function = PreparedFunction {
+            private: false,
+            origin: None,
+            pool: None,
+            function_base: 0,
+            variable_base: 0,
+            index: 0,
+            name: None,
+            instructions: Rc::new(vec![
+                Instruction {
+                    opcode: 0x23,
+                    operands: [-1, 0],
+                    offset: 0,
+                },
+                Instruction {
+                    opcode: 0x12,
+                    operands: [0, -1],
+                    offset: 4,
+                },
+            ]),
+            local_count: 2,
+            args: vec![],
+            min_args: 0,
+            max_args: 0,
+            variadic: false,
+            entry: None,
+            return_type: 255,
+            return_attrib: 0,
+        };
+        let program = PreparedProgram {
+            source: "synthetic-loop".into(),
+            variable_count: 0,
+            strings: vec![],
+            functions: BTreeMap::from([(0, function)]),
+            unimplemented: Default::default(),
+            initializations: None,
+            init_order: vec![],
+            lifecycles: None,
+            methods: None,
+        };
+        let mut objects = ObjectStore::new();
+        let program = objects.register_program(program).unwrap();
+        let object = objects.create(program, vec![]).unwrap();
+        let frame = Frame {
+            id: 0,
+            program,
+            object,
+            body: FrameBody::Function(0),
+            pc: 0,
+            bp: 0,
+            argc: 0,
+            entered: true,
+            phase: EntryPhase::Body,
+        };
+        let mut vm = Vm::new(objects);
+        vm.frames.push(frame.clone());
+        let control = Cell::new(Value::Undefined).unwrap();
+        let bound = Cell::new(Value::Int(1)).unwrap();
+        vm.stack.extend([
+            StackEntry::Value(control.clone()),
+            StackEntry::Value(bound.clone()),
+            StackEntry::Reference(Reference {
+                id: bound.id(),
+                target: Target::Local {
+                    frame: 0,
+                    cell: Rc::downgrade(&bound),
+                },
+                readonly: true,
+                _lease: None,
+            }),
+        ]);
+        vm.push(Value::Int(2)).unwrap();
+        vm.push(Value::Int(1)).unwrap();
+        let p = vm.objects.program(program).unwrap();
+        let view = CodeView::get(&p, frame.body).unwrap();
+        let before = vm.stack().unwrap();
+        assert_eq!(
+            vm.loop_instruction(&frame, &view, 0x23, -1, 0)
+                .unwrap_err()
+                .kind,
+            VmErrorKind::UnsupportedFeature
+        );
+        assert_eq!(vm.stack().unwrap(), before);
+        assert!(!control.is_loop().unwrap());
+        let StackEntry::Reference(r) = &mut vm.stack[2] else {
+            unreachable!()
+        };
+        r.readonly = false;
+        vm.loop_instruction(&frame, &view, 0x23, -1, 0).unwrap();
+        vm.frames[0].id = 1;
+        let before = vm.stack().unwrap();
+        assert_eq!(
+            vm.loop_instruction(&frame, &view, 0x12, 0, -1)
+                .unwrap_err()
+                .kind,
+            VmErrorKind::InvalidState
+        );
+        assert_eq!(vm.stack().unwrap(), before);
+        assert_eq!(bound.read().unwrap(), Value::Int(1));
+        assert!(matches!(
+            control.loop_control().unwrap().state,
+            LoopState::Numeric { next: 1, .. }
+        ));
     }
 }

@@ -11,10 +11,10 @@ use std::{
 };
 
 pub const SUPPORTED_OPCODES: &[u8] = &[
-    0x1, 0x2, 0x3, 0x4, 0x7, 0x8, 0xa, 0xb, 0xc, 0xd, 0xf, 0x13, 0x14, 0x15, 0x16, 0x18, 0x19,
-    0x1b, 0x1c, 0x1d, 0x1e, 0x1f, 0x20, 0x21, 0x22, 0x24, 0x25, 0x26, 0x27, 0x28, 0x29, 0x2a, 0x2b,
-    0x2d, 0x2e, 0x2f, 0x30, 0x32, 0x33, 0x34, 0x37, 0x39, 0x3b, 0x3c, 0x3d, 0x3e, 0x3f, 0x40, 0x41,
-    0x42, 0x43, 0x44, 0x47, 0x48, 0x49, 0x4a, 0x4b, 0x4d, 0x4e, 0x4f, 0x51, 0x55,
+    0x1, 0x2, 0x3, 0x4, 0x7, 0x8, 0xa, 0xb, 0xc, 0xd, 0xf, 0x12, 0x13, 0x14, 0x15, 0x16, 0x18,
+    0x19, 0x1b, 0x1c, 0x1d, 0x1e, 0x1f, 0x20, 0x21, 0x22, 0x23, 0x24, 0x25, 0x26, 0x27, 0x28, 0x29,
+    0x2a, 0x2b, 0x2d, 0x2e, 0x2f, 0x30, 0x32, 0x33, 0x34, 0x37, 0x39, 0x3b, 0x3c, 0x3d, 0x3e, 0x3f,
+    0x40, 0x41, 0x42, 0x43, 0x44, 0x47, 0x48, 0x49, 0x4a, 0x4b, 0x4d, 0x4e, 0x4f, 0x50, 0x51, 0x55,
 ];
 #[derive(Debug, Clone)]
 pub struct Instruction {
@@ -205,7 +205,11 @@ fn instructions(
                 operands[1] = i32::from_le_bytes(raw[4..8].try_into().unwrap());
             }
         }
-        let check = if initialization && matches!(op, 0x0a..=0x0c) {
+        let check = if initialization && matches!(op, 0x12 | 0x23 | 0x50) {
+            Err(unsupported(
+                "loop instructions are unavailable in initialization",
+            ))
+        } else if initialization && matches!(op, 0x0a..=0x0c) {
             Err(unsupported(
                 "case instructions are unavailable in initialization",
             ))
@@ -263,7 +267,7 @@ fn instructions(
             e.offset = Some(offset);
             return Err(e);
         }
-        if matches!(op, 0x0a..=0x0c | 0x1f | 0x21 | 0x0f) {
+        if matches!(op, 0x0a..=0x0c | 0x12 | 0x50 | 0x1f | 0x21 | 0x0f) {
             let target = (pc as i64) + 1 + i64::from(operands[0]);
             if target < 0 || target >= segment.nodes.len() as i64 {
                 let mut e = err("relative branch target outside code");
@@ -404,6 +408,17 @@ fn prepare_function(
         }
     }
     let instructions = instructions(&f.code, strings, vars, false)?;
+    for (pc, i) in instructions.iter().enumerate() {
+        if matches!(i.opcode, 0x12 | 0x23 | 0x50) {
+            let slot = i.operands[usize::from(i.opcode != 0x23)];
+            if slot >= 0 || slot < -i32::from(f.local_count) {
+                let mut e = err("loop control must select a declared local slot");
+                e.pc = Some(pc);
+                e.offset = Some(i.offset);
+                return Err(e);
+            }
+        }
+    }
     if f.arguments.iter().any(|arg| arg.flag == 1)
         && instructions.first().is_none_or(|i| i.opcode != 0x0f)
     {
@@ -937,9 +952,16 @@ fn prepare_catalog(
             }
             let c = &linked.constitutions[slot.constitution];
             let image = &catalog.programs[&c.key];
-            if initialize && let Some(pc) = slot.body.code.nodes.iter().position(|n| n.2 == 0x08) {
+            if initialize
+                && let Some(pc) = slot
+                    .body
+                    .code
+                    .nodes
+                    .iter()
+                    .position(|n| matches!(n.2, 0x08 | 0x12 | 0x23 | 0x50))
+            {
                 let mut e = unsupported(
-                    "cross-object calls in lifecycle-prepared programs are unsupported",
+                    "cross-object calls and loops in lifecycle-prepared programs are unsupported",
                 );
                 e.source = c.key.clone();
                 e.function = Some(i as i16);

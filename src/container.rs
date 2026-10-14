@@ -16,6 +16,11 @@ impl PartialEq for ArrayValue {
 }
 impl Eq for ArrayValue {}
 impl ArrayValue {
+    #[cfg(test)]
+    pub(crate) fn header_refs(&self) -> usize {
+        Rc::strong_count(&self.0)
+    }
+
     /// Shallow snapshot: nested containers continue to share their identity.
     pub fn elements(&self) -> Result<Vec<Value>, VmError> {
         self.0.elements.iter().map(|c| c.read()).collect()

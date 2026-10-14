@@ -5,11 +5,16 @@ use std::{
     rc::Rc,
     sync::atomic::{AtomicU64, Ordering},
 };
+#[derive(Debug, Clone)]
+pub(crate) enum SlotPayload {
+    Value(Value),
+    Loop(Box<crate::vm::LoopControl>),
+}
 static NEXT_ID: AtomicU64 = AtomicU64::new(1);
 #[derive(Debug)]
 pub(crate) struct Cell {
     id: u64,
-    value: RefCell<Value>,
+    value: RefCell<SlotPayload>,
 }
 impl Cell {
     pub(crate) fn new(value: Value) -> Result<Rc<Self>, VmError> {
@@ -18,7 +23,7 @@ impl Cell {
             .map_err(|_| VmError::new(VmErrorKind::Limit, "cell ID space exhausted"))?;
         Ok(Rc::new(Self {
             id,
-            value: RefCell::new(value),
+            value: RefCell::new(SlotPayload::Value(value)),
         }))
     }
     pub(crate) fn id(&self) -> u64 {
@@ -27,8 +32,30 @@ impl Cell {
     pub(crate) fn read(&self) -> Result<Value, VmError> {
         self.value
             .try_borrow()
-            .map(|v| v.clone())
+            .map(|v| match &*v {
+                SlotPayload::Value(v) => v.clone(),
+                SlotPayload::Loop(_) => Value::Undefined,
+            })
             .map_err(|_| VmError::new(VmErrorKind::InvalidState, "value slot is borrowed"))
+    }
+    pub(crate) fn is_loop(&self) -> Result<bool, VmError> {
+        self.value
+            .try_borrow()
+            .map(|v| matches!(*v, SlotPayload::Loop(_)))
+            .map_err(|_| VmError::new(VmErrorKind::InvalidState, "value slot is borrowed"))
+    }
+    pub(crate) fn loop_control(&self) -> Result<crate::vm::LoopControl, VmError> {
+        let guard = self
+            .value
+            .try_borrow()
+            .map_err(|_| VmError::new(VmErrorKind::InvalidState, "value slot is borrowed"))?;
+        match &*guard {
+            SlotPayload::Loop(c) => Ok((**c).clone()),
+            _ => Err(VmError::new(
+                VmErrorKind::InvalidState,
+                "slot has no loop control",
+            )),
+        }
     }
     pub(crate) fn replace(&self, value: Value) -> Result<(), VmError> {
         let old = {
@@ -36,34 +63,47 @@ impl Cell {
                 .value
                 .try_borrow_mut()
                 .map_err(|_| VmError::new(VmErrorKind::InvalidState, "value slot is borrowed"))?;
-            std::mem::replace(&mut *guard, value)
+            std::mem::replace(&mut *guard, SlotPayload::Value(value))
         };
         drop(old);
         Ok(())
     }
-    /// Commit distinct-cell updates atomically. Guards never escape this module;
-    /// release every guard before dropping displaced containers and their headers.
-    pub(crate) fn replace_batch(updates: &[(Rc<Cell>, Value)]) -> Result<(), VmError> {
-        let mut guards = updates
+    /// Acquire every distinct-cell guard before committing. Drop old payloads only afterwards.
+    pub(crate) fn replace_payload_batch(
+        updates: Vec<(Rc<Cell>, SlotPayload)>,
+    ) -> Result<(), VmError> {
+        let (cells, values): (Vec<_>, Vec<_>) = updates.into_iter().unzip();
+        let mut old = Vec::with_capacity(cells.len());
+        let mut guards = cells
             .iter()
-            .map(|(cell, _)| {
-                cell.value
-                    .try_borrow_mut()
-                    .map_err(|_| VmError::new(VmErrorKind::InvalidState, "value slot is borrowed"))
+            .map(|c| {
+                c.value.try_borrow_mut().map_err(|_| {
+                    VmError::new(
+                        VmErrorKind::InvalidState,
+                        "value slot is borrowed or duplicated",
+                    )
+                })
             })
             .collect::<Result<Vec<_>, _>>()?;
-        let mut old = Vec::with_capacity(updates.len());
-        for (guard, (_, value)) in guards.iter_mut().zip(updates) {
-            old.push(std::mem::replace(&mut **guard, value.clone()));
+        for (guard, value) in guards.iter_mut().zip(values) {
+            old.push(std::mem::replace(&mut **guard, value));
         }
         drop(guards);
         drop(old);
         Ok(())
     }
+    pub(crate) fn replace_batch(updates: &[(Rc<Cell>, Value)]) -> Result<(), VmError> {
+        Self::replace_payload_batch(
+            updates
+                .iter()
+                .map(|(c, v)| (c.clone(), SlotPayload::Value(v.clone())))
+                .collect(),
+        )
+    }
     // Only called by a final header destructor. All guards are private and are
     // released before any old Value is dropped, including in replace above.
     pub(crate) fn clear_on_owner_drop(&self) {
-        let old = self.value.replace(Value::Undefined);
+        let old = self.value.replace(SlotPayload::Value(Value::Undefined));
         drop(old);
     }
 }
@@ -100,5 +140,77 @@ mod tests {
         assert_eq!(first.read().unwrap(), Value::Int(1));
         drop(guard);
         assert_eq!(second.read().unwrap(), Value::Int(2));
+    }
+    #[test]
+    fn hidden_payload_projection_and_all_replacement_paths_release_headers() {
+        let Value::Array(owner) = Value::array(vec![Value::Int(1)]).unwrap() else {
+            unreachable!()
+        };
+        let cell = Cell::new(Value::Undefined).unwrap();
+        for path in 0..3 {
+            Cell::replace_payload_batch(vec![(
+                cell.clone(),
+                SlotPayload::Loop(Box::new(crate::vm::LoopControl::for_test(owner.clone()))),
+            )])
+            .unwrap();
+            assert_eq!(owner.header_refs(), 2);
+            assert_eq!(cell.read().unwrap(), Value::Undefined);
+            assert!(cell.is_loop().unwrap());
+            {
+                let _copy = cell.loop_control().unwrap();
+                assert_eq!(owner.header_refs(), 3);
+            }
+            assert_eq!(owner.header_refs(), 2);
+            match path {
+                0 => cell.replace(Value::Int(7)).unwrap(),
+                1 => Cell::replace_batch(&[(cell.clone(), Value::Void)]).unwrap(),
+                _ => cell.clear_on_owner_drop(),
+            }
+            assert_eq!(owner.header_refs(), 1);
+            assert!(!cell.is_loop().unwrap());
+        }
+        Cell::replace_payload_batch(vec![(
+            cell.clone(),
+            SlotPayload::Loop(Box::new(crate::vm::LoopControl::for_test(owner.clone()))),
+        )])
+        .unwrap();
+        drop(cell);
+        assert_eq!(owner.header_refs(), 1);
+    }
+    #[test]
+    fn hidden_payload_batch_borrow_conflict_and_duplicate_cells_are_atomic() {
+        let Value::Array(owner) = Value::array(vec![]).unwrap() else {
+            unreachable!()
+        };
+        let cell = Cell::new(Value::Undefined).unwrap();
+        let other = Cell::new(Value::Int(8)).unwrap();
+        Cell::replace_payload_batch(vec![(
+            cell.clone(),
+            SlotPayload::Loop(Box::new(crate::vm::LoopControl::for_test(owner.clone()))),
+        )])
+        .unwrap();
+        let guard = other.value.borrow();
+        assert_eq!(
+            Cell::replace_payload_batch(vec![
+                (cell.clone(), SlotPayload::Value(Value::Int(1))),
+                (other.clone(), SlotPayload::Value(Value::Int(2)))
+            ])
+            .unwrap_err()
+            .kind,
+            VmErrorKind::InvalidState
+        );
+        assert!(cell.is_loop().unwrap());
+        assert_eq!(owner.header_refs(), 2);
+        drop(guard);
+        assert_eq!(other.read().unwrap(), Value::Int(8));
+        assert!(
+            Cell::replace_payload_batch(vec![
+                (cell.clone(), SlotPayload::Value(Value::Void)),
+                (cell.clone(), SlotPayload::Value(Value::Void))
+            ])
+            .is_err()
+        );
+        assert!(cell.is_loop().unwrap());
+        assert_eq!(owner.header_refs(), 2);
     }
 }

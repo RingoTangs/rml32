@@ -2,7 +2,9 @@
 
 本文采用“总体方案 → 分阶段实施 → 验收与风险”的总—分结构，面向后续实现兼容运行时的工程师。依据截至 2026-10-13 的 [静态分析](magic_Linux32-static-analysis.md) 与 [服务包兼容性分析](magic_Linux32-rust-compatibility-analysis.md)。本文是实施方案，不表示 Rust 服务端已经实现或原程序已经运行验证。
 
-**当前统一状态（阶段2S）：**已实现受限0a/0b/0c，62种限定操作码、254项Rust测试；主语料交集60种、缺13种。见[switch运行时](vm-switch-runtime.md)与[当前矩阵](stage2s-evidence/matrix.md)。阶段2仍未完成；下一批先处理隐藏Cell载荷及整数/数组循环，mapping等待原生哈希顺序兼容，随后推进值/范围、通用catch及对象生命周期、全局/宿主契约。以下阶段条目保留其历史范围与测试数。
+**当前统一状态（阶段2T）：**已实现隐藏控制Cell载荷、23/12/50的±1整数闭区间与Array路径，65种限定操作码、278项Rust测试；主语料交集63种、缺10种。见[循环运行时](vm-loop-runtime.md)与[当前矩阵](stage2t-evidence/matrix.md)。Mapping哈希顺序、额外源属性、复杂绑定、任务内循环及通用catch仍有限制，阶段2未完成。以下条目保留其历史范围与测试数。
+
+**阶段2S历史基线：**已实现受限0a/0b/0c，62种限定操作码、254项Rust测试；主语料交集60种、缺13种。见[switch运行时](vm-switch-runtime.md)与[当前矩阵](stage2s-evidence/matrix.md)。阶段2仍未完成；下一批先处理隐藏Cell载荷及整数/数组循环，mapping等待原生哈希顺序兼容，随后推进值/范围、通用catch及对象生命周期、全局/宿主契约。以下阶段条目保留其历史范围与测试数。
 
 **阶段2R历史静态进展：**已取得0a/0b/0c与23/12/50及辅助函数的Ghidra证据，确认case固定metadata对、±1整数闭区间及997集合循环、隐藏控制槽与header清理。见[控制流语义与下一批设计](vm-control-flow-semantics.md)。运行时继续为59种限定操作码、237项Rust测试；下一实现批次先补switch三条，再设计隐藏Cell载荷并补整数/数组循环，mapping等待原生哈希顺序兼容证据。既有2P/2Q快照保持冻结。
 
