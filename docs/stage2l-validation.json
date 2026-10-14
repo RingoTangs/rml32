@@ -1,0 +1,87 @@
+{
+  "stage": "2L",
+  "date": "2026-10-14",
+  "scope": "bounded inheritance linking and execution using synthetic programs",
+  "supported_opcodes": 55,
+  "dependencies_modified": false,
+  "unsafe_added": false,
+  "reference_executed": false,
+  "startup_scripts_executed": false,
+  "shipped_init_or_business_bytecode_executed": false,
+  "native_evidence": "docs/vm-inheritance-linking.md (existing REA/Ghidra records reused; no new native analysis)",
+  "checks": {
+    "cargo test --locked": {
+      "passed": true,
+      "tests": 171,
+      "baseline_tests": 150,
+      "new_synthetic_tests": 21
+    },
+    "cargo fmt --check": {
+      "passed": true
+    },
+    "cargo clippy --locked --all-targets -- -D warnings": {
+      "passed": true
+    },
+    "git diff --check": {
+      "passed": true
+    }
+  },
+  "corpus": {
+    "status": "pass",
+    "checked": {
+      "packages": 12,
+      "members": 9527,
+      "programs": 7159,
+      "inheritance": 9933
+    },
+    "summary": {
+      "decoded_files": 8921,
+      "errors": 1,
+      "files": 8922,
+      "functions": 101592,
+      "inheritance_matches": 9933,
+      "instructions": 6474773,
+      "members": 9527,
+      "packages": 12,
+      "programs": 7159
+    },
+    "originals_unchanged": 36,
+    "known_errors": [
+      "dba/pack_data/etc.pak/etc"
+    ],
+    "default_action_fields_checked": 358411,
+    "target_execution": "none",
+    "scope": "static structure; not execution equivalence"
+  },
+  "prior_stage2k_evidence_files_checked": 10,
+  "prior_stage2k_evidence_unchanged": true,
+  "design_adjustment": "Frame context is derived from its immutable root dispatch slot; source instructions and string pools are shared with Rc. No separate mutable constitution field is needed.",
+  "limitations": [
+    "Magic559 objects only",
+    "no repeated ancestor, diamond, hidden function or global dependency",
+    "no lifecycle alias/execution or automatic init",
+    "no new global/efun/cross-object dispatch support",
+    "static corpus checks do not establish runtime equivalence"
+  ],
+  "files_sha256": {
+    "src/lib.rs": "55415167158211786799b68bfe72878a70da2f9ce56116a6dc885b3dfc047c44",
+    "src/prepared.rs": "4299493be605ee69d5e8d66c67cdbc0db0ee659c49d6dc725c3997e740d494df",
+    "src/vm.rs": "48505f29a0c3af7b3dd030609edc9efa3da313d45437413ed22554c188ce2921",
+    "tests/vm_core.rs": "451242c6e1fbf61bb89ec62c9fcc5e47fff6df446ea7adc775244f87c98a7c27",
+    "README.md": "65271029086e0010380e700bf99e457d2f0ada95899ca7239a79f5abf4df43a3",
+    "docs/magic_Linux32-rust-rewrite-roadmap.md": "4ab9fb5d38c8c20b98d2b03af7edfa53cedb54989448c7476671a060e893e8ed",
+    "docs/vm-inheritance-runtime.md": "4ffe1a7b551bed94661ad08d9fd292f885391640b8c4cdaee4d2fa660f028fc2"
+  },
+  "stage2k_evidence_sha256": {
+    "docs/vm-inheritance-linking.md": "f1a4bed917eaa5d3153b726765e205743bb513b064024d12c0dd275c7fa49288",
+    "docs/vm-inheritance-evidence/functions.md": "f880ea24d36ea7723a0b1b87daccffc2da406c3954b2f14acae043415e7d9f9c",
+    "docs/vm-inheritance-evidence/graph.json.gz": "a547d2b17ae82f350e33452f7a003066efdfad047e79828f176bd40d6a6edaa7",
+    "docs/vm-inheritance-evidence/index.md": "f0fc93ad42230018b908c9417f26bebb92768383e58a64a7477ae79017423f72",
+    "docs/vm-inheritance-evidence/method.md": "35cb7343c3634c82ba897d806c166435a0b006a5f95a8b0bb93865f138008b89",
+    "docs/vm-inheritance-evidence/rea.json.gz": "f5f6bd151b83b0e46c557bce80d08bd7955cb44be0f64191c3a49126e78968f3",
+    "docs/vm-inheritance-evidence/reused.json.gz": "524866befda0e7dd81cca2326cc164839cfdc3e4a8b4437f8953f8a93110d172",
+    "docs/vm-inheritance-evidence/summary.json": "65db9e648b31418160e78d2d7ff311d2ee9cac7d1ad504b45d90f412b8a6b13f",
+    "docs/vm-inheritance-evidence/test_verify_inheritance.py": "ed11c74eb3cc21ca6b3a6d2d379e470ed9e1a76a6d7c2ef0c1f1a528d2e27f1d",
+    "docs/vm-inheritance-evidence/verify_inheritance.py": "83a213fe29a40eebd10f9f4c3a569e3133dfce83a8bb1c5dfb13f2dda5b85f13"
+  }
+}

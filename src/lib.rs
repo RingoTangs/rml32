@@ -19,7 +19,9 @@ pub use error::{ErrorKind, ParseError};
 pub use inheritance::{ProgramDescriptor, ValidationReport, validate_inheritance};
 pub use object::ObjectStore;
 pub use pak::PakArchive;
-pub use prepared::{PreparedProgram, prepare_program};
+pub use prepared::{
+    LinkLimits, PreparedProgram, ProgramCatalog, prepare_linked_program, prepare_program,
+};
 pub use program::{AbiProfile, ProgramImage, ProgramMode, parse_program};
 pub use value::{ObjectId, ProgramId, RealBits, Value};
 pub use vm::{Completion, ReferenceKind, RunOutcome, StackSnapshot, Vm, VmLimits};

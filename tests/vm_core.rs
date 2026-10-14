@@ -664,7 +664,7 @@ fn noninteger_arithmetic_and_deleted_execution_object_fail_explicitly() {
         &[],
     );
     let (mut vm, o) = machine(p, vec![]);
-    vm.start(o, 0, vec![Value::bytes(b"a"), Value::bytes(b"b")])
+    vm.start(o, 0, vec![Value::bytes(b"b"), Value::bytes(b"a")])
         .unwrap();
     assert_eq!(vm.run(100).unwrap_err().kind, VmErrorKind::UnsupportedType);
     vm.start(o, 0, vec![Value::Int(1), Value::Int(2)]).unwrap();
@@ -3364,4 +3364,549 @@ fn optional_type_check_is_atomic_before_any_default_is_evaluated() {
     let e = vm.run(1).unwrap_err();
     assert_eq!((e.kind, e.pc), (VmErrorKind::UnsupportedType, Some(0)));
     assert_eq!(vm.stack().unwrap(), before);
+}
+
+// Stage 2L: every linked program here is synthetic, never a shipped member.
+fn inherit(child: &mut ProgramImage, parent: &ProgramImage, name: &[u8], bases: [i16; 3]) {
+    child.inherits.push(rml32::program::Inherit {
+        name: Some(ByteString::new(name)),
+        offsets: [
+            bases[0],
+            bases[1],
+            bases[2],
+            parent.constitution_count.unwrap(),
+            parent.max_functions,
+            parent.max_vars,
+        ],
+    });
+}
+fn linked_catalog(parent: ProgramImage, child: ProgramImage) -> rml32::ProgramCatalog {
+    let mut c = rml32::ProgramCatalog::new();
+    c.insert("parent", parent).unwrap();
+    c.insert("child", child).unwrap();
+    c.bind_inherit("child", b"parent\0", "parent");
+    c
+}
+fn link(c: &rml32::ProgramCatalog) -> Result<rml32::PreparedProgram, rml32::VmError> {
+    rml32::prepare_linked_program(c, "child", rml32::LinkLimits::default())
+}
+fn inherited_pair(parent_nodes: &[Node], child_nodes: &[Node]) -> (ProgramImage, ProgramImage) {
+    let p = image(&[fun(0, 0, 0, 255, parent_nodes)], 1, &[b"parent\0"]);
+    let mut c = image(&[fun(1, 0, 0, 255, child_nodes)], 2, &[b"child\0"]);
+    c.constitution_count = Some(2);
+    inherit(&mut c, &p, b"parent\0", [1, 0, 1]);
+    (p, c)
+}
+fn linked_vm(c: &rml32::ProgramCatalog) -> (Vm, rml32::ObjectId) {
+    let p = link(c).unwrap();
+    let n = p.variable_count();
+    let mut store = ObjectStore::new();
+    let id = store.register_program(p).unwrap();
+    let o = store.create(id, vec![Value::Int(0); n]).unwrap();
+    (Vm::new(store), o)
+}
+#[test]
+fn linked_calls_use_body_string_pool_and_restore_caller() {
+    let (p, c) = inherited_pair(&[(0, 0, 0x40)], &[(0, 0, 0x07), (0, 0, 0x33), (0, 0, 0x40)]);
+    let catalog = linked_catalog(p, c);
+    let (mut vm, o) = linked_vm(&catalog);
+    vm.start(o, 0, vec![]).unwrap();
+    assert_eq!(
+        vm.run(100).unwrap(),
+        RunOutcome::Finished(Completion::Returned(Value::bytes(b"parent")))
+    );
+    vm.start(o, 1, vec![]).unwrap();
+    while vm.run(1).unwrap() == RunOutcome::BudgetExhausted {}
+    assert_eq!(
+        vm.run(0).unwrap(),
+        RunOutcome::Finished(Completion::Returned(Value::bytes(b"child")))
+    );
+}
+#[test]
+fn linked_variables_relocate_and_objects_remain_isolated() {
+    let (p, c) = inherited_pair(
+        &[(9, 0, 0x3b), (0, 0, 0x4e), (0, 0, 0x33), (0, 0, 0x3d)],
+        &[(0, 0, 0x07)],
+    );
+    let catalog = linked_catalog(p, c);
+    let prepared = link(&catalog).unwrap();
+    let mut store = ObjectStore::new();
+    let id = store.register_program(prepared).unwrap();
+    let a = store
+        .create(id, vec![Value::Int(1), Value::Int(2)])
+        .unwrap();
+    let b = store
+        .create(id, vec![Value::Int(3), Value::Int(4)])
+        .unwrap();
+    let mut vm = Vm::new(store);
+    vm.start(a, 1, vec![]).unwrap();
+    assert_eq!(
+        vm.run(100).unwrap(),
+        RunOutcome::Finished(Completion::Returned(Value::Int(9)))
+    );
+    assert_eq!(
+        vm.objects().get(a).unwrap().variables().unwrap(),
+        vec![Value::Int(1), Value::Int(9)]
+    );
+    assert_eq!(
+        vm.objects().get(b).unwrap().variables().unwrap(),
+        vec![Value::Int(3), Value::Int(4)]
+    );
+}
+#[test]
+fn linked_multilevel_calls_add_function_bases() {
+    let p = image(
+        &[
+            fun(0, 0, 0, 255, &[(42, 0, 0x3b)]),
+            fun(1, 0, 0, 255, &[(0, 0, 0x07)]),
+        ],
+        0,
+        &[],
+    );
+    let mut mid = image(&[], 0, &[]);
+    mid.max_functions = 3;
+    mid.constitution_count = Some(2);
+    inherit(&mut mid, &p, b"base", [1, 1, 0]);
+    let mut root = image(&[], 0, &[]);
+    root.max_functions = 5;
+    root.constitution_count = Some(3);
+    inherit(&mut root, &mid, b"middle", [1, 2, 0]);
+    let mut catalog = rml32::ProgramCatalog::new();
+    catalog.insert("base", p).unwrap();
+    catalog.insert("mid", mid).unwrap();
+    catalog.insert("child", root).unwrap();
+    catalog.bind_inherit("mid", b"base", "base");
+    catalog.bind_inherit("child", b"middle", "mid");
+    let prepared = link(&catalog).unwrap();
+    assert_eq!(prepared.function(4).unwrap().index(), 4);
+    let (mut vm, o) = linked_vm(&catalog);
+    vm.start(o, 4, vec![]).unwrap();
+    assert_eq!(
+        vm.run(100).unwrap(),
+        RunOutcome::Finished(Completion::Returned(Value::Int(42)))
+    );
+}
+#[test]
+fn linked_declarations_bind_but_concrete_same_names_stay_distinct() {
+    let (mut p, mut c) = inherited_pair(&[(11, 0, 0x3b)], &[(22, 0, 0x3b)]);
+    p.functions[0].name = Some(ByteString::new(b"same"));
+    c.functions[0].name = p.functions[0].name.clone();
+    let catalog = linked_catalog(p.clone(), c.clone());
+    let (mut vm, o) = linked_vm(&catalog);
+    for (slot, v) in [(0, 11), (1, 22)] {
+        vm.start(o, slot, vec![]).unwrap();
+        assert_eq!(
+            vm.run(100).unwrap(),
+            RunOutcome::Finished(Completion::Returned(Value::Int(v)))
+        );
+    }
+    c.functions[0].code.nodes.clear();
+    let catalog = linked_catalog(p, c);
+    let (mut vm, o) = linked_vm(&catalog);
+    vm.start(o, 1, vec![]).unwrap();
+    assert_eq!(
+        vm.run(100).unwrap(),
+        RunOutcome::Finished(Completion::Returned(Value::Int(11)))
+    );
+}
+#[test]
+fn linked_unimplemented_and_missing_slots_differ() {
+    let (p, mut c) = inherited_pair(&[(1, 0, 0x3b)], &[]);
+    c.functions[0].code.nodes.clear();
+    c.max_functions = 3;
+    let catalog = linked_catalog(p, c);
+    let prepared = link(&catalog).unwrap();
+    assert!(prepared.function(1).is_none());
+    let (mut vm, o) = linked_vm(&catalog);
+    assert_eq!(
+        vm.start(o, 1, vec![]).unwrap_err().kind,
+        VmErrorKind::UnsupportedFeature
+    );
+    assert_eq!(
+        vm.start(o, 2, vec![]).unwrap_err().kind,
+        VmErrorKind::InvalidProgram
+    );
+}
+#[test]
+fn linked_errors_report_root_slot_and_actual_body_source() {
+    let (p, c) = inherited_pair(&[(0, 0, 0x33)], &[(0, 0, 0x07)]);
+    let catalog = linked_catalog(p, c);
+    let (mut vm, o) = linked_vm(&catalog);
+    vm.start(o, 1, vec![]).unwrap();
+    let e = vm.run(100).unwrap_err();
+    assert_eq!(e.source, "parent");
+    assert_eq!(e.function, Some(0));
+    assert!(e.program.is_some());
+    assert_eq!(e.pc, Some(2));
+    assert!(e.offset.is_some());
+}
+#[test]
+fn linked_rejects_layout_errors_before_registration() {
+    let (p, c) = inherited_pair(&[(1, 0, 0x3b)], &[]);
+    for case in 0..7 {
+        let mut c = c.clone();
+        match case {
+            0 => c.inherits[0].offsets[3] = 2,
+            1 => c.inherits[0].offsets[0] = 0,
+            2 => c.inherits[0].offsets[1] = 1,
+            3 => c.inherits[0].offsets[2] = 2,
+            4 => c.constitution_count = Some(3),
+            5 => c.inherits[0].offsets[0] = -1,
+            _ => c.functions[0].index = Some(0),
+        }
+        assert!(link(&linked_catalog(p.clone(), c)).is_err(), "case {case}");
+    }
+}
+#[test]
+fn linked_rejects_missing_ambiguous_bindings_and_limits() {
+    let (p, c) = inherited_pair(&[(1, 0, 0x3b)], &[]);
+    let mut catalog = rml32::ProgramCatalog::new();
+    catalog.insert("child", c).unwrap();
+    catalog.insert("parent", p).unwrap();
+    assert!(link(&catalog).is_err());
+    catalog.bind_inherit("child", b"parent\0", "parent");
+    for limits in [
+        rml32::LinkLimits {
+            max_depth: 0,
+            ..Default::default()
+        },
+        rml32::LinkLimits {
+            max_dependencies: 0,
+            ..Default::default()
+        },
+        rml32::LinkLimits {
+            max_function_slots: 1,
+            ..Default::default()
+        },
+    ] {
+        assert_eq!(
+            rml32::prepare_linked_program(&catalog, "child", limits)
+                .unwrap_err()
+                .kind,
+            VmErrorKind::Limit
+        );
+    }
+    catalog.bind_inherit("child", b"parent\0", "other");
+    assert!(link(&catalog).unwrap_err().message.contains("ambiguous"));
+}
+#[test]
+fn linked_rejects_prototype_conflicts_and_lifecycle_execution() {
+    let (mut p, mut c) = inherited_pair(&[(1, 0, 0x3b)], &[]);
+    c.functions[0].name = p.functions[0].name.clone();
+    c.functions[0].code.nodes.clear();
+    c.functions[0].return_type = 2;
+    assert_eq!(
+        link(&linked_catalog(p.clone(), c.clone()))
+            .unwrap_err()
+            .kind,
+        VmErrorKind::InvalidProgram
+    );
+    c.functions[0].return_type = 255;
+    p.functions[0].name = Some(ByteString::new(b"create\0"));
+    let catalog = linked_catalog(p, c);
+    let (mut vm, o) = linked_vm(&catalog);
+    assert_eq!(
+        vm.start(o, 0, vec![]).unwrap_err().kind,
+        VmErrorKind::UnsupportedFeature
+    );
+}
+#[test]
+fn linked_deleted_object_fails_while_paused() {
+    let (p, c) = inherited_pair(&[(0, 0, 0x3d)], &[(0, 0, 0x07)]);
+    let (mut vm, o) = linked_vm(&linked_catalog(p, c));
+    vm.start(o, 1, vec![]).unwrap();
+    assert_eq!(vm.run(3).unwrap(), RunOutcome::BudgetExhausted);
+    vm.objects_mut().remove(o).unwrap();
+    assert_eq!(vm.run(1).unwrap_err().kind, VmErrorKind::InvalidObject);
+}
+
+#[test]
+fn linked_multiple_parents_keep_separate_contexts() {
+    let a = image(&[fun(0, 0, 0, 255, &[(0, 0, 0x40)])], 0, &[b"a\0"]);
+    let b = image(&[fun(0, 0, 0, 255, &[(0, 0, 0x40)])], 0, &[b"b\0"]);
+    let mut c = image(
+        &[fun(
+            2,
+            0,
+            0,
+            255,
+            &[(0, 0, 0x07), (1, 0, 0x07), (2, 0, 0x16)],
+        )],
+        0,
+        &[],
+    );
+    c.constitution_count = Some(3);
+    inherit(&mut c, &a, b"a", [1, 0, 0]);
+    inherit(&mut c, &b, b"b", [2, 1, 0]);
+    let mut catalog = rml32::ProgramCatalog::new();
+    catalog.insert("a", a).unwrap();
+    catalog.insert("b", b).unwrap();
+    catalog.insert("child", c).unwrap();
+    catalog.bind_inherit("child", b"a", "a");
+    catalog.bind_inherit("child", b"b", "b");
+    let (mut vm, o) = linked_vm(&catalog);
+    vm.start(o, 2, vec![]).unwrap();
+    assert_eq!(
+        returned_array(&mut vm),
+        vec![Value::bytes(b"b"), Value::bytes(b"a")]
+    );
+}
+#[test]
+fn linked_reference_parameters_keep_object_cell_identity() {
+    let mut p = image(
+        &[fun(0, 1, 0, 1, &[(9, 0, 0x3b), (0, 0, 0x4d), (0, 0, 0x33)])],
+        0,
+        &[],
+    );
+    ref_arg(&mut p, 0, 0, 2, 0);
+    let mut c = image(
+        &[fun(
+            1,
+            0,
+            0,
+            255,
+            &[(0, 0, 0x3e), (0, 1, 0x07), (0, 0, 0x33), (0, 0, 0x3d)],
+        )],
+        1,
+        &[],
+    );
+    c.constitution_count = Some(2);
+    inherit(&mut c, &p, b"parent\0", [1, 0, 0]);
+    let (mut vm, o) = linked_vm(&linked_catalog(p, c));
+    vm.start(o, 1, vec![]).unwrap();
+    assert_eq!(
+        vm.run(100).unwrap(),
+        RunOutcome::Finished(Completion::Returned(Value::Int(9)))
+    );
+    assert_eq!(object_values(&vm, o), vec![Value::Int(9)]);
+}
+#[test]
+fn linked_alias_uses_implementation_optional_defaults_and_metadata() {
+    let mut f = optional_fun(0, 1, 0, 255, &[vec![(0, 0, 0x3c)]], &[(0, 0, 0x37)]);
+    f.meta = 12345i32.to_le_bytes().to_vec();
+    let mut p = image(&[f], 0, &[]);
+    optional_meta(&mut p, 0, 0, false, &[1]);
+    let mut c = image(&[fun(1, 1, 0, 255, &[])], 0, &[]);
+    c.functions[0].name = p.functions[0].name.clone();
+    c.functions[0].code.nodes.clear();
+    c.functions[0].min_args = 0;
+    c.functions[0].max_args = 0;
+    c.constitution_count = Some(2);
+    inherit(&mut c, &p, b"parent\0", [1, 0, 0]);
+    let (mut vm, o) = linked_vm(&linked_catalog(p, c));
+    vm.start(o, 1, vec![]).unwrap();
+    assert_eq!(
+        vm.run(100).unwrap(),
+        RunOutcome::Finished(Completion::Returned(Value::Int(12345)))
+    );
+}
+#[test]
+fn linked_alias_search_prefers_nearest_lower_and_skips_aliases_private() {
+    let mut p = image(
+        &[
+            fun(0, 0, 0, 255, &[(10, 0, 0x3b)]),
+            fun(1, 0, 0, 255, &[(20, 0, 0x3b)]),
+        ],
+        0,
+        &[],
+    );
+    for f in &mut p.functions {
+        f.name = Some(ByteString::new(b"same"));
+    }
+    for private in [false, true] {
+        let mut p = p.clone();
+        if private {
+            p.functions[1].attrib |= 4;
+        }
+        let mut c = image(&[fun(2, 0, 0, 255, &[])], 0, &[]);
+        c.functions[0].name = Some(ByteString::new(b"same"));
+        c.functions[0].code.nodes.clear();
+        c.constitution_count = Some(2);
+        inherit(&mut c, &p, b"parent\0", [1, 0, 0]);
+        let (mut vm, o) = linked_vm(&linked_catalog(p, c));
+        vm.start(o, 2, vec![]).unwrap();
+        assert_eq!(
+            vm.run(100).unwrap(),
+            RunOutcome::Finished(Completion::Returned(Value::Int(if private {
+                10
+            } else {
+                20
+            })))
+        );
+    }
+}
+#[test]
+fn linked_rejects_cycles_repeated_ancestors_and_nonobject_dependencies() {
+    let (mut p, c) = inherited_pair(&[(1, 0, 0x3b)], &[]);
+    p.inherits.push(rml32::program::Inherit {
+        name: Some(ByteString::new(b"self")),
+        offsets: [0, 0, 0, 1, 1, 1],
+    });
+    let mut catalog = linked_catalog(p, c);
+    catalog.bind_inherit("parent", b"self", "parent");
+    assert!(link(&catalog).unwrap_err().message.contains("cycle"));
+    let (p, mut c) = inherited_pair(&[(1, 0, 0x3b)], &[]);
+    c.inherits.push(c.inherits[0].clone());
+    assert!(
+        link(&linked_catalog(p, c))
+            .unwrap_err()
+            .message
+            .contains("ancestor")
+    );
+    let (mut p, c) = inherited_pair(&[(1, 0, 0x3b)], &[]);
+    p.mode = ProgramMode::Global;
+    assert_eq!(
+        link(&linked_catalog(p, c)).unwrap_err().kind,
+        VmErrorKind::UnsupportedFeature
+    );
+}
+
+#[test]
+fn linked_variadic_body_retains_effective_argument_count() {
+    let mut p = image(&[optional_fun(0, 0, 0, 255, &[], &[(0, 0, 0x34)])], 0, &[]);
+    optional_meta(&mut p, 0, 0, true, &[]);
+    let mut c = image(
+        &[fun(
+            1,
+            0,
+            0,
+            255,
+            &[(3, 0, 0x3b), (4, 0, 0x3b), (0, 2, 0x07)],
+        )],
+        0,
+        &[],
+    );
+    c.constitution_count = Some(2);
+    inherit(&mut c, &p, b"parent\0", [1, 0, 0]);
+    let (mut vm, o) = linked_vm(&linked_catalog(p, c));
+    vm.start(o, 1, vec![]).unwrap();
+    assert_eq!(
+        vm.run(100).unwrap(),
+        RunOutcome::Finished(Completion::Returned(Value::Int(2)))
+    );
+}
+#[test]
+fn linked_preserves_imported_aliases_and_skips_them_as_candidates() {
+    let mut p = image(
+        &[fun(0, 0, 0, 255, &[]), fun(1, 0, 0, 255, &[(77, 0, 0x3b)])],
+        0,
+        &[],
+    );
+    for f in &mut p.functions {
+        f.name = Some(ByteString::new(b"same"));
+    }
+    p.functions[0].code.nodes.clear();
+    let mut c = image(&[fun(2, 0, 0, 255, &[])], 0, &[]);
+    c.functions[0].name = Some(ByteString::new(b"same"));
+    c.functions[0].code.nodes.clear();
+    c.constitution_count = Some(2);
+    inherit(&mut c, &p, b"parent\0", [1, 0, 0]);
+    let (mut vm, o) = linked_vm(&linked_catalog(p, c));
+    for slot in [0, 2] {
+        vm.start(o, slot, vec![]).unwrap();
+        assert_eq!(
+            vm.run(100).unwrap(),
+            RunOutcome::Finished(Completion::Returned(Value::Int(77)))
+        );
+    }
+}
+#[test]
+fn linked_reference_and_return_attribute_mismatches_are_explicit() {
+    let (mut p, mut c) = inherited_pair(&[(1, 0, 0x3b)], &[]);
+    c.functions[0].name = p.functions[0].name.clone();
+    c.functions[0].code.nodes.clear();
+    let mut raw = vec![0; 64];
+    raw[12] = 8;
+    c.functions[0].raw_hex = rml32::hex(&raw);
+    assert_eq!(
+        link(&linked_catalog(p.clone(), c.clone()))
+            .unwrap_err()
+            .kind,
+        VmErrorKind::UnsupportedFeature
+    );
+    // A second declaration with byte-identical type/attrib but different reference flag.
+    p = image(&[fun(0, 1, 0, 255, &[(0, 0, 0x37)])], 1, &[]);
+    c.functions[0] = p.functions[0].clone();
+    c.functions[0].index = Some(1);
+    c.functions[0].code.nodes.clear();
+    c.inherits[0].offsets[4] = 1;
+    ref_arg(&mut p, 0, 0, 255, 0);
+    assert_eq!(
+        link(&linked_catalog(p, c)).unwrap_err().kind,
+        VmErrorKind::UnsupportedFeature
+    );
+}
+
+#[test]
+fn linked_failure_does_not_change_registered_objects_or_program_ids() {
+    let mut store = ObjectStore::new();
+    let first = store
+        .register_program(
+            prepare_program(image(&[fun(0, 0, 0, 255, &[(5, 0, 0x3b)])], 1, &[])).unwrap(),
+        )
+        .unwrap();
+    let o = store.create(first, vec![Value::Int(8)]).unwrap();
+    let (p, mut c) = inherited_pair(&[], &[]);
+    c.inherits[0].offsets[3] = 7;
+    assert!(link(&linked_catalog(p, c)).is_err());
+    assert_eq!(
+        store.get(o).unwrap().variables().unwrap(),
+        vec![Value::Int(8)]
+    );
+    let next = store
+        .register_program(prepare_program(image(&[], 0, &[])).unwrap())
+        .unwrap();
+    assert_eq!(next.get(), first.get() + 1);
+}
+#[test]
+fn linked_rejects_diamond_even_when_intervals_are_disjoint() {
+    let base = image(&[], 0, &[]);
+    let mut left = image(&[], 0, &[]);
+    left.constitution_count = Some(2);
+    inherit(&mut left, &base, b"base", [1, 0, 0]);
+    let right = left.clone();
+    let mut root = image(&[], 0, &[]);
+    root.constitution_count = Some(5);
+    inherit(&mut root, &left, b"left", [1, 0, 0]);
+    inherit(&mut root, &right, b"right", [3, 0, 0]);
+    let mut c = rml32::ProgramCatalog::new();
+    for (key, image) in [
+        ("base", base),
+        ("left", left),
+        ("right", right),
+        ("child", root),
+    ] {
+        c.insert(key, image).unwrap();
+    }
+    c.bind_inherit("left", b"base", "base");
+    c.bind_inherit("right", b"base", "base");
+    c.bind_inherit("child", b"left", "left");
+    c.bind_inherit("child", b"right", "right");
+    assert_eq!(link(&c).unwrap_err().kind, VmErrorKind::UnsupportedFeature);
+}
+#[test]
+fn linked_name_matching_is_byte_exact_and_upper_candidates_are_used() {
+    let mut p = image(&[fun(1, 0, 0, 255, &[(8, 0, 0x3b)])], 0, &[]);
+    p.max_functions = 2;
+    let mut c = image(&[fun(2, 0, 0, 255, &[])], 0, &[]);
+    c.max_functions = 4;
+    c.constitution_count = Some(2);
+    inherit(&mut c, &p, b"parent\0", [1, 0, 0]);
+    // Local slot 2 is below imported body slot 1 only after relocation by 2.
+    c.inherits[0].offsets[1] = 2;
+    c.functions[0].index = Some(0);
+    c.functions[0].code.nodes.clear();
+    c.functions[0].name = p.functions[0].name.clone();
+    let (mut vm, o) = linked_vm(&linked_catalog(p.clone(), c.clone()));
+    vm.start(o, 0, vec![]).unwrap();
+    assert_eq!(
+        vm.run(100).unwrap(),
+        RunOutcome::Finished(Completion::Returned(Value::Int(8)))
+    );
+    c.functions[0].name.as_mut().unwrap().bytes.push(255);
+    let (mut vm, o) = linked_vm(&linked_catalog(p, c));
+    assert_eq!(
+        vm.start(o, 0, vec![]).unwrap_err().kind,
+        VmErrorKind::UnsupportedFeature
+    );
 }

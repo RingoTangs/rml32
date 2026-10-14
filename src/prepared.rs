@@ -5,7 +5,10 @@ use crate::{
     value::Value,
     vm_error::{VmError, VmErrorKind},
 };
-use std::collections::BTreeMap;
+use std::{
+    collections::{BTreeMap, BTreeSet},
+    rc::Rc,
+};
 
 pub const SUPPORTED_OPCODES: &[u8] = &[
     0x1, 0x2, 0x3, 0x4, 0x7, 0xd, 0xf, 0x13, 0x14, 0x15, 0x16, 0x18, 0x19, 0x1b, 0x1c, 0x1d, 0x1e,
@@ -39,7 +42,12 @@ pub(crate) struct EntryLayout {
 pub struct PreparedFunction {
     pub(crate) index: i16,
     pub(crate) name: Option<Vec<u8>>,
-    pub(crate) instructions: Vec<Instruction>,
+    pub(crate) instructions: Rc<Vec<Instruction>>,
+    // Immutable dispatch context: the caller frame retains its own slot on return.
+    pub(crate) origin: Option<String>,
+    pub(crate) pool: Option<Rc<Vec<Option<Value>>>>,
+    pub(crate) function_base: i16,
+    pub(crate) variable_base: i16,
     pub(crate) local_count: usize,
     pub(crate) args: Vec<Argument>,
     pub(crate) min_args: usize,
@@ -66,6 +74,7 @@ pub struct PreparedProgram {
     pub(crate) variable_count: usize,
     pub(crate) strings: Vec<Option<Value>>,
     pub(crate) functions: BTreeMap<i16, PreparedFunction>,
+    pub(crate) unimplemented: BTreeSet<i16>,
 }
 impl PreparedProgram {
     pub fn source(&self) -> &str {
@@ -318,7 +327,11 @@ fn prepare_function(f: Function, strings: usize, vars: usize) -> Result<Prepared
     Ok(PreparedFunction {
         index,
         name: f.name.map(|s| s.bytes),
-        instructions,
+        instructions: Rc::new(instructions),
+        origin: None,
+        pool: None,
+        function_base: 0,
+        variable_base: 0,
         local_count: f.local_count as usize,
         args: f.arguments,
         min_args: usize::from(f.min_args),
@@ -377,10 +390,370 @@ pub fn prepare_program(image: ProgramImage) -> Result<PreparedProgram, VmError> 
                 })
                 .collect(),
             functions,
+            unimplemented: BTreeSet::new(),
         })
     };
     build().map_err(|mut e| {
         e.source = source;
+        e
+    })
+}
+
+/// Explicit dependency namespace. Names are matched as bytes without path inference.
+#[derive(Debug, Default)]
+pub struct ProgramCatalog {
+    programs: BTreeMap<String, ProgramImage>,
+    bindings: BTreeMap<(String, Vec<u8>), BTreeSet<String>>,
+}
+impl ProgramCatalog {
+    pub fn new() -> Self {
+        Self::default()
+    }
+    pub fn insert(&mut self, key: impl Into<String>, image: ProgramImage) -> Result<(), VmError> {
+        let key = key.into();
+        if self.programs.contains_key(&key) {
+            return Err(err("duplicate catalog key"));
+        }
+        self.programs.insert(key, image);
+        Ok(())
+    }
+    pub fn bind_inherit(
+        &mut self,
+        child: impl Into<String>,
+        name: impl AsRef<[u8]>,
+        parent: impl Into<String>,
+    ) {
+        self.bindings
+            .entry((child.into(), name.as_ref().to_vec()))
+            .or_default()
+            .insert(parent.into());
+    }
+}
+#[derive(Debug, Clone, Copy)]
+pub struct LinkLimits {
+    pub max_dependencies: usize,
+    pub max_depth: usize,
+    pub max_function_slots: usize,
+}
+impl Default for LinkLimits {
+    fn default() -> Self {
+        Self {
+            max_dependencies: 1024,
+            max_depth: 64,
+            max_function_slots: 1_000_000,
+        }
+    }
+}
+#[derive(Clone)]
+struct Constitution {
+    key: String,
+    function_base: i16,
+    variable_base: i16,
+}
+#[derive(Clone)]
+struct LinkSlot {
+    body: Rc<Function>,
+    constitution: usize,
+    alias: bool,
+}
+struct Linked {
+    constitutions: Vec<Constitution>,
+    slots: Vec<Option<LinkSlot>>,
+}
+fn add_base(a: i16, b: i16) -> Result<i16, VmError> {
+    a.checked_add(b)
+        .filter(|v| *v >= 0)
+        .ok_or_else(|| err("signed16 relocation overflow"))
+}
+fn prototype(a: &Function, b: &Function) -> Result<(), VmError> {
+    if a.return_type != b.return_type
+        || a.arguments.len() != b.arguments.len()
+        || a.arguments
+            .iter()
+            .zip(&b.arguments)
+            .any(|(a, b)| a.r#type != b.r#type || a.attrib != b.attrib)
+    {
+        return Err(err("declaration prototype conflicts with implementation"));
+    }
+    if bytes(&a.raw_hex)?.get(12) != bytes(&b.raw_hex)?.get(12)
+        || a.arguments
+            .iter()
+            .zip(&b.arguments)
+            .any(|(a, b)| a.flag != b.flag)
+    {
+        return Err(unsupported(
+            "declaration reference/return attributes differ",
+        ));
+    }
+    Ok(())
+}
+struct Linker<'a> {
+    catalog: &'a ProgramCatalog,
+    limits: LinkLimits,
+    seen: BTreeSet<String>,
+    slots: usize,
+}
+impl Linker<'_> {
+    fn link(&mut self, key: &str, depth: usize) -> Result<Linked, VmError> {
+        if depth > self.limits.max_depth {
+            return Err(VmError::new(VmErrorKind::Limit, "inheritance depth limit"));
+        }
+        if !self.seen.insert(key.to_owned()) {
+            return Err(unsupported("cycle or repeated ancestor"));
+        }
+        if self.seen.len().saturating_sub(1) > self.limits.max_dependencies {
+            return Err(VmError::new(VmErrorKind::Limit, "dependency limit"));
+        }
+        let image = self
+            .catalog
+            .programs
+            .get(key)
+            .ok_or_else(|| err(format!("missing catalog program {key}")))?;
+        if image.mode != ProgramMode::Object || image.efuns_count != 559 || !image.hidden.is_empty()
+        {
+            return Err(unsupported(
+                "linking requires Magic559 objects without hidden functions",
+            ));
+        }
+        let count = image
+            .constitution_count
+            .filter(|v| *v > 0)
+            .ok_or_else(|| err("invalid constitution capacity"))? as usize;
+        if image.max_functions < 0 || image.max_vars < 0 {
+            return Err(err("negative capacity"));
+        }
+        self.slots = self
+            .slots
+            .checked_add(image.max_functions as usize)
+            .ok_or_else(|| err("slot sum overflow"))?;
+        if self.slots > self.limits.max_function_slots {
+            return Err(VmError::new(VmErrorKind::Limit, "function slot limit"));
+        }
+        let mut cons = vec![None; count];
+        cons[0] = Some(Constitution {
+            key: key.into(),
+            function_base: 0,
+            variable_base: 0,
+        });
+        let mut slots = vec![None; image.max_functions as usize];
+        for f in &image.functions {
+            let i = f
+                .index
+                .filter(|i| *i >= 0 && (*i as usize) < slots.len())
+                .ok_or_else(|| err("invalid local function slot"))? as usize;
+            if slots[i].is_some() {
+                return Err(err("duplicate local function slot"));
+            }
+            slots[i] = Some(LinkSlot {
+                body: Rc::new(f.clone()),
+                constitution: 0,
+                alias: false,
+            });
+        }
+        let mut occupied_functions = BTreeSet::new();
+        let mut occupied_variables = BTreeSet::new();
+        for (ordinal, inherit) in image.inherits.iter().enumerate() {
+            (|| -> Result<(), VmError> {
+                let build = |this: &mut Self| -> Result<Linked, VmError> {
+                    let name = inherit
+                        .name
+                        .as_ref()
+                        .ok_or_else(|| err("missing inheritance name"))?;
+                    let candidates = this
+                        .catalog
+                        .bindings
+                        .get(&(key.into(), name.bytes.clone()))
+                        .ok_or_else(|| err("missing explicit inheritance binding"))?;
+                    if candidates.len() != 1 {
+                        return Err(err("ambiguous inheritance binding"));
+                    }
+                    let parent_key = candidates.first().unwrap();
+                    let parent = this
+                        .catalog
+                        .programs
+                        .get(parent_key)
+                        .ok_or_else(|| err("missing bound parent"))?;
+                    if [
+                        parent.constitution_count.unwrap_or(0),
+                        parent.max_functions,
+                        parent.max_vars,
+                    ] != inherit.offsets[3..]
+                    {
+                        return Err(err("parent capacity mismatch"));
+                    }
+                    this.link(parent_key, depth + 1)
+                };
+                let parent = build(self)?;
+                let [cb, fb, vb, nc, nf, nv] = inherit.offsets;
+                for (base, len, capacity) in [
+                    (cb, nc, count),
+                    (fb, nf, slots.len()),
+                    (vb, nv, image.max_vars as usize),
+                ] {
+                    if base < 0 || len < 0 || i32::from(base) + i32::from(len) > capacity as i32 {
+                        return Err(err("inheritance interval outside capacity"));
+                    }
+                }
+                for i in fb..add_base(fb, nf)? {
+                    if !occupied_functions.insert(i) || slots[i as usize].is_some() {
+                        return Err(err("overlapping function interval"));
+                    }
+                }
+                for i in vb..add_base(vb, nv)? {
+                    if !occupied_variables.insert(i) {
+                        return Err(err("overlapping variable interval"));
+                    }
+                }
+                for (j, c) in parent.constitutions.into_iter().enumerate() {
+                    let target = cb as usize + j;
+                    if cons[target].is_some() {
+                        return Err(err("overlapping constitution interval"));
+                    }
+                    cons[target] = Some(Constitution {
+                        key: c.key,
+                        function_base: add_base(fb, c.function_base)?,
+                        variable_base: add_base(vb, c.variable_base)?,
+                    });
+                }
+                for (j, slot) in parent.slots.into_iter().enumerate() {
+                    slots[fb as usize + j] = slot.map(|mut s| {
+                        s.constitution += cb as usize;
+                        s
+                    });
+                }
+                Ok(())
+            })()
+            .map_err(|mut e| {
+                e.message = format!(
+                    "{key} inherit[{ordinal}] name={:?}: {}",
+                    inherit.name.as_ref().map(|n| &n.bytes_hex),
+                    e.message
+                );
+                e
+            })?;
+        }
+        let constitutions = cons
+            .into_iter()
+            .map(|c| c.ok_or_else(|| err("constitution hole")))
+            .collect::<Result<Vec<_>, _>>()?;
+        for i in 0..slots.len() {
+            let Some(declaration) = slots[i].clone().filter(|s| s.body.code.nodes.is_empty())
+            else {
+                continue;
+            };
+            for j in (0..i).rev().chain(i + 1..slots.len()) {
+                let Some(candidate) = slots[j].as_ref() else {
+                    continue;
+                };
+                if candidate.alias
+                    || candidate.body.code.nodes.is_empty()
+                    || candidate.body.attrib & 4 != 0
+                {
+                    continue;
+                }
+                let name = declaration.body.name.as_ref().map(|s| &s.bytes);
+                if name.is_none() || name != candidate.body.name.as_ref().map(|s| &s.bytes) {
+                    continue;
+                }
+                if name.is_some_and(|n| {
+                    matches!(n.split(|b| *b == 0).next(), Some(b"create" | b"destruct"))
+                }) {
+                    return Err(unsupported("lifecycle declaration alias"));
+                }
+                prototype(&declaration.body, &candidate.body)?;
+                let mut bound = candidate.clone();
+                bound.alias = true;
+                slots[i] = Some(bound);
+                break;
+            }
+        }
+        Ok(Linked {
+            constitutions,
+            slots,
+        })
+    }
+}
+/// Links without registering programs, creating objects, or executing initialization.
+pub fn prepare_linked_program(
+    catalog: &ProgramCatalog,
+    root: &str,
+    limits: LinkLimits,
+) -> Result<PreparedProgram, VmError> {
+    let build = || {
+        let linked = Linker {
+            catalog,
+            limits,
+            seen: BTreeSet::new(),
+            slots: 0,
+        }
+        .link(root, 0)?;
+        let mut pools = BTreeMap::new();
+        for c in &linked.constitutions {
+            pools.entry(c.key.clone()).or_insert_with(|| {
+                Rc::new(
+                    catalog.programs[&c.key]
+                        .strings
+                        .iter()
+                        .map(|s| {
+                            s.as_ref().map(|s| {
+                                let mut bytes = s.bytes.clone();
+                                if let Some(last) = bytes.last_mut() {
+                                    *last = 0;
+                                }
+                                Value::bytes(bytes.split(|b| *b == 0).next().unwrap_or_default())
+                            })
+                        })
+                        .collect::<Vec<_>>(),
+                )
+            });
+        }
+        let mut functions = BTreeMap::new();
+        let mut unimplemented = BTreeSet::new();
+        let mut bodies = BTreeMap::<(String, i16), PreparedFunction>::new();
+        for (i, slot) in linked.slots.into_iter().enumerate() {
+            let Some(slot) = slot else {
+                continue;
+            };
+            if slot.body.code.nodes.is_empty() {
+                unimplemented.insert(i as i16);
+                continue;
+            }
+            let c = &linked.constitutions[slot.constitution];
+            let image = &catalog.programs[&c.key];
+            let id = (c.key.clone(), slot.body.index.unwrap());
+            if !bodies.contains_key(&id) {
+                let mut f = prepare_function(
+                    (*slot.body).clone(),
+                    image.strings.len(),
+                    image.max_vars as usize,
+                )
+                .map_err(|mut e| {
+                    e.source = c.key.clone();
+                    e.function = Some(i as i16);
+                    e
+                })?;
+                f.origin = Some(c.key.clone());
+                f.pool = Some(pools[&c.key].clone());
+                bodies.insert(id.clone(), f);
+            }
+            let mut f = bodies[&id].clone();
+            f.index = i as i16;
+            f.function_base = c.function_base;
+            f.variable_base = c.variable_base;
+            functions.insert(i as i16, f);
+        }
+        Ok(PreparedProgram {
+            source: root.into(),
+            variable_count: catalog.programs[root].max_vars as usize,
+            strings: vec![],
+            functions,
+            unimplemented,
+        })
+    };
+    build().map_err(|mut e: VmError| {
+        if e.source.is_empty() {
+            e.source = root.into();
+        }
         e
     })
 }

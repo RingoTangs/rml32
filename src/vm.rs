@@ -334,6 +334,12 @@ impl Vm {
         }
         let program = self.objects.get(object)?.program();
         let p = self.objects.program(program)?;
+        if p.unimplemented.contains(&function_index) {
+            return Err(err(
+                VmErrorKind::UnsupportedFeature,
+                "entry declaration is unimplemented",
+            ));
+        }
         if !p.functions.contains_key(&function_index) {
             return Err(err(
                 VmErrorKind::InvalidProgram,
@@ -398,7 +404,11 @@ impl Vm {
                 e.function = Some(frame.function);
                 e.pc = Some(frame.pc);
                 if let Ok(p) = self.objects.program(frame.program) {
-                    e.source = p.source.clone();
+                    e.source = p
+                        .functions
+                        .get(&frame.function)
+                        .and_then(|f| f.origin.clone())
+                        .unwrap_or_else(|| p.source.clone());
                     e.offset = p
                         .functions
                         .get(&frame.function)
@@ -454,7 +464,12 @@ impl Vm {
         (pos >= 0 && pos < self.stack.len() as i64).then_some(pos as usize)
     }
     fn object_cell(&self, frame: &Frame, index: i32) -> Result<Rc<Cell>, VmError> {
-        usize::try_from(index)
+        let p = self.objects.program(frame.program)?;
+        let base = p
+            .functions
+            .get(&frame.function)
+            .map_or(0, |f| f.variable_base);
+        usize::try_from(index + i32::from(base))
             .ok()
             .and_then(|i| self.objects.get(frame.object).ok()?.variables.get(i))
             .cloned()
@@ -462,6 +477,16 @@ impl Vm {
     }
     // Returns the skipped default instruction count and number of new slots.
     fn argument_plan(f: &PreparedFunction, argc: usize) -> Result<(usize, usize), VmError> {
+        if f.origin.is_some()
+            && f.name.as_ref().is_some_and(|n| {
+                matches!(n.split(|b| *b == 0).next(), Some(b"create" | b"destruct"))
+            })
+        {
+            return Err(err(
+                VmErrorKind::UnsupportedFeature,
+                "linked lifecycle execution is unsupported",
+            ));
+        }
         if argc < f.min_args || (!f.variadic && argc > f.max_args) {
             return Err(err(
                 VmErrorKind::ArgumentCount,
@@ -990,7 +1015,7 @@ impl Vm {
             0x40 => {
                 let value = usize::try_from(a)
                     .ok()
-                    .and_then(|n| p.strings.get(n))
+                    .and_then(|n| f.pool.as_deref().unwrap_or(&p.strings).get(n))
                     .and_then(Option::as_ref)
                     .ok_or_else(|| {
                         err(VmErrorKind::Bounds, "shared string is absent or invalid")
@@ -1178,7 +1203,14 @@ impl Vm {
                 if self.frames.len() >= self.limits.max_frames {
                     return Err(err(VmErrorKind::Limit, "call frame limit exceeded"));
                 }
-                let index = a as i16;
+                let index = i16::try_from(a + i32::from(f.function_base))
+                    .map_err(|_| err(VmErrorKind::Bounds, "relocated function index overflow"))?;
+                if p.unimplemented.contains(&index) {
+                    return Err(err(
+                        VmErrorKind::UnsupportedFeature,
+                        "function declaration is unimplemented",
+                    ));
+                }
                 if !p.functions.contains_key(&index) {
                     return Err(err(
                         VmErrorKind::InvalidProgram,
@@ -1317,9 +1349,13 @@ mod tests {
             phase: EntryPhase::Body,
         };
         let function = PreparedFunction {
+            origin: None,
+            pool: None,
+            function_base: 0,
+            variable_base: 0,
             index: 0,
             name: None,
-            instructions: vec![],
+            instructions: Rc::new(vec![]),
             local_count: 0,
             args: vec![],
             min_args: 0,
