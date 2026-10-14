@@ -1,0 +1,6859 @@
+{
+  "by_service": {
+    "aaa": {
+      "fixed_functions": 1015,
+      "nonfixed_functions": 209
+    },
+    "ccs": {
+      "fixed_functions": 3576,
+      "nonfixed_functions": 468
+    },
+    "csa": {
+      "fixed_functions": 1334,
+      "nonfixed_functions": 211
+    },
+    "dba": {
+      "fixed_functions": 1060,
+      "nonfixed_functions": 150
+    },
+    "gs": {
+      "fixed_functions": 83976,
+      "nonfixed_functions": 9593
+    }
+  },
+  "default_field_evidence": {
+    "builder_evidence_id": "ev_2c27ff7488e9819ae0c431411d6590807eaddf4a9037881bcf3d3e67b56ca294",
+    "dwarf_evidence_id": "ev_3a2145a4ec5bf063ceb5de533653f40d5ce70cd826ccb17d03b9892fc915df74",
+    "evidence_id": "ev_d17aa0d7a395baf8b760f4dd773008e55d6a7fc1e8c6931a9657f73663982946",
+    "format": "little-endian signed16",
+    "offset": 10,
+    "read_address": "0x080953c4",
+    "resort_evidence_id": "ev_999d6b2ce2163dabf3dfe97c69fc89bbf621502b7efc62e552dbaefa85dda75e"
+  },
+  "default_function_shapes": [
+    {
+      "attrib_low2": 0,
+      "category": "fixed",
+      "count": 69802,
+      "has_nonzero_default_lengths": false,
+      "has_reference": false
+    },
+    {
+      "attrib_low2": 0,
+      "category": "fixed",
+      "count": 3050,
+      "has_nonzero_default_lengths": false,
+      "has_reference": true
+    },
+    {
+      "attrib_low2": 1,
+      "category": "fixed",
+      "count": 38,
+      "has_nonzero_default_lengths": false,
+      "has_reference": false
+    },
+    {
+      "attrib_low2": 2,
+      "category": "fixed",
+      "count": 4193,
+      "has_nonzero_default_lengths": false,
+      "has_reference": false
+    },
+    {
+      "attrib_low2": 2,
+      "category": "fixed",
+      "count": 35,
+      "has_nonzero_default_lengths": false,
+      "has_reference": true
+    },
+    {
+      "attrib_low2": 3,
+      "category": "fixed",
+      "count": 25,
+      "has_nonzero_default_lengths": false,
+      "has_reference": false
+    },
+    {
+      "attrib_low2": 0,
+      "category": "nonfixed",
+      "count": 7140,
+      "has_nonzero_default_lengths": false,
+      "has_reference": false
+    },
+    {
+      "attrib_low2": 0,
+      "category": "nonfixed",
+      "count": 1429,
+      "has_nonzero_default_lengths": true,
+      "has_reference": false
+    },
+    {
+      "attrib_low2": 0,
+      "category": "nonfixed",
+      "count": 1138,
+      "has_nonzero_default_lengths": false,
+      "has_reference": true
+    },
+    {
+      "attrib_low2": 0,
+      "category": "nonfixed",
+      "count": 85,
+      "has_nonzero_default_lengths": true,
+      "has_reference": true
+    },
+    {
+      "attrib_low2": 1,
+      "category": "nonfixed",
+      "count": 5,
+      "has_nonzero_default_lengths": false,
+      "has_reference": false
+    },
+    {
+      "attrib_low2": 1,
+      "category": "nonfixed",
+      "count": 3,
+      "has_nonzero_default_lengths": true,
+      "has_reference": false
+    },
+    {
+      "attrib_low2": 2,
+      "category": "nonfixed",
+      "count": 501,
+      "has_nonzero_default_lengths": false,
+      "has_reference": false
+    },
+    {
+      "attrib_low2": 2,
+      "category": "nonfixed",
+      "count": 298,
+      "has_nonzero_default_lengths": true,
+      "has_reference": false
+    },
+    {
+      "attrib_low2": 2,
+      "category": "nonfixed",
+      "count": 25,
+      "has_nonzero_default_lengths": false,
+      "has_reference": true
+    },
+    {
+      "attrib_low2": 2,
+      "category": "nonfixed",
+      "count": 7,
+      "has_nonzero_default_lengths": true,
+      "has_reference": true
+    }
+  ],
+  "default_length_histogram": {
+    "0": 172562,
+    "1": 2526,
+    "2": 4,
+    "3": 4,
+    "4": 2,
+    "5": 1,
+    "9": 1
+  },
+  "descriptor_max_mismatch_shapes": [
+    {
+      "attrib_low2": 0,
+      "category": "fixed",
+      "count": 3876,
+      "descriptor_count": 1,
+      "first_opcode": null,
+      "max_args": 0,
+      "min_args": 0
+    },
+    {
+      "attrib_low2": 0,
+      "category": "fixed",
+      "count": 2775,
+      "descriptor_count": 2,
+      "first_opcode": null,
+      "max_args": 0,
+      "min_args": 0
+    },
+    {
+      "attrib_low2": 0,
+      "category": "fixed",
+      "count": 913,
+      "descriptor_count": 3,
+      "first_opcode": null,
+      "max_args": 0,
+      "min_args": 0
+    },
+    {
+      "attrib_low2": 0,
+      "category": "fixed",
+      "count": 511,
+      "descriptor_count": 4,
+      "first_opcode": null,
+      "max_args": 0,
+      "min_args": 0
+    },
+    {
+      "attrib_low2": 0,
+      "category": "fixed",
+      "count": 778,
+      "descriptor_count": 5,
+      "first_opcode": null,
+      "max_args": 0,
+      "min_args": 0
+    },
+    {
+      "attrib_low2": 0,
+      "category": "fixed",
+      "count": 2,
+      "descriptor_count": 6,
+      "first_opcode": null,
+      "max_args": 0,
+      "min_args": 0
+    },
+    {
+      "attrib_low2": 0,
+      "category": "fixed",
+      "count": 2,
+      "descriptor_count": 7,
+      "first_opcode": null,
+      "max_args": 0,
+      "min_args": 0
+    },
+    {
+      "attrib_low2": 0,
+      "category": "fixed",
+      "count": 2,
+      "descriptor_count": 8,
+      "first_opcode": null,
+      "max_args": 0,
+      "min_args": 0
+    },
+    {
+      "attrib_low2": 1,
+      "category": "fixed",
+      "count": 13,
+      "descriptor_count": 1,
+      "first_opcode": null,
+      "max_args": 0,
+      "min_args": 0
+    },
+    {
+      "attrib_low2": 1,
+      "category": "fixed",
+      "count": 4,
+      "descriptor_count": 2,
+      "first_opcode": null,
+      "max_args": 0,
+      "min_args": 0
+    },
+    {
+      "attrib_low2": 1,
+      "category": "fixed",
+      "count": 4,
+      "descriptor_count": 3,
+      "first_opcode": null,
+      "max_args": 0,
+      "min_args": 0
+    },
+    {
+      "attrib_low2": 1,
+      "category": "fixed",
+      "count": 8,
+      "descriptor_count": 4,
+      "first_opcode": null,
+      "max_args": 0,
+      "min_args": 0
+    },
+    {
+      "attrib_low2": 2,
+      "category": "fixed",
+      "count": 17,
+      "descriptor_count": 1,
+      "first_opcode": null,
+      "max_args": 0,
+      "min_args": 0
+    },
+    {
+      "attrib_low2": 2,
+      "category": "fixed",
+      "count": 13,
+      "descriptor_count": 2,
+      "first_opcode": null,
+      "max_args": 0,
+      "min_args": 0
+    },
+    {
+      "attrib_low2": 2,
+      "category": "fixed",
+      "count": 1,
+      "descriptor_count": 4,
+      "first_opcode": null,
+      "max_args": 0,
+      "min_args": 0
+    },
+    {
+      "attrib_low2": 3,
+      "category": "fixed",
+      "count": 1,
+      "descriptor_count": 3,
+      "first_opcode": null,
+      "max_args": 0,
+      "min_args": 0
+    }
+  ],
+  "entry_layout_checks": {
+    "default_tail_layout_matches=True": 87774,
+    "entry_a_equals_length_sum=False": 1822,
+    "entry_a_equals_length_sum=True": 85952,
+    "min_matches_required_nonmixed=True": 87774,
+    "negative_length=False": 87774,
+    "spans_valid=True": 87774,
+    "target_outside_code=False": 87774
+  },
+  "entry_opcodes": [
+    {
+      "category": "fixed",
+      "count": 77143,
+      "opcode": 15
+    },
+    {
+      "category": "fixed",
+      "count": 13818,
+      "opcode": null
+    },
+    {
+      "category": "nonfixed",
+      "count": 10631,
+      "opcode": 15
+    }
+  ],
+  "entry_total_differences": [
+    {
+      "after_default_expressions_opcode": 27,
+      "count": 85952,
+      "entry_a_minus_length_sum": 0
+    },
+    {
+      "after_default_expressions_opcode": 71,
+      "count": 1822,
+      "entry_a_minus_length_sum": 1
+    }
+  ],
+  "full_report": {
+    "compressed_bytes": 1750126,
+    "path": "optional.json.gz",
+    "sha256": "aa564beb9d2a735fcca7588ee6743a0a857ad02ab7ebfb380118bbbd47189f8f",
+    "uncompressed_bytes": 43074790
+  },
+  "function_shapes": [
+    {
+      "argument_count": 0,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 3843,
+      "first_opcode": 15,
+      "max_args": 0,
+      "min_args": 0,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 0,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 4824,
+      "first_opcode": null,
+      "max_args": 0,
+      "min_args": 0,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 1,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 3737,
+      "first_opcode": null,
+      "max_args": 0,
+      "min_args": 0,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 2,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 2642,
+      "first_opcode": null,
+      "max_args": 0,
+      "min_args": 0,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 2,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 1,
+      "first_opcode": null,
+      "max_args": 0,
+      "min_args": 0,
+      "reference_arguments": 1,
+      "variadic": false
+    },
+    {
+      "argument_count": 3,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 830,
+      "first_opcode": null,
+      "max_args": 0,
+      "min_args": 0,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 3,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 13,
+      "first_opcode": null,
+      "max_args": 0,
+      "min_args": 0,
+      "reference_arguments": 1,
+      "variadic": false
+    },
+    {
+      "argument_count": 3,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 10,
+      "first_opcode": null,
+      "max_args": 0,
+      "min_args": 0,
+      "reference_arguments": 3,
+      "variadic": false
+    },
+    {
+      "argument_count": 4,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 480,
+      "first_opcode": null,
+      "max_args": 0,
+      "min_args": 0,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 4,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 1,
+      "first_opcode": null,
+      "max_args": 0,
+      "min_args": 0,
+      "reference_arguments": 3,
+      "variadic": false
+    },
+    {
+      "argument_count": 5,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 769,
+      "first_opcode": null,
+      "max_args": 0,
+      "min_args": 0,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 7,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 1,
+      "first_opcode": null,
+      "max_args": 0,
+      "min_args": 0,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 8,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 1,
+      "first_opcode": null,
+      "max_args": 0,
+      "min_args": 0,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 1,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 566,
+      "first_opcode": 15,
+      "max_args": 1,
+      "min_args": 0,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 1,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 5,
+      "first_opcode": 15,
+      "max_args": 1,
+      "min_args": 0,
+      "reference_arguments": 1,
+      "variadic": false
+    },
+    {
+      "argument_count": 2,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 274,
+      "first_opcode": 15,
+      "max_args": 2,
+      "min_args": 0,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 2,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 2,
+      "first_opcode": 15,
+      "max_args": 2,
+      "min_args": 0,
+      "reference_arguments": 1,
+      "variadic": false
+    },
+    {
+      "argument_count": 2,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 4,
+      "first_opcode": 15,
+      "max_args": 2,
+      "min_args": 0,
+      "reference_arguments": 2,
+      "variadic": false
+    },
+    {
+      "argument_count": 3,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 88,
+      "first_opcode": 15,
+      "max_args": 3,
+      "min_args": 0,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 3,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 1,
+      "first_opcode": 15,
+      "max_args": 3,
+      "min_args": 0,
+      "reference_arguments": 1,
+      "variadic": false
+    },
+    {
+      "argument_count": 3,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 1,
+      "first_opcode": 15,
+      "max_args": 3,
+      "min_args": 0,
+      "reference_arguments": 3,
+      "variadic": false
+    },
+    {
+      "argument_count": 4,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 11,
+      "first_opcode": 15,
+      "max_args": 4,
+      "min_args": 0,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 5,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 6,
+      "first_opcode": 15,
+      "max_args": 5,
+      "min_args": 0,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 6,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 4,
+      "first_opcode": 15,
+      "max_args": 6,
+      "min_args": 0,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 7,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 1,
+      "first_opcode": 15,
+      "max_args": 7,
+      "min_args": 0,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 1,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 9084,
+      "first_opcode": 15,
+      "max_args": 1,
+      "min_args": 1,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 1,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 95,
+      "first_opcode": 15,
+      "max_args": 1,
+      "min_args": 1,
+      "reference_arguments": 1,
+      "variadic": false
+    },
+    {
+      "argument_count": 2,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 1021,
+      "first_opcode": 15,
+      "max_args": 2,
+      "min_args": 1,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 2,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 47,
+      "first_opcode": 15,
+      "max_args": 2,
+      "min_args": 1,
+      "reference_arguments": 1,
+      "variadic": false
+    },
+    {
+      "argument_count": 3,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 105,
+      "first_opcode": 15,
+      "max_args": 3,
+      "min_args": 1,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 3,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 7,
+      "first_opcode": 15,
+      "max_args": 3,
+      "min_args": 1,
+      "reference_arguments": 1,
+      "variadic": false
+    },
+    {
+      "argument_count": 3,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 3,
+      "first_opcode": 15,
+      "max_args": 3,
+      "min_args": 1,
+      "reference_arguments": 2,
+      "variadic": false
+    },
+    {
+      "argument_count": 4,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 30,
+      "first_opcode": 15,
+      "max_args": 4,
+      "min_args": 1,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 4,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 2,
+      "first_opcode": 15,
+      "max_args": 4,
+      "min_args": 1,
+      "reference_arguments": 1,
+      "variadic": false
+    },
+    {
+      "argument_count": 4,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 1,
+      "first_opcode": 15,
+      "max_args": 4,
+      "min_args": 1,
+      "reference_arguments": 2,
+      "variadic": false
+    },
+    {
+      "argument_count": 5,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 7,
+      "first_opcode": 15,
+      "max_args": 5,
+      "min_args": 1,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 7,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 1,
+      "first_opcode": 15,
+      "max_args": 7,
+      "min_args": 1,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 8,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 2,
+      "first_opcode": 15,
+      "max_args": 8,
+      "min_args": 1,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 10,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 37,
+      "first_opcode": 15,
+      "max_args": 10,
+      "min_args": 10,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 11,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 1,
+      "first_opcode": 15,
+      "max_args": 11,
+      "min_args": 10,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 11,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 30,
+      "first_opcode": 15,
+      "max_args": 11,
+      "min_args": 11,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 12,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 5,
+      "first_opcode": 15,
+      "max_args": 12,
+      "min_args": 11,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 12,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 1,
+      "first_opcode": 15,
+      "max_args": 12,
+      "min_args": 11,
+      "reference_arguments": 1,
+      "variadic": false
+    },
+    {
+      "argument_count": 12,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 22,
+      "first_opcode": 15,
+      "max_args": 12,
+      "min_args": 12,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 13,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 4,
+      "first_opcode": 15,
+      "max_args": 13,
+      "min_args": 12,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 13,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 16,
+      "first_opcode": 15,
+      "max_args": 13,
+      "min_args": 13,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 14,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 2,
+      "first_opcode": 15,
+      "max_args": 14,
+      "min_args": 13,
+      "reference_arguments": 1,
+      "variadic": false
+    },
+    {
+      "argument_count": 14,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 7,
+      "first_opcode": 15,
+      "max_args": 14,
+      "min_args": 14,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 15,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 1,
+      "first_opcode": 15,
+      "max_args": 15,
+      "min_args": 14,
+      "reference_arguments": 1,
+      "variadic": false
+    },
+    {
+      "argument_count": 15,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 2,
+      "first_opcode": 15,
+      "max_args": 15,
+      "min_args": 15,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 16,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 1,
+      "first_opcode": 15,
+      "max_args": 16,
+      "min_args": 16,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 17,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 1,
+      "first_opcode": 15,
+      "max_args": 17,
+      "min_args": 17,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 11,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 2,
+      "first_opcode": 15,
+      "max_args": 11,
+      "min_args": 2,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 2,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 10335,
+      "first_opcode": 15,
+      "max_args": 2,
+      "min_args": 2,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 2,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 138,
+      "first_opcode": 15,
+      "max_args": 2,
+      "min_args": 2,
+      "reference_arguments": 1,
+      "variadic": false
+    },
+    {
+      "argument_count": 2,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 6,
+      "first_opcode": 15,
+      "max_args": 2,
+      "min_args": 2,
+      "reference_arguments": 2,
+      "variadic": false
+    },
+    {
+      "argument_count": 3,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 707,
+      "first_opcode": 15,
+      "max_args": 3,
+      "min_args": 2,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 3,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 97,
+      "first_opcode": 15,
+      "max_args": 3,
+      "min_args": 2,
+      "reference_arguments": 1,
+      "variadic": false
+    },
+    {
+      "argument_count": 3,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 23,
+      "first_opcode": 15,
+      "max_args": 3,
+      "min_args": 2,
+      "reference_arguments": 3,
+      "variadic": false
+    },
+    {
+      "argument_count": 4,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 97,
+      "first_opcode": 15,
+      "max_args": 4,
+      "min_args": 2,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 4,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 8,
+      "first_opcode": 15,
+      "max_args": 4,
+      "min_args": 2,
+      "reference_arguments": 1,
+      "variadic": false
+    },
+    {
+      "argument_count": 4,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 5,
+      "first_opcode": 15,
+      "max_args": 4,
+      "min_args": 2,
+      "reference_arguments": 2,
+      "variadic": false
+    },
+    {
+      "argument_count": 5,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 25,
+      "first_opcode": 15,
+      "max_args": 5,
+      "min_args": 2,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 5,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 1,
+      "first_opcode": 15,
+      "max_args": 5,
+      "min_args": 2,
+      "reference_arguments": 1,
+      "variadic": false
+    },
+    {
+      "argument_count": 5,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 2,
+      "first_opcode": 15,
+      "max_args": 5,
+      "min_args": 2,
+      "reference_arguments": 2,
+      "variadic": false
+    },
+    {
+      "argument_count": 5,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 2,
+      "first_opcode": 15,
+      "max_args": 5,
+      "min_args": 2,
+      "reference_arguments": 3,
+      "variadic": false
+    },
+    {
+      "argument_count": 6,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 2,
+      "first_opcode": 15,
+      "max_args": 6,
+      "min_args": 2,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 7,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 1,
+      "first_opcode": 15,
+      "max_args": 7,
+      "min_args": 2,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 8,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 3,
+      "first_opcode": 15,
+      "max_args": 8,
+      "min_args": 2,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 10,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 1,
+      "first_opcode": 15,
+      "max_args": 10,
+      "min_args": 3,
+      "reference_arguments": 1,
+      "variadic": false
+    },
+    {
+      "argument_count": 3,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 2212,
+      "first_opcode": 15,
+      "max_args": 3,
+      "min_args": 3,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 3,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 1568,
+      "first_opcode": 15,
+      "max_args": 3,
+      "min_args": 3,
+      "reference_arguments": 1,
+      "variadic": false
+    },
+    {
+      "argument_count": 3,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 6,
+      "first_opcode": 15,
+      "max_args": 3,
+      "min_args": 3,
+      "reference_arguments": 2,
+      "variadic": false
+    },
+    {
+      "argument_count": 4,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 697,
+      "first_opcode": 15,
+      "max_args": 4,
+      "min_args": 3,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 4,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 80,
+      "first_opcode": 15,
+      "max_args": 4,
+      "min_args": 3,
+      "reference_arguments": 1,
+      "variadic": false
+    },
+    {
+      "argument_count": 4,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 1,
+      "first_opcode": 15,
+      "max_args": 4,
+      "min_args": 3,
+      "reference_arguments": 3,
+      "variadic": false
+    },
+    {
+      "argument_count": 4,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 8,
+      "first_opcode": 15,
+      "max_args": 4,
+      "min_args": 3,
+      "reference_arguments": 4,
+      "variadic": false
+    },
+    {
+      "argument_count": 5,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 45,
+      "first_opcode": 15,
+      "max_args": 5,
+      "min_args": 3,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 5,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 17,
+      "first_opcode": 15,
+      "max_args": 5,
+      "min_args": 3,
+      "reference_arguments": 1,
+      "variadic": false
+    },
+    {
+      "argument_count": 5,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 1,
+      "first_opcode": 15,
+      "max_args": 5,
+      "min_args": 3,
+      "reference_arguments": 3,
+      "variadic": false
+    },
+    {
+      "argument_count": 6,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 13,
+      "first_opcode": 15,
+      "max_args": 6,
+      "min_args": 3,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 7,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 6,
+      "first_opcode": 15,
+      "max_args": 7,
+      "min_args": 3,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 7,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 1,
+      "first_opcode": 15,
+      "max_args": 7,
+      "min_args": 3,
+      "reference_arguments": 1,
+      "variadic": false
+    },
+    {
+      "argument_count": 8,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 1,
+      "first_opcode": 15,
+      "max_args": 8,
+      "min_args": 3,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 21,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 1,
+      "first_opcode": 15,
+      "max_args": 21,
+      "min_args": 4,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 4,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 1331,
+      "first_opcode": 15,
+      "max_args": 4,
+      "min_args": 4,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 4,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 51,
+      "first_opcode": 15,
+      "max_args": 4,
+      "min_args": 4,
+      "reference_arguments": 1,
+      "variadic": false
+    },
+    {
+      "argument_count": 4,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 4,
+      "first_opcode": 15,
+      "max_args": 4,
+      "min_args": 4,
+      "reference_arguments": 2,
+      "variadic": false
+    },
+    {
+      "argument_count": 4,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 2,
+      "first_opcode": 15,
+      "max_args": 4,
+      "min_args": 4,
+      "reference_arguments": 3,
+      "variadic": false
+    },
+    {
+      "argument_count": 4,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 6,
+      "first_opcode": 15,
+      "max_args": 4,
+      "min_args": 4,
+      "reference_arguments": 4,
+      "variadic": false
+    },
+    {
+      "argument_count": 5,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 145,
+      "first_opcode": 15,
+      "max_args": 5,
+      "min_args": 4,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 5,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 6,
+      "first_opcode": 15,
+      "max_args": 5,
+      "min_args": 4,
+      "reference_arguments": 1,
+      "variadic": false
+    },
+    {
+      "argument_count": 6,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 14,
+      "first_opcode": 15,
+      "max_args": 6,
+      "min_args": 4,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 6,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 1,
+      "first_opcode": 15,
+      "max_args": 6,
+      "min_args": 4,
+      "reference_arguments": 1,
+      "variadic": false
+    },
+    {
+      "argument_count": 6,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 1,
+      "first_opcode": 15,
+      "max_args": 6,
+      "min_args": 4,
+      "reference_arguments": 2,
+      "variadic": false
+    },
+    {
+      "argument_count": 7,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 8,
+      "first_opcode": 15,
+      "max_args": 7,
+      "min_args": 4,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 8,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 1,
+      "first_opcode": 15,
+      "max_args": 8,
+      "min_args": 4,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 5,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 331,
+      "first_opcode": 15,
+      "max_args": 5,
+      "min_args": 5,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 5,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 5,
+      "first_opcode": 15,
+      "max_args": 5,
+      "min_args": 5,
+      "reference_arguments": 1,
+      "variadic": false
+    },
+    {
+      "argument_count": 5,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 2,
+      "first_opcode": 15,
+      "max_args": 5,
+      "min_args": 5,
+      "reference_arguments": 4,
+      "variadic": false
+    },
+    {
+      "argument_count": 6,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 51,
+      "first_opcode": 15,
+      "max_args": 6,
+      "min_args": 5,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 6,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 3,
+      "first_opcode": 15,
+      "max_args": 6,
+      "min_args": 5,
+      "reference_arguments": 1,
+      "variadic": false
+    },
+    {
+      "argument_count": 6,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 1,
+      "first_opcode": 15,
+      "max_args": 6,
+      "min_args": 5,
+      "reference_arguments": 3,
+      "variadic": false
+    },
+    {
+      "argument_count": 7,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 11,
+      "first_opcode": 15,
+      "max_args": 7,
+      "min_args": 5,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 7,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 1,
+      "first_opcode": 15,
+      "max_args": 7,
+      "min_args": 5,
+      "reference_arguments": 1,
+      "variadic": false
+    },
+    {
+      "argument_count": 8,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 4,
+      "first_opcode": 15,
+      "max_args": 8,
+      "min_args": 5,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 6,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 289,
+      "first_opcode": 15,
+      "max_args": 6,
+      "min_args": 6,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 6,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 1,
+      "first_opcode": 15,
+      "max_args": 6,
+      "min_args": 6,
+      "reference_arguments": 1,
+      "variadic": false
+    },
+    {
+      "argument_count": 6,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 1,
+      "first_opcode": 15,
+      "max_args": 6,
+      "min_args": 6,
+      "reference_arguments": 2,
+      "variadic": false
+    },
+    {
+      "argument_count": 6,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 2,
+      "first_opcode": 15,
+      "max_args": 6,
+      "min_args": 6,
+      "reference_arguments": 5,
+      "variadic": false
+    },
+    {
+      "argument_count": 7,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 17,
+      "first_opcode": 15,
+      "max_args": 7,
+      "min_args": 6,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 8,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 7,
+      "first_opcode": 15,
+      "max_args": 8,
+      "min_args": 6,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 9,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 1,
+      "first_opcode": 15,
+      "max_args": 9,
+      "min_args": 6,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 10,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 1,
+      "first_opcode": 15,
+      "max_args": 10,
+      "min_args": 7,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 7,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 111,
+      "first_opcode": 15,
+      "max_args": 7,
+      "min_args": 7,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 7,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 1,
+      "first_opcode": 15,
+      "max_args": 7,
+      "min_args": 7,
+      "reference_arguments": 1,
+      "variadic": false
+    },
+    {
+      "argument_count": 8,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 8,
+      "first_opcode": 15,
+      "max_args": 8,
+      "min_args": 7,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 9,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 2,
+      "first_opcode": 15,
+      "max_args": 9,
+      "min_args": 7,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 10,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 2,
+      "first_opcode": 15,
+      "max_args": 10,
+      "min_args": 8,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 11,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 2,
+      "first_opcode": 15,
+      "max_args": 11,
+      "min_args": 8,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 8,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 54,
+      "first_opcode": 15,
+      "max_args": 8,
+      "min_args": 8,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 9,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 6,
+      "first_opcode": 15,
+      "max_args": 9,
+      "min_args": 8,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 9,
+      "attrib": 0,
+      "attrib_low2": 0,
+      "count": 61,
+      "first_opcode": 15,
+      "max_args": 9,
+      "min_args": 9,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 0,
+      "attrib": 1,
+      "attrib_low2": 1,
+      "count": 9,
+      "first_opcode": 15,
+      "max_args": 0,
+      "min_args": 0,
+      "reference_arguments": 0,
+      "variadic": true
+    },
+    {
+      "argument_count": 0,
+      "attrib": 1,
+      "attrib_low2": 1,
+      "count": 4,
+      "first_opcode": null,
+      "max_args": 0,
+      "min_args": 0,
+      "reference_arguments": 0,
+      "variadic": true
+    },
+    {
+      "argument_count": 1,
+      "attrib": 1,
+      "attrib_low2": 1,
+      "count": 13,
+      "first_opcode": null,
+      "max_args": 0,
+      "min_args": 0,
+      "reference_arguments": 0,
+      "variadic": true
+    },
+    {
+      "argument_count": 2,
+      "attrib": 1,
+      "attrib_low2": 1,
+      "count": 4,
+      "first_opcode": null,
+      "max_args": 0,
+      "min_args": 0,
+      "reference_arguments": 0,
+      "variadic": true
+    },
+    {
+      "argument_count": 3,
+      "attrib": 1,
+      "attrib_low2": 1,
+      "count": 4,
+      "first_opcode": null,
+      "max_args": 0,
+      "min_args": 0,
+      "reference_arguments": 0,
+      "variadic": true
+    },
+    {
+      "argument_count": 4,
+      "attrib": 1,
+      "attrib_low2": 1,
+      "count": 8,
+      "first_opcode": null,
+      "max_args": 0,
+      "min_args": 0,
+      "reference_arguments": 0,
+      "variadic": true
+    },
+    {
+      "argument_count": 1,
+      "attrib": 1,
+      "attrib_low2": 1,
+      "count": 1,
+      "first_opcode": 15,
+      "max_args": 1,
+      "min_args": 0,
+      "reference_arguments": 0,
+      "variadic": true
+    },
+    {
+      "argument_count": 2,
+      "attrib": 1,
+      "attrib_low2": 1,
+      "count": 1,
+      "first_opcode": 15,
+      "max_args": 2,
+      "min_args": 0,
+      "reference_arguments": 0,
+      "variadic": true
+    },
+    {
+      "argument_count": 1,
+      "attrib": 1,
+      "attrib_low2": 1,
+      "count": 12,
+      "first_opcode": 15,
+      "max_args": 1,
+      "min_args": 1,
+      "reference_arguments": 0,
+      "variadic": true
+    },
+    {
+      "argument_count": 2,
+      "attrib": 1,
+      "attrib_low2": 1,
+      "count": 2,
+      "first_opcode": 15,
+      "max_args": 2,
+      "min_args": 1,
+      "reference_arguments": 0,
+      "variadic": true
+    },
+    {
+      "argument_count": 4,
+      "attrib": 1,
+      "attrib_low2": 1,
+      "count": 1,
+      "first_opcode": 15,
+      "max_args": 4,
+      "min_args": 1,
+      "reference_arguments": 0,
+      "variadic": true
+    },
+    {
+      "argument_count": 2,
+      "attrib": 1,
+      "attrib_low2": 1,
+      "count": 8,
+      "first_opcode": 15,
+      "max_args": 2,
+      "min_args": 2,
+      "reference_arguments": 0,
+      "variadic": true
+    },
+    {
+      "argument_count": 3,
+      "attrib": 1,
+      "attrib_low2": 1,
+      "count": 2,
+      "first_opcode": 15,
+      "max_args": 3,
+      "min_args": 2,
+      "reference_arguments": 0,
+      "variadic": true
+    },
+    {
+      "argument_count": 3,
+      "attrib": 1,
+      "attrib_low2": 1,
+      "count": 4,
+      "first_opcode": 15,
+      "max_args": 3,
+      "min_args": 3,
+      "reference_arguments": 0,
+      "variadic": true
+    },
+    {
+      "argument_count": 5,
+      "attrib": 1,
+      "attrib_low2": 1,
+      "count": 1,
+      "first_opcode": 15,
+      "max_args": 5,
+      "min_args": 3,
+      "reference_arguments": 0,
+      "variadic": true
+    },
+    {
+      "argument_count": 4,
+      "attrib": 1,
+      "attrib_low2": 1,
+      "count": 4,
+      "first_opcode": 15,
+      "max_args": 4,
+      "min_args": 4,
+      "reference_arguments": 0,
+      "variadic": true
+    },
+    {
+      "argument_count": 0,
+      "attrib": 10,
+      "attrib_low2": 2,
+      "count": 2,
+      "first_opcode": 15,
+      "max_args": 0,
+      "min_args": 0,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 1,
+      "attrib": 10,
+      "attrib_low2": 2,
+      "count": 2,
+      "first_opcode": 15,
+      "max_args": 1,
+      "min_args": 0,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 2,
+      "attrib": 10,
+      "attrib_low2": 2,
+      "count": 2,
+      "first_opcode": 15,
+      "max_args": 2,
+      "min_args": 0,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 1,
+      "attrib": 10,
+      "attrib_low2": 2,
+      "count": 3,
+      "first_opcode": 15,
+      "max_args": 1,
+      "min_args": 1,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 2,
+      "attrib": 10,
+      "attrib_low2": 2,
+      "count": 4,
+      "first_opcode": 15,
+      "max_args": 2,
+      "min_args": 1,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 3,
+      "attrib": 10,
+      "attrib_low2": 2,
+      "count": 1,
+      "first_opcode": 15,
+      "max_args": 3,
+      "min_args": 1,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 4,
+      "attrib": 10,
+      "attrib_low2": 2,
+      "count": 1,
+      "first_opcode": 15,
+      "max_args": 4,
+      "min_args": 1,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 2,
+      "attrib": 10,
+      "attrib_low2": 2,
+      "count": 1,
+      "first_opcode": 15,
+      "max_args": 2,
+      "min_args": 2,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 3,
+      "attrib": 10,
+      "attrib_low2": 2,
+      "count": 33,
+      "first_opcode": 15,
+      "max_args": 3,
+      "min_args": 3,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 8,
+      "attrib": 10,
+      "attrib_low2": 2,
+      "count": 3,
+      "first_opcode": 15,
+      "max_args": 8,
+      "min_args": 3,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 4,
+      "attrib": 10,
+      "attrib_low2": 2,
+      "count": 1,
+      "first_opcode": 15,
+      "max_args": 4,
+      "min_args": 4,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 9,
+      "attrib": 10,
+      "attrib_low2": 2,
+      "count": 3,
+      "first_opcode": 15,
+      "max_args": 9,
+      "min_args": 9,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 1,
+      "attrib": 12,
+      "attrib_low2": 0,
+      "count": 1,
+      "first_opcode": 15,
+      "max_args": 1,
+      "min_args": 1,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 1,
+      "attrib": 18,
+      "attrib_low2": 2,
+      "count": 5,
+      "first_opcode": 15,
+      "max_args": 1,
+      "min_args": 1,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 0,
+      "attrib": 2,
+      "attrib_low2": 2,
+      "count": 503,
+      "first_opcode": 15,
+      "max_args": 0,
+      "min_args": 0,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 0,
+      "attrib": 2,
+      "attrib_low2": 2,
+      "count": 23,
+      "first_opcode": null,
+      "max_args": 0,
+      "min_args": 0,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 1,
+      "attrib": 2,
+      "attrib_low2": 2,
+      "count": 16,
+      "first_opcode": null,
+      "max_args": 0,
+      "min_args": 0,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 2,
+      "attrib": 2,
+      "attrib_low2": 2,
+      "count": 12,
+      "first_opcode": null,
+      "max_args": 0,
+      "min_args": 0,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 4,
+      "attrib": 2,
+      "attrib_low2": 2,
+      "count": 1,
+      "first_opcode": null,
+      "max_args": 0,
+      "min_args": 0,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 1,
+      "attrib": 2,
+      "attrib_low2": 2,
+      "count": 156,
+      "first_opcode": 15,
+      "max_args": 1,
+      "min_args": 0,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 1,
+      "attrib": 2,
+      "attrib_low2": 2,
+      "count": 1,
+      "first_opcode": 15,
+      "max_args": 1,
+      "min_args": 0,
+      "reference_arguments": 1,
+      "variadic": false
+    },
+    {
+      "argument_count": 2,
+      "attrib": 2,
+      "attrib_low2": 2,
+      "count": 47,
+      "first_opcode": 15,
+      "max_args": 2,
+      "min_args": 0,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 2,
+      "attrib": 2,
+      "attrib_low2": 2,
+      "count": 1,
+      "first_opcode": 15,
+      "max_args": 2,
+      "min_args": 0,
+      "reference_arguments": 1,
+      "variadic": false
+    },
+    {
+      "argument_count": 2,
+      "attrib": 2,
+      "attrib_low2": 2,
+      "count": 1,
+      "first_opcode": 15,
+      "max_args": 2,
+      "min_args": 0,
+      "reference_arguments": 2,
+      "variadic": false
+    },
+    {
+      "argument_count": 3,
+      "attrib": 2,
+      "attrib_low2": 2,
+      "count": 12,
+      "first_opcode": 15,
+      "max_args": 3,
+      "min_args": 0,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 3,
+      "attrib": 2,
+      "attrib_low2": 2,
+      "count": 5,
+      "first_opcode": 15,
+      "max_args": 3,
+      "min_args": 0,
+      "reference_arguments": 1,
+      "variadic": false
+    },
+    {
+      "argument_count": 3,
+      "attrib": 2,
+      "attrib_low2": 2,
+      "count": 2,
+      "first_opcode": 15,
+      "max_args": 3,
+      "min_args": 0,
+      "reference_arguments": 2,
+      "variadic": false
+    },
+    {
+      "argument_count": 3,
+      "attrib": 2,
+      "attrib_low2": 2,
+      "count": 1,
+      "first_opcode": 15,
+      "max_args": 3,
+      "min_args": 0,
+      "reference_arguments": 3,
+      "variadic": false
+    },
+    {
+      "argument_count": 4,
+      "attrib": 2,
+      "attrib_low2": 2,
+      "count": 11,
+      "first_opcode": 15,
+      "max_args": 4,
+      "min_args": 0,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 5,
+      "attrib": 2,
+      "attrib_low2": 2,
+      "count": 1,
+      "first_opcode": 15,
+      "max_args": 5,
+      "min_args": 0,
+      "reference_arguments": 2,
+      "variadic": false
+    },
+    {
+      "argument_count": 1,
+      "attrib": 2,
+      "attrib_low2": 2,
+      "count": 977,
+      "first_opcode": 15,
+      "max_args": 1,
+      "min_args": 1,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 2,
+      "attrib": 2,
+      "attrib_low2": 2,
+      "count": 115,
+      "first_opcode": 15,
+      "max_args": 2,
+      "min_args": 1,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 2,
+      "attrib": 2,
+      "attrib_low2": 2,
+      "count": 10,
+      "first_opcode": 15,
+      "max_args": 2,
+      "min_args": 1,
+      "reference_arguments": 1,
+      "variadic": false
+    },
+    {
+      "argument_count": 3,
+      "attrib": 2,
+      "attrib_low2": 2,
+      "count": 29,
+      "first_opcode": 15,
+      "max_args": 3,
+      "min_args": 1,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 4,
+      "attrib": 2,
+      "attrib_low2": 2,
+      "count": 6,
+      "first_opcode": 15,
+      "max_args": 4,
+      "min_args": 1,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 5,
+      "attrib": 2,
+      "attrib_low2": 2,
+      "count": 1,
+      "first_opcode": 15,
+      "max_args": 5,
+      "min_args": 1,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 10,
+      "attrib": 2,
+      "attrib_low2": 2,
+      "count": 7,
+      "first_opcode": 15,
+      "max_args": 10,
+      "min_args": 10,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 11,
+      "attrib": 2,
+      "attrib_low2": 2,
+      "count": 8,
+      "first_opcode": 15,
+      "max_args": 11,
+      "min_args": 11,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 12,
+      "attrib": 2,
+      "attrib_low2": 2,
+      "count": 4,
+      "first_opcode": 15,
+      "max_args": 12,
+      "min_args": 12,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 13,
+      "attrib": 2,
+      "attrib_low2": 2,
+      "count": 1,
+      "first_opcode": 15,
+      "max_args": 13,
+      "min_args": 13,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 17,
+      "attrib": 2,
+      "attrib_low2": 2,
+      "count": 1,
+      "first_opcode": 15,
+      "max_args": 17,
+      "min_args": 14,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 2,
+      "attrib": 2,
+      "attrib_low2": 2,
+      "count": 717,
+      "first_opcode": 15,
+      "max_args": 2,
+      "min_args": 2,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 3,
+      "attrib": 2,
+      "attrib_low2": 2,
+      "count": 95,
+      "first_opcode": 15,
+      "max_args": 3,
+      "min_args": 2,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 3,
+      "attrib": 2,
+      "attrib_low2": 2,
+      "count": 1,
+      "first_opcode": 15,
+      "max_args": 3,
+      "min_args": 2,
+      "reference_arguments": 1,
+      "variadic": false
+    },
+    {
+      "argument_count": 3,
+      "attrib": 2,
+      "attrib_low2": 2,
+      "count": 3,
+      "first_opcode": 15,
+      "max_args": 3,
+      "min_args": 2,
+      "reference_arguments": 3,
+      "variadic": false
+    },
+    {
+      "argument_count": 4,
+      "attrib": 2,
+      "attrib_low2": 2,
+      "count": 49,
+      "first_opcode": 15,
+      "max_args": 4,
+      "min_args": 2,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 5,
+      "attrib": 2,
+      "attrib_low2": 2,
+      "count": 10,
+      "first_opcode": 15,
+      "max_args": 5,
+      "min_args": 2,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 10,
+      "attrib": 2,
+      "attrib_low2": 2,
+      "count": 1,
+      "first_opcode": 15,
+      "max_args": 10,
+      "min_args": 3,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 3,
+      "attrib": 2,
+      "attrib_low2": 2,
+      "count": 500,
+      "first_opcode": 15,
+      "max_args": 3,
+      "min_args": 3,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 3,
+      "attrib": 2,
+      "attrib_low2": 2,
+      "count": 2,
+      "first_opcode": 15,
+      "max_args": 3,
+      "min_args": 3,
+      "reference_arguments": 1,
+      "variadic": false
+    },
+    {
+      "argument_count": 3,
+      "attrib": 2,
+      "attrib_low2": 2,
+      "count": 10,
+      "first_opcode": 15,
+      "max_args": 3,
+      "min_args": 3,
+      "reference_arguments": 2,
+      "variadic": false
+    },
+    {
+      "argument_count": 4,
+      "attrib": 2,
+      "attrib_low2": 2,
+      "count": 44,
+      "first_opcode": 15,
+      "max_args": 4,
+      "min_args": 3,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 5,
+      "attrib": 2,
+      "attrib_low2": 2,
+      "count": 13,
+      "first_opcode": 15,
+      "max_args": 5,
+      "min_args": 3,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 6,
+      "attrib": 2,
+      "attrib_low2": 2,
+      "count": 6,
+      "first_opcode": 15,
+      "max_args": 6,
+      "min_args": 3,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 8,
+      "attrib": 2,
+      "attrib_low2": 2,
+      "count": 1,
+      "first_opcode": 15,
+      "max_args": 8,
+      "min_args": 3,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 9,
+      "attrib": 2,
+      "attrib_low2": 2,
+      "count": 1,
+      "first_opcode": 15,
+      "max_args": 9,
+      "min_args": 3,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 4,
+      "attrib": 2,
+      "attrib_low2": 2,
+      "count": 261,
+      "first_opcode": 15,
+      "max_args": 4,
+      "min_args": 4,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 4,
+      "attrib": 2,
+      "attrib_low2": 2,
+      "count": 5,
+      "first_opcode": 15,
+      "max_args": 4,
+      "min_args": 4,
+      "reference_arguments": 3,
+      "variadic": false
+    },
+    {
+      "argument_count": 5,
+      "attrib": 2,
+      "attrib_low2": 2,
+      "count": 9,
+      "first_opcode": 15,
+      "max_args": 5,
+      "min_args": 4,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 6,
+      "attrib": 2,
+      "attrib_low2": 2,
+      "count": 10,
+      "first_opcode": 15,
+      "max_args": 6,
+      "min_args": 4,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 7,
+      "attrib": 2,
+      "attrib_low2": 2,
+      "count": 5,
+      "first_opcode": 15,
+      "max_args": 7,
+      "min_args": 4,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 5,
+      "attrib": 2,
+      "attrib_low2": 2,
+      "count": 175,
+      "first_opcode": 15,
+      "max_args": 5,
+      "min_args": 5,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 6,
+      "attrib": 2,
+      "attrib_low2": 2,
+      "count": 10,
+      "first_opcode": 15,
+      "max_args": 6,
+      "min_args": 5,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 7,
+      "attrib": 2,
+      "attrib_low2": 2,
+      "count": 1,
+      "first_opcode": 15,
+      "max_args": 7,
+      "min_args": 5,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 6,
+      "attrib": 2,
+      "attrib_low2": 2,
+      "count": 67,
+      "first_opcode": 15,
+      "max_args": 6,
+      "min_args": 6,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 7,
+      "attrib": 2,
+      "attrib_low2": 2,
+      "count": 4,
+      "first_opcode": 15,
+      "max_args": 7,
+      "min_args": 6,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 7,
+      "attrib": 2,
+      "attrib_low2": 2,
+      "count": 66,
+      "first_opcode": 15,
+      "max_args": 7,
+      "min_args": 7,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 8,
+      "attrib": 2,
+      "attrib_low2": 2,
+      "count": 3,
+      "first_opcode": 15,
+      "max_args": 8,
+      "min_args": 7,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 8,
+      "attrib": 2,
+      "attrib_low2": 2,
+      "count": 10,
+      "first_opcode": 15,
+      "max_args": 8,
+      "min_args": 8,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 9,
+      "attrib": 2,
+      "attrib_low2": 2,
+      "count": 1,
+      "first_opcode": 15,
+      "max_args": 9,
+      "min_args": 8,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 9,
+      "attrib": 2,
+      "attrib_low2": 2,
+      "count": 24,
+      "first_opcode": 15,
+      "max_args": 9,
+      "min_args": 9,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 1,
+      "attrib": 26,
+      "attrib_low2": 2,
+      "count": 5,
+      "first_opcode": 15,
+      "max_args": 1,
+      "min_args": 1,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 0,
+      "attrib": 3,
+      "attrib_low2": 3,
+      "count": 1,
+      "first_opcode": 15,
+      "max_args": 0,
+      "min_args": 0,
+      "reference_arguments": 0,
+      "variadic": true
+    },
+    {
+      "argument_count": 3,
+      "attrib": 3,
+      "attrib_low2": 3,
+      "count": 1,
+      "first_opcode": null,
+      "max_args": 0,
+      "min_args": 0,
+      "reference_arguments": 0,
+      "variadic": true
+    },
+    {
+      "argument_count": 1,
+      "attrib": 3,
+      "attrib_low2": 3,
+      "count": 12,
+      "first_opcode": 15,
+      "max_args": 1,
+      "min_args": 1,
+      "reference_arguments": 0,
+      "variadic": true
+    },
+    {
+      "argument_count": 3,
+      "attrib": 3,
+      "attrib_low2": 3,
+      "count": 12,
+      "first_opcode": 15,
+      "max_args": 3,
+      "min_args": 3,
+      "reference_arguments": 0,
+      "variadic": true
+    },
+    {
+      "argument_count": 0,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 11629,
+      "first_opcode": 15,
+      "max_args": 0,
+      "min_args": 0,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 0,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 47,
+      "first_opcode": null,
+      "max_args": 0,
+      "min_args": 0,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 1,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 137,
+      "first_opcode": null,
+      "max_args": 0,
+      "min_args": 0,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 1,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 2,
+      "first_opcode": null,
+      "max_args": 0,
+      "min_args": 0,
+      "reference_arguments": 1,
+      "variadic": false
+    },
+    {
+      "argument_count": 2,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 116,
+      "first_opcode": null,
+      "max_args": 0,
+      "min_args": 0,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 2,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 16,
+      "first_opcode": null,
+      "max_args": 0,
+      "min_args": 0,
+      "reference_arguments": 1,
+      "variadic": false
+    },
+    {
+      "argument_count": 3,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 51,
+      "first_opcode": null,
+      "max_args": 0,
+      "min_args": 0,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 3,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 8,
+      "first_opcode": null,
+      "max_args": 0,
+      "min_args": 0,
+      "reference_arguments": 1,
+      "variadic": false
+    },
+    {
+      "argument_count": 3,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 1,
+      "first_opcode": null,
+      "max_args": 0,
+      "min_args": 0,
+      "reference_arguments": 2,
+      "variadic": false
+    },
+    {
+      "argument_count": 4,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 27,
+      "first_opcode": null,
+      "max_args": 0,
+      "min_args": 0,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 4,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 3,
+      "first_opcode": null,
+      "max_args": 0,
+      "min_args": 0,
+      "reference_arguments": 1,
+      "variadic": false
+    },
+    {
+      "argument_count": 5,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 9,
+      "first_opcode": null,
+      "max_args": 0,
+      "min_args": 0,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 6,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 2,
+      "first_opcode": null,
+      "max_args": 0,
+      "min_args": 0,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 7,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 1,
+      "first_opcode": null,
+      "max_args": 0,
+      "min_args": 0,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 8,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 1,
+      "first_opcode": null,
+      "max_args": 0,
+      "min_args": 0,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 1,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 508,
+      "first_opcode": 15,
+      "max_args": 1,
+      "min_args": 0,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 1,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 3,
+      "first_opcode": 15,
+      "max_args": 1,
+      "min_args": 0,
+      "reference_arguments": 1,
+      "variadic": false
+    },
+    {
+      "argument_count": 2,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 376,
+      "first_opcode": 15,
+      "max_args": 2,
+      "min_args": 0,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 2,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 27,
+      "first_opcode": 15,
+      "max_args": 2,
+      "min_args": 0,
+      "reference_arguments": 1,
+      "variadic": false
+    },
+    {
+      "argument_count": 2,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 8,
+      "first_opcode": 15,
+      "max_args": 2,
+      "min_args": 0,
+      "reference_arguments": 2,
+      "variadic": false
+    },
+    {
+      "argument_count": 3,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 104,
+      "first_opcode": 15,
+      "max_args": 3,
+      "min_args": 0,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 3,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 1,
+      "first_opcode": 15,
+      "max_args": 3,
+      "min_args": 0,
+      "reference_arguments": 2,
+      "variadic": false
+    },
+    {
+      "argument_count": 3,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 1,
+      "first_opcode": 15,
+      "max_args": 3,
+      "min_args": 0,
+      "reference_arguments": 3,
+      "variadic": false
+    },
+    {
+      "argument_count": 4,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 29,
+      "first_opcode": 15,
+      "max_args": 4,
+      "min_args": 0,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 5,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 43,
+      "first_opcode": 15,
+      "max_args": 5,
+      "min_args": 0,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 5,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 1,
+      "first_opcode": 15,
+      "max_args": 5,
+      "min_args": 0,
+      "reference_arguments": 1,
+      "variadic": false
+    },
+    {
+      "argument_count": 6,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 4,
+      "first_opcode": 15,
+      "max_args": 6,
+      "min_args": 0,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 1,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 10454,
+      "first_opcode": 15,
+      "max_args": 1,
+      "min_args": 1,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 1,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 16,
+      "first_opcode": 15,
+      "max_args": 1,
+      "min_args": 1,
+      "reference_arguments": 1,
+      "variadic": false
+    },
+    {
+      "argument_count": 2,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 658,
+      "first_opcode": 15,
+      "max_args": 2,
+      "min_args": 1,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 2,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 174,
+      "first_opcode": 15,
+      "max_args": 2,
+      "min_args": 1,
+      "reference_arguments": 1,
+      "variadic": false
+    },
+    {
+      "argument_count": 3,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 141,
+      "first_opcode": 15,
+      "max_args": 3,
+      "min_args": 1,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 3,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 27,
+      "first_opcode": 15,
+      "max_args": 3,
+      "min_args": 1,
+      "reference_arguments": 1,
+      "variadic": false
+    },
+    {
+      "argument_count": 3,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 17,
+      "first_opcode": 15,
+      "max_args": 3,
+      "min_args": 1,
+      "reference_arguments": 2,
+      "variadic": false
+    },
+    {
+      "argument_count": 4,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 21,
+      "first_opcode": 15,
+      "max_args": 4,
+      "min_args": 1,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 4,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 2,
+      "first_opcode": 15,
+      "max_args": 4,
+      "min_args": 1,
+      "reference_arguments": 1,
+      "variadic": false
+    },
+    {
+      "argument_count": 4,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 6,
+      "first_opcode": 15,
+      "max_args": 4,
+      "min_args": 1,
+      "reference_arguments": 2,
+      "variadic": false
+    },
+    {
+      "argument_count": 4,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 2,
+      "first_opcode": 15,
+      "max_args": 4,
+      "min_args": 1,
+      "reference_arguments": 3,
+      "variadic": false
+    },
+    {
+      "argument_count": 5,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 5,
+      "first_opcode": 15,
+      "max_args": 5,
+      "min_args": 1,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 5,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 1,
+      "first_opcode": 15,
+      "max_args": 5,
+      "min_args": 1,
+      "reference_arguments": 1,
+      "variadic": false
+    },
+    {
+      "argument_count": 6,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 6,
+      "first_opcode": 15,
+      "max_args": 6,
+      "min_args": 1,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 9,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 1,
+      "first_opcode": 15,
+      "max_args": 9,
+      "min_args": 1,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 10,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 21,
+      "first_opcode": 15,
+      "max_args": 10,
+      "min_args": 10,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 10,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 1,
+      "first_opcode": 15,
+      "max_args": 10,
+      "min_args": 10,
+      "reference_arguments": 1,
+      "variadic": false
+    },
+    {
+      "argument_count": 11,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 5,
+      "first_opcode": 15,
+      "max_args": 11,
+      "min_args": 10,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 12,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 1,
+      "first_opcode": 15,
+      "max_args": 12,
+      "min_args": 10,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 11,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 7,
+      "first_opcode": 15,
+      "max_args": 11,
+      "min_args": 11,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 12,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 4,
+      "first_opcode": 15,
+      "max_args": 12,
+      "min_args": 11,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 12,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 5,
+      "first_opcode": 15,
+      "max_args": 12,
+      "min_args": 12,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 13,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 3,
+      "first_opcode": 15,
+      "max_args": 13,
+      "min_args": 12,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 13,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 4,
+      "first_opcode": 15,
+      "max_args": 13,
+      "min_args": 13,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 19,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 2,
+      "first_opcode": 15,
+      "max_args": 19,
+      "min_args": 19,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 2,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 10723,
+      "first_opcode": 15,
+      "max_args": 2,
+      "min_args": 2,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 2,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 728,
+      "first_opcode": 15,
+      "max_args": 2,
+      "min_args": 2,
+      "reference_arguments": 1,
+      "variadic": false
+    },
+    {
+      "argument_count": 2,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 7,
+      "first_opcode": 15,
+      "max_args": 2,
+      "min_args": 2,
+      "reference_arguments": 2,
+      "variadic": false
+    },
+    {
+      "argument_count": 3,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 1081,
+      "first_opcode": 15,
+      "max_args": 3,
+      "min_args": 2,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 3,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 182,
+      "first_opcode": 15,
+      "max_args": 3,
+      "min_args": 2,
+      "reference_arguments": 1,
+      "variadic": false
+    },
+    {
+      "argument_count": 3,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 3,
+      "first_opcode": 15,
+      "max_args": 3,
+      "min_args": 2,
+      "reference_arguments": 2,
+      "variadic": false
+    },
+    {
+      "argument_count": 4,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 91,
+      "first_opcode": 15,
+      "max_args": 4,
+      "min_args": 2,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 4,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 5,
+      "first_opcode": 15,
+      "max_args": 4,
+      "min_args": 2,
+      "reference_arguments": 1,
+      "variadic": false
+    },
+    {
+      "argument_count": 4,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 21,
+      "first_opcode": 15,
+      "max_args": 4,
+      "min_args": 2,
+      "reference_arguments": 2,
+      "variadic": false
+    },
+    {
+      "argument_count": 4,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 1,
+      "first_opcode": 15,
+      "max_args": 4,
+      "min_args": 2,
+      "reference_arguments": 3,
+      "variadic": false
+    },
+    {
+      "argument_count": 5,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 21,
+      "first_opcode": 15,
+      "max_args": 5,
+      "min_args": 2,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 5,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 1,
+      "first_opcode": 15,
+      "max_args": 5,
+      "min_args": 2,
+      "reference_arguments": 1,
+      "variadic": false
+    },
+    {
+      "argument_count": 5,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 2,
+      "first_opcode": 15,
+      "max_args": 5,
+      "min_args": 2,
+      "reference_arguments": 2,
+      "variadic": false
+    },
+    {
+      "argument_count": 5,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 16,
+      "first_opcode": 15,
+      "max_args": 5,
+      "min_args": 2,
+      "reference_arguments": 3,
+      "variadic": false
+    },
+    {
+      "argument_count": 6,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 5,
+      "first_opcode": 15,
+      "max_args": 6,
+      "min_args": 2,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 6,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 1,
+      "first_opcode": 15,
+      "max_args": 6,
+      "min_args": 2,
+      "reference_arguments": 1,
+      "variadic": false
+    },
+    {
+      "argument_count": 6,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 3,
+      "first_opcode": 15,
+      "max_args": 6,
+      "min_args": 2,
+      "reference_arguments": 4,
+      "variadic": false
+    },
+    {
+      "argument_count": 7,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 5,
+      "first_opcode": 15,
+      "max_args": 7,
+      "min_args": 2,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 8,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 1,
+      "first_opcode": 15,
+      "max_args": 8,
+      "min_args": 2,
+      "reference_arguments": 6,
+      "variadic": false
+    },
+    {
+      "argument_count": 3,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 3287,
+      "first_opcode": 15,
+      "max_args": 3,
+      "min_args": 3,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 3,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 225,
+      "first_opcode": 15,
+      "max_args": 3,
+      "min_args": 3,
+      "reference_arguments": 1,
+      "variadic": false
+    },
+    {
+      "argument_count": 3,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 46,
+      "first_opcode": 15,
+      "max_args": 3,
+      "min_args": 3,
+      "reference_arguments": 2,
+      "variadic": false
+    },
+    {
+      "argument_count": 3,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 2,
+      "first_opcode": 15,
+      "max_args": 3,
+      "min_args": 3,
+      "reference_arguments": 3,
+      "variadic": false
+    },
+    {
+      "argument_count": 4,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 501,
+      "first_opcode": 15,
+      "max_args": 4,
+      "min_args": 3,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 4,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 259,
+      "first_opcode": 15,
+      "max_args": 4,
+      "min_args": 3,
+      "reference_arguments": 1,
+      "variadic": false
+    },
+    {
+      "argument_count": 4,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 3,
+      "first_opcode": 15,
+      "max_args": 4,
+      "min_args": 3,
+      "reference_arguments": 2,
+      "variadic": false
+    },
+    {
+      "argument_count": 5,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 66,
+      "first_opcode": 15,
+      "max_args": 5,
+      "min_args": 3,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 5,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 8,
+      "first_opcode": 15,
+      "max_args": 5,
+      "min_args": 3,
+      "reference_arguments": 1,
+      "variadic": false
+    },
+    {
+      "argument_count": 5,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 22,
+      "first_opcode": 15,
+      "max_args": 5,
+      "min_args": 3,
+      "reference_arguments": 2,
+      "variadic": false
+    },
+    {
+      "argument_count": 6,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 40,
+      "first_opcode": 15,
+      "max_args": 6,
+      "min_args": 3,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 6,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 2,
+      "first_opcode": 15,
+      "max_args": 6,
+      "min_args": 3,
+      "reference_arguments": 2,
+      "variadic": false
+    },
+    {
+      "argument_count": 6,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 3,
+      "first_opcode": 15,
+      "max_args": 6,
+      "min_args": 3,
+      "reference_arguments": 3,
+      "variadic": false
+    },
+    {
+      "argument_count": 7,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 6,
+      "first_opcode": 15,
+      "max_args": 7,
+      "min_args": 3,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 7,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 1,
+      "first_opcode": 15,
+      "max_args": 7,
+      "min_args": 3,
+      "reference_arguments": 1,
+      "variadic": false
+    },
+    {
+      "argument_count": 7,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 1,
+      "first_opcode": 15,
+      "max_args": 7,
+      "min_args": 3,
+      "reference_arguments": 3,
+      "variadic": false
+    },
+    {
+      "argument_count": 7,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 2,
+      "first_opcode": 15,
+      "max_args": 7,
+      "min_args": 3,
+      "reference_arguments": 4,
+      "variadic": false
+    },
+    {
+      "argument_count": 8,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 1,
+      "first_opcode": 15,
+      "max_args": 8,
+      "min_args": 3,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 4,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 1651,
+      "first_opcode": 15,
+      "max_args": 4,
+      "min_args": 4,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 4,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 78,
+      "first_opcode": 15,
+      "max_args": 4,
+      "min_args": 4,
+      "reference_arguments": 1,
+      "variadic": false
+    },
+    {
+      "argument_count": 4,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 10,
+      "first_opcode": 15,
+      "max_args": 4,
+      "min_args": 4,
+      "reference_arguments": 2,
+      "variadic": false
+    },
+    {
+      "argument_count": 4,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 3,
+      "first_opcode": 15,
+      "max_args": 4,
+      "min_args": 4,
+      "reference_arguments": 3,
+      "variadic": false
+    },
+    {
+      "argument_count": 4,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 2,
+      "first_opcode": 15,
+      "max_args": 4,
+      "min_args": 4,
+      "reference_arguments": 4,
+      "variadic": false
+    },
+    {
+      "argument_count": 5,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 239,
+      "first_opcode": 15,
+      "max_args": 5,
+      "min_args": 4,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 5,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 11,
+      "first_opcode": 15,
+      "max_args": 5,
+      "min_args": 4,
+      "reference_arguments": 1,
+      "variadic": false
+    },
+    {
+      "argument_count": 5,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 5,
+      "first_opcode": 15,
+      "max_args": 5,
+      "min_args": 4,
+      "reference_arguments": 2,
+      "variadic": false
+    },
+    {
+      "argument_count": 5,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 1,
+      "first_opcode": 15,
+      "max_args": 5,
+      "min_args": 4,
+      "reference_arguments": 3,
+      "variadic": false
+    },
+    {
+      "argument_count": 6,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 7,
+      "first_opcode": 15,
+      "max_args": 6,
+      "min_args": 4,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 6,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 4,
+      "first_opcode": 15,
+      "max_args": 6,
+      "min_args": 4,
+      "reference_arguments": 1,
+      "variadic": false
+    },
+    {
+      "argument_count": 6,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 3,
+      "first_opcode": 15,
+      "max_args": 6,
+      "min_args": 4,
+      "reference_arguments": 2,
+      "variadic": false
+    },
+    {
+      "argument_count": 7,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 29,
+      "first_opcode": 15,
+      "max_args": 7,
+      "min_args": 4,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 7,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 3,
+      "first_opcode": 15,
+      "max_args": 7,
+      "min_args": 4,
+      "reference_arguments": 1,
+      "variadic": false
+    },
+    {
+      "argument_count": 8,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 3,
+      "first_opcode": 15,
+      "max_args": 8,
+      "min_args": 4,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 10,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 1,
+      "first_opcode": 15,
+      "max_args": 10,
+      "min_args": 5,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 10,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 1,
+      "first_opcode": 15,
+      "max_args": 10,
+      "min_args": 5,
+      "reference_arguments": 3,
+      "variadic": false
+    },
+    {
+      "argument_count": 11,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 1,
+      "first_opcode": 15,
+      "max_args": 11,
+      "min_args": 5,
+      "reference_arguments": 5,
+      "variadic": false
+    },
+    {
+      "argument_count": 5,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 454,
+      "first_opcode": 15,
+      "max_args": 5,
+      "min_args": 5,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 5,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 14,
+      "first_opcode": 15,
+      "max_args": 5,
+      "min_args": 5,
+      "reference_arguments": 1,
+      "variadic": false
+    },
+    {
+      "argument_count": 5,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 9,
+      "first_opcode": 15,
+      "max_args": 5,
+      "min_args": 5,
+      "reference_arguments": 2,
+      "variadic": false
+    },
+    {
+      "argument_count": 5,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 2,
+      "first_opcode": 15,
+      "max_args": 5,
+      "min_args": 5,
+      "reference_arguments": 3,
+      "variadic": false
+    },
+    {
+      "argument_count": 6,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 74,
+      "first_opcode": 15,
+      "max_args": 6,
+      "min_args": 5,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 6,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 6,
+      "first_opcode": 15,
+      "max_args": 6,
+      "min_args": 5,
+      "reference_arguments": 1,
+      "variadic": false
+    },
+    {
+      "argument_count": 6,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 3,
+      "first_opcode": 15,
+      "max_args": 6,
+      "min_args": 5,
+      "reference_arguments": 2,
+      "variadic": false
+    },
+    {
+      "argument_count": 6,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 1,
+      "first_opcode": 15,
+      "max_args": 6,
+      "min_args": 5,
+      "reference_arguments": 3,
+      "variadic": false
+    },
+    {
+      "argument_count": 7,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 6,
+      "first_opcode": 15,
+      "max_args": 7,
+      "min_args": 5,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 7,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 4,
+      "first_opcode": 15,
+      "max_args": 7,
+      "min_args": 5,
+      "reference_arguments": 1,
+      "variadic": false
+    },
+    {
+      "argument_count": 7,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 2,
+      "first_opcode": 15,
+      "max_args": 7,
+      "min_args": 5,
+      "reference_arguments": 2,
+      "variadic": false
+    },
+    {
+      "argument_count": 8,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 10,
+      "first_opcode": 15,
+      "max_args": 8,
+      "min_args": 5,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 6,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 137,
+      "first_opcode": 15,
+      "max_args": 6,
+      "min_args": 6,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 6,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 5,
+      "first_opcode": 15,
+      "max_args": 6,
+      "min_args": 6,
+      "reference_arguments": 1,
+      "variadic": false
+    },
+    {
+      "argument_count": 6,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 2,
+      "first_opcode": 15,
+      "max_args": 6,
+      "min_args": 6,
+      "reference_arguments": 3,
+      "variadic": false
+    },
+    {
+      "argument_count": 6,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 1,
+      "first_opcode": 15,
+      "max_args": 6,
+      "min_args": 6,
+      "reference_arguments": 5,
+      "variadic": false
+    },
+    {
+      "argument_count": 7,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 15,
+      "first_opcode": 15,
+      "max_args": 7,
+      "min_args": 6,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 7,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 5,
+      "first_opcode": 15,
+      "max_args": 7,
+      "min_args": 6,
+      "reference_arguments": 1,
+      "variadic": false
+    },
+    {
+      "argument_count": 7,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 1,
+      "first_opcode": 15,
+      "max_args": 7,
+      "min_args": 6,
+      "reference_arguments": 2,
+      "variadic": false
+    },
+    {
+      "argument_count": 8,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 3,
+      "first_opcode": 15,
+      "max_args": 8,
+      "min_args": 6,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 8,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 5,
+      "first_opcode": 15,
+      "max_args": 8,
+      "min_args": 6,
+      "reference_arguments": 1,
+      "variadic": false
+    },
+    {
+      "argument_count": 8,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 2,
+      "first_opcode": 15,
+      "max_args": 8,
+      "min_args": 6,
+      "reference_arguments": 2,
+      "variadic": false
+    },
+    {
+      "argument_count": 9,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 2,
+      "first_opcode": 15,
+      "max_args": 9,
+      "min_args": 6,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 9,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 1,
+      "first_opcode": 15,
+      "max_args": 9,
+      "min_args": 6,
+      "reference_arguments": 2,
+      "variadic": false
+    },
+    {
+      "argument_count": 10,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 2,
+      "first_opcode": 15,
+      "max_args": 10,
+      "min_args": 7,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 7,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 63,
+      "first_opcode": 15,
+      "max_args": 7,
+      "min_args": 7,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 7,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 4,
+      "first_opcode": 15,
+      "max_args": 7,
+      "min_args": 7,
+      "reference_arguments": 1,
+      "variadic": false
+    },
+    {
+      "argument_count": 7,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 1,
+      "first_opcode": 15,
+      "max_args": 7,
+      "min_args": 7,
+      "reference_arguments": 3,
+      "variadic": false
+    },
+    {
+      "argument_count": 8,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 6,
+      "first_opcode": 15,
+      "max_args": 8,
+      "min_args": 7,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 9,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 1,
+      "first_opcode": 15,
+      "max_args": 9,
+      "min_args": 7,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 10,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 1,
+      "first_opcode": 15,
+      "max_args": 10,
+      "min_args": 8,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 11,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 1,
+      "first_opcode": 15,
+      "max_args": 11,
+      "min_args": 8,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 8,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 52,
+      "first_opcode": 15,
+      "max_args": 8,
+      "min_args": 8,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 8,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 1,
+      "first_opcode": 15,
+      "max_args": 8,
+      "min_args": 8,
+      "reference_arguments": 1,
+      "variadic": false
+    },
+    {
+      "argument_count": 8,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 1,
+      "first_opcode": 15,
+      "max_args": 8,
+      "min_args": 8,
+      "reference_arguments": 2,
+      "variadic": false
+    },
+    {
+      "argument_count": 9,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 6,
+      "first_opcode": 15,
+      "max_args": 9,
+      "min_args": 8,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 10,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 4,
+      "first_opcode": 15,
+      "max_args": 10,
+      "min_args": 9,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 9,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 32,
+      "first_opcode": 15,
+      "max_args": 9,
+      "min_args": 9,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 9,
+      "attrib": 4,
+      "attrib_low2": 0,
+      "count": 1,
+      "first_opcode": 15,
+      "max_args": 9,
+      "min_args": 9,
+      "reference_arguments": 1,
+      "variadic": false
+    },
+    {
+      "argument_count": 5,
+      "attrib": 5,
+      "attrib_low2": 1,
+      "count": 1,
+      "first_opcode": 15,
+      "max_args": 5,
+      "min_args": 5,
+      "reference_arguments": 0,
+      "variadic": true
+    },
+    {
+      "argument_count": 0,
+      "attrib": 6,
+      "attrib_low2": 2,
+      "count": 233,
+      "first_opcode": 15,
+      "max_args": 0,
+      "min_args": 0,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 1,
+      "attrib": 6,
+      "attrib_low2": 2,
+      "count": 1,
+      "first_opcode": null,
+      "max_args": 0,
+      "min_args": 0,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 2,
+      "attrib": 6,
+      "attrib_low2": 2,
+      "count": 1,
+      "first_opcode": null,
+      "max_args": 0,
+      "min_args": 0,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 1,
+      "attrib": 6,
+      "attrib_low2": 2,
+      "count": 24,
+      "first_opcode": 15,
+      "max_args": 1,
+      "min_args": 0,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 1,
+      "attrib": 6,
+      "attrib_low2": 2,
+      "count": 1,
+      "first_opcode": 15,
+      "max_args": 1,
+      "min_args": 0,
+      "reference_arguments": 1,
+      "variadic": false
+    },
+    {
+      "argument_count": 2,
+      "attrib": 6,
+      "attrib_low2": 2,
+      "count": 18,
+      "first_opcode": 15,
+      "max_args": 2,
+      "min_args": 0,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 3,
+      "attrib": 6,
+      "attrib_low2": 2,
+      "count": 3,
+      "first_opcode": 15,
+      "max_args": 3,
+      "min_args": 0,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 1,
+      "attrib": 6,
+      "attrib_low2": 2,
+      "count": 261,
+      "first_opcode": 15,
+      "max_args": 1,
+      "min_args": 1,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 2,
+      "attrib": 6,
+      "attrib_low2": 2,
+      "count": 29,
+      "first_opcode": 15,
+      "max_args": 2,
+      "min_args": 1,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 3,
+      "attrib": 6,
+      "attrib_low2": 2,
+      "count": 2,
+      "first_opcode": 15,
+      "max_args": 3,
+      "min_args": 1,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 3,
+      "attrib": 6,
+      "attrib_low2": 2,
+      "count": 1,
+      "first_opcode": 15,
+      "max_args": 3,
+      "min_args": 1,
+      "reference_arguments": 1,
+      "variadic": false
+    },
+    {
+      "argument_count": 10,
+      "attrib": 6,
+      "attrib_low2": 2,
+      "count": 2,
+      "first_opcode": 15,
+      "max_args": 10,
+      "min_args": 10,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 11,
+      "attrib": 6,
+      "attrib_low2": 2,
+      "count": 1,
+      "first_opcode": 15,
+      "max_args": 11,
+      "min_args": 11,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 2,
+      "attrib": 6,
+      "attrib_low2": 2,
+      "count": 196,
+      "first_opcode": 15,
+      "max_args": 2,
+      "min_args": 2,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 2,
+      "attrib": 6,
+      "attrib_low2": 2,
+      "count": 4,
+      "first_opcode": 15,
+      "max_args": 2,
+      "min_args": 2,
+      "reference_arguments": 1,
+      "variadic": false
+    },
+    {
+      "argument_count": 3,
+      "attrib": 6,
+      "attrib_low2": 2,
+      "count": 43,
+      "first_opcode": 15,
+      "max_args": 3,
+      "min_args": 2,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 3,
+      "attrib": 6,
+      "attrib_low2": 2,
+      "count": 1,
+      "first_opcode": 15,
+      "max_args": 3,
+      "min_args": 2,
+      "reference_arguments": 1,
+      "variadic": false
+    },
+    {
+      "argument_count": 4,
+      "attrib": 6,
+      "attrib_low2": 2,
+      "count": 2,
+      "first_opcode": 15,
+      "max_args": 4,
+      "min_args": 2,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 3,
+      "attrib": 6,
+      "attrib_low2": 2,
+      "count": 69,
+      "first_opcode": 15,
+      "max_args": 3,
+      "min_args": 3,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 3,
+      "attrib": 6,
+      "attrib_low2": 2,
+      "count": 1,
+      "first_opcode": 15,
+      "max_args": 3,
+      "min_args": 3,
+      "reference_arguments": 2,
+      "variadic": false
+    },
+    {
+      "argument_count": 4,
+      "attrib": 6,
+      "attrib_low2": 2,
+      "count": 9,
+      "first_opcode": 15,
+      "max_args": 4,
+      "min_args": 3,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 4,
+      "attrib": 6,
+      "attrib_low2": 2,
+      "count": 2,
+      "first_opcode": 15,
+      "max_args": 4,
+      "min_args": 3,
+      "reference_arguments": 1,
+      "variadic": false
+    },
+    {
+      "argument_count": 5,
+      "attrib": 6,
+      "attrib_low2": 2,
+      "count": 1,
+      "first_opcode": 15,
+      "max_args": 5,
+      "min_args": 3,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 6,
+      "attrib": 6,
+      "attrib_low2": 2,
+      "count": 3,
+      "first_opcode": 15,
+      "max_args": 6,
+      "min_args": 3,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 4,
+      "attrib": 6,
+      "attrib_low2": 2,
+      "count": 35,
+      "first_opcode": 15,
+      "max_args": 4,
+      "min_args": 4,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 4,
+      "attrib": 6,
+      "attrib_low2": 2,
+      "count": 12,
+      "first_opcode": 15,
+      "max_args": 4,
+      "min_args": 4,
+      "reference_arguments": 1,
+      "variadic": false
+    },
+    {
+      "argument_count": 5,
+      "attrib": 6,
+      "attrib_low2": 2,
+      "count": 5,
+      "first_opcode": 15,
+      "max_args": 5,
+      "min_args": 4,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 6,
+      "attrib": 6,
+      "attrib_low2": 2,
+      "count": 1,
+      "first_opcode": 15,
+      "max_args": 6,
+      "min_args": 4,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 5,
+      "attrib": 6,
+      "attrib_low2": 2,
+      "count": 12,
+      "first_opcode": 15,
+      "max_args": 5,
+      "min_args": 5,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 6,
+      "attrib": 6,
+      "attrib_low2": 2,
+      "count": 1,
+      "first_opcode": 15,
+      "max_args": 6,
+      "min_args": 5,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 6,
+      "attrib": 6,
+      "attrib_low2": 2,
+      "count": 1,
+      "first_opcode": 15,
+      "max_args": 6,
+      "min_args": 5,
+      "reference_arguments": 1,
+      "variadic": false
+    },
+    {
+      "argument_count": 6,
+      "attrib": 6,
+      "attrib_low2": 2,
+      "count": 1,
+      "first_opcode": 15,
+      "max_args": 6,
+      "min_args": 6,
+      "reference_arguments": 2,
+      "variadic": false
+    },
+    {
+      "argument_count": 7,
+      "attrib": 6,
+      "attrib_low2": 2,
+      "count": 1,
+      "first_opcode": 15,
+      "max_args": 7,
+      "min_args": 6,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 7,
+      "attrib": 6,
+      "attrib_low2": 2,
+      "count": 4,
+      "first_opcode": 15,
+      "max_args": 7,
+      "min_args": 7,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 9,
+      "attrib": 6,
+      "attrib_low2": 2,
+      "count": 2,
+      "first_opcode": 15,
+      "max_args": 9,
+      "min_args": 7,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 8,
+      "attrib": 6,
+      "attrib_low2": 2,
+      "count": 6,
+      "first_opcode": 15,
+      "max_args": 8,
+      "min_args": 8,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 11,
+      "attrib": 6,
+      "attrib_low2": 2,
+      "count": 1,
+      "first_opcode": 15,
+      "max_args": 11,
+      "min_args": 9,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 9,
+      "attrib": 6,
+      "attrib_low2": 2,
+      "count": 1,
+      "first_opcode": 15,
+      "max_args": 9,
+      "min_args": 9,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 0,
+      "attrib": 8,
+      "attrib_low2": 0,
+      "count": 638,
+      "first_opcode": 15,
+      "max_args": 0,
+      "min_args": 0,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 1,
+      "attrib": 8,
+      "attrib_low2": 0,
+      "count": 13,
+      "first_opcode": 15,
+      "max_args": 1,
+      "min_args": 0,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 2,
+      "attrib": 8,
+      "attrib_low2": 0,
+      "count": 17,
+      "first_opcode": 15,
+      "max_args": 2,
+      "min_args": 0,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 3,
+      "attrib": 8,
+      "attrib_low2": 0,
+      "count": 2,
+      "first_opcode": 15,
+      "max_args": 3,
+      "min_args": 0,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 1,
+      "attrib": 8,
+      "attrib_low2": 0,
+      "count": 875,
+      "first_opcode": 15,
+      "max_args": 1,
+      "min_args": 1,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 2,
+      "attrib": 8,
+      "attrib_low2": 0,
+      "count": 191,
+      "first_opcode": 15,
+      "max_args": 2,
+      "min_args": 1,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 3,
+      "attrib": 8,
+      "attrib_low2": 0,
+      "count": 2,
+      "first_opcode": 15,
+      "max_args": 3,
+      "min_args": 1,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 4,
+      "attrib": 8,
+      "attrib_low2": 0,
+      "count": 183,
+      "first_opcode": 15,
+      "max_args": 4,
+      "min_args": 1,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 2,
+      "attrib": 8,
+      "attrib_low2": 0,
+      "count": 698,
+      "first_opcode": 15,
+      "max_args": 2,
+      "min_args": 2,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 3,
+      "attrib": 8,
+      "attrib_low2": 0,
+      "count": 10,
+      "first_opcode": 15,
+      "max_args": 3,
+      "min_args": 2,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 3,
+      "attrib": 8,
+      "attrib_low2": 0,
+      "count": 20,
+      "first_opcode": 15,
+      "max_args": 3,
+      "min_args": 2,
+      "reference_arguments": 1,
+      "variadic": false
+    },
+    {
+      "argument_count": 3,
+      "attrib": 8,
+      "attrib_low2": 0,
+      "count": 1277,
+      "first_opcode": 15,
+      "max_args": 3,
+      "min_args": 3,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 3,
+      "attrib": 8,
+      "attrib_low2": 0,
+      "count": 1,
+      "first_opcode": 15,
+      "max_args": 3,
+      "min_args": 3,
+      "reference_arguments": 1,
+      "variadic": false
+    },
+    {
+      "argument_count": 4,
+      "attrib": 8,
+      "attrib_low2": 0,
+      "count": 5,
+      "first_opcode": 15,
+      "max_args": 4,
+      "min_args": 3,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 4,
+      "attrib": 8,
+      "attrib_low2": 0,
+      "count": 25,
+      "first_opcode": 15,
+      "max_args": 4,
+      "min_args": 4,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 5,
+      "attrib": 8,
+      "attrib_low2": 0,
+      "count": 3,
+      "first_opcode": 15,
+      "max_args": 5,
+      "min_args": 4,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 6,
+      "attrib": 8,
+      "attrib_low2": 0,
+      "count": 1,
+      "first_opcode": 15,
+      "max_args": 6,
+      "min_args": 4,
+      "reference_arguments": 0,
+      "variadic": false
+    },
+    {
+      "argument_count": 5,
+      "attrib": 8,
+      "attrib_low2": 0,
+      "count": 2,
+      "first_opcode": 15,
+      "max_args": 5,
+      "min_args": 5,
+      "reference_arguments": 1,
+      "variadic": false
+    }
+  ],
+  "inputs_sha256": {
+    "docs/compatibility-evidence/input-manifest.json": "98dfa7b7300c32e1c5aba18b974fb8e87b338ea382a60007f758ce95033ea2a2",
+    "docs/compatibility-evidence/inspect_packages.py": "d956dca578545928d2bb4218f9bb1b5d29d2765691e0035afa490f40275ce80d",
+    "docs/compatibility-evidence/members.json.gz": "3b9dfe817d032a1848cd41f8866d5c35c0b36c532a5a8fe6af2c91e06fd69a87",
+    "docs/compatibility-evidence/programs.json.gz": "46389cffa1c7a13692f57a2fac935f7603c723a363dee9dcc4c640ab68f48f31",
+    "docs/vm-reference-arguments-evidence/prototypes.json.gz": "1bb741b8f54b6f00d8cd0ace4524f336b1381fdd9152e318516728e3758a15a9"
+  },
+  "layout_diagnostic_samples": {
+    "(False, False, False)": [
+      {
+        "arguments": [
+          {
+            "attrib": 0,
+            "flag": 0,
+            "index": 0,
+            "name": "sql_cond",
+            "type": 4
+          },
+          {
+            "attrib": 0,
+            "flag": 0,
+            "index": 1,
+            "name": "max_count",
+            "type": 2
+          }
+        ],
+        "code_offset": 2540,
+        "entry_layout": {
+          "after_default_expressions_opcode": 71,
+          "argc_targets": [
+            {
+              "argc": 1,
+              "target": 1
+            },
+            {
+              "argc": 2,
+              "target": 3
+            }
+          ],
+          "body_opcode": 27,
+          "body_start": 3,
+          "check_args_entry": true,
+          "default_contains_call": false,
+          "default_lengths": [
+            0,
+            1
+          ],
+          "default_opcodes": {
+            "59": 1
+          },
+          "default_tail_layout_matches": true,
+          "default_uses_local_read_37": false,
+          "default_uses_local_reference_39": false,
+          "entry_a_equals_length_sum": false,
+          "entry_a_minus_length_sum": 1,
+          "entry_a_total": 2,
+          "length_sum": 1,
+          "min_from_required_nonmixed": 1,
+          "negative_length": false,
+          "omission_cases": [
+            {
+              "argc": 1,
+              "missing_zero_default_indices": [],
+              "missing_zero_default_nonmixed_indices": [],
+              "omitted_reference_indices": [],
+              "zero_default_hole_before_expression": false
+            }
+          ],
+          "spans": {
+            "end": 2,
+            "spans": [
+              [
+                1,
+                1
+              ],
+              [
+                1,
+                2
+              ]
+            ],
+            "valid": true
+          },
+          "target_outside_code": false
+        },
+        "entry_nodes": [
+          [
+            2,
+            0,
+            15
+          ],
+          [
+            128,
+            0,
+            59
+          ],
+          [
+            0,
+            0,
+            71
+          ],
+          [
+            0,
+            0,
+            27
+          ],
+          [
+            31,
+            0,
+            64
+          ],
+          [
+            0,
+            0,
+            55
+          ],
+          [
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            0,
+            61
+          ],
+          [
+            424,
+            2,
+            6
+          ],
+          [
+            -2,
+            0,
+            57
+          ],
+          [
+            0,
+            0,
+            3
+          ],
+          [
+            0,
+            0,
+            51
+          ],
+          [
+            -2,
+            0,
+            55
+          ],
+          [
+            -1,
+            0,
+            59
+          ],
+          [
+            0,
+            0,
+            28
+          ],
+          [
+            5,
+            2,
+            33
+          ]
+        ],
+        "function_offset": 2296,
+        "index": 5,
+        "member_sha256": "96c4154b61dea5006ce612fefb65b3b797d68ae1b0216ac73189a197f49b938a",
+        "name": "browse_log",
+        "node_count": 105,
+        "nodes_offset": 2693,
+        "raw_arguments": [
+          {
+            "offset": 2377,
+            "raw_hex": "a0161f0a000400000000000000000000b0f1200a"
+          },
+          {
+            "offset": 2410,
+            "raw_hex": "d0161f0a00020000010001000000000000000000"
+          }
+        ],
+        "segment": "functions",
+        "shape": {
+          "argument_count": 2,
+          "attrib": 0,
+          "attrib_low2": 0,
+          "first_opcode": 15,
+          "max_args": 2,
+          "min_args": 1,
+          "reference_arguments": 0,
+          "variadic": false
+        },
+        "source": "aaa/pack_data/lib_aaa32.pak/daemons/logd.o"
+      },
+      {
+        "arguments": [
+          {
+            "attrib": 0,
+            "flag": 0,
+            "index": 0,
+            "name": "func",
+            "type": 9
+          },
+          {
+            "attrib": 0,
+            "flag": 0,
+            "index": 1,
+            "name": "timeout",
+            "type": 2
+          }
+        ],
+        "code_offset": 2547,
+        "entry_layout": {
+          "after_default_expressions_opcode": 71,
+          "argc_targets": [
+            {
+              "argc": 1,
+              "target": 1
+            },
+            {
+              "argc": 2,
+              "target": 3
+            }
+          ],
+          "body_opcode": 27,
+          "body_start": 3,
+          "check_args_entry": true,
+          "default_contains_call": false,
+          "default_lengths": [
+            0,
+            1
+          ],
+          "default_opcodes": {
+            "59": 1
+          },
+          "default_tail_layout_matches": true,
+          "default_uses_local_read_37": false,
+          "default_uses_local_reference_39": false,
+          "entry_a_equals_length_sum": false,
+          "entry_a_minus_length_sum": 1,
+          "entry_a_total": 2,
+          "length_sum": 1,
+          "min_from_required_nonmixed": 1,
+          "negative_length": false,
+          "omission_cases": [
+            {
+              "argc": 1,
+              "missing_zero_default_indices": [],
+              "missing_zero_default_nonmixed_indices": [],
+              "omitted_reference_indices": [],
+              "zero_default_hole_before_expression": false
+            }
+          ],
+          "spans": {
+            "end": 2,
+            "spans": [
+              [
+                1,
+                1
+              ],
+              [
+                1,
+                2
+              ]
+            ],
+            "valid": true
+          },
+          "target_outside_code": false
+        },
+        "entry_nodes": [
+          [
+            2,
+            0,
+            15
+          ],
+          [
+            -1,
+            0,
+            59
+          ],
+          [
+            0,
+            0,
+            71
+          ],
+          [
+            0,
+            0,
+            27
+          ],
+          [
+            0,
+            0,
+            46
+          ],
+          [
+            0,
+            0,
+            46
+          ],
+          [
+            0,
+            0,
+            46
+          ],
+          [
+            0,
+            0,
+            46
+          ],
+          [
+            13,
+            0,
+            62
+          ],
+          [
+            30,
+            0,
+            64
+          ],
+          [
+            0,
+            0,
+            68
+          ],
+          [
+            1,
+            0,
+            34
+          ],
+          [
+            0,
+            0,
+            46
+          ],
+          [
+            1,
+            0,
+            55
+          ],
+          [
+            0,
+            0,
+            59
+          ],
+          [
+            0,
+            0,
+            32
+          ]
+        ],
+        "function_offset": 2393,
+        "index": 7,
+        "member_sha256": "1888c764fb42c7141b2bdf9ba96b8c5a628cf39ece442ef9972c385cec10bcfd",
+        "name": "dispatch_web_service",
+        "node_count": 39,
+        "nodes_offset": 2613,
+        "raw_arguments": [
+          {
+            "offset": 2484,
+            "raw_hex": "20361f0a00090000000000000000000060a1200a"
+          },
+          {
+            "offset": 2513,
+            "raw_hex": "c0351f0a00020000010001000000000000000000"
+          }
+        ],
+        "segment": "functions",
+        "shape": {
+          "argument_count": 2,
+          "attrib": 0,
+          "attrib_low2": 0,
+          "first_opcode": 15,
+          "max_args": 2,
+          "min_args": 1,
+          "reference_arguments": 0,
+          "variadic": false
+        },
+        "source": "aaa/pack_data/lib_aaa32.pak/daemons/threadd.o"
+      },
+      {
+        "arguments": [
+          {
+            "attrib": 0,
+            "flag": 0,
+            "index": 0,
+            "name": "func",
+            "type": 9
+          },
+          {
+            "attrib": 0,
+            "flag": 0,
+            "index": 1,
+            "name": "timeout",
+            "type": 2
+          }
+        ],
+        "code_offset": 3127,
+        "entry_layout": {
+          "after_default_expressions_opcode": 71,
+          "argc_targets": [
+            {
+              "argc": 1,
+              "target": 1
+            },
+            {
+              "argc": 2,
+              "target": 3
+            }
+          ],
+          "body_opcode": 27,
+          "body_start": 3,
+          "check_args_entry": true,
+          "default_contains_call": false,
+          "default_lengths": [
+            0,
+            1
+          ],
+          "default_opcodes": {
+            "59": 1
+          },
+          "default_tail_layout_matches": true,
+          "default_uses_local_read_37": false,
+          "default_uses_local_reference_39": false,
+          "entry_a_equals_length_sum": false,
+          "entry_a_minus_length_sum": 1,
+          "entry_a_total": 2,
+          "length_sum": 1,
+          "min_from_required_nonmixed": 1,
+          "negative_length": false,
+          "omission_cases": [
+            {
+              "argc": 1,
+              "missing_zero_default_indices": [],
+              "missing_zero_default_nonmixed_indices": [],
+              "omitted_reference_indices": [],
+              "zero_default_hole_before_expression": false
+            }
+          ],
+          "spans": {
+            "end": 2,
+            "spans": [
+              [
+                1,
+                1
+              ],
+              [
+                1,
+                2
+              ]
+            ],
+            "valid": true
+          },
+          "target_outside_code": false
+        },
+        "entry_nodes": [
+          [
+            2,
+            0,
+            15
+          ],
+          [
+            -1,
+            0,
+            59
+          ],
+          [
+            0,
+            0,
+            71
+          ],
+          [
+            0,
+            0,
+            27
+          ],
+          [
+            6,
+            0,
+            61
+          ],
+          [
+            0,
+            0,
+            45
+          ],
+          [
+            1,
+            2,
+            33
+          ],
+          [
+            0,
+            0,
+            73
+          ],
+          [
+            0,
+            0,
+            46
+          ],
+          [
+            0,
+            0,
+            46
+          ],
+          [
+            0,
+            0,
+            46
+          ],
+          [
+            0,
+            0,
+            46
+          ],
+          [
+            13,
+            0,
+            62
+          ],
+          [
+            31,
+            0,
+            64
+          ],
+          [
+            0,
+            0,
+            68
+          ],
+          [
+            1,
+            0,
+            34
+          ]
+        ],
+        "function_offset": 2973,
+        "index": 16,
+        "member_sha256": "1888c764fb42c7141b2bdf9ba96b8c5a628cf39ece442ef9972c385cec10bcfd",
+        "name": "dispatch_ddb_service",
+        "node_count": 45,
+        "nodes_offset": 3208,
+        "raw_arguments": [
+          {
+            "offset": 3064,
+            "raw_hex": "603b1f0a000900000000000000000000e094200a"
+          },
+          {
+            "offset": 3093,
+            "raw_hex": "003b1f0a00020000010001000000000000000000"
+          }
+        ],
+        "segment": "functions",
+        "shape": {
+          "argument_count": 2,
+          "attrib": 0,
+          "attrib_low2": 0,
+          "first_opcode": 15,
+          "max_args": 2,
+          "min_args": 1,
+          "reference_arguments": 0,
+          "variadic": false
+        },
+        "source": "aaa/pack_data/lib_aaa32.pak/daemons/threadd.o"
+      },
+      {
+        "arguments": [
+          {
+            "attrib": 0,
+            "flag": 0,
+            "index": 0,
+            "name": "func",
+            "type": 9
+          },
+          {
+            "attrib": 0,
+            "flag": 0,
+            "index": 1,
+            "name": "timeout",
+            "type": 2
+          }
+        ],
+        "code_offset": 3751,
+        "entry_layout": {
+          "after_default_expressions_opcode": 71,
+          "argc_targets": [
+            {
+              "argc": 1,
+              "target": 1
+            },
+            {
+              "argc": 2,
+              "target": 3
+            }
+          ],
+          "body_opcode": 27,
+          "body_start": 3,
+          "check_args_entry": true,
+          "default_contains_call": false,
+          "default_lengths": [
+            0,
+            1
+          ],
+          "default_opcodes": {
+            "59": 1
+          },
+          "default_tail_layout_matches": true,
+          "default_uses_local_read_37": false,
+          "default_uses_local_reference_39": false,
+          "entry_a_equals_length_sum": false,
+          "entry_a_minus_length_sum": 1,
+          "entry_a_total": 2,
+          "length_sum": 1,
+          "min_from_required_nonmixed": 1,
+          "negative_length": false,
+          "omission_cases": [
+            {
+              "argc": 1,
+              "missing_zero_default_indices": [],
+              "missing_zero_default_nonmixed_indices": [],
+              "omitted_reference_indices": [],
+              "zero_default_hole_before_expression": false
+            }
+          ],
+          "spans": {
+            "end": 2,
+            "spans": [
+              [
+                1,
+                1
+              ],
+              [
+                1,
+                2
+              ]
+            ],
+            "valid": true
+          },
+          "target_outside_code": false
+        },
+        "entry_nodes": [
+          [
+            2,
+            0,
+            15
+          ],
+          [
+            -1,
+            0,
+            59
+          ],
+          [
+            0,
+            0,
+            71
+          ],
+          [
+            0,
+            0,
+            27
+          ],
+          [
+            0,
+            0,
+            46
+          ],
+          [
+            0,
+            0,
+            46
+          ],
+          [
+            0,
+            0,
+            46
+          ],
+          [
+            0,
+            0,
+            46
+          ],
+          [
+            13,
+            0,
+            62
+          ],
+          [
+            36,
+            0,
+            64
+          ],
+          [
+            0,
+            0,
+            68
+          ],
+          [
+            1,
+            0,
+            34
+          ],
+          [
+            0,
+            0,
+            46
+          ],
+          [
+            1,
+            0,
+            55
+          ],
+          [
+            0,
+            0,
+            59
+          ],
+          [
+            0,
+            0,
+            32
+          ]
+        ],
+        "function_offset": 3596,
+        "index": 19,
+        "member_sha256": "1888c764fb42c7141b2bdf9ba96b8c5a628cf39ece442ef9972c385cec10bcfd",
+        "name": "dispatch_http_service",
+        "node_count": 41,
+        "nodes_offset": 3817,
+        "raw_arguments": [
+          {
+            "offset": 3688,
+            "raw_hex": "00381f0a000900000000000000000000b051200a"
+          },
+          {
+            "offset": 3717,
+            "raw_hex": "a0371f0a00020000010001000000000000000000"
+          }
+        ],
+        "segment": "functions",
+        "shape": {
+          "argument_count": 2,
+          "attrib": 0,
+          "attrib_low2": 0,
+          "first_opcode": 15,
+          "max_args": 2,
+          "min_args": 1,
+          "reference_arguments": 0,
+          "variadic": false
+        },
+        "source": "aaa/pack_data/lib_aaa32.pak/daemons/threadd.o"
+      },
+      {
+        "arguments": [
+          {
+            "attrib": 0,
+            "flag": 0,
+            "index": 0,
+            "name": "func",
+            "type": 9
+          },
+          {
+            "attrib": 0,
+            "flag": 0,
+            "index": 1,
+            "name": "timeout",
+            "type": 2
+          }
+        ],
+        "code_offset": 4837,
+        "entry_layout": {
+          "after_default_expressions_opcode": 71,
+          "argc_targets": [
+            {
+              "argc": 1,
+              "target": 1
+            },
+            {
+              "argc": 2,
+              "target": 3
+            }
+          ],
+          "body_opcode": 27,
+          "body_start": 3,
+          "check_args_entry": true,
+          "default_contains_call": false,
+          "default_lengths": [
+            0,
+            1
+          ],
+          "default_opcodes": {
+            "59": 1
+          },
+          "default_tail_layout_matches": true,
+          "default_uses_local_read_37": false,
+          "default_uses_local_reference_39": false,
+          "entry_a_equals_length_sum": false,
+          "entry_a_minus_length_sum": 1,
+          "entry_a_total": 2,
+          "length_sum": 1,
+          "min_from_required_nonmixed": 1,
+          "negative_length": false,
+          "omission_cases": [
+            {
+              "argc": 1,
+              "missing_zero_default_indices": [],
+              "missing_zero_default_nonmixed_indices": [],
+              "omitted_reference_indices": [],
+              "zero_default_hole_before_expression": false
+            }
+          ],
+          "spans": {
+            "end": 2,
+            "spans": [
+              [
+                1,
+                1
+              ],
+              [
+                1,
+                2
+              ]
+            ],
+            "valid": true
+          },
+          "target_outside_code": false
+        },
+        "entry_nodes": [
+          [
+            2,
+            0,
+            15
+          ],
+          [
+            -1,
+            0,
+            59
+          ],
+          [
+            0,
+            0,
+            71
+          ],
+          [
+            0,
+            0,
+            27
+          ],
+          [
+            7,
+            0,
+            61
+          ],
+          [
+            0,
+            0,
+            45
+          ],
+          [
+            1,
+            2,
+            33
+          ],
+          [
+            0,
+            0,
+            73
+          ],
+          [
+            0,
+            0,
+            46
+          ],
+          [
+            0,
+            0,
+            46
+          ],
+          [
+            0,
+            0,
+            46
+          ],
+          [
+            0,
+            0,
+            46
+          ],
+          [
+            13,
+            0,
+            62
+          ],
+          [
+            32,
+            0,
+            64
+          ],
+          [
+            0,
+            0,
+            68
+          ],
+          [
+            1,
+            0,
+            34
+          ]
+        ],
+        "function_offset": 4683,
+        "index": 18,
+        "member_sha256": "1888c764fb42c7141b2bdf9ba96b8c5a628cf39ece442ef9972c385cec10bcfd",
+        "name": "dispatch_ldb_service",
+        "node_count": 45,
+        "nodes_offset": 4918,
+        "raw_arguments": [
+          {
+            "offset": 4774,
+            "raw_hex": "80391f0a000900000000000000000000408f200a"
+          },
+          {
+            "offset": 4803,
+            "raw_hex": "20391f0a00020000010001000000000000000000"
+          }
+        ],
+        "segment": "functions",
+        "shape": {
+          "argument_count": 2,
+          "attrib": 0,
+          "attrib_low2": 0,
+          "first_opcode": 15,
+          "max_args": 2,
+          "min_args": 1,
+          "reference_arguments": 0,
+          "variadic": false
+        },
+        "source": "aaa/pack_data/lib_aaa32.pak/daemons/threadd.o"
+      }
+    ]
+  },
+  "limitations": [
+    "Counts describe serialized code, not execution or reachability.",
+    "Raw min/max range comparison is not a native call validity verdict.",
+    "Resolved calls reuse stage2G unique singleton/no-inheritance target resolution.",
+    "Default spans use native signed16 descriptor+0x0a and pre-incremented entry PC; bounds checks are report diagnostics, not execution."
+  ],
+  "method_script_sha256": "064a4af5e057fe3cd5f1a5c1beccc05ae2654a10982a2a360f86ae717dc1fbb1",
+  "min_max_attrib": [
+    {
+      "attrib_low2": 0,
+      "count": 29840,
+      "max_args": 0,
+      "min_args": 0
+    },
+    {
+      "attrib_low2": 0,
+      "count": 1095,
+      "max_args": 1,
+      "min_args": 0
+    },
+    {
+      "attrib_low2": 0,
+      "count": 708,
+      "max_args": 2,
+      "min_args": 0
+    },
+    {
+      "attrib_low2": 0,
+      "count": 198,
+      "max_args": 3,
+      "min_args": 0
+    },
+    {
+      "attrib_low2": 0,
+      "count": 40,
+      "max_args": 4,
+      "min_args": 0
+    },
+    {
+      "attrib_low2": 0,
+      "count": 50,
+      "max_args": 5,
+      "min_args": 0
+    },
+    {
+      "attrib_low2": 0,
+      "count": 8,
+      "max_args": 6,
+      "min_args": 0
+    },
+    {
+      "attrib_low2": 0,
+      "count": 1,
+      "max_args": 7,
+      "min_args": 0
+    },
+    {
+      "attrib_low2": 0,
+      "count": 20525,
+      "max_args": 1,
+      "min_args": 1
+    },
+    {
+      "attrib_low2": 0,
+      "count": 2091,
+      "max_args": 2,
+      "min_args": 1
+    },
+    {
+      "attrib_low2": 0,
+      "count": 302,
+      "max_args": 3,
+      "min_args": 1
+    },
+    {
+      "attrib_low2": 0,
+      "count": 247,
+      "max_args": 4,
+      "min_args": 1
+    },
+    {
+      "attrib_low2": 0,
+      "count": 13,
+      "max_args": 5,
+      "min_args": 1
+    },
+    {
+      "attrib_low2": 0,
+      "count": 6,
+      "max_args": 6,
+      "min_args": 1
+    },
+    {
+      "attrib_low2": 0,
+      "count": 1,
+      "max_args": 7,
+      "min_args": 1
+    },
+    {
+      "attrib_low2": 0,
+      "count": 2,
+      "max_args": 8,
+      "min_args": 1
+    },
+    {
+      "attrib_low2": 0,
+      "count": 1,
+      "max_args": 9,
+      "min_args": 1
+    },
+    {
+      "attrib_low2": 0,
+      "count": 22635,
+      "max_args": 2,
+      "min_args": 2
+    },
+    {
+      "attrib_low2": 0,
+      "count": 2123,
+      "max_args": 3,
+      "min_args": 2
+    },
+    {
+      "attrib_low2": 0,
+      "count": 228,
+      "max_args": 4,
+      "min_args": 2
+    },
+    {
+      "attrib_low2": 0,
+      "count": 70,
+      "max_args": 5,
+      "min_args": 2
+    },
+    {
+      "attrib_low2": 0,
+      "count": 11,
+      "max_args": 6,
+      "min_args": 2
+    },
+    {
+      "attrib_low2": 0,
+      "count": 6,
+      "max_args": 7,
+      "min_args": 2
+    },
+    {
+      "attrib_low2": 0,
+      "count": 4,
+      "max_args": 8,
+      "min_args": 2
+    },
+    {
+      "attrib_low2": 0,
+      "count": 2,
+      "max_args": 11,
+      "min_args": 2
+    },
+    {
+      "attrib_low2": 0,
+      "count": 8624,
+      "max_args": 3,
+      "min_args": 3
+    },
+    {
+      "attrib_low2": 0,
+      "count": 1554,
+      "max_args": 4,
+      "min_args": 3
+    },
+    {
+      "attrib_low2": 0,
+      "count": 159,
+      "max_args": 5,
+      "min_args": 3
+    },
+    {
+      "attrib_low2": 0,
+      "count": 58,
+      "max_args": 6,
+      "min_args": 3
+    },
+    {
+      "attrib_low2": 0,
+      "count": 17,
+      "max_args": 7,
+      "min_args": 3
+    },
+    {
+      "attrib_low2": 0,
+      "count": 2,
+      "max_args": 8,
+      "min_args": 3
+    },
+    {
+      "attrib_low2": 0,
+      "count": 1,
+      "max_args": 10,
+      "min_args": 3
+    },
+    {
+      "attrib_low2": 0,
+      "count": 3163,
+      "max_args": 4,
+      "min_args": 4
+    },
+    {
+      "attrib_low2": 0,
+      "count": 410,
+      "max_args": 5,
+      "min_args": 4
+    },
+    {
+      "attrib_low2": 0,
+      "count": 31,
+      "max_args": 6,
+      "min_args": 4
+    },
+    {
+      "attrib_low2": 0,
+      "count": 40,
+      "max_args": 7,
+      "min_args": 4
+    },
+    {
+      "attrib_low2": 0,
+      "count": 4,
+      "max_args": 8,
+      "min_args": 4
+    },
+    {
+      "attrib_low2": 0,
+      "count": 1,
+      "max_args": 21,
+      "min_args": 4
+    },
+    {
+      "attrib_low2": 0,
+      "count": 819,
+      "max_args": 5,
+      "min_args": 5
+    },
+    {
+      "attrib_low2": 0,
+      "count": 139,
+      "max_args": 6,
+      "min_args": 5
+    },
+    {
+      "attrib_low2": 0,
+      "count": 24,
+      "max_args": 7,
+      "min_args": 5
+    },
+    {
+      "attrib_low2": 0,
+      "count": 14,
+      "max_args": 8,
+      "min_args": 5
+    },
+    {
+      "attrib_low2": 0,
+      "count": 2,
+      "max_args": 10,
+      "min_args": 5
+    },
+    {
+      "attrib_low2": 0,
+      "count": 1,
+      "max_args": 11,
+      "min_args": 5
+    },
+    {
+      "attrib_low2": 0,
+      "count": 438,
+      "max_args": 6,
+      "min_args": 6
+    },
+    {
+      "attrib_low2": 0,
+      "count": 38,
+      "max_args": 7,
+      "min_args": 6
+    },
+    {
+      "attrib_low2": 0,
+      "count": 17,
+      "max_args": 8,
+      "min_args": 6
+    },
+    {
+      "attrib_low2": 0,
+      "count": 4,
+      "max_args": 9,
+      "min_args": 6
+    },
+    {
+      "attrib_low2": 0,
+      "count": 180,
+      "max_args": 7,
+      "min_args": 7
+    },
+    {
+      "attrib_low2": 0,
+      "count": 14,
+      "max_args": 8,
+      "min_args": 7
+    },
+    {
+      "attrib_low2": 0,
+      "count": 3,
+      "max_args": 9,
+      "min_args": 7
+    },
+    {
+      "attrib_low2": 0,
+      "count": 3,
+      "max_args": 10,
+      "min_args": 7
+    },
+    {
+      "attrib_low2": 0,
+      "count": 108,
+      "max_args": 8,
+      "min_args": 8
+    },
+    {
+      "attrib_low2": 0,
+      "count": 12,
+      "max_args": 9,
+      "min_args": 8
+    },
+    {
+      "attrib_low2": 0,
+      "count": 3,
+      "max_args": 10,
+      "min_args": 8
+    },
+    {
+      "attrib_low2": 0,
+      "count": 3,
+      "max_args": 11,
+      "min_args": 8
+    },
+    {
+      "attrib_low2": 0,
+      "count": 94,
+      "max_args": 9,
+      "min_args": 9
+    },
+    {
+      "attrib_low2": 0,
+      "count": 4,
+      "max_args": 10,
+      "min_args": 9
+    },
+    {
+      "attrib_low2": 0,
+      "count": 59,
+      "max_args": 10,
+      "min_args": 10
+    },
+    {
+      "attrib_low2": 0,
+      "count": 6,
+      "max_args": 11,
+      "min_args": 10
+    },
+    {
+      "attrib_low2": 0,
+      "count": 1,
+      "max_args": 12,
+      "min_args": 10
+    },
+    {
+      "attrib_low2": 0,
+      "count": 37,
+      "max_args": 11,
+      "min_args": 11
+    },
+    {
+      "attrib_low2": 0,
+      "count": 10,
+      "max_args": 12,
+      "min_args": 11
+    },
+    {
+      "attrib_low2": 0,
+      "count": 27,
+      "max_args": 12,
+      "min_args": 12
+    },
+    {
+      "attrib_low2": 0,
+      "count": 7,
+      "max_args": 13,
+      "min_args": 12
+    },
+    {
+      "attrib_low2": 0,
+      "count": 20,
+      "max_args": 13,
+      "min_args": 13
+    },
+    {
+      "attrib_low2": 0,
+      "count": 2,
+      "max_args": 14,
+      "min_args": 13
+    },
+    {
+      "attrib_low2": 0,
+      "count": 7,
+      "max_args": 14,
+      "min_args": 14
+    },
+    {
+      "attrib_low2": 0,
+      "count": 1,
+      "max_args": 15,
+      "min_args": 14
+    },
+    {
+      "attrib_low2": 0,
+      "count": 2,
+      "max_args": 15,
+      "min_args": 15
+    },
+    {
+      "attrib_low2": 0,
+      "count": 1,
+      "max_args": 16,
+      "min_args": 16
+    },
+    {
+      "attrib_low2": 0,
+      "count": 1,
+      "max_args": 17,
+      "min_args": 17
+    },
+    {
+      "attrib_low2": 0,
+      "count": 2,
+      "max_args": 19,
+      "min_args": 19
+    },
+    {
+      "attrib_low2": 1,
+      "count": 42,
+      "max_args": 0,
+      "min_args": 0
+    },
+    {
+      "attrib_low2": 1,
+      "count": 1,
+      "max_args": 1,
+      "min_args": 0
+    },
+    {
+      "attrib_low2": 1,
+      "count": 1,
+      "max_args": 2,
+      "min_args": 0
+    },
+    {
+      "attrib_low2": 1,
+      "count": 12,
+      "max_args": 1,
+      "min_args": 1
+    },
+    {
+      "attrib_low2": 1,
+      "count": 2,
+      "max_args": 2,
+      "min_args": 1
+    },
+    {
+      "attrib_low2": 1,
+      "count": 1,
+      "max_args": 4,
+      "min_args": 1
+    },
+    {
+      "attrib_low2": 1,
+      "count": 8,
+      "max_args": 2,
+      "min_args": 2
+    },
+    {
+      "attrib_low2": 1,
+      "count": 2,
+      "max_args": 3,
+      "min_args": 2
+    },
+    {
+      "attrib_low2": 1,
+      "count": 4,
+      "max_args": 3,
+      "min_args": 3
+    },
+    {
+      "attrib_low2": 1,
+      "count": 1,
+      "max_args": 5,
+      "min_args": 3
+    },
+    {
+      "attrib_low2": 1,
+      "count": 4,
+      "max_args": 4,
+      "min_args": 4
+    },
+    {
+      "attrib_low2": 1,
+      "count": 1,
+      "max_args": 5,
+      "min_args": 5
+    },
+    {
+      "attrib_low2": 2,
+      "count": 792,
+      "max_args": 0,
+      "min_args": 0
+    },
+    {
+      "attrib_low2": 2,
+      "count": 184,
+      "max_args": 1,
+      "min_args": 0
+    },
+    {
+      "attrib_low2": 2,
+      "count": 69,
+      "max_args": 2,
+      "min_args": 0
+    },
+    {
+      "attrib_low2": 2,
+      "count": 23,
+      "max_args": 3,
+      "min_args": 0
+    },
+    {
+      "attrib_low2": 2,
+      "count": 11,
+      "max_args": 4,
+      "min_args": 0
+    },
+    {
+      "attrib_low2": 2,
+      "count": 1,
+      "max_args": 5,
+      "min_args": 0
+    },
+    {
+      "attrib_low2": 2,
+      "count": 1251,
+      "max_args": 1,
+      "min_args": 1
+    },
+    {
+      "attrib_low2": 2,
+      "count": 158,
+      "max_args": 2,
+      "min_args": 1
+    },
+    {
+      "attrib_low2": 2,
+      "count": 33,
+      "max_args": 3,
+      "min_args": 1
+    },
+    {
+      "attrib_low2": 2,
+      "count": 7,
+      "max_args": 4,
+      "min_args": 1
+    },
+    {
+      "attrib_low2": 2,
+      "count": 1,
+      "max_args": 5,
+      "min_args": 1
+    },
+    {
+      "attrib_low2": 2,
+      "count": 918,
+      "max_args": 2,
+      "min_args": 2
+    },
+    {
+      "attrib_low2": 2,
+      "count": 143,
+      "max_args": 3,
+      "min_args": 2
+    },
+    {
+      "attrib_low2": 2,
+      "count": 51,
+      "max_args": 4,
+      "min_args": 2
+    },
+    {
+      "attrib_low2": 2,
+      "count": 10,
+      "max_args": 5,
+      "min_args": 2
+    },
+    {
+      "attrib_low2": 2,
+      "count": 615,
+      "max_args": 3,
+      "min_args": 3
+    },
+    {
+      "attrib_low2": 2,
+      "count": 55,
+      "max_args": 4,
+      "min_args": 3
+    },
+    {
+      "attrib_low2": 2,
+      "count": 14,
+      "max_args": 5,
+      "min_args": 3
+    },
+    {
+      "attrib_low2": 2,
+      "count": 9,
+      "max_args": 6,
+      "min_args": 3
+    },
+    {
+      "attrib_low2": 2,
+      "count": 4,
+      "max_args": 8,
+      "min_args": 3
+    },
+    {
+      "attrib_low2": 2,
+      "count": 1,
+      "max_args": 9,
+      "min_args": 3
+    },
+    {
+      "attrib_low2": 2,
+      "count": 1,
+      "max_args": 10,
+      "min_args": 3
+    },
+    {
+      "attrib_low2": 2,
+      "count": 314,
+      "max_args": 4,
+      "min_args": 4
+    },
+    {
+      "attrib_low2": 2,
+      "count": 14,
+      "max_args": 5,
+      "min_args": 4
+    },
+    {
+      "attrib_low2": 2,
+      "count": 11,
+      "max_args": 6,
+      "min_args": 4
+    },
+    {
+      "attrib_low2": 2,
+      "count": 5,
+      "max_args": 7,
+      "min_args": 4
+    },
+    {
+      "attrib_low2": 2,
+      "count": 187,
+      "max_args": 5,
+      "min_args": 5
+    },
+    {
+      "attrib_low2": 2,
+      "count": 12,
+      "max_args": 6,
+      "min_args": 5
+    },
+    {
+      "attrib_low2": 2,
+      "count": 1,
+      "max_args": 7,
+      "min_args": 5
+    },
+    {
+      "attrib_low2": 2,
+      "count": 68,
+      "max_args": 6,
+      "min_args": 6
+    },
+    {
+      "attrib_low2": 2,
+      "count": 5,
+      "max_args": 7,
+      "min_args": 6
+    },
+    {
+      "attrib_low2": 2,
+      "count": 70,
+      "max_args": 7,
+      "min_args": 7
+    },
+    {
+      "attrib_low2": 2,
+      "count": 3,
+      "max_args": 8,
+      "min_args": 7
+    },
+    {
+      "attrib_low2": 2,
+      "count": 2,
+      "max_args": 9,
+      "min_args": 7
+    },
+    {
+      "attrib_low2": 2,
+      "count": 16,
+      "max_args": 8,
+      "min_args": 8
+    },
+    {
+      "attrib_low2": 2,
+      "count": 1,
+      "max_args": 9,
+      "min_args": 8
+    },
+    {
+      "attrib_low2": 2,
+      "count": 28,
+      "max_args": 9,
+      "min_args": 9
+    },
+    {
+      "attrib_low2": 2,
+      "count": 1,
+      "max_args": 11,
+      "min_args": 9
+    },
+    {
+      "attrib_low2": 2,
+      "count": 9,
+      "max_args": 10,
+      "min_args": 10
+    },
+    {
+      "attrib_low2": 2,
+      "count": 9,
+      "max_args": 11,
+      "min_args": 11
+    },
+    {
+      "attrib_low2": 2,
+      "count": 4,
+      "max_args": 12,
+      "min_args": 12
+    },
+    {
+      "attrib_low2": 2,
+      "count": 1,
+      "max_args": 13,
+      "min_args": 13
+    },
+    {
+      "attrib_low2": 2,
+      "count": 1,
+      "max_args": 17,
+      "min_args": 14
+    },
+    {
+      "attrib_low2": 3,
+      "count": 2,
+      "max_args": 0,
+      "min_args": 0
+    },
+    {
+      "attrib_low2": 3,
+      "count": 12,
+      "max_args": 1,
+      "min_args": 1
+    },
+    {
+      "attrib_low2": 3,
+      "count": 12,
+      "max_args": 3,
+      "min_args": 3
+    }
+  ],
+  "original_inputs_sha256": {
+    "aaa/pack_data/lib_aaa32.pak": "204dac3efb2e47db6766d16e6581193a712d9c77ec210b33d1b225b36ba72749",
+    "ccs/pack_data/lib_ccs32.pak": "75e62ee0efabd659abc00c65f87caddff3ff3755c8cd7ee8dc92478c10949eb5",
+    "csa/pack_data/lib_csa32.pak": "b4332da310e0105834340de8f544db3ef60c12eb65754dc44686646a5f86216a",
+    "dba/pack_data/lib_dba32.pak": "2ce6b1aafc3c70156e0a053fea117e9579b30d209c11c5194bd2863ba5deee5c",
+    "gs/pack_data/lib_gs32.pak": "63a3779f14f7ce8e21a0642a67c80b39c9546d4997cc462d8cb2a37f35b6db3a"
+  },
+  "resolved_call_code_shapes": [
+    {
+      "count": 590,
+      "relation": "above_max",
+      "target_has_code": false,
+      "variadic": false
+    },
+    {
+      "count": 127,
+      "relation": "within_bounds",
+      "target_has_code": false,
+      "variadic": false
+    },
+    {
+      "count": 5,
+      "relation": "below_min",
+      "target_has_code": true,
+      "variadic": false
+    },
+    {
+      "count": 10211,
+      "relation": "within_bounds",
+      "target_has_code": true,
+      "variadic": false
+    },
+    {
+      "count": 6,
+      "relation": "above_max",
+      "target_has_code": false,
+      "variadic": true
+    },
+    {
+      "count": 7,
+      "relation": "above_max",
+      "target_has_code": true,
+      "variadic": true
+    },
+    {
+      "count": 1,
+      "relation": "within_bounds",
+      "target_has_code": true,
+      "variadic": true
+    }
+  ],
+  "resolved_call_ranges": [
+    {
+      "attrib_low2": 0,
+      "category": "fixed",
+      "count": 572,
+      "relation": "above_max"
+    },
+    {
+      "attrib_low2": 0,
+      "category": "fixed",
+      "count": 4,
+      "relation": "below_min"
+    },
+    {
+      "attrib_low2": 0,
+      "category": "fixed",
+      "count": 7513,
+      "relation": "within_bounds"
+    },
+    {
+      "attrib_low2": 1,
+      "category": "fixed",
+      "count": 12,
+      "relation": "above_max"
+    },
+    {
+      "attrib_low2": 2,
+      "category": "fixed",
+      "count": 18,
+      "relation": "above_max"
+    },
+    {
+      "attrib_low2": 2,
+      "category": "fixed",
+      "count": 780,
+      "relation": "within_bounds"
+    },
+    {
+      "attrib_low2": 0,
+      "category": "nonfixed",
+      "count": 1,
+      "relation": "below_min"
+    },
+    {
+      "attrib_low2": 0,
+      "category": "nonfixed",
+      "count": 1910,
+      "relation": "within_bounds"
+    },
+    {
+      "attrib_low2": 1,
+      "category": "nonfixed",
+      "count": 1,
+      "relation": "above_max"
+    },
+    {
+      "attrib_low2": 1,
+      "category": "nonfixed",
+      "count": 1,
+      "relation": "within_bounds"
+    },
+    {
+      "attrib_low2": 2,
+      "category": "nonfixed",
+      "count": 135,
+      "relation": "within_bounds"
+    }
+  ],
+  "resolved_target_shapes": [
+    {
+      "attrib_low2": 0,
+      "category": "fixed",
+      "count": 3990
+    },
+    {
+      "attrib_low2": 1,
+      "category": "fixed",
+      "count": 4
+    },
+    {
+      "attrib_low2": 2,
+      "category": "fixed",
+      "count": 283
+    },
+    {
+      "attrib_low2": 0,
+      "category": "nonfixed",
+      "count": 802
+    },
+    {
+      "attrib_low2": 1,
+      "category": "nonfixed",
+      "count": 1
+    },
+    {
+      "attrib_low2": 2,
+      "category": "nonfixed",
+      "count": 52
+    }
+  ],
+  "schema": "stage2i.optional-argument-statistics.v1",
+  "totals": {
+    "arguments": 175100,
+    "default_contains_call_functions": 31,
+    "default_uses_local_read_37_functions": 0,
+    "default_uses_local_reference_39_functions": 0,
+    "descriptor_count_ne_max_functions": 8920,
+    "fixed_functions": 90961,
+    "fixed_reference_functions": 3140,
+    "functions": 101592,
+    "functions_with_missing_zero_default_nonmixed_cases": 0,
+    "functions_with_nonzero_default_lengths": 1822,
+    "functions_with_omitted_reference_cases": 1219,
+    "functions_with_zero_default_holes_before_expression": 0,
+    "hidden_functions": 0,
+    "highest_max_args": 21,
+    "highest_min_args": 19,
+    "max_args_high_bit_functions": 0,
+    "min_above_max_functions": 0,
+    "min_args_high_bit_functions": 0,
+    "nonfixed_functions": 10631,
+    "nonfixed_reference_functions": 1255,
+    "programs": 7159,
+    "reference_arguments": 4886,
+    "reference_functions": 4395
+  }
+}

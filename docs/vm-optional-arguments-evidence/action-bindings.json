@@ -1,0 +1,86 @@
+{
+  "source": "docs/evidence/actions.csv",
+  "source_sha256": "fb3d30f8c047e881ecc2d7132111c581d76d45bcb6e64a0effd3cfc4c7cea325",
+  "bindings": [
+    {
+      "record": "0x83cc824",
+      "opcode": "0xf",
+      "entry": "0x809521c",
+      "name": "vm_checkArgNum",
+      "compiler": "0x80ca5fc",
+      "parameters": "1",
+      "memo": "check_args_num",
+      "attrib": "0x1"
+    },
+    {
+      "record": "0x83cc8cc",
+      "opcode": "0x15",
+      "entry": "0x8091fb4",
+      "name": "vm_createArgumentArray",
+      "compiler": "0x80ca554",
+      "parameters": "0",
+      "memo": "create_argument_array",
+      "attrib": "0x0"
+    },
+    {
+      "record": "0x83cc974",
+      "opcode": "0x1b",
+      "entry": "0x80955e8",
+      "name": "vm_enterFunction",
+      "compiler": "0x80ca554",
+      "parameters": "0",
+      "memo": "enter_function",
+      "attrib": "0x0"
+    },
+    {
+      "record": "0x83ccc30",
+      "opcode": "0x34",
+      "entry": "0x80916cc",
+      "name": "vm_pushArgNum",
+      "compiler": "0x80ca554",
+      "parameters": "0",
+      "memo": "push_arg_num",
+      "attrib": "0x0"
+    },
+    {
+      "record": "0x83ccc84",
+      "opcode": "0x37",
+      "entry": "0x80914dc",
+      "name": "vm_pushLocalVar",
+      "compiler": "0x80ca554",
+      "parameters": "1",
+      "memo": "push_local_value",
+      "attrib": "0x4"
+    },
+    {
+      "record": "0x83cccbc",
+      "opcode": "0x39",
+      "entry": "0x809134c",
+      "name": "vm_pushLocalVptr",
+      "compiler": "0x80ca554",
+      "parameters": "1",
+      "memo": "push_local_vptr",
+      "attrib": "0x42"
+    },
+    {
+      "record": "0x83cce44",
+      "opcode": "0x47",
+      "entry": "0x80954a8",
+      "name": "vm_resortStack",
+      "compiler": "0x80ca554",
+      "parameters": "0",
+      "memo": "resort_stack",
+      "attrib": "0x0"
+    },
+    {
+      "record": "0x83cce7c",
+      "opcode": "0x49",
+      "entry": "0x8094978",
+      "name": "vm_returnFromFun",
+      "compiler": "0x80caa7c",
+      "parameters": "0",
+      "memo": "return_from_fun",
+      "attrib": "0x0"
+    }
+  ]
+}

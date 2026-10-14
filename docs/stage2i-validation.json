@@ -1,0 +1,103 @@
+{
+  "stage": "2I",
+  "date": "2026-10-14",
+  "scope": "static optional/variadic argument analysis and future Rust design only",
+  "runtime_modified": false,
+  "public_api_modified": false,
+  "dependencies_modified": false,
+  "reference_binary_executed": false,
+  "startup_scripts_executed": false,
+  "business_bytecode_executed": false,
+  "existing_tracked_files_checked": 147,
+  "existing_tracked_files_unchanged": true,
+  "original_manifest_files_checked": 36,
+  "original_hashes_match": true,
+  "prior_validation_file_maps_verified": {
+    "docs/stage2g-validation.json": 8,
+    "docs/stage2h-validation.json": 7
+  },
+  "ghidra": {
+    "engine": "Ghidra",
+    "version": "12.1.4",
+    "new_records": 31,
+    "reused_records": 23,
+    "export_matches_raw": true,
+    "session_closed": true,
+    "target_sha256": "5d4ebac58d8c415d9cf95bbcdd50f78afac91adf4f7e667ea3afc6f5336a6f34"
+  },
+  "statistics": {
+    "command": "python3 docs/vm-optional-arguments-evidence/verify_optional.py",
+    "verified": true,
+    "totals": {
+      "arguments": 175100,
+      "default_contains_call_functions": 31,
+      "default_uses_local_read_37_functions": 0,
+      "default_uses_local_reference_39_functions": 0,
+      "descriptor_count_ne_max_functions": 8920,
+      "fixed_functions": 90961,
+      "fixed_reference_functions": 3140,
+      "functions": 101592,
+      "functions_with_missing_zero_default_nonmixed_cases": 0,
+      "functions_with_nonzero_default_lengths": 1822,
+      "functions_with_omitted_reference_cases": 1219,
+      "functions_with_zero_default_holes_before_expression": 0,
+      "hidden_functions": 0,
+      "highest_max_args": 21,
+      "highest_min_args": 19,
+      "max_args_high_bit_functions": 0,
+      "min_above_max_functions": 0,
+      "min_args_high_bit_functions": 0,
+      "nonfixed_functions": 10631,
+      "nonfixed_reference_functions": 1255,
+      "programs": 7159,
+      "reference_arguments": 4886,
+      "reference_functions": 4395
+    },
+    "report_sha256": "aa564beb9d2a735fcca7588ee6743a0a857ad02ab7ebfb380118bbbd47189f8f",
+    "layout_checks": {
+      "default_tail_layout_matches=True": 87774,
+      "entry_a_equals_length_sum=False": 1822,
+      "entry_a_equals_length_sum=True": 85952,
+      "min_matches_required_nonmixed=True": 87774,
+      "negative_length=False": 87774,
+      "spans_valid=True": 87774,
+      "target_outside_code=False": 87774
+    }
+  },
+  "synthetic_statistics_tests": {
+    "command": "python3 docs/vm-optional-arguments-evidence/test_verify_optional.py",
+    "passed": true,
+    "count": 14
+  },
+  "runtime_baseline": {
+    "supported_opcodes": 52,
+    "tests": 132,
+    "rerun_this_stage": false,
+    "default_or_variadic_runtime_implemented_this_stage": false
+  },
+  "question_status": {
+    "default_field_loading": "answered",
+    "entry_jumps_and_layout": "answered",
+    "stack_order_and_missing_mixed": "answered",
+    "variadic_access_and_cleanup": "answered",
+    "compiler_language_rules": "partial; parameter expressions referencing preceding formals not established",
+    "native_reference_relocation_safety": "unresolved; no blanket safety guarantee",
+    "all_cross_object_global_dynamic_exception_paths": "outside this stage"
+  },
+  "local_links_checked": 9,
+  "inline_evidence_ids_verified": true,
+  "git_diff_check_passed": true,
+  "files_sha256": {
+    "docs/vm-optional-arguments.md": "323eb31596ef180c0375dc8d44dc9130a91c03880f524239ff87cbe793eee246",
+    "docs/vm-optional-arguments-evidence/action-bindings.json": "971ed7921d563e880d781f124e0228af5a8d65e7f75a2a7d566ed6c77a4fa342",
+    "docs/vm-optional-arguments-evidence/functions.md": "57f01997ee4e3c35c36b8ada467a185910224cdb2305bde8c70a04c9cf67b602",
+    "docs/vm-optional-arguments-evidence/index.md": "78a5f5524f8f47cac4850f38f86ac4db6c925152e7d4cfb24473d475394025e1",
+    "docs/vm-optional-arguments-evidence/method.md": "7dc0b05948e063cd51f6fd3784dd3ffee733f100200107a75d4193cca05c3c2f",
+    "docs/vm-optional-arguments-evidence/optional.json.gz": "aa564beb9d2a735fcca7588ee6743a0a857ad02ab7ebfb380118bbbd47189f8f",
+    "docs/vm-optional-arguments-evidence/rea.json.gz": "d83e801a7fdedad0859fdd1e2a03809887cd9f3a1bf96320d7a961071d36e505",
+    "docs/vm-optional-arguments-evidence/reused.json.gz": "33f312a21bb51fc7b4fca94f672c45a2eeb00df2a97f82e35a3bfee1bd66d9c2",
+    "docs/vm-optional-arguments-evidence/summary.json": "1549d1a6cebb3d657d7128ca71fe1dcea3eb4b88e14f0b62d9a8a9079531e991",
+    "docs/vm-optional-arguments-evidence/test_verify_optional.py": "9ce409262b488995fb239a7249499e3f389e3d513de28c7722cbd79936543e2a",
+    "docs/vm-optional-arguments-evidence/verify_optional.py": "064a4af5e057fe3cd5f1a5c1beccc05ae2654a10982a2a360f86ae717dc1fbb1"
+  }
+}
