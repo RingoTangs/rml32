@@ -1,0 +1,45 @@
+{
+  "stage": "2G",
+  "scope": "static evidence and design only; reference arguments not implemented",
+  "reference_executed": false,
+  "business_bytecode_executed": false,
+  "runtime_modified": false,
+  "existing_tracked_files_checked": 136,
+  "existing_tracked_files_unchanged": true,
+  "original_manifest_files_checked": 36,
+  "original_manifest_hashes_match": true,
+  "ghidra": {
+    "engine": "Ghidra",
+    "version": "12.1.4",
+    "rea_records": 45,
+    "export_matches_raw": true,
+    "session_closed": true,
+    "target_sha256": "5d4ebac58d8c415d9cf95bbcdd50f78afac91adf4f7e667ea3afc6f5336a6f34"
+  },
+  "prototype_verifier": {
+    "command": "python3 docs/vm-reference-arguments-evidence/verify_prototypes.py",
+    "passed": true,
+    "programs": 7159,
+    "functions": 101592,
+    "reference_functions": 4395,
+    "reference_parameters": 4886
+  },
+  "existing_runtime_baseline": {
+    "supported_opcodes": 52,
+    "tests": 110,
+    "rerun_this_stage": false
+  },
+  "local_links_checked": 8,
+  "inline_evidence_ids_verified": true,
+  "git_diff_check_passed": true,
+  "files_sha256": {
+    "docs/vm-reference-arguments-evidence/functions.md": "df7fd43ad5b073790f8a83c5f53753672cdaecf6c59ce6aed21ad9b7cfdcd500",
+    "docs/vm-reference-arguments-evidence/index.md": "a5662ff3badbd440eaa00aa5311f9f380e38511ef3f1035fc8f9472d0a458d0d",
+    "docs/vm-reference-arguments-evidence/method.md": "53be6ab626647ed4a0600e091522836280297d032713b30ed4fc8105158d09f4",
+    "docs/vm-reference-arguments-evidence/prototypes.json.gz": "1bb741b8f54b6f00d8cd0ace4524f336b1381fdd9152e318516728e3758a15a9",
+    "docs/vm-reference-arguments-evidence/rea.json.gz": "f1f94c5510d60fb876bb2ccf177279ed149ea368e53858582550a138a030805e",
+    "docs/vm-reference-arguments-evidence/summary.json": "db9ad8f513a306f3ee1560d0f6577a3ffebf1458ca5fcd9281fd7fe42919a957",
+    "docs/vm-reference-arguments-evidence/verify_prototypes.py": "9b37c3f777ac5f159071b09b695a71fb239262ead6da6e47e0eff58799da656c",
+    "docs/vm-reference-arguments.md": "e62bf2d2bd6f2a048ec866bfe9e8d0b64c9871f3be671fd1eb634a8859dc9e81"
+  }
+}

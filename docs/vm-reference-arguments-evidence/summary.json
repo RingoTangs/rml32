@@ -1,0 +1,527 @@
+{
+  "by_package": {
+    "aaa/pack_data/lib_aaa32.pak": {
+      "arguments": 2466,
+      "functions": 1224,
+      "programs": 202,
+      "reference_arguments": 84,
+      "reference_functions": 71,
+      "reference_programs": 25
+    },
+    "ccs/pack_data/lib_ccs32.pak": {
+      "arguments": 8041,
+      "functions": 4044,
+      "programs": 309,
+      "reference_arguments": 105,
+      "reference_functions": 82,
+      "reference_programs": 50
+    },
+    "csa/pack_data/lib_csa32.pak": {
+      "arguments": 2480,
+      "functions": 1545,
+      "programs": 154,
+      "reference_arguments": 57,
+      "reference_functions": 47,
+      "reference_programs": 21
+    },
+    "dba/pack_data/lib_dba32.pak": {
+      "arguments": 2300,
+      "functions": 1210,
+      "programs": 187,
+      "reference_arguments": 33,
+      "reference_functions": 29,
+      "reference_programs": 14
+    },
+    "gs/pack_data/lib_gs32.pak": {
+      "arguments": 159813,
+      "functions": 93569,
+      "programs": 6307,
+      "reference_arguments": 4607,
+      "reference_functions": 4166,
+      "reference_programs": 1600
+    }
+  },
+  "by_service": {
+    "aaa": {
+      "arguments": 2466,
+      "functions": 1224,
+      "programs": 202,
+      "reference_arguments": 84,
+      "reference_functions": 71,
+      "reference_programs": 25
+    },
+    "ccs": {
+      "arguments": 8041,
+      "functions": 4044,
+      "programs": 309,
+      "reference_arguments": 105,
+      "reference_functions": 82,
+      "reference_programs": 50
+    },
+    "csa": {
+      "arguments": 2480,
+      "functions": 1545,
+      "programs": 154,
+      "reference_arguments": 57,
+      "reference_functions": 47,
+      "reference_programs": 21
+    },
+    "dba": {
+      "arguments": 2300,
+      "functions": 1210,
+      "programs": 187,
+      "reference_arguments": 33,
+      "reference_functions": 29,
+      "reference_programs": 14
+    },
+    "gs": {
+      "arguments": 159813,
+      "functions": 93569,
+      "programs": 6307,
+      "reference_arguments": 4607,
+      "reference_functions": 4166,
+      "reference_programs": 1600
+    }
+  },
+  "calls": {
+    "builtin_efun_0x06": {
+      "argc": {},
+      "count": 143520,
+      "raw_b": {
+        "0": 15790,
+        "1": 63650,
+        "10": 104,
+        "11": 55,
+        "12": 41,
+        "13": 48,
+        "14": 31,
+        "15": 39,
+        "16": 12,
+        "17": 10,
+        "18": 17,
+        "19": 4,
+        "2": 40933,
+        "20": 9,
+        "21": 11,
+        "22": 3,
+        "23": 4,
+        "24": 5,
+        "25": 2,
+        "28": 2,
+        "3": 14681,
+        "30": 3,
+        "4": 4860,
+        "5": 1605,
+        "6": 826,
+        "7": 392,
+        "8": 255,
+        "9": 128
+      }
+    },
+    "cross_object_0x08": {
+      "argc": {},
+      "count": 366483,
+      "raw_b": {
+        "0": 80466,
+        "1": 134837,
+        "10": 211,
+        "11": 4842,
+        "12": 103,
+        "13": 158,
+        "14": 201,
+        "17": 1,
+        "2": 99788,
+        "21": 3,
+        "3": 24683,
+        "4": 9436,
+        "5": 4133,
+        "6": 1249,
+        "7": 3081,
+        "8": 2667,
+        "9": 624
+      }
+    },
+    "dynamic_function_pointer_0x05": {
+      "argc": {},
+      "count": 3089,
+      "raw_b": {
+        "1": 1971,
+        "10": 1,
+        "11": 2,
+        "2": 540,
+        "3": 465,
+        "4": 56,
+        "5": 44,
+        "6": 9,
+        "9": 1
+      }
+    },
+    "global_0x07_unresolved_runtime_global_program": {
+      "argc": {
+        "0": 3049,
+        "1": 17381,
+        "2": 2357,
+        "3": 2191,
+        "4": 196,
+        "5": 36,
+        "6": 39,
+        "7": 8,
+        "8": 13,
+        "9": 304
+      },
+      "count": 25574,
+      "raw_b": {
+        "128": 3049,
+        "129": 17381,
+        "130": 2357,
+        "131": 2191,
+        "132": 196,
+        "133": 36,
+        "134": 39,
+        "135": 8,
+        "136": 13,
+        "137": 304
+      }
+    },
+    "local_0x07_resolved_single_constitution": {
+      "argc": {
+        "0": 1482,
+        "1": 3960,
+        "10": 13,
+        "11": 9,
+        "2": 2873,
+        "3": 1376,
+        "4": 638,
+        "5": 279,
+        "6": 124,
+        "7": 69,
+        "8": 103,
+        "9": 21
+      },
+      "count": 10947,
+      "raw_b": {
+        "0": 1482,
+        "1": 3960,
+        "10": 13,
+        "11": 9,
+        "2": 2873,
+        "3": 1376,
+        "4": 638,
+        "5": 279,
+        "6": 124,
+        "7": 69,
+        "8": 103,
+        "9": 21
+      }
+    },
+    "local_0x07_unknown_constitution_base_offset": {
+      "argc": {
+        "0": 26027,
+        "1": 26636,
+        "10": 6,
+        "11": 10,
+        "12": 3,
+        "13": 2,
+        "19": 1,
+        "2": 22250,
+        "3": 10202,
+        "4": 3638,
+        "5": 755,
+        "6": 246,
+        "7": 78,
+        "8": 65,
+        "9": 26
+      },
+      "count": 89945,
+      "raw_b": {
+        "0": 26027,
+        "1": 26636,
+        "10": 6,
+        "11": 10,
+        "12": 3,
+        "13": 2,
+        "19": 1,
+        "2": 22250,
+        "3": 10202,
+        "4": 3638,
+        "5": 755,
+        "6": 246,
+        "7": 78,
+        "8": 65,
+        "9": 26
+      }
+    },
+    "os_function_0x09": {
+      "argc": {},
+      "count": 0,
+      "raw_b": {}
+    }
+  },
+  "descriptor_diagnostics": {
+    "arguments_with_unknown_attrib_bits": 0,
+    "arguments_with_unknown_flag_bits": 0,
+    "functions_checked": 101592,
+    "functions_starting_check_args_0x0f": 87774,
+    "functions_with_nonsequential_argument_indices": 0,
+    "functions_with_sequential_argument_indices": 101592,
+    "reference_functions_starting_check_args_0x0f": 4340,
+    "reference_functions_with_any_unknown_attrib_bits": 0,
+    "reference_functions_with_any_unknown_flag_bits": 0,
+    "reference_functions_with_nonsequential_argument_indices": 0
+  },
+  "full_report": {
+    "compressed_bytes": 626161,
+    "path": "prototypes.json.gz",
+    "sha256": "1bb741b8f54b6f00d8cd0ace4524f336b1381fdd9152e318516728e3758a15a9",
+    "uncompressed_bytes": 12693994
+  },
+  "inputs_sha256": {
+    "docs/compatibility-evidence/compatibility-summary.json": "bb8e38b6b7e1d52e11f6468f74ec7fdd63773acb7b6ab01879ce796e0e2ddbbf",
+    "docs/compatibility-evidence/programs.json.gz": "46389cffa1c7a13692f57a2fac935f7603c723a363dee9dcc4c640ab68f48f31",
+    "docs/evidence/actions.csv": "fb3d30f8c047e881ecc2d7132111c581d76d45bcb6e64a0effd3cfc4c7cea325",
+    "docs/evidence/magic_Linux32-rea.json.gz": "41c6286a610215b9b281e1f2b195d0469b99bb92d103dfa7beda1bee3b2f8fc8"
+  },
+  "limitations": [
+    "Occurrences count serialized nodes, not execution, reachability, or unique source bodies.",
+    "Reference flag bit0 is counted; nullable8/const2 are raw attrib masks, not claims of runtime enforcement.",
+    "No stack provenance is inferred; resolved call targets do not prove passed arguments are references.",
+    "Multi-constitution and global runtime bindings remain unknown, even when names or indices match.",
+    "Only opcode07 argc is decoded here; raw b is preserved for other call kinds.",
+    "argc range relation is a raw min/max comparison, not a vararg/default argument validity verdict.",
+    "Samples are bounded, but every occurrence contributes to exact aggregate counts.",
+    "Offsets are within uncompressed PAK members, never ELF addresses or compressed package offsets."
+  ],
+  "method_script_sha256": "9b37c3f777ac5f159071b09b695a71fb239262ead6da6e47e0eff58799da656c",
+  "parameter_combinations": [
+    {
+      "attrib": 0,
+      "const": false,
+      "count": 24982,
+      "flag": 0,
+      "nullable": false,
+      "reference": false,
+      "type": 2
+    },
+    {
+      "attrib": 0,
+      "const": false,
+      "count": 205,
+      "flag": 0,
+      "nullable": false,
+      "reference": false,
+      "type": 3
+    },
+    {
+      "attrib": 0,
+      "const": false,
+      "count": 29067,
+      "flag": 0,
+      "nullable": false,
+      "reference": false,
+      "type": 4
+    },
+    {
+      "attrib": 0,
+      "const": false,
+      "count": 153,
+      "flag": 0,
+      "nullable": false,
+      "reference": false,
+      "type": 5
+    },
+    {
+      "attrib": 0,
+      "const": false,
+      "count": 10286,
+      "flag": 0,
+      "nullable": false,
+      "reference": false,
+      "type": 6
+    },
+    {
+      "attrib": 2,
+      "const": true,
+      "count": 1,
+      "flag": 0,
+      "nullable": false,
+      "reference": false,
+      "type": 6
+    },
+    {
+      "attrib": 0,
+      "const": false,
+      "count": 13966,
+      "flag": 0,
+      "nullable": false,
+      "reference": false,
+      "type": 7
+    },
+    {
+      "attrib": 0,
+      "const": false,
+      "count": 405,
+      "flag": 0,
+      "nullable": false,
+      "reference": false,
+      "type": 9
+    },
+    {
+      "attrib": 0,
+      "const": false,
+      "count": 68925,
+      "flag": 0,
+      "nullable": false,
+      "reference": false,
+      "type": 10
+    },
+    {
+      "attrib": 8,
+      "const": false,
+      "count": 4,
+      "flag": 0,
+      "nullable": true,
+      "reference": false,
+      "type": 10
+    },
+    {
+      "attrib": 0,
+      "const": false,
+      "count": 22220,
+      "flag": 0,
+      "nullable": false,
+      "reference": false,
+      "type": 255
+    },
+    {
+      "attrib": 0,
+      "const": false,
+      "count": 298,
+      "flag": 1,
+      "nullable": false,
+      "reference": true,
+      "type": 2
+    },
+    {
+      "attrib": 0,
+      "const": false,
+      "count": 4,
+      "flag": 1,
+      "nullable": false,
+      "reference": true,
+      "type": 3
+    },
+    {
+      "attrib": 0,
+      "const": false,
+      "count": 1849,
+      "flag": 1,
+      "nullable": false,
+      "reference": true,
+      "type": 4
+    },
+    {
+      "attrib": 0,
+      "const": false,
+      "count": 14,
+      "flag": 1,
+      "nullable": false,
+      "reference": true,
+      "type": 5
+    },
+    {
+      "attrib": 0,
+      "const": false,
+      "count": 1002,
+      "flag": 1,
+      "nullable": false,
+      "reference": true,
+      "type": 6
+    },
+    {
+      "attrib": 0,
+      "const": false,
+      "count": 235,
+      "flag": 1,
+      "nullable": false,
+      "reference": true,
+      "type": 7
+    },
+    {
+      "attrib": 0,
+      "const": false,
+      "count": 27,
+      "flag": 1,
+      "nullable": false,
+      "reference": true,
+      "type": 10
+    },
+    {
+      "attrib": 0,
+      "const": false,
+      "count": 1457,
+      "flag": 1,
+      "nullable": false,
+      "reference": true,
+      "type": 255
+    }
+  ],
+  "reference_function_shapes": [
+    {
+      "attrib_low2": 0,
+      "count": 1223,
+      "first_opcode": 15,
+      "fixed_arity": false,
+      "sequential_argument_indices": true
+    },
+    {
+      "attrib_low2": 2,
+      "count": 32,
+      "first_opcode": 15,
+      "fixed_arity": false,
+      "sequential_argument_indices": true
+    },
+    {
+      "attrib_low2": 0,
+      "count": 55,
+      "first_opcode": null,
+      "fixed_arity": true,
+      "sequential_argument_indices": true
+    },
+    {
+      "attrib_low2": 0,
+      "count": 3050,
+      "first_opcode": 15,
+      "fixed_arity": true,
+      "sequential_argument_indices": true
+    },
+    {
+      "attrib_low2": 2,
+      "count": 35,
+      "first_opcode": 15,
+      "fixed_arity": true,
+      "sequential_argument_indices": true
+    }
+  ],
+  "resolved_local_summary": {
+    "argc_range_relation": {
+      "above_max": 603,
+      "below_min": 5,
+      "within_bounds": 10339
+    },
+    "calls_to_prototypes_with_reference_parameters": 742,
+    "targets": 5132,
+    "targets_with_reference_parameters": 385
+  },
+  "schema": "stage2g.reference-argument-statistics.v1",
+  "totals": {
+    "arguments": 175100,
+    "functions": 101592,
+    "hidden_functions": 0,
+    "instructions": 6474773,
+    "programs": 7159,
+    "reference_arguments": 4886,
+    "reference_functions": 4395,
+    "reference_programs": 1710,
+    "segments": 108751
+  }
+}
