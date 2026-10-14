@@ -47,6 +47,7 @@ python3 tests/compare_corpus.py --report target/stage1-validation.json
 - [阶段 2J 受限默认与可变参数实现](docs/vm-optional-arguments-runtime.md)
 - [阶段 2K 继承静态证据与设计](docs/vm-inheritance-linking.md)
 - [阶段 2L 受限继承链接与执行](docs/vm-inheritance-runtime.md)
+- [阶段 2M 对象生命周期静态分析与设计](docs/vm-object-lifecycle.md)
 - [服务包与 Rust 兼容性分析](docs/magic_Linux32-rust-compatibility-analysis.md)
 - [Ghidra 静态分析](docs/magic_Linux32-static-analysis.md)
 

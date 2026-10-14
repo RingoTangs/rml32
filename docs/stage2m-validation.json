@@ -1,0 +1,246 @@
+{
+  "stage": "2M",
+  "date": "2026-10-14",
+  "scope": "static lifecycle evidence and future Rust design; no runtime implementation",
+  "runtime_modified": false,
+  "public_api_modified": false,
+  "dependencies_modified": false,
+  "reference_executed": false,
+  "startup_scripts_executed": false,
+  "shipped_init_or_business_bytecode_executed": false,
+  "ghidra": {
+    "engine": "Ghidra",
+    "version": "12.1.4",
+    "new_records": 54,
+    "reused_records": 12,
+    "session_closed": true,
+    "raw_export_matches_compressed": true,
+    "target_sha256": "5d4ebac58d8c415d9cf95bbcdd50f78afac91adf4f7e667ea3afc6f5336a6f34"
+  },
+  "checks": {
+    "cargo test --locked": {
+      "passed": true,
+      "tests": 171
+    },
+    "cargo fmt --check": {
+      "passed": true
+    },
+    "cargo clippy --locked --all-targets -- -D warnings": {
+      "passed": true
+    },
+    "python3 docs/vm-object-lifecycle-evidence/test_verify_lifecycle.py": {
+      "passed": true,
+      "synthetic_metadata_tests": 19
+    },
+    "python3 docs/vm-object-lifecycle-evidence/verify_lifecycle.py": {
+      "passed": true,
+      "read_only_byte_identical": true
+    },
+    "python3 docs/vm-object-lifecycle-evidence/verify_evidence.py": {
+      "passed": true,
+      "referenced_ids": 66,
+      "source_bundles_verified": 3
+    },
+    "git diff --check": {
+      "passed": true
+    }
+  },
+  "corpus": {
+    "status": "pass",
+    "checked": {
+      "packages": 12,
+      "members": 9527,
+      "programs": 7159,
+      "inheritance": 9933
+    },
+    "summary": {
+      "decoded_files": 8921,
+      "errors": 1,
+      "files": 8922,
+      "functions": 101592,
+      "inheritance_matches": 9933,
+      "instructions": 6474773,
+      "members": 9527,
+      "packages": 12,
+      "programs": 7159
+    },
+    "originals_unchanged": 36,
+    "known_errors": [
+      "dba/pack_data/etc.pak/etc"
+    ],
+    "default_action_fields_checked": 358411,
+    "target_execution": "none",
+    "scope": "static structure; not execution equivalence"
+  },
+  "statistics": {
+    "functions_raw_checked": 101592,
+    "init_metadata_nonempty": 427,
+    "init_minimal_2e_48_1d": 1274,
+    "init_nodes": 575635,
+    "init_opcode_counts": {
+      "01": 324,
+      "03": 14882,
+      "05": 92,
+      "06": 818,
+      "07": 1707,
+      "08": 198,
+      "14": 196,
+      "16": 39007,
+      "17": 4871,
+      "18": 35644,
+      "19": 1,
+      "1c": 5,
+      "1d": 7159,
+      "1e": 1,
+      "1f": 369,
+      "21": 420,
+      "22": 196,
+      "24": 85,
+      "26": 3,
+      "2d": 9,
+      "2e": 17107,
+      "33": 15156,
+      "35": 384,
+      "36": 1260,
+      "3b": 165310,
+      "3c": 5519,
+      "3d": 237,
+      "3e": 14014,
+      "3f": 597,
+      "40": 242523,
+      "42": 50,
+      "43": 85,
+      "44": 213,
+      "45": 12,
+      "48": 7154,
+      "4f": 17,
+      "51": 10
+    },
+    "init_order_issues": [],
+    "init_other": 5885,
+    "lifecycle": {
+      "create": {
+        "argument_attribs": {
+          "0": 14
+        },
+        "argument_counts": {
+          "0": 5254,
+          "1": 14
+        },
+        "argument_flags": {
+          "0": 14
+        },
+        "argument_types": {
+          "255": 2,
+          "7": 12
+        },
+        "attrib": {
+          "4": 5234,
+          "6": 34
+        },
+        "bodies": 5268,
+        "declarations": 0,
+        "group": {
+          "functions": 5268
+        },
+        "min_max": {
+          "0/0": 5254,
+          "0/1": 12,
+          "1/1": 2
+        },
+        "mode": {
+          "object": 5268
+        },
+        "nonzero_default_descriptors": 10,
+        "programs": 5268,
+        "records": 5268,
+        "return_attrib": {
+          "0": 5268
+        },
+        "return_type": {
+          "1": 5268
+        }
+      },
+      "destruct": {
+        "argument_attribs": {},
+        "argument_counts": {
+          "0": 948
+        },
+        "argument_flags": {},
+        "argument_types": {},
+        "attrib": {
+          "4": 917,
+          "6": 31
+        },
+        "bodies": 948,
+        "declarations": 0,
+        "group": {
+          "functions": 948
+        },
+        "min_max": {
+          "0/0": 948
+        },
+        "mode": {
+          "object": 948
+        },
+        "nonzero_default_descriptors": 0,
+        "programs": 948,
+        "records": 948,
+        "return_attrib": {
+          "0": 948
+        },
+        "return_type": {
+          "1": 948
+        }
+      }
+    },
+    "modes": {
+      "global": 5,
+      "object": 7154
+    },
+    "object_init_orders_verified": 7154,
+    "programs": 7159
+  },
+  "existing_files_checked": 174,
+  "existing_files_unchanged": 172,
+  "intentional_existing_edits": [
+    "README.md",
+    "docs/magic_Linux32-rust-rewrite-roadmap.md"
+  ],
+  "prior_stage2k_stage2l_protected_file_maps_verified": true,
+  "original_manifest_artifacts_verified": 36,
+  "question_status": {
+    "allocation_default_values_and_early_hash_publication": "answered for focused paths",
+    "init_order_consumer_context_and_fake_return": "answered",
+    "construction_parameters_and_callbacks": "answered",
+    "normal_destruct_reverse_order_and_failure_continue": "answered",
+    "failed_create_vs_failed_init_rollback": "answered for focused callbacks",
+    "exec_ref_deferred_cleanup_and_tombstone_shell": "answered",
+    "all_lifecycle_name_resolution_and_final_offsets": "partial; native lookup inspected; full corpus final dispatch not modeled",
+    "reentrancy_and_all_error_exit_paths": "partial; exact flag guards preserved; not exhaustive",
+    "global_shutdown_scheduler_hot_reload_and_native_pointer_safety": "deferred/unknown"
+  },
+  "runtime_baseline": {
+    "supported_opcodes": 55,
+    "rust_tests": 171,
+    "unchanged": true
+  },
+  "files_sha256": {
+    "docs/vm-object-lifecycle.md": "f0c7ba9b0aa0b08fc286f6043b0379fa9186ae74078313a0e99df3948a59bd69",
+    "README.md": "fed8c0889ae4710f9ce4a2b261def5cf2d42dae49a39c9fe8b3bffcca49420c3",
+    "docs/magic_Linux32-rust-rewrite-roadmap.md": "6e48b4f556aab1dc1abf896b9285d06b906853f7e9fed2aade56c80ffaf099eb",
+    "docs/vm-object-lifecycle-evidence/deletion-findings.md": "419440136b936e4420236e6f79b8d4fa91c71fb06ea4dfe17179c9d3ff7e6c12",
+    "docs/vm-object-lifecycle-evidence/details.json.gz": "07a7595c71f585e49207fe4dc473303657505cf14767a3d7dcf65b95a8bda745",
+    "docs/vm-object-lifecycle-evidence/functions.md": "ad109ded92bff16d620e73cd6eb9cba17ad4b3f75432086100aa96e26d0ab799",
+    "docs/vm-object-lifecycle-evidence/index.md": "eaf8f9cd80405dba521e343b0cdc9cc7727746ae129bf1ebc9ab3044c1e16d01",
+    "docs/vm-object-lifecycle-evidence/method.md": "c3a928b706edd42f0b96baeb526981313dbac112cb9a92c329d1fe2d00e6465b",
+    "docs/vm-object-lifecycle-evidence/rea.json.gz": "b40cfdf0c59672628b24cf6682691746e155e71d54d8a0bd891eecc384ab2a4c",
+    "docs/vm-object-lifecycle-evidence/reused.json.gz": "c3bfa1f07982f4f6cc60882e1d5b057e2679ad3ea97116f72b2d009d4ea6663d",
+    "docs/vm-object-lifecycle-evidence/summary.json": "4ed794a06567cf0a3ef038c570a738bf8d50a1f4499d095404c9e29071210bbd",
+    "docs/vm-object-lifecycle-evidence/test_verify_lifecycle.py": "931881a8c711db8fc7ff6c31ac78f041a93f24e7585009c424cb1bb1fddff0df",
+    "docs/vm-object-lifecycle-evidence/verify_evidence.py": "2d8b2591e8b83e3151761be3fde7fd2135c1d2240c4322f708bea8f844c3e193",
+    "docs/vm-object-lifecycle-evidence/verify_lifecycle.py": "4e2b28ba6d383e231cabbbaf3cd7686fd11fced119d69c8ac8fd42ee3d511c01"
+  },
+  "local_links_checked": 7,
+  "files_sha256_verified": true
+}

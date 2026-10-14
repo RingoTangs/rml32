@@ -1,0 +1,150 @@
+{
+  "counts": {
+    "functions_raw_checked": 101592,
+    "init_metadata_nonempty": 427,
+    "init_minimal_2e_48_1d": 1274,
+    "init_nodes": 575635,
+    "init_opcode_counts": {
+      "01": 324,
+      "03": 14882,
+      "05": 92,
+      "06": 818,
+      "07": 1707,
+      "08": 198,
+      "14": 196,
+      "16": 39007,
+      "17": 4871,
+      "18": 35644,
+      "19": 1,
+      "1c": 5,
+      "1d": 7159,
+      "1e": 1,
+      "1f": 369,
+      "21": 420,
+      "22": 196,
+      "24": 85,
+      "26": 3,
+      "2d": 9,
+      "2e": 17107,
+      "33": 15156,
+      "35": 384,
+      "36": 1260,
+      "3b": 165310,
+      "3c": 5519,
+      "3d": 237,
+      "3e": 14014,
+      "3f": 597,
+      "40": 242523,
+      "42": 50,
+      "43": 85,
+      "44": 213,
+      "45": 12,
+      "48": 7154,
+      "4f": 17,
+      "51": 10
+    },
+    "init_order_issues": [],
+    "init_other": 5885,
+    "lifecycle": {
+      "create": {
+        "argument_attribs": {
+          "0": 14
+        },
+        "argument_counts": {
+          "0": 5254,
+          "1": 14
+        },
+        "argument_flags": {
+          "0": 14
+        },
+        "argument_types": {
+          "255": 2,
+          "7": 12
+        },
+        "attrib": {
+          "4": 5234,
+          "6": 34
+        },
+        "bodies": 5268,
+        "declarations": 0,
+        "group": {
+          "functions": 5268
+        },
+        "min_max": {
+          "0/0": 5254,
+          "0/1": 12,
+          "1/1": 2
+        },
+        "mode": {
+          "object": 5268
+        },
+        "nonzero_default_descriptors": 10,
+        "programs": 5268,
+        "records": 5268,
+        "return_attrib": {
+          "0": 5268
+        },
+        "return_type": {
+          "1": 5268
+        }
+      },
+      "destruct": {
+        "argument_attribs": {},
+        "argument_counts": {
+          "0": 948
+        },
+        "argument_flags": {},
+        "argument_types": {},
+        "attrib": {
+          "4": 917,
+          "6": 31
+        },
+        "bodies": 948,
+        "declarations": 0,
+        "group": {
+          "functions": 948
+        },
+        "min_max": {
+          "0/0": 948
+        },
+        "mode": {
+          "object": 948
+        },
+        "nonzero_default_descriptors": 0,
+        "programs": 948,
+        "records": 948,
+        "return_attrib": {
+          "0": 948
+        },
+        "return_type": {
+          "1": 948
+        }
+      }
+    },
+    "modes": {
+      "global": 5,
+      "object": 7154
+    },
+    "object_init_orders_verified": 7154,
+    "programs": 7159
+  },
+  "details_bytes": 437456,
+  "details_sha256": "07a7595c71f585e49207fe4dc473303657505cf14767a3d7dcf65b95a8bda745",
+  "limitations": [
+    "Counts are original local records, not final aliased or inherited dispatch slots.",
+    "Names use original bytes before first NUL; display decoding is not used for matching.",
+    "Init order is reused offline stage2K reconstruction; this does not prove native execution order.",
+    "Raw serialized attributes precede native postload lifecycle flag changes.",
+    "No original executable, startup script, init segment or business bytecode is executed."
+  ],
+  "originals_verified": 36,
+  "schema": "stage2m-lifecycle-v1",
+  "sources": {
+    "docs/compatibility-evidence/input-manifest.json": "98dfa7b7300c32e1c5aba18b974fb8e87b338ea382a60007f758ce95033ea2a2",
+    "docs/compatibility-evidence/inspect_packages.py": "d956dca578545928d2bb4218f9bb1b5d29d2765691e0035afa490f40275ce80d",
+    "docs/compatibility-evidence/members.json.gz": "3b9dfe817d032a1848cd41f8866d5c35c0b36c532a5a8fe6af2c91e06fd69a87",
+    "docs/compatibility-evidence/programs.json.gz": "46389cffa1c7a13692f57a2fac935f7603c723a363dee9dcc4c640ab68f48f31",
+    "docs/vm-inheritance-evidence/graph.json.gz": "a547d2b17ae82f350e33452f7a003066efdfad047e79828f176bd40d6a6edaa7",
+    "docs/vm-object-lifecycle-evidence/verify_lifecycle.py": "4e2b28ba6d383e231cabbbaf3cd7686fd11fced119d69c8ac8fd42ee3d511c01"
+  }
+}
