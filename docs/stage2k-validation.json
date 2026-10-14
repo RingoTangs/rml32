@@ -1,0 +1,119 @@
+{
+  "stage": "2K",
+  "date": "2026-10-14",
+  "scope": "static inheritance, constitution and relocation evidence plus future Rust linking design",
+  "runtime_modified": false,
+  "public_api_modified": false,
+  "dependencies_modified": false,
+  "reference_executed": false,
+  "startup_scripts_executed": false,
+  "init_code_or_business_bytecode_executed": false,
+  "existing_tracked_files_checked": 161,
+  "existing_tracked_files_unchanged": true,
+  "original_manifest_files_checked": 36,
+  "original_hashes_match": true,
+  "prior_validation_file_maps_verified": {
+    "docs/stage2i-validation.json": 11,
+    "docs/stage2j-validation.json": 8
+  },
+  "ghidra": {
+    "engine": "Ghidra",
+    "version": "12.1.4",
+    "new_records": 41,
+    "reused_records": 10,
+    "export_matches_raw": true,
+    "session_closed": true,
+    "target_sha256": "5d4ebac58d8c415d9cf95bbcdd50f78afac91adf4f7e667ea3afc6f5336a6f34"
+  },
+  "statistics": {
+    "command": "python3 docs/vm-inheritance-evidence/verify_inheritance.py",
+    "passed": true,
+    "counts": {
+      "constitution_reserved_self_overlap_edges": 0,
+      "count_mismatch_edges": 0,
+      "cyclic_components_detected": 0,
+      "depth_histogram": {
+        "0": 1884,
+        "1": 2034,
+        "2": 2125,
+        "3": 392,
+        "4": 712,
+        "5": 12
+      },
+      "direct_multiple_inheritance": 1956,
+      "duplicate_direct_parent_programs": 0,
+      "duplicate_source_keys": 0,
+      "edges": 9933,
+      "inherited_dlt_attrib_histogram": {
+        "537133056": 15098,
+        "537395200": 752
+      },
+      "inherited_dlt_raw_8_16_nonzero": 15160,
+      "inherited_dlt_records": 15850,
+      "init_order_issues": {},
+      "init_orders_reconstructed": 7154,
+      "interval_out_of_capacity_edges": 0,
+      "multiple_paths_to_same_ancestor": 0,
+      "overlapping_sibling_intervals": {},
+      "prealias_concrete_slots": 482971,
+      "prealias_declaration_slots_unresolved": 230242,
+      "prealias_issues": {},
+      "prealias_populated_slots": 713213,
+      "prealias_tables": 7159,
+      "prealias_unpopulated_slots": 2860,
+      "programs": 7159,
+      "relocated_programs": 7159,
+      "relocation_issues": {},
+      "root_local_function_call07_nodes": 124759,
+      "root_local_function_call07_statuses": {
+        "concrete_resolved": 100119,
+        "declaration_alias_unknown": 773,
+        "global_unknown": 23867
+      },
+      "signed16_end_overflow_edges": 0,
+      "statuses": {
+        "resolved": 9933
+      }
+    },
+    "graph_sha256": "a547d2b17ae82f350e33452f7a003066efdfad047e79828f176bd40d6a6edaa7",
+    "graph_compressed_bytes": 3649925,
+    "call_scope": "original local functions per analyzed root; caller constitution 0; excludes init and inherited execution-context replication",
+    "binding_scope": "prealias concrete-body identities only; empty declaration targets remain unknown"
+  },
+  "synthetic_metadata_tests": {
+    "command": "python3 docs/vm-inheritance-evidence/test_verify_inheritance.py",
+    "passed": true,
+    "count": 19
+  },
+  "runtime_baseline": {
+    "supported_opcodes": 55,
+    "tests": 150,
+    "rerun_this_stage": false,
+    "inheritance_runtime_implemented_this_stage": false
+  },
+  "question_status": {
+    "six_fields_and_signedness": "answered",
+    "constitution_layout_and_nested_bases": "answered",
+    "function_import_and_declaration_binding_algorithm": "answered statically; full corpus final name binding not reconstructed",
+    "data_pool_and_call_context": "answered for focused native handlers",
+    "init_order_construction": "answered; not executed",
+    "runtime_name_namespace": "partial; explicit offline catalogue policy only",
+    "hidden_reload_diamond_and_native_reference_safety": "unresolved or deferred; first runtime subset must reject unsupported combinations",
+    "constructor_destructor_attributes": "observed mutation; not simulated in corpus model"
+  },
+  "local_links_checked": 10,
+  "inline_evidence_ids_verified": true,
+  "git_diff_check_passed": true,
+  "files_sha256": {
+    "docs/vm-inheritance-linking.md": "f1a4bed917eaa5d3153b726765e205743bb513b064024d12c0dd275c7fa49288",
+    "docs/vm-inheritance-evidence/functions.md": "f880ea24d36ea7723a0b1b87daccffc2da406c3954b2f14acae043415e7d9f9c",
+    "docs/vm-inheritance-evidence/graph.json.gz": "a547d2b17ae82f350e33452f7a003066efdfad047e79828f176bd40d6a6edaa7",
+    "docs/vm-inheritance-evidence/index.md": "f0fc93ad42230018b908c9417f26bebb92768383e58a64a7477ae79017423f72",
+    "docs/vm-inheritance-evidence/method.md": "35cb7343c3634c82ba897d806c166435a0b006a5f95a8b0bb93865f138008b89",
+    "docs/vm-inheritance-evidence/rea.json.gz": "f5f6bd151b83b0e46c557bce80d08bd7955cb44be0f64191c3a49126e78968f3",
+    "docs/vm-inheritance-evidence/reused.json.gz": "524866befda0e7dd81cca2326cc164839cfdc3e4a8b4437f8953f8a93110d172",
+    "docs/vm-inheritance-evidence/summary.json": "65db9e648b31418160e78d2d7ff311d2ee9cac7d1ad504b45d90f412b8a6b13f",
+    "docs/vm-inheritance-evidence/test_verify_inheritance.py": "ed11c74eb3cc21ca6b3a6d2d379e470ed9e1a76a6d7c2ef0c1f1a528d2e27f1d",
+    "docs/vm-inheritance-evidence/verify_inheritance.py": "83a213fe29a40eebd10f9f4c3a569e3133dfce83a8bb1c5dfb13f2dda5b85f13"
+  }
+}

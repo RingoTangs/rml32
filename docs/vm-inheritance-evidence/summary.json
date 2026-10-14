@@ -1,0 +1,66 @@
+{
+  "counts": {
+    "constitution_reserved_self_overlap_edges": 0,
+    "count_mismatch_edges": 0,
+    "cyclic_components_detected": 0,
+    "depth_histogram": {
+      "0": 1884,
+      "1": 2034,
+      "2": 2125,
+      "3": 392,
+      "4": 712,
+      "5": 12
+    },
+    "direct_multiple_inheritance": 1956,
+    "duplicate_direct_parent_programs": 0,
+    "duplicate_source_keys": 0,
+    "edges": 9933,
+    "inherited_dlt_attrib_histogram": {
+      "537133056": 15098,
+      "537395200": 752
+    },
+    "inherited_dlt_raw_8_16_nonzero": 15160,
+    "inherited_dlt_records": 15850,
+    "init_order_issues": {},
+    "init_orders_reconstructed": 7154,
+    "interval_out_of_capacity_edges": 0,
+    "multiple_paths_to_same_ancestor": 0,
+    "overlapping_sibling_intervals": {},
+    "prealias_concrete_slots": 482971,
+    "prealias_declaration_slots_unresolved": 230242,
+    "prealias_issues": {},
+    "prealias_populated_slots": 713213,
+    "prealias_tables": 7159,
+    "prealias_unpopulated_slots": 2860,
+    "programs": 7159,
+    "relocated_programs": 7159,
+    "relocation_issues": {},
+    "root_local_function_call07_nodes": 124759,
+    "root_local_function_call07_statuses": {
+      "concrete_resolved": 100119,
+      "declaration_alias_unknown": 773,
+      "global_unknown": 23867
+    },
+    "signed16_end_overflow_edges": 0,
+    "statuses": {
+      "resolved": 9933
+    }
+  },
+  "graph_bytes": 3649925,
+  "graph_sha256": "a547d2b17ae82f350e33452f7a003066efdfad047e79828f176bd40d6a6edaa7",
+  "inheritance_csv_rows_verified": 9933,
+  "limitations": [
+    "overlap is descriptive, not an invalidity verdict",
+    "prealias tables only: empty declarations remain unresolved; no name matching or bytecode execution",
+    "offline package catalogue is not native object namespace"
+  ],
+  "schema": "stage2k-inheritance-v1",
+  "sources": {
+    "docs/compatibility-evidence/inheritance.csv": "0b754f78d765cf4ed7465606be491c916afb905328bb69975a33d9b9ebe31846",
+    "docs/compatibility-evidence/main-rea.json.gz": "9c40597da8d64c6b52b77ac26a9f89eb276f82b7e23c0d233d17ecbb56320d8d",
+    "docs/compatibility-evidence/programs.json.gz": "46389cffa1c7a13692f57a2fac935f7603c723a363dee9dcc4c640ab68f48f31",
+    "docs/vm-inheritance-evidence/rea.json.gz": "f5f6bd151b83b0e46c557bce80d08bd7955cb44be0f64191c3a49126e78968f3",
+    "docs/vm-inheritance-evidence/verify_inheritance.py": "83a213fe29a40eebd10f9f4c3a569e3133dfce83a8bb1c5dfb13f2dda5b85f13",
+    "docs/vm-optional-arguments-evidence/rea.json.gz": "d83e801a7fdedad0859fdd1e2a03809887cd9f3a1bf96320d7a961071d36e505"
+  }
+}
