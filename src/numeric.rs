@@ -186,3 +186,40 @@ pub(crate) fn binary(op: u8, left: &Value, right: &Value) -> Result<Value, VmErr
         real(result)
     })
 }
+
+/// vm_incValue @0x0808dea4: ADD or FLD/FIADD/FSTP (binary32).
+pub(crate) fn increment(value: &Value, delta: i32) -> Result<Value, VmError> {
+    match value {
+        Value::Int(n) => Ok(Value::Int(n.wrapping_add(delta))),
+        Value::Real(r) => Ok(real(wide_arithmetic(
+            1,
+            f64::from(r.to_f32()),
+            f64::from(delta),
+        ))),
+        _ => Err(unsupported()),
+    }
+}
+
+/// vm_opEqValue selectors are compiler operator numbers, not VM opcodes.
+/// Inline multiply uses the same FIMUL/FSTP/ftol sequence as vm_mulValue.
+pub(crate) fn compound(selector: i32, left: &Value, right: &Value) -> Result<Value, VmError> {
+    let opcode = match selector {
+        2 => 0x01,
+        3 => 0x51,
+        4 => 0x29,
+        5 => 0x19,
+        6 => 0x02,
+        7 => 0x30,
+        8 => 0x55,
+        9 => 0x4b,
+        10 => 0x26,
+        11 => 0x28,
+        _ => {
+            return Err(VmError::new(
+                VmErrorKind::UnsupportedFeature,
+                "unsupported compound operator selector",
+            ));
+        }
+    };
+    binary(opcode, left, right)
+}

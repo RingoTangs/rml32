@@ -650,7 +650,7 @@ fn supported_types_have_explicit_legacy_tags() {
         [0, 1, 2, 4, 10]
     );
     let supported: BTreeSet<_> = rml32::prepared::SUPPORTED_OPCODES.iter().collect();
-    assert_eq!(supported.len(), 50);
+    assert_eq!(supported.len(), 52);
     assert_eq!(ByteString::new(b"\xff").bytes, b"\xff");
 }
 
@@ -1801,4 +1801,444 @@ fn reference_modes_invalid_targets_and_invalid_keys_fail_explicitly() {
     );
     vm.start(o, 0, vec![]).unwrap();
     assert_eq!(vm.run(100).unwrap_err().kind, VmErrorKind::UnsupportedType);
+}
+
+fn update_machine(
+    op: u8,
+    operand: i16,
+    left: Value,
+    right: Option<Value>,
+) -> (Vm, rml32::ObjectId) {
+    let mut nodes = vec![(0, 0, 0x3e)];
+    let args: Vec<_> = right.into_iter().collect();
+    if op == 0x2f {
+        nodes.push((0, 0, 0x37));
+    }
+    nodes.push((operand, 0, op));
+    if op == 0x22 {
+        nodes.push((0, 0, 0x3d));
+    }
+    let (mut vm, o) = machine(
+        image(&[fun(0, args.len(), 0, 255, &nodes)], 1, &[]),
+        vec![left],
+    );
+    vm.start(o, 0, args).unwrap();
+    (vm, o)
+}
+fn updated(op: u8, operand: i16, left: Value, right: Option<Value>) -> Value {
+    let (mut vm, o) = update_machine(op, operand, left, right);
+    let RunOutcome::Finished(Completion::Returned(value)) = vm.run(100).unwrap() else {
+        panic!("value return expected")
+    };
+    assert_eq!(
+        vm.objects().get(o).unwrap().variables().unwrap(),
+        vec![value.clone()]
+    );
+    value
+}
+#[test]
+fn increment_accepts_signed_par16_and_wraps_integer_extremes() {
+    for (left, delta, expected) in [
+        (5, 1, 6),
+        (5, -1, 4),
+        (5, 0, 5),
+        (5, 7, 12),
+        (0, i16::MIN, -32768),
+        (0, i16::MAX, 32767),
+        (i32::MAX, 1, i32::MIN),
+        (i32::MIN, -1, i32::MAX),
+    ] {
+        assert_eq!(
+            updated(0x22, delta, Value::Int(left), None),
+            Value::Int(expected)
+        );
+    }
+}
+#[test]
+fn increment_real_rounding_special_values_and_zero_sign_follow_fiadd_store() {
+    for (left, delta, expected) in [
+        (1.5, 1, 2.5),
+        (1.5, -1, 0.5),
+        (-0.0, 0, 0.0),
+        (16777216.0, 1, 16777216.0),
+        (16777216.0, 3, 16777220.0),
+        (f32::from_bits(1), 0, f32::from_bits(1)),
+        (f32::MAX, 32767, f32::MAX),
+        (f32::INFINITY, -1, f32::INFINITY),
+        (f32::NEG_INFINITY, 1, f32::NEG_INFINITY),
+    ] {
+        assert_eq!(updated(0x22, delta, real(left), None), real(expected));
+    }
+    let Value::Real(r) = updated(0x22, 0, real(f32::NAN), None) else {
+        unreachable!()
+    };
+    assert!(r.to_f32().is_nan());
+}
+#[test]
+fn increment_consumes_reference_without_leaving_expression_result() {
+    let (mut vm, o) = machine(
+        image(&[fun(0, 0, 0, 1, &[(0, 0, 0x3e), (1, 0, 0x22)])], 1, &[]),
+        vec![Value::Int(1)],
+    );
+    vm.start(o, 0, vec![]).unwrap();
+    returns(&mut vm, Value::Void);
+    assert!(vm.stack().unwrap().is_empty());
+    assert_eq!(
+        vm.objects().get(o).unwrap().variables().unwrap(),
+        vec![Value::Int(2)]
+    );
+    assert_eq!(
+        container_run(
+            &[(0, 0, 0x39), (2, 0, 0x22), (0, 0, 0x37)],
+            vec![Value::Int(7)]
+        )
+        .unwrap(),
+        RunOutcome::Finished(Completion::Returned(Value::Int(9)))
+    );
+    let nodes = [
+        (5, 0, 0x3b),
+        (-1, 0, 0x4d),
+        (0, 0, 0x33),
+        (-1, 0, 0x39),
+        (-2, 0, 0x22),
+        (-1, 0, 0x37),
+    ];
+    let (mut vm, o) = machine(image(&[fun(0, 0, 1, 2, &nodes)], 0, &[]), vec![]);
+    vm.start(o, 0, vec![]).unwrap();
+    returns(&mut vm, Value::Int(3));
+}
+#[test]
+fn compound_selectors_cover_all_ten_operations_and_leave_result() {
+    for (selector, expected) in [
+        (2, 17),
+        (3, 11),
+        (4, 42),
+        (5, 4),
+        (6, 2),
+        (7, 15),
+        (8, 13),
+        (9, 1),
+        (10, 112),
+        (11, 2),
+    ] {
+        assert_eq!(
+            updated(0x2f, selector, Value::Int(14), Some(Value::Int(3))),
+            Value::Int(expected)
+        );
+    }
+    assert_eq!(
+        updated(0x2f, 2, Value::Int(i32::MAX), Some(Value::Int(1))),
+        Value::Int(i32::MIN)
+    );
+    assert_eq!(
+        updated(0x2f, 3, Value::Int(i32::MIN), Some(Value::Int(1))),
+        Value::Int(i32::MAX)
+    );
+    assert_eq!(
+        updated(0x2f, 4, Value::Int(i32::MAX), Some(Value::Int(2))),
+        Value::Int(-2)
+    );
+}
+#[test]
+fn compound_mixed_arithmetic_preserves_target_type_except_remainder() {
+    for (selector, int_expected, float_expected) in
+        [(2, 9, 9.5), (3, 4, 4.5), (4, 17, 17.5), (5, 2, 2.8)]
+    {
+        assert_eq!(
+            updated(0x2f, selector, Value::Int(7), Some(real(2.5))),
+            Value::Int(int_expected)
+        );
+        assert_eq!(
+            updated(0x2f, selector, real(7.0), Some(real(2.5))),
+            real(float_expected)
+        );
+    }
+    assert_eq!(updated(0x2f, 2, real(2.5), Some(Value::Int(7))), real(9.5));
+    assert_eq!(updated(0x2f, 3, real(2.5), Some(Value::Int(7))), real(-4.5));
+    assert_eq!(
+        updated(0x2f, 4, Value::Int(-7), Some(real(2.5))),
+        Value::Int(-17)
+    );
+    assert_eq!(updated(0x2f, 11, Value::Int(7), Some(real(2.5))), real(2.0));
+    assert_eq!(
+        updated(0x2f, 11, real(-7.0), Some(Value::Int(3))),
+        real(-1.0)
+    );
+}
+#[test]
+fn compound_inline_multiply_matches_x87_precision_and_float_store_before_ftol() {
+    assert_eq!(
+        updated(0x2f, 3, Value::Int(16777217), Some(real(16777216.0))),
+        Value::Int(1)
+    );
+    assert_eq!(
+        updated(0x2f, 3, real(16777216.0), Some(Value::Int(16777217))),
+        real(-1.0)
+    );
+    assert_eq!(
+        updated(0x2f, 4, Value::Int(16777217), Some(real(1.0))),
+        Value::Int(16777216)
+    );
+    for (r, i, bits) in [
+        (16777215.0, 1090519041, 0x5a81ffff),
+        (8388609.0, 1619001343, 0x5a410001),
+    ] {
+        assert_eq!(
+            updated(0x2f, 4, real(r), Some(Value::Int(i))),
+            Value::Real(rml32::RealBits::from_bits(bits))
+        );
+    }
+    assert_eq!(
+        updated(0x2f, 4, Value::Int(1), Some(real(f32::INFINITY))),
+        Value::Int(i32::MIN)
+    );
+}
+#[test]
+fn compound_float_special_values_and_shift_edges_keep_numeric_policy() {
+    assert_eq!(updated(0x2f, 4, real(-0.0), Some(real(2.0))), real(-0.0));
+    assert_eq!(
+        updated(0x2f, 2, real(f32::INFINITY), Some(Value::Int(1))),
+        real(f32::INFINITY)
+    );
+    assert_eq!(
+        updated(0x2f, 4, real(f32::from_bits(1)), Some(Value::Int(1))),
+        real(f32::from_bits(1))
+    );
+    for (selector, right) in [(2, real(f32::NAN)), (11, real(0.0))] {
+        let Value::Real(r) = updated(0x2f, selector, real(1.0), Some(right)) else {
+            unreachable!()
+        };
+        assert!(r.to_f32().is_nan());
+    }
+    for (shift, rsh, lsh) in [(-1, 0, 0), (0, -1, -1), (31, 1, i32::MIN), (32, 0, 0)] {
+        assert_eq!(
+            updated(0x2f, 9, Value::Int(-1), Some(Value::Int(shift))),
+            Value::Int(rsh)
+        );
+        assert_eq!(
+            updated(0x2f, 10, Value::Int(-1), Some(Value::Int(shift))),
+            Value::Int(lsh)
+        );
+    }
+}
+#[test]
+fn numeric_update_errors_preserve_target_and_operand_stack_with_locations() {
+    let mut cases = vec![
+        (
+            0x22,
+            1,
+            Value::Undefined,
+            None,
+            VmErrorKind::UnsupportedType,
+        ),
+        (
+            0x22,
+            0,
+            Value::bytes(b"x"),
+            None,
+            VmErrorKind::UnsupportedType,
+        ),
+        (
+            0x22,
+            1,
+            Value::array(vec![]).unwrap(),
+            None,
+            VmErrorKind::UnsupportedType,
+        ),
+    ];
+    for selector in [5, 11] {
+        for (left, right) in [
+            (Value::Int(3), Value::Int(0)),
+            (Value::Int(i32::MIN), Value::Int(-1)),
+        ] {
+            cases.push((0x2f, selector, left, Some(right), VmErrorKind::Arithmetic));
+        }
+    }
+    cases.push((
+        0x2f,
+        5,
+        real(1.0),
+        Some(real(-0.0)),
+        VmErrorKind::Arithmetic,
+    ));
+    for selector in 2..=11 {
+        cases.push((
+            0x2f,
+            selector,
+            Value::bytes(b"x"),
+            Some(Value::Int(1)),
+            VmErrorKind::UnsupportedType,
+        ));
+    }
+    for selector in 6..=10 {
+        cases.push((
+            0x2f,
+            selector,
+            Value::Int(1),
+            Some(real(1.0)),
+            VmErrorKind::UnsupportedType,
+        ));
+    }
+    for (op, selector, left, right, kind) in cases {
+        let expected = left.clone();
+        let (mut vm, o) = update_machine(op, selector, left, right);
+        let prefix = if op == 0x22 { 3 } else { 4 };
+        assert_eq!(vm.run(prefix).unwrap(), RunOutcome::BudgetExhausted);
+        let stack = vm.stack().unwrap();
+        let e = vm.run(1).unwrap_err();
+        assert_eq!(e.kind, kind);
+        assert_eq!(e.pc, Some(prefix));
+        assert!(
+            e.offset.is_some()
+                && e.program.is_some()
+                && e.object.is_some()
+                && e.function.is_some()
+                && !e.source.is_empty()
+        );
+        assert_eq!(vm.stack().unwrap(), stack);
+        assert_eq!(
+            vm.objects().get(o).unwrap().variables().unwrap(),
+            vec![expected]
+        );
+        assert_eq!(vm.run(100).unwrap_err(), e);
+    }
+}
+#[test]
+fn compound_rejects_invalid_selector_during_preparation_and_bad_stack_forms_at_runtime() {
+    for selector in [-32768, -1, 0, 1, 12, 32767] {
+        let e = prepare_program(image(&[fun(0, 0, 0, 255, &[(selector, 0, 0x2f)])], 0, &[]))
+            .unwrap_err();
+        assert_eq!(e.kind, VmErrorKind::UnsupportedFeature);
+        assert_eq!(e.pc, Some(2));
+        assert!(e.offset.is_some());
+    }
+    for (nodes, kind) in [
+        (vec![(1, 0, 0x22)], VmErrorKind::StackUnderflow),
+        (vec![(2, 0, 0x2f)], VmErrorKind::StackUnderflow),
+        (
+            vec![(0, 0, 0x3e), (2, 0, 0x2f)],
+            VmErrorKind::StackUnderflow,
+        ),
+        (
+            vec![(1, 0, 0x3b), (1, 0, 0x22)],
+            VmErrorKind::UnsupportedType,
+        ),
+        (
+            vec![(1, 0, 0x3b), (0, 0, 0x3e), (2, 0, 0x2f)],
+            VmErrorKind::UnsupportedType,
+        ),
+        (
+            vec![(0, 0, 0x3e), (0, 0, 0x3e), (2, 0, 0x2f)],
+            VmErrorKind::UnsupportedFeature,
+        ),
+    ] {
+        let (mut vm, o) = machine(
+            image(&[fun(0, 0, 0, 255, &nodes)], 1, &[]),
+            vec![Value::Int(3)],
+        );
+        vm.start(o, 0, vec![]).unwrap();
+        assert_eq!(vm.run(100).unwrap_err().kind, kind);
+        assert_eq!(
+            vm.objects().get(o).unwrap().variables().unwrap(),
+            vec![Value::Int(3)]
+        );
+    }
+}
+#[test]
+fn numeric_updates_reach_shared_members_and_keep_object_isolation() {
+    for container in [
+        Value::array(vec![Value::Int(5)]).unwrap(),
+        Value::mapping(vec![(Value::Int(0), Value::Int(5))]).unwrap(),
+    ] {
+        let nodes = [
+            (0, 0, 0x3e),
+            (0, 0, 0x3b),
+            (0, 0, 0x44),
+            (2, 0, 0x22),
+            (0, 0, 0x3e),
+            (0, 0, 0x3b),
+            (0, 0, 0x44),
+            (3, 0, 0x3b),
+            (4, 0, 0x2f),
+        ];
+        let (mut vm, o) = machine(
+            image(&[fun(0, 0, 0, 2, &nodes)], 1, &[]),
+            vec![container.clone()],
+        );
+        let pid = vm.objects().get(o).unwrap().program();
+        let other = vm.objects_mut().create(pid, vec![Value::Int(100)]).unwrap();
+        vm.start(o, 0, vec![]).unwrap();
+        returns(&mut vm, Value::Int(21));
+        let result = match container {
+            Value::Array(a) => a.elements().unwrap()[0].clone(),
+            Value::Mapping(m) => m.get(&Value::Int(0)).unwrap().unwrap(),
+            _ => unreachable!(),
+        };
+        assert_eq!(result, Value::Int(21));
+        assert_eq!(
+            vm.objects().get(other).unwrap().variables().unwrap(),
+            vec![Value::Int(100)]
+        );
+    }
+}
+#[test]
+fn numeric_updates_on_temporaries_and_local_slots_use_existing_lifetime_rules() {
+    let nodes = [
+        (7, 0, 0x3b),
+        (1, 0, 0x16),
+        (0, 0, 0x13),
+        (0, 0, 0x3b),
+        (0, 0, 0x44),
+        (3, 0, 0x3b),
+        (2, 0, 0x2f),
+    ];
+    assert_eq!(
+        container_run(&nodes, vec![]).unwrap(),
+        RunOutcome::Finished(Completion::Returned(Value::Int(10)))
+    );
+    let nodes = [(0, 0, 0x39), (3, 0, 0x3b), (4, 0, 0x2f)];
+    assert_eq!(
+        container_run(&nodes, vec![Value::Int(7)]).unwrap(),
+        RunOutcome::Finished(Completion::Returned(Value::Int(21)))
+    );
+    // A missing mapping member was inserted by the prior instruction; numeric
+    // update errors must leave that successful insertion intact.
+    let m = Value::mapping(vec![]).unwrap();
+    let nodes = [
+        (0, 0, 0x3e),
+        (7, 0, 0x3b),
+        (0, 0, 0x44),
+        (1, 0, 0x3b),
+        (2, 0, 0x2f),
+    ];
+    let (mut vm, o) = machine(image(&[fun(0, 0, 0, 255, &nodes)], 1, &[]), vec![m.clone()]);
+    vm.start(o, 0, vec![]).unwrap();
+    assert_eq!(vm.run(100).unwrap_err().kind, VmErrorKind::UnsupportedType);
+    let Value::Mapping(m) = m else { unreachable!() };
+    assert_eq!(m.get(&Value::Int(7)).unwrap(), Some(Value::Undefined));
+}
+#[test]
+fn numeric_update_budget_resume_commits_once_and_deleted_objects_error_without_changes() {
+    for (op, a, right, expected, prefix) in [
+        (0x22, 1, None, Value::Int(6), 3),
+        (0x2f, 2, Some(Value::Int(3)), Value::Int(8), 4),
+    ] {
+        let (mut vm, o) = update_machine(op, a, Value::Int(5), right.clone());
+        assert_eq!(vm.run(prefix).unwrap(), RunOutcome::BudgetExhausted);
+        let before = vm.stack().unwrap();
+        assert_eq!(vm.run(0).unwrap(), RunOutcome::BudgetExhausted);
+        assert_eq!(before, vm.stack().unwrap());
+        assert_eq!(vm.run(1).unwrap(), RunOutcome::BudgetExhausted);
+        assert_eq!(
+            vm.objects().get(o).unwrap().variables().unwrap(),
+            vec![expected.clone()]
+        );
+        returns(&mut vm, expected);
+        let (mut vm, o) = update_machine(op, a, Value::Int(5), right);
+        vm.run(prefix).unwrap();
+        let before = vm.stack().unwrap();
+        vm.objects_mut().remove(o).unwrap();
+        assert_eq!(vm.run(1).unwrap_err().kind, VmErrorKind::InvalidObject);
+        assert_eq!(vm.stack().unwrap().len(), before.len());
+    }
 }

@@ -495,6 +495,44 @@ impl Vm {
         }
         Ok(i as usize)
     }
+    fn numeric_update(
+        &mut self,
+        opcode: u8,
+        operand: i32,
+        frame: &Frame,
+        function: &PreparedFunction,
+    ) -> Result<(), VmError> {
+        let count = if opcode == 0x22 { 1 } else { 2 };
+        self.need(count, frame, function)?;
+        let n = self.stack.len();
+        let reference = self.reference(n - count)?;
+        if reference.readonly {
+            return Err(err(
+                VmErrorKind::UnsupportedFeature,
+                "cannot modify const reference",
+            ));
+        }
+        let cell = self.resolve(&reference)?;
+        let left = cell.read()?;
+        let result = if opcode == 0x22 {
+            crate::numeric::increment(&left, operand)?
+        } else {
+            crate::numeric::compound(operand, &left, &self.value(n - 1)?)?
+        };
+        // All computation and result allocation precede the commit. A failure
+        // leaves both the target and operand stack intact (IP still advances).
+        let entry = if opcode == 0x2f {
+            Some(StackEntry::Value(Cell::new(result.clone())?))
+        } else {
+            None
+        };
+        cell.replace(result)?;
+        self.stack.truncate(n - count);
+        if let Some(entry) = entry {
+            self.push_entry(entry)?;
+        }
+        Ok(())
+    }
     fn step(&mut self) -> Result<(), VmError> {
         let (frame, p) = self.context()?;
         let f = p
@@ -513,6 +551,7 @@ impl Vm {
         let [a, b] = operands;
         let n = self.stack.len();
         match opcode {
+            0x22 | 0x2f => self.numeric_update(opcode, a, &frame, f),
             0x03 | 0x04 => {
                 self.need(2, &frame, f)?;
                 let (target, source) = if opcode == 3 {
@@ -967,5 +1006,79 @@ mod tests {
             vm.resolve(&reference).unwrap_err().kind,
             VmErrorKind::InvalidObject
         );
+    }
+    #[test]
+    fn numeric_updates_reject_readonly_and_invalid_targets_before_mutation() {
+        let frame = Frame {
+            id: 0,
+            program: ProgramId(0),
+            object: ObjectId(0),
+            function: 0,
+            pc: 0,
+            bp: 0,
+            argc: 0,
+            entered: true,
+        };
+        let function = PreparedFunction {
+            index: 0,
+            name: None,
+            instructions: vec![],
+            local_count: 0,
+            args: vec![],
+            argument_count: 0,
+            return_type: 255,
+            return_attrib: 0,
+        };
+        for opcode in [0x22, 0x2f] {
+            for scenario in 0..3 {
+                let cell = Cell::new(Value::Int(7)).unwrap();
+                let (target, kind) = match scenario {
+                    0 => (
+                        Target::Owned {
+                            cell: cell.clone(),
+                            kind: ReferenceKind::Temporary,
+                        },
+                        VmErrorKind::UnsupportedFeature,
+                    ),
+                    1 => (
+                        Target::Local {
+                            frame: 0,
+                            cell: Rc::downgrade(&cell),
+                        },
+                        VmErrorKind::InvalidState,
+                    ),
+                    _ => (
+                        Target::Object {
+                            object: ObjectId(0),
+                            cell: Rc::downgrade(&cell),
+                        },
+                        VmErrorKind::InvalidObject,
+                    ),
+                };
+                let reference = Reference {
+                    id: cell.id(),
+                    target,
+                    readonly: scenario == 0,
+                    _lease: None,
+                };
+                let mut vm = Vm::new(ObjectStore::new());
+                vm.stack.push(StackEntry::Reference(reference));
+                if opcode == 0x2f {
+                    vm.push(Value::Int(2)).unwrap();
+                }
+                let before = vm.stack().unwrap();
+                let error = vm
+                    .numeric_update(
+                        opcode,
+                        if opcode == 0x22 { 1 } else { 2 },
+                        &frame,
+                        &function,
+                    )
+                    .unwrap_err();
+                assert_eq!(error.kind, kind);
+                assert_eq!(cell.read().unwrap(), Value::Int(7));
+                assert_eq!(vm.stack().unwrap(), before);
+            }
+        }
     }
 }
