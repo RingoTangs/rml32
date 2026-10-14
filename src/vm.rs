@@ -218,6 +218,64 @@ impl Vm {
             Target::Owned { cell, .. } => Ok(cell.clone()),
         }
     }
+    fn writable(&self, r: &Reference, value: &Value) -> Result<Rc<Cell>, VmError> {
+        if r.readonly {
+            return Err(err(
+                VmErrorKind::UnsupportedFeature,
+                "cannot modify const reference",
+            ));
+        }
+        let cell = self.resolve(r)?;
+        if matches!(
+            r.kind(),
+            ReferenceKind::ArrayMember | ReferenceKind::MappingMember
+        ) && matches!(value, Value::Array(_) | Value::Mapping(_))
+        {
+            return Err(err(
+                VmErrorKind::UnsupportedType,
+                "container member writes require scalar values",
+            ));
+        }
+        Ok(cell)
+    }
+    fn validate_binding(&self, r: &Reference) -> Result<(), VmError> {
+        let cell = self.resolve(r)?;
+        if let Target::Local { frame, .. } = r.target {
+            let owner = self
+                .frames
+                .iter()
+                .find(|f| f.id == frame)
+                .ok_or_else(|| err(VmErrorKind::InvalidState, "reference frame has exited"))?;
+            let program = self.objects.program(owner.program)?;
+            let locals = if owner.entered {
+                program.functions[&owner.function].local_count
+            } else {
+                0
+            };
+            let declared = &self.stack[owner.bp - owner.argc..owner.bp + locals];
+            if !declared
+                .iter()
+                .any(|entry| matches!(entry, StackEntry::Value(c) if c.id() == cell.id()))
+            {
+                return Err(err(
+                    VmErrorKind::UnsupportedFeature,
+                    "reference argument originates in an evaluation slot",
+                ));
+            }
+        }
+        Ok(())
+    }
+    // Allocate the result before normalizing a dead Object in its source Cell.
+    fn read_reference(&self, r: &Reference) -> Result<StackEntry, VmError> {
+        let cell = self.resolve(r)?;
+        let original = cell.read()?;
+        let value = self.copy_value(&original);
+        let entry = StackEntry::Value(Cell::new(value.clone())?);
+        if value != original {
+            cell.replace(value)?;
+        }
+        Ok(entry)
+    }
     fn reserve_reference(&mut self, id: Option<u64>) -> Result<(), VmError> {
         // Bound registry memory without scanning all live slots on every query.
         if self.reference_cells.len() >= self.limits.max_reference_cells {
@@ -272,6 +330,16 @@ impl Vm {
             return Err(err(
                 VmErrorKind::InvalidProgram,
                 "entry function does not exist",
+            ));
+        }
+        if p.functions[&function_index]
+            .args
+            .iter()
+            .any(|a| a.flag == 1)
+        {
+            return Err(err(
+                VmErrorKind::UnsupportedFeature,
+                "reference entry requires an internal wrapper call",
             ));
         }
         if self.limits.max_frames == 0 || arguments.len() > self.limits.max_stack {
@@ -396,9 +464,29 @@ impl Vm {
                 "fixed argument count does not match prototype",
             ));
         }
+        let mut updates = BTreeMap::new();
         for (i, arg) in f.args.iter().enumerate() {
             let pos = frame.bp - 1 - i;
-            let value = crate::numeric::coerce(self.copy_value(&self.value(pos)?), arg.r#type);
+            let (cell, value) = if arg.flag == 1 {
+                let reference = self.reference(pos)?;
+                let cell = self.resolve(&reference)?;
+                if arg.r#type == 255 {
+                    continue;
+                }
+                let value = self.copy_value(&cell.read()?);
+                (cell, value)
+            } else {
+                let StackEntry::Value(cell) = &self.stack[pos] else {
+                    return Err(err(
+                        VmErrorKind::UnsupportedFeature,
+                        "reference passed to a value parameter",
+                    ));
+                };
+                (
+                    cell.clone(),
+                    crate::numeric::coerce(self.copy_value(&cell.read()?), arg.r#type),
+                )
+            };
             if arg.r#type != 255
                 && value.tag() != arg.r#type
                 && !(arg.attrib & 8 != 0 && value == Value::Undefined)
@@ -408,8 +496,9 @@ impl Vm {
                     format!("argument {i} type does not match prototype"),
                 ));
             }
-            self.set(pos, value)?;
+            updates.insert(cell.id(), (cell, value));
         }
+        Cell::replace_batch(&updates.into_values().collect::<Vec<_>>())?;
         Ok(())
     }
     fn return_function(&mut self, frame: &Frame, f: &PreparedFunction) -> Result<(), VmError> {
@@ -461,15 +550,25 @@ impl Vm {
                 "return type does not match prototype",
             ));
         }
-        self.stack.truncate(frame.bp - frame.argc);
-        self.frames.pop();
-        if self.frames.is_empty() {
-            self.completion = Some(Completion::Returned(result));
-            Ok(())
+        let floor = frame.bp - frame.argc;
+        let result_entry = if self.frames.len() > 1 {
+            if floor >= self.limits.max_stack {
+                return Err(err(VmErrorKind::Limit, "return result exceeds stack limit"));
+            }
+            Some(StackEntry::Value(Cell::new(result.clone())?))
         } else {
-            self.push(result)
+            None
+        };
+        self.stack.truncate(floor);
+        self.frames.pop();
+        if let Some(entry) = result_entry {
+            self.stack.push(entry);
+        } else {
+            self.completion = Some(Completion::Returned(result));
         }
+        Ok(())
     }
+
     fn array_index(
         array: &crate::container::ArrayValue,
         key: &Value,
@@ -526,7 +625,7 @@ impl Vm {
         } else {
             None
         };
-        cell.replace(result)?;
+        self.writable(&reference, &result)?.replace(result)?;
         self.stack.truncate(n - count);
         if let Some(entry) = entry {
             self.push_entry(entry)?;
@@ -560,24 +659,8 @@ impl Vm {
                     (n - 2, n - 1)
                 };
                 let reference = self.reference(target)?;
-                if reference.readonly {
-                    return Err(err(
-                        VmErrorKind::UnsupportedFeature,
-                        "cannot modify const reference",
-                    ));
-                }
-                let cell = self.resolve(&reference)?;
                 let value = self.copy_value(&self.value(source)?);
-                if matches!(
-                    reference.kind(),
-                    ReferenceKind::ArrayMember | ReferenceKind::MappingMember
-                ) && matches!(value, Value::Array(_) | Value::Mapping(_))
-                {
-                    return Err(err(
-                        VmErrorKind::UnsupportedType,
-                        "container member writes require scalar values",
-                    ));
-                }
+                let cell = self.writable(&reference, &value)?;
                 // Allocate the result before committing the write.
                 let result = StackEntry::Value(Cell::new(value.clone())?);
                 cell.replace(value)?;
@@ -588,20 +671,26 @@ impl Vm {
                 let pos = self
                     .slot(a, &frame)
                     .ok_or_else(|| err(VmErrorKind::Bounds, "no such local/argument slot"))?;
-                let StackEntry::Value(c) = &self.stack[pos] else {
-                    return Err(err(
-                        VmErrorKind::UnsupportedFeature,
-                        "reference arguments are unsupported",
-                    ));
-                };
-                let r = Reference {
-                    id: c.id(),
-                    target: Target::Local {
-                        frame: frame.id,
-                        cell: Rc::downgrade(c),
+                let r = match &self.stack[pos] {
+                    StackEntry::Reference(r) => {
+                        if pos >= frame.bp {
+                            return Err(err(
+                                VmErrorKind::UnsupportedFeature,
+                                "only reference parameters may be forwarded",
+                            ));
+                        }
+                        self.resolve(r)?;
+                        r.clone()
+                    }
+                    StackEntry::Value(c) => Reference {
+                        id: c.id(),
+                        target: Target::Local {
+                            frame: frame.id,
+                            cell: Rc::downgrade(c),
+                        },
+                        readonly: false,
+                        _lease: None,
                     },
-                    readonly: false,
-                    _lease: None,
                 };
                 self.push_entry(StackEntry::Reference(r))
             }
@@ -639,8 +728,9 @@ impl Vm {
             0x14 => {
                 self.need(1, &frame, f)?;
                 let r = self.reference(n - 1)?;
-                let value = self.copy_value(&self.resolve(&r)?.read()?);
-                self.set(n - 1, value)
+                let entry = self.read_reference(&r)?;
+                self.stack[n - 1] = entry;
+                Ok(())
             }
             0x44 => {
                 self.need(2, &frame, f)?;
@@ -821,12 +911,28 @@ impl Vm {
                 Ok(())
             }
             0x37 => {
-                let v = if let Some(pos) = self.slot(a, &frame) {
-                    self.copy_value(&self.value(pos)?)
+                if n >= self.limits.max_stack {
+                    return Err(err(VmErrorKind::Limit, "value stack limit exceeded"));
+                }
+                let entry = if let Some(pos) = self.slot(a, &frame) {
+                    match &self.stack[pos] {
+                        StackEntry::Reference(r) => {
+                            if pos >= frame.bp {
+                                return Err(err(
+                                    VmErrorKind::UnsupportedFeature,
+                                    "only reference parameters may be read as local references",
+                                ));
+                            }
+                            self.read_reference(r)?
+                        }
+                        StackEntry::Value(c) => {
+                            StackEntry::Value(Cell::new(self.copy_value(&c.read()?))?)
+                        }
+                    }
                 } else {
-                    Value::Undefined
+                    StackEntry::Value(Cell::new(Value::Undefined)?)
                 };
-                self.push(v)
+                self.push_entry(entry)
             }
             0x4d => {
                 self.need(1, &frame, f)?;
@@ -834,9 +940,18 @@ impl Vm {
                     .slot(a, &frame)
                     .ok_or_else(|| err(VmErrorKind::Bounds, "no such local/argument slot"))?;
                 let value = self.copy_value(&self.value(n - 1)?);
-                // Reference-parameter forwarding is outside this bounded core.
-                self.value(pos)?;
-                self.set(pos, value)
+                match &self.stack[pos] {
+                    StackEntry::Reference(r) => {
+                        if pos >= frame.bp {
+                            return Err(err(
+                                VmErrorKind::UnsupportedFeature,
+                                "only reference parameters may be assigned through local slots",
+                            ));
+                        }
+                        self.writable(r, &value)?.replace(value)
+                    }
+                    StackEntry::Value(c) => c.replace(value),
+                }
             }
             0x3d => {
                 let value = self.copy_value(&self.object_cell(&frame, a)?.read()?);
@@ -863,6 +978,13 @@ impl Vm {
                 Ok(())
             }
             0x0f => {
+                let target = frame.pc as i64 + 1 + i64::from(a);
+                if target < 0 || target >= f.instructions.len() as i64 {
+                    return Err(err(
+                        VmErrorKind::Bounds,
+                        "branch target outside function code",
+                    ));
+                }
                 self.check_args(&frame, f)?;
                 self.jump(a, f.instructions.len())
             }
@@ -894,9 +1016,6 @@ impl Vm {
             0x07 => {
                 let argc = (b & 0x3f) as usize;
                 self.need(argc, &frame, f)?;
-                for i in n - argc..n {
-                    self.value(i)?;
-                }
                 if self.frames.len() >= self.limits.max_frames {
                     return Err(err(VmErrorKind::Limit, "call frame limit exceeded"));
                 }
@@ -906,6 +1025,25 @@ impl Vm {
                         VmErrorKind::InvalidProgram,
                         "local function index does not exist",
                     ));
+                }
+                let target = &p.functions[&index];
+                if argc != target.argument_count {
+                    return Err(err(
+                        VmErrorKind::ArgumentCount,
+                        "fixed argument count does not match prototype",
+                    ));
+                }
+                for (i, arg) in target.args.iter().enumerate() {
+                    match (&self.stack[n - 1 - i], arg.flag) {
+                        (StackEntry::Reference(r), 1) => self.validate_binding(r)?,
+                        (StackEntry::Value(_), 0) => {}
+                        _ => {
+                            return Err(err(
+                                VmErrorKind::UnsupportedFeature,
+                                "argument binding does not match value/reference parameter",
+                            ));
+                        }
+                    }
                 }
                 let id = self.frame_id()?;
                 self.frames.push(Frame {
@@ -1079,6 +1217,42 @@ mod tests {
                 assert_eq!(cell.read().unwrap(), Value::Int(7));
                 assert_eq!(vm.stack().unwrap(), before);
             }
+        }
+    }
+    #[test]
+    fn cloned_reference_permissions_cannot_be_weakened() {
+        let vm = Vm::new(ObjectStore::new());
+        let cell = Cell::new(Value::Int(5)).unwrap();
+        for kind in [
+            ReferenceKind::Temporary,
+            ReferenceKind::ArrayMember,
+            ReferenceKind::MappingMember,
+        ] {
+            let r = Reference {
+                id: cell.id(),
+                target: Target::Owned {
+                    cell: cell.clone(),
+                    kind,
+                },
+                readonly: true,
+                _lease: None,
+            };
+            let forwarded = r.clone();
+            assert_eq!(
+                vm.writable(&forwarded, &Value::Int(9)).unwrap_err().kind,
+                VmErrorKind::UnsupportedFeature
+            );
+            let mut mutable = forwarded;
+            mutable.readonly = false;
+            if kind != ReferenceKind::Temporary {
+                assert_eq!(
+                    vm.writable(&mutable, &Value::array(vec![]).unwrap())
+                        .unwrap_err()
+                        .kind,
+                    VmErrorKind::UnsupportedType
+                );
+            }
+            assert_eq!(cell.read().unwrap(), Value::Int(5));
         }
     }
 }

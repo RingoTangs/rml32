@@ -201,8 +201,10 @@ fn prepare_function(f: Function, strings: usize, vars: usize) -> Result<Prepared
         return Err(err("fixed argument descriptors do not match prototype"));
     }
     for (i, a) in f.arguments.iter().enumerate() {
-        if a.flag & 1 != 0 || a.attrib & 2 != 0 {
-            return Err(unsupported("reference/const arguments are not supported"));
+        if a.flag & !1 != 0 || a.attrib & !8 != 0 {
+            return Err(unsupported(
+                "unknown argument flags or const attributes are not supported",
+            ));
         }
         if ![0, 1, 2, 3, 4, 6, 7, 10, 255].contains(&a.r#type) {
             return Err(VmError::new(
@@ -215,6 +217,13 @@ fn prepare_function(f: Function, strings: usize, vars: usize) -> Result<Prepared
         }
     }
     let instructions = instructions(&f.code, strings, vars)?;
+    if f.arguments.iter().any(|arg| arg.flag == 1)
+        && instructions.first().is_none_or(|i| i.opcode != 0x0f)
+    {
+        return Err(unsupported(
+            "reference functions must start with check_args (0x0f)",
+        ));
+    }
     Ok(PreparedFunction {
         index,
         name: f.name.map(|s| s.bytes),

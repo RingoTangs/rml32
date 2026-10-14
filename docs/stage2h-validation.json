@@ -1,0 +1,63 @@
+{
+  "stage": "2H",
+  "implementation": "fixed current-object reference arguments",
+  "validation_date": "2026-10-14",
+  "supported_opcodes": 52,
+  "tests": {
+    "command": "cargo test --locked",
+    "passed": true,
+    "total": 132,
+    "library": 6,
+    "loader": 23,
+    "synthetic_vm": 103,
+    "baseline": 110,
+    "added": 22
+  },
+  "checks": [
+    {
+      "command": "cargo fmt --check",
+      "passed": true
+    },
+    {
+      "command": "cargo clippy --locked --all-targets -- -D warnings",
+      "passed": true
+    },
+    {
+      "command": "git diff --check",
+      "passed": true
+    }
+  ],
+  "reference_execution": false,
+  "startup_scripts_execution": false,
+  "shipped_business_bytecode_execution": false,
+  "new_dependencies": false,
+  "public_api_changes": false,
+  "original_manifest_files_checked": 36,
+  "original_hashes_match": true,
+  "target_sha256": "5d4ebac58d8c415d9cf95bbcdd50f78afac91adf4f7e667ea3afc6f5336a6f34",
+  "stage2g_evidence_files_checked": 8,
+  "stage2g_evidence_unchanged": true,
+  "cargo_and_agents_unchanged": true,
+  "local_links_checked": 33,
+  "compatibility_policy": {
+    "argument_checks": "batch atomic; native per-argument side effects intentionally differ",
+    "ordinary_mixed_reference_arguments": "rejected",
+    "reference_returns": "rejected",
+    "root_reference_parameters": "unsupported; internal wrapper required",
+    "exception_recovery": "not implemented; terminal frames retained until successful start/drop"
+  },
+  "static_candidate_functions": {
+    "count": 3050,
+    "executed": false,
+    "is_runtime_coverage": false
+  },
+  "files_sha256": {
+    "src/cell.rs": "236a82c65da2446b7e462556b6ac16a7383a5cae1091c487e579a1a21c3add70",
+    "src/prepared.rs": "9aff2048cf922e3a33c02f5856b510257a53dd60e006e397d7fb59b1d19f8143",
+    "src/vm.rs": "35fa1dd3c077df269d55342a2aae360b4bb1cfe4ea9e381b1c52fbbba96a44dc",
+    "tests/vm_core.rs": "2df94acaf6093c590aeb8bfbb0abb386aaef2d6f9c7eec9ac307f56418219a51",
+    "README.md": "402b3ca2259d465382598a11e4dc93733934670d689d2f6d1cf4c9eabab05d7c",
+    "docs/magic_Linux32-rust-rewrite-roadmap.md": "3a8bc5d486f3e2365036da4576b11ad19111626555c2462ff0802383eea2cb24",
+    "docs/vm-reference-arguments-runtime.md": "7b0bab5198278dfafa17e2a2b900e6a2d5704224ef6ad40b80e5f1255793f495"
+  }
+}

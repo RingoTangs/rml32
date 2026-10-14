@@ -41,6 +41,25 @@ impl Cell {
         drop(old);
         Ok(())
     }
+    /// Commit distinct-cell updates atomically. Guards never escape this module;
+    /// release every guard before dropping displaced containers and their headers.
+    pub(crate) fn replace_batch(updates: &[(Rc<Cell>, Value)]) -> Result<(), VmError> {
+        let mut guards = updates
+            .iter()
+            .map(|(cell, _)| {
+                cell.value
+                    .try_borrow_mut()
+                    .map_err(|_| VmError::new(VmErrorKind::InvalidState, "value slot is borrowed"))
+            })
+            .collect::<Result<Vec<_>, _>>()?;
+        let mut old = Vec::with_capacity(updates.len());
+        for (guard, (_, value)) in guards.iter_mut().zip(updates) {
+            old.push(std::mem::replace(&mut **guard, value.clone()));
+        }
+        drop(guards);
+        drop(old);
+        Ok(())
+    }
     // Only called by a final header destructor. All guards are private and are
     // released before any old Value is dropped, including in replace above.
     pub(crate) fn clear_on_owner_drop(&self) {
@@ -63,5 +82,23 @@ mod tests {
         );
         drop(guard);
         assert_eq!(cell.read().unwrap(), Value::Int(7));
+    }
+    #[test]
+    fn batch_borrow_failure_does_not_commit_an_earlier_cell() {
+        let first = Cell::new(Value::Int(1)).unwrap();
+        let second = Cell::new(Value::Int(2)).unwrap();
+        let guard = second.value.borrow();
+        assert_eq!(
+            Cell::replace_batch(&[
+                (first.clone(), Value::Int(3)),
+                (second.clone(), Value::Int(4))
+            ])
+            .unwrap_err()
+            .kind,
+            VmErrorKind::InvalidState
+        );
+        assert_eq!(first.read().unwrap(), Value::Int(1));
+        drop(guard);
+        assert_eq!(second.read().unwrap(), Value::Int(2));
     }
 }
