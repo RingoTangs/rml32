@@ -238,8 +238,37 @@ struct ScriptCatch {
     target_pc: usize,
 }
 #[derive(Debug, Clone, Copy)]
+// Keep the zero qualifier explicit: overflow/type faults at the same arithmetic
+// operations are deliberately excluded from these catchable provenance sites.
+#[allow(clippy::enum_variant_names)]
 enum RuntimeFaultSite {
     IntDivZero,
+    NumericDivZero,
+    IntRemZero,
+    CompoundDivZero,
+    CompoundIntRemZero,
+}
+impl RuntimeFaultSite {
+    // Only called at a failed arithmetic operation, after operand/ref validation.
+    // This classifies the exact native vm_error site, never diagnostic text/kind.
+    fn binary(opcode: u8, left: &Value, right: &Value) -> Option<Self> {
+        match (opcode, left, right) {
+            (0x19, Value::Int(_), Value::Int(0)) => Some(Self::IntDivZero),
+            (0x19, Value::Real(_), Value::Int(0)) => Some(Self::NumericDivZero),
+            (0x19, Value::Int(_) | Value::Real(_), Value::Real(r)) if r.to_f32() == 0.0 => {
+                Some(Self::NumericDivZero)
+            }
+            (0x28, Value::Int(_), Value::Int(0)) => Some(Self::IntRemZero),
+            _ => None,
+        }
+    }
+    fn compound(selector: i32, left: &Value, right: &Value) -> Option<Self> {
+        match selector {
+            5 => Self::binary(0x19, left, right).map(|_| Self::CompoundDivZero),
+            11 => Self::binary(0x28, left, right).map(|_| Self::CompoundIntRemZero),
+            _ => None,
+        }
+    }
 }
 #[derive(Debug)]
 struct StepFault {
@@ -915,7 +944,7 @@ impl Vm {
                     e.offset = code.instructions.get(frame.pc).map(|i| i.offset);
                 }
                 // Capture the actual failing instruction before changing frame/stack state.
-                if let Some(RuntimeFaultSite::IntDivZero) = fault.site {
+                if fault.site.is_some() {
                     match self.route_script_fault() {
                         Ok(true) => continue,
                         Ok(false) => {}
@@ -1367,6 +1396,7 @@ impl Vm {
         operand: i32,
         frame: &Frame,
         local_count: usize,
+        fault_site: &mut Option<RuntimeFaultSite>,
     ) -> Result<(), VmError> {
         let count = if opcode == 0x22 { 1 } else { 2 };
         self.need(count, frame, local_count)?;
@@ -1383,7 +1413,10 @@ impl Vm {
         let result = if opcode == 0x22 {
             crate::numeric::increment(&left, operand)?
         } else {
-            crate::numeric::compound(operand, &left, &self.value(n - 1)?)?
+            let right = self.value(n - 1)?;
+            crate::numeric::compound(operand, &left, &right).inspect_err(|_| {
+                *fault_site = RuntimeFaultSite::compound(operand, &left, &right);
+            })?
         };
         // All computation and result allocation precede the commit. A failure
         // leaves both the target and operand stack intact (IP still advances).
@@ -1765,7 +1798,7 @@ impl Vm {
             }
             // vm_pushThisObject @0x080975d8. All currently accepted frames own an Object.
             0x41 => self.push(Value::Object(frame.object)),
-            0x22 | 0x2f => self.numeric_update(opcode, a, &frame, f.local_count),
+            0x22 | 0x2f => self.numeric_update(opcode, a, &frame, f.local_count, fault_site),
             0x03 | 0x04 => {
                 self.need(2, &frame, f.local_count)?;
                 let (target, source) = if opcode == 3 {
@@ -1964,9 +1997,7 @@ impl Vm {
                 let left = self.value(n - 2)?;
                 let right = self.value(n - 1)?;
                 let result = crate::numeric::binary(opcode, &left, &right).inspect_err(|_| {
-                    if opcode == 0x19 && matches!((&left, &right), (Value::Int(_), Value::Int(0))) {
-                        *fault_site = Some(RuntimeFaultSite::IntDivZero);
-                    }
+                    *fault_site = RuntimeFaultSite::binary(opcode, &left, &right);
                 })?;
                 self.stack.pop();
                 self.set(n - 2, result)
@@ -2422,6 +2453,7 @@ mod tests {
                         if opcode == 0x22 { 1 } else { 2 },
                         &frame,
                         function.local_count,
+                        &mut None,
                     )
                     .unwrap_err();
                 assert_eq!(error.kind, kind);
@@ -2580,7 +2612,7 @@ mod catch_tests {
 
     // A synthetic prepared body permits direct inspection of lifetime and corrupted-state
     // boundaries which cannot be exposed through the public Value/API.
-    fn fixture(locals: usize) -> Vm {
+    pub(super) fn fixture(locals: usize) -> Vm {
         let function = PreparedFunction {
             index: 0,
             name: None,
@@ -2803,5 +2835,119 @@ mod catch_tests {
         save(&mut vm);
         vm.clear_task_frames();
         assert!(vm.catches.is_empty());
+    }
+}
+
+#[cfg(test)]
+mod numeric_fault_tests {
+    use super::*;
+
+    #[test]
+    fn numeric_catch_reference_guard_failures_never_tag_arithmetic_sources() {
+        for selector in [5, 11] {
+            for invalid in 0..4 {
+                let mut vm = super::catch_tests::fixture(0);
+                let frame = vm.frames[0].clone();
+                let cell = Cell::new(if invalid == 3 {
+                    Value::Undefined
+                } else {
+                    Value::Int(9)
+                })
+                .unwrap();
+                let reference = Reference {
+                    id: cell.id(),
+                    readonly: invalid == 0,
+                    _lease: None,
+                    target: Target::Local {
+                        frame: if invalid == 1 { 999 } else { frame.id },
+                        cell: Rc::downgrade(&cell),
+                    },
+                };
+                vm.stack.push(StackEntry::Reference(reference.clone()));
+                if invalid == 2 {
+                    vm.stack.push(StackEntry::Reference(reference));
+                } else {
+                    vm.push(Value::Int(0)).unwrap();
+                }
+                let before = vm.stack().unwrap();
+                let value_before = cell.read().unwrap();
+                let mut source = None;
+                let e = vm
+                    .numeric_update(0x2f, selector, &frame, 0, &mut source)
+                    .unwrap_err();
+                assert_eq!(
+                    e.kind,
+                    match invalid {
+                        0 | 2 => VmErrorKind::UnsupportedFeature,
+                        1 => VmErrorKind::InvalidState,
+                        _ => VmErrorKind::UnsupportedType,
+                    }
+                );
+                assert!(source.is_none());
+                assert_eq!(vm.stack().unwrap(), before);
+                assert_eq!(cell.read().unwrap(), value_before);
+            }
+        }
+    }
+
+    #[test]
+    fn numeric_catch_compound_zero_tags_only_after_resolving_valid_target_and_rhs() {
+        for (selector, expected) in [
+            (5, RuntimeFaultSite::CompoundDivZero),
+            (11, RuntimeFaultSite::CompoundIntRemZero),
+        ] {
+            let mut vm = super::catch_tests::fixture(0);
+            let frame = vm.frames[0].clone();
+            let cell = Cell::new(Value::Int(9)).unwrap();
+            let reference = vm
+                .owned_reference(cell.clone(), ReferenceKind::ArrayMember)
+                .unwrap();
+            vm.stack.push(StackEntry::Reference(reference));
+            vm.push(Value::Int(0)).unwrap();
+            let before = vm.stack().unwrap();
+            let mut source = None;
+            assert_eq!(
+                vm.numeric_update(0x2f, selector, &frame, 0, &mut source)
+                    .unwrap_err()
+                    .kind,
+                VmErrorKind::Arithmetic
+            );
+            assert_eq!(
+                std::mem::discriminant(&source.unwrap()),
+                std::mem::discriminant(&expected)
+            );
+            assert_eq!(vm.stack().unwrap(), before);
+            assert_eq!(cell.read().unwrap(), Value::Int(9));
+        }
+    }
+
+    #[test]
+    fn numeric_catch_deleted_object_guard_precedes_compound_zero_classification() {
+        let mut vm = super::catch_tests::fixture(0);
+        let frame = vm.frames[0].clone();
+        let cell = Cell::new(Value::Int(9)).unwrap();
+        let reference = Reference {
+            id: cell.id(),
+            readonly: false,
+            _lease: None,
+            target: Target::Object {
+                object: frame.object,
+                cell: Rc::downgrade(&cell),
+            },
+        };
+        vm.stack.push(StackEntry::Reference(reference));
+        vm.push(Value::Int(0)).unwrap();
+        vm.objects.remove(frame.object).unwrap();
+        let before = vm.stack().unwrap();
+        let mut source = None;
+        assert_eq!(
+            vm.numeric_update(0x2f, 5, &frame, 0, &mut source)
+                .unwrap_err()
+                .kind,
+            VmErrorKind::InvalidObject
+        );
+        assert!(source.is_none());
+        assert_eq!(vm.stack().unwrap(), before);
+        assert_eq!(cell.read().unwrap(), Value::Int(9));
     }
 }

@@ -7367,17 +7367,8 @@ fn catches_return_validation_errors_remain_fatal_with_real_failure_location() {
 fn catches_do_not_classify_other_arithmetic_errors_by_kind_or_message() {
     for (op, left, right) in [
         (0x19, Value::Int(i32::MIN), Value::Int(-1)),
-        (
-            0x19,
-            Value::Real(rml32::RealBits::from_f32(1.0)),
-            Value::Int(0),
-        ),
-        (
-            0x19,
-            Value::Int(1),
-            Value::Real(rml32::RealBits::from_f32(0.0)),
-        ),
-        (0x28, Value::Int(1), Value::Int(0)),
+        (0x28, Value::Int(i32::MIN), Value::Int(-1)),
+        (0x19, real(1.0), Value::bytes(b"bad")),
         (0x19, Value::bytes(b"x"), Value::Int(0)),
     ] {
         let body = [(0, 0, 0x37), (1, 0, 0x37), (0, 0, op)];
@@ -7613,7 +7604,7 @@ fn catches_preserve_saved_evaluation_prefix_and_optional_argument_storage() {
 }
 
 #[test]
-fn catches_marker_limit_and_compound_zero_remain_uncatchable() {
+fn catches_marker_limit_remains_fatal_and_compound_zero_uses_handler() {
     let (vm, o) = machine(image(&[fun(0, 0, 1, 255, &[(0, 0, 0x0e)])], 0, &[]), vec![]);
     let mut vm = Vm::with_limits(
         vm.into_objects(),
@@ -7627,6 +7618,396 @@ fn catches_marker_limit_and_compound_zero_remain_uncatchable() {
     let f = catch_fun(0, 0, 0, 255, &[(0, 0, 0x3e), (0, 0, 0x3b), (5, 0, 0x2f)]);
     let (mut vm, o) = machine(image(&[f], 1, &[]), vec![Value::Int(9)]);
     vm.start(o, 0, vec![]).unwrap();
-    assert_eq!(vm.run(100).unwrap_err().kind, VmErrorKind::Arithmetic);
+    returns(&mut vm, Value::Int(1));
     assert_eq!(object_values(&vm, o), vec![Value::Int(9)]);
+}
+
+// Stage2W: per-site numeric zero faults; all programs remain synthetic.
+fn zero_binary(opcode: u8, left: Value, right: Value) -> (Vm, rml32::ObjectId) {
+    let body = [(0, 0, 0x37), (1, 0, 0x37), (0, 0, opcode)];
+    let (mut vm, o) = machine(image(&[catch_fun(0, 2, 0, 255, &body)], 0, &[]), vec![]);
+    vm.start(o, 0, vec![left, right]).unwrap();
+    (vm, o)
+}
+
+#[test]
+fn numeric_catch_division_accepts_numeric_pairs_and_both_real_zero_signs() {
+    for left in [
+        Value::Int(9),
+        real(9.0),
+        real(f32::NAN),
+        real(f32::INFINITY),
+    ] {
+        for right in [Value::Int(0), real(0.0), real(-0.0)] {
+            let (mut vm, _) = zero_binary(0x19, left.clone(), right);
+            returns(&mut vm, Value::Int(1));
+        }
+    }
+}
+
+#[test]
+fn numeric_catch_integer_remainder_zero_accepts_negative_and_minimum_dividends() {
+    for left in [0, -9, i32::MIN, i32::MAX] {
+        let (mut vm, _) = zero_binary(0x28, Value::Int(left), Value::Int(0));
+        returns(&mut vm, Value::Int(1));
+    }
+}
+
+#[test]
+fn numeric_catch_nan_divisors_do_not_enter_zero_handlers() {
+    for left in [Value::Int(7), real(7.0)] {
+        let integer = matches!(left, Value::Int(_));
+        let (mut vm, _) = zero_binary(0x19, left, real(f32::NAN));
+        match vm.run(100).unwrap() {
+            RunOutcome::Finished(Completion::Returned(Value::Int(v))) if integer => {
+                assert_eq!(v, i32::MIN)
+            }
+            RunOutcome::Finished(Completion::Returned(Value::Real(v))) if !integer => {
+                assert!(v.to_f32().is_nan())
+            }
+            other => panic!("NaN must follow arithmetic path: {other:?}"),
+        }
+    }
+}
+
+#[test]
+fn numeric_catch_float_remainder_zero_keeps_fmod_nan_result() {
+    for (left, right) in [
+        (Value::Int(7), real(0.0)),
+        (Value::Int(7), real(-0.0)),
+        (real(7.0), Value::Int(0)),
+        (real(7.0), real(-0.0)),
+    ] {
+        let (mut vm, _) = zero_binary(0x28, left, right);
+        let RunOutcome::Finished(Completion::Returned(Value::Real(v))) = vm.run(100).unwrap()
+        else {
+            panic!("fmod result must be Real")
+        };
+        assert!(v.to_f32().is_nan());
+    }
+}
+
+#[test]
+fn numeric_catch_nonzero_divisors_keep_normal_numeric_results() {
+    for (left, right, expected) in [
+        (Value::Int(9), real(2.0), Value::Int(4)),
+        (real(9.0), Value::Int(2), real(4.5)),
+        (real(9.0), real(f32::INFINITY), real(0.0)),
+    ] {
+        let (mut vm, _) = zero_binary(0x19, left, right);
+        returns(&mut vm, expected);
+    }
+}
+
+#[test]
+fn numeric_catch_compound_object_zero_preserves_every_supported_target_type() {
+    for left in [
+        Value::Int(9),
+        real(9.0),
+        real(f32::NAN),
+        real(f32::INFINITY),
+    ] {
+        for right in [Value::Int(0), real(0.0), real(-0.0)] {
+            let body = [(0, 0, 0x3e), (0, 0, 0x37), (5, 0, 0x2f)];
+            let (mut vm, o) = machine(
+                image(&[catch_fun(0, 1, 0, 255, &body)], 1, &[]),
+                vec![left.clone()],
+            );
+            vm.start(o, 0, vec![right]).unwrap();
+            returns(&mut vm, Value::Int(1));
+            assert_eq!(object_values(&vm, o), vec![left.clone()]);
+        }
+    }
+    let body = [(0, 0, 0x3e), (0, 0, 0x3b), (11, 0, 0x2f)];
+    let (mut vm, o) = machine(
+        image(&[catch_fun(0, 0, 0, 255, &body)], 1, &[]),
+        vec![Value::Int(-9)],
+    );
+    vm.start(o, 0, vec![]).unwrap();
+    returns(&mut vm, Value::Int(1));
+    assert_eq!(object_values(&vm, o), vec![Value::Int(-9)]);
+}
+
+#[test]
+fn numeric_catch_compound_local_keeps_value_and_does_not_commit_a_result() {
+    for selector in [5, 11] {
+        let trap = catch_fun(
+            0,
+            0,
+            0,
+            255,
+            &[(-1, 0, 0x39), (0, 0, 0x3b), (selector, 0, 0x2f)],
+        );
+        let mut nodes = vec![(27, 0, 0x3b), (-1, 0, 0x4d), (0, 0, 0x33)];
+        nodes.extend_from_slice(&trap.nodes[2..trap.nodes.len() - 1]);
+        nodes.extend([(0, 0, 0x33), (-1, 0, 0x37)]);
+        let (mut vm, o) = machine(image(&[fun(0, 0, 1, 255, &nodes)], 0, &[]), vec![]);
+        vm.start(o, 0, vec![]).unwrap();
+        returns(&mut vm, Value::Int(27));
+    }
+}
+
+#[test]
+fn numeric_catch_compound_members_release_discarded_leases_before_next_query() {
+    for mapping in [false, true] {
+        for selector in [5, 11] {
+            let value = if mapping {
+                Value::mapping(vec![
+                    (Value::Int(0), Value::Int(9)),
+                    (Value::Int(1), Value::Int(5)),
+                ])
+                .unwrap()
+            } else {
+                Value::array(vec![Value::Int(9), Value::Int(5)]).unwrap()
+            };
+            let trap = catch_fun(
+                0,
+                1,
+                0,
+                255,
+                &[
+                    (0, 0, 0x39),
+                    (0, 0, 0x3b),
+                    (0, 0, 0x44),
+                    (0, 0, 0x3b),
+                    (selector, 0, 0x2f),
+                ],
+            );
+            let mut f = trap;
+            f.nodes.pop();
+            f.nodes.extend([
+                (0, 0, 0x33),
+                (0, 0, 0x39),
+                (1, 0, 0x3b),
+                (0, 0, 0x44),
+                (0, 0, 0x33),
+                (7, 0, 0x3b),
+                (0, 0, 0x49),
+            ]);
+            let (vm, o) = machine(image(&[f], 0, &[]), vec![]);
+            let mut vm = Vm::with_limits(
+                vm.into_objects(),
+                VmLimits {
+                    max_reference_cells: 1,
+                    ..Default::default()
+                },
+            );
+            vm.start(o, 0, vec![value.clone()]).unwrap();
+            returns(&mut vm, Value::Int(7));
+            match value {
+                Value::Array(a) => {
+                    assert_eq!(a.elements().unwrap(), vec![Value::Int(9), Value::Int(5)])
+                }
+                Value::Mapping(m) => {
+                    assert_eq!(m.get(&Value::Int(0)).unwrap(), Some(Value::Int(9)))
+                }
+                _ => unreachable!(),
+            }
+        }
+    }
+}
+
+#[test]
+fn numeric_catch_keeps_mapping_insertions_committed_before_later_arithmetic_error() {
+    let mapping = Value::mapping(vec![(Value::Int(0), Value::Int(9))]).unwrap();
+    let body = [
+        (0, 0, 0x39),
+        (99, 0, 0x3b),
+        (0, 0, 0x44),
+        (0, 0, 0x33),
+        (0, 0, 0x39),
+        (0, 0, 0x3b),
+        (0, 0, 0x44),
+        (0, 0, 0x3b),
+        (11, 0, 0x2f),
+    ];
+    let (mut vm, o) = machine(image(&[catch_fun(0, 1, 0, 255, &body)], 0, &[]), vec![]);
+    vm.start(o, 0, vec![mapping.clone()]).unwrap();
+    returns(&mut vm, Value::Int(1));
+    let Value::Mapping(m) = mapping else {
+        unreachable!()
+    };
+    assert_eq!(m.get(&Value::Int(99)).unwrap(), Some(Value::Undefined));
+    assert_eq!(m.get(&Value::Int(0)).unwrap(), Some(Value::Int(9)));
+}
+
+#[test]
+fn numeric_catch_compound_integer_overflow_is_still_fatal_for_division_and_remainder() {
+    for selector in [5, 11] {
+        let body = [(0, 0, 0x3e), (-1, 0, 0x3b), (selector, 0, 0x2f)];
+        let (mut vm, o) = machine(
+            image(&[catch_fun(0, 0, 0, 255, &body)], 1, &[]),
+            vec![Value::Int(i32::MIN)],
+        );
+        vm.start(o, 0, vec![]).unwrap();
+        let e = vm.run(100).unwrap_err();
+        assert_eq!(
+            (e.kind, e.function, e.pc),
+            (VmErrorKind::Arithmetic, Some(0), Some(5))
+        );
+        assert_eq!(vm.run(100).unwrap_err(), e);
+        assert_eq!(object_values(&vm, o), vec![Value::Int(i32::MIN)]);
+    }
+}
+
+#[test]
+fn numeric_catch_unhandled_compound_zero_preserves_operands_and_location() {
+    for selector in [5, 11] {
+        let body = [(0, 0, 0x3e), (0, 0, 0x3b), (selector, 0, 0x2f)];
+        let (mut vm, o) = machine(
+            image(&[fun(0, 0, 0, 255, &body)], 1, &[]),
+            vec![Value::Int(9)],
+        );
+        vm.start(o, 0, vec![]).unwrap();
+        let e = vm.run(100).unwrap_err();
+        assert_eq!((e.kind, e.pc), (VmErrorKind::Arithmetic, Some(4)));
+        assert!(e.offset.is_some());
+        let stack = vm.stack().unwrap();
+        assert!(matches!(
+            stack[0],
+            rml32::StackSnapshot::Reference { valid: true, .. }
+        ));
+        assert_eq!(stack[1], rml32::StackSnapshot::Value(Value::Int(0)));
+        assert_eq!(object_values(&vm, o), vec![Value::Int(9)]);
+        assert_eq!(vm.run(0).unwrap_err(), e);
+    }
+}
+
+#[test]
+fn numeric_catch_nested_mixed_zero_then_remainder_matches_single_step_budget() {
+    let inner = catch_fun(0, 2, 0, 255, &[(0, 0, 0x37), (1, 0, 0x37), (0, 0, 0x19)]);
+    let mut body = inner.nodes[2..inner.nodes.len() - 1].to_vec();
+    body.extend([(0, 0, 0x33), (7, 0, 0x3b), (0, 0, 0x3b), (0, 0, 0x28)]);
+    let p = image(&[catch_fun(0, 2, 0, 255, &body)], 0, &[]);
+    let (mut vm, o) = machine(p.clone(), vec![]);
+    vm.start(o, 0, vec![real(8.0), real(-0.0)]).unwrap();
+    returns(&mut vm, Value::Int(1));
+    let (mut stepped, o) = machine(p, vec![]);
+    stepped.start(o, 0, vec![real(8.0), real(-0.0)]).unwrap();
+    let mut result = None;
+    for _ in 0..100 {
+        assert_eq!(stepped.run(0).unwrap(), RunOutcome::BudgetExhausted);
+        if let RunOutcome::Finished(c) = stepped.run(1).unwrap() {
+            result = Some(c);
+            break;
+        }
+    }
+    assert_eq!(result, Some(Completion::Returned(Value::Int(1))));
+}
+
+#[test]
+fn numeric_catch_cross_object_compound_remainder_restores_caller_without_target_write() {
+    let caller = image(
+        &[catch_fun(
+            0,
+            1,
+            0,
+            255,
+            &[(0, 0, 0x40), (0, 0, 0x37), (0, 0, 0x08)],
+        )],
+        0,
+        &[b"fail\0"],
+    );
+    let target = other_target(
+        image(
+            &[fun(
+                0,
+                0,
+                0,
+                255,
+                &[(0, 0, 0x3e), (0, 0, 0x3b), (11, 0, 0x2f)],
+            )],
+            1,
+            &[],
+        ),
+        vec![method(b"fail", 0)],
+    );
+    let (mut vm, a, b) = other_machine(caller, target, vec![], vec![Value::Int(13)]);
+    vm.start(a, 0, vec![Value::Object(b)]).unwrap();
+    returns(&mut vm, Value::Int(1));
+    assert_eq!(object_values(&vm, b), vec![Value::Int(13)]);
+}
+
+#[test]
+fn numeric_catch_handled_source_does_not_make_later_type_error_catchable() {
+    let inner = catch_fun(0, 0, 0, 255, &[(9, 0, 0x3b), (0, 0, 0x3b), (0, 0, 0x28)]);
+    let mut body = inner.nodes[2..inner.nodes.len() - 1].to_vec();
+    body.extend([(0, 0, 0x33), (0, 0, 0x40), (0, 0, 0x3b), (0, 0, 0x19)]);
+    let (mut vm, o) = machine(
+        image(&[catch_fun(0, 0, 0, 255, &body)], 0, &[b"not numeric\0"]),
+        vec![],
+    );
+    vm.start(o, 0, vec![]).unwrap();
+    let e = vm.run(100).unwrap_err();
+    assert_eq!(e.kind, VmErrorKind::UnsupportedType);
+    assert_eq!(vm.run(1).unwrap_err(), e);
+}
+
+#[test]
+fn numeric_catch_compound_float_remainder_zero_and_nan_divisor_follow_normal_path() {
+    for (selector, left, right, integer_result) in [
+        (11, real(7.0), Value::Int(0), false),
+        (11, Value::Int(7), real(-0.0), false),
+        (5, Value::Int(7), real(f32::NAN), true),
+        (5, real(7.0), real(f32::NAN), false),
+    ] {
+        let body = [(0, 0, 0x3e), (0, 0, 0x37), (selector, 0, 0x2f)];
+        let (mut vm, o) = machine(image(&[catch_fun(0, 1, 0, 255, &body)], 1, &[]), vec![left]);
+        vm.start(o, 0, vec![right]).unwrap();
+        let RunOutcome::Finished(Completion::Returned(result)) = vm.run(100).unwrap() else {
+            panic!("expected return")
+        };
+        if integer_result {
+            assert_eq!(result, Value::Int(i32::MIN));
+        } else {
+            let Value::Real(r) = &result else {
+                panic!("expected floating result")
+            };
+            assert!(r.to_f32().is_nan());
+        }
+        assert_eq!(object_values(&vm, o), vec![result]);
+    }
+}
+
+#[test]
+fn numeric_catch_unhandled_real_zero_preserves_diagnostic_and_negative_zero_bits() {
+    let body = [(0, 0, 0x37), (1, 0, 0x37), (0, 0, 0x19)];
+    let (mut vm, o) = machine(image(&[fun(0, 2, 0, 255, &body)], 0, &[]), vec![]);
+    vm.start(o, 0, vec![real(7.0), real(-0.0)]).unwrap();
+    let e = vm.run(100).unwrap_err();
+    assert_eq!(
+        (e.kind, e.function, e.pc),
+        (VmErrorKind::Arithmetic, Some(0), Some(4))
+    );
+    assert_eq!(&*e.message, "divide by zero");
+    let stack = vm.stack().unwrap();
+    assert_eq!(
+        stack[stack.len() - 1],
+        rml32::StackSnapshot::Value(real(-0.0))
+    );
+    assert_eq!(vm.run(100).unwrap_err(), e);
+}
+
+#[test]
+fn numeric_catch_reference_quota_failure_before_zero_remains_fatal() {
+    let body = [
+        (0, 0, 0x39),
+        (0, 0, 0x3b),
+        (0, 0, 0x44),
+        (0, 0, 0x3b),
+        (5, 0, 0x2f),
+    ];
+    let (vm, o) = machine(image(&[catch_fun(0, 1, 0, 255, &body)], 0, &[]), vec![]);
+    let mut vm = Vm::with_limits(
+        vm.into_objects(),
+        VmLimits {
+            max_reference_cells: 0,
+            ..Default::default()
+        },
+    );
+    vm.start(o, 0, vec![Value::array(vec![Value::Int(9)]).unwrap()])
+        .unwrap();
+    let e = vm.run(100).unwrap_err();
+    assert_eq!((e.kind, e.pc), (VmErrorKind::Limit, Some(5)));
+    assert_eq!(vm.run(100).unwrap_err(), e);
 }

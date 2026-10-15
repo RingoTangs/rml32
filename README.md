@@ -1,8 +1,10 @@
 # rml32
 
-对 `magic_Linux32` 进行静态分析，并以 Rust 重写兼容驱动。当前已实现**只读离线加载器**和阶段 2V 的**数值、共享容器、引用参数、受限默认/可变参数、继承链接、初始化、构造回滚及受限跨对象调用、switch、整数/数组循环及受限 catch VM 库**，支持 68 种操作码的限定路径。VM 仅在人工构造程序上验证，尚无可运行服务端；`rml32-inspect` 继续只读检查制品。
+对 `magic_Linux32` 进行静态分析，并以 Rust 重写兼容驱动。当前已实现**只读离线加载器**和阶段 2W 的**数值、共享容器、引用参数、受限默认/可变参数、继承链接、初始化、构造回滚及受限跨对象调用、switch、整数/数组循环及受限 catch VM 库**，支持 68 种操作码的限定路径。VM 仅在人工构造程序上验证，尚无可运行服务端；`rml32-inspect` 继续只读检查制品。
 
-阶段2V已实现普通函数的2c/1a/0e及整数除零捕获，303项Rust测试通过。见[catch运行时](docs/vm-catch-runtime.md)和[当前矩阵](docs/stage2v-evidence/matrix.md)。主语料交集66种、缺7种；其他错误来源、生命周期内catch及回调/JIT仍未实现，编号比例不是功能完成率。
+阶段2W已扩展实数/混合除零、整数余数零及相应复合赋值捕获，323项Rust测试通过。见[数值错误捕获](docs/vm-numeric-catch-runtime.md)和[当前矩阵](docs/stage2w-evidence/matrix.md)。仍为68种限定操作码；生命周期内catch、其他错误来源及回调/JIT保持限制。
+
+阶段2V已实现普通函数的2c/1a/0e及整数除零捕获，303项Rust测试通过。见[catch运行时](docs/vm-catch-runtime.md)和[2V历史矩阵](docs/stage2v-evidence/matrix.md)。主语料交集66种、缺7种；其他错误来源、生命周期内catch及回调/JIT仍未实现，编号比例不是功能完成率。
 
 阶段2T已实现隐藏控制槽和23/12/50的整数±1闭区间、Array遍历，278项Rust测试通过。见[循环运行时](docs/vm-loop-runtime.md)与[2T历史矩阵](docs/stage2t-evidence/matrix.md)。主语料73种中交集63种、缺10种；Mapping循环及完整异常/生命周期仍未实现，编号比例不是功能完成率。2P—2S报告和证据保留历史快照。
 
@@ -38,6 +40,8 @@ python3 tests/compare_corpus.py --report target/stage1-validation.json
 比较器核对既有压缩证据中的成员、完整程序结构及继承记录。已知 `dba/pack_data/etc.pak/etc` 解压异常必须报告；直接执行 `corpus --root .` 因此返回 1，而比较器确认只有该已知异常时返回 0。新增错误不能被忽略。
 
 ## 文档与边界
+
+- [阶段 2W 数值错误捕获扩展](docs/vm-numeric-catch-runtime.md)
 
 - [阶段 2V 受限 catch 运行时](docs/vm-catch-runtime.md)
 

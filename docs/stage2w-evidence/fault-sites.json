@@ -1,0 +1,196 @@
+{
+  "stage": "2W",
+  "target_sha256": "5d4ebac58d8c415d9cf95bbcdd50f78afac91adf4f7e667ea3afc6f5336a6f34",
+  "provider": "ghidra",
+  "provider_version": "12.1.4",
+  "evidence_mode": "retained static evidence; no new native query or execution",
+  "sites": [
+    {
+      "rust_fault_source": "IntDivZero",
+      "opcode": "19",
+      "operand_types": [
+        "Int",
+        "Int"
+      ],
+      "condition": "integer divisor == 0",
+      "native_function": "vm_divValue",
+      "native_entry": "0x0808e1a4",
+      "zero_branch": "0x0808e27f",
+      "error_call": "0x0808e2ea",
+      "error_target": "0x08097b24",
+      "evidence_ids": [
+        "ev_19597a6d356a5c98c32c16698ef7be5e4ad2201b7a0a22f7a714cc7918dd6f89"
+      ],
+      "pre_error_mutation": "No VM operand stack mutation; x87 comparison pops transient FPU value only. Result write and vm_popStack occur after zero guard."
+    },
+    {
+      "rust_fault_source": "NumericDivZero",
+      "opcode": "19",
+      "operand_types": [
+        "Int",
+        "Real"
+      ],
+      "condition": "real divisor == +0.0 or -0.0; unordered NaN bypasses error",
+      "native_function": "vm_divValue",
+      "native_entry": "0x0808e1a4",
+      "zero_branch": "0x0808e24f",
+      "error_call": "0x0808e29d",
+      "error_target": "0x08097b24",
+      "evidence_ids": [
+        "ev_19597a6d356a5c98c32c16698ef7be5e4ad2201b7a0a22f7a714cc7918dd6f89"
+      ],
+      "pre_error_mutation": "No VM operand stack mutation; x87 comparison pops transient FPU value only. Result write and vm_popStack occur after zero guard."
+    },
+    {
+      "rust_fault_source": "NumericDivZero",
+      "opcode": "19",
+      "operand_types": [
+        "Real",
+        "Int"
+      ],
+      "condition": "integer divisor == 0",
+      "native_function": "vm_divValue",
+      "native_entry": "0x0808e1a4",
+      "zero_branch": "0x0808e269",
+      "error_call": "0x0808e2b2",
+      "error_target": "0x08097b24",
+      "evidence_ids": [
+        "ev_19597a6d356a5c98c32c16698ef7be5e4ad2201b7a0a22f7a714cc7918dd6f89"
+      ],
+      "pre_error_mutation": "No VM operand stack mutation; x87 comparison pops transient FPU value only. Result write and vm_popStack occur after zero guard."
+    },
+    {
+      "rust_fault_source": "NumericDivZero",
+      "opcode": "19",
+      "operand_types": [
+        "Real",
+        "Real"
+      ],
+      "condition": "real divisor == +0.0 or -0.0; unordered NaN bypasses error",
+      "native_function": "vm_divValue",
+      "native_entry": "0x0808e1a4",
+      "zero_branch": "0x0808e22d",
+      "error_call": "0x0808e2cf",
+      "error_target": "0x08097b24",
+      "evidence_ids": [
+        "ev_19597a6d356a5c98c32c16698ef7be5e4ad2201b7a0a22f7a714cc7918dd6f89"
+      ],
+      "pre_error_mutation": "No VM operand stack mutation; x87 comparison pops transient FPU value only. Result write and vm_popStack occur after zero guard."
+    },
+    {
+      "rust_fault_source": "IntRemZero",
+      "opcode": "28",
+      "operand_types": [
+        "Int",
+        "Int"
+      ],
+      "condition": "integer divisor == 0",
+      "native_function": "vm_modValue",
+      "native_entry": "0x0808e7bc",
+      "zero_branch": "0x0808e848",
+      "error_call": "0x0808e8ae",
+      "error_target": "0x08097b24",
+      "evidence_ids": [
+        "ev_4066c4eef4bbbc302618e0bb8a65aeab459dde67f388ba53c0695f2616f8a31d"
+      ],
+      "pre_error_mutation": "No VM operand stack mutation; result remainder store0x0808e852 and vm_popStack0x0808e804 follow guard."
+    },
+    {
+      "rust_fault_source": "CompoundDivZero",
+      "opcode": "2f",
+      "selector": 5,
+      "condition": "numeric pair with zero divisor",
+      "native_function": "vm_opEqValue",
+      "native_entry": "0x0808eb68",
+      "delegate_call": "0x0808ecc2",
+      "delegate": "vm_divValue",
+      "error_calls": [
+        "0x0808e2ea",
+        "0x0808e29d",
+        "0x0808e2b2",
+        "0x0808e2cf"
+      ],
+      "evidence_ids": [
+        "ev_354a97d72f74e25fe049521f079d6411eef25ea6be56c075ef7da6aab3dbeb4e",
+        "ev_19597a6d356a5c98c32c16698ef7be5e4ad2201b7a0a22f7a714cc7918dd6f89"
+      ],
+      "pre_error_mutation": "vm_sp decremented at0x0808eb91; RHS fields copied into new top0x0808eba0..0x0808ebaf; target copied into temporary at0x0808ebb4. Arithmetic edits temporary only; numeric target is unchanged on zero error.",
+      "success_writeback": [
+        "0x0808ebf3 vm_cleanupValue(target)",
+        "0x0808ebfc vm_copyValue(target,result)",
+        "0x0808ec04 vm_unrefValue(target)",
+        "0x0808ec29/0x0808ec3c clear temporary tags",
+        "0x0808ec41 vm_sp++"
+      ]
+    },
+    {
+      "rust_fault_source": "CompoundIntRemZero",
+      "opcode": "2f",
+      "selector": 11,
+      "condition": "Int/Int zero divisor",
+      "native_function": "vm_opEqValue",
+      "native_entry": "0x0808eb68",
+      "delegate_call": "0x0808ec52",
+      "delegate": "vm_modValue",
+      "error_calls": [
+        "0x0808e8ae"
+      ],
+      "evidence_ids": [
+        "ev_354a97d72f74e25fe049521f079d6411eef25ea6be56c075ef7da6aab3dbeb4e",
+        "ev_4066c4eef4bbbc302618e0bb8a65aeab459dde67f388ba53c0695f2616f8a31d"
+      ],
+      "pre_error_mutation": "vm_sp decremented at0x0808eb91; RHS fields copied into new top0x0808eba0..0x0808ebaf; target copied into temporary at0x0808ebb4. Arithmetic edits temporary only; numeric target is unchanged on zero error.",
+      "success_writeback": [
+        "0x0808ebf3 vm_cleanupValue(target)",
+        "0x0808ebfc vm_copyValue(target,result)",
+        "0x0808ec04 vm_unrefValue(target)",
+        "0x0808ec29/0x0808ec3c clear temporary tags",
+        "0x0808ec41 vm_sp++"
+      ]
+    }
+  ],
+  "limitations": [
+    "Ghidra pseudocode is not original source. Preserve native error-backend assumptions from catch evidence; disassembly fallthrough after vm_error does not establish that catch continues locally.",
+    "Native opEq pre-arithmetic stack expansion differs from Rust evaluation without temporary stack allocation; claim equivalent bounded numeric target/write outcome, not identical intermediate layout.",
+    "vm_copyValue can normalize invalid object/function source values; numeric type2/3 copies are scalar only. This guarantee does not extend to unsupported operands.",
+    "Native opEq body has no readonly guard. Rust existing readonly, ownership, reference and bounds checks precede arithmetic; those errors remain untagged. No native readonly priority parity claimed.",
+    "No script callback occurs in the demonstrated scalar numeric arithmetic path; lifecycle/native callbacks and general cleanup callback parity remain out of scope."
+  ],
+  "excluded": [
+    {
+      "case": "Int MIN/-1 division or remainder",
+      "evidence_ids": [
+        "ev_19597a6d356a5c98c32c16698ef7be5e4ad2201b7a0a22f7a714cc7918dd6f89",
+        "ev_4066c4eef4bbbc302618e0bb8a65aeab459dde67f388ba53c0695f2616f8a31d"
+      ],
+      "native_instructions": [
+        "0x0808e287 IDIV ECX",
+        "0x0808e850 IDIV ECX"
+      ],
+      "decision": "No explicit vm_error guard for signed overflow. Remains uncatchable in bounded Rust implementation; do not claim native OS exception parity."
+    },
+    {
+      "case": "real or mixed remainder by zero",
+      "evidence_ids": [
+        "ev_4066c4eef4bbbc302618e0bb8a65aeab459dde67f388ba53c0695f2616f8a31d"
+      ],
+      "native_calls": [
+        "0x0808e871 fmod",
+        "0x0808e899 fmod"
+      ],
+      "decision": "No zero vm_error guard; preserve existing NaN-producing Rust arithmetic, never tag catch source."
+    },
+    {
+      "case": "NaN real divisor in division",
+      "evidence_ids": [
+        "ev_19597a6d356a5c98c32c16698ef7be5e4ad2201b7a0a22f7a714cc7918dd6f89"
+      ],
+      "native_branches": [
+        "0x0808e291 JP0x0808e251",
+        "0x0808e2bf JP0x0808e233"
+      ],
+      "decision": "Unordered comparison bypasses zero error; negative zero compares equal and enters zero error."
+    }
+  ],
+  "tagging_contract": "Set private source only on arithmetic error after operation/type/divisor checks and preceding Rust VM/reference guards; never classify by VmErrorKind or message."
+}
