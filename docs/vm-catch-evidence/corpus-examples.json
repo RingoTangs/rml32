@@ -1,0 +1,1536 @@
+{
+  "contains_any_call": {
+    "source": "csa/pack_data/lib_csa32.pak/csa/daemons/cityward.o",
+    "member_sha256": "cc618e41579bbc54c9090ebde3e5fc249ddc893f10d7fbde2a8d04d7f372db8d",
+    "function": "destruct",
+    "function_index": 28,
+    "segment_kind": "functions",
+    "segment_offset": 19579,
+    "pc": 2,
+    "member_node_offset": 19638,
+    "node_count": 12,
+    "node": [
+      5,
+      0,
+      44
+    ],
+    "candidate_target": 8,
+    "candidate_target_member_offset": 19662,
+    "candidate_target_node": [
+      0,
+      0,
+      14
+    ],
+    "lexical_region": [
+      3,
+      8
+    ],
+    "lexical_region_end_exclusive": true,
+    "snippet": [
+      {
+        "pc": 0,
+        "member_offset": 19630,
+        "node": [
+          0,
+          0,
+          15
+        ]
+      },
+      {
+        "pc": 1,
+        "member_offset": 19634,
+        "node": [
+          0,
+          0,
+          27
+        ]
+      },
+      {
+        "pc": 2,
+        "member_offset": 19638,
+        "node": [
+          5,
+          0,
+          44
+        ]
+      },
+      {
+        "pc": 3,
+        "member_offset": 19642,
+        "node": [
+          7,
+          0,
+          7
+        ]
+      },
+      {
+        "pc": 4,
+        "member_offset": 19646,
+        "node": [
+          0,
+          0,
+          51
+        ]
+      },
+      {
+        "pc": 5,
+        "member_offset": 19650,
+        "node": [
+          0,
+          0,
+          59
+        ]
+      },
+      {
+        "pc": 6,
+        "member_offset": 19654,
+        "node": [
+          0,
+          0,
+          26
+        ]
+      }
+    ],
+    "target_snippet": [
+      {
+        "pc": 6,
+        "member_offset": 19654,
+        "node": [
+          0,
+          0,
+          26
+        ]
+      },
+      {
+        "pc": 7,
+        "member_offset": 19658,
+        "node": [
+          1,
+          0,
+          31
+        ]
+      },
+      {
+        "pc": 8,
+        "member_offset": 19662,
+        "node": [
+          0,
+          0,
+          14
+        ]
+      },
+      {
+        "pc": 9,
+        "member_offset": 19666,
+        "node": [
+          0,
+          0,
+          51
+        ]
+      },
+      {
+        "pc": 10,
+        "member_offset": 19670,
+        "node": [
+          0,
+          0,
+          46
+        ]
+      }
+    ],
+    "witness_pc": 3,
+    "witness_snippet": [
+      {
+        "pc": 2,
+        "member_offset": 19638,
+        "node": [
+          5,
+          0,
+          44
+        ]
+      },
+      {
+        "pc": 3,
+        "member_offset": 19642,
+        "node": [
+          7,
+          0,
+          7
+        ]
+      },
+      {
+        "pc": 4,
+        "member_offset": 19646,
+        "node": [
+          0,
+          0,
+          51
+        ]
+      }
+    ]
+  },
+  "contains_cross_object_call": {
+    "source": "gs/pack_data/lib_gs32.pak/gs/daemons/onlinemalld.o",
+    "member_sha256": "b721c45648314abaffbfed888d0814830457dbf71a6a7503d5df9aa06cd0b44d",
+    "function": "init_custom_pack_mall",
+    "function_index": 26,
+    "segment_kind": "functions",
+    "segment_offset": 25790,
+    "pc": 2,
+    "member_node_offset": 25851,
+    "node_count": 15,
+    "node": [
+      8,
+      0,
+      44
+    ],
+    "candidate_target": 11,
+    "candidate_target_member_offset": 25887,
+    "candidate_target_node": [
+      0,
+      0,
+      14
+    ],
+    "lexical_region": [
+      3,
+      11
+    ],
+    "lexical_region_end_exclusive": true,
+    "snippet": [
+      {
+        "pc": 0,
+        "member_offset": 25843,
+        "node": [
+          0,
+          0,
+          15
+        ]
+      },
+      {
+        "pc": 1,
+        "member_offset": 25847,
+        "node": [
+          0,
+          0,
+          27
+        ]
+      },
+      {
+        "pc": 2,
+        "member_offset": 25851,
+        "node": [
+          8,
+          0,
+          44
+        ]
+      },
+      {
+        "pc": 3,
+        "member_offset": 25855,
+        "node": [
+          16,
+          0,
+          61
+        ]
+      },
+      {
+        "pc": 4,
+        "member_offset": 25859,
+        "node": [
+          232,
+          0,
+          64
+        ]
+      },
+      {
+        "pc": 5,
+        "member_offset": 25863,
+        "node": [
+          233,
+          0,
+          64
+        ]
+      },
+      {
+        "pc": 6,
+        "member_offset": 25867,
+        "node": [
+          4,
+          1,
+          8
+        ]
+      }
+    ],
+    "target_snippet": [
+      {
+        "pc": 9,
+        "member_offset": 25879,
+        "node": [
+          0,
+          0,
+          26
+        ]
+      },
+      {
+        "pc": 10,
+        "member_offset": 25883,
+        "node": [
+          1,
+          0,
+          31
+        ]
+      },
+      {
+        "pc": 11,
+        "member_offset": 25887,
+        "node": [
+          0,
+          0,
+          14
+        ]
+      },
+      {
+        "pc": 12,
+        "member_offset": 25891,
+        "node": [
+          0,
+          0,
+          51
+        ]
+      },
+      {
+        "pc": 13,
+        "member_offset": 25895,
+        "node": [
+          0,
+          0,
+          46
+        ]
+      }
+    ],
+    "witness_pc": 6,
+    "witness_snippet": [
+      {
+        "pc": 5,
+        "member_offset": 25863,
+        "node": [
+          233,
+          0,
+          64
+        ]
+      },
+      {
+        "pc": 6,
+        "member_offset": 25867,
+        "node": [
+          4,
+          1,
+          8
+        ]
+      },
+      {
+        "pc": 7,
+        "member_offset": 25871,
+        "node": [
+          0,
+          0,
+          51
+        ]
+      }
+    ]
+  },
+  "contains_end": {
+    "source": "csa/pack_data/lib_csa32.pak/csa/daemons/cityward.o",
+    "member_sha256": "cc618e41579bbc54c9090ebde3e5fc249ddc893f10d7fbde2a8d04d7f372db8d",
+    "function": "destruct",
+    "function_index": 28,
+    "segment_kind": "functions",
+    "segment_offset": 19579,
+    "pc": 2,
+    "member_node_offset": 19638,
+    "node_count": 12,
+    "node": [
+      5,
+      0,
+      44
+    ],
+    "candidate_target": 8,
+    "candidate_target_member_offset": 19662,
+    "candidate_target_node": [
+      0,
+      0,
+      14
+    ],
+    "lexical_region": [
+      3,
+      8
+    ],
+    "lexical_region_end_exclusive": true,
+    "snippet": [
+      {
+        "pc": 0,
+        "member_offset": 19630,
+        "node": [
+          0,
+          0,
+          15
+        ]
+      },
+      {
+        "pc": 1,
+        "member_offset": 19634,
+        "node": [
+          0,
+          0,
+          27
+        ]
+      },
+      {
+        "pc": 2,
+        "member_offset": 19638,
+        "node": [
+          5,
+          0,
+          44
+        ]
+      },
+      {
+        "pc": 3,
+        "member_offset": 19642,
+        "node": [
+          7,
+          0,
+          7
+        ]
+      },
+      {
+        "pc": 4,
+        "member_offset": 19646,
+        "node": [
+          0,
+          0,
+          51
+        ]
+      },
+      {
+        "pc": 5,
+        "member_offset": 19650,
+        "node": [
+          0,
+          0,
+          59
+        ]
+      },
+      {
+        "pc": 6,
+        "member_offset": 19654,
+        "node": [
+          0,
+          0,
+          26
+        ]
+      }
+    ],
+    "target_snippet": [
+      {
+        "pc": 6,
+        "member_offset": 19654,
+        "node": [
+          0,
+          0,
+          26
+        ]
+      },
+      {
+        "pc": 7,
+        "member_offset": 19658,
+        "node": [
+          1,
+          0,
+          31
+        ]
+      },
+      {
+        "pc": 8,
+        "member_offset": 19662,
+        "node": [
+          0,
+          0,
+          14
+        ]
+      },
+      {
+        "pc": 9,
+        "member_offset": 19666,
+        "node": [
+          0,
+          0,
+          51
+        ]
+      },
+      {
+        "pc": 10,
+        "member_offset": 19670,
+        "node": [
+          0,
+          0,
+          46
+        ]
+      }
+    ],
+    "witness_pc": 6,
+    "witness_snippet": [
+      {
+        "pc": 5,
+        "member_offset": 19650,
+        "node": [
+          0,
+          0,
+          59
+        ]
+      },
+      {
+        "pc": 6,
+        "member_offset": 19654,
+        "node": [
+          0,
+          0,
+          26
+        ]
+      },
+      {
+        "pc": 7,
+        "member_offset": 19658,
+        "node": [
+          1,
+          0,
+          31
+        ]
+      }
+    ]
+  },
+  "contains_loop": {
+    "source": "gs/pack_data/lib_gs32.pak/gs/start_gs.o",
+    "member_sha256": "2f3ce58bb54584d2ce7bb3d90852893b97fcd5fb55d455b8eccff856fc696174",
+    "function": "remove_client_user",
+    "function_index": 1022,
+    "segment_kind": "functions",
+    "segment_offset": 1096469,
+    "pc": 2,
+    "member_node_offset": 1096571,
+    "node_count": 37,
+    "node": [
+      26,
+      0,
+      44
+    ],
+    "candidate_target": 29,
+    "candidate_target_member_offset": 1096679,
+    "candidate_target_node": [
+      0,
+      0,
+      14
+    ],
+    "lexical_region": [
+      3,
+      29
+    ],
+    "lexical_region_end_exclusive": true,
+    "snippet": [
+      {
+        "pc": 0,
+        "member_offset": 1096563,
+        "node": [
+          0,
+          0,
+          15
+        ]
+      },
+      {
+        "pc": 1,
+        "member_offset": 1096567,
+        "node": [
+          0,
+          0,
+          27
+        ]
+      },
+      {
+        "pc": 2,
+        "member_offset": 1096571,
+        "node": [
+          26,
+          0,
+          44
+        ]
+      },
+      {
+        "pc": 3,
+        "member_offset": 1096575,
+        "node": [
+          -1,
+          0,
+          57
+        ]
+      },
+      {
+        "pc": 4,
+        "member_offset": 1096579,
+        "node": [
+          114,
+          0,
+          53
+        ]
+      },
+      {
+        "pc": 5,
+        "member_offset": 1096583,
+        "node": [
+          997,
+          0,
+          59
+        ]
+      },
+      {
+        "pc": 6,
+        "member_offset": 1096587,
+        "node": [
+          -2,
+          0,
+          35
+        ]
+      }
+    ],
+    "target_snippet": [
+      {
+        "pc": 27,
+        "member_offset": 1096671,
+        "node": [
+          0,
+          0,
+          26
+        ]
+      },
+      {
+        "pc": 28,
+        "member_offset": 1096675,
+        "node": [
+          1,
+          0,
+          31
+        ]
+      },
+      {
+        "pc": 29,
+        "member_offset": 1096679,
+        "node": [
+          0,
+          0,
+          14
+        ]
+      },
+      {
+        "pc": 30,
+        "member_offset": 1096683,
+        "node": [
+          0,
+          0,
+          51
+        ]
+      },
+      {
+        "pc": 31,
+        "member_offset": 1096687,
+        "node": [
+          0,
+          0,
+          55
+        ]
+      }
+    ],
+    "witness_pc": 6,
+    "witness_snippet": [
+      {
+        "pc": 5,
+        "member_offset": 1096583,
+        "node": [
+          997,
+          0,
+          59
+        ]
+      },
+      {
+        "pc": 6,
+        "member_offset": 1096587,
+        "node": [
+          -2,
+          0,
+          35
+        ]
+      },
+      {
+        "pc": 7,
+        "member_offset": 1096591,
+        "node": [
+          13,
+          -2,
+          18
+        ]
+      }
+    ]
+  },
+  "contains_nested_start": {
+    "source": "gs/pack_data/lib_gs32.pak/gs/daemons/stalld.o",
+    "member_sha256": "ebe6f3b35f7cf84ded4d1faa4330ee39cda8cbaa66d05f254e120c914f96c661",
+    "function": "save_all_automatism_stalls",
+    "function_index": 45,
+    "segment_kind": "functions",
+    "segment_offset": 194347,
+    "pc": 9,
+    "member_node_offset": 194666,
+    "node_count": 115,
+    "node": [
+      98,
+      0,
+      44
+    ],
+    "candidate_target": 108,
+    "candidate_target_member_offset": 195062,
+    "candidate_target_node": [
+      0,
+      0,
+      14
+    ],
+    "lexical_region": [
+      10,
+      108
+    ],
+    "lexical_region_end_exclusive": true,
+    "snippet": [
+      {
+        "pc": 7,
+        "member_offset": 194658,
+        "node": [
+          305,
+          1,
+          6
+        ]
+      },
+      {
+        "pc": 8,
+        "member_offset": 194662,
+        "node": [
+          0,
+          0,
+          51
+        ]
+      },
+      {
+        "pc": 9,
+        "member_offset": 194666,
+        "node": [
+          98,
+          0,
+          44
+        ]
+      },
+      {
+        "pc": 10,
+        "member_offset": 194670,
+        "node": [
+          11,
+          0,
+          61
+        ]
+      },
+      {
+        "pc": 11,
+        "member_offset": 194674,
+        "node": [
+          102,
+          1,
+          6
+        ]
+      },
+      {
+        "pc": 12,
+        "member_offset": 194678,
+        "node": [
+          64,
+          0,
+          53
+        ]
+      },
+      {
+        "pc": 13,
+        "member_offset": 194682,
+        "node": [
+          500,
+          0,
+          64
+        ]
+      }
+    ],
+    "target_snippet": [
+      {
+        "pc": 106,
+        "member_offset": 195054,
+        "node": [
+          0,
+          0,
+          26
+        ]
+      },
+      {
+        "pc": 107,
+        "member_offset": 195058,
+        "node": [
+          1,
+          0,
+          31
+        ]
+      },
+      {
+        "pc": 108,
+        "member_offset": 195062,
+        "node": [
+          0,
+          0,
+          14
+        ]
+      },
+      {
+        "pc": 109,
+        "member_offset": 195066,
+        "node": [
+          0,
+          0,
+          51
+        ]
+      },
+      {
+        "pc": 110,
+        "member_offset": 195070,
+        "node": [
+          14,
+          0,
+          64
+        ]
+      }
+    ],
+    "witness_pc": 65,
+    "witness_snippet": [
+      {
+        "pc": 64,
+        "member_offset": 194886,
+        "node": [
+          0,
+          0,
+          51
+        ]
+      },
+      {
+        "pc": 65,
+        "member_offset": 194890,
+        "node": [
+          6,
+          0,
+          44
+        ]
+      },
+      {
+        "pc": 66,
+        "member_offset": 194894,
+        "node": [
+          -3,
+          0,
+          55
+        ]
+      }
+    ]
+  },
+  "contains_return": {
+    "source": "gs/pack_data/lib_gs32.pak/gs/daemons/reportd.o",
+    "member_sha256": "c4a0766dd9d009d9497e4311f8980d0561ce2607063ed4c1ba93424e325eb1a5",
+    "function": "do_when_char_arrive",
+    "function_index": 26,
+    "segment_kind": "functions",
+    "segment_offset": 6291,
+    "pc": 2,
+    "member_node_offset": 6398,
+    "node_count": 27,
+    "node": [
+      20,
+      0,
+      44
+    ],
+    "candidate_target": 23,
+    "candidate_target_member_offset": 6482,
+    "candidate_target_node": [
+      0,
+      0,
+      14
+    ],
+    "lexical_region": [
+      3,
+      23
+    ],
+    "lexical_region_end_exclusive": true,
+    "snippet": [
+      {
+        "pc": 0,
+        "member_offset": 6390,
+        "node": [
+          0,
+          0,
+          15
+        ]
+      },
+      {
+        "pc": 1,
+        "member_offset": 6394,
+        "node": [
+          0,
+          0,
+          27
+        ]
+      },
+      {
+        "pc": 2,
+        "member_offset": 6398,
+        "node": [
+          20,
+          0,
+          44
+        ]
+      },
+      {
+        "pc": 3,
+        "member_offset": 6402,
+        "node": [
+          4,
+          0,
+          61
+        ]
+      },
+      {
+        "pc": 4,
+        "member_offset": 6406,
+        "node": [
+          1,
+          0,
+          55
+        ]
+      },
+      {
+        "pc": 5,
+        "member_offset": 6410,
+        "node": [
+          0,
+          0,
+          67
+        ]
+      },
+      {
+        "pc": 6,
+        "member_offset": 6414,
+        "node": [
+          0,
+          0,
+          45
+        ]
+      }
+    ],
+    "target_snippet": [
+      {
+        "pc": 21,
+        "member_offset": 6474,
+        "node": [
+          0,
+          0,
+          26
+        ]
+      },
+      {
+        "pc": 22,
+        "member_offset": 6478,
+        "node": [
+          1,
+          0,
+          31
+        ]
+      },
+      {
+        "pc": 23,
+        "member_offset": 6482,
+        "node": [
+          0,
+          0,
+          14
+        ]
+      },
+      {
+        "pc": 24,
+        "member_offset": 6486,
+        "node": [
+          0,
+          0,
+          51
+        ]
+      },
+      {
+        "pc": 25,
+        "member_offset": 6490,
+        "node": [
+          0,
+          0,
+          46
+        ]
+      }
+    ],
+    "witness_pc": 8,
+    "witness_snippet": [
+      {
+        "pc": 7,
+        "member_offset": 6418,
+        "node": [
+          1,
+          2,
+          33
+        ]
+      },
+      {
+        "pc": 8,
+        "member_offset": 6422,
+        "node": [
+          0,
+          0,
+          73
+        ]
+      },
+      {
+        "pc": 9,
+        "member_offset": 6426,
+        "node": [
+          137,
+          0,
+          6
+        ]
+      }
+    ]
+  },
+  "end_then_jump_immediately_before_target": {
+    "source": "csa/pack_data/lib_csa32.pak/csa/daemons/cityward.o",
+    "member_sha256": "cc618e41579bbc54c9090ebde3e5fc249ddc893f10d7fbde2a8d04d7f372db8d",
+    "function": "destruct",
+    "function_index": 28,
+    "segment_kind": "functions",
+    "segment_offset": 19579,
+    "pc": 2,
+    "member_node_offset": 19638,
+    "node_count": 12,
+    "node": [
+      5,
+      0,
+      44
+    ],
+    "candidate_target": 8,
+    "candidate_target_member_offset": 19662,
+    "candidate_target_node": [
+      0,
+      0,
+      14
+    ],
+    "lexical_region": [
+      3,
+      8
+    ],
+    "lexical_region_end_exclusive": true,
+    "snippet": [
+      {
+        "pc": 0,
+        "member_offset": 19630,
+        "node": [
+          0,
+          0,
+          15
+        ]
+      },
+      {
+        "pc": 1,
+        "member_offset": 19634,
+        "node": [
+          0,
+          0,
+          27
+        ]
+      },
+      {
+        "pc": 2,
+        "member_offset": 19638,
+        "node": [
+          5,
+          0,
+          44
+        ]
+      },
+      {
+        "pc": 3,
+        "member_offset": 19642,
+        "node": [
+          7,
+          0,
+          7
+        ]
+      },
+      {
+        "pc": 4,
+        "member_offset": 19646,
+        "node": [
+          0,
+          0,
+          51
+        ]
+      },
+      {
+        "pc": 5,
+        "member_offset": 19650,
+        "node": [
+          0,
+          0,
+          59
+        ]
+      },
+      {
+        "pc": 6,
+        "member_offset": 19654,
+        "node": [
+          0,
+          0,
+          26
+        ]
+      }
+    ],
+    "target_snippet": [
+      {
+        "pc": 6,
+        "member_offset": 19654,
+        "node": [
+          0,
+          0,
+          26
+        ]
+      },
+      {
+        "pc": 7,
+        "member_offset": 19658,
+        "node": [
+          1,
+          0,
+          31
+        ]
+      },
+      {
+        "pc": 8,
+        "member_offset": 19662,
+        "node": [
+          0,
+          0,
+          14
+        ]
+      },
+      {
+        "pc": 9,
+        "member_offset": 19666,
+        "node": [
+          0,
+          0,
+          51
+        ]
+      },
+      {
+        "pc": 10,
+        "member_offset": 19670,
+        "node": [
+          0,
+          0,
+          46
+        ]
+      }
+    ]
+  },
+  "opcode_0x0e": {
+    "source": "csa/pack_data/lib_csa32.pak/csa/daemons/cityward.o",
+    "member_sha256": "cc618e41579bbc54c9090ebde3e5fc249ddc893f10d7fbde2a8d04d7f372db8d",
+    "function": "destruct",
+    "function_index": 28,
+    "segment_kind": "functions",
+    "segment_offset": 19579,
+    "pc": 8,
+    "member_node_offset": 19662,
+    "node_count": 12,
+    "node": [
+      0,
+      0,
+      14
+    ],
+    "snippet": [
+      {
+        "pc": 6,
+        "member_offset": 19654,
+        "node": [
+          0,
+          0,
+          26
+        ]
+      },
+      {
+        "pc": 7,
+        "member_offset": 19658,
+        "node": [
+          1,
+          0,
+          31
+        ]
+      },
+      {
+        "pc": 8,
+        "member_offset": 19662,
+        "node": [
+          0,
+          0,
+          14
+        ]
+      },
+      {
+        "pc": 9,
+        "member_offset": 19666,
+        "node": [
+          0,
+          0,
+          51
+        ]
+      },
+      {
+        "pc": 10,
+        "member_offset": 19670,
+        "node": [
+          0,
+          0,
+          46
+        ]
+      },
+      {
+        "pc": 11,
+        "member_offset": 19674,
+        "node": [
+          0,
+          0,
+          73
+        ]
+      }
+    ]
+  },
+  "opcode_0x1a": {
+    "source": "csa/pack_data/lib_csa32.pak/csa/daemons/cityward.o",
+    "member_sha256": "cc618e41579bbc54c9090ebde3e5fc249ddc893f10d7fbde2a8d04d7f372db8d",
+    "function": "destruct",
+    "function_index": 28,
+    "segment_kind": "functions",
+    "segment_offset": 19579,
+    "pc": 6,
+    "member_node_offset": 19654,
+    "node_count": 12,
+    "node": [
+      0,
+      0,
+      26
+    ],
+    "snippet": [
+      {
+        "pc": 4,
+        "member_offset": 19646,
+        "node": [
+          0,
+          0,
+          51
+        ]
+      },
+      {
+        "pc": 5,
+        "member_offset": 19650,
+        "node": [
+          0,
+          0,
+          59
+        ]
+      },
+      {
+        "pc": 6,
+        "member_offset": 19654,
+        "node": [
+          0,
+          0,
+          26
+        ]
+      },
+      {
+        "pc": 7,
+        "member_offset": 19658,
+        "node": [
+          1,
+          0,
+          31
+        ]
+      },
+      {
+        "pc": 8,
+        "member_offset": 19662,
+        "node": [
+          0,
+          0,
+          14
+        ]
+      },
+      {
+        "pc": 9,
+        "member_offset": 19666,
+        "node": [
+          0,
+          0,
+          51
+        ]
+      },
+      {
+        "pc": 10,
+        "member_offset": 19670,
+        "node": [
+          0,
+          0,
+          46
+        ]
+      }
+    ]
+  },
+  "opcode_0x2c": {
+    "source": "csa/pack_data/lib_csa32.pak/csa/daemons/cityward.o",
+    "member_sha256": "cc618e41579bbc54c9090ebde3e5fc249ddc893f10d7fbde2a8d04d7f372db8d",
+    "function": "destruct",
+    "function_index": 28,
+    "segment_kind": "functions",
+    "segment_offset": 19579,
+    "pc": 2,
+    "member_node_offset": 19638,
+    "node_count": 12,
+    "node": [
+      5,
+      0,
+      44
+    ],
+    "snippet": [
+      {
+        "pc": 0,
+        "member_offset": 19630,
+        "node": [
+          0,
+          0,
+          15
+        ]
+      },
+      {
+        "pc": 1,
+        "member_offset": 19634,
+        "node": [
+          0,
+          0,
+          27
+        ]
+      },
+      {
+        "pc": 2,
+        "member_offset": 19638,
+        "node": [
+          5,
+          0,
+          44
+        ]
+      },
+      {
+        "pc": 3,
+        "member_offset": 19642,
+        "node": [
+          7,
+          0,
+          7
+        ]
+      },
+      {
+        "pc": 4,
+        "member_offset": 19646,
+        "node": [
+          0,
+          0,
+          51
+        ]
+      },
+      {
+        "pc": 5,
+        "member_offset": 19650,
+        "node": [
+          0,
+          0,
+          59
+        ]
+      },
+      {
+        "pc": 6,
+        "member_offset": 19654,
+        "node": [
+          0,
+          0,
+          26
+        ]
+      }
+    ]
+  },
+  "return_before_first_lexical_end": {
+    "source": "gs/pack_data/lib_gs32.pak/gs/daemons/reportd.o",
+    "member_sha256": "c4a0766dd9d009d9497e4311f8980d0561ce2607063ed4c1ba93424e325eb1a5",
+    "function": "do_when_char_arrive",
+    "function_index": 26,
+    "segment_kind": "functions",
+    "segment_offset": 6291,
+    "pc": 2,
+    "member_node_offset": 6398,
+    "node_count": 27,
+    "node": [
+      20,
+      0,
+      44
+    ],
+    "candidate_target": 23,
+    "candidate_target_member_offset": 6482,
+    "candidate_target_node": [
+      0,
+      0,
+      14
+    ],
+    "lexical_region": [
+      3,
+      23
+    ],
+    "lexical_region_end_exclusive": true,
+    "snippet": [
+      {
+        "pc": 0,
+        "member_offset": 6390,
+        "node": [
+          0,
+          0,
+          15
+        ]
+      },
+      {
+        "pc": 1,
+        "member_offset": 6394,
+        "node": [
+          0,
+          0,
+          27
+        ]
+      },
+      {
+        "pc": 2,
+        "member_offset": 6398,
+        "node": [
+          20,
+          0,
+          44
+        ]
+      },
+      {
+        "pc": 3,
+        "member_offset": 6402,
+        "node": [
+          4,
+          0,
+          61
+        ]
+      },
+      {
+        "pc": 4,
+        "member_offset": 6406,
+        "node": [
+          1,
+          0,
+          55
+        ]
+      },
+      {
+        "pc": 5,
+        "member_offset": 6410,
+        "node": [
+          0,
+          0,
+          67
+        ]
+      },
+      {
+        "pc": 6,
+        "member_offset": 6414,
+        "node": [
+          0,
+          0,
+          45
+        ]
+      }
+    ],
+    "target_snippet": [
+      {
+        "pc": 21,
+        "member_offset": 6474,
+        "node": [
+          0,
+          0,
+          26
+        ]
+      },
+      {
+        "pc": 22,
+        "member_offset": 6478,
+        "node": [
+          1,
+          0,
+          31
+        ]
+      },
+      {
+        "pc": 23,
+        "member_offset": 6482,
+        "node": [
+          0,
+          0,
+          14
+        ]
+      },
+      {
+        "pc": 24,
+        "member_offset": 6486,
+        "node": [
+          0,
+          0,
+          51
+        ]
+      },
+      {
+        "pc": 25,
+        "member_offset": 6490,
+        "node": [
+          0,
+          0,
+          46
+        ]
+      }
+    ]
+  }
+}

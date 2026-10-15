@@ -4,6 +4,8 @@
 
 阶段2T已实现隐藏控制槽和23/12/50的整数±1闭区间、Array遍历，278项Rust测试通过。见[循环运行时](docs/vm-loop-runtime.md)与[当前矩阵](docs/stage2t-evidence/matrix.md)。主语料73种中交集63种、缺10种；Mapping循环及完整异常/生命周期仍未实现，编号比例不是功能完成率。2P—2S报告和证据保留历史快照。
 
+阶段2U已完成通用catch静态取证、只读语料统计及Rust栈展开设计，见[异常捕获报告](docs/vm-catch-semantics.md)。确认2c/1a/0e各3,266次及解释模式目标公式，首批实现规格限定整数除零；本轮运行时、依赖和65种操作码支持表不变，catch尚未实现。
+
 ## 构建与检查
 
 需要 Rust / Cargo；当前验证环境为 Rust 1.99.0。依赖为 `serde`、`serde_json`、`sha2`，版本由 `Cargo.lock` 固定。
@@ -35,6 +37,7 @@ python3 tests/compare_corpus.py --report target/stage1-validation.json
 
 ## 文档与边界
 
+- [阶段 2U catch 静态语义与 Rust 设计](docs/vm-catch-semantics.md)
 - [阶段 2T 整数与数组循环运行时](docs/vm-loop-runtime.md)
 - [阶段 2S switch 运行时](docs/vm-switch-runtime.md)
 - [阶段 2R 控制流静态语义与实施设计](docs/vm-control-flow-semantics.md)

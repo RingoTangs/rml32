@@ -1,0 +1,137 @@
+{
+  "schema_version": 1,
+  "scope": "Main Magic559 decoded corpus; readonly lexical analysis; no execution",
+  "target_formula_status": "native-confirmed pc + 1 + signed a; lexical region pairing remains candidate",
+  "target_formula_evidence": {
+    "function": "vm_newThreadCatch",
+    "address": "0x080aaf84",
+    "evidence_id": "ev_446aa83f597882387e0856507a84ad5ec466a2e91a4e234c7e9c000ca98eec9a",
+    "basis": "current.ip + offset; regularProcessor advances ip before signed-par16 dispatch"
+  },
+  "offsets": "Uncompressed member-relative byte offsets, not ELF addresses or compressed-package offsets",
+  "totals": {
+    "programs": 7159,
+    "ordinary_functions": 101592,
+    "hidden_functions": 0,
+    "instructions": 6474773,
+    "segments_with_catch_start": 2495
+  },
+  "checks": {
+    "candidate_targets_checked": 3266
+  },
+  "lexical_candidate_patterns": {
+    "contains_end": 3266,
+    "contains_any_call": 3262,
+    "end_then_jump_immediately_before_target": 3266,
+    "max_candidate_interval_overlap": 2,
+    "contains_cross_object_call": 820,
+    "contains_loop": 21,
+    "contains_return": 11,
+    "return_before_first_lexical_end": 11,
+    "contains_nested_start": 3
+  },
+  "candidate_target_opcodes": {
+    "0x0e": 3266
+  },
+  "opcodes": {
+    "0x0e": {
+      "name": "vm_caughtError",
+      "count": 3266,
+      "by_segment_kind": {
+        "functions": 3266
+      },
+      "raw_operand_combinations": {
+        "0,0": 3266
+      }
+    },
+    "0x1a": {
+      "name": "vm_endThreadCatch",
+      "count": 3266,
+      "by_segment_kind": {
+        "functions": 3266
+      },
+      "raw_operand_combinations": {
+        "0,0": 3266
+      }
+    },
+    "0x2c": {
+      "name": "vm_newThreadCatch",
+      "count": 3266,
+      "by_segment_kind": {
+        "functions": 3266
+      },
+      "raw_operand_combinations": {
+        "5,0": 222,
+        "6,0": 1126,
+        "7,0": 200,
+        "8,0": 664,
+        "9,0": 179,
+        "10,0": 132,
+        "11,0": 76,
+        "12,0": 45,
+        "13,0": 92,
+        "14,0": 16,
+        "15,0": 21,
+        "16,0": 22,
+        "17,0": 7,
+        "18,0": 1,
+        "19,0": 129,
+        "20,0": 14,
+        "21,0": 4,
+        "22,0": 185,
+        "23,0": 24,
+        "24,0": 5,
+        "25,0": 3,
+        "26,0": 3,
+        "27,0": 22,
+        "28,0": 2,
+        "30,0": 2,
+        "31,0": 2,
+        "32,0": 4,
+        "34,0": 2,
+        "35,0": 10,
+        "37,0": 2,
+        "38,0": 4,
+        "42,0": 2,
+        "46,0": 1,
+        "49,0": 1,
+        "55,0": 4,
+        "60,0": 1,
+        "61,0": 1,
+        "62,0": 3,
+        "63,0": 1,
+        "65,0": 1,
+        "66,0": 1,
+        "69,0": 1,
+        "76,0": 6,
+        "81,0": 1,
+        "90,0": 1,
+        "93,0": 1,
+        "96,0": 1,
+        "98,0": 1,
+        "102,0": 2,
+        "107,0": 2,
+        "108,0": 1,
+        "111,0": 1,
+        "113,0": 1,
+        "127,0": 1,
+        "142,0": 1,
+        "153,0": 1,
+        "179,0": 1,
+        "183,0": 1,
+        "213,0": 1,
+        "247,0": 1,
+        "249,0": 1,
+        "264,0": 1,
+        "270,0": 1,
+        "446,0": 1
+      }
+    }
+  },
+  "errors": [],
+  "input_sha256": {
+    "docs/compatibility-evidence/programs.json.gz": "46389cffa1c7a13692f57a2fac935f7603c723a363dee9dcc4c640ab68f48f31",
+    "docs/compatibility-evidence/compatibility-summary.json": "bb8e38b6b7e1d52e11f6468f74ec7fdd63773acb7b6ab01879ce796e0e2ddbbf",
+    "docs/evidence/actions.csv": "fb3d30f8c047e881ecc2d7132111c581d76d45bcb6e64a0effd3cfc4c7cea325"
+  }
+}
