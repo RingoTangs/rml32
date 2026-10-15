@@ -231,10 +231,27 @@ struct Frame {
     phase: EntryPhase,
 }
 #[derive(Debug)]
+struct ScriptCatch {
+    frame_id: u64,
+    frame_depth: usize,
+    stack_len: usize,
+    target_pc: usize,
+}
+#[derive(Debug, Clone, Copy)]
+enum RuntimeFaultSite {
+    IntDivZero,
+}
+#[derive(Debug)]
+struct StepFault {
+    diagnostic: Box<VmError>,
+    site: Option<RuntimeFaultSite>,
+}
+#[derive(Debug)]
 pub struct Vm {
     objects: ObjectStore,
     stack: Vec<StackEntry>,
     frames: Vec<Frame>,
+    catches: Vec<ScriptCatch>,
     limits: VmLimits,
     next_frame: u64,
     reference_cells: BTreeMap<u64, Weak<()>>,
@@ -253,6 +270,7 @@ impl Vm {
             objects,
             stack: vec![],
             frames: vec![],
+            catches: vec![],
             limits: VmLimits::default(),
             next_frame: 0,
             reference_cells: BTreeMap::new(),
@@ -326,6 +344,7 @@ impl Vm {
         self.objects
             .set_initialization(object, InitializationState::Initializing)?;
         self.stack.clear();
+        self.catches.clear();
         self.reference_cells.clear();
         self.frames = vec![Self::initialization_frame(
             id,
@@ -441,6 +460,7 @@ impl Vm {
         Ok(object)
     }
     fn clear_task_frames(&mut self) {
+        self.catches.clear();
         self.frames.clear();
         self.stack.clear();
         self.reference_cells.clear();
@@ -538,6 +558,7 @@ impl Vm {
             phase: EntryPhase::Unchecked,
         }];
         self.stack = arguments;
+        self.catches.clear();
         Ok(())
     }
     // Metadata transitions are bounded by the already validated constitution count.
@@ -845,6 +866,7 @@ impl Vm {
             .collect::<Result<Vec<_>, _>>()?;
         let id = self.frame_id()?;
         self.stack = arguments;
+        self.catches.clear();
         self.frames = vec![Frame {
             id,
             program,
@@ -878,7 +900,8 @@ impl Vm {
         for _ in 0..instruction_budget {
             let frame = self.frames.last().unwrap().clone();
             let initialization = self.initialization.as_ref().map(|t| t.constitution);
-            if let Err(mut e) = self.step() {
+            if let Err(fault) = self.step() {
+                let mut e = *fault.diagnostic;
                 e.program = Some(frame.program);
                 e.object = Some(frame.object);
                 e.function = frame.body.function();
@@ -890,6 +913,17 @@ impl Vm {
                 {
                     e.source = code.source.to_owned();
                     e.offset = code.instructions.get(frame.pc).map(|i| i.offset);
+                }
+                // Capture the actual failing instruction before changing frame/stack state.
+                if let Some(RuntimeFaultSite::IntDivZero) = fault.site {
+                    match self.route_script_fault() {
+                        Ok(true) => continue,
+                        Ok(false) => {}
+                        Err(invalid) => {
+                            e.kind = invalid.kind;
+                            e.message = invalid.message;
+                        }
+                    }
                 }
                 if self.construction.is_some() {
                     self.construction_error(e);
@@ -1230,6 +1264,8 @@ impl Vm {
         Ok(())
     }
     fn return_function(&mut self, frame: &Frame, f: &PreparedFunction) -> Result<(), VmError> {
+        // vm_returnFromFun retires this frame's handlers before return validation.
+        self.catches.retain(|c| c.frame_depth < self.frames.len());
         if f.local_count > 0 && !frame.entered {
             return Err(err(
                 VmErrorKind::InvalidProgram,
@@ -1523,7 +1559,141 @@ impl Vm {
         self.frames.last_mut().unwrap().pc = pc as usize;
         Ok(())
     }
-    fn step(&mut self) -> Result<(), VmError> {
+    fn check_script_context(&self) -> Result<(), VmError> {
+        if self.initialization.is_some() || self.construction.is_some() {
+            return Err(err(
+                VmErrorKind::UnsupportedFeature,
+                "catch during lifecycle task",
+            ));
+        }
+        Ok(())
+    }
+    fn register_script_catch(
+        &mut self,
+        frame: &Frame,
+        code: &CodeView<'_>,
+        offset: i32,
+    ) -> Result<(), VmError> {
+        self.check_script_context()?;
+        code.function()?;
+        if !frame.entered
+            || frame
+                .bp
+                .checked_add(code.local_count)
+                .is_none_or(|floor| floor > self.stack.len())
+        {
+            return Err(err(
+                VmErrorKind::InvalidProgram,
+                "catch requires an entered function frame",
+            ));
+        }
+        let target_pc = frame
+            .pc
+            .checked_add(1)
+            .and_then(|pc| pc.checked_add_signed(offset as isize))
+            .filter(|&pc| pc < code.instructions.len())
+            .ok_or_else(|| err(VmErrorKind::InvalidProgram, "catch target outside function"))?;
+        if code.entry.is_some_and(|entry| target_pc <= entry.enter) {
+            return Err(err(
+                VmErrorKind::InvalidProgram,
+                "catch targets function initialization",
+            ));
+        }
+        if self.catches.len() >= self.limits.max_stack {
+            return Err(err(VmErrorKind::Limit, "catch context limit exceeded"));
+        }
+        self.catches.push(ScriptCatch {
+            frame_id: frame.id,
+            frame_depth: self.frames.len(),
+            stack_len: self.stack.len(),
+            target_pc,
+        });
+        Ok(())
+    }
+    fn end_script_catch(&mut self, frame: &Frame) -> Result<(), VmError> {
+        self.check_script_context()?;
+        if self
+            .catches
+            .last()
+            .is_none_or(|c| c.frame_id != frame.id || c.frame_depth != self.frames.len())
+        {
+            return Err(err(
+                VmErrorKind::InvalidProgram,
+                "catch end has no handler owned by this frame",
+            ));
+        }
+        self.catches.pop();
+        Ok(())
+    }
+    fn route_script_fault(&mut self) -> Result<bool, VmError> {
+        // No task error is ever turned into an ordinary script recovery.
+        if self.initialization.is_some() || self.construction.is_some() {
+            return Ok(false);
+        }
+        let Some(handler) = self.catches.last() else {
+            return Ok(false);
+        };
+        let invalid = || {
+            err(
+                VmErrorKind::InvalidProgram,
+                "catch recovery context is invalid",
+            )
+        };
+        let owner_index = handler.frame_depth.checked_sub(1).ok_or_else(invalid)?;
+        let owner = self.frames.get(owner_index).ok_or_else(invalid)?;
+        if owner.id != handler.frame_id || !owner.entered {
+            return Err(invalid());
+        }
+        self.objects.get(owner.object)?;
+        let program = self.objects.program(owner.program)?;
+        let code = CodeView::get(&program, owner.body)?;
+        code.function()?;
+        let floor = owner.bp.checked_add(code.local_count).ok_or_else(invalid)?;
+        if handler.stack_len < floor
+            || handler.stack_len > self.stack.len()
+            || handler.target_pc >= code.instructions.len()
+            || code
+                .entry
+                .is_some_and(|entry| handler.target_pc <= entry.enter)
+        {
+            return Err(invalid());
+        }
+        let child_floor = self
+            .frames
+            .get(handler.frame_depth)
+            .map(|child| child.bp.checked_sub(child.argc).ok_or_else(invalid))
+            .transpose()?;
+        if child_floor.is_some_and(|floor| floor < handler.stack_len || floor > self.stack.len()) {
+            return Err(invalid());
+        }
+        let (depth, saved_len, target) =
+            (handler.frame_depth, handler.stack_len, handler.target_pc);
+        // All checks precede destruction. No borrow guard, callback, allocation,
+        // or budget yield may occur between these two native-corresponding phases.
+        if let Some(floor) = child_floor {
+            self.stack.truncate(floor);
+            self.frames.truncate(depth);
+        }
+        self.catches.pop();
+        self.stack.truncate(saved_len);
+        self.frames[owner_index].pc = target;
+        self.reference_cells
+            .retain(|_, lease| lease.strong_count() != 0);
+        Ok(true)
+    }
+    fn step(&mut self) -> Result<(), StepFault> {
+        // Provenance lives only for this instruction, never in sticky VM state.
+        let mut site = None;
+        self.step_instruction(&mut site)
+            .map_err(|diagnostic| StepFault {
+                diagnostic: Box::new(diagnostic),
+                site,
+            })
+    }
+    fn step_instruction(
+        &mut self,
+        fault_site: &mut Option<RuntimeFaultSite>,
+    ) -> Result<(), VmError> {
         let (frame, p) = self.context()?;
         let f = CodeView::get(&p, frame.body)?;
         let Instruction {
@@ -1554,6 +1724,12 @@ impl Vm {
         let [a, b] = operands;
         let n = self.stack.len();
         match opcode {
+            0x2c => self.register_script_catch(&frame, &f, a),
+            0x1a => self.end_script_catch(&frame),
+            0x0e => {
+                self.check_script_context()?;
+                self.push(Value::Int(1))
+            }
             0x12 | 0x23 | 0x50 => self.loop_instruction(&frame, &f, opcode, a, b),
             0x08 => self.call_other(&frame, f.local_count, a, b),
             // vm_caseCheckNumber/String/Default @0x080974c0/4fc/584.
@@ -1785,8 +1961,13 @@ impl Vm {
             0x01 | 0x19 | 0x28 | 0x29 | 0x51 | 0x1c | 0x1e | 0x20 | 0x25 | 0x27 | 0x02 | 0x30
             | 0x55 | 0x26 | 0x4b | 0x2a => {
                 self.need(2, &frame, f.local_count)?;
-                let result =
-                    crate::numeric::binary(opcode, &self.value(n - 2)?, &self.value(n - 1)?)?;
+                let left = self.value(n - 2)?;
+                let right = self.value(n - 1)?;
+                let result = crate::numeric::binary(opcode, &left, &right).inspect_err(|_| {
+                    if opcode == 0x19 && matches!((&left, &right), (Value::Int(_), Value::Int(0))) {
+                        *fault_site = Some(RuntimeFaultSite::IntDivZero);
+                    }
+                })?;
                 self.stack.pop();
                 self.set(n - 2, result)
             }
@@ -2079,6 +2260,7 @@ impl Vm {
                     ));
                 }
                 self.completion = Some(Completion::ActionFinished);
+                self.catches.clear();
                 Ok(())
             }
             _ => Err(err(
@@ -2389,5 +2571,237 @@ mod tests {
             control.loop_control().unwrap().state,
             LoopState::Numeric { next: 1, .. }
         ));
+    }
+}
+
+#[cfg(test)]
+mod catch_tests {
+    use super::*;
+
+    // A synthetic prepared body permits direct inspection of lifetime and corrupted-state
+    // boundaries which cannot be exposed through the public Value/API.
+    fn fixture(locals: usize) -> Vm {
+        let function = PreparedFunction {
+            index: 0,
+            name: None,
+            private: false,
+            instructions: Rc::new(vec![Instruction {
+                opcode: 0x1d,
+                operands: [0, 0],
+                offset: 0,
+            }]),
+            origin: None,
+            pool: None,
+            function_base: 0,
+            variable_base: 0,
+            local_count: locals,
+            args: vec![],
+            min_args: 0,
+            max_args: 0,
+            variadic: false,
+            entry: None,
+            return_type: 1,
+            return_attrib: 0,
+        };
+        let program = PreparedProgram {
+            source: "synthetic-catch".into(),
+            variable_count: 0,
+            strings: vec![],
+            functions: BTreeMap::from([(0, function)]),
+            unimplemented: Default::default(),
+            initializations: None,
+            init_order: vec![],
+            lifecycles: None,
+            methods: None,
+        };
+        let mut objects = ObjectStore::new();
+        let program = objects.register_program(program).unwrap();
+        let object = objects.create(program, vec![]).unwrap();
+        let mut vm = Vm::new(objects);
+        vm.frames.push(Frame {
+            id: 10,
+            program,
+            object,
+            body: FrameBody::Function(0),
+            pc: 0,
+            bp: 0,
+            argc: 0,
+            entered: true,
+            phase: EntryPhase::Body,
+        });
+        for _ in 0..locals {
+            vm.push(Value::Undefined).unwrap();
+        }
+        vm
+    }
+    fn save(vm: &mut Vm) {
+        vm.catches.push(ScriptCatch {
+            frame_id: 10,
+            frame_depth: 1,
+            stack_len: vm.stack.len(),
+            target_pc: 0,
+        });
+    }
+
+    #[test]
+    fn catches_unwind_preserves_owner_slots_and_releases_young_loop_headers() {
+        let mut vm = fixture(1);
+        let Value::Array(array) = Value::array(vec![Value::Int(8)]).unwrap() else {
+            unreachable!()
+        };
+        let StackEntry::Value(owner_cell) = &vm.stack[0] else {
+            unreachable!()
+        };
+        let owner_cell = owner_cell.clone();
+        Cell::replace_payload_batch(vec![(
+            owner_cell.clone(),
+            SlotPayload::Loop(Box::new(LoopControl::for_test(array.clone()))),
+        )])
+        .unwrap();
+        save(&mut vm);
+        let mut child = vm.frames[0].clone();
+        child.id = 11;
+        child.bp = 1;
+        vm.frames.push(child);
+        let young = Cell::new(Value::Undefined).unwrap();
+        let reference = Reference {
+            id: young.id(),
+            target: Target::Local {
+                frame: 11,
+                cell: Rc::downgrade(&young),
+            },
+            readonly: false,
+            _lease: None,
+        };
+        Cell::replace_payload_batch(vec![(
+            young.clone(),
+            SlotPayload::Loop(Box::new(LoopControl::for_test(array.clone()))),
+        )])
+        .unwrap();
+        vm.stack.push(StackEntry::Value(young));
+        assert_eq!(array.header_refs(), 3);
+        assert!(vm.route_script_fault().unwrap());
+        assert_eq!(array.header_refs(), 2);
+        assert_eq!(vm.frames.len(), 1);
+        let StackEntry::Value(after) = &vm.stack[0] else {
+            unreachable!()
+        };
+        assert!(Rc::ptr_eq(after, &owner_cell));
+        assert!(after.is_loop().unwrap());
+        assert!(vm.resolve(&reference).is_err());
+        drop(owner_cell);
+        vm.stack.clear();
+        assert_eq!(array.header_refs(), 1);
+    }
+
+    #[test]
+    fn catches_mapping_final_header_clear_keeps_surviving_reference_lease_counted() {
+        let mut vm = fixture(0);
+        vm.limits.max_reference_cells = 1;
+        save(&mut vm);
+        let Value::Mapping(mapping) = Value::mapping(vec![(Value::Int(2), Value::Int(9))]).unwrap()
+        else {
+            unreachable!()
+        };
+        let member = mapping.member(&Value::Int(2)).unwrap();
+        let reference = vm
+            .owned_reference(member.clone(), ReferenceKind::MappingMember)
+            .unwrap();
+        vm.push(Value::Mapping(mapping)).unwrap(); // sole header is discarded by recovery
+        assert!(vm.route_script_fault().unwrap());
+        assert_eq!(member.read().unwrap(), Value::Undefined);
+        assert_eq!(vm.resolve(&reference).unwrap().id(), member.id());
+        let another = Cell::new(Value::Int(0)).unwrap();
+        assert_eq!(
+            vm.owned_reference(another.clone(), ReferenceKind::Temporary)
+                .unwrap_err()
+                .kind,
+            VmErrorKind::Limit
+        );
+        drop(reference);
+        assert!(
+            vm.owned_reference(another, ReferenceKind::Temporary)
+                .is_ok()
+        );
+    }
+
+    #[test]
+    fn catches_invalid_recovery_preflight_preserves_frames_stack_and_handlers() {
+        for corruption in 0..4 {
+            let mut vm = fixture(0);
+            save(&mut vm);
+            match corruption {
+                0 => vm.catches[0].frame_id = 999,
+                1 => vm.catches[0].stack_len = 1,
+                2 => vm.catches[0].target_pc = 1,
+                _ => {
+                    vm.push(Value::Int(7)).unwrap();
+                    vm.catches[0].stack_len = 1;
+                    let mut child = vm.frames[0].clone();
+                    child.id = 11;
+                    vm.frames.push(child); // child floor0 is below saved1
+                }
+            }
+            let before = vm.stack().unwrap();
+            let depth = vm.frames.len();
+            assert_eq!(
+                vm.route_script_fault().unwrap_err().kind,
+                VmErrorKind::InvalidProgram
+            );
+            assert_eq!(vm.stack().unwrap(), before);
+            assert_eq!(vm.frames.len(), depth);
+            assert_eq!(vm.catches.len(), 1);
+        }
+    }
+
+    #[test]
+    fn catches_retire_before_return_validation_and_do_not_retire_callers() {
+        let mut vm = fixture(0);
+        save(&mut vm);
+        let mut child = vm.frames[0].clone();
+        child.id = 11;
+        vm.frames.push(child.clone());
+        vm.catches.push(ScriptCatch {
+            frame_id: 11,
+            frame_depth: 2,
+            stack_len: 0,
+            target_pc: 0,
+        });
+        vm.push(Value::Int(7)).unwrap(); // void return fails after handler retirement
+        let program = vm.objects.program(child.program).unwrap();
+        assert_eq!(
+            vm.return_function(&child, &program.functions[&0])
+                .unwrap_err()
+                .kind,
+            VmErrorKind::InvalidProgram
+        );
+        assert_eq!(vm.catches.len(), 1);
+        assert_eq!(vm.catches[0].frame_id, 10);
+    }
+
+    #[test]
+    fn catches_restart_preflight_completion_and_task_cleanup_have_correct_boundaries() {
+        let mut vm = fixture(0);
+        save(&mut vm);
+        let object = vm.frames[0].object;
+        vm.failure = Some(err(VmErrorKind::Arithmetic, "synthetic failure"));
+        assert!(vm.start(object, 99, vec![]).is_err());
+        assert_eq!(vm.catches.len(), 1);
+        vm.start(object, 0, vec![]).unwrap();
+        assert!(vm.catches.is_empty());
+        vm.catches.push(ScriptCatch {
+            frame_id: vm.frames[0].id,
+            frame_depth: 1,
+            stack_len: 0,
+            target_pc: 0,
+        });
+        assert_eq!(
+            vm.run(1).unwrap(),
+            RunOutcome::Finished(Completion::ActionFinished)
+        );
+        assert!(vm.catches.is_empty());
+        save(&mut vm);
+        vm.clear_task_frames();
+        assert!(vm.catches.is_empty());
     }
 }
