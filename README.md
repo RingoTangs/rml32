@@ -1,5 +1,7 @@
 # rml32
 
+阶段2X已完成范围查询 `45` 的静态取证、3,452处语料统计及后续受限 Bytes/Array 实现规格，见[范围查询语义与设计](docs/vm-range-semantics.md)。本轮运行时、公共API、依赖与68种限定操作码支持集合保持不变，`45`尚未实现。
+
 对 `magic_Linux32` 进行静态分析，并以 Rust 重写兼容驱动。当前已实现**只读离线加载器**和阶段 2W 的**数值、共享容器、引用参数、受限默认/可变参数、继承链接、初始化、构造回滚及受限跨对象调用、switch、整数/数组循环及受限 catch VM 库**，支持 68 种操作码的限定路径。VM 仅在人工构造程序上验证，尚无可运行服务端；`rml32-inspect` 继续只读检查制品。
 
 阶段2W已扩展实数/混合除零、整数余数零及相应复合赋值捕获，323项Rust测试通过。见[数值错误捕获](docs/vm-numeric-catch-runtime.md)和[当前矩阵](docs/stage2w-evidence/matrix.md)。仍为68种限定操作码；生命周期内catch、其他错误来源及回调/JIT保持限制。
@@ -40,6 +42,8 @@ python3 tests/compare_corpus.py --report target/stage1-validation.json
 比较器核对既有压缩证据中的成员、完整程序结构及继承记录。已知 `dba/pack_data/etc.pak/etc` 解压异常必须报告；直接执行 `corpus --root .` 因此返回 1，而比较器确认只有该已知异常时返回 0。新增错误不能被忽略。
 
 ## 文档与边界
+
+- [阶段 2X 范围查询静态语义与实现设计](docs/vm-range-semantics.md)
 
 - [阶段 2W 数值错误捕获扩展](docs/vm-numeric-catch-runtime.md)
 

@@ -1,0 +1,326 @@
+[
+  {
+    "source": "aaa/pack_data/lib_aaa32.pak/daemons/statmoduled.o",
+    "source_package": "aaa/pack_data/lib_aaa32.pak",
+    "member_sha256": "28ce63ef5211c6e4c00ef2022263b9aef9bd3bc7b41ba4301fdac4d5a7587ec5",
+    "function": "get_variables",
+    "function_index": 9,
+    "segment_kind": "functions",
+    "segment_offset": 2334,
+    "node_count": 124,
+    "pc": 39,
+    "member_node_offset": 2680,
+    "raw_operands": [
+      0,
+      0
+    ],
+    "snippet": [
+      {
+        "pc": 36,
+        "member_node_offset": 2668,
+        "node": [
+          -7,
+          0,
+          55
+        ]
+      },
+      {
+        "pc": 37,
+        "member_node_offset": 2672,
+        "node": [
+          1,
+          0,
+          59
+        ]
+      },
+      {
+        "pc": 38,
+        "member_node_offset": 2676,
+        "node": [
+          0,
+          0,
+          81
+        ]
+      },
+      {
+        "pc": 39,
+        "member_node_offset": 2680,
+        "node": [
+          0,
+          0,
+          69
+        ]
+      },
+      {
+        "pc": 40,
+        "member_node_offset": 2684,
+        "node": [
+          -5,
+          0,
+          57
+        ]
+      },
+      {
+        "pc": 41,
+        "member_node_offset": 2688,
+        "node": [
+          0,
+          0,
+          3
+        ]
+      },
+      {
+        "pc": 42,
+        "member_node_offset": 2692,
+        "node": [
+          0,
+          0,
+          51
+        ]
+      }
+    ]
+  },
+  {
+    "source": "aaa/pack_data/lib_aaa32.pak/daemons/statmoduled.o",
+    "source_package": "aaa/pack_data/lib_aaa32.pak",
+    "member_sha256": "28ce63ef5211c6e4c00ef2022263b9aef9bd3bc7b41ba4301fdac4d5a7587ec5",
+    "function": "get_variables",
+    "function_index": 9,
+    "segment_kind": "functions",
+    "segment_offset": 2334,
+    "node_count": 124,
+    "pc": 48,
+    "member_node_offset": 2716,
+    "raw_operands": [
+      1,
+      0
+    ],
+    "snippet": [
+      {
+        "pc": 45,
+        "member_node_offset": 2704,
+        "node": [
+          2,
+          0,
+          59
+        ]
+      },
+      {
+        "pc": 46,
+        "member_node_offset": 2708,
+        "node": [
+          0,
+          0,
+          1
+        ]
+      },
+      {
+        "pc": 47,
+        "member_node_offset": 2712,
+        "node": [
+          1,
+          0,
+          59
+        ]
+      },
+      {
+        "pc": 48,
+        "member_node_offset": 2716,
+        "node": [
+          1,
+          0,
+          69
+        ]
+      },
+      {
+        "pc": 49,
+        "member_node_offset": 2720,
+        "node": [
+          -6,
+          0,
+          57
+        ]
+      },
+      {
+        "pc": 50,
+        "member_node_offset": 2724,
+        "node": [
+          0,
+          0,
+          3
+        ]
+      },
+      {
+        "pc": 51,
+        "member_node_offset": 2728,
+        "node": [
+          0,
+          0,
+          51
+        ]
+      }
+    ]
+  },
+  {
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o",
+    "source_package": "aaa/pack_data/lib_aaa32.pak",
+    "member_sha256": "f9896828c87399be4977107fbfbe3f67fd71caebd3008bda84be16cc722d0a0e",
+    "function": "__init__",
+    "function_index": null,
+    "segment_kind": "init",
+    "segment_offset": 448680,
+    "node_count": 661,
+    "pc": 109,
+    "member_node_offset": 450572,
+    "raw_operands": [
+      1,
+      0
+    ],
+    "snippet": [
+      {
+        "pc": 106,
+        "member_node_offset": 450560,
+        "node": [
+          30,
+          0,
+          53
+        ]
+      },
+      {
+        "pc": 107,
+        "member_node_offset": 450564,
+        "node": [
+          1,
+          0,
+          59
+        ]
+      },
+      {
+        "pc": 108,
+        "member_node_offset": 450568,
+        "node": [
+          2,
+          0,
+          59
+        ]
+      },
+      {
+        "pc": 109,
+        "member_node_offset": 450572,
+        "node": [
+          1,
+          0,
+          69
+        ]
+      },
+      {
+        "pc": 110,
+        "member_node_offset": 450576,
+        "node": [
+          30,
+          0,
+          54
+        ]
+      },
+      {
+        "pc": 111,
+        "member_node_offset": 450580,
+        "node": [
+          0,
+          0,
+          3
+        ]
+      },
+      {
+        "pc": 112,
+        "member_node_offset": 450584,
+        "node": [
+          0,
+          0,
+          51
+        ]
+      }
+    ]
+  },
+  {
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/daemons/vip_smsd.o",
+    "source_package": "aaa/pack_data/lib_aaa32.pak",
+    "member_sha256": "cedbeb30d077af108e2f990f2bd4e90bdababb8b0387e57b3c83407a72fd89f5",
+    "function": "get_account_desc",
+    "function_index": 11,
+    "segment_kind": "functions",
+    "segment_offset": 4712,
+    "node_count": 56,
+    "pc": 49,
+    "member_node_offset": 5009,
+    "raw_operands": [
+      3,
+      0
+    ],
+    "snippet": [
+      {
+        "pc": 46,
+        "member_node_offset": 4997,
+        "node": [
+          0,
+          0,
+          55
+        ]
+      },
+      {
+        "pc": 47,
+        "member_node_offset": 5001,
+        "node": [
+          2,
+          0,
+          59
+        ]
+      },
+      {
+        "pc": 48,
+        "member_node_offset": 5005,
+        "node": [
+          1,
+          0,
+          59
+        ]
+      },
+      {
+        "pc": 49,
+        "member_node_offset": 5009,
+        "node": [
+          3,
+          0,
+          69
+        ]
+      },
+      {
+        "pc": 50,
+        "member_node_offset": 5013,
+        "node": [
+          2,
+          0,
+          47
+        ]
+      },
+      {
+        "pc": 51,
+        "member_node_offset": 5017,
+        "node": [
+          0,
+          0,
+          51
+        ]
+      },
+      {
+        "pc": 52,
+        "member_node_offset": 5021,
+        "node": [
+          -2,
+          0,
+          55
+        ]
+      }
+    ]
+  }
+]

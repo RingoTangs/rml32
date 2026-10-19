@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "opcode": "0x45",
+  "name": "vm_queryRange",
+  "scope": "Retained Main Magic559 decoded program images; static scan only",
+  "offsets": "Uncompressed member-relative bytes; nodes_offset + 4*pc; src/program.rs decodes each node as little-endian i16, signed i8, u8",
+  "interpretation": "Raw operands only; runtime types, reachability, and mode semantics are not inferred",
+  "totals": {
+    "programs": 7159,
+    "ordinary_functions": 101592,
+    "hidden_functions": 0,
+    "instructions": 6474773
+  },
+  "occurrence_count": 3452,
+  "by_segment_kind": {
+    "functions": 3440,
+    "init": 12
+  },
+  "by_source_package": {
+    "aaa/pack_data/lib_aaa32.pak": 193,
+    "ccs/pack_data/lib_ccs32.pak": 451,
+    "csa/pack_data/lib_csa32.pak": 265,
+    "dba/pack_data/lib_dba32.pak": 112,
+    "gs/pack_data/lib_gs32.pak": 2431
+  },
+  "raw_operand_combinations": [
+    {
+      "a": 0,
+      "b": 0,
+      "count": 1525
+    },
+    {
+      "a": 1,
+      "b": 0,
+      "count": 1159
+    },
+    {
+      "a": 3,
+      "b": 0,
+      "count": 768
+    }
+  ],
+  "input_sha256": {
+    "docs/compatibility-evidence/programs.json.gz": "46389cffa1c7a13692f57a2fac935f7603c723a363dee9dcc4c640ab68f48f31",
+    "docs/compatibility-evidence/compatibility-summary.json": "bb8e38b6b7e1d52e11f6468f74ec7fdd63773acb7b6ab01879ce796e0e2ddbbf"
+  }
+}
