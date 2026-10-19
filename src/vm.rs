@@ -1592,6 +1592,105 @@ impl Vm {
         self.frames.last_mut().unwrap().pc = pc as usize;
         Ok(())
     }
+    // vm_queryRange @0x0808fd04: inclusive endpoints, bit0=end-relative,
+    // bit1=begin-relative. Wide temporaries avoid native signed overflow.
+    fn range_bounds(
+        len: usize,
+        begin: &Value,
+        end: &Value,
+        mode: i32,
+    ) -> Result<std::ops::Range<usize>, VmError> {
+        let endpoint = |v: &Value| match v {
+            Value::Int(i) => Ok(i64::from(*i)),
+            Value::Real(r) => Ok(i64::from(crate::numeric::trunc_i32(r.to_f32()))),
+            _ => Err(err(
+                VmErrorKind::UnsupportedType,
+                "range endpoints require numbers",
+            )),
+        };
+        let mut begin = endpoint(begin)?;
+        let mut end = endpoint(end)?;
+        let len = i32::try_from(len).map_err(|_| {
+            err(
+                VmErrorKind::Limit,
+                "range source exceeds legacy integer length",
+            )
+        })?;
+        let len = i64::from(len);
+        if mode & 1 != 0 {
+            end = len - end.max(1);
+        }
+        if mode & 2 != 0 {
+            begin = len - begin.max(1);
+        }
+        begin = begin.max(0);
+        end = end.min(len - 1);
+        if begin > end {
+            Ok(0..0)
+        } else {
+            Ok(begin as usize..end as usize + 1)
+        }
+    }
+    fn query_range(&mut self, frame: &Frame, locals: usize, mode: i32) -> Result<(), VmError> {
+        if self.initialization.is_some() || self.construction.is_some() {
+            return Err(err(
+                VmErrorKind::UnsupportedFeature,
+                "range query during lifecycle task",
+            ));
+        }
+        self.need(3, frame, locals)?;
+        let n = self.stack.len();
+        let source = self.value(n - 3)?;
+        let begin = self.value(n - 2)?;
+        let end = self.value(n - 1)?;
+        let mut updates = std::collections::BTreeMap::new();
+        let result = match source {
+            Value::Bytes(bytes) => {
+                let range = Self::range_bounds(bytes.len(), &begin, &end, mode)?;
+                if range.len() > 65536 {
+                    return Err(err(
+                        VmErrorKind::Limit,
+                        "range byte result exceeds 65536 bytes",
+                    ));
+                }
+                let mut result = bytes[range].to_vec();
+                // Native String uses strncpy, not Buffer's memcpy. Preserve length.
+                if let Some(nul) = result.iter().position(|&b| b == 0) {
+                    result[nul..].fill(0);
+                }
+                Value::Bytes(Rc::from(result))
+            }
+            Value::Array(array) => {
+                let range = Self::range_bounds(array.len(), &begin, &end, mode)?;
+                let mut values = Vec::with_capacity(range.len());
+                for index in range {
+                    let cell = array.cell(index)?;
+                    let original = cell.read()?;
+                    let copied = self.copy_value(&original);
+                    if copied != original {
+                        updates.insert(cell.id(), (cell, copied.clone()));
+                    }
+                    values.push(copied);
+                }
+                Value::array(values)?
+            }
+            _ => {
+                return Err(err(
+                    VmErrorKind::UnsupportedType,
+                    "range query requires bytes or array",
+                ));
+            }
+        };
+        let StackEntry::Value(cell) = &self.stack[n - 3] else {
+            unreachable!()
+        };
+        updates.insert(cell.id(), (cell.clone(), result));
+        // All fallible reads/allocations precede the atomic commit. Source dead-object
+        // normalization is visible through aliases, as in native vm_copyValue.
+        Cell::replace_batch(&updates.into_values().collect::<Vec<_>>())?;
+        self.stack.truncate(n - 2);
+        Ok(())
+    }
     fn check_script_context(&self) -> Result<(), VmError> {
         if self.initialization.is_some() || self.construction.is_some() {
             return Err(err(
@@ -1757,6 +1856,7 @@ impl Vm {
         let [a, b] = operands;
         let n = self.stack.len();
         match opcode {
+            0x45 => self.query_range(&frame, f.local_count, a),
             0x2c => self.register_script_catch(&frame, &f, a),
             0x1a => self.end_script_catch(&frame),
             0x0e => {
@@ -2603,6 +2703,102 @@ mod tests {
             control.loop_control().unwrap().state,
             LoopState::Numeric { next: 1, .. }
         ));
+    }
+}
+
+#[cfg(test)]
+mod range_tests {
+    use super::*;
+
+    fn source_vm(values: Vec<Value>) -> (Vm, Frame, crate::container::ArrayValue) {
+        let mut vm = super::catch_tests::fixture(0);
+        let Value::Array(array) = Value::array(values).unwrap() else {
+            unreachable!()
+        };
+        vm.push(Value::Array(array.clone())).unwrap();
+        vm.push(Value::Int(0)).unwrap();
+        vm.push(Value::Int(1)).unwrap();
+        let frame = vm.frames[0].clone();
+        (vm, frame, array)
+    }
+
+    #[test]
+    fn ranges_borrow_failure_does_not_partially_normalize_source_or_replace_stack() {
+        // ObjectId(999) is deliberately absent from the synthetic store.
+        let dead = Value::Object(ObjectId(999));
+        let (mut vm, frame, array) = source_vm(vec![dead.clone(), dead.clone()]);
+        let before = vm.stack().unwrap();
+        let cell = array.cell(1).unwrap();
+        cell.with_read_borrow_for_test(|| {
+            assert_eq!(
+                vm.query_range(&frame, 0, 0).unwrap_err().kind,
+                VmErrorKind::InvalidState
+            );
+            assert_eq!(vm.stack().unwrap(), before);
+            assert_eq!(array.elements().unwrap(), vec![dead.clone(), dead.clone()]);
+        });
+        vm.query_range(&frame, 0, 0).unwrap();
+        assert_eq!(array.elements().unwrap(), vec![Value::Undefined; 2]);
+        assert_eq!(vm.stack.len(), 1);
+    }
+
+    #[test]
+    fn ranges_source_stack_borrow_failure_leaves_dead_elements_unchanged() {
+        let dead = Value::Object(ObjectId(999));
+        let (mut vm, frame, array) = source_vm(vec![dead.clone(), Value::Int(2)]);
+        let StackEntry::Value(cell) = vm.stack[0].clone() else {
+            unreachable!()
+        };
+        cell.with_read_borrow_for_test(|| {
+            assert_eq!(
+                vm.query_range(&frame, 0, 0).unwrap_err().kind,
+                VmErrorKind::InvalidState
+            );
+            assert_eq!(array.elements().unwrap()[0], dead);
+            assert_eq!(vm.stack.len(), 3);
+        });
+    }
+
+    #[test]
+    fn ranges_result_validation_failure_keeps_prior_normalizations_uncommitted() {
+        let dead = Value::Object(ObjectId(999));
+        let (mut vm, frame, array) = source_vm(vec![dead.clone(), Value::Int(2)]);
+        let mut deep = Value::Int(1);
+        for _ in 0..64 {
+            deep = Value::array(vec![deep]).unwrap();
+        }
+        // Corrupted internal graph, bypassing the ordinary reference write depth checks.
+        array.cell(1).unwrap().replace(deep).unwrap();
+        assert_eq!(
+            vm.query_range(&frame, 0, 0).unwrap_err().kind,
+            VmErrorKind::Limit
+        );
+        assert_eq!(array.cell(0).unwrap().read().unwrap(), dead);
+        assert_eq!(vm.stack.len(), 3);
+    }
+
+    #[test]
+    fn ranges_source_length_guard_and_extreme_interval_math_are_bounded() {
+        assert_eq!(
+            Vm::range_bounds(i32::MAX as usize + 1, &Value::Int(0), &Value::Int(0), 0)
+                .unwrap_err()
+                .kind,
+            VmErrorKind::Limit
+        );
+        assert_eq!(
+            Vm::range_bounds(
+                i32::MAX as usize,
+                &Value::Int(i32::MAX),
+                &Value::Int(i32::MIN),
+                3
+            )
+            .unwrap(),
+            0..i32::MAX as usize
+        );
+        assert_eq!(
+            Vm::range_bounds(0, &Value::Int(i32::MIN), &Value::Int(i32::MAX), 0).unwrap(),
+            0..0
+        );
     }
 }
 

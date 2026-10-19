@@ -652,8 +652,565 @@ fn supported_types_have_explicit_legacy_tags() {
         [0, 1, 2, 4, 10]
     );
     let supported: BTreeSet<_> = rml32::prepared::SUPPORTED_OPCODES.iter().collect();
-    assert_eq!(supported.len(), 68);
+    assert_eq!(supported.len(), 69);
     assert_eq!(ByteString::new(b"\xff").bytes, b"\xff");
+}
+
+// Stage 2Y: synthesized range queries only; the retained business corpus stays read-only.
+#[test]
+fn ranges_arrays_have_independent_top_slots_and_shared_nested_values() {
+    let nested = Value::array(vec![Value::Int(8)]).unwrap();
+    let source = Value::array(vec![Value::Int(1), nested.clone()]).unwrap();
+    let result = range_result(source.clone(), Value::Int(0), Value::Int(1), 0).unwrap();
+    assert_ne!(result, source);
+    let Value::Array(a) = &result else { panic!() };
+    assert_eq!(a.elements().unwrap(), vec![Value::Int(1), nested.clone()]);
+    // Assign through the result's top-level member, then a shared nested member.
+    let mutate = fun(
+        0,
+        0,
+        0,
+        255,
+        &[
+            (9, 0, 0x3b),
+            (0, 0, 0x3e),
+            (0, 0, 0x3b),
+            (0, 0, 0x44),
+            (0, 0, 0x03),
+        ],
+    );
+    let (mut vm, o) = machine(image(&[mutate], 1, &[]), vec![result.clone()]);
+    vm.start(o, 0, vec![]).unwrap();
+    returns(&mut vm, Value::Int(9));
+    assert_eq!(a.elements().unwrap()[0], Value::Int(9));
+    let Value::Array(source) = &source else {
+        panic!()
+    };
+    assert_eq!(source.elements().unwrap()[0], Value::Int(1));
+    let (mut vm, o) = machine(
+        image(
+            &[fun(
+                0,
+                0,
+                0,
+                255,
+                &[
+                    (7, 0, 0x3b),
+                    (0, 0, 0x3e),
+                    (0, 0, 0x3b),
+                    (0, 0, 0x44),
+                    (0, 0, 0x03),
+                ],
+            )],
+            1,
+            &[],
+        ),
+        vec![nested],
+    );
+    vm.start(o, 0, vec![]).unwrap();
+    returns(&mut vm, Value::Int(7));
+    let Value::Array(shared) = &source.elements().unwrap()[1] else {
+        panic!()
+    };
+    assert_eq!(shared.elements().unwrap(), vec![Value::Int(7)]);
+    let Value::Array(shared) = &a.elements().unwrap()[1] else {
+        panic!()
+    };
+    assert_eq!(shared.elements().unwrap(), vec![Value::Int(7)]);
+}
+#[test]
+fn ranges_array_normalization_updates_only_selected_direct_dead_objects() {
+    let (mut vm, o) = machine(image(&[range_function(0, 0)], 0, &[]), vec![]);
+    let program = vm.objects().get(o).unwrap().program();
+    let dead = vm.objects_mut().create(program, vec![]).unwrap();
+    let nested = Value::array(vec![Value::Object(dead)]).unwrap();
+    let source = Value::array(vec![
+        Value::Object(dead),
+        Value::Object(dead),
+        nested.clone(),
+    ])
+    .unwrap();
+    vm.objects_mut().remove(dead).unwrap();
+    vm.start(o, 0, vec![source.clone(), Value::Int(1), Value::Int(2)])
+        .unwrap();
+    vm.run(5).unwrap();
+    vm.run(0).unwrap();
+    let Value::Array(a) = &source else { panic!() };
+    assert_eq!(a.elements().unwrap()[1], Value::Object(dead));
+    assert_eq!(
+        returned_array(&mut vm),
+        vec![Value::Undefined, nested.clone()]
+    );
+    assert_eq!(
+        a.elements().unwrap(),
+        vec![Value::Object(dead), Value::Undefined, nested.clone()]
+    );
+    let Value::Array(nested) = nested else {
+        panic!()
+    };
+    assert_eq!(nested.elements().unwrap(), vec![Value::Object(dead)]);
+}
+#[test]
+fn ranges_array_depth_item_limits_and_shared_subgraphs_are_preserved() {
+    let shared = Value::array(vec![Value::Int(1)]).unwrap();
+    let source = Value::array(vec![shared.clone(); 65536]).unwrap();
+    let Value::Array(result) = range_result(source, Value::Int(0), Value::Int(65535), 0).unwrap()
+    else {
+        panic!()
+    };
+    assert_eq!(result.elements().unwrap(), vec![shared; 65536]);
+    let mut deep = Value::Int(1);
+    for _ in 0..64 {
+        deep = Value::array(vec![deep]).unwrap();
+    }
+    let Value::Array(result) = range_result(deep, Value::Int(0), Value::Int(0), 0).unwrap() else {
+        panic!()
+    };
+    assert_eq!(result.depth().unwrap(), 64);
+}
+#[test]
+fn ranges_stack_underflow_and_byte_limit_preserve_operands_and_diagnostics() {
+    for count in 0..3 {
+        let nodes = vec![(0, 0, 0x3b); count];
+        let mut f = fun(0, 0, 0, 255, &nodes);
+        f.nodes.insert(f.nodes.len() - 1, (0, 0, 0x45));
+        let (mut vm, o) = machine(image(&[f], 0, &[]), vec![]);
+        vm.start(o, 0, vec![]).unwrap();
+        vm.run(2 + count).unwrap();
+        let before = vm.stack().unwrap();
+        assert_eq!(vm.run(1).unwrap_err().kind, VmErrorKind::StackUnderflow);
+        assert_eq!(vm.stack().unwrap(), before);
+    }
+    let (mut vm, o) = machine(image(&[range_function(0, 0)], 0, &[]), vec![]);
+    vm.start(
+        o,
+        0,
+        vec![
+            Value::bytes(vec![b'x'; 65537]),
+            Value::Int(0),
+            Value::Int(65536),
+        ],
+    )
+    .unwrap();
+    vm.run(5).unwrap();
+    let before = vm.stack().unwrap();
+    let e = vm.run(1).unwrap_err();
+    assert_eq!(e.kind, VmErrorKind::Limit);
+    assert_eq!(e.object, Some(o));
+    assert_eq!(e.function, Some(0));
+    assert_eq!(e.pc, Some(5));
+    assert_eq!(vm.stack().unwrap(), before);
+}
+#[test]
+fn ranges_errors_inside_catch_remain_fatal_and_restart_keeps_numeric_routing() {
+    let bad = catch_fun(
+        0,
+        0,
+        0,
+        255,
+        &[(0, 0, 0x16), (0, 0, 0x42), (0, 0, 0x3b), (0, 0, 0x45)],
+    );
+    let good = catch_fun(1, 0, 0, 255, &[(1, 0, 0x3b), (0, 0, 0x3b), (0, 0, 0x19)]);
+    let (mut vm, o) = machine(image(&[bad, good], 0, &[]), vec![]);
+    vm.start(o, 0, vec![]).unwrap();
+    assert_eq!(vm.run(100).unwrap_err().kind, VmErrorKind::UnsupportedType);
+    vm.start(o, 1, vec![]).unwrap();
+    returns(&mut vm, Value::Int(1));
+}
+#[test]
+fn ranges_inherited_body_uses_parent_pool_and_restores_child() {
+    let (parent, child) = inherited_pair(
+        &[(0, 0, 0x40), (1, 0, 0x3b), (3, 0, 0x3b), (0, 0, 0x45)],
+        &[(0, 0, 0x07), (0, 0, 0x33), (0, 0, 0x40)],
+    );
+    let (mut vm, o) = linked_vm(&linked_catalog(parent, child));
+    vm.start(o, 0, vec![]).unwrap();
+    returns(&mut vm, Value::bytes(b"are"));
+    vm.start(o, 1, vec![]).unwrap();
+    returns(&mut vm, Value::bytes(b"child"));
+}
+#[test]
+fn ranges_cross_object_result_and_return_context_survive_single_steps() {
+    let target = other_target(
+        image(&[range_function(1, 127)], 0, &[]),
+        vec![method(b"slice", 0)],
+    );
+    let (mut vm, caller, target) = other_machine(
+        image(&[other_wrapper(3, 0)], 0, &[]),
+        target,
+        vec![],
+        vec![],
+    );
+    vm.start(
+        caller,
+        0,
+        vec![
+            Value::Object(target),
+            Value::bytes(b"slice"),
+            Value::bytes(b"abcdef"),
+            Value::Int(2),
+            Value::Int(2),
+        ],
+    )
+    .unwrap();
+    loop {
+        if let RunOutcome::Finished(result) = vm.run(1).unwrap() {
+            assert_eq!(result, Completion::Returned(Value::bytes(b"cde")));
+            break;
+        }
+    }
+    assert_eq!(vm.frame_depth(), 0);
+    assert!(vm.objects().get(caller).is_ok());
+    assert!(vm.objects().get(target).is_ok());
+}
+#[test]
+fn ranges_lifecycle_helper_rejection_cleans_initialization_and_construction() {
+    let helper = fun(
+        2,
+        0,
+        0,
+        1,
+        &[
+            (0, 0, 0x40),
+            (0, 0, 0x3b),
+            (0, 0, 0x3b),
+            (0, 0, 0x45),
+            (0, 0, 0x33),
+        ],
+    );
+    let mut p = image(
+        &[
+            fun(0, 0, 0, 1, &[(2, 0, 0x07)]),
+            fun(1, 0, 0, 1, &[]),
+            helper,
+        ],
+        0,
+        &[b"x"],
+    );
+    set_init(&mut p, &[(2, 0, 0x07), (0, 0, 0x48)]);
+    let (mut vm, id) = init_vm(&init_catalog(p.clone()), "root");
+    let o = vm.begin_initialize(id).unwrap();
+    let e = vm.run(100).unwrap_err();
+    assert_eq!(e.kind, VmErrorKind::UnsupportedFeature);
+    assert_eq!(e.function, Some(2));
+    assert!(vm.objects().get(o).is_err());
+    assert!(vm.stack().unwrap().is_empty());
+    lifecycle_name(&mut p, 0, b"create");
+    lifecycle_name(&mut p, 1, b"destruct");
+    set_init(&mut p, &[(0, 0, 0x48)]);
+    let c = single_construct_catalog(
+        p,
+        rml32::LifecycleBinding {
+            create: Some(0),
+            destruct: Some(1),
+        },
+    );
+    let (mut vm, id) = construct_vm(&c, "root");
+    let o = vm.begin_construct(id, None).unwrap();
+    let e = vm.run(100).unwrap_err();
+    assert_eq!(e.kind, VmErrorKind::UnsupportedFeature);
+    assert_eq!(
+        e.lifecycle.as_ref().unwrap().phase,
+        rml32::LifecyclePhase::Create
+    );
+    assert!(vm.rollback_errors().is_empty());
+    assert!(vm.objects().get(o).is_err());
+    assert!(vm.stack().unwrap().is_empty());
+}
+#[test]
+fn ranges_rollback_helper_rejection_preserves_primary_error_and_cleans_task() {
+    let mut p = image(
+        &[
+            fun(0, 0, 0, 1, &[(0, 0, 0x33)]),
+            fun(1, 0, 0, 1, &[(2, 0, 0x07)]),
+            fun(
+                2,
+                0,
+                0,
+                1,
+                &[(0, 0, 0x40), (0, 0, 0x3b), (0, 0, 0x3b), (0, 0, 0x45)],
+            ),
+        ],
+        0,
+        &[b"x"],
+    );
+    lifecycle_name(&mut p, 0, b"create");
+    lifecycle_name(&mut p, 1, b"destruct");
+    set_init(&mut p, &[(0, 0, 0x48)]);
+    let c = single_construct_catalog(
+        p,
+        rml32::LifecycleBinding {
+            create: Some(0),
+            destruct: Some(1),
+        },
+    );
+    let (mut vm, id) = construct_vm(&c, "root");
+    let o = vm.begin_construct(id, None).unwrap();
+    assert_eq!(vm.run(100).unwrap_err().kind, VmErrorKind::StackUnderflow);
+    assert_eq!(vm.rollback_errors().len(), 1);
+    let e = &vm.rollback_errors()[0];
+    assert_eq!(e.kind, VmErrorKind::UnsupportedFeature);
+    assert_eq!(e.function, Some(2));
+    assert_eq!(
+        e.lifecycle.as_ref().unwrap().phase,
+        rml32::LifecyclePhase::RollbackDestruct
+    );
+    assert!(vm.objects().get(o).is_err());
+    assert!(vm.stack().unwrap().is_empty());
+}
+fn range_function(mode: i16, par8: i8) -> Fun {
+    fun(
+        0,
+        3,
+        0,
+        255,
+        &[(0, 0, 0x37), (1, 0, 0x37), (2, 0, 0x37), (mode, par8, 0x45)],
+    )
+}
+fn range_result(
+    source: Value,
+    begin: Value,
+    end: Value,
+    mode: i16,
+) -> Result<Value, rml32::VmError> {
+    let (mut vm, o) = machine(image(&[range_function(mode, 0)], 0, &[]), vec![]);
+    vm.start(o, 0, vec![source, begin, end]).unwrap();
+    match vm.run(100)? {
+        RunOutcome::Finished(Completion::Returned(v)) => Ok(v),
+        other => panic!("unexpected {other:?}"),
+    }
+}
+#[test]
+fn ranges_inclusive_modes_clip_both_types_and_preserve_order() {
+    for (mode, begin, end, expected) in [
+        (0, 1, 3, vec![1, 2, 3]),
+        (1, 1, 1, vec![1, 2, 3, 4]),
+        (2, 3, 3, vec![2, 3]),
+        (3, 3, 1, vec![2, 3, 4]),
+        (0, -8, 99, vec![0, 1, 2, 3, 4]),
+        (0, 4, 1, vec![]),
+        (0, 0, -1, vec![]),
+        (0, 99, 100, vec![]),
+        (1, 0, 0, vec![0, 1, 2, 3, 4]),
+        (1, 0, -5, vec![0, 1, 2, 3, 4]),
+        (2, 0, 4, vec![4]),
+        (3, -5, 0, vec![4]),
+    ] {
+        let begin = Value::Int(begin);
+        let end = Value::Int(end);
+        let bytes = range_result(
+            Value::bytes([10, 11, 12, 13, 14]),
+            begin.clone(),
+            end.clone(),
+            mode,
+        )
+        .unwrap();
+        assert_eq!(
+            bytes,
+            Value::bytes(expected.iter().map(|i| i + 10).collect::<Vec<_>>())
+        );
+        let values = (0..5).map(Value::Int).collect();
+        let Value::Array(result) =
+            range_result(Value::array(values).unwrap(), begin, end, mode).unwrap()
+        else {
+            panic!()
+        };
+        assert_eq!(
+            result.elements().unwrap(),
+            expected
+                .into_iter()
+                .map(|i| Value::Int(i.into()))
+                .collect::<Vec<_>>()
+        );
+    }
+}
+#[test]
+fn ranges_empty_single_and_extreme_endpoints_are_safe() {
+    for mode in 0..=3 {
+        for (begin, end) in [(0, 0), (i32::MIN, i32::MAX), (i32::MAX, i32::MIN)] {
+            assert_eq!(
+                range_result(Value::bytes([]), Value::Int(begin), Value::Int(end), mode).unwrap(),
+                Value::bytes([])
+            );
+            let source = Value::array(vec![]).unwrap();
+            let result =
+                range_result(source.clone(), Value::Int(begin), Value::Int(end), mode).unwrap();
+            assert_ne!(source, result); // Explicit Rust empty-array identity policy.
+            let Value::Array(result) = result else {
+                panic!()
+            };
+            assert!(result.elements().unwrap().is_empty());
+        }
+        assert_eq!(
+            range_result(Value::bytes(b"x"), Value::Int(0), Value::Int(0), mode).unwrap(),
+            Value::bytes(b"x")
+        );
+    }
+    assert_eq!(
+        range_result(
+            Value::bytes(b"xy"),
+            Value::Int(i32::MIN),
+            Value::Int(i32::MAX),
+            0
+        )
+        .unwrap(),
+        Value::bytes(b"xy")
+    );
+    assert_eq!(
+        range_result(
+            Value::bytes(b"xy"),
+            Value::Int(i32::MAX),
+            Value::Int(i32::MIN),
+            3
+        )
+        .unwrap(),
+        Value::bytes(b"xy")
+    );
+}
+#[test]
+fn ranges_real_endpoints_use_legacy_truncation_and_indefinite_min() {
+    for (begin, end, mode, expected) in [
+        (real(1.9), real(2.9), 0, b"bc".as_slice()),
+        (real(-0.0), real(0.0), 0, b"a"),
+        (real(f32::NAN), Value::Int(2), 0, b"abc"),
+        (Value::Int(0), real(f32::INFINITY), 0, b""),
+        (Value::Int(0), real(f32::NEG_INFINITY), 1, b"abcd"),
+        (real(2147483648.0), Value::Int(1), 0, b"ab"),
+        (real(2147483520.0), Value::Int(3), 0, b""),
+        (Value::Int(1), real(1.9), 1, b"bcd"),
+    ] {
+        assert_eq!(
+            range_result(Value::bytes(b"abcd"), begin, end, mode).unwrap(),
+            Value::bytes(expected)
+        );
+    }
+}
+#[test]
+fn ranges_bytes_apply_strncpy_padding_only_inside_selected_region() {
+    for (begin, end, expected) in [
+        (0, 3, vec![0x41, 0, 0, 0]),
+        (2, 3, vec![0x42, 0xff]),
+        (1, 2, vec![0, 0]),
+    ] {
+        assert_eq!(
+            range_result(
+                Value::bytes([0x41, 0, 0x42, 0xff]),
+                Value::Int(begin),
+                Value::Int(end),
+                0
+            )
+            .unwrap(),
+            Value::bytes(expected)
+        );
+    }
+}
+#[test]
+fn ranges_bytes_result_limit_is_independent_of_source_length() {
+    let bytes = Value::bytes(vec![b'x'; 65537]);
+    let result = range_result(bytes.clone(), Value::Int(0), Value::Int(65535), 0).unwrap();
+    assert_eq!(result, Value::bytes(vec![b'x'; 65536]));
+    assert_eq!(
+        range_result(bytes.clone(), Value::Int(0), Value::Int(65536), 0)
+            .unwrap_err()
+            .kind,
+        VmErrorKind::Limit
+    );
+    assert_eq!(
+        range_result(bytes, Value::Int(65536), Value::Int(65536), 0).unwrap(),
+        Value::bytes(b"x")
+    );
+}
+#[test]
+fn ranges_types_and_reference_operands_remain_explicit_errors() {
+    for source in [
+        Value::Int(1),
+        Value::Undefined,
+        Value::Void,
+        Value::mapping(vec![]).unwrap(),
+    ] {
+        assert_eq!(
+            range_result(source, Value::Int(0), Value::Int(0), 0)
+                .unwrap_err()
+                .kind,
+            VmErrorKind::UnsupportedType
+        );
+    }
+    for args in [
+        vec![Value::bytes(b"x"), Value::bytes(b"0"), Value::Int(0)],
+        vec![Value::bytes(b"x"), Value::Int(0), Value::Undefined],
+    ] {
+        let (mut vm, o) = machine(image(&[range_function(0, 0)], 0, &[]), vec![]);
+        vm.start(o, 0, args).unwrap();
+        vm.run(5).unwrap();
+        let before = vm.stack().unwrap();
+        let e = vm.run(1).unwrap_err();
+        assert_eq!(e.kind, VmErrorKind::UnsupportedType);
+        assert_eq!(e.pc, Some(5));
+        assert!(e.offset.is_some());
+        assert_eq!(vm.stack().unwrap(), before);
+    }
+    for position in 0..3 {
+        let mut f = range_function(0, 0);
+        f.nodes[2 + position].2 = 0x39;
+        let (mut vm, o) = machine(image(&[f], 0, &[]), vec![]);
+        vm.start(o, 0, vec![Value::bytes(b"x"), Value::Int(0), Value::Int(0)])
+            .unwrap();
+        vm.run(5).unwrap();
+        let before = vm.stack().unwrap();
+        assert_eq!(vm.run(1).unwrap_err().kind, VmErrorKind::UnsupportedFeature);
+        assert_eq!(vm.stack().unwrap(), before);
+    }
+}
+#[test]
+fn ranges_zero_budget_and_single_step_match_continuous_execution() {
+    let (mut vm, o) = machine(image(&[range_function(3, -128)], 0, &[]), vec![]);
+    vm.start(
+        o,
+        0,
+        vec![Value::bytes(b"abcde"), Value::Int(3), Value::Int(1)],
+    )
+    .unwrap();
+    vm.run(5).unwrap();
+    let before = vm.stack().unwrap();
+    assert_eq!(vm.run(0).unwrap(), RunOutcome::BudgetExhausted);
+    assert_eq!(vm.stack().unwrap(), before);
+    assert_eq!(vm.run(1).unwrap(), RunOutcome::BudgetExhausted);
+    assert_eq!(
+        vm.stack().unwrap().last(),
+        Some(&rml32::StackSnapshot::Value(Value::bytes(b"cde")))
+    );
+    returns(&mut vm, Value::bytes(b"cde"));
+    assert_eq!(
+        range_result(Value::bytes(b"abcde"), Value::Int(3), Value::Int(1), 3).unwrap(),
+        Value::bytes(b"cde")
+    );
+}
+#[test]
+fn ranges_preparation_rejects_bad_modes_init_and_default_expressions() {
+    for mode in [i16::MIN, -1, 4, i16::MAX] {
+        let e = prepare_program(image(&[range_function(mode, 0)], 0, &[])).unwrap_err();
+        assert_eq!(e.kind, VmErrorKind::UnsupportedFeature);
+        assert_eq!(e.pc, Some(5));
+    }
+    let mut p = image(&[], 0, &[]);
+    set_init(&mut p, &[(0, 0, 0x45), (0, 0, 0x48)]);
+    let e = prepare_init(&init_catalog(p), "root").unwrap_err();
+    assert_eq!(e.kind, VmErrorKind::UnsupportedFeature);
+    assert_eq!(e.offset, Some(9000));
+    let f = optional_fun(
+        0,
+        1,
+        0,
+        255,
+        &[vec![(0, 0, 0x40), (0, 0, 0x3b), (1, 0, 0x3b), (0, 0, 0x45)]],
+        &[(0, 0, 0x37)],
+    );
+    let mut p = image(&[f], 0, &[b"xy"]);
+    optional_meta(&mut p, 0, 0, false, &[4]);
+    assert_eq!(
+        prepare_program(p).unwrap_err().kind,
+        VmErrorKind::UnsupportedFeature
+    );
 }
 
 #[test]
