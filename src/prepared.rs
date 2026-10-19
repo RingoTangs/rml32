@@ -93,10 +93,18 @@ pub struct GlobalBankSchema {
 
 pub(crate) const MAX_GLOBAL_SLOTS: usize = 32768;
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub(crate) enum ProgramKind {
+    Object,
+    Global,
+}
+
 #[derive(Debug)]
 pub struct PreparedProgram {
     pub(crate) source: String,
     pub(crate) global_schema: Option<GlobalBankSchema>,
+    pub(crate) kind: ProgramKind,
+    pub(crate) function_capacity: usize,
     pub(crate) variable_count: usize,
     pub(crate) strings: Vec<Option<Value>>,
     pub(crate) functions: BTreeMap<i16, PreparedFunction>,
@@ -185,6 +193,7 @@ fn instructions(
     vars: usize,
     initialization: bool,
     globals: Option<GlobalBankSchema>,
+    global_code: bool,
 ) -> Result<Vec<Instruction>, VmError> {
     let metadata = bytes(&segment.metadata_hex)?;
     let mut result = Vec::new();
@@ -288,9 +297,12 @@ fn instructions(
             Err(err("case string index is outside pool or empty"))
         } else if matches!(op, 0x3d | 0x3e | 0x4e) && (a < 0 || a as usize >= vars) {
             Err(err("object variable index outside capacity"))
-        } else if op == 0x07 && (b as u8 & 0x80 != 0) {
+        } else if op == 0x07
+            && ((b as u8 & 0x80 != 0) && (globals.is_none() || initialization)
+                || (b as u8 & 0x80 == 0) && global_code)
+        {
             Err(unsupported(
-                "global/bootstrap function calls are not supported",
+                "function call requires explicit global preparation and global-code calls require bit7",
             ))
         } else {
             Ok(())
@@ -393,6 +405,7 @@ fn prepare_function(
     strings: &[Option<crate::ByteString>],
     vars: usize,
     globals: Option<GlobalBankSchema>,
+    global_code: bool,
 ) -> Result<PreparedFunction, VmError> {
     let index = f
         .index
@@ -441,7 +454,7 @@ fn prepare_function(
             return Err(err("argument descriptor index does not match position"));
         }
     }
-    let instructions = instructions(&f.code, strings, vars, false, globals)?;
+    let instructions = instructions(&f.code, strings, vars, false, globals, global_code)?;
     for (pc, i) in instructions.iter().enumerate() {
         if matches!(i.opcode, 0x12 | 0x23 | 0x50) {
             let slot = i.operands[usize::from(i.opcode != 0x23)];
@@ -491,7 +504,7 @@ fn prepare_function(
     })
 }
 pub fn prepare_program(image: ProgramImage) -> Result<PreparedProgram, VmError> {
-    prepare_object_program(image, None)
+    prepare_code_program(image, None, false)
 }
 
 /// Prepare ordinary single-constitution Object functions with explicit global access.
@@ -500,12 +513,21 @@ pub fn prepare_program_with_globals(
     image: ProgramImage,
     schema: GlobalBankSchema,
 ) -> Result<PreparedProgram, VmError> {
-    prepare_object_program(image, Some(schema))
+    prepare_code_program(image, Some(schema), false)
 }
 
-fn prepare_object_program(
+/// Prepare Global functions only; initialization and pre-module bootstrap are excluded.
+pub fn prepare_global_program(
+    image: ProgramImage,
+    schema: GlobalBankSchema,
+) -> Result<PreparedProgram, VmError> {
+    prepare_code_program(image, Some(schema), true)
+}
+
+fn prepare_code_program(
     image: ProgramImage,
     globals: Option<GlobalBankSchema>,
+    global_code: bool,
 ) -> Result<PreparedProgram, VmError> {
     let source = format!("sha256:{}", image.sha256);
     let build = || {
@@ -515,13 +537,21 @@ fn prepare_object_program(
                 "global schema exceeds 32768 slots",
             ));
         }
-        if image.mode != ProgramMode::Object
-            || !image.inherits.is_empty()
-            || image.constitution_count != Some(1)
+        if !image.inherits.is_empty()
+            || (!global_code
+                && (image.mode != ProgramMode::Object || image.constitution_count != Some(1)))
+            || (global_code && image.mode != ProgramMode::Global)
         {
             return Err(unsupported(
-                "stage 2A executes only single-constitution objects without inheritance",
+                "preparation requires the selected code kind without inheritance",
             ));
+        }
+        if global_code
+            && (image.function_base < 559
+                || image.function_base > i32::from(image.max_functions)
+                || globals.is_none_or(|s| s.slots != image.max_vars as usize))
+        {
+            return Err(err("invalid global function interval or variable schema"));
         }
         if image.efuns_count != 559 || image.max_vars < 0 || image.max_functions < 0 {
             return Err(err("invalid Magic559 capacities"));
@@ -532,13 +562,21 @@ fn prepare_object_program(
         let mut functions = BTreeMap::new();
         for function in image.functions {
             let index = function.index;
-            let prepared =
-                prepare_function(function, &image.strings, image.max_vars as usize, globals)
-                    .map_err(|mut e| {
-                        e.function = index;
-                        e
-                    })?;
-            if prepared.index >= image.max_functions || functions.contains_key(&prepared.index) {
+            let prepared = prepare_function(
+                function,
+                &image.strings,
+                image.max_vars as usize,
+                globals,
+                global_code,
+            )
+            .map_err(|mut e| {
+                e.function = index;
+                e
+            })?;
+            if prepared.index >= image.max_functions
+                || (global_code && i32::from(prepared.index) < image.function_base)
+                || functions.contains_key(&prepared.index)
+            {
                 return Err(err("function index is duplicated or outside capacity"));
             }
             functions.insert(prepared.index, prepared);
@@ -546,6 +584,12 @@ fn prepare_object_program(
         Ok(PreparedProgram {
             source: source.clone(),
             global_schema: globals,
+            kind: if global_code {
+                ProgramKind::Global
+            } else {
+                ProgramKind::Object
+            },
+            function_capacity: image.max_functions as usize,
             variable_count: image.max_vars as usize,
             strings: image
                 .strings
@@ -975,6 +1019,7 @@ fn prepare_catalog(
                                 image.max_vars as usize,
                                 true,
                                 None,
+                                false,
                             )?;
                             if !code.iter().any(|i| i.opcode == 0x48) {
                                 return Err(err("initialization has no return (48)"));
@@ -1040,12 +1085,13 @@ fn prepare_catalog(
                         body.attrib |= 4;
                     }
                 }
-                let mut f = prepare_function(body, &image.strings, image.max_vars as usize, None)
-                    .map_err(|mut e| {
-                    e.source = c.key.clone();
-                    e.function = Some(i as i16);
-                    e
-                })?;
+                let mut f =
+                    prepare_function(body, &image.strings, image.max_vars as usize, None, false)
+                        .map_err(|mut e| {
+                            e.source = c.key.clone();
+                            e.function = Some(i as i16);
+                            e
+                        })?;
                 f.origin = Some(c.key.clone());
                 f.pool = Some(pools[&c.key].clone());
                 bodies.insert(id.clone(), f);
@@ -1059,6 +1105,8 @@ fn prepare_catalog(
         Ok(PreparedProgram {
             source: root.into(),
             global_schema: None,
+            kind: ProgramKind::Object,
+            function_capacity: 0,
             variable_count: catalog.programs[root].max_vars as usize,
             strings: vec![],
             functions,

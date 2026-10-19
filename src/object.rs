@@ -46,6 +46,7 @@ pub struct ObjectStore {
     programs: BTreeMap<ProgramId, Rc<PreparedProgram>>,
     objects: BTreeMap<ObjectId, Object>,
     globals: Option<Vec<Rc<crate::cell::Cell>>>,
+    global_program: Option<ProgramId>,
     next_program: u32,
     next_object: u32,
 }
@@ -105,6 +106,33 @@ impl ObjectStore {
             .as_deref()
             .ok_or_else(|| VmError::new(VmErrorKind::InvalidState, "global bank is not installed"))
     }
+    /// Select Global code independently of the variable bank. Existing frames keep their code.
+    pub fn bind_global_program(&mut self, program: ProgramId) -> Result<(), VmError> {
+        if self.global_program.is_some() {
+            return Err(VmError::new(
+                VmErrorKind::InvalidState,
+                "global program is already bound",
+            ));
+        }
+        if self.program(program)?.kind != crate::prepared::ProgramKind::Global {
+            return Err(VmError::new(
+                VmErrorKind::UnsupportedFeature,
+                "global binding requires Global code",
+            ));
+        }
+        self.global_program = Some(program);
+        Ok(())
+    }
+    pub fn clear_global_program(&mut self) -> Result<(), VmError> {
+        self.global_program
+            .take()
+            .map(|_| ())
+            .ok_or_else(|| VmError::new(VmErrorKind::InvalidState, "global program is not bound"))
+    }
+    pub(crate) fn global_program(&self) -> Result<ProgramId, VmError> {
+        self.global_program
+            .ok_or_else(|| VmError::new(VmErrorKind::InvalidState, "global program is not bound"))
+    }
     pub fn register_program(&mut self, program: PreparedProgram) -> Result<ProgramId, VmError> {
         let id = ProgramId(self.next_program);
         self.next_program = self
@@ -120,6 +148,12 @@ impl ObjectStore {
         initial_values: Vec<Value>,
     ) -> Result<ObjectId, VmError> {
         let p = self.program(program)?;
+        if p.kind == crate::prepared::ProgramKind::Global {
+            return Err(VmError::new(
+                VmErrorKind::UnsupportedFeature,
+                "Global code cannot create an object",
+            ));
+        }
         if initial_values.len() != p.variable_count {
             return Err(VmError::new(
                 VmErrorKind::InvalidProgram,
@@ -189,5 +223,22 @@ impl ObjectStore {
             .get(&id)
             .cloned()
             .ok_or_else(|| VmError::new(VmErrorKind::InvalidProgram, "program handle is unknown"))
+    }
+}
+
+#[cfg(test)]
+mod global_binding_tests {
+    use super::*;
+    #[test]
+    fn global_calls_unknown_program_binding_does_not_install_a_binding() {
+        let mut store = ObjectStore::new();
+        assert_eq!(
+            store.bind_global_program(ProgramId(999)).unwrap_err().kind,
+            VmErrorKind::InvalidProgram
+        );
+        assert_eq!(
+            store.clear_global_program().unwrap_err().kind,
+            VmErrorKind::InvalidState
+        );
     }
 }

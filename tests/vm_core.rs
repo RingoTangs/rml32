@@ -50,8 +50,25 @@ fn code(out: &mut Vec<u8>, nodes: &[Node], meta: &[u8]) {
     word(out, 0);
 }
 fn image(functions: &[Fun], vars: usize, strings: &[&[u8]]) -> ProgramImage {
+    image_mode(functions, vars, strings, ProgramMode::Object)
+}
+fn global_image(functions: &[Fun], vars: usize, strings: &[&[u8]]) -> ProgramImage {
+    image_mode(functions, vars, strings, ProgramMode::Global)
+}
+fn image_mode(
+    functions: &[Fun],
+    vars: usize,
+    strings: &[&[u8]],
+    mode: ProgramMode,
+) -> ProgramImage {
     let mut out = Vec::new();
-    for n in [0x10001, 0, 0, 0, strings.len() as i32] {
+    for n in [
+        0x10001,
+        0,
+        if mode == ProgramMode::Global { 559 } else { 0 },
+        0,
+        strings.len() as i32,
+    ] {
         word(&mut out, n);
     }
     for s in strings {
@@ -68,7 +85,7 @@ fn image(functions: &[Fun], vars: usize, strings: &[&[u8]]) -> ProgramImage {
     out.extend(names);
     short(&mut out, vars as i16);
     short(&mut out, vars as i16);
-    for i in 0..vars {
+    for i in 0..if mode == ProgramMode::Object { vars } else { 0 } {
         out.extend([0; 16]);
         string(&mut out, format!("v{i}\0").as_bytes());
     }
@@ -78,8 +95,10 @@ fn image(functions: &[Fun], vars: usize, strings: &[&[u8]]) -> ProgramImage {
         functions.iter().map(|f| f.index + 1).max().unwrap_or(0),
     );
     word(&mut out, 0);
-    short(&mut out, 1);
-    word(&mut out, 0);
+    if mode == ProgramMode::Object {
+        short(&mut out, 1);
+        word(&mut out, 0);
+    }
     word(&mut out, functions.len() as i32);
     for (f, offset) in functions.iter().zip(offsets) {
         let mut dlt = [0; 20];
@@ -108,7 +127,7 @@ fn image(functions: &[Fun], vars: usize, strings: &[&[u8]]) -> ProgramImage {
         code(&mut out, &f.nodes, &f.meta);
     }
     code(&mut out, &[(0, 0, 0x1d)], &[]);
-    parse_program(&out, ProgramMode::Object).unwrap()
+    parse_program(&out, mode).unwrap()
 }
 fn machine(image: ProgramImage, values: Vec<Value>) -> (Vm, rml32::ObjectId) {
     let mut store = ObjectStore::new();
@@ -8949,8 +8968,8 @@ fn globals_preparation_is_explicit_and_checks_signed_slot_boundaries() {
 
 #[test]
 fn globals_preparation_does_not_enable_other_global_features_or_init() {
-    for node in [(0, 0, 0x06), (559, -128, 0x07)] {
-        let p = image(&[fun(0, 0, 0, 255, &[node])], 0, &[]);
+    {
+        let p = image(&[fun(0, 0, 0, 255, &[(0, 0, 0x06)])], 0, &[]);
         assert_eq!(
             rml32::prepare_program_with_globals(p, rml32::GlobalBankSchema { slots: 1 })
                 .unwrap_err()
@@ -9482,4 +9501,656 @@ fn globals_do_not_change_legacy_programs_that_do_not_access_the_bank() {
     }
     vm.start(o, 0, vec![]).unwrap();
     returns(&mut vm, Value::Int(9));
+}
+
+// Stage 2AC: all Global images below are serialized synthetic Magic559 programs.
+fn bind_synthetic_globals(vm: &mut Vm, p: ProgramImage, slots: usize) -> rml32::ProgramId {
+    let p = rml32::prepare_global_program(p, rml32::GlobalBankSchema { slots }).unwrap();
+    let id = vm.objects_mut().register_program(p).unwrap();
+    vm.objects_mut().bind_global_program(id).unwrap();
+    id
+}
+fn global_call_machine(global: ProgramImage) -> (Vm, rml32::ObjectId, rml32::ProgramId) {
+    let caller = image(&[fun(0, 0, 0, 255, &[(559, -128, 0x07)])], 0, &[]);
+    let slots = global.max_vars as usize;
+    let (mut vm, o) = global_machine(caller, vec![Value::Undefined; slots], slots);
+    let id = bind_synthetic_globals(&mut vm, global, slots);
+    (vm, o, id)
+}
+
+#[test]
+fn global_calls_preparation_checks_kind_schema_function_interval_and_duplicates() {
+    use rml32::{GlobalBankSchema, prepare_global_program};
+    let good = global_image(&[fun(559, 0, 0, 255, &[(0, 0, 0x41)])], 1, &[]);
+    assert!(prepare_global_program(good.clone(), GlobalBankSchema { slots: 1 }).is_ok());
+    for (case, kind) in [
+        (0, VmErrorKind::UnsupportedFeature),
+        (1, VmErrorKind::InvalidProgram),
+        (2, VmErrorKind::InvalidProgram),
+        (3, VmErrorKind::InvalidProgram),
+        (4, VmErrorKind::InvalidProgram),
+        (5, VmErrorKind::InvalidProgram),
+    ] {
+        let mut p = good.clone();
+        match case {
+            0 => p.mode = ProgramMode::Object,
+            1 => p.function_base = 558,
+            2 => p.function_base = 561,
+            3 => p.functions[0].index = Some(558),
+            4 => p.functions.push(p.functions[0].clone()),
+            _ => p.max_vars = 2,
+        }
+        assert_eq!(
+            prepare_global_program(p, GlobalBankSchema { slots: 1 })
+                .unwrap_err()
+                .kind,
+            kind
+        );
+    }
+    let mut p = good;
+    p.efuns_count = 558;
+    assert_eq!(
+        prepare_global_program(p, GlobalBankSchema { slots: 1 })
+            .unwrap_err()
+            .kind,
+        VmErrorKind::InvalidProgram
+    );
+}
+
+#[test]
+fn global_calls_binding_is_explicit_and_global_code_cannot_create_objects() {
+    let mut s = ObjectStore::new();
+    assert_eq!(
+        s.clear_global_program().unwrap_err().kind,
+        VmErrorKind::InvalidState
+    );
+    let object = s
+        .register_program(prepare_program(image(&[fun(0, 0, 0, 1, &[])], 0, &[])).unwrap())
+        .unwrap();
+    assert_eq!(
+        s.bind_global_program(object).unwrap_err().kind,
+        VmErrorKind::UnsupportedFeature
+    );
+    let p = rml32::prepare_global_program(
+        global_image(&[fun(559, 0, 0, 1, &[])], 0, &[]),
+        rml32::GlobalBankSchema { slots: 0 },
+    )
+    .unwrap();
+    let global = s.register_program(p).unwrap();
+    assert_eq!(
+        s.create(global, vec![]).unwrap_err().kind,
+        VmErrorKind::UnsupportedFeature
+    );
+    s.bind_global_program(global).unwrap();
+    assert_eq!(
+        s.bind_global_program(global).unwrap_err().kind,
+        VmErrorKind::InvalidState
+    );
+    s.clear_global_program().unwrap();
+    s.bind_global_program(global).unwrap(); // No variable bank required.
+}
+
+#[test]
+fn global_calls_legacy_and_global_local_calls_stay_rejected() {
+    let p = image(&[fun(0, 0, 0, 255, &[(559, -128, 0x07)])], 0, &[]);
+    assert_eq!(
+        prepare_program(p.clone()).unwrap_err().kind,
+        VmErrorKind::UnsupportedFeature
+    );
+    assert!(rml32::prepare_program_with_globals(p, rml32::GlobalBankSchema { slots: 0 }).is_ok());
+    for op in [(559, 0, 0x07), (0, 0, 0x06)] {
+        let e = rml32::prepare_global_program(
+            global_image(&[fun(559, 0, 0, 255, &[op])], 0, &[]),
+            rml32::GlobalBankSchema { slots: 0 },
+        )
+        .unwrap_err();
+        assert_eq!(e.kind, VmErrorKind::UnsupportedFeature);
+        assert_eq!(e.pc, Some(2));
+    }
+}
+
+#[test]
+fn global_calls_absolute_slots_flags_and_missing_bindings_have_distinct_errors() {
+    for (slot, expected) in [
+        (-1, Some(VmErrorKind::Bounds)),
+        (560, Some(VmErrorKind::Bounds)),
+        (558, Some(VmErrorKind::UnsupportedFeature)),
+        (559, None),
+    ] {
+        for flags in [-128, -64] {
+            // bit6 ignored; argc remains zero.
+            let caller = image(&[fun(0, 0, 0, 255, &[(slot, flags, 0x07)])], 0, &[]);
+            let (mut vm, o) = global_machine(caller, vec![], 0);
+            bind_synthetic_globals(
+                &mut vm,
+                global_image(&[fun(559, 0, 0, 255, &[(9, 0, 0x3b)])], 0, &[]),
+                0,
+            );
+            vm.start(o, 0, vec![]).unwrap();
+            if let Some(kind) = expected {
+                let e = vm.run(100).unwrap_err();
+                assert_eq!(e.kind, kind);
+                assert_eq!(e.object, Some(o));
+                assert_eq!(e.pc, Some(2));
+            } else {
+                returns(&mut vm, Value::Int(9));
+            }
+        }
+    }
+    let (mut vm, o) = global_machine(
+        image(&[fun(0, 0, 0, 255, &[(559, -128, 0x07)])], 0, &[]),
+        vec![],
+        0,
+    );
+    vm.start(o, 0, vec![]).unwrap();
+    assert_eq!(vm.run(100).unwrap_err().kind, VmErrorKind::InvalidState);
+    let mut p = global_image(&[fun(572, 0, 0, 255, &[(9, 0, 0x3b)])], 0, &[]);
+    p.function_base = 572;
+    let (mut vm, o, _) = global_call_machine(p);
+    vm.start(o, 0, vec![]).unwrap();
+    assert_eq!(
+        vm.run(100).unwrap_err().kind,
+        VmErrorKind::UnsupportedFeature
+    );
+}
+
+#[test]
+fn global_calls_clear_object_context_and_restore_object_on_return() {
+    let caller = image(
+        &[fun(
+            0,
+            0,
+            0,
+            255,
+            &[(559, -128, 0x07), (0, 0, 0x33), (0, 0, 0x41)],
+        )],
+        0,
+        &[],
+    );
+    let (mut vm, o) = global_machine(caller, vec![], 0);
+    bind_synthetic_globals(
+        &mut vm,
+        global_image(&[fun(559, 0, 0, 2, &[(0, 0, 0x41)])], 0, &[]),
+        0,
+    );
+    vm.start(o, 0, vec![]).unwrap();
+    vm.run(6).unwrap();
+    assert_eq!(
+        vm.stack().unwrap(),
+        vec![rml32::StackSnapshot::Value(Value::Int(0))]
+    );
+    returns(&mut vm, Value::Object(o));
+}
+
+#[test]
+fn global_calls_nested_global_functions_use_absolute_slots_and_own_string_pool() {
+    let global = global_image(
+        &[
+            fun(559, 0, 0, 255, &[(560, -128, 0x07)]),
+            fun(560, 0, 0, 255, &[(0, 0, 0x40)]),
+        ],
+        0,
+        &[b"global\0"],
+    );
+    let caller = image(
+        &[fun(
+            0,
+            0,
+            0,
+            255,
+            &[(559, -128, 0x07), (0, 0, 0x40), (2, 0, 0x16)],
+        )],
+        0,
+        &[b"object\0"],
+    );
+    let (mut vm, o) = global_machine(caller, vec![], 0);
+    bind_synthetic_globals(&mut vm, global, 0);
+    vm.start(o, 0, vec![]).unwrap();
+    let RunOutcome::Finished(Completion::Returned(Value::Array(values))) = vm.run(100).unwrap()
+    else {
+        panic!()
+    };
+    assert_eq!(
+        values.elements().unwrap(),
+        vec![Value::bytes(b"object"), Value::bytes(b"global")]
+    );
+}
+
+#[test]
+fn global_calls_object_variable_instructions_fail_without_fake_object_identity() {
+    for opcode in [0x3d, 0x3e, 0x4e] {
+        let mut nodes = vec![];
+        if opcode == 0x4e {
+            nodes.push((7, 0, 0x3b));
+        }
+        nodes.push((0, 0, opcode));
+        let (mut vm, o, id) =
+            global_call_machine(global_image(&[fun(559, 0, 0, 255, &nodes)], 1, &[]));
+        vm.start(o, 0, vec![]).unwrap();
+        let e = vm.run(100).unwrap_err();
+        assert_eq!(e.kind, VmErrorKind::UnsupportedFeature);
+        assert_eq!(e.object, None);
+        assert_eq!(e.program, Some(id));
+        assert_eq!(e.function, Some(559));
+        assert!(e.offset.is_some());
+    }
+}
+
+#[test]
+fn global_calls_can_call_object_methods_and_restore_global_none_context() {
+    let global = global_image(
+        &[fun(
+            559,
+            1,
+            0,
+            255,
+            &[
+                (0, 0, 0x40),
+                (0, 0, 0x37),
+                (0, 0, 0x08),
+                (0, 0, 0x33),
+                (0, 0, 0x41),
+            ],
+        )],
+        0,
+        &[b"who\0"],
+    );
+    let caller = image(
+        &[fun(0, 1, 0, 255, &[(0, 0, 0x37), (559, -127, 0x07)])],
+        0,
+        &[],
+    );
+    let (mut vm, o) = global_machine(caller, vec![], 0);
+    bind_synthetic_globals(&mut vm, global, 0);
+    let p = other_target(
+        image(&[fun(0, 0, 0, 255, &[(0, 0, 0x41)])], 0, &[]),
+        vec![rml32::MethodBinding {
+            name: b"who".to_vec(),
+            slot: 0,
+        }],
+    );
+    let p = vm.objects_mut().register_program(p).unwrap();
+    let target = vm.objects_mut().create(p, vec![]).unwrap();
+    vm.start(o, 0, vec![Value::Object(target)]).unwrap();
+    assert_eq!(vm.run(13).unwrap(), RunOutcome::BudgetExhausted);
+    assert_eq!(
+        vm.stack().unwrap().last(),
+        Some(&rml32::StackSnapshot::Value(Value::Object(target)))
+    );
+    returns(&mut vm, Value::Int(0));
+}
+
+#[test]
+fn global_calls_active_frames_survive_clear_and_new_calls_use_rebinding() {
+    let old = global_image(
+        &[
+            fun(559, 0, 0, 255, &[(1, 0, 0x3b)]),
+            fun(560, 0, 0, 255, &[(2, 0, 0x3b)]),
+        ],
+        0,
+        &[],
+    );
+    let new = global_image(
+        &[
+            fun(559, 0, 0, 255, &[(8, 0, 0x3b)]),
+            fun(560, 0, 0, 255, &[(9, 0, 0x3b)]),
+        ],
+        0,
+        &[],
+    );
+    let caller = image(
+        &[fun(
+            0,
+            0,
+            0,
+            255,
+            &[(559, -128, 0x07), (560, -128, 0x07), (0, 0, 0x01)],
+        )],
+        0,
+        &[],
+    );
+    let (mut vm, o) = global_machine(caller, vec![], 0);
+    bind_synthetic_globals(&mut vm, old, 0);
+    vm.start(o, 0, vec![]).unwrap();
+    vm.run(3).unwrap();
+    vm.objects_mut().clear_global_program().unwrap();
+    vm.run(2).unwrap(); // Already-entered code remains executable without binding.
+    bind_synthetic_globals(&mut vm, new, 0);
+    returns(&mut vm, Value::Int(10));
+}
+
+#[test]
+fn global_calls_deleted_caller_does_not_invalidate_active_global_code() {
+    let (mut vm, o, _) = global_call_machine(global_image(
+        &[fun(559, 0, 0, 255, &[(7, 0, 0x3b)])],
+        0,
+        &[],
+    ));
+    vm.start(o, 0, vec![]).unwrap();
+    vm.run(3).unwrap();
+    vm.objects_mut().remove(o).unwrap();
+    assert_eq!(vm.run(4).unwrap(), RunOutcome::BudgetExhausted); // 0f,1b,push,return all use Global code.
+    let e = vm.run(1).unwrap_err();
+    assert_eq!(e.kind, VmErrorKind::InvalidObject);
+    assert_eq!(e.object, Some(o));
+    assert_eq!(e.function, Some(0));
+}
+
+#[test]
+fn global_calls_global_errors_have_actual_program_pool_and_no_object() {
+    let (mut vm, o, id) = global_call_machine(global_image(
+        &[fun(
+            559,
+            0,
+            0,
+            255,
+            &[(0, 0, 0x40), (1, 0, 0x3b), (0, 0, 0x01)],
+        )],
+        0,
+        &[b"text\0"],
+    ));
+    vm.start(o, 0, vec![]).unwrap();
+    let e = vm.run(100).unwrap_err();
+    assert_eq!(e.kind, VmErrorKind::UnsupportedType);
+    assert_eq!(e.program, Some(id));
+    assert_eq!(e.object, None);
+    assert_eq!(e.function, Some(559));
+    assert_eq!(e.pc, Some(4));
+}
+
+#[test]
+fn global_calls_catch_unwinds_both_execution_sources_and_keeps_correct_context() {
+    // Object catches a Global arithmetic fault; Global catches an Object fault.
+    let caller = image(&[catch_fun(0, 0, 0, 255, &[(559, -128, 0x07)])], 0, &[]);
+    let (mut vm, o) = global_machine(caller, vec![], 0);
+    bind_synthetic_globals(
+        &mut vm,
+        global_image(&[fun(559, 0, 0, 255, INT_ZERO)], 0, &[]),
+        0,
+    );
+    vm.start(o, 0, vec![]).unwrap();
+    returns(&mut vm, Value::Int(1));
+    let caller = image(
+        &[fun(0, 1, 0, 255, &[(0, 0, 0x37), (559, -127, 0x07)])],
+        0,
+        &[],
+    );
+    let global = global_image(
+        &[catch_fun(
+            559,
+            1,
+            0,
+            255,
+            &[(0, 0, 0x40), (0, 0, 0x37), (0, 0, 0x08)],
+        )],
+        0,
+        &[b"fail\0"],
+    );
+    let (mut vm, o) = global_machine(caller, vec![], 0);
+    bind_synthetic_globals(&mut vm, global, 0);
+    let p = other_target(
+        image(&[fun(0, 0, 0, 255, INT_ZERO)], 0, &[]),
+        vec![rml32::MethodBinding {
+            name: b"fail".to_vec(),
+            slot: 0,
+        }],
+    );
+    let id = vm.objects_mut().register_program(p).unwrap();
+    let target = vm.objects_mut().create(id, vec![]).unwrap();
+    vm.start(o, 0, vec![Value::Object(target)]).unwrap();
+    returns(&mut vm, Value::Int(1));
+}
+
+#[test]
+fn global_calls_reference_parameters_forward_global_roots_and_object_locals() {
+    let caller = fun(
+        0,
+        0,
+        1,
+        255,
+        &[
+            (0, 0, 0x36),
+            (559, -127, 0x07),
+            (0, 0, 0x33),
+            (-1, 0, 0x39),
+            (559, -127, 0x07),
+            (0, 0, 0x33),
+            (-1, 0, 0x37),
+        ],
+    );
+    let forward = fun(559, 1, 0, 255, &[(0, 0, 0x39), (560, -127, 0x07)]);
+    let callee = fun(560, 1, 0, 1, &[(9, 0, 0x3b), (0, 0, 0x4d), (0, 0, 0x33)]);
+    let mut global = global_image(&[forward, callee], 1, &[]);
+    ref_arg(&mut global, 0, 0, 255, 0);
+    ref_arg(&mut global, 1, 0, 255, 0);
+    let (mut vm, o) = global_machine(image(&[caller], 0, &[]), vec![Value::Int(1)], 1);
+    bind_synthetic_globals(&mut vm, global, 1);
+    vm.start(o, 0, vec![]).unwrap();
+    returns(&mut vm, Value::Int(9));
+    assert_eq!(vm.objects().global_values().unwrap(), vec![Value::Int(9)]);
+}
+
+#[test]
+fn global_calls_parameter_preflight_failure_preserves_caller_operands_and_frames() {
+    for reference in [false, true] {
+        let nodes = if reference {
+            vec![(0, 0, 0x36), (559, -127, 0x07)]
+        } else {
+            vec![(0, 0, 0x40), (559, -127, 0x07)]
+        };
+        let caller = image(&[fun(0, 0, 0, 255, &nodes)], 0, &[b"wrong\0"]);
+        let (mut vm, o) = global_machine(caller, vec![Value::bytes(b"wrong")], 1);
+        let mut global = global_image(&[fun(559, 1, 0, 1, &[])], 1, &[]);
+        if reference {
+            ref_arg(&mut global, 0, 0, 2, 0);
+        } else {
+            global.functions[0].arguments[0].r#type = 2;
+        }
+        bind_synthetic_globals(&mut vm, global, 1);
+        vm.start(o, 0, vec![]).unwrap();
+        vm.run(3).unwrap();
+        let before = vm.stack().unwrap();
+        let e = vm.run(1).unwrap_err();
+        assert_eq!(e.kind, VmErrorKind::UnsupportedType);
+        assert_eq!(e.object, Some(o));
+        assert_eq!(vm.stack().unwrap(), before);
+        assert_eq!(vm.frame_depth(), 1);
+        assert_eq!(
+            vm.objects().global_values().unwrap(),
+            vec![Value::bytes(b"wrong")]
+        );
+    }
+}
+
+#[test]
+fn global_calls_prototype_limits_return_failures_and_catch_sources_remain_bounded() {
+    for (argc, ret, body, kind) in [
+        (1, 255, vec![(7, 0, 0x3b)], VmErrorKind::ArgumentCount),
+        (0, 2, vec![(0, 0, 0x40)], VmErrorKind::UnsupportedType),
+    ] {
+        let (mut vm, o, id) = global_call_machine(global_image(
+            &[fun(559, argc, 0, ret, &body)],
+            0,
+            &[b"wrong\0"],
+        ));
+        vm.start(o, 0, vec![]).unwrap();
+        let e = vm.run(100).unwrap_err();
+        assert_eq!(e.kind, kind);
+        assert_eq!(e.object, if argc == 1 { Some(o) } else { None });
+        if argc == 0 {
+            assert_eq!(e.program, Some(id));
+        }
+    }
+    let (vm, o, _) = global_call_machine(global_image(
+        &[fun(559, 0, 0, 255, &[(7, 0, 0x3b)])],
+        0,
+        &[],
+    ));
+    let mut vm = Vm::with_limits(
+        vm.into_objects(),
+        VmLimits {
+            max_frames: 1,
+            ..VmLimits::default()
+        },
+    );
+    vm.start(o, 0, vec![]).unwrap();
+    assert_eq!(vm.run(100).unwrap_err().kind, VmErrorKind::Limit);
+    let (mut vm, o) = global_machine(
+        image(&[catch_fun(0, 0, 0, 255, &[(559, -128, 0x07)])], 0, &[]),
+        vec![],
+        0,
+    );
+    vm.start(o, 0, vec![]).unwrap();
+    assert_eq!(vm.run(100).unwrap_err().kind, VmErrorKind::InvalidState);
+}
+
+#[test]
+fn global_calls_variable_access_uses_global_schema_and_current_bank() {
+    let global = global_image(
+        &[fun(
+            559,
+            0,
+            0,
+            255,
+            &[(0, 0, 0x36), (1, 0, 0x22), (0, 0, 0x35)],
+        )],
+        1,
+        &[],
+    );
+    let (mut vm, o, _) = global_call_machine(global);
+    vm.objects_mut().remove_globals().unwrap();
+    vm.objects_mut()
+        .register_globals(vec![Value::Int(6)])
+        .unwrap();
+    vm.start(o, 0, vec![]).unwrap();
+    returns(&mut vm, Value::Int(7));
+    let (mut vm, o) = global_machine(
+        image(&[fun(0, 0, 0, 255, &[(559, -128, 0x07)])], 0, &[]),
+        vec![],
+        0,
+    );
+    bind_synthetic_globals(
+        &mut vm,
+        global_image(&[fun(559, 0, 0, 255, &[(0, 0, 0x35)])], 1, &[]),
+        1,
+    );
+    vm.start(o, 0, vec![]).unwrap();
+    let e = vm.run(100).unwrap_err();
+    assert_eq!(e.kind, VmErrorKind::InvalidState);
+    assert_eq!(e.object, None);
+}
+
+#[test]
+fn global_calls_global_init_is_ignored_and_default_whitelist_does_not_expand() {
+    let mut global = global_image(&[fun(559, 0, 0, 255, &[(7, 0, 0x3b)])], 0, &[]);
+    global.init.nodes = vec![(559, 0, 0x06)];
+    let (mut vm, o, _) = global_call_machine(global);
+    vm.start(o, 0, vec![]).unwrap();
+    returns(&mut vm, Value::Int(7));
+    let f = optional_fun(559, 1, 0, 255, &[vec![(7, 0, 0x3b)]], &[(0, 0, 0x37)]);
+    let mut global = global_image(&[f], 0, &[]);
+    optional_meta(&mut global, 0, 0, false, &[1]);
+    let (mut vm, o, _) = global_call_machine(global.clone());
+    vm.start(o, 0, vec![]).unwrap();
+    returns(&mut vm, Value::Int(7));
+    global.max_vars = 1;
+    global.functions[0].code.nodes[1] = (0, 0, 0x35);
+    assert_eq!(
+        rml32::prepare_global_program(global, rml32::GlobalBankSchema { slots: 1 })
+            .unwrap_err()
+            .kind,
+        VmErrorKind::UnsupportedFeature
+    );
+}
+
+#[test]
+fn global_calls_zero_and_single_step_budgets_match_continuous_execution() {
+    for step in [false, true] {
+        let global = global_image(
+            &[
+                fun(559, 0, 0, 255, &[(560, -128, 0x07)]),
+                fun(560, 0, 0, 255, &[(0, 0, 0x41)]),
+            ],
+            0,
+            &[],
+        );
+        let (mut vm, o, _) = global_call_machine(global);
+        vm.start(o, 0, vec![]).unwrap();
+        let before = vm.stack().unwrap();
+        assert_eq!(vm.run(0).unwrap(), RunOutcome::BudgetExhausted);
+        assert_eq!(vm.stack().unwrap(), before);
+        if step {
+            loop {
+                if let RunOutcome::Finished(result) = vm.run(1).unwrap() {
+                    assert_eq!(result, Completion::Returned(Value::Int(0)));
+                    break;
+                }
+            }
+        } else {
+            returns(&mut vm, Value::Int(0));
+        }
+    }
+}
+
+#[test]
+fn global_calls_preflight_does_not_normalize_earlier_deleted_object_before_later_type_error() {
+    let caller = image(
+        &[fun(
+            0,
+            2,
+            0,
+            255,
+            &[(1, 0, 0x37), (0, 0, 0x37), (559, -126, 0x07)],
+        )],
+        0,
+        &[],
+    );
+    let (mut vm, o) = global_machine(caller, vec![], 0);
+    let mut global = global_image(&[fun(559, 2, 0, 1, &[])], 0, &[]);
+    global.functions[0].arguments[1].r#type = 2;
+    bind_synthetic_globals(&mut vm, global, 0);
+    let program = vm.objects().get(o).unwrap().program();
+    let target = vm.objects_mut().create(program, vec![]).unwrap();
+    let dead = Value::Object(target);
+    vm.start(o, 0, vec![dead.clone(), Value::bytes(b"wrong")])
+        .unwrap();
+    vm.run(4).unwrap();
+    vm.objects_mut().remove(target).unwrap();
+    let before = vm.stack().unwrap();
+    assert_eq!(vm.run(1).unwrap_err().kind, VmErrorKind::UnsupportedType);
+    assert_eq!(vm.stack().unwrap(), before);
+    assert_eq!(vm.frame_depth(), 1);
+    assert!(before.contains(&rml32::StackSnapshot::Value(dead)));
+}
+
+#[test]
+fn global_calls_code_binding_and_variable_bank_lifetimes_are_independent() {
+    let global = global_image(
+        &[
+            fun(559, 0, 0, 255, &[(560, -128, 0x07)]),
+            fun(560, 0, 0, 255, &[(7, 0, 0x3b)]),
+        ],
+        0,
+        &[],
+    );
+    let (mut vm, o, _) = global_call_machine(global);
+    vm.objects_mut().remove_globals().unwrap();
+    vm.start(o, 0, vec![]).unwrap();
+    vm.run(3).unwrap();
+    vm.objects_mut().clear_global_program().unwrap(); // Active Global code survives; its next call cannot resolve a binding.
+    let e = vm.run(100).unwrap_err();
+    assert_eq!(e.kind, VmErrorKind::InvalidState);
+    assert_eq!(e.object, None);
+    assert_eq!(e.function, Some(559));
+    let (mut vm, o, _) = global_call_machine(global_image(
+        &[fun(559, 0, 0, 255, &[(7, 0, 0x3b)])],
+        0,
+        &[],
+    ));
+    vm.objects_mut().remove_globals().unwrap();
+    vm.start(o, 0, vec![]).unwrap();
+    returns(&mut vm, Value::Int(7));
+    let mut s = vm.into_objects();
+    assert!(s.global_values().is_err());
+    s.clear_global_program().unwrap();
 }

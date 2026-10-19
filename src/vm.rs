@@ -2,7 +2,7 @@
 use crate::{
     cell::{Cell, SlotPayload},
     object::{InitializationState, LifecycleState, ObjectStore},
-    prepared::{EntryLayout, Instruction, PreparedFunction, PreparedProgram},
+    prepared::{EntryLayout, Instruction, PreparedFunction, PreparedProgram, ProgramKind},
     value::{ObjectId, ProgramId, Value},
     vm_error::{LifecycleContext, LifecyclePhase, VmError, VmErrorKind},
 };
@@ -221,17 +221,42 @@ struct ConstructionTask {
     parameter: Option<Value>,
     primary: Option<VmError>,
 }
+#[derive(Debug, Clone, Copy)]
+enum ExecutionSource {
+    ObjectProgram(ProgramId),
+    GlobalProgram(ProgramId),
+}
+impl ExecutionSource {
+    fn program(self) -> ProgramId {
+        match self {
+            Self::ObjectProgram(p) | Self::GlobalProgram(p) => p,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 struct Frame {
     id: u64,
-    program: ProgramId,
-    object: ObjectId,
+    execution: ExecutionSource,
+    active_object: Option<ObjectId>,
     body: FrameBody,
     pc: usize,
     bp: usize,
     argc: usize,
     entered: bool,
     phase: EntryPhase,
+}
+impl Frame {
+    fn program(&self) -> ProgramId {
+        self.execution.program()
+    }
+    fn object(&self) -> Result<ObjectId, VmError> {
+        self.active_object.ok_or_else(|| {
+            err(
+                VmErrorKind::UnsupportedFeature,
+                "operation requires an active Object",
+            )
+        })
+    }
 }
 #[derive(Debug)]
 struct ScriptCatch {
@@ -402,8 +427,8 @@ impl Vm {
     ) -> Frame {
         Frame {
             id,
-            program,
-            object,
+            execution: ExecutionSource::ObjectProgram(program),
+            active_object: Some(object),
             body: FrameBody::Initialization(constitution),
             pc: 0,
             bp: 0,
@@ -430,13 +455,13 @@ impl Vm {
         if let Some(&constitution) = p.init_order.get(position) {
             let id = self.frame_id()?;
             self.frames[0] =
-                Self::initialization_frame(id, frame.program, frame.object, constitution);
+                Self::initialization_frame(id, frame.program(), frame.object()?, constitution);
             let task = self.initialization.as_mut().unwrap();
             task.position = position;
             task.constitution = constitution;
         } else {
             self.objects
-                .set_initialization(frame.object, InitializationState::Initialized)?;
+                .set_initialization(frame.object()?, InitializationState::Initialized)?;
             self.frames.clear();
             self.reference_cells.clear();
             self.initialization = None;
@@ -445,7 +470,7 @@ impl Vm {
                 task.position = 0;
                 self.advance_construction();
             } else {
-                self.completion = Some(Completion::Initialized(frame.object));
+                self.completion = Some(Completion::Initialized(frame.object()?));
             }
         }
         Ok(())
@@ -580,8 +605,8 @@ impl Vm {
         let task = self.construction.as_ref().unwrap();
         self.frames = vec![Frame {
             id,
-            program: task.program,
-            object: task.object,
+            execution: ExecutionSource::ObjectProgram(task.program),
+            active_object: Some(task.object),
             body: FrameBody::Function(slot),
             pc: 0,
             bp: argc,
@@ -773,7 +798,7 @@ impl Vm {
                 .iter()
                 .find(|f| f.id == frame)
                 .ok_or_else(|| err(VmErrorKind::InvalidState, "reference frame has exited"))?;
-            let program = self.objects.program(owner.program)?;
+            let program = self.objects.program(owner.program())?;
             let locals = if owner.entered {
                 CodeView::get(&program, owner.body)?.local_count
             } else {
@@ -901,8 +926,8 @@ impl Vm {
         self.catches.clear();
         self.frames = vec![Frame {
             id,
-            program,
-            object,
+            execution: ExecutionSource::ObjectProgram(program),
+            active_object: Some(object),
             body: FrameBody::Function(function_index),
             pc: 0,
             bp: self.stack.len(),
@@ -934,13 +959,13 @@ impl Vm {
             let initialization = self.initialization.as_ref().map(|t| t.constitution);
             if let Err(fault) = self.step() {
                 let mut e = *fault.diagnostic;
-                e.program = Some(frame.program);
-                e.object = Some(frame.object);
+                e.program = Some(frame.program());
+                e.object = frame.active_object;
                 e.function = frame.body.function();
                 e.initialization = initialization;
                 e.lifecycle = self.lifecycle_context();
                 e.pc = Some(frame.pc);
-                if let Ok(p) = self.objects.program(frame.program)
+                if let Ok(p) = self.objects.program(frame.program())
                     && let Ok(code) = CodeView::get(&p, frame.body)
                 {
                     e.source = code.source.to_owned();
@@ -984,8 +1009,19 @@ impl Vm {
             .last()
             .ok_or_else(|| err(VmErrorKind::InvalidState, "missing call frame"))?
             .clone();
-        self.objects.get(frame.object)?;
-        let p = self.objects.program(frame.program)?;
+        let p = self.objects.program(frame.program())?;
+        match (frame.execution, frame.active_object, p.kind) {
+            (ExecutionSource::ObjectProgram(_), Some(object), ProgramKind::Object) => {
+                self.objects.get(object)?;
+            }
+            (ExecutionSource::GlobalProgram(_), None, ProgramKind::Global) => {}
+            _ => {
+                return Err(err(
+                    VmErrorKind::InvalidState,
+                    "frame code and object contexts disagree",
+                ));
+            }
+        }
         Ok((frame, p))
     }
     fn need(&self, n: usize, frame: &Frame, local_count: usize) -> Result<(), VmError> {
@@ -1018,11 +1054,12 @@ impl Vm {
         (pos >= 0 && pos < self.stack.len() as i64).then_some(pos as usize)
     }
     fn object_cell(&self, frame: &Frame, index: i32) -> Result<Rc<Cell>, VmError> {
-        let p = self.objects.program(frame.program)?;
+        let object = frame.object()?;
+        let p = self.objects.program(frame.program())?;
         let base = CodeView::get(&p, frame.body)?.variable_base;
         usize::try_from(index + i32::from(base))
             .ok()
-            .and_then(|i| self.objects.get(frame.object).ok()?.variables.get(i))
+            .and_then(|i| self.objects.get(object).ok()?.variables.get(i))
             .cloned()
             .ok_or_else(|| err(VmErrorKind::Bounds, "object variable index outside storage"))
     }
@@ -1278,8 +1315,8 @@ impl Vm {
         }
         let next = Frame {
             id: self.next_frame,
-            program,
-            object,
+            execution: ExecutionSource::ObjectProgram(program),
+            active_object: Some(object),
             body: FrameBody::Function(index),
             pc: 0,
             bp,
@@ -1292,6 +1329,106 @@ impl Vm {
         self.argument_updates(&next, target)?;
         self.frame_id()?;
         self.stack.truncate(bp);
+        self.frames.push(next);
+        Ok(())
+    }
+    fn call_user(
+        &mut self,
+        frame: &Frame,
+        current: &PreparedProgram,
+        local_count: usize,
+        base: i16,
+        slot: i32,
+        flags: i32,
+    ) -> Result<(), VmError> {
+        let global = flags & 0x80 != 0;
+        if global
+            && (current.global_schema.is_none()
+                || self.initialization.is_some()
+                || self.construction.is_some())
+        {
+            return Err(err(
+                VmErrorKind::UnsupportedFeature,
+                "global calls require ordinary opt-in execution",
+            ));
+        }
+        if !global && matches!(frame.execution, ExecutionSource::GlobalProgram(_)) {
+            return Err(err(
+                VmErrorKind::UnsupportedFeature,
+                "non-global07 requires Object code",
+            ));
+        }
+        let argc = (flags & 0x3f) as usize;
+        self.need(argc, frame, local_count)?;
+        if self.frames.len() >= self.limits.max_frames {
+            return Err(err(VmErrorKind::Limit, "call frame limit exceeded"));
+        }
+        let program = if global {
+            self.objects.global_program()?
+        } else {
+            frame.program()
+        };
+        let p = self.objects.program(program)?;
+        let index = if global {
+            if slot < 0 || slot as usize >= p.function_capacity {
+                return Err(err(
+                    VmErrorKind::Bounds,
+                    format!("global function slot {slot} outside capacity"),
+                ));
+            }
+            slot as i16
+        } else {
+            i16::try_from(slot + i32::from(base))
+                .map_err(|_| err(VmErrorKind::Bounds, "relocated function index overflow"))?
+        };
+        if p.unimplemented.contains(&index) || global && !p.functions.contains_key(&index) {
+            return Err(err(
+                VmErrorKind::UnsupportedFeature,
+                format!("function slot {index} is unimplemented"),
+            ));
+        }
+        let target = p.functions.get(&index).ok_or_else(|| {
+            err(
+                VmErrorKind::InvalidProgram,
+                "local function index does not exist",
+            )
+        })?;
+        Self::check_user_entry(target)?;
+        Self::argument_plan(target, argc)?;
+        let bp = self.stack.len();
+        for i in 0..argc {
+            let flag = target.args.get(i).map_or(0, |arg| arg.flag);
+            match (&self.stack[bp - 1 - i], flag) {
+                (StackEntry::Reference(r), 1) => self.validate_binding(r)?,
+                (StackEntry::Value(_), 0) => {}
+                _ => {
+                    return Err(err(
+                        VmErrorKind::UnsupportedFeature,
+                        "argument binding does not match value/reference parameter",
+                    ));
+                }
+            }
+        }
+        let next = Frame {
+            id: self.next_frame,
+            execution: if global {
+                ExecutionSource::GlobalProgram(program)
+            } else {
+                frame.execution
+            },
+            active_object: if global { None } else { frame.active_object },
+            body: FrameBody::Function(index),
+            pc: 0,
+            bp,
+            argc,
+            entered: false,
+            phase: EntryPhase::Unchecked,
+        };
+        // As with 08, preflight types before installing a Global frame. 0f commits later.
+        if global {
+            self.argument_updates(&next, target)?;
+        }
+        self.frame_id()?;
         self.frames.push(next);
         Ok(())
     }
@@ -1796,8 +1933,10 @@ impl Vm {
         if owner.id != handler.frame_id || !owner.entered {
             return Err(invalid());
         }
-        self.objects.get(owner.object)?;
-        let program = self.objects.program(owner.program)?;
+        if let Some(object) = owner.active_object {
+            self.objects.get(object)?;
+        }
+        let program = self.objects.program(owner.program())?;
         let code = CodeView::get(&program, owner.body)?;
         code.function()?;
         let floor = owner.bp.checked_add(code.local_count).ok_or_else(invalid)?;
@@ -1918,7 +2057,12 @@ impl Vm {
                 Ok(())
             }
             // vm_pushThisObject @0x080975d8. All currently accepted frames own an Object.
-            0x41 => self.push(Value::Object(frame.object)),
+            0x41 => self.push(
+                frame
+                    .active_object
+                    .map(Value::Object)
+                    .unwrap_or(Value::Int(0)),
+            ),
             0x22 | 0x2f => self.numeric_update(opcode, a, &frame, f.local_count, fault_site),
             0x03 | 0x04 => {
                 self.need(2, &frame, f.local_count)?;
@@ -1968,7 +2112,7 @@ impl Vm {
                 let r = Reference {
                     id: cell.id(),
                     target: Target::Object {
-                        object: frame.object,
+                        object: frame.object()?,
                         cell: Rc::downgrade(&cell),
                     },
                     readonly: false,
@@ -2407,56 +2551,7 @@ impl Vm {
                 self.frames.last_mut().unwrap().phase = EntryPhase::Body;
                 Ok(())
             }
-            0x07 => {
-                let argc = (b & 0x3f) as usize;
-                self.need(argc, &frame, f.local_count)?;
-                if self.frames.len() >= self.limits.max_frames {
-                    return Err(err(VmErrorKind::Limit, "call frame limit exceeded"));
-                }
-                let index = i16::try_from(a + i32::from(f.function_base))
-                    .map_err(|_| err(VmErrorKind::Bounds, "relocated function index overflow"))?;
-                if p.unimplemented.contains(&index) {
-                    return Err(err(
-                        VmErrorKind::UnsupportedFeature,
-                        "function declaration is unimplemented",
-                    ));
-                }
-                if !p.functions.contains_key(&index) {
-                    return Err(err(
-                        VmErrorKind::InvalidProgram,
-                        "local function index does not exist",
-                    ));
-                }
-                let target = &p.functions[&index];
-                Self::check_user_entry(target)?;
-                Self::argument_plan(target, argc)?;
-                for i in 0..argc {
-                    let flag = target.args.get(i).map_or(0, |arg| arg.flag);
-                    match (&self.stack[n - 1 - i], flag) {
-                        (StackEntry::Reference(r), 1) => self.validate_binding(r)?,
-                        (StackEntry::Value(_), 0) => {}
-                        _ => {
-                            return Err(err(
-                                VmErrorKind::UnsupportedFeature,
-                                "argument binding does not match value/reference parameter",
-                            ));
-                        }
-                    }
-                }
-                let id = self.frame_id()?;
-                self.frames.push(Frame {
-                    id,
-                    program: frame.program,
-                    object: frame.object,
-                    body: FrameBody::Function(index),
-                    pc: 0,
-                    bp: n,
-                    argc,
-                    entered: false,
-                    phase: EntryPhase::Unchecked,
-                });
-                Ok(())
-            }
+            0x07 => self.call_user(&frame, &p, f.local_count, f.function_base, a, b),
             0x2e => Ok(()),
             0x48 => self.return_initialization(&frame, &p),
             0x49 => self.return_function(&frame, f.function()?),
@@ -2498,8 +2593,8 @@ mod tests {
         };
         vm.frames.push(Frame {
             id,
-            program: ProgramId(0),
-            object: ObjectId(0),
+            execution: ExecutionSource::ObjectProgram(ProgramId(0)),
+            active_object: Some(ObjectId(0)),
             body: FrameBody::Function(0),
             pc: 0,
             bp: 0,
@@ -2516,8 +2611,8 @@ mod tests {
         assert_ne!(id, new_id);
         vm.frames.push(Frame {
             id: new_id,
-            program: ProgramId(0),
-            object: ObjectId(0),
+            execution: ExecutionSource::ObjectProgram(ProgramId(0)),
+            active_object: Some(ObjectId(0)),
             body: FrameBody::Function(0),
             pc: 0,
             bp: 0,
@@ -2559,8 +2654,8 @@ mod tests {
     fn numeric_updates_reject_readonly_and_invalid_targets_before_mutation() {
         let frame = Frame {
             id: 0,
-            program: ProgramId(0),
-            object: ObjectId(0),
+            execution: ExecutionSource::ObjectProgram(ProgramId(0)),
+            active_object: Some(ObjectId(0)),
             body: FrameBody::Function(0),
             pc: 0,
             bp: 0,
@@ -2708,6 +2803,8 @@ mod tests {
         };
         let program = PreparedProgram {
             global_schema: None,
+            kind: ProgramKind::Object,
+            function_capacity: 0,
             source: "synthetic-loop".into(),
             variable_count: 0,
             strings: vec![],
@@ -2723,8 +2820,8 @@ mod tests {
         let object = objects.create(program, vec![]).unwrap();
         let frame = Frame {
             id: 0,
-            program,
-            object,
+            execution: ExecutionSource::ObjectProgram(program),
+            active_object: Some(object),
             body: FrameBody::Function(0),
             pc: 0,
             bp: 0,
@@ -3056,6 +3153,8 @@ mod catch_tests {
         };
         let program = PreparedProgram {
             global_schema: None,
+            kind: ProgramKind::Object,
+            function_capacity: 0,
             source: "synthetic-catch".into(),
             variable_count: 0,
             strings: vec![],
@@ -3072,8 +3171,8 @@ mod catch_tests {
         let mut vm = Vm::new(objects);
         vm.frames.push(Frame {
             id: 10,
-            program,
-            object,
+            execution: ExecutionSource::ObjectProgram(program),
+            active_object: Some(object),
             body: FrameBody::Function(0),
             pc: 0,
             bp: 0,
@@ -3220,7 +3319,7 @@ mod catch_tests {
             target_pc: 0,
         });
         vm.push(Value::Int(7)).unwrap(); // void return fails after handler retirement
-        let program = vm.objects.program(child.program).unwrap();
+        let program = vm.objects.program(child.program()).unwrap();
         assert_eq!(
             vm.return_function(&child, &program.functions[&0])
                 .unwrap_err()
@@ -3235,7 +3334,7 @@ mod catch_tests {
     fn catches_restart_preflight_completion_and_task_cleanup_have_correct_boundaries() {
         let mut vm = fixture(0);
         save(&mut vm);
-        let object = vm.frames[0].object;
+        let object = vm.frames[0].object().unwrap();
         vm.failure = Some(err(VmErrorKind::Arithmetic, "synthetic failure"));
         assert!(vm.start(object, 99, vec![]).is_err());
         assert_eq!(vm.catches.len(), 1);
@@ -3351,13 +3450,13 @@ mod numeric_fault_tests {
             readonly: false,
             _lease: None,
             target: Target::Object {
-                object: frame.object,
+                object: frame.object().unwrap(),
                 cell: Rc::downgrade(&cell),
             },
         };
         vm.stack.push(StackEntry::Reference(reference));
         vm.push(Value::Int(0)).unwrap();
-        vm.objects.remove(frame.object).unwrap();
+        vm.objects.remove(frame.object().unwrap()).unwrap();
         let before = vm.stack().unwrap();
         let mut source = None;
         assert_eq!(
@@ -3384,7 +3483,7 @@ mod global_tests {
             private: false,
             instructions: Rc::new(vec![Instruction {
                 opcode,
-                operands: [0, 0],
+                operands: if opcode == 0x07 { [559, -128] } else { [0, 0] },
                 offset: 42,
             }]),
             origin: None,
@@ -3403,6 +3502,8 @@ mod global_tests {
         let program = PreparedProgram {
             source: "synthetic-global".into(),
             global_schema: schema,
+            kind: ProgramKind::Object,
+            function_capacity: 0,
             variable_count: 0,
             strings: vec![],
             functions: BTreeMap::from([(0, function)]),
@@ -3421,8 +3522,8 @@ mod global_tests {
         let mut vm = Vm::new(objects);
         vm.frames.push(Frame {
             id: 1,
-            program: p,
-            object: o,
+            execution: ExecutionSource::ObjectProgram(p),
+            active_object: Some(o),
             body: FrameBody::Function(0),
             pc: 0,
             bp: 0,
@@ -3498,7 +3599,7 @@ mod global_tests {
             ] {
                 let (mut vm, o) = fixture(opcode, Some(GlobalBankSchema { slots: 1 }));
                 if let Some(phase) = phase {
-                    let program = vm.frames[0].program;
+                    let program = vm.frames[0].program();
                     vm.construction = Some(ConstructionTask {
                         object: o,
                         program,
@@ -3525,5 +3626,52 @@ mod global_tests {
                 );
             }
         }
+    }
+    #[test]
+    fn global_calls_internal_lifecycle_helper_rejects_and_preserves_primary_rollback_error() {
+        for phase in [
+            LifecyclePhase::Initialize,
+            LifecyclePhase::Create,
+            LifecyclePhase::RollbackDestruct,
+        ] {
+            let (mut vm, o) = fixture(0x07, Some(GlobalBankSchema { slots: 1 }));
+            let primary = (phase == LifecyclePhase::RollbackDestruct)
+                .then(|| err(VmErrorKind::Arithmetic, "primary"));
+            vm.construction = Some(ConstructionTask {
+                object: o,
+                program: vm.frames[0].program(),
+                phase,
+                position: 0,
+                constitution: 0,
+                parameter: None,
+                primary,
+            });
+            let e = vm.run(1).unwrap_err();
+            assert_eq!(
+                e.kind,
+                if phase == LifecyclePhase::RollbackDestruct {
+                    VmErrorKind::Arithmetic
+                } else {
+                    VmErrorKind::UnsupportedFeature
+                }
+            );
+            if phase == LifecyclePhase::RollbackDestruct {
+                assert_eq!(
+                    vm.rollback_errors()[0].kind,
+                    VmErrorKind::UnsupportedFeature
+                );
+            }
+            assert!(vm.objects.get(o).is_err());
+            assert!(vm.frames.is_empty());
+        }
+    }
+    #[test]
+    fn global_calls_inconsistent_frame_context_is_rejected_without_fake_identity() {
+        let (mut vm, _) = fixture(0x41, None);
+        vm.frames[0].active_object = None;
+        let e = vm.run(1).unwrap_err();
+        assert_eq!(e.kind, VmErrorKind::InvalidState);
+        assert_eq!(e.object, None);
+        assert!(vm.stack.is_empty());
     }
 }

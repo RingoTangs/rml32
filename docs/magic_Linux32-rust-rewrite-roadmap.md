@@ -1,5 +1,7 @@
 # magic_Linux32 Rust 重写实施路线图
 
+**阶段2AC新增交付：**受限Global函数准备/绑定、全局位07与双上下文帧已实现，支持对象/全局代码切换、引用转发及两向数值catch；407项Rust测试、72种限定操作码、语料交集70种，缺05/06/17。见[全局调用运行时](vm-global-call-runtime.md)、[当前矩阵](stage2ac-evidence/matrix.md)及[验证记录](stage2ac-validation.json)。06、Global init、真实13槽bootstrap与服务启动仍排除。以下阶段描述保留历史状态。
+
 **阶段2AB新增交付：**显式全局表、35/36及强引用保留语义已实现，共72种限定操作码、384项Rust测试；主语料交集70种，缺05/06/17。见[全局运行时](vm-global-runtime.md)、[当前矩阵](stage2ab-evidence/matrix.md)及[验证记录](stage2ab-validation.json)。全局07/06、Global程序加载和真实启动仍未实现，下一批为阶段2AA规格中的双上下文全局调用。以下阶段条目保留历史状态。
 
 **阶段2AA新增交付：**全局35/36、全局07与06边界取证、47,003处全局操作位置及五个全局单元清单已完成，见[全局语义](vm-global-semantics.md)和[后续实施规格](stage2aa-evidence/global-runtime-design.md)。本轮运行时/API/依赖保持不变，继续使用2Z的70种限定操作码基线。下一批仅实现显式合成银行与35/36，保留旧根引用到旧槽；之后独立迁移全局帧与07，不开放真实bootstrap/efun。
