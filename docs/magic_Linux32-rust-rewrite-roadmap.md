@@ -1,5 +1,7 @@
 # magic_Linux32 Rust 重写实施路线图
 
+**当前阶段2AF：**函数值05/17已完成静态取证、35,703处位置复算与[首批Object函数值/标量捕获实施规格](stage2af-evidence/function-runtime-design.md)，运行时尚未实现。见[语义报告](vm-function-value-semantics.md)与[验证记录](stage2af-validation.json)。运行时基线为2AE的同步合成06、433项Rust测试、73种限定支持/71种语料交集；真实efun、global/init/bootstrap、完整函数值和服务启动仍有缺口，阶段2未完成。以下2AC及更早条目保留历史状态。
+
 **阶段2AC新增交付：**受限Global函数准备/绑定、全局位07与双上下文帧已实现，支持对象/全局代码切换、引用转发及两向数值catch；407项Rust测试、72种限定操作码、语料交集70种，缺05/06/17。见[全局调用运行时](vm-global-call-runtime.md)、[当前矩阵](stage2ac-evidence/matrix.md)及[验证记录](stage2ac-validation.json)。06、Global init、真实13槽bootstrap与服务启动仍排除。以下阶段描述保留历史状态。
 
 **阶段2AB新增交付：**显式全局表、35/36及强引用保留语义已实现，共72种限定操作码、384项Rust测试；主语料交集70种，缺05/06/17。见[全局运行时](vm-global-runtime.md)、[当前矩阵](stage2ab-evidence/matrix.md)及[验证记录](stage2ab-validation.json)。全局07/06、Global程序加载和真实启动仍未实现，下一批为阶段2AA规格中的双上下文全局调用。以下阶段条目保留历史状态。

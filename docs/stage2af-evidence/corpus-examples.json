@@ -1,0 +1,4725 @@
+[
+  {
+    "argc_status": "nonnegative",
+    "function": "callback_mysql_select_array",
+    "function_index": 809,
+    "member_node_offset": 339782,
+    "member_sha256": "f9896828c87399be4977107fbfbe3f67fd71caebd3008bda84be16cc722d0a0e",
+    "mode": "global",
+    "nodes_offset": 339766,
+    "opcode": "05",
+    "par16": 0,
+    "par8_signed": 2,
+    "par8_unsigned": 2,
+    "pc": 4,
+    "segment_kind": "functions",
+    "segment_offset": 339718,
+    "service": "aaa",
+    "snippet": [
+      {
+        "member_node_offset": 339774,
+        "node": [
+          0,
+          0,
+          55
+        ],
+        "pc": 2
+      },
+      {
+        "member_node_offset": 339778,
+        "node": [
+          20,
+          0,
+          53
+        ],
+        "pc": 3
+      },
+      {
+        "member_node_offset": 339782,
+        "node": [
+          0,
+          2,
+          5
+        ],
+        "pc": 4
+      },
+      {
+        "member_node_offset": 339786,
+        "node": [
+          0,
+          0,
+          73
+        ],
+        "pc": 5
+      },
+      {
+        "member_node_offset": 339790,
+        "node": [
+          0,
+          0,
+          46
+        ],
+        "pc": 6
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o",
+    "target_resolution": "runtime_stack_value_not_statically_resolved"
+  },
+  {
+    "argc_status": "nonnegative",
+    "function": "mixed_mysql_select",
+    "function_index": 806,
+    "member_node_offset": 366171,
+    "member_sha256": "f9896828c87399be4977107fbfbe3f67fd71caebd3008bda84be16cc722d0a0e",
+    "mode": "global",
+    "nodes_offset": 366151,
+    "opcode": "05",
+    "par16": 0,
+    "par8_signed": 3,
+    "par8_unsigned": 3,
+    "pc": 5,
+    "segment_kind": "functions",
+    "segment_offset": 365983,
+    "service": "aaa",
+    "snippet": [
+      {
+        "member_node_offset": 366163,
+        "node": [
+          0,
+          0,
+          55
+        ],
+        "pc": 3
+      },
+      {
+        "member_node_offset": 366167,
+        "node": [
+          15,
+          0,
+          53
+        ],
+        "pc": 4
+      },
+      {
+        "member_node_offset": 366171,
+        "node": [
+          0,
+          3,
+          5
+        ],
+        "pc": 5
+      },
+      {
+        "member_node_offset": 366175,
+        "node": [
+          -2,
+          0,
+          57
+        ],
+        "pc": 6
+      },
+      {
+        "member_node_offset": 366179,
+        "node": [
+          0,
+          0,
+          3
+        ],
+        "pc": 7
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o",
+    "target_resolution": "runtime_stack_value_not_statically_resolved"
+  },
+  {
+    "argc_status": "nonnegative",
+    "function": "xdbc_log",
+    "function_index": 581,
+    "member_node_offset": 257082,
+    "member_sha256": "f9896828c87399be4977107fbfbe3f67fd71caebd3008bda84be16cc722d0a0e",
+    "mode": "global",
+    "nodes_offset": 257026,
+    "opcode": "05",
+    "par16": 4,
+    "par8_signed": 1,
+    "par8_unsigned": 1,
+    "pc": 14,
+    "segment_kind": "functions",
+    "segment_offset": 256951,
+    "service": "aaa",
+    "snippet": [
+      {
+        "member_node_offset": 257074,
+        "node": [
+          53,
+          0,
+          64
+        ],
+        "pc": 12
+      },
+      {
+        "member_node_offset": 257078,
+        "node": [
+          36,
+          2,
+          6
+        ],
+        "pc": 13
+      },
+      {
+        "member_node_offset": 257082,
+        "node": [
+          4,
+          1,
+          5
+        ],
+        "pc": 14
+      },
+      {
+        "member_node_offset": 257086,
+        "node": [
+          54,
+          0,
+          64
+        ],
+        "pc": 15
+      },
+      {
+        "member_node_offset": 257090,
+        "node": [
+          586,
+          -126,
+          7
+        ],
+        "pc": 16
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o",
+    "target_resolution": "runtime_stack_value_not_statically_resolved"
+  },
+  {
+    "argc_status": "nonnegative",
+    "function": "post_auto_save",
+    "function_index": 649,
+    "member_node_offset": 244143,
+    "member_sha256": "f9896828c87399be4977107fbfbe3f67fd71caebd3008bda84be16cc722d0a0e",
+    "mode": "global",
+    "nodes_offset": 244087,
+    "opcode": "05",
+    "par16": 4,
+    "par8_signed": 2,
+    "par8_unsigned": 2,
+    "pc": 14,
+    "segment_kind": "functions",
+    "segment_offset": 244005,
+    "service": "aaa",
+    "snippet": [
+      {
+        "member_node_offset": 244135,
+        "node": [
+          0,
+          0,
+          55
+        ],
+        "pc": 12
+      },
+      {
+        "member_node_offset": 244139,
+        "node": [
+          -1,
+          0,
+          55
+        ],
+        "pc": 13
+      },
+      {
+        "member_node_offset": 244143,
+        "node": [
+          4,
+          2,
+          5
+        ],
+        "pc": 14
+      },
+      {
+        "member_node_offset": 244147,
+        "node": [
+          0,
+          0,
+          51
+        ],
+        "pc": 15
+      },
+      {
+        "member_node_offset": 244151,
+        "node": [
+          0,
+          0,
+          46
+        ],
+        "pc": 16
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o",
+    "target_resolution": "runtime_stack_value_not_statically_resolved"
+  },
+  {
+    "argc_status": "nonnegative",
+    "function": "_dict",
+    "function_index": 1877,
+    "member_node_offset": 1366730,
+    "member_sha256": "2f3ce58bb54584d2ce7bb3d90852893b97fcd5fb55d455b8eccff856fc696174",
+    "mode": "global",
+    "nodes_offset": 1366702,
+    "opcode": "05",
+    "par16": 4,
+    "par8_signed": 3,
+    "par8_unsigned": 3,
+    "pc": 7,
+    "segment_kind": "functions",
+    "segment_offset": 1366656,
+    "service": "gs",
+    "snippet": [
+      {
+        "member_node_offset": 1366722,
+        "node": [
+          0,
+          0,
+          55
+        ],
+        "pc": 5
+      },
+      {
+        "member_node_offset": 1366726,
+        "node": [
+          0,
+          0,
+          1
+        ],
+        "pc": 6
+      },
+      {
+        "member_node_offset": 1366730,
+        "node": [
+          4,
+          3,
+          5
+        ],
+        "pc": 7
+      },
+      {
+        "member_node_offset": 1366734,
+        "node": [
+          0,
+          0,
+          73
+        ],
+        "pc": 8
+      },
+      {
+        "member_node_offset": 1366738,
+        "node": [
+          0,
+          0,
+          46
+        ],
+        "pc": 9
+      }
+    ],
+    "source": "gs/pack_data/lib_gs32.pak/gs/start_gs.o",
+    "target_resolution": "runtime_stack_value_not_statically_resolved"
+  },
+  {
+    "argc_status": "nonnegative",
+    "function": "post_regen_iid",
+    "function_index": 651,
+    "member_node_offset": 242453,
+    "member_sha256": "f9896828c87399be4977107fbfbe3f67fd71caebd3008bda84be16cc722d0a0e",
+    "mode": "global",
+    "nodes_offset": 242385,
+    "opcode": "05",
+    "par16": 4,
+    "par8_signed": 5,
+    "par8_unsigned": 5,
+    "pc": 17,
+    "segment_kind": "functions",
+    "segment_offset": 242303,
+    "service": "aaa",
+    "snippet": [
+      {
+        "member_node_offset": 242445,
+        "node": [
+          0,
+          0,
+          55
+        ],
+        "pc": 15
+      },
+      {
+        "member_node_offset": 242449,
+        "node": [
+          -1,
+          0,
+          55
+        ],
+        "pc": 16
+      },
+      {
+        "member_node_offset": 242453,
+        "node": [
+          4,
+          5,
+          5
+        ],
+        "pc": 17
+      },
+      {
+        "member_node_offset": 242457,
+        "node": [
+          0,
+          0,
+          51
+        ],
+        "pc": 18
+      },
+      {
+        "member_node_offset": 242461,
+        "node": [
+          0,
+          0,
+          46
+        ],
+        "pc": 19
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o",
+    "target_resolution": "runtime_stack_value_not_statically_resolved"
+  },
+  {
+    "argc_status": "nonnegative",
+    "function": "__init__",
+    "function_index": null,
+    "member_node_offset": 452508,
+    "member_sha256": "f9896828c87399be4977107fbfbe3f67fd71caebd3008bda84be16cc722d0a0e",
+    "mode": "global",
+    "nodes_offset": 450136,
+    "opcode": "05",
+    "par16": 0,
+    "par8_signed": 2,
+    "par8_unsigned": 2,
+    "pc": 593,
+    "segment_kind": "init",
+    "segment_offset": 448680,
+    "service": "aaa",
+    "snippet": [
+      {
+        "member_node_offset": 452500,
+        "node": [
+          686,
+          0,
+          64
+        ],
+        "pc": 591
+      },
+      {
+        "member_node_offset": 452504,
+        "node": [
+          84,
+          0,
+          53
+        ],
+        "pc": 592
+      },
+      {
+        "member_node_offset": 452508,
+        "node": [
+          0,
+          2,
+          5
+        ],
+        "pc": 593
+      },
+      {
+        "member_node_offset": 452512,
+        "node": [
+          0,
+          0,
+          51
+        ],
+        "pc": 594
+      },
+      {
+        "member_node_offset": 452516,
+        "node": [
+          87,
+          0,
+          53
+        ],
+        "pc": 595
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o",
+    "target_resolution": "runtime_stack_value_not_statically_resolved"
+  },
+  {
+    "argc_status": "nonnegative",
+    "function": "do_execute_by_macro",
+    "function_index": 104,
+    "member_node_offset": 6176,
+    "member_sha256": "ad647ff8a32dacc57c9b70a2d02e34d811b3aa61d6ed333d5405f1c79aa290bd",
+    "mode": "object",
+    "nodes_offset": 6124,
+    "opcode": "05",
+    "par16": 0,
+    "par8_signed": 1,
+    "par8_unsigned": 1,
+    "pc": 13,
+    "segment_kind": "functions",
+    "segment_offset": 6069,
+    "service": "gs",
+    "snippet": [
+      {
+        "member_node_offset": 6168,
+        "node": [
+          0,
+          0,
+          51
+        ],
+        "pc": 11
+      },
+      {
+        "member_node_offset": 6172,
+        "node": [
+          -1,
+          0,
+          55
+        ],
+        "pc": 12
+      },
+      {
+        "member_node_offset": 6176,
+        "node": [
+          0,
+          1,
+          5
+        ],
+        "pc": 13
+      },
+      {
+        "member_node_offset": 6180,
+        "node": [
+          0,
+          0,
+          51
+        ],
+        "pc": 14
+      },
+      {
+        "member_node_offset": 6184,
+        "node": [
+          0,
+          0,
+          46
+        ],
+        "pc": 15
+      }
+    ],
+    "source": "gs/pack_data/lib_gs32.pak/gs/daemons/accountd.o",
+    "target_resolution": "runtime_stack_value_not_statically_resolved"
+  },
+  {
+    "argc_status": "nonnegative",
+    "function": "destruct",
+    "function_index": 7,
+    "member_node_offset": 2013,
+    "member_sha256": "94a64dea59d79f6915ebefcac31c680e4f3dbcb685600412b4ee02ff00f4a653",
+    "mode": "object",
+    "nodes_offset": 1925,
+    "opcode": "05",
+    "par16": 0,
+    "par8_signed": 2,
+    "par8_unsigned": 2,
+    "pc": 22,
+    "segment_kind": "functions",
+    "segment_offset": 1863,
+    "service": "aaa",
+    "snippet": [
+      {
+        "member_node_offset": 2005,
+        "node": [
+          0,
+          0,
+          67
+        ],
+        "pc": 20
+      },
+      {
+        "member_node_offset": 2009,
+        "node": [
+          11,
+          0,
+          53
+        ],
+        "pc": 21
+      },
+      {
+        "member_node_offset": 2013,
+        "node": [
+          0,
+          2,
+          5
+        ],
+        "pc": 22
+      },
+      {
+        "member_node_offset": 2017,
+        "node": [
+          0,
+          0,
+          51
+        ],
+        "pc": 23
+      },
+      {
+        "member_node_offset": 2021,
+        "node": [
+          -7,
+          -4,
+          80
+        ],
+        "pc": 24
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/daemons/dbd.o",
+    "target_resolution": "runtime_stack_value_not_statically_resolved"
+  },
+  {
+    "argc_status": "nonnegative",
+    "function": "delete_specific_records",
+    "function_index": 0,
+    "member_node_offset": 2032,
+    "member_sha256": "61b69c8dd9d925568c03dcca0782abb5cf754ff46bdffcfdc131343f147046c6",
+    "mode": "object",
+    "nodes_offset": 1948,
+    "opcode": "05",
+    "par16": 0,
+    "par8_signed": 3,
+    "par8_unsigned": 3,
+    "pc": 21,
+    "segment_kind": "functions",
+    "segment_offset": 1681,
+    "service": "aaa",
+    "snippet": [
+      {
+        "member_node_offset": 2024,
+        "node": [
+          -2,
+          0,
+          55
+        ],
+        "pc": 19
+      },
+      {
+        "member_node_offset": 2028,
+        "node": [
+          15,
+          0,
+          53
+        ],
+        "pc": 20
+      },
+      {
+        "member_node_offset": 2032,
+        "node": [
+          0,
+          3,
+          5
+        ],
+        "pc": 21
+      },
+      {
+        "member_node_offset": 2036,
+        "node": [
+          -1,
+          0,
+          57
+        ],
+        "pc": 22
+      },
+      {
+        "member_node_offset": 2040,
+        "node": [
+          0,
+          0,
+          3
+        ],
+        "pc": 23
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/daemons/recycled.o",
+    "target_resolution": "runtime_stack_value_not_statically_resolved"
+  },
+  {
+    "argc_status": "nonnegative",
+    "function": "assure_connection",
+    "function_index": 0,
+    "member_node_offset": 5511,
+    "member_sha256": "94a64dea59d79f6915ebefcac31c680e4f3dbcb685600412b4ee02ff00f4a653",
+    "mode": "object",
+    "nodes_offset": 5275,
+    "opcode": "05",
+    "par16": 0,
+    "par8_signed": 5,
+    "par8_unsigned": 5,
+    "pc": 59,
+    "segment_kind": "functions",
+    "segment_offset": 5053,
+    "service": "aaa",
+    "snippet": [
+      {
+        "member_node_offset": 5503,
+        "node": [
+          0,
+          0,
+          67
+        ],
+        "pc": 57
+      },
+      {
+        "member_node_offset": 5507,
+        "node": [
+          10,
+          0,
+          53
+        ],
+        "pc": 58
+      },
+      {
+        "member_node_offset": 5511,
+        "node": [
+          0,
+          5,
+          5
+        ],
+        "pc": 59
+      },
+      {
+        "member_node_offset": 5515,
+        "node": [
+          -4,
+          0,
+          57
+        ],
+        "pc": 60
+      },
+      {
+        "member_node_offset": 5519,
+        "node": [
+          0,
+          0,
+          3
+        ],
+        "pc": 61
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/daemons/dbd.o",
+    "target_resolution": "runtime_stack_value_not_statically_resolved"
+  },
+  {
+    "argc_status": "nonnegative",
+    "function": "_do_inquiry",
+    "function_index": 21,
+    "member_node_offset": 9863,
+    "member_sha256": "def69ddd80c88bdbccbdb55f3e1ec0d90d9249dcd558c24519b05a884b6a947a",
+    "mode": "object",
+    "nodes_offset": 9759,
+    "opcode": "05",
+    "par16": 0,
+    "par8_signed": 6,
+    "par8_unsigned": 6,
+    "pc": 26,
+    "segment_kind": "functions",
+    "segment_offset": 9544,
+    "service": "aaa",
+    "snippet": [
+      {
+        "member_node_offset": 9855,
+        "node": [
+          0,
+          0,
+          55
+        ],
+        "pc": 24
+      },
+      {
+        "member_node_offset": 9859,
+        "node": [
+          2,
+          0,
+          55
+        ],
+        "pc": 25
+      },
+      {
+        "member_node_offset": 9863,
+        "node": [
+          0,
+          6,
+          5
+        ],
+        "pc": 26
+      },
+      {
+        "member_node_offset": 9867,
+        "node": [
+          0,
+          0,
+          51
+        ],
+        "pc": 27
+      },
+      {
+        "member_node_offset": 9871,
+        "node": [
+          0,
+          0,
+          73
+        ],
+        "pc": 28
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/daemons/express_recharged.o",
+    "target_resolution": "runtime_stack_value_not_statically_resolved"
+  },
+  {
+    "argc_status": "nonnegative",
+    "function": "process_command",
+    "function_index": 5,
+    "member_node_offset": 5616,
+    "member_sha256": "5f1a18f01d1bb1a75a05bf3bdf2788fddd1ca8f55134e59cd47eb9ab4847a896",
+    "mode": "object",
+    "nodes_offset": 5492,
+    "opcode": "05",
+    "par16": 4,
+    "par8_signed": 1,
+    "par8_unsigned": 1,
+    "pc": 31,
+    "segment_kind": "functions",
+    "segment_offset": 5407,
+    "service": "aaa",
+    "snippet": [
+      {
+        "member_node_offset": 5608,
+        "node": [
+          0,
+          0,
+          67
+        ],
+        "pc": 29
+      },
+      {
+        "member_node_offset": 5612,
+        "node": [
+          36,
+          3,
+          6
+        ],
+        "pc": 30
+      },
+      {
+        "member_node_offset": 5616,
+        "node": [
+          4,
+          1,
+          5
+        ],
+        "pc": 31
+      },
+      {
+        "member_node_offset": 5620,
+        "node": [
+          0,
+          0,
+          51
+        ],
+        "pc": 32
+      },
+      {
+        "member_node_offset": 5624,
+        "node": [
+          75,
+          0,
+          53
+        ],
+        "pc": 33
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/daemons/connectiond.o",
+    "target_resolution": "runtime_stack_value_not_statically_resolved"
+  },
+  {
+    "argc_status": "nonnegative",
+    "function": "sell_treasure",
+    "function_index": 62,
+    "member_node_offset": 390543,
+    "member_sha256": "7470d396e302395318f58cd411353242a8911d6704f032b517978ea9092f0ef7",
+    "mode": "object",
+    "nodes_offset": 389475,
+    "opcode": "05",
+    "par16": 4,
+    "par8_signed": 10,
+    "par8_unsigned": 10,
+    "pc": 267,
+    "segment_kind": "functions",
+    "segment_offset": 388951,
+    "service": "gs",
+    "snippet": [
+      {
+        "member_node_offset": 390535,
+        "node": [
+          0,
+          0,
+          55
+        ],
+        "pc": 265
+      },
+      {
+        "member_node_offset": 390539,
+        "node": [
+          -2,
+          0,
+          55
+        ],
+        "pc": 266
+      },
+      {
+        "member_node_offset": 390543,
+        "node": [
+          4,
+          10,
+          5
+        ],
+        "pc": 267
+      },
+      {
+        "member_node_offset": 390547,
+        "node": [
+          0,
+          0,
+          51
+        ],
+        "pc": 268
+      },
+      {
+        "member_node_offset": 390551,
+        "node": [
+          11,
+          0,
+          31
+        ],
+        "pc": 269
+      }
+    ],
+    "source": "gs/pack_data/lib_gs32.pak/gs/daemons/treasure_tradingd.o",
+    "target_resolution": "runtime_stack_value_not_statically_resolved"
+  },
+  {
+    "argc_status": "nonnegative",
+    "function": "check_appointer",
+    "function_index": 184,
+    "member_node_offset": 292531,
+    "member_sha256": "7470d396e302395318f58cd411353242a8911d6704f032b517978ea9092f0ef7",
+    "mode": "object",
+    "nodes_offset": 292415,
+    "opcode": "05",
+    "par16": 4,
+    "par8_signed": 11,
+    "par8_unsigned": 11,
+    "pc": 29,
+    "segment_kind": "functions",
+    "segment_offset": 292316,
+    "service": "gs",
+    "snippet": [
+      {
+        "member_node_offset": 292523,
+        "node": [
+          0,
+          0,
+          55
+        ],
+        "pc": 27
+      },
+      {
+        "member_node_offset": 292527,
+        "node": [
+          9,
+          0,
+          55
+        ],
+        "pc": 28
+      },
+      {
+        "member_node_offset": 292531,
+        "node": [
+          4,
+          11,
+          5
+        ],
+        "pc": 29
+      },
+      {
+        "member_node_offset": 292535,
+        "node": [
+          0,
+          0,
+          51
+        ],
+        "pc": 30
+      },
+      {
+        "member_node_offset": 292539,
+        "node": [
+          0,
+          0,
+          46
+        ],
+        "pc": 31
+      }
+    ],
+    "source": "gs/pack_data/lib_gs32.pak/gs/daemons/treasure_tradingd.o",
+    "target_resolution": "runtime_stack_value_not_statically_resolved"
+  },
+  {
+    "argc_status": "nonnegative",
+    "function": "connection_disconnect",
+    "function_index": 3,
+    "member_node_offset": 2271,
+    "member_sha256": "5f1a18f01d1bb1a75a05bf3bdf2788fddd1ca8f55134e59cd47eb9ab4847a896",
+    "mode": "object",
+    "nodes_offset": 2207,
+    "opcode": "05",
+    "par16": 4,
+    "par8_signed": 2,
+    "par8_unsigned": 2,
+    "pc": 16,
+    "segment_kind": "functions",
+    "segment_offset": 2127,
+    "service": "aaa",
+    "snippet": [
+      {
+        "member_node_offset": 2263,
+        "node": [
+          0,
+          0,
+          55
+        ],
+        "pc": 14
+      },
+      {
+        "member_node_offset": 2267,
+        "node": [
+          -1,
+          0,
+          55
+        ],
+        "pc": 15
+      },
+      {
+        "member_node_offset": 2271,
+        "node": [
+          4,
+          2,
+          5
+        ],
+        "pc": 16
+      },
+      {
+        "member_node_offset": 2275,
+        "node": [
+          0,
+          0,
+          51
+        ],
+        "pc": 17
+      },
+      {
+        "member_node_offset": 2279,
+        "node": [
+          -8,
+          -2,
+          80
+        ],
+        "pc": 18
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/daemons/connectiond.o",
+    "target_resolution": "runtime_stack_value_not_statically_resolved"
+  },
+  {
+    "argc_status": "nonnegative",
+    "function": "do_when_new_connection",
+    "function_index": 12,
+    "member_node_offset": 2998,
+    "member_sha256": "5f1a18f01d1bb1a75a05bf3bdf2788fddd1ca8f55134e59cd47eb9ab4847a896",
+    "mode": "object",
+    "nodes_offset": 2862,
+    "opcode": "05",
+    "par16": 4,
+    "par8_signed": 3,
+    "par8_unsigned": 3,
+    "pc": 34,
+    "segment_kind": "functions",
+    "segment_offset": 2727,
+    "service": "aaa",
+    "snippet": [
+      {
+        "member_node_offset": 2990,
+        "node": [
+          -4,
+          0,
+          55
+        ],
+        "pc": 32
+      },
+      {
+        "member_node_offset": 2994,
+        "node": [
+          -1,
+          0,
+          55
+        ],
+        "pc": 33
+      },
+      {
+        "member_node_offset": 2998,
+        "node": [
+          4,
+          3,
+          5
+        ],
+        "pc": 34
+      },
+      {
+        "member_node_offset": 3002,
+        "node": [
+          -3,
+          0,
+          57
+        ],
+        "pc": 35
+      },
+      {
+        "member_node_offset": 3006,
+        "node": [
+          0,
+          0,
+          3
+        ],
+        "pc": 36
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/daemons/connectiond.o",
+    "target_resolution": "runtime_stack_value_not_statically_resolved"
+  },
+  {
+    "argc_status": "nonnegative",
+    "function": "do_account_transaction",
+    "function_index": 1,
+    "member_node_offset": 13527,
+    "member_sha256": "67c1060eb814ce072491b047ec2a5c60ec27c5ed4d7a98e34469201eea558d07",
+    "mode": "object",
+    "nodes_offset": 13231,
+    "opcode": "05",
+    "par16": 4,
+    "par8_signed": 4,
+    "par8_unsigned": 4,
+    "pc": 74,
+    "segment_kind": "functions",
+    "segment_offset": 13003,
+    "service": "aaa",
+    "snippet": [
+      {
+        "member_node_offset": 13519,
+        "node": [
+          -2,
+          0,
+          57
+        ],
+        "pc": 72
+      },
+      {
+        "member_node_offset": 13523,
+        "node": [
+          3,
+          0,
+          55
+        ],
+        "pc": 73
+      },
+      {
+        "member_node_offset": 13527,
+        "node": [
+          4,
+          4,
+          5
+        ],
+        "pc": 74
+      },
+      {
+        "member_node_offset": 13531,
+        "node": [
+          0,
+          0,
+          45
+        ],
+        "pc": 75
+      },
+      {
+        "member_node_offset": 13535,
+        "node": [
+          2,
+          2,
+          33
+        ],
+        "pc": 76
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/daemons/account_transactiond.o",
+    "target_resolution": "runtime_stack_value_not_statically_resolved"
+  },
+  {
+    "argc_status": "nonnegative",
+    "function": "deny_by_pwd_protect",
+    "function_index": 115,
+    "member_node_offset": 60540,
+    "member_sha256": "fbad2268542cac34b915222e0e6ba038e390b5098d06295834c707654c4bbd05",
+    "mode": "object",
+    "nodes_offset": 60344,
+    "opcode": "05",
+    "par16": 4,
+    "par8_signed": 5,
+    "par8_unsigned": 5,
+    "pc": 49,
+    "segment_kind": "functions",
+    "segment_offset": 60228,
+    "service": "aaa",
+    "snippet": [
+      {
+        "member_node_offset": 60532,
+        "node": [
+          0,
+          0,
+          55
+        ],
+        "pc": 47
+      },
+      {
+        "member_node_offset": 60536,
+        "node": [
+          -1,
+          0,
+          55
+        ],
+        "pc": 48
+      },
+      {
+        "member_node_offset": 60540,
+        "node": [
+          4,
+          5,
+          5
+        ],
+        "pc": 49
+      },
+      {
+        "member_node_offset": 60544,
+        "node": [
+          2,
+          2,
+          33
+        ],
+        "pc": 50
+      },
+      {
+        "member_node_offset": 60548,
+        "node": [
+          1,
+          0,
+          59
+        ],
+        "pc": 51
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/daemons/accountd.o",
+    "target_resolution": "runtime_stack_value_not_statically_resolved"
+  },
+  {
+    "argc_status": "nonnegative",
+    "function": "update_menu_content_succ",
+    "function_index": 918,
+    "member_node_offset": 8369,
+    "member_sha256": "3f0d49454b5db17e190ec73801b182509ae5057d3f8fd70fdd3870c1198f0cca",
+    "mode": "object",
+    "nodes_offset": 8069,
+    "opcode": "05",
+    "par16": 4,
+    "par8_signed": 6,
+    "par8_unsigned": 6,
+    "pc": 75,
+    "segment_kind": "functions",
+    "segment_offset": 7825,
+    "service": "gs",
+    "snippet": [
+      {
+        "member_node_offset": 8361,
+        "node": [
+          -3,
+          0,
+          57
+        ],
+        "pc": 73
+      },
+      {
+        "member_node_offset": 8365,
+        "node": [
+          -6,
+          0,
+          55
+        ],
+        "pc": 74
+      },
+      {
+        "member_node_offset": 8369,
+        "node": [
+          4,
+          6,
+          5
+        ],
+        "pc": 75
+      },
+      {
+        "member_node_offset": 8373,
+        "node": [
+          -1,
+          0,
+          57
+        ],
+        "pc": 76
+      },
+      {
+        "member_node_offset": 8377,
+        "node": [
+          0,
+          0,
+          3
+        ],
+        "pc": 77
+      }
+    ],
+    "source": "gs/pack_data/lib_gs32.pak/gs/clone/npc/donghai-yucun/yinshi.o",
+    "target_resolution": "runtime_stack_value_not_statically_resolved"
+  },
+  {
+    "argc_status": "nonnegative",
+    "function": "sell_treasure",
+    "function_index": 62,
+    "member_node_offset": 390591,
+    "member_sha256": "7470d396e302395318f58cd411353242a8911d6704f032b517978ea9092f0ef7",
+    "mode": "object",
+    "nodes_offset": 389475,
+    "opcode": "05",
+    "par16": 4,
+    "par8_signed": 9,
+    "par8_unsigned": 9,
+    "pc": 279,
+    "segment_kind": "functions",
+    "segment_offset": 388951,
+    "service": "gs",
+    "snippet": [
+      {
+        "member_node_offset": 390583,
+        "node": [
+          0,
+          0,
+          55
+        ],
+        "pc": 277
+      },
+      {
+        "member_node_offset": 390587,
+        "node": [
+          -2,
+          0,
+          55
+        ],
+        "pc": 278
+      },
+      {
+        "member_node_offset": 390591,
+        "node": [
+          4,
+          9,
+          5
+        ],
+        "pc": 279
+      },
+      {
+        "member_node_offset": 390595,
+        "node": [
+          0,
+          0,
+          51
+        ],
+        "pc": 280
+      },
+      {
+        "member_node_offset": 390599,
+        "node": [
+          0,
+          0,
+          46
+        ],
+        "pc": 281
+      }
+    ],
+    "source": "gs/pack_data/lib_gs32.pak/gs/daemons/treasure_tradingd.o",
+    "target_resolution": "runtime_stack_value_not_statically_resolved"
+  },
+  {
+    "bound_count": 0,
+    "efun_numeric_name": null,
+    "function": "init_compile_module",
+    "function_index": 796,
+    "global_bit": true,
+    "global_unit": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o",
+    "member_node_offset": 320457,
+    "member_sha256": "f9896828c87399be4977107fbfbe3f67fd71caebd3008bda84be16cc722d0a0e",
+    "mode": "global",
+    "nodes_offset": 320441,
+    "numeric_namespace": "module_numeric_range",
+    "opcode": "17",
+    "par16": 798,
+    "par8_signed": -128,
+    "par8_unsigned": 128,
+    "pc": 4,
+    "same_image_definition_candidate": null,
+    "segment_kind": "functions",
+    "segment_offset": 320306,
+    "selector_bit6": false,
+    "service": "aaa",
+    "snippet": [
+      {
+        "member_node_offset": 320449,
+        "node": [
+          67,
+          0,
+          6
+        ],
+        "pc": 2
+      },
+      {
+        "member_node_offset": 320453,
+        "node": [
+          17,
+          2,
+          33
+        ],
+        "pc": 3
+      },
+      {
+        "member_node_offset": 320457,
+        "node": [
+          798,
+          -128,
+          23
+        ],
+        "pc": 4
+      },
+      {
+        "member_node_offset": 320461,
+        "node": [
+          84,
+          0,
+          54
+        ],
+        "pc": 5
+      },
+      {
+        "member_node_offset": 320465,
+        "node": [
+          0,
+          0,
+          3
+        ],
+        "pc": 6
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o"
+  },
+  {
+    "bound_count": 1,
+    "efun_numeric_name": null,
+    "function": "xdbc_log",
+    "function_index": 581,
+    "global_bit": true,
+    "global_unit": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o",
+    "member_node_offset": 257130,
+    "member_sha256": "f9896828c87399be4977107fbfbe3f67fd71caebd3008bda84be16cc722d0a0e",
+    "mode": "global",
+    "nodes_offset": 257026,
+    "numeric_namespace": "module_numeric_range",
+    "opcode": "17",
+    "par16": 584,
+    "par8_signed": -127,
+    "par8_unsigned": 129,
+    "pc": 26,
+    "same_image_definition_candidate": null,
+    "segment_kind": "functions",
+    "segment_offset": 256951,
+    "selector_bit6": false,
+    "service": "aaa",
+    "snippet": [
+      {
+        "member_node_offset": 257122,
+        "node": [
+          1,
+          0,
+          69
+        ],
+        "pc": 24
+      },
+      {
+        "member_node_offset": 257126,
+        "node": [
+          0,
+          0,
+          55
+        ],
+        "pc": 25
+      },
+      {
+        "member_node_offset": 257130,
+        "node": [
+          584,
+          -127,
+          23
+        ],
+        "pc": 26
+      },
+      {
+        "member_node_offset": 257134,
+        "node": [
+          36,
+          2,
+          6
+        ],
+        "pc": 27
+      },
+      {
+        "member_node_offset": 257138,
+        "node": [
+          4,
+          1,
+          5
+        ],
+        "pc": 28
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o"
+  },
+  {
+    "bound_count": 2,
+    "efun_numeric_name": null,
+    "function": "write_content_to_ex",
+    "function_index": 722,
+    "global_bit": true,
+    "global_unit": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o",
+    "member_node_offset": 301693,
+    "member_sha256": "f9896828c87399be4977107fbfbe3f67fd71caebd3008bda84be16cc722d0a0e",
+    "mode": "global",
+    "nodes_offset": 301621,
+    "numeric_namespace": "module_numeric_range",
+    "opcode": "17",
+    "par16": 721,
+    "par8_signed": -126,
+    "par8_unsigned": 130,
+    "pc": 18,
+    "same_image_definition_candidate": null,
+    "segment_kind": "functions",
+    "segment_offset": 301564,
+    "selector_bit6": false,
+    "service": "aaa",
+    "snippet": [
+      {
+        "member_node_offset": 301685,
+        "node": [
+          4,
+          0,
+          55
+        ],
+        "pc": 16
+      },
+      {
+        "member_node_offset": 301689,
+        "node": [
+          0,
+          0,
+          55
+        ],
+        "pc": 17
+      },
+      {
+        "member_node_offset": 301693,
+        "node": [
+          721,
+          -126,
+          23
+        ],
+        "pc": 18
+      },
+      {
+        "member_node_offset": 301697,
+        "node": [
+          -1,
+          0,
+          55
+        ],
+        "pc": 19
+      },
+      {
+        "member_node_offset": 301701,
+        "node": [
+          2,
+          0,
+          55
+        ],
+        "pc": 20
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o"
+  },
+  {
+    "bound_count": 3,
+    "efun_numeric_name": null,
+    "function": "read_content_to_ex",
+    "function_index": 718,
+    "global_bit": true,
+    "global_unit": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o",
+    "member_node_offset": 283450,
+    "member_sha256": "f9896828c87399be4977107fbfbe3f67fd71caebd3008bda84be16cc722d0a0e",
+    "mode": "global",
+    "nodes_offset": 283430,
+    "numeric_namespace": "module_numeric_range",
+    "opcode": "17",
+    "par16": 717,
+    "par8_signed": -125,
+    "par8_unsigned": 131,
+    "pc": 5,
+    "same_image_definition_candidate": null,
+    "segment_kind": "functions",
+    "segment_offset": 283383,
+    "selector_bit6": false,
+    "service": "aaa",
+    "snippet": [
+      {
+        "member_node_offset": 283442,
+        "node": [
+          0,
+          0,
+          55
+        ],
+        "pc": 3
+      },
+      {
+        "member_node_offset": 283446,
+        "node": [
+          3,
+          0,
+          55
+        ],
+        "pc": 4
+      },
+      {
+        "member_node_offset": 283450,
+        "node": [
+          717,
+          -125,
+          23
+        ],
+        "pc": 5
+      },
+      {
+        "member_node_offset": 283454,
+        "node": [
+          2,
+          0,
+          55
+        ],
+        "pc": 6
+      },
+      {
+        "member_node_offset": 283458,
+        "node": [
+          1,
+          0,
+          55
+        ],
+        "pc": 7
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o"
+  },
+  {
+    "bound_count": 4,
+    "efun_numeric_name": null,
+    "function": "auto_recover_read_to",
+    "function_index": 983,
+    "global_bit": true,
+    "global_unit": "ccs/pack_data/lib_ccs32.pak/ccs/start_ccs.o",
+    "member_node_offset": 512956,
+    "member_sha256": "256301c54d7c2b8bdf50aeded93c27325dad80690a2f488249d04acfe3f59b47",
+    "mode": "global",
+    "nodes_offset": 512932,
+    "numeric_namespace": "module_numeric_range",
+    "opcode": "17",
+    "par16": 982,
+    "par8_signed": -124,
+    "par8_unsigned": 132,
+    "pc": 6,
+    "same_image_definition_candidate": null,
+    "segment_kind": "functions",
+    "segment_offset": 512857,
+    "selector_bit6": false,
+    "service": "ccs",
+    "snippet": [
+      {
+        "member_node_offset": 512948,
+        "node": [
+          1,
+          0,
+          55
+        ],
+        "pc": 4
+      },
+      {
+        "member_node_offset": 512952,
+        "node": [
+          0,
+          0,
+          55
+        ],
+        "pc": 5
+      },
+      {
+        "member_node_offset": 512956,
+        "node": [
+          982,
+          -124,
+          23
+        ],
+        "pc": 6
+      },
+      {
+        "member_node_offset": 512960,
+        "node": [
+          2,
+          0,
+          55
+        ],
+        "pc": 7
+      },
+      {
+        "member_node_offset": 512964,
+        "node": [
+          1,
+          0,
+          55
+        ],
+        "pc": 8
+      }
+    ],
+    "source": "ccs/pack_data/lib_ccs32.pak/ccs/start_ccs.o"
+  },
+  {
+    "bound_count": 0,
+    "efun_numeric_name": "strlen",
+    "function": "analysis_ban_words_file",
+    "function_index": 663,
+    "global_bit": true,
+    "global_unit": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o",
+    "member_node_offset": 253212,
+    "member_sha256": "f9896828c87399be4977107fbfbe3f67fd71caebd3008bda84be16cc722d0a0e",
+    "mode": "global",
+    "nodes_offset": 252828,
+    "numeric_namespace": "efun_numeric_range",
+    "opcode": "17",
+    "par16": 122,
+    "par8_signed": -64,
+    "par8_unsigned": 192,
+    "pc": 96,
+    "same_image_definition_candidate": null,
+    "segment_kind": "functions",
+    "segment_offset": 252671,
+    "selector_bit6": true,
+    "service": "aaa",
+    "snippet": [
+      {
+        "member_node_offset": 253204,
+        "node": [
+          -6,
+          0,
+          35
+        ],
+        "pc": 94
+      },
+      {
+        "member_node_offset": 253208,
+        "node": [
+          12,
+          -6,
+          18
+        ],
+        "pc": 95
+      },
+      {
+        "member_node_offset": 253212,
+        "node": [
+          122,
+          -64,
+          23
+        ],
+        "pc": 96
+      },
+      {
+        "member_node_offset": 253216,
+        "node": [
+          -5,
+          0,
+          55
+        ],
+        "pc": 97
+      },
+      {
+        "member_node_offset": 253220,
+        "node": [
+          -4,
+          0,
+          55
+        ],
+        "pc": 98
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o"
+  },
+  {
+    "bound_count": 0,
+    "efun_numeric_name": null,
+    "function": "create",
+    "function_index": 13,
+    "global_bit": false,
+    "global_unit": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o",
+    "member_node_offset": 6083,
+    "member_sha256": "5f1a18f01d1bb1a75a05bf3bdf2788fddd1ca8f55134e59cd47eb9ab4847a896",
+    "mode": "object",
+    "nodes_offset": 6043,
+    "numeric_namespace": "object_relative",
+    "opcode": "17",
+    "par16": 12,
+    "par8_signed": 0,
+    "par8_unsigned": 0,
+    "pc": 10,
+    "same_image_definition_candidate": "do_when_new_connection",
+    "segment_kind": "functions",
+    "segment_offset": 5983,
+    "selector_bit6": false,
+    "service": "aaa",
+    "snippet": [
+      {
+        "member_node_offset": 6075,
+        "node": [
+          2,
+          2,
+          7
+        ],
+        "pc": 8
+      },
+      {
+        "member_node_offset": 6079,
+        "node": [
+          0,
+          0,
+          51
+        ],
+        "pc": 9
+      },
+      {
+        "member_node_offset": 6083,
+        "node": [
+          12,
+          0,
+          23
+        ],
+        "pc": 10
+      },
+      {
+        "member_node_offset": 6087,
+        "node": [
+          817,
+          -127,
+          7
+        ],
+        "pc": 11
+      },
+      {
+        "member_node_offset": 6091,
+        "node": [
+          0,
+          0,
+          51
+        ],
+        "pc": 12
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/daemons/connectiond.o"
+  },
+  {
+    "bound_count": 1,
+    "efun_numeric_name": null,
+    "function": "register_timer",
+    "function_index": 0,
+    "global_bit": false,
+    "global_unit": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o",
+    "member_node_offset": 927,
+    "member_sha256": "131f3af3767ffcbc17dcbb64421aaec3466b8cd04ff9216a173f164150926521",
+    "mode": "object",
+    "nodes_offset": 699,
+    "numeric_namespace": "object_relative",
+    "opcode": "17",
+    "par16": 2,
+    "par8_signed": 1,
+    "par8_unsigned": 1,
+    "pc": 57,
+    "same_image_definition_candidate": "timer_handler",
+    "segment_kind": "functions",
+    "segment_offset": 589,
+    "selector_bit6": false,
+    "service": "aaa",
+    "snippet": [
+      {
+        "member_node_offset": 919,
+        "node": [
+          0,
+          0,
+          51
+        ],
+        "pc": 55
+      },
+      {
+        "member_node_offset": 923,
+        "node": [
+          0,
+          0,
+          55
+        ],
+        "pc": 56
+      },
+      {
+        "member_node_offset": 927,
+        "node": [
+          2,
+          1,
+          23
+        ],
+        "pc": 57
+      },
+      {
+        "member_node_offset": 931,
+        "node": [
+          0,
+          0,
+          55
+        ],
+        "pc": 58
+      },
+      {
+        "member_node_offset": 935,
+        "node": [
+          -1,
+          0,
+          55
+        ],
+        "pc": 59
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/daemons/timerd.o"
+  },
+  {
+    "bound_count": 10,
+    "efun_numeric_name": null,
+    "function": "main",
+    "function_index": 5,
+    "global_bit": false,
+    "global_unit": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o",
+    "member_node_offset": 2551,
+    "member_sha256": "ae5f106c864f7f894b397ee1550101b284a37596e737bf6b8d8aa097d8d1dee6",
+    "mode": "object",
+    "nodes_offset": 2503,
+    "numeric_namespace": "object_relative",
+    "opcode": "17",
+    "par16": 4,
+    "par8_signed": 10,
+    "par8_unsigned": 10,
+    "pc": 12,
+    "same_image_definition_candidate": "exchange_coupon",
+    "segment_kind": "functions",
+    "segment_offset": 2404,
+    "selector_bit6": false,
+    "service": "aaa",
+    "snippet": [
+      {
+        "member_node_offset": 2543,
+        "node": [
+          1,
+          0,
+          55
+        ],
+        "pc": 10
+      },
+      {
+        "member_node_offset": 2547,
+        "node": [
+          0,
+          0,
+          55
+        ],
+        "pc": 11
+      },
+      {
+        "member_node_offset": 2551,
+        "node": [
+          4,
+          10,
+          23
+        ],
+        "pc": 12
+      },
+      {
+        "member_node_offset": 2555,
+        "node": [
+          2,
+          0,
+          55
+        ],
+        "pc": 13
+      },
+      {
+        "member_node_offset": 2559,
+        "node": [
+          0,
+          0,
+          79
+        ],
+        "pc": 14
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/daemons/server/cmd_l_change_coupon.o"
+  },
+  {
+    "bound_count": 11,
+    "efun_numeric_name": null,
+    "function": "request_login_from_csa",
+    "function_index": 5,
+    "global_bit": false,
+    "global_unit": "ccs/pack_data/lib_ccs32.pak/ccs/start_ccs.o",
+    "member_node_offset": 84978,
+    "member_sha256": "b88c27909ad68341b472fc42c1c577d64e1fa47edbe595aca7c7ea97154e06d2",
+    "mode": "object",
+    "nodes_offset": 84778,
+    "numeric_namespace": "object_relative",
+    "opcode": "17",
+    "par16": 68,
+    "par8_signed": 11,
+    "par8_unsigned": 11,
+    "pc": 50,
+    "same_image_definition_candidate": "_request_login_from_csa",
+    "segment_kind": "functions",
+    "segment_offset": 84615,
+    "selector_bit6": false,
+    "service": "ccs",
+    "snippet": [
+      {
+        "member_node_offset": 84970,
+        "node": [
+          1,
+          0,
+          55
+        ],
+        "pc": 48
+      },
+      {
+        "member_node_offset": 84974,
+        "node": [
+          0,
+          0,
+          55
+        ],
+        "pc": 49
+      },
+      {
+        "member_node_offset": 84978,
+        "node": [
+          68,
+          11,
+          23
+        ],
+        "pc": 50
+      },
+      {
+        "member_node_offset": 84982,
+        "node": [
+          -1,
+          0,
+          55
+        ],
+        "pc": 51
+      },
+      {
+        "member_node_offset": 84986,
+        "node": [
+          196,
+          0,
+          64
+        ],
+        "pc": 52
+      }
+    ],
+    "source": "ccs/pack_data/lib_ccs32.pak/ccs/daemons/cross_server/everyone_pk_match.o"
+  },
+  {
+    "bound_count": 12,
+    "efun_numeric_name": null,
+    "function": "main",
+    "function_index": 14,
+    "global_bit": false,
+    "global_unit": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o",
+    "member_node_offset": 16889,
+    "member_sha256": "98ebb01e4321ac97a9f5f2e2c32b93e95bd9a08da0c0f82372c963271c99c4b1",
+    "mode": "object",
+    "nodes_offset": 16833,
+    "numeric_namespace": "object_relative",
+    "opcode": "17",
+    "par16": 5,
+    "par8_signed": 12,
+    "par8_unsigned": 12,
+    "pc": 14,
+    "same_image_definition_candidate": "_main",
+    "segment_kind": "functions",
+    "segment_offset": 16739,
+    "selector_bit6": false,
+    "service": "aaa",
+    "snippet": [
+      {
+        "member_node_offset": 16881,
+        "node": [
+          1,
+          0,
+          55
+        ],
+        "pc": 12
+      },
+      {
+        "member_node_offset": 16885,
+        "node": [
+          0,
+          0,
+          55
+        ],
+        "pc": 13
+      },
+      {
+        "member_node_offset": 16889,
+        "node": [
+          5,
+          12,
+          23
+        ],
+        "pc": 14
+      },
+      {
+        "member_node_offset": 16893,
+        "node": [
+          4,
+          0,
+          55
+        ],
+        "pc": 15
+      },
+      {
+        "member_node_offset": 16897,
+        "node": [
+          0,
+          0,
+          79
+        ],
+        "pc": 16
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/daemons/server/cmd_l_add_coin.o"
+  },
+  {
+    "bound_count": 13,
+    "efun_numeric_name": null,
+    "function": "main",
+    "function_index": 6,
+    "global_bit": false,
+    "global_unit": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o",
+    "member_node_offset": 8295,
+    "member_sha256": "287ae44a318db3a5b0203591212b67aeef6665ead65ede4c96997881192f9a3c",
+    "mode": "object",
+    "nodes_offset": 8103,
+    "numeric_namespace": "object_relative",
+    "opcode": "17",
+    "par16": 5,
+    "par8_signed": 13,
+    "par8_unsigned": 13,
+    "pc": 48,
+    "same_image_definition_candidate": "_main_thread",
+    "segment_kind": "functions",
+    "segment_offset": 7950,
+    "selector_bit6": false,
+    "service": "aaa",
+    "snippet": [
+      {
+        "member_node_offset": 8287,
+        "node": [
+          1,
+          0,
+          55
+        ],
+        "pc": 46
+      },
+      {
+        "member_node_offset": 8291,
+        "node": [
+          0,
+          0,
+          55
+        ],
+        "pc": 47
+      },
+      {
+        "member_node_offset": 8295,
+        "node": [
+          5,
+          13,
+          23
+        ],
+        "pc": 48
+      },
+      {
+        "member_node_offset": 8299,
+        "node": [
+          4,
+          0,
+          55
+        ],
+        "pc": 49
+      },
+      {
+        "member_node_offset": 8303,
+        "node": [
+          0,
+          0,
+          79
+        ],
+        "pc": 50
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/daemons/server/cmd_l_precost_coin.o"
+  },
+  {
+    "bound_count": 15,
+    "efun_numeric_name": null,
+    "function": "do_sell_user",
+    "function_index": 114,
+    "global_bit": false,
+    "global_unit": "gs/pack_data/lib_gs32.pak/gs/start_gs.o",
+    "member_node_offset": 166201,
+    "member_sha256": "7470d396e302395318f58cd411353242a8911d6704f032b517978ea9092f0ef7",
+    "mode": "object",
+    "nodes_offset": 165277,
+    "numeric_namespace": "object_relative",
+    "opcode": "17",
+    "par16": 42,
+    "par8_signed": 15,
+    "par8_unsigned": 15,
+    "pc": 231,
+    "same_image_definition_candidate": "_sell_treasure",
+    "segment_kind": "functions",
+    "segment_offset": 164868,
+    "selector_bit6": false,
+    "service": "gs",
+    "snippet": [
+      {
+        "member_node_offset": 166193,
+        "node": [
+          1,
+          0,
+          55
+        ],
+        "pc": 229
+      },
+      {
+        "member_node_offset": 166197,
+        "node": [
+          -9,
+          0,
+          55
+        ],
+        "pc": 230
+      },
+      {
+        "member_node_offset": 166201,
+        "node": [
+          42,
+          15,
+          23
+        ],
+        "pc": 231
+      },
+      {
+        "member_node_offset": 166205,
+        "node": [
+          75,
+          0,
+          64
+        ],
+        "pc": 232
+      },
+      {
+        "member_node_offset": 166209,
+        "node": [
+          -14,
+          0,
+          55
+        ],
+        "pc": 233
+      }
+    ],
+    "source": "gs/pack_data/lib_gs32.pak/gs/daemons/treasure_tradingd.o"
+  },
+  {
+    "bound_count": 18,
+    "efun_numeric_name": null,
+    "function": "kick_off",
+    "function_index": 138,
+    "global_bit": false,
+    "global_unit": "gs/pack_data/lib_gs32.pak/gs/start_gs.o",
+    "member_node_offset": 162245,
+    "member_sha256": "7470d396e302395318f58cd411353242a8911d6704f032b517978ea9092f0ef7",
+    "mode": "object",
+    "nodes_offset": 162153,
+    "numeric_namespace": "object_relative",
+    "opcode": "17",
+    "par16": 160,
+    "par8_signed": 18,
+    "par8_unsigned": 18,
+    "pc": 23,
+    "same_image_definition_candidate": "save_done_callback",
+    "segment_kind": "functions",
+    "segment_offset": 162029,
+    "selector_bit6": false,
+    "service": "gs",
+    "snippet": [
+      {
+        "member_node_offset": 162237,
+        "node": [
+          2,
+          0,
+          55
+        ],
+        "pc": 21
+      },
+      {
+        "member_node_offset": 162241,
+        "node": [
+          1,
+          0,
+          55
+        ],
+        "pc": 22
+      },
+      {
+        "member_node_offset": 162245,
+        "node": [
+          160,
+          18,
+          23
+        ],
+        "pc": 23
+      },
+      {
+        "member_node_offset": 162249,
+        "node": [
+          1165,
+          0,
+          64
+        ],
+        "pc": 24
+      },
+      {
+        "member_node_offset": 162253,
+        "node": [
+          1082,
+          0,
+          64
+        ],
+        "pc": 25
+      }
+    ],
+    "source": "gs/pack_data/lib_gs32.pak/gs/daemons/treasure_tradingd.o"
+  },
+  {
+    "bound_count": 19,
+    "efun_numeric_name": null,
+    "function": "do_sell_user",
+    "function_index": 114,
+    "global_bit": false,
+    "global_unit": "gs/pack_data/lib_gs32.pak/gs/start_gs.o",
+    "member_node_offset": 166385,
+    "member_sha256": "7470d396e302395318f58cd411353242a8911d6704f032b517978ea9092f0ef7",
+    "mode": "object",
+    "nodes_offset": 165277,
+    "numeric_namespace": "object_relative",
+    "opcode": "17",
+    "par16": 138,
+    "par8_signed": 19,
+    "par8_unsigned": 19,
+    "pc": 277,
+    "same_image_definition_candidate": "kick_off",
+    "segment_kind": "functions",
+    "segment_offset": 164868,
+    "selector_bit6": false,
+    "service": "gs",
+    "snippet": [
+      {
+        "member_node_offset": 166377,
+        "node": [
+          -9,
+          0,
+          55
+        ],
+        "pc": 275
+      },
+      {
+        "member_node_offset": 166381,
+        "node": [
+          0,
+          0,
+          55
+        ],
+        "pc": 276
+      },
+      {
+        "member_node_offset": 166385,
+        "node": [
+          138,
+          19,
+          23
+        ],
+        "pc": 277
+      },
+      {
+        "member_node_offset": 166389,
+        "node": [
+          0,
+          0,
+          59
+        ],
+        "pc": 278
+      },
+      {
+        "member_node_offset": 166393,
+        "node": [
+          10,
+          0,
+          59
+        ],
+        "pc": 279
+      }
+    ],
+    "source": "gs/pack_data/lib_gs32.pak/gs/daemons/treasure_tradingd.o"
+  },
+  {
+    "bound_count": 2,
+    "efun_numeric_name": null,
+    "function": "post_request",
+    "function_index": 35,
+    "global_bit": false,
+    "global_unit": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o",
+    "member_node_offset": 3774,
+    "member_sha256": "277cac16ad15447b900b3112f0ca5c442cde8b100553ae7497f875370e628839",
+    "mode": "object",
+    "nodes_offset": 3682,
+    "numeric_namespace": "object_relative",
+    "opcode": "17",
+    "par16": 45,
+    "par8_signed": 2,
+    "par8_unsigned": 2,
+    "pc": 23,
+    "same_image_definition_candidate": "post_request_done",
+    "segment_kind": "functions",
+    "segment_offset": 3615,
+    "selector_bit6": false,
+    "service": "aaa",
+    "snippet": [
+      {
+        "member_node_offset": 3766,
+        "node": [
+          277,
+          0,
+          6
+        ],
+        "pc": 21
+      },
+      {
+        "member_node_offset": 3770,
+        "node": [
+          -1,
+          0,
+          55
+        ],
+        "pc": 22
+      },
+      {
+        "member_node_offset": 3774,
+        "node": [
+          45,
+          2,
+          23
+        ],
+        "pc": 23
+      },
+      {
+        "member_node_offset": 3778,
+        "node": [
+          0,
+          0,
+          57
+        ],
+        "pc": 24
+      },
+      {
+        "member_node_offset": 3782,
+        "node": [
+          15,
+          0,
+          64
+        ],
+        "pc": 25
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/daemons/mmd.o"
+  },
+  {
+    "bound_count": 3,
+    "efun_numeric_name": null,
+    "function": "do_when_coin_trade_add_ok",
+    "function_index": 6,
+    "global_bit": false,
+    "global_unit": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o",
+    "member_node_offset": 3528,
+    "member_sha256": "98ebb01e4321ac97a9f5f2e2c32b93e95bd9a08da0c0f82372c963271c99c4b1",
+    "mode": "object",
+    "nodes_offset": 3372,
+    "numeric_namespace": "object_relative",
+    "opcode": "17",
+    "par16": 4,
+    "par8_signed": 3,
+    "par8_unsigned": 3,
+    "pc": 39,
+    "same_image_definition_candidate": "_do_when_coin_trade_add_ok",
+    "segment_kind": "functions",
+    "segment_offset": 3243,
+    "selector_bit6": false,
+    "service": "aaa",
+    "snippet": [
+      {
+        "member_node_offset": 3520,
+        "node": [
+          1,
+          0,
+          55
+        ],
+        "pc": 37
+      },
+      {
+        "member_node_offset": 3524,
+        "node": [
+          -1,
+          0,
+          55
+        ],
+        "pc": 38
+      },
+      {
+        "member_node_offset": 3528,
+        "node": [
+          4,
+          3,
+          23
+        ],
+        "pc": 39
+      },
+      {
+        "member_node_offset": 3532,
+        "node": [
+          -1,
+          0,
+          55
+        ],
+        "pc": 40
+      },
+      {
+        "member_node_offset": 3536,
+        "node": [
+          0,
+          0,
+          79
+        ],
+        "pc": 41
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/daemons/server/cmd_l_add_coin.o"
+  },
+  {
+    "bound_count": 4,
+    "efun_numeric_name": null,
+    "function": "take_mutex_by_remote",
+    "function_index": 2,
+    "global_bit": false,
+    "global_unit": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o",
+    "member_node_offset": 1254,
+    "member_sha256": "1ffcd2c68da48c040dd1850daa956c8d8c3fc9ef091d3afbe80b28b0de695b5f",
+    "mode": "object",
+    "nodes_offset": 1122,
+    "numeric_namespace": "object_relative",
+    "opcode": "17",
+    "par16": 5,
+    "par8_signed": 4,
+    "par8_unsigned": 4,
+    "pc": 33,
+    "same_image_definition_candidate": "post_request_to_thread",
+    "segment_kind": "functions",
+    "segment_offset": 1013,
+    "selector_bit6": false,
+    "service": "aaa",
+    "snippet": [
+      {
+        "member_node_offset": 1246,
+        "node": [
+          1,
+          0,
+          55
+        ],
+        "pc": 31
+      },
+      {
+        "member_node_offset": 1250,
+        "node": [
+          0,
+          0,
+          55
+        ],
+        "pc": 32
+      },
+      {
+        "member_node_offset": 1254,
+        "node": [
+          5,
+          4,
+          23
+        ],
+        "pc": 33
+      },
+      {
+        "member_node_offset": 1258,
+        "node": [
+          0,
+          0,
+          73
+        ],
+        "pc": 34
+      },
+      {
+        "member_node_offset": 1262,
+        "node": [
+          0,
+          0,
+          46
+        ],
+        "pc": 35
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/daemons/syncd.o"
+  },
+  {
+    "bound_count": 5,
+    "efun_numeric_name": null,
+    "function": "main",
+    "function_index": 4,
+    "global_bit": false,
+    "global_unit": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o",
+    "member_node_offset": 1250,
+    "member_sha256": "fb69941b46ea4d800ad130610a743061c32de61f8c203b898084964abf1fa3b8",
+    "mode": "object",
+    "nodes_offset": 1202,
+    "numeric_namespace": "object_relative",
+    "opcode": "17",
+    "par16": 3,
+    "par8_signed": 5,
+    "par8_unsigned": 5,
+    "pc": 12,
+    "same_image_definition_candidate": "_main",
+    "segment_kind": "functions",
+    "segment_offset": 1093,
+    "selector_bit6": false,
+    "service": "aaa",
+    "snippet": [
+      {
+        "member_node_offset": 1242,
+        "node": [
+          1,
+          0,
+          55
+        ],
+        "pc": 10
+      },
+      {
+        "member_node_offset": 1246,
+        "node": [
+          0,
+          0,
+          55
+        ],
+        "pc": 11
+      },
+      {
+        "member_node_offset": 1250,
+        "node": [
+          3,
+          5,
+          23
+        ],
+        "pc": 12
+      },
+      {
+        "member_node_offset": 1254,
+        "node": [
+          2,
+          0,
+          55
+        ],
+        "pc": 13
+      },
+      {
+        "member_node_offset": 1258,
+        "node": [
+          0,
+          0,
+          79
+        ],
+        "pc": 14
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/daemons/server/cmd_l_do_alipay_recharge.o"
+  },
+  {
+    "bound_count": 6,
+    "efun_numeric_name": null,
+    "function": "main",
+    "function_index": 4,
+    "global_bit": false,
+    "global_unit": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o",
+    "member_node_offset": 1927,
+    "member_sha256": "c4a28bfea698fe8f79a234c1534353acbd7857e51fac1df3837589144eb57fc7",
+    "mode": "object",
+    "nodes_offset": 1895,
+    "numeric_namespace": "object_relative",
+    "opcode": "17",
+    "par16": 3,
+    "par8_signed": 6,
+    "par8_unsigned": 6,
+    "pc": 8,
+    "same_image_definition_candidate": "verify_password",
+    "segment_kind": "functions",
+    "segment_offset": 1804,
+    "selector_bit6": false,
+    "service": "aaa",
+    "snippet": [
+      {
+        "member_node_offset": 1919,
+        "node": [
+          1,
+          0,
+          55
+        ],
+        "pc": 6
+      },
+      {
+        "member_node_offset": 1923,
+        "node": [
+          0,
+          0,
+          55
+        ],
+        "pc": 7
+      },
+      {
+        "member_node_offset": 1927,
+        "node": [
+          3,
+          6,
+          23
+        ],
+        "pc": 8
+      },
+      {
+        "member_node_offset": 1931,
+        "node": [
+          2,
+          0,
+          55
+        ],
+        "pc": 9
+      },
+      {
+        "member_node_offset": 1935,
+        "node": [
+          0,
+          0,
+          79
+        ],
+        "pc": 10
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/daemons/server/cmd_l_verify_password.o"
+  },
+  {
+    "bound_count": 7,
+    "efun_numeric_name": null,
+    "function": "main",
+    "function_index": 4,
+    "global_bit": false,
+    "global_unit": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o",
+    "member_node_offset": 2672,
+    "member_sha256": "d8041f9634679ca3f2e3db38ad37dc050d3d4f17245798322a8b7657071666fe",
+    "mode": "object",
+    "nodes_offset": 2636,
+    "numeric_namespace": "object_relative",
+    "opcode": "17",
+    "par16": 3,
+    "par8_signed": 7,
+    "par8_unsigned": 7,
+    "pc": 9,
+    "same_image_definition_candidate": "block_account",
+    "segment_kind": "functions",
+    "segment_offset": 2547,
+    "selector_bit6": false,
+    "service": "aaa",
+    "snippet": [
+      {
+        "member_node_offset": 2664,
+        "node": [
+          1,
+          0,
+          55
+        ],
+        "pc": 7
+      },
+      {
+        "member_node_offset": 2668,
+        "node": [
+          0,
+          0,
+          55
+        ],
+        "pc": 8
+      },
+      {
+        "member_node_offset": 2672,
+        "node": [
+          3,
+          7,
+          23
+        ],
+        "pc": 9
+      },
+      {
+        "member_node_offset": 2676,
+        "node": [
+          2,
+          0,
+          55
+        ],
+        "pc": 10
+      },
+      {
+        "member_node_offset": 2680,
+        "node": [
+          0,
+          0,
+          79
+        ],
+        "pc": 11
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/daemons/server/cmd_l_block_account.o"
+  },
+  {
+    "bound_count": 8,
+    "efun_numeric_name": null,
+    "function": "main",
+    "function_index": 6,
+    "global_bit": false,
+    "global_unit": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o",
+    "member_node_offset": 4152,
+    "member_sha256": "5a1afc6b59e8f38cd511f2a13c2a15ff33a12327ab91c3f83a09c7b8c4c2aed6",
+    "mode": "object",
+    "nodes_offset": 4112,
+    "numeric_namespace": "object_relative",
+    "opcode": "17",
+    "par16": 5,
+    "par8_signed": 8,
+    "par8_unsigned": 8,
+    "pc": 10,
+    "same_image_definition_candidate": "update_first_credit_bonus",
+    "segment_kind": "functions",
+    "segment_offset": 4001,
+    "selector_bit6": false,
+    "service": "aaa",
+    "snippet": [
+      {
+        "member_node_offset": 4144,
+        "node": [
+          1,
+          0,
+          55
+        ],
+        "pc": 8
+      },
+      {
+        "member_node_offset": 4148,
+        "node": [
+          0,
+          0,
+          55
+        ],
+        "pc": 9
+      },
+      {
+        "member_node_offset": 4152,
+        "node": [
+          5,
+          8,
+          23
+        ],
+        "pc": 10
+      },
+      {
+        "member_node_offset": 4156,
+        "node": [
+          2,
+          0,
+          55
+        ],
+        "pc": 11
+      },
+      {
+        "member_node_offset": 4160,
+        "node": [
+          0,
+          0,
+          79
+        ],
+        "pc": 12
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/daemons/server/cmd_l_update_first_credit_bonus.o"
+  },
+  {
+    "bound_count": 9,
+    "efun_numeric_name": null,
+    "function": "main",
+    "function_index": 4,
+    "global_bit": false,
+    "global_unit": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o",
+    "member_node_offset": 3101,
+    "member_sha256": "85dfb27de18bac734e8d10d30500c2ab9ee085105446d3726467c176fd3e3b8d",
+    "mode": "object",
+    "nodes_offset": 3057,
+    "numeric_namespace": "object_relative",
+    "opcode": "17",
+    "par16": 5,
+    "par8_signed": 9,
+    "par8_unsigned": 9,
+    "pc": 11,
+    "same_image_definition_candidate": "_main",
+    "segment_kind": "functions",
+    "segment_offset": 2962,
+    "selector_bit6": false,
+    "service": "aaa",
+    "snippet": [
+      {
+        "member_node_offset": 3093,
+        "node": [
+          1,
+          0,
+          55
+        ],
+        "pc": 9
+      },
+      {
+        "member_node_offset": 3097,
+        "node": [
+          0,
+          0,
+          55
+        ],
+        "pc": 10
+      },
+      {
+        "member_node_offset": 3101,
+        "node": [
+          5,
+          9,
+          23
+        ],
+        "pc": 11
+      },
+      {
+        "member_node_offset": 3105,
+        "node": [
+          4,
+          0,
+          55
+        ],
+        "pc": 12
+      },
+      {
+        "member_node_offset": 3109,
+        "node": [
+          0,
+          0,
+          79
+        ],
+        "pc": 13
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/daemons/server/cmd_l_convert_silver_coin.o"
+  },
+  {
+    "bound_count": 0,
+    "efun_numeric_name": null,
+    "function": "query_objects",
+    "function_index": 5,
+    "global_bit": true,
+    "global_unit": "gs/pack_data/lib_gs32.pak/gs/start_gs.o",
+    "member_node_offset": 13248,
+    "member_sha256": "bedbb3fb266910533917e57126568e59a52fff42421e0a53f46e9caf036eccfc",
+    "mode": "object",
+    "nodes_offset": 12916,
+    "numeric_namespace": "module_numeric_range",
+    "opcode": "17",
+    "par16": 1869,
+    "par8_signed": -128,
+    "par8_unsigned": 128,
+    "pc": 83,
+    "same_image_definition_candidate": null,
+    "segment_kind": "functions",
+    "segment_offset": 12764,
+    "selector_bit6": false,
+    "service": "gs",
+    "snippet": [
+      {
+        "member_node_offset": 13240,
+        "node": [
+          0,
+          0,
+          3
+        ],
+        "pc": 81
+      },
+      {
+        "member_node_offset": 13244,
+        "node": [
+          0,
+          0,
+          51
+        ],
+        "pc": 82
+      },
+      {
+        "member_node_offset": 13248,
+        "node": [
+          1869,
+          -128,
+          23
+        ],
+        "pc": 83
+      },
+      {
+        "member_node_offset": 13252,
+        "node": [
+          -4,
+          0,
+          55
+        ],
+        "pc": 84
+      },
+      {
+        "member_node_offset": 13256,
+        "node": [
+          81,
+          2,
+          6
+        ],
+        "pc": 85
+      }
+    ],
+    "source": "gs/pack_data/lib_gs32.pak/gs/daemons/scand.o"
+  },
+  {
+    "bound_count": 3,
+    "efun_numeric_name": null,
+    "function": "log_local",
+    "function_index": 4,
+    "global_bit": true,
+    "global_unit": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o",
+    "member_node_offset": 5702,
+    "member_sha256": "96c4154b61dea5006ce612fefb65b3b797d68ae1b0216ac73189a197f49b938a",
+    "mode": "object",
+    "nodes_offset": 5606,
+    "numeric_namespace": "module_numeric_range",
+    "opcode": "17",
+    "par16": 755,
+    "par8_signed": -125,
+    "par8_unsigned": 131,
+    "pc": 24,
+    "same_image_definition_candidate": null,
+    "segment_kind": "functions",
+    "segment_offset": 5508,
+    "selector_bit6": false,
+    "service": "aaa",
+    "snippet": [
+      {
+        "member_node_offset": 5694,
+        "node": [
+          12,
+          0,
+          64
+        ],
+        "pc": 22
+      },
+      {
+        "member_node_offset": 5698,
+        "node": [
+          0,
+          0,
+          61
+        ],
+        "pc": 23
+      },
+      {
+        "member_node_offset": 5702,
+        "node": [
+          755,
+          -125,
+          23
+        ],
+        "pc": 24
+      },
+      {
+        "member_node_offset": 5706,
+        "node": [
+          21,
+          0,
+          64
+        ],
+        "pc": 25
+      },
+      {
+        "member_node_offset": 5710,
+        "node": [
+          30,
+          0,
+          64
+        ],
+        "pc": 26
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/daemons/logd.o"
+  },
+  {
+    "bound_count": 0,
+    "efun_numeric_name": "trim",
+    "function": "create_data",
+    "function_index": 32,
+    "global_bit": true,
+    "global_unit": "ccs/pack_data/lib_ccs32.pak/ccs/start_ccs.o",
+    "member_node_offset": 11054,
+    "member_sha256": "70d9452400cefc6619c612a5b9f47d664cf8606500a8eb7ab0f56317126e2eb3",
+    "mode": "object",
+    "nodes_offset": 11018,
+    "numeric_namespace": "efun_numeric_range",
+    "opcode": "17",
+    "par16": 141,
+    "par8_signed": -64,
+    "par8_unsigned": 192,
+    "pc": 9,
+    "same_image_definition_candidate": null,
+    "segment_kind": "functions",
+    "segment_offset": 10906,
+    "selector_bit6": true,
+    "service": "ccs",
+    "snippet": [
+      {
+        "member_node_offset": 11046,
+        "node": [
+          0,
+          0,
+          3
+        ],
+        "pc": 7
+      },
+      {
+        "member_node_offset": 11050,
+        "node": [
+          0,
+          0,
+          51
+        ],
+        "pc": 8
+      },
+      {
+        "member_node_offset": 11054,
+        "node": [
+          141,
+          -64,
+          23
+        ],
+        "pc": 9
+      },
+      {
+        "member_node_offset": 11058,
+        "node": [
+          91,
+          0,
+          64
+        ],
+        "pc": 10
+      },
+      {
+        "member_node_offset": 11062,
+        "node": [
+          -2,
+          0,
+          55
+        ],
+        "pc": 11
+      }
+    ],
+    "source": "ccs/pack_data/lib_ccs32.pak/ccs/daemons/shop_mgrd.o"
+  },
+  {
+    "bound_count": 1,
+    "efun_numeric_name": "destruct_object",
+    "function": "logout",
+    "function_index": 2030,
+    "global_bit": true,
+    "global_unit": "gs/pack_data/lib_gs32.pak/gs/start_gs.o",
+    "member_node_offset": 9299,
+    "member_sha256": "4a9f77736fb29d04ff31a0238df65675c7ad482e611c0e02218770eb14fe5630",
+    "mode": "object",
+    "nodes_offset": 9091,
+    "numeric_namespace": "efun_numeric_range",
+    "opcode": "17",
+    "par16": 361,
+    "par8_signed": -63,
+    "par8_unsigned": 193,
+    "pc": 52,
+    "same_image_definition_candidate": null,
+    "segment_kind": "functions",
+    "segment_offset": 8987,
+    "selector_bit6": true,
+    "service": "gs",
+    "snippet": [
+      {
+        "member_node_offset": 9291,
+        "node": [
+          0,
+          0,
+          51
+        ],
+        "pc": 50
+      },
+      {
+        "member_node_offset": 9295,
+        "node": [
+          0,
+          0,
+          65
+        ],
+        "pc": 51
+      },
+      {
+        "member_node_offset": 9299,
+        "node": [
+          361,
+          -63,
+          23
+        ],
+        "pc": 52
+      },
+      {
+        "member_node_offset": 9303,
+        "node": [
+          974,
+          0,
+          7
+        ],
+        "pc": 53
+      },
+      {
+        "member_node_offset": 9307,
+        "node": [
+          47,
+          0,
+          64
+        ],
+        "pc": 54
+      }
+    ],
+    "source": "gs/pack_data/lib_gs32.pak/gs/clone/char/user.o"
+  },
+  {
+    "bound_count": 10,
+    "efun_numeric_name": "call_other",
+    "function": "_client_wanna_vendue_merch",
+    "function_index": 127,
+    "global_bit": true,
+    "global_unit": "gs/pack_data/lib_gs32.pak/gs/start_gs.o",
+    "member_node_offset": 47635,
+    "member_sha256": "301f9d2420487de38a05eb515d180001fe918beb10941810126ce2d177e1eac8",
+    "mode": "object",
+    "nodes_offset": 47567,
+    "numeric_namespace": "efun_numeric_range",
+    "opcode": "17",
+    "par16": 356,
+    "par8_signed": -54,
+    "par8_unsigned": 202,
+    "pc": 17,
+    "same_image_definition_candidate": null,
+    "segment_kind": "functions",
+    "segment_offset": 47468,
+    "selector_bit6": true,
+    "service": "gs",
+    "snippet": [
+      {
+        "member_node_offset": 47627,
+        "node": [
+          458,
+          0,
+          64
+        ],
+        "pc": 15
+      },
+      {
+        "member_node_offset": 47631,
+        "node": [
+          3,
+          0,
+          64
+        ],
+        "pc": 16
+      },
+      {
+        "member_node_offset": 47635,
+        "node": [
+          356,
+          -54,
+          23
+        ],
+        "pc": 17
+      },
+      {
+        "member_node_offset": 47639,
+        "node": [
+          109,
+          0,
+          64
+        ],
+        "pc": 18
+      },
+      {
+        "member_node_offset": 47643,
+        "node": [
+          6,
+          0,
+          55
+        ],
+        "pc": 19
+      }
+    ],
+    "source": "gs/pack_data/lib_gs32.pak/gs/daemons/vendued.o"
+  },
+  {
+    "bound_count": 11,
+    "efun_numeric_name": "call_other",
+    "function": "_main",
+    "function_index": 5,
+    "global_bit": true,
+    "global_unit": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o",
+    "member_node_offset": 1643,
+    "member_sha256": "85dfb27de18bac734e8d10d30500c2ab9ee085105446d3726467c176fd3e3b8d",
+    "mode": "object",
+    "nodes_offset": 1483,
+    "numeric_namespace": "efun_numeric_range",
+    "opcode": "17",
+    "par16": 356,
+    "par8_signed": -53,
+    "par8_unsigned": 203,
+    "pc": 40,
+    "same_image_definition_candidate": null,
+    "segment_kind": "functions",
+    "segment_offset": 1213,
+    "selector_bit6": true,
+    "service": "aaa",
+    "snippet": [
+      {
+        "member_node_offset": 1635,
+        "node": [
+          7,
+          0,
+          64
+        ],
+        "pc": 38
+      },
+      {
+        "member_node_offset": 1639,
+        "node": [
+          8,
+          0,
+          64
+        ],
+        "pc": 39
+      },
+      {
+        "member_node_offset": 1643,
+        "node": [
+          356,
+          -53,
+          23
+        ],
+        "pc": 40
+      },
+      {
+        "member_node_offset": 1647,
+        "node": [
+          -8,
+          0,
+          57
+        ],
+        "pc": 41
+      },
+      {
+        "member_node_offset": 1651,
+        "node": [
+          0,
+          0,
+          3
+        ],
+        "pc": 42
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/daemons/server/cmd_l_convert_silver_coin.o"
+  },
+  {
+    "bound_count": 13,
+    "efun_numeric_name": "call_other",
+    "function": "_main",
+    "function_index": 5,
+    "global_bit": true,
+    "global_unit": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o",
+    "member_node_offset": 5950,
+    "member_sha256": "98ebb01e4321ac97a9f5f2e2c32b93e95bd9a08da0c0f82372c963271c99c4b1",
+    "mode": "object",
+    "nodes_offset": 5662,
+    "numeric_namespace": "efun_numeric_range",
+    "opcode": "17",
+    "par16": 356,
+    "par8_signed": -51,
+    "par8_unsigned": 205,
+    "pc": 72,
+    "same_image_definition_candidate": null,
+    "segment_kind": "functions",
+    "segment_offset": 5283,
+    "selector_bit6": true,
+    "service": "aaa",
+    "snippet": [
+      {
+        "member_node_offset": 5942,
+        "node": [
+          17,
+          0,
+          64
+        ],
+        "pc": 70
+      },
+      {
+        "member_node_offset": 5946,
+        "node": [
+          19,
+          0,
+          64
+        ],
+        "pc": 71
+      },
+      {
+        "member_node_offset": 5950,
+        "node": [
+          356,
+          -51,
+          23
+        ],
+        "pc": 72
+      },
+      {
+        "member_node_offset": 5954,
+        "node": [
+          -10,
+          0,
+          57
+        ],
+        "pc": 73
+      },
+      {
+        "member_node_offset": 5958,
+        "node": [
+          0,
+          0,
+          3
+        ],
+        "pc": 74
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/daemons/server/cmd_l_add_coin.o"
+  },
+  {
+    "bound_count": 14,
+    "efun_numeric_name": "call_other",
+    "function": "_main",
+    "function_index": 5,
+    "global_bit": true,
+    "global_unit": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o",
+    "member_node_offset": 6735,
+    "member_sha256": "8faed4bce6fc69a029c18167da349290f0cbc221c22ef07908761602c01a2f2c",
+    "mode": "object",
+    "nodes_offset": 6171,
+    "numeric_namespace": "efun_numeric_range",
+    "opcode": "17",
+    "par16": 356,
+    "par8_signed": -50,
+    "par8_unsigned": 206,
+    "pc": 141,
+    "same_image_definition_candidate": null,
+    "segment_kind": "functions",
+    "segment_offset": 5676,
+    "selector_bit6": true,
+    "service": "aaa",
+    "snippet": [
+      {
+        "member_node_offset": 6727,
+        "node": [
+          23,
+          0,
+          64
+        ],
+        "pc": 139
+      },
+      {
+        "member_node_offset": 6731,
+        "node": [
+          36,
+          0,
+          64
+        ],
+        "pc": 140
+      },
+      {
+        "member_node_offset": 6735,
+        "node": [
+          356,
+          -50,
+          23
+        ],
+        "pc": 141
+      },
+      {
+        "member_node_offset": 6739,
+        "node": [
+          -9,
+          0,
+          57
+        ],
+        "pc": 142
+      },
+      {
+        "member_node_offset": 6743,
+        "node": [
+          0,
+          0,
+          3
+        ],
+        "pc": 143
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/daemons/server/cmd_l_cost_coin.o"
+  },
+  {
+    "bound_count": 2,
+    "efun_numeric_name": "call_other",
+    "function": "do_init_others",
+    "function_index": 107,
+    "global_bit": true,
+    "global_unit": "ccs/pack_data/lib_ccs32.pak/ccs/start_ccs.o",
+    "member_node_offset": 101904,
+    "member_sha256": "8d381e39d806dad8931c9e727e99061690a77ec69907a006b296cbae6d8d44b8",
+    "mode": "object",
+    "nodes_offset": 101380,
+    "numeric_namespace": "efun_numeric_range",
+    "opcode": "17",
+    "par16": 356,
+    "par8_signed": -62,
+    "par8_unsigned": 194,
+    "pc": 131,
+    "same_image_definition_candidate": null,
+    "segment_kind": "functions",
+    "segment_offset": 101079,
+    "selector_bit6": true,
+    "service": "ccs",
+    "snippet": [
+      {
+        "member_node_offset": 101896,
+        "node": [
+          246,
+          0,
+          64
+        ],
+        "pc": 129
+      },
+      {
+        "member_node_offset": 101900,
+        "node": [
+          0,
+          0,
+          64
+        ],
+        "pc": 130
+      },
+      {
+        "member_node_offset": 101904,
+        "node": [
+          356,
+          -62,
+          23
+        ],
+        "pc": 131
+      },
+      {
+        "member_node_offset": 101908,
+        "node": [
+          245,
+          0,
+          64
+        ],
+        "pc": 132
+      },
+      {
+        "member_node_offset": 101912,
+        "node": [
+          900,
+          0,
+          59
+        ],
+        "pc": 133
+      }
+    ],
+    "source": "ccs/pack_data/lib_ccs32.pak/ccs/daemons/party_masterd.o"
+  },
+  {
+    "bound_count": 3,
+    "efun_numeric_name": "call_other",
+    "function": "batch_revise_shops",
+    "function_index": 33,
+    "global_bit": true,
+    "global_unit": "ccs/pack_data/lib_ccs32.pak/ccs/start_ccs.o",
+    "member_node_offset": 4298,
+    "member_sha256": "70d9452400cefc6619c612a5b9f47d664cf8606500a8eb7ab0f56317126e2eb3",
+    "mode": "object",
+    "nodes_offset": 4098,
+    "numeric_namespace": "efun_numeric_range",
+    "opcode": "17",
+    "par16": 356,
+    "par8_signed": -61,
+    "par8_unsigned": 195,
+    "pc": 50,
+    "same_image_definition_candidate": null,
+    "segment_kind": "functions",
+    "segment_offset": 3971,
+    "selector_bit6": true,
+    "service": "ccs",
+    "snippet": [
+      {
+        "member_node_offset": 4290,
+        "node": [
+          -2,
+          0,
+          55
+        ],
+        "pc": 48
+      },
+      {
+        "member_node_offset": 4294,
+        "node": [
+          98,
+          0,
+          64
+        ],
+        "pc": 49
+      },
+      {
+        "member_node_offset": 4298,
+        "node": [
+          356,
+          -61,
+          23
+        ],
+        "pc": 50
+      },
+      {
+        "member_node_offset": 4302,
+        "node": [
+          -5,
+          0,
+          57
+        ],
+        "pc": 51
+      },
+      {
+        "member_node_offset": 4306,
+        "node": [
+          0,
+          0,
+          3
+        ],
+        "pc": 52
+      }
+    ],
+    "source": "ccs/pack_data/lib_ccs32.pak/ccs/daemons/shop_mgrd.o"
+  },
+  {
+    "bound_count": 4,
+    "efun_numeric_name": "call_other",
+    "function": "request_oper_city_from_csa",
+    "function_index": 28,
+    "global_bit": true,
+    "global_unit": "ccs/pack_data/lib_ccs32.pak/ccs/start_ccs.o",
+    "member_node_offset": 19696,
+    "member_sha256": "55fc9a5e8a8dd8a7647e8d560cc09b20d006c4d097a6756a9f28cbb21989a018",
+    "mode": "object",
+    "nodes_offset": 19460,
+    "numeric_namespace": "efun_numeric_range",
+    "opcode": "17",
+    "par16": 356,
+    "par8_signed": -60,
+    "par8_unsigned": 196,
+    "pc": 59,
+    "same_image_definition_candidate": null,
+    "segment_kind": "functions",
+    "segment_offset": 19297,
+    "selector_bit6": true,
+    "service": "ccs",
+    "snippet": [
+      {
+        "member_node_offset": 19688,
+        "node": [
+          111,
+          0,
+          64
+        ],
+        "pc": 57
+      },
+      {
+        "member_node_offset": 19692,
+        "node": [
+          74,
+          0,
+          64
+        ],
+        "pc": 58
+      },
+      {
+        "member_node_offset": 19696,
+        "node": [
+          356,
+          -60,
+          23
+        ],
+        "pc": 59
+      },
+      {
+        "member_node_offset": 19700,
+        "node": [
+          62,
+          0,
+          64
+        ],
+        "pc": 60
+      },
+      {
+        "member_node_offset": 19704,
+        "node": [
+          65,
+          0,
+          64
+        ],
+        "pc": 61
+      }
+    ],
+    "source": "ccs/pack_data/lib_ccs32.pak/ccs/daemons/cross_server/citywar.o"
+  },
+  {
+    "bound_count": 5,
+    "efun_numeric_name": "call_other",
+    "function": "block_account",
+    "function_index": 37,
+    "global_bit": true,
+    "global_unit": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o",
+    "member_node_offset": 26462,
+    "member_sha256": "fbad2268542cac34b915222e0e6ba038e390b5098d06295834c707654c4bbd05",
+    "mode": "object",
+    "nodes_offset": 25662,
+    "numeric_namespace": "efun_numeric_range",
+    "opcode": "17",
+    "par16": 356,
+    "par8_signed": -59,
+    "par8_unsigned": 197,
+    "pc": 200,
+    "same_image_definition_candidate": null,
+    "segment_kind": "functions",
+    "segment_offset": 25246,
+    "selector_bit6": true,
+    "service": "aaa",
+    "snippet": [
+      {
+        "member_node_offset": 26454,
+        "node": [
+          76,
+          0,
+          64
+        ],
+        "pc": 198
+      },
+      {
+        "member_node_offset": 26458,
+        "node": [
+          65,
+          0,
+          64
+        ],
+        "pc": 199
+      },
+      {
+        "member_node_offset": 26462,
+        "node": [
+          356,
+          -59,
+          23
+        ],
+        "pc": 200
+      },
+      {
+        "member_node_offset": 26466,
+        "node": [
+          10,
+          0,
+          59
+        ],
+        "pc": 201
+      },
+      {
+        "member_node_offset": 26470,
+        "node": [
+          94,
+          1,
+          6
+        ],
+        "pc": 202
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/daemons/accountd.o"
+  },
+  {
+    "bound_count": 6,
+    "efun_numeric_name": "call_other",
+    "function": "request_dispatch_city",
+    "function_index": 33,
+    "global_bit": true,
+    "global_unit": "ccs/pack_data/lib_ccs32.pak/ccs/start_ccs.o",
+    "member_node_offset": 28361,
+    "member_sha256": "2bed680e0fa0e09efc5ebcb144433b71e7b8b165c4a7f16da88da8cc3b86cd5b",
+    "mode": "object",
+    "nodes_offset": 28197,
+    "numeric_namespace": "efun_numeric_range",
+    "opcode": "17",
+    "par16": 356,
+    "par8_signed": -58,
+    "par8_unsigned": 198,
+    "pc": 41,
+    "same_image_definition_candidate": null,
+    "segment_kind": "functions",
+    "segment_offset": 28082,
+    "selector_bit6": true,
+    "service": "ccs",
+    "snippet": [
+      {
+        "member_node_offset": 28353,
+        "node": [
+          84,
+          0,
+          64
+        ],
+        "pc": 39
+      },
+      {
+        "member_node_offset": 28357,
+        "node": [
+          42,
+          0,
+          64
+        ],
+        "pc": 40
+      },
+      {
+        "member_node_offset": 28361,
+        "node": [
+          356,
+          -58,
+          23
+        ],
+        "pc": 41
+      },
+      {
+        "member_node_offset": 28365,
+        "node": [
+          81,
+          0,
+          64
+        ],
+        "pc": 42
+      },
+      {
+        "member_node_offset": 28369,
+        "node": [
+          85,
+          0,
+          64
+        ],
+        "pc": 43
+      }
+    ],
+    "source": "ccs/pack_data/lib_ccs32.pak/ccs/daemons/ccs_cityward.o"
+  },
+  {
+    "bound_count": 7,
+    "efun_numeric_name": "call_other",
+    "function": "request_local_encrypt",
+    "function_index": 9,
+    "global_bit": true,
+    "global_unit": "gs/pack_data/lib_gs32.pak/gs/start_gs.o",
+    "member_node_offset": 5430,
+    "member_sha256": "420778293b7c84e3396cff5dd48cc0f6553878116e4d382f54f63a2aca63ec93",
+    "mode": "object",
+    "nodes_offset": 4882,
+    "numeric_namespace": "efun_numeric_range",
+    "opcode": "17",
+    "par16": 356,
+    "par8_signed": -57,
+    "par8_unsigned": 199,
+    "pc": 137,
+    "same_image_definition_candidate": null,
+    "segment_kind": "functions",
+    "segment_offset": 4586,
+    "selector_bit6": true,
+    "service": "gs",
+    "snippet": [
+      {
+        "member_node_offset": 5422,
+        "node": [
+          55,
+          0,
+          64
+        ],
+        "pc": 135
+      },
+      {
+        "member_node_offset": 5426,
+        "node": [
+          5,
+          0,
+          64
+        ],
+        "pc": 136
+      },
+      {
+        "member_node_offset": 5430,
+        "node": [
+          356,
+          -57,
+          23
+        ],
+        "pc": 137
+      },
+      {
+        "member_node_offset": 5434,
+        "node": [
+          56,
+          0,
+          64
+        ],
+        "pc": 138
+      },
+      {
+        "member_node_offset": 5438,
+        "node": [
+          2,
+          0,
+          24
+        ],
+        "pc": 139
+      }
+    ],
+    "source": "gs/pack_data/lib_gs32.pak/gs/daemons/local_encryptd.o"
+  },
+  {
+    "bound_count": 8,
+    "efun_numeric_name": "call_other",
+    "function": "main",
+    "function_index": 0,
+    "global_bit": true,
+    "global_unit": "gs/pack_data/lib_gs32.pak/gs/start_gs.o",
+    "member_node_offset": 618,
+    "member_sha256": "9094b9cb08b91235bd536494dc931ba0700810bba90e88c90106636ccd6c9bc6",
+    "mode": "object",
+    "nodes_offset": 578,
+    "numeric_namespace": "efun_numeric_range",
+    "opcode": "17",
+    "par16": 356,
+    "par8_signed": -56,
+    "par8_unsigned": 200,
+    "pc": 10,
+    "same_image_definition_candidate": null,
+    "segment_kind": "functions",
+    "segment_offset": 494,
+    "selector_bit6": true,
+    "service": "gs",
+    "snippet": [
+      {
+        "member_node_offset": 610,
+        "node": [
+          1,
+          0,
+          64
+        ],
+        "pc": 8
+      },
+      {
+        "member_node_offset": 614,
+        "node": [
+          2,
+          0,
+          64
+        ],
+        "pc": 9
+      },
+      {
+        "member_node_offset": 618,
+        "node": [
+          356,
+          -56,
+          23
+        ],
+        "pc": 10
+      },
+      {
+        "member_node_offset": 622,
+        "node": [
+          0,
+          0,
+          64
+        ],
+        "pc": 11
+      },
+      {
+        "member_node_offset": 626,
+        "node": [
+          3,
+          0,
+          64
+        ],
+        "pc": 12
+      }
+    ],
+    "source": "gs/pack_data/lib_gs32.pak/gs/cmds/intersrv/msg_l_do_inquiry.o"
+  },
+  {
+    "bound_count": 9,
+    "efun_numeric_name": "call_other",
+    "function": "offer_price_decision_confirmed",
+    "function_index": 107,
+    "global_bit": true,
+    "global_unit": "gs/pack_data/lib_gs32.pak/gs/start_gs.o",
+    "member_node_offset": 48268,
+    "member_sha256": "301f9d2420487de38a05eb515d180001fe918beb10941810126ce2d177e1eac8",
+    "mode": "object",
+    "nodes_offset": 48224,
+    "numeric_namespace": "efun_numeric_range",
+    "opcode": "17",
+    "par16": 356,
+    "par8_signed": -55,
+    "par8_unsigned": 201,
+    "pc": 11,
+    "same_image_definition_candidate": null,
+    "segment_kind": "functions",
+    "segment_offset": 48140,
+    "selector_bit6": true,
+    "service": "gs",
+    "snippet": [
+      {
+        "member_node_offset": 48260,
+        "node": [
+          342,
+          0,
+          64
+        ],
+        "pc": 9
+      },
+      {
+        "member_node_offset": 48264,
+        "node": [
+          3,
+          0,
+          64
+        ],
+        "pc": 10
+      },
+      {
+        "member_node_offset": 48268,
+        "node": [
+          356,
+          -55,
+          23
+        ],
+        "pc": 11
+      },
+      {
+        "member_node_offset": 48272,
+        "node": [
+          109,
+          0,
+          64
+        ],
+        "pc": 12
+      },
+      {
+        "member_node_offset": 48276,
+        "node": [
+          5,
+          0,
+          55
+        ],
+        "pc": 13
+      }
+    ],
+    "source": "gs/pack_data/lib_gs32.pak/gs/daemons/vendued.o"
+  },
+  {
+    "bound_count": 0,
+    "efun_numeric_name": null,
+    "function": "__init__",
+    "function_index": null,
+    "global_bit": false,
+    "global_unit": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o",
+    "member_node_offset": 14570,
+    "member_sha256": "67c1060eb814ce072491b047ec2a5c60ec27c5ed4d7a98e34469201eea558d07",
+    "mode": "object",
+    "nodes_offset": 14490,
+    "numeric_namespace": "object_relative",
+    "opcode": "17",
+    "par16": 4,
+    "par8_signed": 0,
+    "par8_unsigned": 0,
+    "pc": 20,
+    "same_image_definition_candidate": "query_account_info",
+    "segment_kind": "init",
+    "segment_offset": 14382,
+    "selector_bit6": false,
+    "service": "aaa",
+    "snippet": [
+      {
+        "member_node_offset": 14562,
+        "node": [
+          0,
+          0,
+          3
+        ],
+        "pc": 18
+      },
+      {
+        "member_node_offset": 14566,
+        "node": [
+          0,
+          0,
+          51
+        ],
+        "pc": 19
+      },
+      {
+        "member_node_offset": 14570,
+        "node": [
+          4,
+          0,
+          23
+        ],
+        "pc": 20
+      },
+      {
+        "member_node_offset": 14574,
+        "node": [
+          14,
+          0,
+          64
+        ],
+        "pc": 21
+      },
+      {
+        "member_node_offset": 14578,
+        "node": [
+          5,
+          0,
+          23
+        ],
+        "pc": 22
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/daemons/account_transactiond.o"
+  },
+  {
+    "bound_count": 1,
+    "efun_numeric_name": null,
+    "function": "__init__",
+    "function_index": null,
+    "global_bit": false,
+    "global_unit": "gs/pack_data/lib_gs32.pak/gs/start_gs.o",
+    "member_node_offset": 18940,
+    "member_sha256": "3f0d49454b5db17e190ec73801b182509ae5057d3f8fd70fdd3870c1198f0cca",
+    "mode": "object",
+    "nodes_offset": 18920,
+    "numeric_namespace": "object_relative",
+    "opcode": "17",
+    "par16": 916,
+    "par8_signed": 1,
+    "par8_unsigned": 1,
+    "pc": 5,
+    "same_image_definition_candidate": "update_menu_content",
+    "segment_kind": "init",
+    "segment_offset": 18576,
+    "selector_bit6": false,
+    "service": "gs",
+    "snippet": [
+      {
+        "member_node_offset": 18932,
+        "node": [
+          0,
+          0,
+          66
+        ],
+        "pc": 3
+      },
+      {
+        "member_node_offset": 18936,
+        "node": [
+          2,
+          0,
+          59
+        ],
+        "pc": 4
+      },
+      {
+        "member_node_offset": 18940,
+        "node": [
+          916,
+          1,
+          23
+        ],
+        "pc": 5
+      },
+      {
+        "member_node_offset": 18944,
+        "node": [
+          75,
+          0,
+          64
+        ],
+        "pc": 6
+      },
+      {
+        "member_node_offset": 18948,
+        "node": [
+          875,
+          0,
+          23
+        ],
+        "pc": 7
+      }
+    ],
+    "source": "gs/pack_data/lib_gs32.pak/gs/clone/npc/donghai-yucun/yinshi.o"
+  },
+  {
+    "bound_count": 2,
+    "efun_numeric_name": null,
+    "function": "__init__",
+    "function_index": null,
+    "global_bit": false,
+    "global_unit": "gs/pack_data/lib_gs32.pak/gs/start_gs.o",
+    "member_node_offset": 19873,
+    "member_sha256": "ea758ccd6360d40e462b75bb34d3702ced9b2b24de2f6c7afff1dd84b0d12ba9",
+    "mode": "object",
+    "nodes_offset": 19853,
+    "numeric_namespace": "object_relative",
+    "opcode": "17",
+    "par16": 101,
+    "par8_signed": 2,
+    "par8_unsigned": 2,
+    "pc": 5,
+    "same_image_definition_candidate": "try_change_state",
+    "segment_kind": "init",
+    "segment_offset": 19510,
+    "selector_bit6": false,
+    "service": "gs",
+    "snippet": [
+      {
+        "member_node_offset": 19865,
+        "node": [
+          23,
+          0,
+          64
+        ],
+        "pc": 3
+      },
+      {
+        "member_node_offset": 19869,
+        "node": [
+          12,
+          0,
+          64
+        ],
+        "pc": 4
+      },
+      {
+        "member_node_offset": 19873,
+        "node": [
+          101,
+          2,
+          23
+        ],
+        "pc": 5
+      },
+      {
+        "member_node_offset": 19877,
+        "node": [
+          99,
+          0,
+          59
+        ],
+        "pc": 6
+      },
+      {
+        "member_node_offset": 19881,
+        "node": [
+          1,
+          0,
+          59
+        ],
+        "pc": 7
+      }
+    ],
+    "source": "gs/pack_data/lib_gs32.pak/gs/daemons/discover_world/buyi_zhicai.o"
+  },
+  {
+    "bound_count": 3,
+    "efun_numeric_name": null,
+    "function": "__init__",
+    "function_index": null,
+    "global_bit": false,
+    "global_unit": "gs/pack_data/lib_gs32.pak/gs/start_gs.o",
+    "member_node_offset": 32264,
+    "member_sha256": "038467dcfc3a650bd3ac030ab7a092ee893cd2ca001a99af9ac23867285daa5d",
+    "mode": "object",
+    "nodes_offset": 31920,
+    "numeric_namespace": "object_relative",
+    "opcode": "17",
+    "par16": 108,
+    "par8_signed": 3,
+    "par8_unsigned": 3,
+    "pc": 86,
+    "same_image_definition_candidate": "do_bonus",
+    "segment_kind": "init",
+    "segment_offset": 31401,
+    "selector_bit6": false,
+    "service": "gs",
+    "snippet": [
+      {
+        "member_node_offset": 32256,
+        "node": [
+          0,
+          0,
+          67
+        ],
+        "pc": 84
+      },
+      {
+        "member_node_offset": 32260,
+        "node": [
+          27,
+          0,
+          64
+        ],
+        "pc": 85
+      },
+      {
+        "member_node_offset": 32264,
+        "node": [
+          108,
+          3,
+          23
+        ],
+        "pc": 86
+      },
+      {
+        "member_node_offset": 32268,
+        "node": [
+          99,
+          0,
+          59
+        ],
+        "pc": 87
+      },
+      {
+        "member_node_offset": 32272,
+        "node": [
+          1,
+          0,
+          59
+        ],
+        "pc": 88
+      }
+    ],
+    "source": "gs/pack_data/lib_gs32.pak/gs/daemons/tasks/instruction/sub-tasks/instruction-20.o"
+  },
+  {
+    "bound_count": 5,
+    "efun_numeric_name": null,
+    "function": "__init__",
+    "function_index": null,
+    "global_bit": false,
+    "global_unit": "gs/pack_data/lib_gs32.pak/gs/start_gs.o",
+    "member_node_offset": 20437,
+    "member_sha256": "09e0f6b9ecd6d6a96de77ab9380780957fb4755bd98b1a860ece192ca66e9981",
+    "mode": "object",
+    "nodes_offset": 20213,
+    "numeric_namespace": "object_relative",
+    "opcode": "17",
+    "par16": 130,
+    "par8_signed": 5,
+    "par8_unsigned": 5,
+    "pc": 56,
+    "same_image_definition_candidate": "npc_appear_ex",
+    "segment_kind": "init",
+    "segment_offset": 19969,
+    "selector_bit6": false,
+    "service": "gs",
+    "snippet": [
+      {
+        "member_node_offset": 20429,
+        "node": [
+          8,
+          0,
+          59
+        ],
+        "pc": 54
+      },
+      {
+        "member_node_offset": 20433,
+        "node": [
+          104,
+          0,
+          64
+        ],
+        "pc": 55
+      },
+      {
+        "member_node_offset": 20437,
+        "node": [
+          130,
+          5,
+          23
+        ],
+        "pc": 56
+      },
+      {
+        "member_node_offset": 20441,
+        "node": [
+          99,
+          0,
+          59
+        ],
+        "pc": 57
+      },
+      {
+        "member_node_offset": 20445,
+        "node": [
+          1,
+          0,
+          59
+        ],
+        "pc": 58
+      }
+    ],
+    "source": "gs/pack_data/lib_gs32.pak/gs/daemons/tasks/new_year_2010/sub_tasks/shenxian_qiangqin.o"
+  },
+  {
+    "bound_count": 0,
+    "efun_numeric_name": "std_life",
+    "function": "__init__",
+    "function_index": null,
+    "global_bit": true,
+    "global_unit": "gs/pack_data/lib_gs32.pak/gs/start_gs.o",
+    "member_node_offset": 60066,
+    "member_sha256": "6b147d5f88404a9cb9cb4ff13748f19074231e508bcf46398df8dd50e457a3c9",
+    "mode": "object",
+    "nodes_offset": 59822,
+    "numeric_namespace": "efun_numeric_range",
+    "opcode": "17",
+    "par16": 547,
+    "par8_signed": -64,
+    "par8_unsigned": 192,
+    "pc": 61,
+    "same_image_definition_candidate": null,
+    "segment_kind": "init",
+    "segment_offset": 59268,
+    "selector_bit6": true,
+    "service": "gs",
+    "snippet": [
+      {
+        "member_node_offset": 60058,
+        "node": [
+          0,
+          0,
+          51
+        ],
+        "pc": 59
+      },
+      {
+        "member_node_offset": 60062,
+        "node": [
+          0,
+          0,
+          63
+        ],
+        "pc": 60
+      },
+      {
+        "member_node_offset": 60066,
+        "node": [
+          547,
+          -64,
+          23
+        ],
+        "pc": 61
+      },
+      {
+        "member_node_offset": 60070,
+        "node": [
+          2,
+          0,
+          22
+        ],
+        "pc": 62
+      },
+      {
+        "member_node_offset": 60074,
+        "node": [
+          220,
+          0,
+          64
+        ],
+        "pc": 63
+      }
+    ],
+    "source": "gs/pack_data/lib_gs32.pak/gs/daemons/change_lookd.o"
+  },
+  {
+    "bound_count": 2,
+    "efun_numeric_name": "call_other",
+    "function": "__init__",
+    "function_index": null,
+    "global_bit": true,
+    "global_unit": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o",
+    "member_node_offset": 14610,
+    "member_sha256": "67c1060eb814ce072491b047ec2a5c60ec27c5ed4d7a98e34469201eea558d07",
+    "mode": "object",
+    "nodes_offset": 14490,
+    "numeric_namespace": "efun_numeric_range",
+    "opcode": "17",
+    "par16": 356,
+    "par8_signed": -62,
+    "par8_unsigned": 194,
+    "pc": 30,
+    "same_image_definition_candidate": null,
+    "segment_kind": "init",
+    "segment_offset": 14382,
+    "selector_bit6": true,
+    "service": "aaa",
+    "snippet": [
+      {
+        "member_node_offset": 14602,
+        "node": [
+          8,
+          0,
+          64
+        ],
+        "pc": 28
+      },
+      {
+        "member_node_offset": 14606,
+        "node": [
+          9,
+          0,
+          64
+        ],
+        "pc": 29
+      },
+      {
+        "member_node_offset": 14610,
+        "node": [
+          356,
+          -62,
+          23
+        ],
+        "pc": 30
+      },
+      {
+        "member_node_offset": 14614,
+        "node": [
+          14,
+          0,
+          64
+        ],
+        "pc": 31
+      },
+      {
+        "member_node_offset": 14618,
+        "node": [
+          0,
+          0,
+          23
+        ],
+        "pc": 32
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/daemons/account_transactiond.o"
+  },
+  {
+    "bound_count": 3,
+    "efun_numeric_name": "call_other",
+    "function": "__init__",
+    "function_index": null,
+    "global_bit": true,
+    "global_unit": "gs/pack_data/lib_gs32.pak/gs/start_gs.o",
+    "member_node_offset": 30836,
+    "member_sha256": "23d1cc2756f288fe885ddef837d9d4ff57116854dd06df8da9d3c00b73572b3c",
+    "mode": "object",
+    "nodes_offset": 30624,
+    "numeric_namespace": "efun_numeric_range",
+    "opcode": "17",
+    "par16": 356,
+    "par8_signed": -61,
+    "par8_unsigned": 195,
+    "pc": 53,
+    "same_image_definition_candidate": null,
+    "segment_kind": "init",
+    "segment_offset": 30027,
+    "selector_bit6": true,
+    "service": "gs",
+    "snippet": [
+      {
+        "member_node_offset": 30828,
+        "node": [
+          161,
+          0,
+          64
+        ],
+        "pc": 51
+      },
+      {
+        "member_node_offset": 30832,
+        "node": [
+          77,
+          0,
+          64
+        ],
+        "pc": 52
+      },
+      {
+        "member_node_offset": 30836,
+        "node": [
+          356,
+          -61,
+          23
+        ],
+        "pc": 53
+      },
+      {
+        "member_node_offset": 30840,
+        "node": [
+          99,
+          0,
+          59
+        ],
+        "pc": 54
+      },
+      {
+        "member_node_offset": 30844,
+        "node": [
+          1,
+          0,
+          59
+        ],
+        "pc": 55
+      }
+    ],
+    "source": "gs/pack_data/lib_gs32.pak/gs/daemons/tasks/guoguo_shilian.o"
+  }
+]

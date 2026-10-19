@@ -1,5 +1,7 @@
 # rml32
 
+阶段2AF已完成函数值 `05/17` 的静态取证、35,703处位置统计及[首批Object函数值/标量捕获规格](docs/stage2af-evidence/function-runtime-design.md)。确认05参数数目包含目标，17捕获参数前置；见[函数值语义](docs/vm-function-value-semantics.md)与[验证记录](docs/stage2af-validation.json)。本轮Rust/API/依赖不变，仍为2AE的433项Rust测试、73种限定操作码，05/17尚未实现。
+
 阶段2AE已实现显式注册的受限同步 `06` 宿主调用，433项Rust测试通过。新增宿主签名/上下文/返回接口及Object/Global准备入口；支持73种限定操作码，主语料仍缺05/17。见[宿主调用运行时](docs/vm-efun-runtime.md)、[当前矩阵](docs/stage2ae-evidence/matrix.md)和[验证记录](docs/stage2ae-validation.json)。真实efun、引用参数、异步/重入、Global init及服务启动仍未实现；以下条目保留历史状态。
 
 阶段2AD已完成 `06 / vm_callInEfun` 的静态取证、143,520处调用统计及[受限同步宿主接口规格](docs/stage2ad-evidence/host-runtime-design.md)。固定559槽中312槽被静态调用；参数顺序、原生上下文继承、返回与清理依据见[宿主分派语义](docs/vm-efun-semantics.md)。本轮未修改Rust运行时、公共API或依赖，仍为2AC的72种限定操作码、407项Rust测试，06尚未实现；合成宿主、真实efun及服务启动不能由静态统计代替。
@@ -56,6 +58,9 @@ python3 tests/compare_corpus.py --report target/stage1-validation.json
 比较器核对既有压缩证据中的成员、完整程序结构及继承记录。已知 `dba/pack_data/etc.pak/etc` 解压异常必须报告；直接执行 `corpus --root .` 因此返回 1，而比较器确认只有该已知异常时返回 0。新增错误不能被忽略。
 
 ## 文档与边界
+
+- [阶段 2AF 函数值创建、调用与寿命取证](docs/vm-function-value-semantics.md)
+- [阶段 2AF 复现方法与首批实施设计](docs/stage2af-evidence/method.md)
 
 - [阶段 2AE 受限同步宿主调用](docs/vm-efun-runtime.md)
 - [阶段 2AE 当前能力矩阵与复现](docs/stage2ae-evidence/method.md)

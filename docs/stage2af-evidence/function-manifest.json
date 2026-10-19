@@ -1,0 +1,719 @@
+[
+  {
+    "address": "0x809441c",
+    "body": {
+      "available": true,
+      "contains_entry": true,
+      "non_contiguous": true,
+      "provenance": "ghidra-function-body-address-set",
+      "ranges": [
+        {
+          "end": "0x80944c9",
+          "start": "0x809441c"
+        },
+        {
+          "end": "0x8094615",
+          "start": "0x80944cc"
+        },
+        {
+          "end": "0x8094704",
+          "start": "0x8094618"
+        },
+        {
+          "end": "0x8094977",
+          "start": "0x8094708"
+        }
+      ],
+      "span_bytes": 1372,
+      "total_bytes": 1365
+    },
+    "evidence_id": "ev_a50406aa6a4cd4b2b95b079a7b126ba210a8ecaa6919839ac438372500c0159d",
+    "limitations": [
+      "The session serves operations only after Ghidra reports default auto-analysis complete; incomplete analysis does not expose partial results.",
+      "The imported Program and temporary project are ephemeral and deleted on close. Annotation operations edit session database metadata; original executable bytes are never written.",
+      "Cancelling an active Ghidra request terminates its ephemeral database and discards session annotations. The selected target remains open; the next provider query imports the original artifact again.",
+      "Default-space addresses use lowercase 0x-prefixed hexadecimal; other address spaces use <percent-encoded-space>:0x<hex>.",
+      "References cover the complete Ghidra function-body AddressSet and exact entry. Dossier incoming edges omit sources owned by that function; procedure_references also retains those internal edges.",
+      "The dossier combines Ghidra FunctionManager, Listing, ReferenceManager, BasicBlockModel, and decompiler observations; provider-specific pseudocode and assembly are not cross-provider text invariants.",
+      "Resolved reference metadata identifies computed, indirect, external, call, jump, and data edges; unresolved targetless flows remain unknown, and function classifications distinguish thunks and externals.",
+      "Synthetic Ghidra entry-point references without actionable memory sources are omitted.",
+      "The Java bridge serializes one function request per Program and lets each decompilation run until it completes or the caller cancels.",
+      "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state."
+    ],
+    "name": "vm_callFunPtr",
+    "operation": "analyze_function",
+    "parameters": {
+      "procedure": "vm_callFunPtr"
+    },
+    "source": "docs/stage2af-evidence/rea.json.gz",
+    "source_sha256": "3cd2cc630c9adc9cef66b6cd37993647e2414d28ab5053a593a6e91cf94ce205"
+  },
+  {
+    "address": "0x8093d98",
+    "body": {
+      "available": true,
+      "contains_entry": true,
+      "non_contiguous": true,
+      "provenance": "ghidra-function-body-address-set",
+      "ranges": [
+        {
+          "end": "0x8093e96",
+          "start": "0x8093d98"
+        },
+        {
+          "end": "0x8093ead",
+          "start": "0x8093e98"
+        }
+      ],
+      "span_bytes": 278,
+      "total_bytes": 277
+    },
+    "evidence_id": "ev_f7a9dddeb7edb2f09a574fb30d22a4cf7af8ca2f93f06fb113081ac12811e04f",
+    "limitations": [
+      "The session serves operations only after Ghidra reports default auto-analysis complete; incomplete analysis does not expose partial results.",
+      "The imported Program and temporary project are ephemeral and deleted on close. Annotation operations edit session database metadata; original executable bytes are never written.",
+      "Cancelling an active Ghidra request terminates its ephemeral database and discards session annotations. The selected target remains open; the next provider query imports the original artifact again.",
+      "Default-space addresses use lowercase 0x-prefixed hexadecimal; other address spaces use <percent-encoded-space>:0x<hex>.",
+      "References cover the complete Ghidra function-body AddressSet and exact entry. Dossier incoming edges omit sources owned by that function; procedure_references also retains those internal edges.",
+      "The dossier combines Ghidra FunctionManager, Listing, ReferenceManager, BasicBlockModel, and decompiler observations; provider-specific pseudocode and assembly are not cross-provider text invariants.",
+      "Resolved reference metadata identifies computed, indirect, external, call, jump, and data edges; unresolved targetless flows remain unknown, and function classifications distinguish thunks and externals.",
+      "Synthetic Ghidra entry-point references without actionable memory sources are omitted.",
+      "The Java bridge serializes one function request per Program and lets each decompilation run until it completes or the caller cancels.",
+      "Ghidra Listing reports a terminal call at 0x8093e43 to 0x8093c5c vm_returnFromEfun (external=false, thunk=false, hasNoReturn=false); fallthrough is excluded by Ghidra's flow model. The reason for the terminal flow is not established by this observation.",
+      "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state."
+    ],
+    "name": "vm_callInEfun",
+    "operation": "analyze_function",
+    "parameters": {
+      "procedure": "vm_callInEfun"
+    },
+    "source": "docs/compatibility-evidence/main-rea.json.gz",
+    "source_sha256": "9c40597da8d64c6b52b77ac26a9f89eb276f82b7e23c0d233d17ecbb56320d8d"
+  },
+  {
+    "address": "0x8093eb0",
+    "evidence_id": "ev_af340516b2b29ca98a9f7fdbd69b859634edd556cde9e4d06c0db4b0f2873aad",
+    "limitations": [
+      "The session serves operations only after Ghidra reports default auto-analysis complete; incomplete analysis does not expose partial results.",
+      "The imported Program and temporary project are ephemeral and deleted on close. Annotation operations edit session database metadata; original executable bytes are never written.",
+      "Cancelling an active Ghidra request terminates its ephemeral database and discards session annotations. The selected target remains open; the next provider query imports the original artifact again.",
+      "Default-space addresses use lowercase 0x-prefixed hexadecimal; other address spaces use <percent-encoded-space>:0x<hex>.",
+      "Pseudocode is Ghidra decompiler output, not original source and not text-equivalent to Hopper output.",
+      "External functions and functions without an analyzable body return null; other decompiler failures remain explicit.",
+      "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state."
+    ],
+    "name": "vm_callInUserFunBody",
+    "operation": "procedure_pseudo_code",
+    "parameters": {
+      "procedure": "vm_callInUserFunBody"
+    },
+    "source": "docs/vm-core-evidence/rea.json.gz",
+    "source_sha256": "56d2b1a3e419b9c6c252468ac46ebf5c3eb60738bf0adc2ef429a40e42326fda"
+  },
+  {
+    "address": "0x808ad98",
+    "body": {
+      "available": true,
+      "contains_entry": true,
+      "non_contiguous": false,
+      "provenance": "ghidra-function-body-address-set",
+      "ranges": [
+        {
+          "end": "0x808afc4",
+          "start": "0x808ad98"
+        }
+      ],
+      "span_bytes": 557,
+      "total_bytes": 557
+    },
+    "evidence_id": "ev_d5e0fa5ed30b20859a959e09027480b13f6d9acdd746527dd5c2dac47520cadc",
+    "limitations": [
+      "The session serves operations only after Ghidra reports default auto-analysis complete; incomplete analysis does not expose partial results.",
+      "The imported Program and temporary project are ephemeral and deleted on close. Annotation operations edit session database metadata; original executable bytes are never written.",
+      "Cancelling an active Ghidra request terminates its ephemeral database and discards session annotations. The selected target remains open; the next provider query imports the original artifact again.",
+      "Default-space addresses use lowercase 0x-prefixed hexadecimal; other address spaces use <percent-encoded-space>:0x<hex>.",
+      "References cover the complete Ghidra function-body AddressSet and exact entry. Dossier incoming edges omit sources owned by that function; procedure_references also retains those internal edges.",
+      "The dossier combines Ghidra FunctionManager, Listing, ReferenceManager, BasicBlockModel, and decompiler observations; provider-specific pseudocode and assembly are not cross-provider text invariants.",
+      "Resolved reference metadata identifies computed, indirect, external, call, jump, and data edges; unresolved targetless flows remain unknown, and function classifications distinguish thunks and externals.",
+      "Synthetic Ghidra entry-point references without actionable memory sources are omitted.",
+      "The Java bridge serializes one function request per Program and lets each decompilation run until it completes or the caller cancels.",
+      "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state."
+    ],
+    "name": "vm_cleanupValue",
+    "operation": "analyze_function",
+    "parameters": {
+      "procedure": "vm_cleanupValue"
+    },
+    "source": "docs/stage2af-evidence/rea.json.gz",
+    "source_sha256": "3cd2cc630c9adc9cef66b6cd37993647e2414d28ab5053a593a6e91cf94ce205"
+  },
+  {
+    "address": "0x808be24",
+    "body": {
+      "available": true,
+      "contains_entry": true,
+      "non_contiguous": false,
+      "provenance": "ghidra-function-body-address-set",
+      "ranges": [
+        {
+          "end": "0x808bee8",
+          "start": "0x808be24"
+        }
+      ],
+      "span_bytes": 197,
+      "total_bytes": 197
+    },
+    "evidence_id": "ev_69a23ae044935ae6f7450097987faa71f641c62091f885fc4b4b5f8d5b1929f4",
+    "limitations": [
+      "The session serves operations only after Ghidra reports default auto-analysis complete; incomplete analysis does not expose partial results.",
+      "The imported Program and temporary project are ephemeral and deleted on close. Annotation operations edit session database metadata; original executable bytes are never written.",
+      "Cancelling an active Ghidra request terminates its ephemeral database and discards session annotations. The selected target remains open; the next provider query imports the original artifact again.",
+      "Default-space addresses use lowercase 0x-prefixed hexadecimal; other address spaces use <percent-encoded-space>:0x<hex>.",
+      "References cover the complete Ghidra function-body AddressSet and exact entry. Dossier incoming edges omit sources owned by that function; procedure_references also retains those internal edges.",
+      "The dossier combines Ghidra FunctionManager, Listing, ReferenceManager, BasicBlockModel, and decompiler observations; provider-specific pseudocode and assembly are not cross-provider text invariants.",
+      "Resolved reference metadata identifies computed, indirect, external, call, jump, and data edges; unresolved targetless flows remain unknown, and function classifications distinguish thunks and externals.",
+      "Synthetic Ghidra entry-point references without actionable memory sources are omitted.",
+      "The Java bridge serializes one function request per Program and lets each decompilation run until it completes or the caller cancels.",
+      "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state."
+    ],
+    "name": "vm_copyValue",
+    "operation": "analyze_function",
+    "parameters": {
+      "procedure": "vm_copyValue"
+    },
+    "source": "docs/stage2af-evidence/rea.json.gz",
+    "source_sha256": "3cd2cc630c9adc9cef66b6cd37993647e2414d28ab5053a593a6e91cf94ce205"
+  },
+  {
+    "address": "0x8091f34",
+    "body": {
+      "available": true,
+      "contains_entry": true,
+      "non_contiguous": true,
+      "provenance": "ghidra-function-body-address-set",
+      "ranges": [
+        {
+          "end": "0x8091f8e",
+          "start": "0x8091f34"
+        },
+        {
+          "end": "0x8091fb2",
+          "start": "0x8091f90"
+        }
+      ],
+      "span_bytes": 127,
+      "total_bytes": 126
+    },
+    "evidence_id": "ev_4ae635941eda7abcc9024ccadd56fd4d6278ddcd6075acacda6b865390f65444",
+    "limitations": [
+      "The session serves operations only after Ghidra reports default auto-analysis complete; incomplete analysis does not expose partial results.",
+      "The imported Program and temporary project are ephemeral and deleted on close. Annotation operations edit session database metadata; original executable bytes are never written.",
+      "Cancelling an active Ghidra request terminates its ephemeral database and discards session annotations. The selected target remains open; the next provider query imports the original artifact again.",
+      "Default-space addresses use lowercase 0x-prefixed hexadecimal; other address spaces use <percent-encoded-space>:0x<hex>.",
+      "References cover the complete Ghidra function-body AddressSet and exact entry. Dossier incoming edges omit sources owned by that function; procedure_references also retains those internal edges.",
+      "The dossier combines Ghidra FunctionManager, Listing, ReferenceManager, BasicBlockModel, and decompiler observations; provider-specific pseudocode and assembly are not cross-provider text invariants.",
+      "Resolved reference metadata identifies computed, indirect, external, call, jump, and data edges; unresolved targetless flows remain unknown, and function classifications distinguish thunks and externals.",
+      "Synthetic Ghidra entry-point references without actionable memory sources are omitted.",
+      "The Java bridge serializes one function request per Program and lets each decompilation run until it completes or the caller cancels.",
+      "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state."
+    ],
+    "name": "vm_createFunctionValue",
+    "operation": "analyze_function",
+    "parameters": {
+      "procedure": "vm_createFunctionValue"
+    },
+    "source": "docs/compatibility-evidence/dispatch-rea.json.gz",
+    "source_sha256": "448b91228a685a4c4bff7a2776fcd5398f29178c2bc4276c74d0dfa4e3929bee"
+  },
+  {
+    "address": "0x8091cd0",
+    "body": {
+      "available": true,
+      "contains_entry": true,
+      "non_contiguous": true,
+      "provenance": "ghidra-function-body-address-set",
+      "ranges": [
+        {
+          "end": "0x8091cf1",
+          "start": "0x8091cd0"
+        },
+        {
+          "end": "0x8091e2c",
+          "start": "0x8091cf4"
+        },
+        {
+          "end": "0x8091f32",
+          "start": "0x8091e30"
+        }
+      ],
+      "span_bytes": 611,
+      "total_bytes": 606
+    },
+    "evidence_id": "ev_f739f81d73d7c07779ab3fb741800726145efbc40fd8dc6c58009ac2d703aa48",
+    "limitations": [
+      "The session serves operations only after Ghidra reports default auto-analysis complete; incomplete analysis does not expose partial results.",
+      "The imported Program and temporary project are ephemeral and deleted on close. Annotation operations edit session database metadata; original executable bytes are never written.",
+      "Cancelling an active Ghidra request terminates its ephemeral database and discards session annotations. The selected target remains open; the next provider query imports the original artifact again.",
+      "Default-space addresses use lowercase 0x-prefixed hexadecimal; other address spaces use <percent-encoded-space>:0x<hex>.",
+      "References cover the complete Ghidra function-body AddressSet and exact entry. Dossier incoming edges omit sources owned by that function; procedure_references also retains those internal edges.",
+      "The dossier combines Ghidra FunctionManager, Listing, ReferenceManager, BasicBlockModel, and decompiler observations; provider-specific pseudocode and assembly are not cross-provider text invariants.",
+      "Resolved reference metadata identifies computed, indirect, external, call, jump, and data edges; unresolved targetless flows remain unknown, and function classifications distinguish thunks and externals.",
+      "Synthetic Ghidra entry-point references without actionable memory sources are omitted.",
+      "The Java bridge serializes one function request per Program and lets each decompilation run until it completes or the caller cancels.",
+      "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state."
+    ],
+    "name": "vm_createFunctionValueEx",
+    "operation": "analyze_function",
+    "parameters": {
+      "procedure": "vm_createFunctionValueEx"
+    },
+    "source": "docs/stage2af-evidence/rea.json.gz",
+    "source_sha256": "3cd2cc630c9adc9cef66b6cd37993647e2414d28ab5053a593a6e91cf94ce205"
+  },
+  {
+    "address": "0x8097008",
+    "evidence_id": "ev_1f8d2b76898bf43dd8b24a370fca52729a822af343d566f8bc3216ef0b05c88f",
+    "limitations": [
+      "The session serves operations only after Ghidra reports default auto-analysis complete; incomplete analysis does not expose partial results.",
+      "The imported Program and temporary project are ephemeral and deleted on close. Annotation operations edit session database metadata; original executable bytes are never written.",
+      "Cancelling an active Ghidra request terminates its ephemeral database and discards session annotations. The selected target remains open; the next provider query imports the original artifact again.",
+      "Default-space addresses use lowercase 0x-prefixed hexadecimal; other address spaces use <percent-encoded-space>:0x<hex>.",
+      "Pseudocode is Ghidra decompiler output, not original source and not text-equivalent to Hopper output.",
+      "External functions and functions without an analyzable body return null; other decompiler failures remain explicit.",
+      "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state."
+    ],
+    "name": "vm_doActions",
+    "operation": "procedure_pseudo_code",
+    "parameters": {
+      "procedure": "vm_doActions"
+    },
+    "source": "docs/vm-catch-evidence/reused.json.gz",
+    "source_sha256": "8c538a6de33c643d2f41de8be2a0a6d46a2369a55991768c0f01477bb86703fc"
+  },
+  {
+    "address": "0x808eed4",
+    "body": {
+      "available": true,
+      "contains_entry": true,
+      "non_contiguous": false,
+      "provenance": "ghidra-function-body-address-set",
+      "ranges": [
+        {
+          "end": "0x808ef27",
+          "start": "0x808eed4"
+        }
+      ],
+      "span_bytes": 84,
+      "total_bytes": 84
+    },
+    "evidence_id": "ev_9c31d92aeb045a089ff6361f0cf81330894208eb0520a78f0bf4bd4701c8d565",
+    "limitations": [
+      "The session serves operations only after Ghidra reports default auto-analysis complete; incomplete analysis does not expose partial results.",
+      "The imported Program and temporary project are ephemeral and deleted on close. Annotation operations edit session database metadata; original executable bytes are never written.",
+      "Cancelling an active Ghidra request terminates its ephemeral database and discards session annotations. The selected target remains open; the next provider query imports the original artifact again.",
+      "Default-space addresses use lowercase 0x-prefixed hexadecimal; other address spaces use <percent-encoded-space>:0x<hex>.",
+      "References cover the complete Ghidra function-body AddressSet and exact entry. Dossier incoming edges omit sources owned by that function; procedure_references also retains those internal edges.",
+      "The dossier combines Ghidra FunctionManager, Listing, ReferenceManager, BasicBlockModel, and decompiler observations; provider-specific pseudocode and assembly are not cross-provider text invariants.",
+      "Resolved reference metadata identifies computed, indirect, external, call, jump, and data edges; unresolved targetless flows remain unknown, and function classifications distinguish thunks and externals.",
+      "Synthetic Ghidra entry-point references without actionable memory sources are omitted.",
+      "The Java bridge serializes one function request per Program and lets each decompilation run until it completes or the caller cancels.",
+      "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state."
+    ],
+    "name": "vm_eqValue",
+    "operation": "analyze_function",
+    "parameters": {
+      "procedure": "vm_eqValue"
+    },
+    "source": "docs/stage2af-evidence/rea.json.gz",
+    "source_sha256": "3cd2cc630c9adc9cef66b6cd37993647e2414d28ab5053a593a6e91cf94ce205"
+  },
+  {
+    "address": "0x80ab104",
+    "evidence_id": "ev_d9b9b1bd2399a379282bc11cbe8575420d3f316770e17d5a6ea5138fdee1b7a1",
+    "limitations": [
+      "The session serves operations only after Ghidra reports default auto-analysis complete; incomplete analysis does not expose partial results.",
+      "The imported Program and temporary project are ephemeral and deleted on close. Annotation operations edit session database metadata; original executable bytes are never written.",
+      "Cancelling an active Ghidra request terminates its ephemeral database and discards session annotations. The selected target remains open; the next provider query imports the original artifact again.",
+      "Default-space addresses use lowercase 0x-prefixed hexadecimal; other address spaces use <percent-encoded-space>:0x<hex>.",
+      "Pseudocode is Ghidra decompiler output, not original source and not text-equivalent to Hopper output.",
+      "External functions and functions without an analyzable body return null; other decompiler failures remain explicit.",
+      "Ghidra Listing reports a terminal call at 0x80ab144 to 0x804b574 <EXTERNAL>::longjmp (external=false, thunk=true, hasNoReturn=true); fallthrough is excluded by Ghidra's flow model. This records Ghidra's FunctionManager flag, not an independent verification that the callee cannot return.",
+      "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state."
+    ],
+    "name": "vm_errorQuit",
+    "operation": "procedure_pseudo_code",
+    "parameters": {
+      "procedure": "vm_errorQuit"
+    },
+    "source": "docs/vm-catch-evidence/reused.json.gz",
+    "source_sha256": "8c538a6de33c643d2f41de8be2a0a6d46a2369a55991768c0f01477bb86703fc"
+  },
+  {
+    "address": "0x80df374",
+    "body": {
+      "available": true,
+      "contains_entry": true,
+      "non_contiguous": false,
+      "provenance": "ghidra-function-body-address-set",
+      "ranges": [
+        {
+          "end": "0x80df401",
+          "start": "0x80df374"
+        }
+      ],
+      "span_bytes": 142,
+      "total_bytes": 142
+    },
+    "evidence_id": "ev_2367fe505024260c84916a2784345d572dd09ee9effe6fad39c28a1eb75cb9e0",
+    "limitations": [
+      "The session serves operations only after Ghidra reports default auto-analysis complete; incomplete analysis does not expose partial results.",
+      "The imported Program and temporary project are ephemeral and deleted on close. Annotation operations edit session database metadata; original executable bytes are never written.",
+      "Cancelling an active Ghidra request terminates its ephemeral database and discards session annotations. The selected target remains open; the next provider query imports the original artifact again.",
+      "Default-space addresses use lowercase 0x-prefixed hexadecimal; other address spaces use <percent-encoded-space>:0x<hex>.",
+      "References cover the complete Ghidra function-body AddressSet and exact entry. Dossier incoming edges omit sources owned by that function; procedure_references also retains those internal edges.",
+      "The dossier combines Ghidra FunctionManager, Listing, ReferenceManager, BasicBlockModel, and decompiler observations; provider-specific pseudocode and assembly are not cross-provider text invariants.",
+      "Resolved reference metadata identifies computed, indirect, external, call, jump, and data edges; unresolved targetless flows remain unknown, and function classifications distinguish thunks and externals.",
+      "Synthetic Ghidra entry-point references without actionable memory sources are omitted.",
+      "The Java bridge serializes one function request per Program and lets each decompilation run until it completes or the caller cancels.",
+      "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state."
+    ],
+    "name": "vm_f_bind_parameters",
+    "operation": "analyze_function",
+    "parameters": {
+      "procedure": "vm_f_bind_parameters"
+    },
+    "source": "docs/stage2af-evidence/rea.json.gz",
+    "source_sha256": "3cd2cc630c9adc9cef66b6cd37993647e2414d28ab5053a593a6e91cf94ce205"
+  },
+  {
+    "address": "0x80df310",
+    "body": {
+      "available": true,
+      "contains_entry": true,
+      "non_contiguous": false,
+      "provenance": "ghidra-function-body-address-set",
+      "ranges": [
+        {
+          "end": "0x80df373",
+          "start": "0x80df310"
+        }
+      ],
+      "span_bytes": 100,
+      "total_bytes": 100
+    },
+    "evidence_id": "ev_6e22aee1d5df3133900f522d36c3f2841a4834926e5c9e99b05ade923bd15982",
+    "limitations": [
+      "The session serves operations only after Ghidra reports default auto-analysis complete; incomplete analysis does not expose partial results.",
+      "The imported Program and temporary project are ephemeral and deleted on close. Annotation operations edit session database metadata; original executable bytes are never written.",
+      "Cancelling an active Ghidra request terminates its ephemeral database and discards session annotations. The selected target remains open; the next provider query imports the original artifact again.",
+      "Default-space addresses use lowercase 0x-prefixed hexadecimal; other address spaces use <percent-encoded-space>:0x<hex>.",
+      "References cover the complete Ghidra function-body AddressSet and exact entry. Dossier incoming edges omit sources owned by that function; procedure_references also retains those internal edges.",
+      "The dossier combines Ghidra FunctionManager, Listing, ReferenceManager, BasicBlockModel, and decompiler observations; provider-specific pseudocode and assembly are not cross-provider text invariants.",
+      "Resolved reference metadata identifies computed, indirect, external, call, jump, and data edges; unresolved targetless flows remain unknown, and function classifications distinguish thunks and externals.",
+      "Synthetic Ghidra entry-point references without actionable memory sources are omitted.",
+      "The Java bridge serializes one function request per Program and lets each decompilation run until it completes or the caller cancels.",
+      "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state."
+    ],
+    "name": "vm_f_bind_parameters_arr",
+    "operation": "analyze_function",
+    "parameters": {
+      "procedure": "vm_f_bind_parameters_arr"
+    },
+    "source": "docs/stage2af-evidence/rea.json.gz",
+    "source_sha256": "3cd2cc630c9adc9cef66b6cd37993647e2414d28ab5053a593a6e91cf94ce205"
+  },
+  {
+    "address": "0x808c114",
+    "body": {
+      "available": true,
+      "contains_entry": true,
+      "non_contiguous": true,
+      "provenance": "ghidra-function-body-address-set",
+      "ranges": [
+        {
+          "end": "0x808c12c",
+          "start": "0x808c114"
+        },
+        {
+          "end": "0x808c1f8",
+          "start": "0x808c130"
+        }
+      ],
+      "span_bytes": 229,
+      "total_bytes": 226
+    },
+    "evidence_id": "ev_228d09be9663f9f70d03a59ebe1663960c6d34458f9a82d3d5e1e4cee42d44f9",
+    "limitations": [
+      "The session serves operations only after Ghidra reports default auto-analysis complete; incomplete analysis does not expose partial results.",
+      "The imported Program and temporary project are ephemeral and deleted on close. Annotation operations edit session database metadata; original executable bytes are never written.",
+      "Cancelling an active Ghidra request terminates its ephemeral database and discards session annotations. The selected target remains open; the next provider query imports the original artifact again.",
+      "Default-space addresses use lowercase 0x-prefixed hexadecimal; other address spaces use <percent-encoded-space>:0x<hex>.",
+      "References cover the complete Ghidra function-body AddressSet and exact entry. Dossier incoming edges omit sources owned by that function; procedure_references also retains those internal edges.",
+      "The dossier combines Ghidra FunctionManager, Listing, ReferenceManager, BasicBlockModel, and decompiler observations; provider-specific pseudocode and assembly are not cross-provider text invariants.",
+      "Resolved reference metadata identifies computed, indirect, external, call, jump, and data edges; unresolved targetless flows remain unknown, and function classifications distinguish thunks and externals.",
+      "Synthetic Ghidra entry-point references without actionable memory sources are omitted.",
+      "The Java bridge serializes one function request per Program and lets each decompilation run until it completes or the caller cancels.",
+      "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state."
+    ],
+    "name": "vm_freeFunctionValue",
+    "operation": "analyze_function",
+    "parameters": {
+      "procedure": "vm_freeFunctionValue"
+    },
+    "source": "docs/stage2af-evidence/rea.json.gz",
+    "source_sha256": "3cd2cc630c9adc9cef66b6cd37993647e2414d28ab5053a593a6e91cf94ce205"
+  },
+  {
+    "address": "0x808c908",
+    "body": {
+      "available": true,
+      "contains_entry": true,
+      "non_contiguous": true,
+      "provenance": "ghidra-function-body-address-set",
+      "ranges": [
+        {
+          "end": "0x808c934",
+          "start": "0x808c908"
+        },
+        {
+          "end": "0x808c93e",
+          "start": "0x808c938"
+        },
+        {
+          "end": "0x808c982",
+          "start": "0x808c940"
+        },
+        {
+          "end": "0x808ca0c",
+          "start": "0x808c984"
+        },
+        {
+          "end": "0x808ca7c",
+          "start": "0x808ca10"
+        },
+        {
+          "end": "0x808cad1",
+          "start": "0x808ca80"
+        }
+      ],
+      "span_bytes": 458,
+      "total_bytes": 447
+    },
+    "evidence_id": "ev_c98c01d582d90083a8c48681f7d36bdd274bd35ed834c0ef8fe22e6ac304baf1",
+    "limitations": [
+      "The session serves operations only after Ghidra reports default auto-analysis complete; incomplete analysis does not expose partial results.",
+      "The imported Program and temporary project are ephemeral and deleted on close. Annotation operations edit session database metadata; original executable bytes are never written.",
+      "Cancelling an active Ghidra request terminates its ephemeral database and discards session annotations. The selected target remains open; the next provider query imports the original artifact again.",
+      "Default-space addresses use lowercase 0x-prefixed hexadecimal; other address spaces use <percent-encoded-space>:0x<hex>.",
+      "References cover the complete Ghidra function-body AddressSet and exact entry. Dossier incoming edges omit sources owned by that function; procedure_references also retains those internal edges.",
+      "The dossier combines Ghidra FunctionManager, Listing, ReferenceManager, BasicBlockModel, and decompiler observations; provider-specific pseudocode and assembly are not cross-provider text invariants.",
+      "Resolved reference metadata identifies computed, indirect, external, call, jump, and data edges; unresolved targetless flows remain unknown, and function classifications distinguish thunks and externals.",
+      "Synthetic Ghidra entry-point references without actionable memory sources are omitted.",
+      "The Java bridge serializes one function request per Program and lets each decompilation run until it completes or the caller cancels.",
+      "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state."
+    ],
+    "name": "vm_isEq",
+    "operation": "analyze_function",
+    "parameters": {
+      "procedure": "vm_isEq"
+    },
+    "source": "docs/stage2af-evidence/rea.json.gz",
+    "source_sha256": "3cd2cc630c9adc9cef66b6cd37993647e2414d28ab5053a593a6e91cf94ce205"
+  },
+  {
+    "address": "0x808cad4",
+    "evidence_id": "ev_174f52005ca1def1dcd28fda64fa608062b04eaeef2672493386d0ad773ab397",
+    "limitations": [
+      "The session serves operations only after Ghidra reports default auto-analysis complete; incomplete analysis does not expose partial results.",
+      "The imported Program and temporary project are ephemeral and deleted on close. Annotation operations edit session database metadata; original executable bytes are never written.",
+      "Cancelling an active Ghidra request terminates its ephemeral database and discards session annotations. The selected target remains open; the next provider query imports the original artifact again.",
+      "Default-space addresses use lowercase 0x-prefixed hexadecimal; other address spaces use <percent-encoded-space>:0x<hex>.",
+      "Pseudocode is Ghidra decompiler output, not original source and not text-equivalent to Hopper output.",
+      "External functions and functions without an analyzable body return null; other decompiler failures remain explicit.",
+      "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state."
+    ],
+    "name": "vm_isZero",
+    "operation": "procedure_pseudo_code",
+    "parameters": {
+      "procedure": "vm_isZero"
+    },
+    "source": "docs/vm-core-evidence/rea.json.gz",
+    "source_sha256": "56d2b1a3e419b9c6c252468ac46ebf5c3eb60738bf0adc2ef429a40e42326fda"
+  },
+  {
+    "address": "0x8091074",
+    "body": {
+      "available": true,
+      "contains_entry": true,
+      "non_contiguous": true,
+      "provenance": "ghidra-function-body-address-set",
+      "ranges": [
+        {
+          "end": "0x80910b5",
+          "start": "0x8091074"
+        },
+        {
+          "end": "0x80910ce",
+          "start": "0x80910b8"
+        }
+      ],
+      "span_bytes": 91,
+      "total_bytes": 89
+    },
+    "evidence_id": "ev_4d6d17b9e1b09afb2790e5504711604e853f3e4e9740fbca01c397f299a00212",
+    "limitations": [
+      "The session serves operations only after Ghidra reports default auto-analysis complete; incomplete analysis does not expose partial results.",
+      "The imported Program and temporary project are ephemeral and deleted on close. Annotation operations edit session database metadata; original executable bytes are never written.",
+      "Cancelling an active Ghidra request terminates its ephemeral database and discards session annotations. The selected target remains open; the next provider query imports the original artifact again.",
+      "Default-space addresses use lowercase 0x-prefixed hexadecimal; other address spaces use <percent-encoded-space>:0x<hex>.",
+      "References cover the complete Ghidra function-body AddressSet and exact entry. Dossier incoming edges omit sources owned by that function; procedure_references also retains those internal edges.",
+      "The dossier combines Ghidra FunctionManager, Listing, ReferenceManager, BasicBlockModel, and decompiler observations; provider-specific pseudocode and assembly are not cross-provider text invariants.",
+      "Resolved reference metadata identifies computed, indirect, external, call, jump, and data edges; unresolved targetless flows remain unknown, and function classifications distinguish thunks and externals.",
+      "Synthetic Ghidra entry-point references without actionable memory sources are omitted.",
+      "The Java bridge serializes one function request per Program and lets each decompilation run until it completes or the caller cancels.",
+      "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state."
+    ],
+    "name": "vm_pushValue",
+    "operation": "analyze_function",
+    "parameters": {
+      "procedure": "vm_pushValue"
+    },
+    "source": "docs/stage2af-evidence/rea.json.gz",
+    "source_sha256": "3cd2cc630c9adc9cef66b6cd37993647e2414d28ab5053a593a6e91cf94ce205"
+  },
+  {
+    "address": "0x80978c4",
+    "body": {
+      "available": true,
+      "contains_entry": true,
+      "non_contiguous": true,
+      "provenance": "ghidra-function-body-address-set",
+      "ranges": [
+        {
+          "end": "0x80979b0",
+          "start": "0x80978c4"
+        },
+        {
+          "end": "0x8097a08",
+          "start": "0x80979b4"
+        },
+        {
+          "end": "0x8097a32",
+          "start": "0x8097a0c"
+        },
+        {
+          "end": "0x8097a5e",
+          "start": "0x8097a34"
+        },
+        {
+          "end": "0x8097a8a",
+          "start": "0x8097a60"
+        },
+        {
+          "end": "0x8097ac8",
+          "start": "0x8097a8c"
+        }
+      ],
+      "span_bytes": 517,
+      "total_bytes": 508
+    },
+    "evidence_id": "ev_be433ed21232d17e29f35f068109d8dd00bd74149a9fd91468d8680cabda6fe3",
+    "limitations": [
+      "The session serves operations only after Ghidra reports default auto-analysis complete; incomplete analysis does not expose partial results.",
+      "The imported Program and temporary project are ephemeral and deleted on close. Annotation operations edit session database metadata; original executable bytes are never written.",
+      "Cancelling an active Ghidra request terminates its ephemeral database and discards session annotations. The selected target remains open; the next provider query imports the original artifact again.",
+      "Default-space addresses use lowercase 0x-prefixed hexadecimal; other address spaces use <percent-encoded-space>:0x<hex>.",
+      "References cover the complete Ghidra function-body AddressSet and exact entry. Dossier incoming edges omit sources owned by that function; procedure_references also retains those internal edges.",
+      "The dossier combines Ghidra FunctionManager, Listing, ReferenceManager, BasicBlockModel, and decompiler observations; provider-specific pseudocode and assembly are not cross-provider text invariants.",
+      "Resolved reference metadata identifies computed, indirect, external, call, jump, and data edges; unresolved targetless flows remain unknown, and function classifications distinguish thunks and externals.",
+      "Synthetic Ghidra entry-point references without actionable memory sources are omitted.",
+      "The Java bridge serializes one function request per Program and lets each decompilation run until it completes or the caller cancels.",
+      "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state."
+    ],
+    "name": "vm_regularProcessor",
+    "operation": "analyze_function",
+    "parameters": {
+      "procedure": "vm_regularProcessor"
+    },
+    "source": "docs/evidence/magic_Linux32-rea.json.gz",
+    "source_sha256": "41c6286a610215b9b281e1f2b195d0469b99bb92d103dfa7beda1bee3b2f8fc8"
+  },
+  {
+    "address": "0x8094978",
+    "evidence_id": "ev_f4c403eaac43efab5b199f80f74a1e7737969061e2977d9d6e1554147b8f7610",
+    "limitations": [
+      "The session serves operations only after Ghidra reports default auto-analysis complete; incomplete analysis does not expose partial results.",
+      "The imported Program and temporary project are ephemeral and deleted on close. Annotation operations edit session database metadata; original executable bytes are never written.",
+      "Cancelling an active Ghidra request terminates its ephemeral database and discards session annotations. The selected target remains open; the next provider query imports the original artifact again.",
+      "Default-space addresses use lowercase 0x-prefixed hexadecimal; other address spaces use <percent-encoded-space>:0x<hex>.",
+      "Assembly is Ghidra Listing text and does not claim textual equivalence with Hopper output.",
+      "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state."
+    ],
+    "name": "vm_returnFromFun",
+    "operation": "procedure_assembly",
+    "parameters": {
+      "procedure": "vm_returnFromFun"
+    },
+    "source": "docs/vm-core-evidence/rea.json.gz",
+    "source_sha256": "56d2b1a3e419b9c6c252468ac46ebf5c3eb60738bf0adc2ef429a40e42326fda"
+  },
+  {
+    "address": "0x8094978",
+    "evidence_id": "ev_e9492a960f163a9c44c46efb1fdcfca92689aa3ce02ea9f075ac00e305bd3dc2",
+    "limitations": [
+      "The session serves operations only after Ghidra reports default auto-analysis complete; incomplete analysis does not expose partial results.",
+      "The imported Program and temporary project are ephemeral and deleted on close. Annotation operations edit session database metadata; original executable bytes are never written.",
+      "Cancelling an active Ghidra request terminates its ephemeral database and discards session annotations. The selected target remains open; the next provider query imports the original artifact again.",
+      "Default-space addresses use lowercase 0x-prefixed hexadecimal; other address spaces use <percent-encoded-space>:0x<hex>.",
+      "Pseudocode is Ghidra decompiler output, not original source and not text-equivalent to Hopper output.",
+      "External functions and functions without an analyzable body return null; other decompiler failures remain explicit.",
+      "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state."
+    ],
+    "name": "vm_returnFromFun",
+    "operation": "procedure_pseudo_code",
+    "parameters": {
+      "procedure": "vm_returnFromFun"
+    },
+    "source": "docs/vm-core-evidence/rea.json.gz",
+    "source_sha256": "56d2b1a3e419b9c6c252468ac46ebf5c3eb60738bf0adc2ef429a40e42326fda"
+  },
+  {
+    "address": "0x8093520",
+    "evidence_id": "ev_e12a1e49fc37b28910632e7d22872a27b51e7c54f0c6478935e893b20f7c63fe",
+    "limitations": [
+      "The session serves operations only after Ghidra reports default auto-analysis complete; incomplete analysis does not expose partial results.",
+      "The imported Program and temporary project are ephemeral and deleted on close. Annotation operations edit session database metadata; original executable bytes are never written.",
+      "Cancelling an active Ghidra request terminates its ephemeral database and discards session annotations. The selected target remains open; the next provider query imports the original artifact again.",
+      "Default-space addresses use lowercase 0x-prefixed hexadecimal; other address spaces use <percent-encoded-space>:0x<hex>.",
+      "Assembly is Ghidra Listing text and does not claim textual equivalence with Hopper output.",
+      "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state."
+    ],
+    "name": "vm_traceError",
+    "operation": "procedure_assembly",
+    "parameters": {
+      "procedure": "vm_traceError"
+    },
+    "source": "docs/vm-catch-evidence/reused.json.gz",
+    "source_sha256": "8c538a6de33c643d2f41de8be2a0a6d46a2369a55991768c0f01477bb86703fc"
+  },
+  {
+    "address": "0x8093520",
+    "evidence_id": "ev_3aa06be9e85308cb2db022171ebc8b97169c4291640f5d39b9176041544f81e4",
+    "limitations": [
+      "The session serves operations only after Ghidra reports default auto-analysis complete; incomplete analysis does not expose partial results.",
+      "The imported Program and temporary project are ephemeral and deleted on close. Annotation operations edit session database metadata; original executable bytes are never written.",
+      "Cancelling an active Ghidra request terminates its ephemeral database and discards session annotations. The selected target remains open; the next provider query imports the original artifact again.",
+      "Default-space addresses use lowercase 0x-prefixed hexadecimal; other address spaces use <percent-encoded-space>:0x<hex>.",
+      "Pseudocode is Ghidra decompiler output, not original source and not text-equivalent to Hopper output.",
+      "External functions and functions without an analyzable body return null; other decompiler failures remain explicit.",
+      "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state."
+    ],
+    "name": "vm_traceError",
+    "operation": "procedure_pseudo_code",
+    "parameters": {
+      "procedure": "vm_traceError"
+    },
+    "source": "docs/vm-catch-evidence/reused.json.gz",
+    "source_sha256": "8c538a6de33c643d2f41de8be2a0a6d46a2369a55991768c0f01477bb86703fc"
+  }
+]

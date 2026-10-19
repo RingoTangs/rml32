@@ -1,0 +1,3292 @@
+[
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 280,
+    "par16": 0,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 73,
+    "par16": 1,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 90,
+    "par16": 2,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 144,
+    "par16": 3,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 102,
+    "par16": 4,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 104,
+    "par16": 5,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 113,
+    "par16": 6,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 109,
+    "par16": 7,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 85,
+    "par16": 8,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 176,
+    "par16": 9,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 100,
+    "par16": 10,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 94,
+    "par16": 11,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 82,
+    "par16": 12,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 86,
+    "par16": 13,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 99,
+    "par16": 14,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 89,
+    "par16": 15,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 71,
+    "par16": 16,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 99,
+    "par16": 17,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 77,
+    "par16": 18,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 74,
+    "par16": 19,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 136,
+    "par16": 20,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 67,
+    "par16": 21,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 83,
+    "par16": 22,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 87,
+    "par16": 23,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 82,
+    "par16": 24,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 75,
+    "par16": 25,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 67,
+    "par16": 26,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 115,
+    "par16": 27,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 91,
+    "par16": 28,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 96,
+    "par16": 29,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 80,
+    "par16": 30,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 61,
+    "par16": 31,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 53,
+    "par16": 32,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 67,
+    "par16": 33,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 56,
+    "par16": 34,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 44,
+    "par16": 35,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 47,
+    "par16": 36,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 51,
+    "par16": 37,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 54,
+    "par16": 38,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 42,
+    "par16": 39,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 77,
+    "par16": 40,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 77,
+    "par16": 41,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 72,
+    "par16": 42,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 77,
+    "par16": 43,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 74,
+    "par16": 44,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 68,
+    "par16": 45,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 80,
+    "par16": 46,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 76,
+    "par16": 47,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 79,
+    "par16": 48,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 89,
+    "par16": 49,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 84,
+    "par16": 50,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 87,
+    "par16": 51,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 96,
+    "par16": 52,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 82,
+    "par16": 53,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 90,
+    "par16": 54,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 115,
+    "par16": 55,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 90,
+    "par16": 56,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 95,
+    "par16": 57,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 100,
+    "par16": 58,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 94,
+    "par16": 59,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 97,
+    "par16": 60,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 91,
+    "par16": 61,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 93,
+    "par16": 62,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 101,
+    "par16": 63,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 81,
+    "par16": 64,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 83,
+    "par16": 65,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 94,
+    "par16": 66,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 94,
+    "par16": 67,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 106,
+    "par16": 68,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 95,
+    "par16": 69,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 111,
+    "par16": 70,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 92,
+    "par16": 71,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 103,
+    "par16": 72,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 89,
+    "par16": 73,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 82,
+    "par16": 74,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 88,
+    "par16": 75,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 111,
+    "par16": 76,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 134,
+    "par16": 77,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 115,
+    "par16": 78,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 126,
+    "par16": 79,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 128,
+    "par16": 80,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 161,
+    "par16": 81,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 154,
+    "par16": 82,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 139,
+    "par16": 83,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 151,
+    "par16": 84,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 185,
+    "par16": 85,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 118,
+    "par16": 86,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 129,
+    "par16": 87,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 152,
+    "par16": 88,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 255,
+    "par16": 89,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 241,
+    "par16": 90,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 353,
+    "par16": 91,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 365,
+    "par16": 92,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 353,
+    "par16": 93,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 374,
+    "par16": 94,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 349,
+    "par16": 95,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 389,
+    "par16": 96,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 384,
+    "par16": 97,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 309,
+    "par16": 98,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 329,
+    "par16": 99,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 299,
+    "par16": 100,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 299,
+    "par16": 101,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 324,
+    "par16": 102,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 306,
+    "par16": 103,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 250,
+    "par16": 104,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 354,
+    "par16": 105,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 348,
+    "par16": 106,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 358,
+    "par16": 107,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 333,
+    "par16": 108,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 342,
+    "par16": 109,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 295,
+    "par16": 110,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 340,
+    "par16": 111,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 392,
+    "par16": 112,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 300,
+    "par16": 113,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 355,
+    "par16": 114,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 343,
+    "par16": 115,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 336,
+    "par16": 116,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 366,
+    "par16": 117,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 329,
+    "par16": 118,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 349,
+    "par16": 119,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 277,
+    "par16": 120,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 279,
+    "par16": 121,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 309,
+    "par16": 122,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 255,
+    "par16": 123,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 242,
+    "par16": 124,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 238,
+    "par16": 125,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 218,
+    "par16": 126,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 220,
+    "par16": 127,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 174,
+    "par16": 128,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 216,
+    "par16": 129,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 183,
+    "par16": 130,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 177,
+    "par16": 131,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 203,
+    "par16": 132,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 187,
+    "par16": 133,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 156,
+    "par16": 134,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 156,
+    "par16": 135,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 188,
+    "par16": 136,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 134,
+    "par16": 137,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 129,
+    "par16": 138,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 136,
+    "par16": 139,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 122,
+    "par16": 140,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 141,
+    "par16": 141,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 133,
+    "par16": 142,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 140,
+    "par16": 143,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 152,
+    "par16": 144,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 112,
+    "par16": 145,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 103,
+    "par16": 146,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 106,
+    "par16": 147,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 99,
+    "par16": 148,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 100,
+    "par16": 149,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 101,
+    "par16": 150,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 86,
+    "par16": 151,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 132,
+    "par16": 152,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 110,
+    "par16": 153,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 87,
+    "par16": 154,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 89,
+    "par16": 155,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 87,
+    "par16": 156,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 90,
+    "par16": 157,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 116,
+    "par16": 158,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 79,
+    "par16": 159,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 73,
+    "par16": 160,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 74,
+    "par16": 161,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 88,
+    "par16": 162,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 76,
+    "par16": 163,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 87,
+    "par16": 164,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 77,
+    "par16": 165,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 69,
+    "par16": 166,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 56,
+    "par16": 167,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 60,
+    "par16": 168,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 53,
+    "par16": 169,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 72,
+    "par16": 170,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 50,
+    "par16": 171,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 86,
+    "par16": 172,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 43,
+    "par16": 173,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 44,
+    "par16": 174,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 45,
+    "par16": 175,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 33,
+    "par16": 176,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 40,
+    "par16": 177,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 38,
+    "par16": 178,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 42,
+    "par16": 179,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 31,
+    "par16": 180,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 28,
+    "par16": 181,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 27,
+    "par16": 182,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 22,
+    "par16": 183,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 21,
+    "par16": 184,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 19,
+    "par16": 185,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 14,
+    "par16": 186,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 15,
+    "par16": 187,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 15,
+    "par16": 188,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 15,
+    "par16": 189,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 14,
+    "par16": 190,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 11,
+    "par16": 191,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 15,
+    "par16": 192,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 12,
+    "par16": 193,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 8,
+    "par16": 194,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 8,
+    "par16": 195,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 5,
+    "par16": 196,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 14,
+    "par16": 197,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 4,
+    "par16": 198,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 5,
+    "par16": 199,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 9,
+    "par16": 200,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 4,
+    "par16": 201,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 4,
+    "par16": 202,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 3,
+    "par16": 203,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 1,
+    "par16": 204,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 2,
+    "par16": 205,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 2,
+    "par16": 206,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 5,
+    "par16": 207,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 5,
+    "par16": 208,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 2,
+    "par16": 209,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 2,
+    "par16": 210,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 4,
+    "par16": 211,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 4,
+    "par16": 212,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 4,
+    "par16": 213,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 3,
+    "par16": 214,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 5,
+    "par16": 215,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 2,
+    "par16": 216,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 7,
+    "par16": 217,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 5,
+    "par16": 218,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 18,
+    "par16": 219,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 12,
+    "par16": 220,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 14,
+    "par16": 221,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 6,
+    "par16": 222,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 11,
+    "par16": 223,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 17,
+    "par16": 224,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 11,
+    "par16": 225,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 86,
+    "par16": 226,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 10,
+    "par16": 227,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 4,
+    "par16": 228,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 6,
+    "par16": 229,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 5,
+    "par16": 230,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 39,
+    "par16": 231,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 2,
+    "par16": 232,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 2,
+    "par16": 233,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 3,
+    "par16": 234,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 3,
+    "par16": 235,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 1,
+    "par16": 236,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 1,
+    "par16": 237,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 2,
+    "par16": 238,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 2,
+    "par16": 239,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 1,
+    "par16": 240,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 2,
+    "par16": 243,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 3,
+    "par16": 245,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 3,
+    "par16": 247,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 1,
+    "par16": 248,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 1,
+    "par16": 249,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 1,
+    "par16": 250,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 1,
+    "par16": 252,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 3,
+    "par16": 255,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 2,
+    "par16": 256,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 2,
+    "par16": 257,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 3,
+    "par16": 258,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 1,
+    "par16": 259,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 1,
+    "par16": 260,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 2,
+    "par16": 261,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 3,
+    "par16": 262,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 4,
+    "par16": 263,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 2,
+    "par16": 264,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 1,
+    "par16": 267,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 3,
+    "par16": 268,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 3,
+    "par16": 269,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 2,
+    "par16": 270,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 2,
+    "par16": 271,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 1,
+    "par16": 272,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 2,
+    "par16": 273,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 2,
+    "par16": 274,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 1,
+    "par16": 275,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 3,
+    "par16": 276,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 2,
+    "par16": 277,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 2,
+    "par16": 278,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 2,
+    "par16": 279,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 1,
+    "par16": 280,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 1,
+    "par16": 281,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 3,
+    "par16": 283,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 2,
+    "par16": 284,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 1,
+    "par16": 288,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 1,
+    "par16": 290,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 1,
+    "par16": 291,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 1,
+    "par16": 292,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 1,
+    "par16": 293,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 1,
+    "par16": 297,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 1,
+    "par16": 300,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 1,
+    "par16": 302,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 1,
+    "par16": 304,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 1,
+    "par16": 305,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 1,
+    "par16": 307,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 1,
+    "par16": 308,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 1,
+    "par16": 309,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 1,
+    "par16": 311,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 1,
+    "par16": 312,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 2,
+    "par16": 316,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 1,
+    "par16": 323,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 1,
+    "par16": 331,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 2,
+    "par16": 341,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 2,
+    "par16": 343,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 1,
+    "par16": 347,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 1,
+    "par16": 364,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 1,
+    "par16": 368,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 1,
+    "par16": 372,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 1,
+    "par16": 373,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 1,
+    "par16": 374,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 1,
+    "par16": 378,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 1,
+    "par16": 380,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 1,
+    "par16": 810,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 1,
+    "par16": 811,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 103,
+    "par16": 875,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 1,
+    "par16": 876,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 52,
+    "par16": 899,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 1,
+    "par16": 900,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 35,
+    "par16": 904,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 12,
+    "par16": 905,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 6,
+    "par16": 906,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 5,
+    "par16": 907,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 3,
+    "par16": 908,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 5,
+    "par16": 909,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 4,
+    "par16": 910,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 8,
+    "par16": 911,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 14,
+    "par16": 912,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 11,
+    "par16": 913,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 12,
+    "par16": 914,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 9,
+    "par16": 915,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 9,
+    "par16": 916,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 7,
+    "par16": 917,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 4,
+    "par16": 918,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 3,
+    "par16": 919,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 7,
+    "par16": 920,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 4,
+    "par16": 921,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 5,
+    "par16": 922,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 1,
+    "par16": 923,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 2,
+    "par16": 924,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 5,
+    "par16": 927,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 3,
+    "par16": 929,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 3,
+    "par16": 930,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 3,
+    "par16": 931,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 1,
+    "par16": 932,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 2,
+    "par16": 933,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 17,
+    "par16": 941,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 4,
+    "par16": 943,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 6,
+    "par16": 946,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 5,
+    "par16": 947,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 8,
+    "par16": 948,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 3,
+    "par16": 949,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 1,
+    "par16": 951,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 4,
+    "par16": 952,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 4,
+    "par16": 953,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 12,
+    "par16": 954,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 4,
+    "par16": 955,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 11,
+    "par16": 956,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 5,
+    "par16": 957,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 5,
+    "par16": 958,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 5,
+    "par16": 959,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 7,
+    "par16": 960,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 8,
+    "par16": 961,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 2,
+    "par16": 962,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 1,
+    "par16": 966,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 1,
+    "par16": 968,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 2,
+    "par16": 969,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 1,
+    "par16": 970,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 1,
+    "par16": 971,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 1,
+    "par16": 972,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 1,
+    "par16": 974,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 1,
+    "par16": 975,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 1,
+    "par16": 976,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 2,
+    "par16": 977,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 1,
+    "par16": 995,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 1,
+    "par16": 1000,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 1,
+    "par16": 1001,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 2,
+    "par16": 1003,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 1,
+    "par16": 1004,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 1,
+    "par16": 1005,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 1,
+    "par16": 1008,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 1,
+    "par16": 1009,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 1,
+    "par16": 1010,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 1,
+    "par16": 1011,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 1,
+    "par16": 1115,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": false,
+    "occurrences": 1,
+    "par16": 1120,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": true,
+    "occurrences": 5,
+    "par16": 584,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": true,
+    "occurrences": 5,
+    "par16": 587,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": true,
+    "occurrences": 1,
+    "par16": 672,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": true,
+    "occurrences": 1,
+    "par16": 674,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": true,
+    "occurrences": 1,
+    "par16": 688,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": true,
+    "occurrences": 3,
+    "par16": 717,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": true,
+    "occurrences": 1,
+    "par16": 720,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": true,
+    "occurrences": 3,
+    "par16": 721,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": true,
+    "occurrences": 1,
+    "par16": 724,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": true,
+    "occurrences": 3,
+    "par16": 755,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": true,
+    "occurrences": 1,
+    "par16": 757,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": true,
+    "occurrences": 1,
+    "par16": 760,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": true,
+    "occurrences": 1,
+    "par16": 761,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": true,
+    "occurrences": 2,
+    "par16": 774,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": true,
+    "occurrences": 2,
+    "par16": 776,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": true,
+    "occurrences": 1,
+    "par16": 777,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": true,
+    "occurrences": 1,
+    "par16": 779,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": true,
+    "occurrences": 1,
+    "par16": 783,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": true,
+    "occurrences": 1,
+    "par16": 785,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": true,
+    "occurrences": 2,
+    "par16": 787,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": true,
+    "occurrences": 1,
+    "par16": 790,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": true,
+    "occurrences": 1,
+    "par16": 796,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": true,
+    "occurrences": 2,
+    "par16": 797,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": true,
+    "occurrences": 2,
+    "par16": 798,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": true,
+    "occurrences": 2,
+    "par16": 799,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": true,
+    "occurrences": 2,
+    "par16": 800,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": true,
+    "occurrences": 2,
+    "par16": 804,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": true,
+    "occurrences": 2,
+    "par16": 805,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": true,
+    "occurrences": 1,
+    "par16": 806,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": true,
+    "occurrences": 3,
+    "par16": 807,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": true,
+    "occurrences": 2,
+    "par16": 808,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": true,
+    "occurrences": 2,
+    "par16": 809,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": true,
+    "occurrences": 1,
+    "par16": 813,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": true,
+    "occurrences": 1,
+    "par16": 814,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": true,
+    "occurrences": 1,
+    "par16": 819,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": true,
+    "occurrences": 1,
+    "par16": 823,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": true,
+    "occurrences": 1,
+    "par16": 827,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": true,
+    "occurrences": 1,
+    "par16": 829,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": true,
+    "occurrences": 1,
+    "par16": 835,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": true,
+    "occurrences": 1,
+    "par16": 939,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": true,
+    "occurrences": 1,
+    "par16": 940,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": true,
+    "occurrences": 1,
+    "par16": 941,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": true,
+    "occurrences": 2,
+    "par16": 942,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": true,
+    "occurrences": 1,
+    "par16": 943,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": true,
+    "occurrences": 1,
+    "par16": 944,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": true,
+    "occurrences": 1,
+    "par16": 945,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": true,
+    "occurrences": 1,
+    "par16": 946,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": true,
+    "occurrences": 1,
+    "par16": 947,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": true,
+    "occurrences": 2,
+    "par16": 949,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": true,
+    "occurrences": 2,
+    "par16": 950,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": true,
+    "occurrences": 1,
+    "par16": 951,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": true,
+    "occurrences": 1,
+    "par16": 952,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": true,
+    "occurrences": 1,
+    "par16": 953,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": true,
+    "occurrences": 1,
+    "par16": 954,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": true,
+    "occurrences": 1,
+    "par16": 961,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": true,
+    "occurrences": 1,
+    "par16": 964,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": true,
+    "occurrences": 1,
+    "par16": 965,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": true,
+    "occurrences": 1,
+    "par16": 968,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": true,
+    "occurrences": 1,
+    "par16": 969,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": true,
+    "occurrences": 1,
+    "par16": 970,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": true,
+    "occurrences": 1,
+    "par16": 971,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": true,
+    "occurrences": 1,
+    "par16": 972,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": true,
+    "occurrences": 1,
+    "par16": 973,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": true,
+    "occurrences": 2,
+    "par16": 974,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": true,
+    "occurrences": 2,
+    "par16": 977,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": true,
+    "occurrences": 1,
+    "par16": 978,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": true,
+    "occurrences": 1,
+    "par16": 979,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": true,
+    "occurrences": 1,
+    "par16": 980,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": true,
+    "occurrences": 1,
+    "par16": 982,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": true,
+    "occurrences": 2,
+    "par16": 985,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": true,
+    "occurrences": 1,
+    "par16": 986,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": true,
+    "occurrences": 1,
+    "par16": 987,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": true,
+    "occurrences": 1,
+    "par16": 992,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": true,
+    "occurrences": 1,
+    "par16": 1000,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": true,
+    "occurrences": 1,
+    "par16": 1157,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": true,
+    "occurrences": 1,
+    "par16": 1207,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": null,
+    "global_bit": true,
+    "occurrences": 1,
+    "par16": 1869,
+    "selector_bit6": false
+  },
+  {
+    "efun_numeric_name": "atoi",
+    "global_bit": true,
+    "occurrences": 2,
+    "par16": 5,
+    "selector_bit6": true
+  },
+  {
+    "efun_numeric_name": "map_delete",
+    "global_bit": true,
+    "occurrences": 1,
+    "par16": 80,
+    "selector_bit6": true
+  },
+  {
+    "efun_numeric_name": "shutdown",
+    "global_bit": true,
+    "occurrences": 1,
+    "par16": 115,
+    "selector_bit6": true
+  },
+  {
+    "efun_numeric_name": "strlen",
+    "global_bit": true,
+    "occurrences": 5,
+    "par16": 122,
+    "selector_bit6": true
+  },
+  {
+    "efun_numeric_name": "toupper",
+    "global_bit": true,
+    "occurrences": 1,
+    "par16": 138,
+    "selector_bit6": true
+  },
+  {
+    "efun_numeric_name": "trim",
+    "global_bit": true,
+    "occurrences": 13,
+    "par16": 141,
+    "selector_bit6": true
+  },
+  {
+    "efun_numeric_name": "create_thread",
+    "global_bit": true,
+    "occurrences": 1,
+    "par16": 268,
+    "selector_bit6": true
+  },
+  {
+    "efun_numeric_name": "call_other",
+    "global_bit": true,
+    "occurrences": 4863,
+    "par16": 356,
+    "selector_bit6": true
+  },
+  {
+    "efun_numeric_name": "call_other_arg",
+    "global_bit": true,
+    "occurrences": 3,
+    "par16": 357,
+    "selector_bit6": true
+  },
+  {
+    "efun_numeric_name": "destruct_object",
+    "global_bit": true,
+    "occurrences": 4,
+    "par16": 361,
+    "selector_bit6": true
+  },
+  {
+    "efun_numeric_name": "calc_offset",
+    "global_bit": true,
+    "occurrences": 2,
+    "par16": 480,
+    "selector_bit6": true
+  },
+  {
+    "efun_numeric_name": "get_object_by_id",
+    "global_bit": true,
+    "occurrences": 1,
+    "par16": 494,
+    "selector_bit6": true
+  },
+  {
+    "efun_numeric_name": "std_attack",
+    "global_bit": true,
+    "occurrences": 1,
+    "par16": 544,
+    "selector_bit6": true
+  },
+  {
+    "efun_numeric_name": "std_defense",
+    "global_bit": true,
+    "occurrences": 1,
+    "par16": 545,
+    "selector_bit6": true
+  },
+  {
+    "efun_numeric_name": "std_mana",
+    "global_bit": true,
+    "occurrences": 1,
+    "par16": 546,
+    "selector_bit6": true
+  },
+  {
+    "efun_numeric_name": "std_life",
+    "global_bit": true,
+    "occurrences": 1,
+    "par16": 547,
+    "selector_bit6": true
+  },
+  {
+    "efun_numeric_name": "std_speed",
+    "global_bit": true,
+    "occurrences": 1,
+    "par16": 548,
+    "selector_bit6": true
+  }
+]

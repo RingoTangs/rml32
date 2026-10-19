@@ -1,0 +1,124 @@
+[
+  {
+    "classification": "observation",
+    "evidence_ids": [
+      "ev_4ae635941eda7abcc9024ccadd56fd4d6278ddcd6075acacda6b865390f65444"
+    ],
+    "id": "create-flags",
+    "statement": "17 bit7 is global scope, bit6 selects K versus c, low6 is bound argc; local slots add the current constitution function base with signed16 storage.",
+    "status": "answered"
+  },
+  {
+    "classification": "observation",
+    "evidence_ids": [
+      "ev_f739f81d73d7c07779ab3fb741800726145efbc40fd8dc6c58009ac2d703aa48"
+    ],
+    "id": "create-capture",
+    "statement": "Constructor rejects raw references, retains a live owner and snapshots the function entry; captures move from stack top into pArgs in logical argument order.",
+    "status": "answered"
+  },
+  {
+    "classification": "observation",
+    "evidence_ids": [
+      "ev_a50406aa6a4cd4b2b95b079a7b126ba210a8ecaa6919839ac438372500c0159d"
+    ],
+    "id": "call-layout",
+    "statement": "05 argn includes target at stack top; effective argc is argn-1 plus captures, with captures prepended to new arguments.",
+    "status": "answered"
+  },
+  {
+    "classification": "observation",
+    "evidence_ids": [
+      "ev_a50406aa6a4cd4b2b95b079a7b126ba210a8ecaa6919839ac438372500c0159d",
+      "ev_af340516b2b29ca98a9f7fdbd69b859634edd556cde9e4d06c0db4b0f2873aad",
+      "ev_f7a9dddeb7edb2f09a574fb30d22a4cf7af8ca2f93f06fb113081ac12811e04f"
+    ],
+    "id": "call-branches",
+    "statement": "05 dispatches Function versus string; K routes to native efun, c routes to user body; mayNull suppresses a missing string lookup only, not type or deleted-owner errors.",
+    "status": "answered"
+  },
+  {
+    "classification": "observation",
+    "evidence_ids": [
+      "ev_4d6d17b9e1b09afb2790e5504711604e853f3e4e9740fbca01c397f299a00212",
+      "ev_69a23ae044935ae6f7450097987faa71f641c62091f885fc4b4b5f8d5b1929f4",
+      "ev_a50406aa6a4cd4b2b95b079a7b126ba210a8ecaa6919839ac438372500c0159d"
+    ],
+    "id": "sharing",
+    "statement": "Unique function ownership moves captures then frees the header; shared ownership releases the consumed handle and copies captures. Copy normalizes a deleted-owner Function source via cleanup.",
+    "status": "answered"
+  },
+  {
+    "classification": "observation",
+    "evidence_ids": [
+      "ev_228d09be9663f9f70d03a59ebe1663960c6d34458f9a82d3d5e1e4cee42d44f9",
+      "ev_69a23ae044935ae6f7450097987faa71f641c62091f885fc4b4b5f8d5b1929f4",
+      "ev_d5e0fa5ed30b20859a959e09027480b13f6d9acdd746527dd5c2dac47520cadc"
+    ],
+    "id": "destruction",
+    "statement": "Final cleanup releases captured values, owner reference and allocation; function copy increments header ref.",
+    "status": "answered"
+  },
+  {
+    "classification": "observation",
+    "evidence_ids": [
+      "ev_9c31d92aeb045a089ff6361f0cf81330894208eb0520a78f0bf4bd4701c8d565",
+      "ev_c98c01d582d90083a8c48681f7d36bdd274bd35ed834c0ef8fe22e6ac304baf1",
+      "ev_174f52005ca1def1dcd28fda64fa608062b04eaeef2672493386d0ad773ab397"
+    ],
+    "id": "identity",
+    "statement": "Function equality is pointer identity and raw Function truth is nonzero, including a dead-owner raw Function; this differs from a copy that normalizes to Undefined.",
+    "status": "answered"
+  },
+  {
+    "classification": "static-inference",
+    "evidence_ids": [
+      "ev_d5e0fa5ed30b20859a959e09027480b13f6d9acdd746527dd5c2dac47520cadc",
+      "ev_1f8d2b76898bf43dd8b24a370fca52729a822af343d566f8bc3216ef0b05c88f",
+      "ev_3aa06be9e85308cb2db022171ebc8b97169c4291640f5d39b9176041544f81e4",
+      "ev_d9b9b1bd2399a379282bc11cbe8575420d3f316770e17d5a6ea5138fdee1b7a1",
+      "ev_e12a1e49fc37b28910632e7d22872a27b51e7c54f0c6478935e893b20f7c63fe",
+      "ev_e9492a960f163a9c44c46efb1fdcfca92689aa3ce02ea9f075ac00e305bd3dc2",
+      "ev_f4c403eaac43efab5b199f80f74a1e7737969061e2977d9d6e1554147b8f7610"
+    ],
+    "id": "unwind",
+    "statement": "Function arguments are ordinary tag9 values participating in existing value cleanup and user-frame/catch unwind; full scheduler, active deletion and JIT behavior remains outside the bounded design.",
+    "status": "partial"
+  },
+  {
+    "classification": "observation",
+    "evidence_ids": [
+      "ev_2367fe505024260c84916a2784345d572dd09ee9effe6fad39c28a1eb75cb9e0",
+      "ev_6e22aee1d5df3133900f522d36c3f2841a4834926e5c9e99b05ade923bd15982"
+    ],
+    "id": "bind-name-boundary",
+    "statement": "bind_parameters and bind_parameters_arr are SQL statement binding helpers, not closure capture creation.",
+    "status": "answered"
+  },
+  {
+    "classification": "design",
+    "evidence_ids": [],
+    "id": "first-batch",
+    "statement": "First implementation is ordinary Object bytecode targets and scalar captures, with opaque identity, explicit preparation and cross-store invocation checks. Global/efun/name targets and non-scalar captures are deferred.",
+    "status": "answered"
+  },
+  {
+    "classification": "unknown",
+    "evidence_ids": [
+      "ev_a50406aa6a4cd4b2b95b079a7b126ba210a8ecaa6919839ac438372500c0159d"
+    ],
+    "id": "dynamic-targets",
+    "statement": "Static 05 operands do not establish runtime target values, reachability, or an actual dynamic call graph.",
+    "status": "out_of_scope"
+  },
+  {
+    "classification": "unknown",
+    "evidence_ids": [
+      "ev_228d09be9663f9f70d03a59ebe1663960c6d34458f9a82d3d5e1e4cee42d44f9",
+      "ev_a50406aa6a4cd4b2b95b079a7b126ba210a8ecaa6919839ac438372500c0159d"
+    ],
+    "id": "extended-lifetime",
+    "statement": "Native cycle collection, full active-object deletion, hot code replacement and suspended native callbacks are not proven by these selected functions.",
+    "status": "out_of_scope"
+  }
+]
