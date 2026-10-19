@@ -1,5 +1,7 @@
 # rml32
 
+阶段2AE已实现显式注册的受限同步 `06` 宿主调用，433项Rust测试通过。新增宿主签名/上下文/返回接口及Object/Global准备入口；支持73种限定操作码，主语料仍缺05/17。见[宿主调用运行时](docs/vm-efun-runtime.md)、[当前矩阵](docs/stage2ae-evidence/matrix.md)和[验证记录](docs/stage2ae-validation.json)。真实efun、引用参数、异步/重入、Global init及服务启动仍未实现；以下条目保留历史状态。
+
 阶段2AD已完成 `06 / vm_callInEfun` 的静态取证、143,520处调用统计及[受限同步宿主接口规格](docs/stage2ad-evidence/host-runtime-design.md)。固定559槽中312槽被静态调用；参数顺序、原生上下文继承、返回与清理依据见[宿主分派语义](docs/vm-efun-semantics.md)。本轮未修改Rust运行时、公共API或依赖，仍为2AC的72种限定操作码、407项Rust测试，06尚未实现；合成宿主、真实efun及服务启动不能由静态统计代替。
 
 阶段2AC已实现显式全局程序准备/绑定、全局位07及双上下文帧，407项Rust测试通过。全局代码使用独立代码池且无当前对象，41返回Int(0)，支持通过08调用对象方法并恢复上下文；暂停重绑保留活动帧旧代码。见[全局调用运行时](docs/vm-global-call-runtime.md)、[当前矩阵](docs/stage2ac-evidence/matrix.md)和[验证记录](docs/stage2ac-validation.json)。仍为72种限定操作码；06、Global init、预置bootstrap和真实服务启动尚未实现。以下条目保留历史状态。
@@ -14,7 +16,7 @@
 
 阶段2X已完成范围查询 `45` 的静态取证、3,452处语料统计及后续受限 Bytes/Array 实现规格，见[范围查询语义与设计](docs/vm-range-semantics.md)。本轮运行时、公共API、依赖与68种限定操作码支持集合保持不变，`45`尚未实现。
 
-对 `magic_Linux32` 进行静态分析，并以 Rust 重写兼容驱动。当前已实现**只读离线加载器**和阶段 2AC 的**数值、共享容器、引用参数及类型检查、受限默认/可变参数、继承链接、初始化、构造回滚及受限跨对象调用、switch、整数/数组循环、范围查询、显式全局表与全局函数调用及受限 catch VM 库**，支持 72 种操作码的限定路径。VM 仅在人工构造程序上验证，尚无可运行服务端；`rml32-inspect` 继续只读检查制品。
+对 `magic_Linux32` 进行静态分析，并以 Rust 重写兼容驱动。当前已实现**只读离线加载器**和阶段 2AE 的**数值、共享容器、引用参数及类型检查、受限默认/可变参数、继承链接、初始化、构造回滚及受限跨对象调用、switch、整数/数组循环、范围查询、显式全局表与全局函数调用、同步宿主调用及受限 catch VM 库**，支持 73 种操作码的限定路径。VM 仅在人工构造程序上验证，尚无可运行服务端；`rml32-inspect` 继续只读检查制品。
 
 阶段2W已扩展实数/混合除零、整数余数零及相应复合赋值捕获，323项Rust测试通过。见[数值错误捕获](docs/vm-numeric-catch-runtime.md)和[当前矩阵](docs/stage2w-evidence/matrix.md)。仍为68种限定操作码；生命周期内catch、其他错误来源及回调/JIT保持限制。
 
@@ -54,6 +56,9 @@ python3 tests/compare_corpus.py --report target/stage1-validation.json
 比较器核对既有压缩证据中的成员、完整程序结构及继承记录。已知 `dba/pack_data/etc.pak/etc` 解压异常必须报告；直接执行 `corpus --root .` 因此返回 1，而比较器确认只有该已知异常时返回 0。新增错误不能被忽略。
 
 ## 文档与边界
+
+- [阶段 2AE 受限同步宿主调用](docs/vm-efun-runtime.md)
+- [阶段 2AE 当前能力矩阵与复现](docs/stage2ae-evidence/method.md)
 
 - [阶段 2AD 宿主分派语义与同步设计](docs/vm-efun-semantics.md)
 - [阶段 2AD 证据、统计及验证复现](docs/stage2ad-evidence/method.md)

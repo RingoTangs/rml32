@@ -3,6 +3,7 @@
 mod cell;
 pub mod container;
 pub mod error;
+pub mod host;
 pub mod inheritance;
 pub mod lzss;
 mod numeric;
@@ -16,13 +17,17 @@ pub mod vm;
 pub mod vm_error;
 
 pub use error::{ErrorKind, ParseError};
+pub use host::{
+    HostCallContext, HostCallback, HostError, HostFunction, HostReturn, HostSignature, HostType,
+};
 pub use inheritance::{ProgramDescriptor, ValidationReport, validate_inheritance};
 pub use object::{InitializationState, LifecycleState, ObjectStore};
 pub use pak::PakArchive;
 pub use prepared::{
     GlobalBankSchema, LifecycleBinding, LinkLimits, MethodBinding, PreparedProgram, ProgramCatalog,
-    prepare_constructible_program, prepare_global_program, prepare_initializable_program,
-    prepare_linked_program, prepare_program, prepare_program_with_globals,
+    prepare_constructible_program, prepare_global_program, prepare_global_program_with_host_calls,
+    prepare_initializable_program, prepare_linked_program, prepare_program,
+    prepare_program_with_globals, prepare_program_with_host_calls,
 };
 pub use program::{AbiProfile, ProgramImage, ProgramMode, parse_program};
 pub use value::{ObjectId, ProgramId, RealBits, Value};

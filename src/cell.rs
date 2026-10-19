@@ -64,6 +64,11 @@ impl Cell {
         let _guard = self.value.borrow();
         f()
     }
+    #[cfg(test)]
+    pub(crate) fn with_write_borrow_for_test<T>(&self, f: impl FnOnce() -> T) -> T {
+        let _guard = self.value.borrow_mut();
+        f()
+    }
     pub(crate) fn read(&self) -> Result<Value, VmError> {
         self.value
             .try_borrow()

@@ -11,11 +11,11 @@ use std::{
 };
 
 pub const SUPPORTED_OPCODES: &[u8] = &[
-    0x1, 0x2, 0x3, 0x4, 0x7, 0x8, 0xa, 0xb, 0xc, 0xd, 0xe, 0xf, 0x10, 0x12, 0x13, 0x14, 0x15, 0x16,
-    0x18, 0x19, 0x1a, 0x1b, 0x1c, 0x1d, 0x1e, 0x1f, 0x20, 0x21, 0x22, 0x23, 0x24, 0x25, 0x26, 0x27,
-    0x28, 0x29, 0x2a, 0x2b, 0x2c, 0x2d, 0x2e, 0x2f, 0x30, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x39,
-    0x3b, 0x3c, 0x3d, 0x3e, 0x3f, 0x40, 0x41, 0x42, 0x43, 0x44, 0x45, 0x47, 0x48, 0x49, 0x4a, 0x4b,
-    0x4d, 0x4e, 0x4f, 0x50, 0x51, 0x55,
+    0x1, 0x2, 0x3, 0x4, 0x6, 0x7, 0x8, 0xa, 0xb, 0xc, 0xd, 0xe, 0xf, 0x10, 0x12, 0x13, 0x14, 0x15,
+    0x16, 0x18, 0x19, 0x1a, 0x1b, 0x1c, 0x1d, 0x1e, 0x1f, 0x20, 0x21, 0x22, 0x23, 0x24, 0x25, 0x26,
+    0x27, 0x28, 0x29, 0x2a, 0x2b, 0x2c, 0x2d, 0x2e, 0x2f, 0x30, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37,
+    0x39, 0x3b, 0x3c, 0x3d, 0x3e, 0x3f, 0x40, 0x41, 0x42, 0x43, 0x44, 0x45, 0x47, 0x48, 0x49, 0x4a,
+    0x4b, 0x4d, 0x4e, 0x4f, 0x50, 0x51, 0x55,
 ];
 #[derive(Debug, Clone)]
 pub struct Instruction {
@@ -103,6 +103,7 @@ pub(crate) enum ProgramKind {
 pub struct PreparedProgram {
     pub(crate) source: String,
     pub(crate) global_schema: Option<GlobalBankSchema>,
+    pub(crate) allow_host_calls: bool,
     pub(crate) kind: ProgramKind,
     pub(crate) function_capacity: usize,
     pub(crate) variable_count: usize,
@@ -194,6 +195,7 @@ fn instructions(
     initialization: bool,
     globals: Option<GlobalBankSchema>,
     global_code: bool,
+    host_calls: bool,
 ) -> Result<Vec<Instruction>, VmError> {
     let metadata = bytes(&segment.metadata_hex)?;
     let mut result = Vec::new();
@@ -225,7 +227,19 @@ fn instructions(
                 operands[1] = i32::from_le_bytes(raw[4..8].try_into().unwrap());
             }
         }
-        let check = if matches!(op, 0x35 | 0x36) {
+        let check = if op == 0x06 {
+            if !host_calls || initialization {
+                Err(unsupported(
+                    "host calls require explicit ordinary-function preparation",
+                ))
+            } else if !(0..559).contains(&a) || b < 0 {
+                Err(err(
+                    "host slot or signed argument count outside supported range",
+                ))
+            } else {
+                Ok(())
+            }
+        } else if matches!(op, 0x35 | 0x36) {
             match globals.filter(|_| !initialization) {
                 None => Err(unsupported(format!(
                     "global slot {a} requires explicit ordinary-function preparation"
@@ -406,6 +420,7 @@ fn prepare_function(
     vars: usize,
     globals: Option<GlobalBankSchema>,
     global_code: bool,
+    host_calls: bool,
 ) -> Result<PreparedFunction, VmError> {
     let index = f
         .index
@@ -454,7 +469,15 @@ fn prepare_function(
             return Err(err("argument descriptor index does not match position"));
         }
     }
-    let instructions = instructions(&f.code, strings, vars, false, globals, global_code)?;
+    let instructions = instructions(
+        &f.code,
+        strings,
+        vars,
+        false,
+        globals,
+        global_code,
+        host_calls,
+    )?;
     for (pc, i) in instructions.iter().enumerate() {
         if matches!(i.opcode, 0x12 | 0x23 | 0x50) {
             let slot = i.operands[usize::from(i.opcode != 0x23)];
@@ -504,7 +527,7 @@ fn prepare_function(
     })
 }
 pub fn prepare_program(image: ProgramImage) -> Result<PreparedProgram, VmError> {
-    prepare_code_program(image, None, false)
+    prepare_code_program(image, None, false, false)
 }
 
 /// Prepare ordinary single-constitution Object functions with explicit global access.
@@ -513,7 +536,7 @@ pub fn prepare_program_with_globals(
     image: ProgramImage,
     schema: GlobalBankSchema,
 ) -> Result<PreparedProgram, VmError> {
-    prepare_code_program(image, Some(schema), false)
+    prepare_code_program(image, Some(schema), false, false)
 }
 
 /// Prepare Global functions only; initialization and pre-module bootstrap are excluded.
@@ -521,13 +544,30 @@ pub fn prepare_global_program(
     image: ProgramImage,
     schema: GlobalBankSchema,
 ) -> Result<PreparedProgram, VmError> {
-    prepare_code_program(image, Some(schema), true)
+    prepare_code_program(image, Some(schema), true, false)
+}
+
+/// Prepare ordinary Object functions with synchronous synthetic host calls.
+pub fn prepare_program_with_host_calls(
+    image: ProgramImage,
+    globals: Option<GlobalBankSchema>,
+) -> Result<PreparedProgram, VmError> {
+    prepare_code_program(image, globals, false, true)
+}
+
+/// Prepare ordinary Global functions with synchronous synthetic host calls; init is ignored.
+pub fn prepare_global_program_with_host_calls(
+    image: ProgramImage,
+    globals: GlobalBankSchema,
+) -> Result<PreparedProgram, VmError> {
+    prepare_code_program(image, Some(globals), true, true)
 }
 
 fn prepare_code_program(
     image: ProgramImage,
     globals: Option<GlobalBankSchema>,
     global_code: bool,
+    host_calls: bool,
 ) -> Result<PreparedProgram, VmError> {
     let source = format!("sha256:{}", image.sha256);
     let build = || {
@@ -568,6 +608,7 @@ fn prepare_code_program(
                 image.max_vars as usize,
                 globals,
                 global_code,
+                host_calls,
             )
             .map_err(|mut e| {
                 e.function = index;
@@ -584,6 +625,7 @@ fn prepare_code_program(
         Ok(PreparedProgram {
             source: source.clone(),
             global_schema: globals,
+            allow_host_calls: host_calls,
             kind: if global_code {
                 ProgramKind::Global
             } else {
@@ -1020,6 +1062,7 @@ fn prepare_catalog(
                                 true,
                                 None,
                                 false,
+                                false,
                             )?;
                             if !code.iter().any(|i| i.opcode == 0x48) {
                                 return Err(err("initialization has no return (48)"));
@@ -1085,13 +1128,19 @@ fn prepare_catalog(
                         body.attrib |= 4;
                     }
                 }
-                let mut f =
-                    prepare_function(body, &image.strings, image.max_vars as usize, None, false)
-                        .map_err(|mut e| {
-                            e.source = c.key.clone();
-                            e.function = Some(i as i16);
-                            e
-                        })?;
+                let mut f = prepare_function(
+                    body,
+                    &image.strings,
+                    image.max_vars as usize,
+                    None,
+                    false,
+                    false,
+                )
+                .map_err(|mut e| {
+                    e.source = c.key.clone();
+                    e.function = Some(i as i16);
+                    e
+                })?;
                 f.origin = Some(c.key.clone());
                 f.pool = Some(pools[&c.key].clone());
                 bodies.insert(id.clone(), f);
@@ -1105,6 +1154,7 @@ fn prepare_catalog(
         Ok(PreparedProgram {
             source: root.into(),
             global_schema: None,
+            allow_host_calls: false,
             kind: ProgramKind::Object,
             function_capacity: 0,
             variable_count: catalog.programs[root].max_vars as usize,

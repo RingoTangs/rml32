@@ -1432,6 +1432,119 @@ impl Vm {
         self.frames.push(next);
         Ok(())
     }
+    fn call_host(
+        &mut self,
+        frame: &Frame,
+        program: &PreparedProgram,
+        code: &CodeView<'_>,
+        slot: i32,
+        argc: i32,
+    ) -> Result<(), VmError> {
+        use crate::host::{HostActivation, HostCallContext, HostReturn, validate_value};
+        if !program.allow_host_calls || self.initialization.is_some() || self.construction.is_some()
+        {
+            return Err(err(
+                VmErrorKind::UnsupportedFeature,
+                "host calls require ordinary opt-in execution",
+            ));
+        }
+        if !(0..559).contains(&slot) || !(0..128).contains(&argc) {
+            return Err(err(
+                VmErrorKind::Bounds,
+                "host slot or argc outside supported range",
+            ));
+        }
+        let activation = HostActivation {
+            context: HostCallContext {
+                slot: slot as u16,
+                source: code.source.to_owned(),
+                program: frame.program(),
+                object: frame.active_object,
+                function: code.function()?.index,
+                pc: frame.pc,
+                offset: code.instructions[frame.pc].offset,
+            },
+            function: self.objects.host_function(slot as u16)?,
+        };
+        let invoke = |vm: &mut Self| -> Result<(), VmError> {
+            let argc = argc as usize;
+            vm.need(argc, frame, code.local_count)?;
+            if vm.frames.len() >= vm.limits.max_frames {
+                return Err(err(
+                    VmErrorKind::Limit,
+                    "host activation exceeds frame limit",
+                ));
+            }
+            activation.function.signature.check_count(argc)?;
+            let n = vm.stack.len();
+            // Inspect raw shape first. Cell::read intentionally hides Loop payloads.
+            for entry in &vm.stack[n - argc..] {
+                match entry {
+                    StackEntry::Value(cell) if !cell.is_loop()? => {}
+                    _ => {
+                        return Err(err(
+                            VmErrorKind::UnsupportedFeature,
+                            "host arguments require ordinary values",
+                        ));
+                    }
+                }
+            }
+            let mut arguments = Vec::new();
+            arguments
+                .try_reserve(argc)
+                .map_err(|_| err(VmErrorKind::Limit, "host argument allocation failed"))?;
+            for i in 0..argc {
+                let value = vm.value(n - 1 - i)?;
+                let expected = activation.function.signature.argument(i);
+                if !expected.accepts(&value) {
+                    return Err(err(
+                        VmErrorKind::UnsupportedType,
+                        format!("host argument {i} expected {expected:?}"),
+                    ));
+                }
+                validate_value(&value)?;
+                arguments.push(value);
+            }
+            let result_len = (n - argc)
+                .checked_add(1)
+                .ok_or_else(|| err(VmErrorKind::Limit, "host result stack overflow"))?;
+            if result_len > vm.limits.max_stack {
+                return Err(err(VmErrorKind::Limit, "host result exceeds stack limit"));
+            }
+            let cell = Cell::new(Value::Void)?;
+            vm.stack
+                .try_reserve(result_len.saturating_sub(n))
+                .map_err(|_| err(VmErrorKind::Limit, "host result allocation failed"))?;
+            let result = (activation.function.callback)(&activation.context, &arguments)
+                .map_err(|e| err(e.kind, e.message))?;
+            let value = match (activation.function.signature.returns, result) {
+                (HostReturn::Void, None) | (HostReturn::Mixed, None) => Value::Void,
+                (HostReturn::Mixed, Some(value)) => value,
+                (HostReturn::Exact(expected), Some(value)) if expected.accepts(&value) => value,
+                (expected, _) => {
+                    return Err(err(
+                        VmErrorKind::UnsupportedType,
+                        format!("host result expected {expected:?}"),
+                    ));
+                }
+            };
+            validate_value(&value)?;
+            cell.replace(value)?;
+            drop(arguments);
+            vm.stack.truncate(n - argc);
+            vm.stack.push(StackEntry::Value(cell));
+            vm.frames.last_mut().unwrap().pc += 1;
+            Ok(())
+        };
+        invoke(self).map_err(|mut e| {
+            e.message = format!(
+                "host slot {} ({}): {}",
+                slot, activation.function.name, e.message
+            )
+            .into();
+            e
+        })
+    }
     fn return_function(&mut self, frame: &Frame, f: &PreparedFunction) -> Result<(), VmError> {
         // vm_returnFromFun retires this frame's handlers before return validation.
         self.catches.retain(|c| c.frame_depth < self.frames.len());
@@ -2009,6 +2122,11 @@ impl Vm {
                     "invalid function initialization state",
                 ));
             }
+        }
+        // Synthetic 06 commits PC only after a complete synchronous call.
+        // Other instructions retain the native pre-dispatch increment.
+        if opcode == 0x06 {
+            return self.call_host(&frame, &p, &f, operands[0], operands[1]);
         }
         // vm_regularProcessor @0x080978c4 increments IP before dispatch.
         self.frames.last_mut().unwrap().pc += 1;
@@ -2803,6 +2921,7 @@ mod tests {
         };
         let program = PreparedProgram {
             global_schema: None,
+            allow_host_calls: false,
             kind: ProgramKind::Object,
             function_capacity: 0,
             source: "synthetic-loop".into(),
@@ -3153,6 +3272,7 @@ mod catch_tests {
         };
         let program = PreparedProgram {
             global_schema: None,
+            allow_host_calls: false,
             kind: ProgramKind::Object,
             function_capacity: 0,
             source: "synthetic-catch".into(),
@@ -3502,6 +3622,7 @@ mod global_tests {
         let program = PreparedProgram {
             source: "synthetic-global".into(),
             global_schema: schema,
+            allow_host_calls: false,
             kind: ProgramKind::Object,
             function_capacity: 0,
             variable_count: 0,
@@ -3673,5 +3794,259 @@ mod global_tests {
         assert_eq!(e.kind, VmErrorKind::InvalidState);
         assert_eq!(e.object, None);
         assert!(vm.stack.is_empty());
+    }
+}
+
+#[cfg(test)]
+mod host_tests {
+    use super::*;
+    use crate::{HostError, HostFunction, HostReturn, HostSignature, HostType};
+    use std::cell::Cell as Counter;
+
+    fn fixture(slot: i32, argc: i32, allow: bool) -> (Vm, Rc<Counter<usize>>) {
+        let mut vm = super::catch_tests::fixture(0);
+        let mut function = vm
+            .objects
+            .program(vm.frames[0].program())
+            .unwrap()
+            .functions[&0]
+            .clone();
+        function.return_type = 255;
+        function.instructions = Rc::new(vec![Instruction {
+            opcode: 6,
+            operands: [slot, argc],
+            offset: 42,
+        }]);
+        let program = PreparedProgram {
+            source: "synthetic-host".into(),
+            global_schema: None,
+            allow_host_calls: allow,
+            kind: ProgramKind::Object,
+            function_capacity: 1,
+            variable_count: 0,
+            strings: vec![],
+            functions: BTreeMap::from([(0, function)]),
+            unimplemented: Default::default(),
+            initializations: None,
+            init_order: vec![],
+            lifecycles: None,
+            methods: None,
+        };
+        let p = vm.objects.register_program(program).unwrap();
+        let o = vm.objects.create(p, vec![]).unwrap();
+        vm.frames[0].execution = ExecutionSource::ObjectProgram(p);
+        vm.frames[0].active_object = Some(o);
+        let calls = Rc::new(Counter::new(0));
+        let counter = calls.clone();
+        vm.objects
+            .register_host_function(
+                0,
+                HostFunction {
+                    name: "internal".into(),
+                    signature: HostSignature {
+                        required: vec![],
+                        optional: vec![],
+                        rest: Some(HostType::Any),
+                        returns: HostReturn::Mixed,
+                    },
+                    callback: Rc::new(move |_, a| {
+                        counter.set(counter.get() + 1);
+                        Ok(a.first().cloned())
+                    }),
+                },
+            )
+            .unwrap();
+        (vm, calls)
+    }
+    fn fail_step(vm: &mut Vm, kind: VmErrorKind) {
+        let before = vm.stack().unwrap();
+        let depth = vm.frames.len();
+        let pc = vm.frames[0].pc;
+        let fault = vm.step().unwrap_err();
+        assert_eq!(fault.diagnostic.kind, kind);
+        assert!(fault.site.is_none());
+        assert_eq!(vm.frames[0].pc, pc);
+        assert_eq!(vm.frames.len(), depth);
+        assert_eq!(vm.stack().unwrap(), before);
+    }
+    #[test]
+    fn host_allocation_and_borrow_failures_preserve_pc_operands_and_callback_count() {
+        let (mut vm, calls) = fixture(0, 1, true);
+        vm.push(Value::Int(7)).unwrap();
+        crate::cell::with_allocation_failure(0, || fail_step(&mut vm, VmErrorKind::Limit));
+        assert_eq!(calls.get(), 0);
+        let StackEntry::Value(cell) = vm.stack[0].clone() else {
+            panic!()
+        };
+        let before = vm.stack().unwrap();
+        cell.with_write_borrow_for_test(|| {
+            let fault = vm.step().unwrap_err();
+            assert_eq!(fault.diagnostic.kind, VmErrorKind::InvalidState);
+            assert!(fault.site.is_none());
+        });
+        assert_eq!(vm.stack().unwrap(), before);
+        assert_eq!(vm.frames[0].pc, 0);
+        assert_eq!(calls.get(), 0);
+        let (mut vm, calls) = fixture(0, 1, true);
+        let Value::Array(a) = Value::array(vec![Value::Int(1)]).unwrap() else {
+            panic!()
+        };
+        vm.push(Value::Array(a.clone())).unwrap();
+        let before = vm.stack().unwrap();
+        a.cell(0).unwrap().with_write_borrow_for_test(|| {
+            let fault = vm.step().unwrap_err();
+            assert_eq!(fault.diagnostic.kind, VmErrorKind::InvalidState);
+            assert!(fault.site.is_none());
+        });
+        assert_eq!(vm.stack().unwrap(), before);
+        assert_eq!(vm.frames[0].pc, 0);
+        assert_eq!(calls.get(), 0);
+    }
+    #[test]
+    fn host_hidden_loop_payload_is_rejected_before_value_projection() {
+        let (mut vm, calls) = fixture(0, 1, true);
+        let Value::Array(array) = Value::array(vec![Value::Int(1)]).unwrap() else {
+            panic!()
+        };
+        let cell = Cell::new(Value::Undefined).unwrap();
+        Cell::replace_payload_batch(vec![(
+            cell.clone(),
+            SlotPayload::Loop(Box::new(LoopControl::for_test(array.clone()))),
+        )])
+        .unwrap();
+        vm.stack.push(StackEntry::Value(cell.clone()));
+        fail_step(&mut vm, VmErrorKind::UnsupportedFeature);
+        assert!(cell.is_loop().unwrap());
+        assert_eq!(array.header_refs(), 2);
+        assert_eq!(calls.get(), 0);
+    }
+    #[test]
+    fn host_defensive_capability_bounds_and_task_checks_do_not_advance_pc() {
+        for (slot, argc, allow, kind) in [
+            (0, 0, false, VmErrorKind::UnsupportedFeature),
+            (-1, 0, true, VmErrorKind::Bounds),
+            (559, 0, true, VmErrorKind::Bounds),
+            (0, -1, true, VmErrorKind::Bounds),
+            (0, 128, true, VmErrorKind::Bounds),
+        ] {
+            let (mut vm, calls) = fixture(slot, argc, allow);
+            fail_step(&mut vm, kind);
+            assert_eq!(calls.get(), 0);
+        }
+        let (mut vm, calls) = fixture(0, 0, true);
+        vm.initialization = Some(InitializationTask {
+            object: vm.frames[0].active_object.unwrap(),
+            position: 0,
+            constitution: 0,
+        });
+        fail_step(&mut vm, VmErrorKind::UnsupportedFeature);
+        assert_eq!(calls.get(), 0);
+        vm.initialization = None;
+        vm.construction = Some(ConstructionTask {
+            object: vm.frames[0].active_object.unwrap(),
+            program: vm.frames[0].program(),
+            phase: LifecyclePhase::Create,
+            position: 0,
+            constitution: 0,
+            parameter: None,
+            primary: None,
+        });
+        fail_step(&mut vm, VmErrorKind::UnsupportedFeature);
+        assert_eq!(calls.get(), 0);
+    }
+    #[test]
+    fn host_deleted_object_arguments_and_results_are_not_normalized() {
+        let (mut vm, calls) = fixture(0, 1, true);
+        let deleted = vm.objects.create(vm.frames[0].program(), vec![]).unwrap();
+        vm.objects.remove(deleted).unwrap();
+        let source = Cell::new(Value::Object(deleted)).unwrap();
+        vm.stack.push(StackEntry::Value(source.clone()));
+        vm.run(1).unwrap();
+        assert_eq!(calls.get(), 1);
+        assert_eq!(source.read().unwrap(), Value::Object(deleted));
+        assert_eq!(vm.value(0).unwrap(), Value::Object(deleted));
+        assert_eq!(vm.frames[0].pc, 1);
+    }
+    #[test]
+    fn host_deep_container_rejection_and_return_validation_release_temporary_headers() {
+        let mut nested = Value::Int(1);
+        for _ in 0..64 {
+            nested = Value::array(vec![nested]).unwrap();
+        }
+        let Value::Array(outer) = Value::array(vec![Value::Undefined]).unwrap() else {
+            panic!()
+        };
+        outer.cell(0).unwrap().replace(nested).unwrap();
+        let (mut vm, calls) = fixture(0, 1, true);
+        vm.push(Value::Array(outer.clone())).unwrap();
+        fail_step(&mut vm, VmErrorKind::Limit);
+        assert_eq!(calls.get(), 0);
+        assert_eq!(outer.header_refs(), 2);
+        let (mut vm, calls) = fixture(0, 0, true);
+        vm.objects.remove_host_function(0).unwrap();
+        let counter = calls.clone();
+        let retained = outer.clone();
+        vm.objects
+            .register_host_function(
+                0,
+                HostFunction {
+                    name: "deep-result".into(),
+                    signature: HostSignature {
+                        required: vec![],
+                        optional: vec![],
+                        rest: None,
+                        returns: HostReturn::Mixed,
+                    },
+                    callback: Rc::new(move |_, _| {
+                        counter.set(counter.get() + 1);
+                        Ok(Some(Value::Array(retained.clone())))
+                    }),
+                },
+            )
+            .unwrap();
+        let before = outer.header_refs();
+        fail_step(&mut vm, VmErrorKind::Limit);
+        assert_eq!(calls.get(), 1);
+        assert_eq!(outer.header_refs(), before);
+    }
+    #[test]
+    fn host_callback_failure_releases_temporaries_and_restart_clears_old_operands() {
+        let (mut vm, calls) = fixture(0, 1, true);
+        vm.objects.remove_host_function(0).unwrap();
+        let counter = calls.clone();
+        vm.objects
+            .register_host_function(
+                0,
+                HostFunction {
+                    name: "fail".into(),
+                    signature: HostSignature {
+                        required: vec![HostType::Any],
+                        optional: vec![],
+                        rest: None,
+                        returns: HostReturn::Mixed,
+                    },
+                    callback: Rc::new(move |_, _| {
+                        counter.set(counter.get() + 1);
+                        Err(HostError {
+                            kind: VmErrorKind::Arithmetic,
+                            message: "failure".into(),
+                        })
+                    }),
+                },
+            )
+            .unwrap();
+        let Value::Array(a) = Value::array(vec![Value::Int(9)]).unwrap() else {
+            panic!()
+        };
+        vm.push(Value::Array(a.clone())).unwrap();
+        let frame = vm.frames[0].clone();
+        let e = vm.run(1).unwrap_err();
+        assert_eq!(e.pc, Some(0));
+        assert_eq!(vm.frames[0].pc, 0);
+        assert_eq!(calls.get(), 1);
+        assert_eq!(a.header_refs(), 2);
+        assert_eq!(vm.run(1).unwrap_err(), e);
+        vm.start(frame.active_object.unwrap(), 0, vec![]).unwrap();
+        assert_eq!(a.header_refs(), 1);
     }
 }

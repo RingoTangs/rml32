@@ -671,7 +671,7 @@ fn supported_types_have_explicit_legacy_tags() {
         [0, 1, 2, 4, 10]
     );
     let supported: BTreeSet<_> = rml32::prepared::SUPPORTED_OPCODES.iter().collect();
-    assert_eq!(supported.len(), 72);
+    assert_eq!(supported.len(), 73);
     assert_eq!(ByteString::new(b"\xff").bytes, b"\xff");
 }
 
@@ -10153,4 +10153,664 @@ fn global_calls_code_binding_and_variable_bank_lifetimes_are_independent() {
     let mut s = vm.into_objects();
     assert!(s.global_values().is_err());
     s.clear_global_program().unwrap();
+}
+
+// Stage 2AE: synthetic synchronous callbacks only; no native efun is executed.
+use rml32::{HostCallContext, HostError, HostFunction, HostReturn, HostSignature, HostType};
+use std::{cell::Cell as HostCounter, rc::Rc as HostRc};
+
+fn host_binding(
+    required: Vec<HostType>,
+    returns: HostReturn,
+    callback: impl Fn(&HostCallContext, &[Value]) -> Result<Option<Value>, HostError> + 'static,
+) -> HostFunction {
+    HostFunction {
+        name: "synthetic".into(),
+        signature: HostSignature {
+            required,
+            optional: vec![],
+            rest: None,
+            returns,
+        },
+        callback: HostRc::new(callback),
+    }
+}
+fn host_machine(p: ProgramImage, binding: HostFunction) -> (Vm, rml32::ObjectId) {
+    let vars = p.max_vars as usize;
+    let p = rml32::prepare_program_with_host_calls(p, None).unwrap();
+    let mut store = ObjectStore::new();
+    let p = store.register_program(p).unwrap();
+    let o = store.create(p, vec![Value::Undefined; vars]).unwrap();
+    store.register_host_function(0, binding).unwrap();
+    (Vm::new(store), o)
+}
+fn counted_host(counter: &HostRc<HostCounter<usize>>, returns: HostReturn) -> HostFunction {
+    let counter = counter.clone();
+    host_binding(vec![], returns, move |_, _| {
+        counter.set(counter.get() + 1);
+        Ok(Some(Value::Int(9)))
+    })
+}
+#[test]
+fn host_registry_validates_slots_names_signatures_and_preserves_registration_on_failure() {
+    let make = || host_binding(vec![], HostReturn::Mixed, |_, _| Ok(None));
+    let mut store = ObjectStore::new();
+    for slot in [0, 558] {
+        store.register_host_function(slot, make()).unwrap();
+    }
+    assert_eq!(
+        store.register_host_function(0, make()).unwrap_err().kind,
+        VmErrorKind::InvalidState
+    );
+    for slot in [559, u16::MAX] {
+        assert_eq!(
+            store.register_host_function(slot, make()).unwrap_err().kind,
+            VmErrorKind::Bounds
+        );
+        assert_eq!(
+            store.remove_host_function(slot).unwrap_err().kind,
+            VmErrorKind::Bounds
+        );
+    }
+    for name in ["", "bad\0name"] {
+        let mut f = make();
+        f.name = name.into();
+        assert_eq!(
+            store.register_host_function(1, f).unwrap_err().kind,
+            VmErrorKind::InvalidProgram
+        );
+    }
+    for returns in [
+        HostReturn::Exact(HostType::Any),
+        HostReturn::Exact(HostType::Void),
+    ] {
+        let mut f = make();
+        f.signature.returns = returns;
+        assert_eq!(
+            store.register_host_function(1, f).unwrap_err().kind,
+            VmErrorKind::InvalidProgram
+        );
+    }
+    let mut f = make();
+    f.signature.required = vec![HostType::Any; 127];
+    f.signature.optional.push(HostType::Any);
+    assert_eq!(
+        store.register_host_function(1, f).unwrap_err().kind,
+        VmErrorKind::Limit
+    );
+    store.register_host_function(1, make()).unwrap();
+    assert!(!format!("{store:?}").contains("callback"));
+    store.remove_host_function(0).unwrap();
+    assert_eq!(
+        store.remove_host_function(0).unwrap_err().kind,
+        VmErrorKind::InvalidState
+    );
+}
+#[test]
+fn host_preparation_requires_opt_in_and_validates_signed_operands() {
+    use rml32::{
+        GlobalBankSchema, prepare_global_program_with_host_calls, prepare_program_with_host_calls,
+    };
+    for (slot, argc) in [(0, 0), (558, 127), (0, 64)] {
+        let p = image(&[fun(0, 0, 0, 255, &[(slot, argc, 6)])], 0, &[]);
+        assert_eq!(
+            prepare_program(p.clone()).unwrap_err().kind,
+            VmErrorKind::UnsupportedFeature
+        );
+        assert_eq!(
+            rml32::prepare_program_with_globals(p.clone(), GlobalBankSchema { slots: 0 })
+                .unwrap_err()
+                .kind,
+            VmErrorKind::UnsupportedFeature
+        );
+        assert!(prepare_program_with_host_calls(p, None).is_ok());
+    }
+    for (slot, argc) in [(-1, 0), (559, 0), (0, -1), (0, -128)] {
+        // The read-only parser already rejects bad efun slots; mutate a parsed
+        // synthetic image to exercise the preparation layer independently.
+        let mut p = image(&[fun(0, 0, 0, 255, &[(0, 0, 6)])], 0, &[]);
+        p.functions[0].code.nodes[2] = (slot, argc, 6);
+        let offset = p.functions[0].code.nodes_offset + 8;
+        let e = prepare_program_with_host_calls(p, None).unwrap_err();
+        assert_eq!(
+            (e.kind, e.function, e.pc, e.offset),
+            (VmErrorKind::InvalidProgram, Some(0), Some(2), Some(offset))
+        );
+    }
+    let global = global_image(&[fun(559, 0, 0, 255, &[(0, 0, 6)])], 0, &[]);
+    assert_eq!(
+        rml32::prepare_global_program(global.clone(), GlobalBankSchema { slots: 0 })
+            .unwrap_err()
+            .kind,
+        VmErrorKind::UnsupportedFeature
+    );
+    assert!(prepare_global_program_with_host_calls(global, GlobalBankSchema { slots: 0 }).is_ok());
+}
+#[test]
+fn host_preparation_keeps_init_defaults_and_catalog_paths_isolated() {
+    let mut p = image(&[fun(0, 0, 0, 255, &[(0, 0, 6)])], 0, &[]);
+    set_init(&mut p, &[(0, 0, 6), (0, 0, 0x48)]);
+    let prepared = rml32::prepare_program_with_host_calls(p.clone(), None).unwrap();
+    assert!(!prepared.is_initializable());
+    let catalog = init_catalog(p);
+    for result in [
+        rml32::prepare_linked_program(&catalog, "root", Default::default()),
+        prepare_init(&catalog, "root"),
+    ] {
+        assert_eq!(result.unwrap_err().kind, VmErrorKind::UnsupportedFeature);
+    }
+    let mut p = image(
+        &[optional_fun(
+            0,
+            1,
+            0,
+            255,
+            &[vec![(0, 0, 6)]],
+            &[(0, 0, 0x37)],
+        )],
+        0,
+        &[],
+    );
+    optional_meta(&mut p, 0, 0, false, &[1]);
+    assert_eq!(
+        rml32::prepare_program_with_host_calls(p, None)
+            .unwrap_err()
+            .kind,
+        VmErrorKind::UnsupportedFeature
+    );
+}
+#[test]
+fn host_arguments_follow_stack_order_without_numeric_conversion() {
+    let f = host_binding(
+        vec![HostType::Int, HostType::Int],
+        HostReturn::Exact(HostType::Int),
+        |_, args| {
+            let [Value::Int(a), Value::Int(b)] = args else {
+                panic!()
+            };
+            Ok(Some(Value::Int(a - b)))
+        },
+    );
+    let (mut vm, o) = host_machine(
+        image(
+            &[fun(0, 0, 0, 2, &[(3, 0, 0x3b), (10, 0, 0x3b), (0, 2, 6)])],
+            0,
+            &[],
+        ),
+        f,
+    );
+    vm.start(o, 0, vec![]).unwrap();
+    returns(&mut vm, Value::Int(7));
+    let calls = HostRc::new(HostCounter::new(0));
+    let mut binding = counted_host(&calls, HostReturn::Mixed);
+    binding.signature.required = vec![HostType::Real];
+    let (mut vm, o) = host_machine(
+        image(&[fun(0, 0, 0, 255, &[(1, 0, 0x3b), (0, 1, 6)])], 0, &[]),
+        binding,
+    );
+    vm.start(o, 0, vec![]).unwrap();
+    assert_eq!(vm.run(10).unwrap_err().kind, VmErrorKind::UnsupportedType);
+    assert_eq!(calls.get(), 0);
+}
+#[test]
+fn host_optional_and_rest_pass_actual_arguments_without_defaults() {
+    for argc in 1..=4 {
+        let mut binding = host_binding(
+            vec![HostType::Int],
+            HostReturn::Exact(HostType::Int),
+            |_, args| Ok(Some(Value::Int(args.len() as i32))),
+        );
+        binding.signature.optional = vec![HostType::Int];
+        binding.signature.rest = Some(HostType::Int);
+        let mut nodes = vec![(1, 0, 0x3b); argc];
+        nodes.push((0, argc as i8, 6));
+        let (mut vm, o) = host_machine(image(&[fun(0, 0, 0, 2, &nodes)], 0, &[]), binding);
+        vm.start(o, 0, vec![]).unwrap();
+        returns(&mut vm, Value::Int(argc as i32));
+    }
+}
+#[test]
+fn host_argument_count_and_underflow_fail_before_callback() {
+    for (required, pushed, argc, kind) in [
+        (1, 0, 0, VmErrorKind::ArgumentCount),
+        (0, 1, 1, VmErrorKind::ArgumentCount),
+        (0, 0, 1, VmErrorKind::StackUnderflow),
+    ] {
+        let calls = HostRc::new(HostCounter::new(0));
+        let mut binding = counted_host(&calls, HostReturn::Mixed);
+        binding.signature.required = vec![HostType::Any; required];
+        let mut nodes = vec![(1, 0, 0x3b); pushed];
+        nodes.push((0, argc, 6));
+        let (mut vm, o) = host_machine(image(&[fun(0, 0, 0, 255, &nodes)], 0, &[]), binding);
+        vm.start(o, 0, vec![]).unwrap();
+        assert_eq!(vm.run(100).unwrap_err().kind, kind);
+        assert_eq!(calls.get(), 0);
+    }
+}
+#[test]
+fn host_argc_64_and_127_are_not_masked_and_charge_one_instruction() {
+    for argc in [0, 64, 127] {
+        let calls = HostRc::new(HostCounter::new(0));
+        let counted = calls.clone();
+        let mut binding = host_binding(vec![], HostReturn::Exact(HostType::Int), move |_, args| {
+            counted.set(counted.get() + 1);
+            Ok(Some(Value::Int(args.len() as i32)))
+        });
+        binding.signature.rest = Some(HostType::Int);
+        let mut nodes = vec![(1, 0, 0x3b); argc];
+        nodes.push((0, argc as i8, 6));
+        let (mut vm, o) = host_machine(image(&[fun(0, 0, 0, 2, &nodes)], 0, &[]), binding);
+        vm.start(o, 0, vec![]).unwrap();
+        assert_eq!(vm.run(2 + argc).unwrap(), RunOutcome::BudgetExhausted);
+        assert_eq!(calls.get(), 0);
+        assert_eq!(vm.run(0).unwrap(), RunOutcome::BudgetExhausted);
+        assert_eq!(calls.get(), 0);
+        assert_eq!(vm.run(1).unwrap(), RunOutcome::BudgetExhausted);
+        assert_eq!(calls.get(), 1);
+        returns(&mut vm, Value::Int(argc as i32));
+        assert_eq!(calls.get(), 1);
+    }
+}
+#[test]
+fn host_return_policies_validate_void_mixed_and_exact_values() {
+    let values = [
+        (HostType::Undefined, Value::Undefined),
+        (HostType::Int, Value::Int(4)),
+        (HostType::Real, real(1.5)),
+        (HostType::Bytes, Value::bytes(b"a\0b")),
+        (HostType::Array, Value::array(vec![Value::Int(1)]).unwrap()),
+        (
+            HostType::Mapping,
+            Value::mapping(vec![(Value::Int(1), Value::Int(2))]).unwrap(),
+        ),
+    ];
+    for (ty, value) in values {
+        let expected = value.clone();
+        let f = host_binding(vec![], HostReturn::Exact(ty), move |_, _| {
+            Ok(Some(value.clone()))
+        });
+        let (mut vm, o) = host_machine(image(&[fun(0, 0, 0, 255, &[(0, 0, 6)])], 0, &[]), f);
+        vm.start(o, 0, vec![]).unwrap();
+        returns(&mut vm, expected);
+    }
+    for (policy, result, expected) in [
+        (HostReturn::Void, None, Value::Void),
+        (HostReturn::Mixed, None, Value::Void),
+        (HostReturn::Mixed, Some(Value::Void), Value::Void),
+        (HostReturn::Mixed, Some(Value::Int(8)), Value::Int(8)),
+    ] {
+        let f = host_binding(vec![], policy, move |_, _| Ok(result.clone()));
+        let (mut vm, o) = host_machine(image(&[fun(0, 0, 0, 255, &[(0, 0, 6)])], 0, &[]), f);
+        vm.start(o, 0, vec![]).unwrap();
+        returns(&mut vm, expected);
+    }
+}
+#[test]
+fn host_wrong_results_preserve_operands_and_are_not_replayed() {
+    for (policy, result) in [
+        (HostReturn::Void, Some(Value::Void)),
+        (HostReturn::Exact(HostType::Int), None),
+        (HostReturn::Exact(HostType::Int), Some(real(1.0))),
+    ] {
+        let calls = HostRc::new(HostCounter::new(0));
+        let counted = calls.clone();
+        let f = host_binding(vec![HostType::Any], policy, move |_, _| {
+            counted.set(counted.get() + 1);
+            Ok(result.clone())
+        });
+        let (mut vm, o) = host_machine(
+            image(&[fun(0, 0, 0, 255, &[(7, 0, 0x3b), (0, 1, 6)])], 0, &[]),
+            f,
+        );
+        vm.start(o, 0, vec![]).unwrap();
+        vm.run(3).unwrap();
+        let before = vm.stack().unwrap();
+        let e = vm.run(1).unwrap_err();
+        assert_eq!(e.kind, VmErrorKind::UnsupportedType);
+        assert_eq!(e.pc, Some(3));
+        assert!(e.message.contains("host slot 0 (synthetic)"));
+        assert_eq!(vm.stack().unwrap(), before);
+        assert_eq!(vm.run(10).unwrap_err(), e);
+        assert_eq!(calls.get(), 1);
+    }
+}
+#[test]
+fn host_callback_error_preserves_side_effect_and_bypasses_script_catch() {
+    let calls = HostRc::new(HostCounter::new(0));
+    let counted = calls.clone();
+    let f = host_binding(vec![], HostReturn::Mixed, move |_, _| {
+        counted.set(counted.get() + 1);
+        Err(HostError {
+            kind: VmErrorKind::Arithmetic,
+            message: "synthetic arithmetic".into(),
+        })
+    });
+    // catch target is body PC 6; the host error must never reach it.
+    let (mut vm, o) = host_machine(
+        image(
+            &[fun(
+                0,
+                0,
+                0,
+                255,
+                &[
+                    (3, 0, 0x2c),
+                    (0, 0, 6),
+                    (0, 0, 0x1a),
+                    (1, 0, 0x32),
+                    (0, 0, 0x0e),
+                ],
+            )],
+            0,
+            &[],
+        ),
+        f,
+    );
+    vm.start(o, 0, vec![]).unwrap();
+    let e = vm.run(100).unwrap_err();
+    assert_eq!(
+        (e.kind, e.pc, e.object, e.function),
+        (VmErrorKind::Arithmetic, Some(3), Some(o), Some(0))
+    );
+    assert_eq!(vm.run(100).unwrap_err(), e);
+    assert_eq!(calls.get(), 1);
+}
+#[test]
+fn host_missing_registration_reports_actual_callsite_without_global_binding() {
+    let f = host_binding(vec![], HostReturn::Mixed, |_, _| Ok(None));
+    let p = image(&[fun(0, 0, 0, 255, &[(0, 0, 6)])], 0, &[]);
+    let offset = p.functions[0].code.nodes_offset + 8;
+    let (mut vm, o) = host_machine(p, f);
+    vm.objects_mut().remove_host_function(0).unwrap();
+    vm.start(o, 0, vec![]).unwrap();
+    let e = vm.run(10).unwrap_err();
+    assert_eq!(
+        (e.kind, e.object, e.function, e.pc, e.offset),
+        (
+            VmErrorKind::UnsupportedFeature,
+            Some(o),
+            Some(0),
+            Some(2),
+            Some(offset)
+        )
+    );
+    assert_eq!(e.program, Some(vm.objects().get(o).unwrap().program()));
+}
+#[test]
+fn host_stack_and_frame_limits_prevent_callback_and_preserve_stack() {
+    for frames in [false, true] {
+        let calls = HostRc::new(HostCounter::new(0));
+        let binding = counted_host(&calls, HostReturn::Mixed);
+        let (vm, o) = host_machine(image(&[fun(0, 0, 0, 255, &[(0, 0, 6)])], 0, &[]), binding);
+        let mut vm = Vm::with_limits(
+            vm.into_objects(),
+            VmLimits {
+                max_stack: if frames { 8 } else { 0 },
+                max_frames: if frames { 1 } else { 8 },
+                ..Default::default()
+            },
+        );
+        vm.start(o, 0, vec![]).unwrap();
+        vm.run(2).unwrap();
+        let before = vm.stack().unwrap();
+        assert_eq!(vm.run(1).unwrap_err().kind, VmErrorKind::Limit);
+        assert_eq!(calls.get(), 0);
+        assert_eq!(vm.stack().unwrap(), before);
+    }
+}
+#[test]
+fn host_rejects_references_even_for_any_parameters() {
+    let calls = HostRc::new(HostCounter::new(0));
+    let mut f = counted_host(&calls, HostReturn::Mixed);
+    f.signature.required.push(HostType::Any);
+    let (mut vm, o) = host_machine(
+        image(&[fun(0, 0, 1, 255, &[(-1, 0, 0x39), (0, 1, 6)])], 0, &[]),
+        f,
+    );
+    vm.start(o, 0, vec![]).unwrap();
+    vm.run(3).unwrap();
+    let before = vm.stack().unwrap();
+    assert_eq!(vm.run(1).unwrap_err().kind, VmErrorKind::UnsupportedFeature);
+    assert_eq!(calls.get(), 0);
+    assert_eq!(vm.stack().unwrap(), before);
+}
+#[test]
+fn host_container_roundtrip_preserves_identity_and_original_object_slots() {
+    let f = host_binding(vec![HostType::Any], HostReturn::Mixed, |_, a| {
+        Ok(Some(a[0].clone()))
+    });
+    let (mut vm, o) = host_machine(
+        image(&[fun(0, 1, 0, 255, &[(0, 0, 0x37), (0, 1, 6)])], 0, &[]),
+        f,
+    );
+    for value in [
+        Value::array(vec![Value::Int(8)]).unwrap(),
+        Value::mapping(vec![(Value::Int(1), Value::Int(9))]).unwrap(),
+    ] {
+        vm.start(o, 0, vec![value.clone()]).unwrap();
+        returns(&mut vm, value);
+    }
+}
+#[test]
+fn host_returned_object_and_nested_object_handles_are_opaque() {
+    let f = host_binding(vec![], HostReturn::Exact(HostType::Object), |c, _| {
+        Ok(Some(Value::Object(c.object.unwrap())))
+    });
+    let (mut vm, o) = host_machine(image(&[fun(0, 0, 0, 255, &[(0, 0, 6)])], 0, &[]), f);
+    vm.start(o, 0, vec![]).unwrap();
+    returns(&mut vm, Value::Object(o));
+    let (mut vm, o) = host_machine(
+        image(&[fun(0, 1, 0, 255, &[(0, 0, 0x37), (0, 1, 6)])], 0, &[]),
+        host_binding(vec![HostType::Any], HostReturn::Mixed, |_, a| {
+            Ok(Some(a[0].clone()))
+        }),
+    );
+    let nested = Value::array(vec![Value::Object(o)]).unwrap();
+    vm.start(o, 0, vec![nested.clone()]).unwrap();
+    vm.run(3).unwrap();
+    // Object is still alive here; deleted raw handles are exercised with private cells.
+    returns(&mut vm, nested);
+}
+#[test]
+fn host_pause_rebinding_and_into_objects_keep_registry_and_never_replay() {
+    let calls = HostRc::new(HostCounter::new(0));
+    let (mut vm, o) = host_machine(
+        image(
+            &[fun(0, 0, 0, 255, &[(0, 0, 6), (1, 0, 0x32), (0, 0, 6)])],
+            0,
+            &[],
+        ),
+        counted_host(&calls, HostReturn::Mixed),
+    );
+    vm.start(o, 0, vec![]).unwrap();
+    vm.run(3).unwrap();
+    assert_eq!(calls.get(), 1);
+    vm.objects_mut().remove_host_function(0).unwrap();
+    vm.objects_mut()
+        .register_host_function(
+            0,
+            host_binding(vec![], HostReturn::Mixed, |_, _| Ok(Some(Value::Int(42)))),
+        )
+        .unwrap();
+    returns(&mut vm, Value::Int(42));
+    assert_eq!(calls.get(), 1);
+    let mut vm = Vm::new(vm.into_objects());
+    vm.start(o, 0, vec![]).unwrap();
+    returns(&mut vm, Value::Int(42));
+}
+#[test]
+fn host_global_calls_restore_none_context_and_object_caller_code_pool() {
+    use rml32::{
+        GlobalBankSchema, prepare_global_program_with_host_calls, prepare_program_with_host_calls,
+    };
+    let schema = GlobalBankSchema { slots: 0 };
+    let seen = HostRc::new(std::cell::RefCell::new(vec![]));
+    let captured = seen.clone();
+    let binding = host_binding(vec![], HostReturn::Mixed, move |ctx, _| {
+        captured.borrow_mut().push(ctx.clone());
+        Ok(Some(Value::Int(7)))
+    });
+    let caller = image(
+        &[fun(
+            0,
+            0,
+            0,
+            255,
+            &[
+                (0, 0, 6),
+                (1, 0, 0x32),
+                (559, -128, 7),
+                (1, 0, 0x32),
+                (0, 0, 0x40),
+            ],
+        )],
+        0,
+        &[b"object\0"],
+    );
+    let global = global_image(
+        &[fun(
+            559,
+            0,
+            0,
+            255,
+            &[(0, 0, 6), (1, 0, 0x32), (0, 0, 0x41)],
+        )],
+        0,
+        &[b"global\0"],
+    );
+    let mut store = ObjectStore::new();
+    let p = store
+        .register_program(
+            prepare_program_with_host_calls(caller, Some(schema))
+                .unwrap()
+                .with_source("object-pool"),
+        )
+        .unwrap();
+    let o = store.create(p, vec![]).unwrap();
+    let g = store
+        .register_program(
+            prepare_global_program_with_host_calls(global, schema)
+                .unwrap()
+                .with_source("global-pool"),
+        )
+        .unwrap();
+    store.bind_global_program(g).unwrap();
+    store.register_host_function(0, binding).unwrap();
+    let mut vm = Vm::new(store);
+    vm.start(o, 0, vec![]).unwrap();
+    returns(&mut vm, Value::bytes(b"object"));
+    let seen = seen.borrow();
+    assert_eq!(seen.len(), 2);
+    assert_eq!(
+        (seen[0].program, seen[0].object, seen[0].source.as_str()),
+        (p, Some(o), "object-pool")
+    );
+    assert_eq!(
+        (
+            seen[1].program,
+            seen[1].object,
+            seen[1].source.as_str(),
+            seen[1].function
+        ),
+        (g, None, "global-pool", 559)
+    );
+}
+#[test]
+fn host_global_errors_have_no_object_and_point_to_global_06() {
+    use rml32::{GlobalBankSchema, prepare_global_program_with_host_calls};
+    let schema = GlobalBankSchema { slots: 0 };
+    let (mut vm, o) = host_machine(
+        image(&[fun(0, 0, 0, 255, &[(0, 0, 6)])], 0, &[]),
+        host_binding(vec![], HostReturn::Mixed, |_, _| {
+            Err(HostError {
+                kind: VmErrorKind::InvalidState,
+                message: "global failure".into(),
+            })
+        }),
+    );
+    // Replace the Object program with a global-opted-in caller.
+    let mut store = vm.into_objects();
+    let p = store
+        .register_program(
+            rml32::prepare_program_with_host_calls(
+                image(&[fun(0, 0, 0, 255, &[(559, -128, 7)])], 0, &[]),
+                Some(schema),
+            )
+            .unwrap(),
+        )
+        .unwrap();
+    store.remove(o).unwrap();
+    let o = store.create(p, vec![]).unwrap();
+    let g = store
+        .register_program(
+            prepare_global_program_with_host_calls(
+                global_image(&[fun(559, 0, 0, 255, &[(0, 0, 6)])], 0, &[]),
+                schema,
+            )
+            .unwrap()
+            .with_source("global-failure"),
+        )
+        .unwrap();
+    store.bind_global_program(g).unwrap();
+    vm = Vm::new(store);
+    vm.start(o, 0, vec![]).unwrap();
+    let e = vm.run(100).unwrap_err();
+    assert_eq!(
+        (e.program, e.object, e.function, e.pc),
+        (Some(g), None, Some(559), Some(2))
+    );
+    assert_eq!(e.source, "global-failure");
+}
+
+#[test]
+fn host_exact_argument_types_and_optional_rest_failures_are_checked_before_calling() {
+    let (_, object) = machine(image(&[fun(0, 0, 0, 255, &[])], 0, &[]), vec![]);
+    for (ty, value) in [
+        (HostType::Undefined, Value::Undefined),
+        (HostType::Void, Value::Void),
+        (HostType::Int, Value::Int(1)),
+        (HostType::Real, real(1.5)),
+        (HostType::Bytes, Value::bytes(b"bytes")),
+        (HostType::Object, Value::Object(object)),
+        (HostType::Array, Value::array(vec![]).unwrap()),
+        (HostType::Mapping, Value::mapping(vec![]).unwrap()),
+    ] {
+        let expected = value.clone();
+        let f = host_binding(vec![ty], HostReturn::Mixed, |_, a| Ok(Some(a[0].clone())));
+        let (mut vm, o) = host_machine(
+            image(&[fun(0, 1, 0, 255, &[(0, 0, 0x37), (0, 1, 6)])], 0, &[]),
+            f,
+        );
+        vm.start(o, 0, vec![value]).unwrap();
+        returns(&mut vm, expected);
+    }
+    for rest in [false, true] {
+        let calls = HostRc::new(HostCounter::new(0));
+        let mut f = counted_host(&calls, HostReturn::Mixed);
+        if rest {
+            f.signature.rest = Some(HostType::Real)
+        } else {
+            f.signature.optional = vec![HostType::Real]
+        }
+        let (mut vm, o) = host_machine(
+            image(&[fun(0, 0, 0, 255, &[(1, 0, 0x3b), (0, 1, 6)])], 0, &[]),
+            f,
+        );
+        vm.start(o, 0, vec![]).unwrap();
+        assert_eq!(vm.run(100).unwrap_err().kind, VmErrorKind::UnsupportedType);
+        assert_eq!(calls.get(), 0);
+    }
+}
+
+#[test]
+fn host_binding_at_last_slot_works_without_a_global_program_or_bank() {
+    let f = host_binding(vec![], HostReturn::Exact(HostType::Int), |ctx, _| {
+        assert_eq!(ctx.slot, 558);
+        Ok(Some(Value::Int(18)))
+    });
+    let (mut vm, o) = host_machine(image(&[fun(0, 0, 0, 2, &[(558, 0, 6)])], 0, &[]), f.clone());
+    vm.objects_mut().remove_host_function(0).unwrap();
+    vm.objects_mut().register_host_function(558, f).unwrap();
+    vm.start(o, 0, vec![]).unwrap();
+    returns(&mut vm, Value::Int(18));
 }

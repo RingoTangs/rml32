@@ -43,6 +43,7 @@ impl Object {
 }
 #[derive(Debug, Default)]
 pub struct ObjectStore {
+    host_functions: BTreeMap<u16, crate::HostFunction>,
     programs: BTreeMap<ProgramId, Rc<PreparedProgram>>,
     objects: BTreeMap<ObjectId, Object>,
     globals: Option<Vec<Rc<crate::cell::Cell>>>,
@@ -51,6 +52,54 @@ pub struct ObjectStore {
     next_object: u32,
 }
 impl ObjectStore {
+    /// Register a synthetic synchronous callback, independently of Global code and variables.
+    pub fn register_host_function(
+        &mut self,
+        slot: u16,
+        function: crate::HostFunction,
+    ) -> Result<(), VmError> {
+        if slot >= 559 {
+            return Err(VmError::new(
+                VmErrorKind::Bounds,
+                "host slot outside 0..558",
+            ));
+        }
+        if self.host_functions.contains_key(&slot) {
+            return Err(VmError::new(
+                VmErrorKind::InvalidState,
+                "host slot already registered",
+            ));
+        }
+        if function.name.is_empty() || function.name.contains('\0') {
+            return Err(VmError::new(
+                VmErrorKind::InvalidProgram,
+                "host name must be nonempty without NUL",
+            ));
+        }
+        function.signature.validate()?;
+        self.host_functions.insert(slot, function);
+        Ok(())
+    }
+    pub fn remove_host_function(&mut self, slot: u16) -> Result<(), VmError> {
+        if slot >= 559 {
+            return Err(VmError::new(
+                VmErrorKind::Bounds,
+                "host slot outside 0..558",
+            ));
+        }
+        self.host_functions
+            .remove(&slot)
+            .map(|_| ())
+            .ok_or_else(|| VmError::new(VmErrorKind::InvalidState, "host slot is not registered"))
+    }
+    pub(crate) fn host_function(&self, slot: u16) -> Result<crate::HostFunction, VmError> {
+        self.host_functions.get(&slot).cloned().ok_or_else(|| {
+            VmError::new(
+                VmErrorKind::UnsupportedFeature,
+                format!("host slot {slot} is not registered"),
+            )
+        })
+    }
     pub fn new() -> Self {
         Self::default()
     }
