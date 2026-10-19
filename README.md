@@ -1,5 +1,7 @@
 # rml32
 
+阶段2AD已完成 `06 / vm_callInEfun` 的静态取证、143,520处调用统计及[受限同步宿主接口规格](docs/stage2ad-evidence/host-runtime-design.md)。固定559槽中312槽被静态调用；参数顺序、原生上下文继承、返回与清理依据见[宿主分派语义](docs/vm-efun-semantics.md)。本轮未修改Rust运行时、公共API或依赖，仍为2AC的72种限定操作码、407项Rust测试，06尚未实现；合成宿主、真实efun及服务启动不能由静态统计代替。
+
 阶段2AC已实现显式全局程序准备/绑定、全局位07及双上下文帧，407项Rust测试通过。全局代码使用独立代码池且无当前对象，41返回Int(0)，支持通过08调用对象方法并恢复上下文；暂停重绑保留活动帧旧代码。见[全局调用运行时](docs/vm-global-call-runtime.md)、[当前矩阵](docs/stage2ac-evidence/matrix.md)和[验证记录](docs/stage2ac-validation.json)。仍为72种限定操作码；06、Global init、预置bootstrap和真实服务启动尚未实现。以下条目保留历史状态。
 
 阶段2AB已实现显式共享全局表与 `35/36`，支持72种操作码的限定路径，384项Rust测试通过。新增 `GlobalBankSchema`、`prepare_program_with_globals`、全局表安装/移除/快照接口和公开枚举变体 `ReferenceKind::Global`。旧引用在移除后保留旧槽，重装不别名。见[全局运行时](docs/vm-global-runtime.md)和[当前矩阵](docs/stage2ab-evidence/matrix.md)。全局程序加载、全局07/06、真实启动、继承及生命周期内全局访问仍排除；依赖不变。
@@ -52,6 +54,9 @@ python3 tests/compare_corpus.py --report target/stage1-validation.json
 比较器核对既有压缩证据中的成员、完整程序结构及继承记录。已知 `dba/pack_data/etc.pak/etc` 解压异常必须报告；直接执行 `corpus --root .` 因此返回 1，而比较器确认只有该已知异常时返回 0。新增错误不能被忽略。
 
 ## 文档与边界
+
+- [阶段 2AD 宿主分派语义与同步设计](docs/vm-efun-semantics.md)
+- [阶段 2AD 证据、统计及验证复现](docs/stage2ad-evidence/method.md)
 
 - [阶段 2AA 全局存储与调用静态语义](docs/vm-global-semantics.md)
 - [后续两批全局运行时实施规格](docs/stage2aa-evidence/global-runtime-design.md)

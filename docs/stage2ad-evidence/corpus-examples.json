@@ -1,0 +1,3160 @@
+[
+  {
+    "argc_status": "nonnegative",
+    "efun": "time",
+    "function": "telnet_daemon",
+    "function_index": 829,
+    "member_node_offset": 245917,
+    "member_sha256": "f9896828c87399be4977107fbfbe3f67fd71caebd3008bda84be16cc722d0a0e",
+    "mode": "global",
+    "nodes_offset": 245909,
+    "par8_signed": 0,
+    "par8_unsigned": 0,
+    "pc": 2,
+    "segment_kind": "functions",
+    "segment_offset": 245460,
+    "slot": 137,
+    "slot_status": "registered",
+    "snippet": [
+      {
+        "member_node_offset": 245909,
+        "node": [
+          0,
+          0,
+          15
+        ],
+        "pc": 0
+      },
+      {
+        "member_node_offset": 245913,
+        "node": [
+          0,
+          0,
+          27
+        ],
+        "pc": 1
+      },
+      {
+        "member_node_offset": 245917,
+        "node": [
+          137,
+          0,
+          6
+        ],
+        "pc": 2
+      },
+      {
+        "member_node_offset": 245921,
+        "node": [
+          94,
+          0,
+          53
+        ],
+        "pc": 3
+      },
+      {
+        "member_node_offset": 245925,
+        "node": [
+          0,
+          0,
+          81
+        ],
+        "pc": 4
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o"
+  },
+  {
+    "argc_status": "nonnegative",
+    "efun": "printf",
+    "function": "top",
+    "function_index": 778,
+    "member_node_offset": 376410,
+    "member_sha256": "f9896828c87399be4977107fbfbe3f67fd71caebd3008bda84be16cc722d0a0e",
+    "mode": "global",
+    "nodes_offset": 375474,
+    "par8_signed": 15,
+    "par8_unsigned": 15,
+    "pc": 234,
+    "segment_kind": "functions",
+    "segment_offset": 375146,
+    "slot": 90,
+    "slot_status": "registered",
+    "snippet": [
+      {
+        "member_node_offset": 376402,
+        "node": [
+          464,
+          0,
+          64
+        ],
+        "pc": 232
+      },
+      {
+        "member_node_offset": 376406,
+        "node": [
+          465,
+          0,
+          64
+        ],
+        "pc": 233
+      },
+      {
+        "member_node_offset": 376410,
+        "node": [
+          90,
+          15,
+          6
+        ],
+        "pc": 234
+      },
+      {
+        "member_node_offset": 376414,
+        "node": [
+          0,
+          0,
+          51
+        ],
+        "pc": 235
+      },
+      {
+        "member_node_offset": 376418,
+        "node": [
+          -2,
+          0,
+          55
+        ],
+        "pc": 236
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o"
+  },
+  {
+    "argc_status": "nonnegative",
+    "efun": "abs",
+    "function": "is_same_week",
+    "function_index": 700,
+    "member_node_offset": 244822,
+    "member_sha256": "f9896828c87399be4977107fbfbe3f67fd71caebd3008bda84be16cc722d0a0e",
+    "mode": "global",
+    "nodes_offset": 244802,
+    "par8_signed": 1,
+    "par8_unsigned": 1,
+    "pc": 5,
+    "segment_kind": "functions",
+    "segment_offset": 244740,
+    "slot": 3,
+    "slot_status": "registered",
+    "snippet": [
+      {
+        "member_node_offset": 244814,
+        "node": [
+          1,
+          0,
+          55
+        ],
+        "pc": 3
+      },
+      {
+        "member_node_offset": 244818,
+        "node": [
+          0,
+          0,
+          81
+        ],
+        "pc": 4
+      },
+      {
+        "member_node_offset": 244822,
+        "node": [
+          3,
+          1,
+          6
+        ],
+        "pc": 5
+      },
+      {
+        "member_node_offset": 244826,
+        "node": [
+          0,
+          0,
+          60
+        ],
+        "pc": 6
+      },
+      {
+        "member_node_offset": 244830,
+        "node": [
+          0,
+          0,
+          32
+        ],
+        "pc": 7
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o"
+  },
+  {
+    "argc_status": "nonnegative",
+    "efun": "clean_array",
+    "function": "post_regen_iid",
+    "function_index": 651,
+    "member_node_offset": 242477,
+    "member_sha256": "f9896828c87399be4977107fbfbe3f67fd71caebd3008bda84be16cc722d0a0e",
+    "mode": "global",
+    "nodes_offset": 242385,
+    "par8_signed": 2,
+    "par8_unsigned": 2,
+    "pc": 23,
+    "segment_kind": "functions",
+    "segment_offset": 242303,
+    "slot": 12,
+    "slot_status": "registered",
+    "snippet": [
+      {
+        "member_node_offset": 242469,
+        "node": [
+          9,
+          0,
+          59
+        ],
+        "pc": 21
+      },
+      {
+        "member_node_offset": 242473,
+        "node": [
+          42,
+          0,
+          53
+        ],
+        "pc": 22
+      },
+      {
+        "member_node_offset": 242477,
+        "node": [
+          12,
+          2,
+          6
+        ],
+        "pc": 23
+      },
+      {
+        "member_node_offset": 242481,
+        "node": [
+          0,
+          0,
+          51
+        ],
+        "pc": 24
+      },
+      {
+        "member_node_offset": 242485,
+        "node": [
+          0,
+          0,
+          46
+        ],
+        "pc": 25
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o"
+  },
+  {
+    "argc_status": "nonnegative",
+    "efun": "sprintf",
+    "function": "telnet_daemon",
+    "function_index": 829,
+    "member_node_offset": 246701,
+    "member_sha256": "f9896828c87399be4977107fbfbe3f67fd71caebd3008bda84be16cc722d0a0e",
+    "mode": "global",
+    "nodes_offset": 245909,
+    "par8_signed": 3,
+    "par8_unsigned": 3,
+    "pc": 198,
+    "segment_kind": "functions",
+    "segment_offset": 245460,
+    "slot": 121,
+    "slot_status": "registered",
+    "snippet": [
+      {
+        "member_node_offset": 246693,
+        "node": [
+          -1,
+          0,
+          55
+        ],
+        "pc": 196
+      },
+      {
+        "member_node_offset": 246697,
+        "node": [
+          555,
+          0,
+          64
+        ],
+        "pc": 197
+      },
+      {
+        "member_node_offset": 246701,
+        "node": [
+          121,
+          3,
+          6
+        ],
+        "pc": 198
+      },
+      {
+        "member_node_offset": 246705,
+        "node": [
+          570,
+          -127,
+          7
+        ],
+        "pc": 199
+      },
+      {
+        "member_node_offset": 246709,
+        "node": [
+          0,
+          0,
+          51
+        ],
+        "pc": 200
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o"
+  },
+  {
+    "argc_status": "nonnegative",
+    "efun": "sprintf",
+    "function": "telnet_daemon",
+    "function_index": 829,
+    "member_node_offset": 246673,
+    "member_sha256": "f9896828c87399be4977107fbfbe3f67fd71caebd3008bda84be16cc722d0a0e",
+    "mode": "global",
+    "nodes_offset": 245909,
+    "par8_signed": 4,
+    "par8_unsigned": 4,
+    "pc": 191,
+    "segment_kind": "functions",
+    "segment_offset": 245460,
+    "slot": 121,
+    "slot_status": "registered",
+    "snippet": [
+      {
+        "member_node_offset": 246665,
+        "node": [
+          4,
+          0,
+          13
+        ],
+        "pc": 189
+      },
+      {
+        "member_node_offset": 246669,
+        "node": [
+          554,
+          0,
+          64
+        ],
+        "pc": 190
+      },
+      {
+        "member_node_offset": 246673,
+        "node": [
+          121,
+          4,
+          6
+        ],
+        "pc": 191
+      },
+      {
+        "member_node_offset": 246677,
+        "node": [
+          -8,
+          0,
+          57
+        ],
+        "pc": 192
+      },
+      {
+        "member_node_offset": 246681,
+        "node": [
+          0,
+          0,
+          3
+        ],
+        "pc": 193
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o"
+  },
+  {
+    "argc_status": "nonnegative",
+    "efun": "sscanf",
+    "function": "get_offset_ym",
+    "function_index": 692,
+    "member_node_offset": 291816,
+    "member_sha256": "f9896828c87399be4977107fbfbe3f67fd71caebd3008bda84be16cc722d0a0e",
+    "mode": "global",
+    "nodes_offset": 291780,
+    "par8_signed": 5,
+    "par8_unsigned": 5,
+    "pc": 9,
+    "segment_kind": "functions",
+    "segment_offset": 291658,
+    "slot": 120,
+    "slot_status": "registered",
+    "snippet": [
+      {
+        "member_node_offset": 291808,
+        "node": [
+          0,
+          0,
+          55
+        ],
+        "pc": 7
+      },
+      {
+        "member_node_offset": 291812,
+        "node": [
+          18,
+          2,
+          6
+        ],
+        "pc": 8
+      },
+      {
+        "member_node_offset": 291816,
+        "node": [
+          120,
+          5,
+          6
+        ],
+        "pc": 9
+      },
+      {
+        "member_node_offset": 291820,
+        "node": [
+          3,
+          0,
+          59
+        ],
+        "pc": 10
+      },
+      {
+        "member_node_offset": 291824,
+        "node": [
+          0,
+          0,
+          39
+        ],
+        "pc": 11
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o"
+  },
+  {
+    "argc_status": "nonnegative",
+    "efun": "sprintf",
+    "function": "time_desc_to_ch",
+    "function_index": 730,
+    "member_node_offset": 254127,
+    "member_sha256": "f9896828c87399be4977107fbfbe3f67fd71caebd3008bda84be16cc722d0a0e",
+    "mode": "global",
+    "nodes_offset": 253979,
+    "par8_signed": 6,
+    "par8_unsigned": 6,
+    "pc": 37,
+    "segment_kind": "functions",
+    "segment_offset": 253912,
+    "slot": 121,
+    "slot_status": "registered",
+    "snippet": [
+      {
+        "member_node_offset": 254119,
+        "node": [
+          0,
+          0,
+          67
+        ],
+        "pc": 35
+      },
+      {
+        "member_node_offset": 254123,
+        "node": [
+          290,
+          0,
+          64
+        ],
+        "pc": 36
+      },
+      {
+        "member_node_offset": 254127,
+        "node": [
+          121,
+          6,
+          6
+        ],
+        "pc": 37
+      },
+      {
+        "member_node_offset": 254131,
+        "node": [
+          0,
+          0,
+          73
+        ],
+        "pc": 38
+      },
+      {
+        "member_node_offset": 254135,
+        "node": [
+          0,
+          0,
+          46
+        ],
+        "pc": 39
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o"
+  },
+  {
+    "argc_status": "nonnegative",
+    "efun": "sprintf",
+    "function": "time_desc_ex",
+    "function_index": 682,
+    "member_node_offset": 329777,
+    "member_sha256": "f9896828c87399be4977107fbfbe3f67fd71caebd3008bda84be16cc722d0a0e",
+    "mode": "global",
+    "nodes_offset": 329653,
+    "par8_signed": 7,
+    "par8_unsigned": 7,
+    "pc": 31,
+    "segment_kind": "functions",
+    "segment_offset": 329586,
+    "slot": 121,
+    "slot_status": "registered",
+    "snippet": [
+      {
+        "member_node_offset": 329769,
+        "node": [
+          0,
+          0,
+          67
+        ],
+        "pc": 29
+      },
+      {
+        "member_node_offset": 329773,
+        "node": [
+          232,
+          0,
+          64
+        ],
+        "pc": 30
+      },
+      {
+        "member_node_offset": 329777,
+        "node": [
+          121,
+          7,
+          6
+        ],
+        "pc": 31
+      },
+      {
+        "member_node_offset": 329781,
+        "node": [
+          0,
+          0,
+          73
+        ],
+        "pc": 32
+      },
+      {
+        "member_node_offset": 329785,
+        "node": [
+          0,
+          0,
+          46
+        ],
+        "pc": 33
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o"
+  },
+  {
+    "argc_status": "nonnegative",
+    "efun": "sprintf",
+    "function": "convert_int_to_scientific_string",
+    "function_index": 727,
+    "member_node_offset": 270393,
+    "member_sha256": "f9896828c87399be4977107fbfbe3f67fd71caebd3008bda84be16cc722d0a0e",
+    "mode": "global",
+    "nodes_offset": 269889,
+    "par8_signed": 8,
+    "par8_unsigned": 8,
+    "pc": 126,
+    "segment_kind": "functions",
+    "segment_offset": 269662,
+    "slot": 121,
+    "slot_status": "registered",
+    "snippet": [
+      {
+        "member_node_offset": 270385,
+        "node": [
+          0,
+          0,
+          69
+        ],
+        "pc": 124
+      },
+      {
+        "member_node_offset": 270389,
+        "node": [
+          282,
+          0,
+          64
+        ],
+        "pc": 125
+      },
+      {
+        "member_node_offset": 270393,
+        "node": [
+          121,
+          8,
+          6
+        ],
+        "pc": 126
+      },
+      {
+        "member_node_offset": 270397,
+        "node": [
+          -3,
+          0,
+          57
+        ],
+        "pc": 127
+      },
+      {
+        "member_node_offset": 270401,
+        "node": [
+          0,
+          0,
+          3
+        ],
+        "pc": 128
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o"
+  },
+  {
+    "argc_status": "nonnegative",
+    "efun": "time",
+    "function": "__init__",
+    "function_index": null,
+    "member_node_offset": 452216,
+    "member_sha256": "f9896828c87399be4977107fbfbe3f67fd71caebd3008bda84be16cc722d0a0e",
+    "mode": "global",
+    "nodes_offset": 450136,
+    "par8_signed": 0,
+    "par8_unsigned": 0,
+    "pc": 520,
+    "segment_kind": "init",
+    "segment_offset": 448680,
+    "slot": 137,
+    "slot_status": "registered",
+    "snippet": [
+      {
+        "member_node_offset": 452208,
+        "node": [
+          0,
+          0,
+          3
+        ],
+        "pc": 518
+      },
+      {
+        "member_node_offset": 452212,
+        "node": [
+          0,
+          0,
+          51
+        ],
+        "pc": 519
+      },
+      {
+        "member_node_offset": 452216,
+        "node": [
+          137,
+          0,
+          6
+        ],
+        "pc": 520
+      },
+      {
+        "member_node_offset": 452220,
+        "node": [
+          96,
+          0,
+          54
+        ],
+        "pc": 521
+      },
+      {
+        "member_node_offset": 452224,
+        "node": [
+          0,
+          0,
+          3
+        ],
+        "pc": 522
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o"
+  },
+  {
+    "argc_status": "nonnegative",
+    "efun": "allocate_array",
+    "function": "__init__",
+    "function_index": null,
+    "member_node_offset": 450140,
+    "member_sha256": "f9896828c87399be4977107fbfbe3f67fd71caebd3008bda84be16cc722d0a0e",
+    "mode": "global",
+    "nodes_offset": 450136,
+    "par8_signed": 1,
+    "par8_unsigned": 1,
+    "pc": 1,
+    "segment_kind": "init",
+    "segment_offset": 448680,
+    "slot": 0,
+    "slot_status": "registered",
+    "snippet": [
+      {
+        "member_node_offset": 450136,
+        "node": [
+          1024,
+          0,
+          59
+        ],
+        "pc": 0
+      },
+      {
+        "member_node_offset": 450140,
+        "node": [
+          0,
+          1,
+          6
+        ],
+        "pc": 1
+      },
+      {
+        "member_node_offset": 450144,
+        "node": [
+          2,
+          0,
+          54
+        ],
+        "pc": 2
+      },
+      {
+        "member_node_offset": 450148,
+        "node": [
+          0,
+          0,
+          3
+        ],
+        "pc": 3
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o"
+  },
+  {
+    "argc_status": "nonnegative",
+    "efun": "enable_trace",
+    "function": "__init__",
+    "function_index": null,
+    "member_node_offset": 450280,
+    "member_sha256": "f9896828c87399be4977107fbfbe3f67fd71caebd3008bda84be16cc722d0a0e",
+    "mode": "global",
+    "nodes_offset": 450136,
+    "par8_signed": 2,
+    "par8_unsigned": 2,
+    "pc": 36,
+    "segment_kind": "init",
+    "segment_offset": 448680,
+    "slot": 27,
+    "slot_status": "registered",
+    "snippet": [
+      {
+        "member_node_offset": 450272,
+        "node": [
+          0,
+          0,
+          59
+        ],
+        "pc": 34
+      },
+      {
+        "member_node_offset": 450276,
+        "node": [
+          576,
+          0,
+          64
+        ],
+        "pc": 35
+      },
+      {
+        "member_node_offset": 450280,
+        "node": [
+          27,
+          2,
+          6
+        ],
+        "pc": 36
+      },
+      {
+        "member_node_offset": 450284,
+        "node": [
+          0,
+          0,
+          51
+        ],
+        "pc": 37
+      },
+      {
+        "member_node_offset": 450288,
+        "node": [
+          0,
+          0,
+          24
+        ],
+        "pc": 38
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o"
+  },
+  {
+    "argc_status": "nonnegative",
+    "efun": "set_timer",
+    "function": "__init__",
+    "function_index": null,
+    "member_node_offset": 450956,
+    "member_sha256": "f9896828c87399be4977107fbfbe3f67fd71caebd3008bda84be16cc722d0a0e",
+    "mode": "global",
+    "nodes_offset": 450136,
+    "par8_signed": 3,
+    "par8_unsigned": 3,
+    "pc": 205,
+    "segment_kind": "init",
+    "segment_offset": 448680,
+    "slot": 327,
+    "slot_status": "registered",
+    "snippet": [
+      {
+        "member_node_offset": 450948,
+        "node": [
+          0,
+          0,
+          59
+        ],
+        "pc": 203
+      },
+      {
+        "member_node_offset": 450952,
+        "node": [
+          0,
+          0,
+          59
+        ],
+        "pc": 204
+      },
+      {
+        "member_node_offset": 450956,
+        "node": [
+          327,
+          3,
+          6
+        ],
+        "pc": 205
+      },
+      {
+        "member_node_offset": 450960,
+        "node": [
+          0,
+          0,
+          51
+        ],
+        "pc": 206
+      },
+      {
+        "member_node_offset": 450964,
+        "node": [
+          45,
+          0,
+          59
+        ],
+        "pc": 207
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o"
+  },
+  {
+    "argc_status": "nonnegative",
+    "efun": "pkt_destruct_analyser",
+    "function": "destruct",
+    "function_index": 2,
+    "member_node_offset": 278,
+    "member_sha256": "acc2335fe2c4b61645bb6c5e1cfb3ed0b1dd2cf0db8306ae323ef7e3b8d2bef8",
+    "mode": "object",
+    "nodes_offset": 270,
+    "par8_signed": 0,
+    "par8_unsigned": 0,
+    "pc": 2,
+    "segment_kind": "functions",
+    "segment_offset": 219,
+    "slot": 223,
+    "slot_status": "registered",
+    "snippet": [
+      {
+        "member_node_offset": 270,
+        "node": [
+          0,
+          0,
+          15
+        ],
+        "pc": 0
+      },
+      {
+        "member_node_offset": 274,
+        "node": [
+          0,
+          0,
+          27
+        ],
+        "pc": 1
+      },
+      {
+        "member_node_offset": 278,
+        "node": [
+          223,
+          0,
+          6
+        ],
+        "pc": 2
+      },
+      {
+        "member_node_offset": 282,
+        "node": [
+          0,
+          0,
+          51
+        ],
+        "pc": 3
+      },
+      {
+        "member_node_offset": 286,
+        "node": [
+          0,
+          0,
+          46
+        ],
+        "pc": 4
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/daemons/communicated.o"
+  },
+  {
+    "argc_status": "nonnegative",
+    "efun": "pad_buffer",
+    "function": "generate_pic_by_str",
+    "function_index": 5,
+    "member_node_offset": 8754,
+    "member_sha256": "254377d8baf64b747c15823605d3d6fa245eff4b940561f07357ef254906e899",
+    "mode": "object",
+    "nodes_offset": 8230,
+    "par8_signed": 10,
+    "par8_unsigned": 10,
+    "pc": 131,
+    "segment_kind": "functions",
+    "segment_offset": 8009,
+    "slot": 524,
+    "slot_status": "registered",
+    "snippet": [
+      {
+        "member_node_offset": 8746,
+        "node": [
+          0,
+          0,
+          67
+        ],
+        "pc": 129
+      },
+      {
+        "member_node_offset": 8750,
+        "node": [
+          521,
+          1,
+          6
+        ],
+        "pc": 130
+      },
+      {
+        "member_node_offset": 8754,
+        "node": [
+          524,
+          10,
+          6
+        ],
+        "pc": 131
+      },
+      {
+        "member_node_offset": 8758,
+        "node": [
+          -4,
+          0,
+          57
+        ],
+        "pc": 132
+      },
+      {
+        "member_node_offset": 8762,
+        "node": [
+          0,
+          0,
+          3
+        ],
+        "pc": 133
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/daemons/verify_coded.o"
+  },
+  {
+    "argc_status": "nonnegative",
+    "efun": "sprintf",
+    "function": "get_entire_url",
+    "function_index": 14,
+    "member_node_offset": 8515,
+    "member_sha256": "eb569216013ce8d57bd4e7536f8f9950d204e7a5704f08000d7bfcb4681e0bf1",
+    "mode": "object",
+    "nodes_offset": 7907,
+    "par8_signed": 11,
+    "par8_unsigned": 11,
+    "pc": 152,
+    "segment_kind": "functions",
+    "segment_offset": 7723,
+    "slot": 121,
+    "slot_status": "registered",
+    "snippet": [
+      {
+        "member_node_offset": 8507,
+        "node": [
+          3,
+          0,
+          61
+        ],
+        "pc": 150
+      },
+      {
+        "member_node_offset": 8511,
+        "node": [
+          36,
+          0,
+          64
+        ],
+        "pc": 151
+      },
+      {
+        "member_node_offset": 8515,
+        "node": [
+          121,
+          11,
+          6
+        ],
+        "pc": 152
+      },
+      {
+        "member_node_offset": 8519,
+        "node": [
+          -14,
+          0,
+          57
+        ],
+        "pc": 153
+      },
+      {
+        "member_node_offset": 8523,
+        "node": [
+          0,
+          0,
+          3
+        ],
+        "pc": 154
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/daemons/ecardd.o"
+  },
+  {
+    "argc_status": "nonnegative",
+    "efun": "sprintf",
+    "function": "get_entire_recharge_url",
+    "function_index": 9,
+    "member_node_offset": 4249,
+    "member_sha256": "def69ddd80c88bdbccbdb55f3e1ec0d90d9249dcd558c24519b05a884b6a947a",
+    "mode": "object",
+    "nodes_offset": 3737,
+    "par8_signed": 12,
+    "par8_unsigned": 12,
+    "pc": 128,
+    "segment_kind": "functions",
+    "segment_offset": 3502,
+    "slot": 121,
+    "slot_status": "registered",
+    "snippet": [
+      {
+        "member_node_offset": 4241,
+        "node": [
+          -14,
+          0,
+          55
+        ],
+        "pc": 126
+      },
+      {
+        "member_node_offset": 4245,
+        "node": [
+          43,
+          0,
+          64
+        ],
+        "pc": 127
+      },
+      {
+        "member_node_offset": 4249,
+        "node": [
+          121,
+          12,
+          6
+        ],
+        "pc": 128
+      },
+      {
+        "member_node_offset": 4253,
+        "node": [
+          0,
+          0,
+          73
+        ],
+        "pc": 129
+      },
+      {
+        "member_node_offset": 4257,
+        "node": [
+          0,
+          0,
+          46
+        ],
+        "pc": 130
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/daemons/express_recharged.o"
+  },
+  {
+    "argc_status": "nonnegative",
+    "efun": "mysql_bind_parameters",
+    "function": "record_ecard_business",
+    "function_index": 17,
+    "member_node_offset": 12701,
+    "member_sha256": "eb569216013ce8d57bd4e7536f8f9950d204e7a5704f08000d7bfcb4681e0bf1",
+    "mode": "object",
+    "nodes_offset": 12465,
+    "par8_signed": 13,
+    "par8_unsigned": 13,
+    "pc": 59,
+    "segment_kind": "functions",
+    "segment_offset": 12321,
+    "slot": 447,
+    "slot_status": "registered",
+    "snippet": [
+      {
+        "member_node_offset": 12693,
+        "node": [
+          0,
+          0,
+          67
+        ],
+        "pc": 57
+      },
+      {
+        "member_node_offset": 12697,
+        "node": [
+          50,
+          0,
+          64
+        ],
+        "pc": 58
+      },
+      {
+        "member_node_offset": 12701,
+        "node": [
+          447,
+          13,
+          6
+        ],
+        "pc": 59
+      },
+      {
+        "member_node_offset": 12705,
+        "node": [
+          -2,
+          0,
+          57
+        ],
+        "pc": 60
+      },
+      {
+        "member_node_offset": 12709,
+        "node": [
+          0,
+          0,
+          3
+        ],
+        "pc": 61
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/daemons/ecardd.o"
+  },
+  {
+    "argc_status": "nonnegative",
+    "efun": "mysql_bind_parameters",
+    "function": "log_to_adb",
+    "function_index": 16,
+    "member_node_offset": 21896,
+    "member_sha256": "eb569216013ce8d57bd4e7536f8f9950d204e7a5704f08000d7bfcb4681e0bf1",
+    "mode": "object",
+    "nodes_offset": 21588,
+    "par8_signed": 14,
+    "par8_unsigned": 14,
+    "pc": 77,
+    "segment_kind": "functions",
+    "segment_offset": 21424,
+    "slot": 447,
+    "slot_status": "registered",
+    "snippet": [
+      {
+        "member_node_offset": 21888,
+        "node": [
+          0,
+          0,
+          67
+        ],
+        "pc": 75
+      },
+      {
+        "member_node_offset": 21892,
+        "node": [
+          47,
+          0,
+          64
+        ],
+        "pc": 76
+      },
+      {
+        "member_node_offset": 21896,
+        "node": [
+          447,
+          14,
+          6
+        ],
+        "pc": 77
+      },
+      {
+        "member_node_offset": 21900,
+        "node": [
+          -2,
+          0,
+          57
+        ],
+        "pc": 78
+      },
+      {
+        "member_node_offset": 21904,
+        "node": [
+          0,
+          0,
+          3
+        ],
+        "pc": 79
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/daemons/ecardd.o"
+  },
+  {
+    "argc_status": "nonnegative",
+    "efun": "mysql_bind_parameters",
+    "function": "record_ecard_for_resend",
+    "function_index": 18,
+    "member_node_offset": 16860,
+    "member_sha256": "eb569216013ce8d57bd4e7536f8f9950d204e7a5704f08000d7bfcb4681e0bf1",
+    "mode": "object",
+    "nodes_offset": 16592,
+    "par8_signed": 15,
+    "par8_unsigned": 15,
+    "pc": 67,
+    "segment_kind": "functions",
+    "segment_offset": 16443,
+    "slot": 447,
+    "slot_status": "registered",
+    "snippet": [
+      {
+        "member_node_offset": 16852,
+        "node": [
+          0,
+          0,
+          67
+        ],
+        "pc": 65
+      },
+      {
+        "member_node_offset": 16856,
+        "node": [
+          52,
+          0,
+          64
+        ],
+        "pc": 66
+      },
+      {
+        "member_node_offset": 16860,
+        "node": [
+          447,
+          15,
+          6
+        ],
+        "pc": 67
+      },
+      {
+        "member_node_offset": 16864,
+        "node": [
+          -2,
+          0,
+          57
+        ],
+        "pc": 68
+      },
+      {
+        "member_node_offset": 16868,
+        "node": [
+          0,
+          0,
+          3
+        ],
+        "pc": 69
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/daemons/ecardd.o"
+  },
+  {
+    "argc_status": "nonnegative",
+    "efun": "sprintf",
+    "function": "get_notice_login_url",
+    "function_index": 5,
+    "member_node_offset": 4202,
+    "member_sha256": "76d66dd93ce4fcc6f74ce0809a4b40e36f9cc9676b1f9178ac0b6578af4c5603",
+    "mode": "object",
+    "nodes_offset": 3910,
+    "par8_signed": 16,
+    "par8_unsigned": 16,
+    "pc": 73,
+    "segment_kind": "functions",
+    "segment_offset": 3798,
+    "slot": 121,
+    "slot_status": "registered",
+    "snippet": [
+      {
+        "member_node_offset": 4194,
+        "node": [
+          22,
+          0,
+          64
+        ],
+        "pc": 71
+      },
+      {
+        "member_node_offset": 4198,
+        "node": [
+          0,
+          0,
+          1
+        ],
+        "pc": 72
+      },
+      {
+        "member_node_offset": 4202,
+        "node": [
+          121,
+          16,
+          6
+        ],
+        "pc": 73
+      },
+      {
+        "member_node_offset": 4206,
+        "node": [
+          0,
+          0,
+          73
+        ],
+        "pc": 74
+      },
+      {
+        "member_node_offset": 4210,
+        "node": [
+          0,
+          0,
+          46
+        ],
+        "pc": 75
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/daemons/easyutild.o"
+  },
+  {
+    "argc_status": "nonnegative",
+    "efun": "mysql_bind_parameters",
+    "function": "log_gbuy_coin",
+    "function_index": 10,
+    "member_node_offset": 15899,
+    "member_sha256": "98ebb01e4321ac97a9f5f2e2c32b93e95bd9a08da0c0f82372c963271c99c4b1",
+    "mode": "object",
+    "nodes_offset": 15695,
+    "par8_signed": 17,
+    "par8_unsigned": 17,
+    "pc": 51,
+    "segment_kind": "functions",
+    "segment_offset": 15531,
+    "slot": 447,
+    "slot_status": "registered",
+    "snippet": [
+      {
+        "member_node_offset": 15891,
+        "node": [
+          18,
+          2,
+          6
+        ],
+        "pc": 49
+      },
+      {
+        "member_node_offset": 15895,
+        "node": [
+          56,
+          0,
+          64
+        ],
+        "pc": 50
+      },
+      {
+        "member_node_offset": 15899,
+        "node": [
+          447,
+          17,
+          6
+        ],
+        "pc": 51
+      },
+      {
+        "member_node_offset": 15903,
+        "node": [
+          -1,
+          0,
+          57
+        ],
+        "pc": 52
+      },
+      {
+        "member_node_offset": 15907,
+        "node": [
+          0,
+          0,
+          3
+        ],
+        "pc": 53
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/daemons/server/cmd_l_add_coin.o"
+  },
+  {
+    "argc_status": "nonnegative",
+    "efun": "sprintf",
+    "function": "get_cur_ticket_info",
+    "function_index": 23,
+    "member_node_offset": 4920,
+    "member_sha256": "dbd1f56bd03e6b65ef938d80ad32b2fc61005269b258ccf71d33d2988c73c9b6",
+    "mode": "object",
+    "nodes_offset": 4656,
+    "par8_signed": 18,
+    "par8_unsigned": 18,
+    "pc": 66,
+    "segment_kind": "functions",
+    "segment_offset": 4503,
+    "slot": 121,
+    "slot_status": "registered",
+    "snippet": [
+      {
+        "member_node_offset": 4912,
+        "node": [
+          0,
+          0,
+          67
+        ],
+        "pc": 64
+      },
+      {
+        "member_node_offset": 4916,
+        "node": [
+          81,
+          0,
+          64
+        ],
+        "pc": 65
+      },
+      {
+        "member_node_offset": 4920,
+        "node": [
+          121,
+          18,
+          6
+        ],
+        "pc": 66
+      },
+      {
+        "member_node_offset": 4924,
+        "node": [
+          -1,
+          0,
+          57
+        ],
+        "pc": 67
+      },
+      {
+        "member_node_offset": 4928,
+        "node": [
+          0,
+          0,
+          3
+        ],
+        "pc": 68
+      }
+    ],
+    "source": "ccs/pack_data/lib_ccs32.pak/ccs/daemons/lottery_ticketd.o"
+  },
+  {
+    "argc_status": "nonnegative",
+    "efun": "sprintf",
+    "function": "get_cur_elixir_info",
+    "function_index": 23,
+    "member_node_offset": 12153,
+    "member_sha256": "7571757a85dfdce87679db97211df21345f4f47511c2b6f2d44249330b2942d7",
+    "mode": "object",
+    "nodes_offset": 11853,
+    "par8_signed": 19,
+    "par8_unsigned": 19,
+    "pc": 75,
+    "segment_kind": "functions",
+    "segment_offset": 11658,
+    "slot": 121,
+    "slot_status": "registered",
+    "snippet": [
+      {
+        "member_node_offset": 12145,
+        "node": [
+          0,
+          0,
+          67
+        ],
+        "pc": 73
+      },
+      {
+        "member_node_offset": 12149,
+        "node": [
+          83,
+          0,
+          64
+        ],
+        "pc": 74
+      },
+      {
+        "member_node_offset": 12153,
+        "node": [
+          121,
+          19,
+          6
+        ],
+        "pc": 75
+      },
+      {
+        "member_node_offset": 12157,
+        "node": [
+          -1,
+          0,
+          57
+        ],
+        "pc": 76
+      },
+      {
+        "member_node_offset": 12161,
+        "node": [
+          0,
+          0,
+          3
+        ],
+        "pc": 77
+      }
+    ],
+    "source": "ccs/pack_data/lib_ccs32.pak/ccs/daemons/melt_elixird.o"
+  },
+  {
+    "argc_status": "nonnegative",
+    "efun": "restore_value",
+    "function": "decrypt",
+    "function_index": 1,
+    "member_node_offset": 434,
+    "member_sha256": "3e1f32932ec3b2891c1a54162af683055b991ccec4a711f989bfe6510434c32c",
+    "mode": "object",
+    "nodes_offset": 410,
+    "par8_signed": 1,
+    "par8_unsigned": 1,
+    "pc": 6,
+    "segment_kind": "functions",
+    "segment_offset": 323,
+    "slot": 100,
+    "slot_status": "registered",
+    "snippet": [
+      {
+        "member_node_offset": 426,
+        "node": [
+          1,
+          0,
+          64
+        ],
+        "pc": 4
+      },
+      {
+        "member_node_offset": 430,
+        "node": [
+          121,
+          2,
+          6
+        ],
+        "pc": 5
+      },
+      {
+        "member_node_offset": 434,
+        "node": [
+          100,
+          1,
+          6
+        ],
+        "pc": 6
+      },
+      {
+        "member_node_offset": 438,
+        "node": [
+          -1,
+          0,
+          57
+        ],
+        "pc": 7
+      },
+      {
+        "member_node_offset": 442,
+        "node": [
+          0,
+          0,
+          3
+        ],
+        "pc": 8
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/daemons/encryptd.o"
+  },
+  {
+    "argc_status": "nonnegative",
+    "efun": "mysql_bind_parameters",
+    "function": "log_add_gold_coin",
+    "function_index": 11,
+    "member_node_offset": 9589,
+    "member_sha256": "98ebb01e4321ac97a9f5f2e2c32b93e95bd9a08da0c0f82372c963271c99c4b1",
+    "mode": "object",
+    "nodes_offset": 9453,
+    "par8_signed": 20,
+    "par8_unsigned": 20,
+    "pc": 34,
+    "segment_kind": "functions",
+    "segment_offset": 9294,
+    "slot": 447,
+    "slot_status": "registered",
+    "snippet": [
+      {
+        "member_node_offset": 9581,
+        "node": [
+          4,
+          0,
+          55
+        ],
+        "pc": 32
+      },
+      {
+        "member_node_offset": 9585,
+        "node": [
+          59,
+          0,
+          64
+        ],
+        "pc": 33
+      },
+      {
+        "member_node_offset": 9589,
+        "node": [
+          447,
+          20,
+          6
+        ],
+        "pc": 34
+      },
+      {
+        "member_node_offset": 9593,
+        "node": [
+          -1,
+          0,
+          57
+        ],
+        "pc": 35
+      },
+      {
+        "member_node_offset": 9597,
+        "node": [
+          0,
+          0,
+          3
+        ],
+        "pc": 36
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/daemons/server/cmd_l_add_coin.o"
+  },
+  {
+    "argc_status": "nonnegative",
+    "efun": "sprintf",
+    "function": "main",
+    "function_index": 0,
+    "member_node_offset": 2308,
+    "member_sha256": "33c123e884e38c99d5e3e47e364ba426ac3de2c6ccf48e1f4ab3dc70997f7f98",
+    "mode": "object",
+    "nodes_offset": 1344,
+    "par8_signed": 21,
+    "par8_unsigned": 21,
+    "pc": 241,
+    "segment_kind": "functions",
+    "segment_offset": 1029,
+    "slot": 121,
+    "slot_status": "registered",
+    "snippet": [
+      {
+        "member_node_offset": 2300,
+        "node": [
+          81,
+          0,
+          53
+        ],
+        "pc": 239
+      },
+      {
+        "member_node_offset": 2304,
+        "node": [
+          33,
+          0,
+          64
+        ],
+        "pc": 240
+      },
+      {
+        "member_node_offset": 2308,
+        "node": [
+          121,
+          21,
+          6
+        ],
+        "pc": 241
+      },
+      {
+        "member_node_offset": 2312,
+        "node": [
+          -3,
+          0,
+          57
+        ],
+        "pc": 242
+      },
+      {
+        "member_node_offset": 2316,
+        "node": [
+          0,
+          0,
+          3
+        ],
+        "pc": 243
+      }
+    ],
+    "source": "ccs/pack_data/lib_ccs32.pak/ccs/cmds/ma/attrib_polar_info.o"
+  },
+  {
+    "argc_status": "nonnegative",
+    "efun": "mysql_bind_parameters",
+    "function": "main",
+    "function_index": 23,
+    "member_node_offset": 2837,
+    "member_sha256": "13a3bed1a52dc0ec13261357c5b26395a92b1b01d1917556eb6480101315ee1c",
+    "mode": "object",
+    "nodes_offset": 2441,
+    "par8_signed": 22,
+    "par8_unsigned": 22,
+    "pc": 99,
+    "segment_kind": "functions",
+    "segment_offset": 2160,
+    "slot": 447,
+    "slot_status": "registered",
+    "snippet": [
+      {
+        "member_node_offset": 2829,
+        "node": [
+          1,
+          0,
+          55
+        ],
+        "pc": 97
+      },
+      {
+        "member_node_offset": 2833,
+        "node": [
+          9,
+          0,
+          61
+        ],
+        "pc": 98
+      },
+      {
+        "member_node_offset": 2837,
+        "node": [
+          447,
+          22,
+          6
+        ],
+        "pc": 99
+      },
+      {
+        "member_node_offset": 2841,
+        "node": [
+          -2,
+          0,
+          57
+        ],
+        "pc": 100
+      },
+      {
+        "member_node_offset": 2845,
+        "node": [
+          0,
+          0,
+          3
+        ],
+        "pc": 101
+      }
+    ],
+    "source": "dba/pack_data/lib_dba32.pak/dba/daemons/dbaserver/cmd_log_apply.o"
+  },
+  {
+    "argc_status": "nonnegative",
+    "efun": "pad_buffer",
+    "function": "build_spa_message",
+    "function_index": 0,
+    "member_node_offset": 9063,
+    "member_sha256": "86a01fd87d70bdddc18b7fbca589535d5d2dc42165929043e7863a6d4101babf",
+    "mode": "object",
+    "nodes_offset": 7943,
+    "par8_signed": 23,
+    "par8_unsigned": 23,
+    "pc": 280,
+    "segment_kind": "functions",
+    "segment_offset": 7555,
+    "slot": 524,
+    "slot_status": "registered",
+    "snippet": [
+      {
+        "member_node_offset": 9055,
+        "node": [
+          0,
+          0,
+          55
+        ],
+        "pc": 278
+      },
+      {
+        "member_node_offset": 9059,
+        "node": [
+          16383,
+          0,
+          59
+        ],
+        "pc": 279
+      },
+      {
+        "member_node_offset": 9063,
+        "node": [
+          524,
+          23,
+          6
+        ],
+        "pc": 280
+      },
+      {
+        "member_node_offset": 9067,
+        "node": [
+          0,
+          0,
+          73
+        ],
+        "pc": 281
+      },
+      {
+        "member_node_offset": 9071,
+        "node": [
+          0,
+          0,
+          46
+        ],
+        "pc": 282
+      }
+    ],
+    "source": "ccs/pack_data/lib_ccs32.pak/ccs/daemons/channel_managed.o"
+  },
+  {
+    "argc_status": "nonnegative",
+    "efun": "mysql_bind_parameters",
+    "function": "main",
+    "function_index": 4,
+    "member_node_offset": 1948,
+    "member_sha256": "214acef75a274ce7358c86b1b8e5f3e2ea008835ee4ce6684f2fec356972ccb3",
+    "mode": "object",
+    "nodes_offset": 1644,
+    "par8_signed": 24,
+    "par8_unsigned": 24,
+    "pc": 76,
+    "segment_kind": "functions",
+    "segment_offset": 1457,
+    "slot": 447,
+    "slot_status": "registered",
+    "snippet": [
+      {
+        "member_node_offset": 1940,
+        "node": [
+          18,
+          2,
+          6
+        ],
+        "pc": 74
+      },
+      {
+        "member_node_offset": 1944,
+        "node": [
+          12,
+          0,
+          64
+        ],
+        "pc": 75
+      },
+      {
+        "member_node_offset": 1948,
+        "node": [
+          447,
+          24,
+          6
+        ],
+        "pc": 76
+      },
+      {
+        "member_node_offset": 1952,
+        "node": [
+          -2,
+          0,
+          57
+        ],
+        "pc": 77
+      },
+      {
+        "member_node_offset": 1956,
+        "node": [
+          0,
+          0,
+          3
+        ],
+        "pc": 78
+      }
+    ],
+    "source": "dba/pack_data/lib_dba32.pak/dba/daemons/dbaserver/cmd_log_gbuy_action.o"
+  },
+  {
+    "argc_status": "nonnegative",
+    "efun": "mysql_bind_parameters",
+    "function": "main",
+    "function_index": 4,
+    "member_node_offset": 1945,
+    "member_sha256": "f5506705ecd878fbcd8a118c8836ecef4f3f811e3d35a5a6225055bdca62ca7c",
+    "mode": "object",
+    "nodes_offset": 1561,
+    "par8_signed": 25,
+    "par8_unsigned": 25,
+    "pc": 96,
+    "segment_kind": "functions",
+    "segment_offset": 1370,
+    "slot": 447,
+    "slot_status": "registered",
+    "snippet": [
+      {
+        "member_node_offset": 1937,
+        "node": [
+          18,
+          2,
+          6
+        ],
+        "pc": 94
+      },
+      {
+        "member_node_offset": 1941,
+        "node": [
+          17,
+          0,
+          64
+        ],
+        "pc": 95
+      },
+      {
+        "member_node_offset": 1945,
+        "node": [
+          447,
+          25,
+          6
+        ],
+        "pc": 96
+      },
+      {
+        "member_node_offset": 1949,
+        "node": [
+          -2,
+          0,
+          57
+        ],
+        "pc": 97
+      },
+      {
+        "member_node_offset": 1953,
+        "node": [
+          0,
+          0,
+          3
+        ],
+        "pc": 98
+      }
+    ],
+    "source": "dba/pack_data/lib_dba32.pak/dba/daemons/dbaserver/cmd_log_csl_combat.o"
+  },
+  {
+    "argc_status": "nonnegative",
+    "efun": "mysql_bind_parameters",
+    "function": "main",
+    "function_index": 23,
+    "member_node_offset": 3185,
+    "member_sha256": "f5d6cf230ebbadea0dd60b210522ac5a4e921fdfd2aa155ffbd0baab5cab8f18",
+    "mode": "object",
+    "nodes_offset": 2817,
+    "par8_signed": 28,
+    "par8_unsigned": 28,
+    "pc": 92,
+    "segment_kind": "functions",
+    "segment_offset": 2528,
+    "slot": 447,
+    "slot_status": "registered",
+    "snippet": [
+      {
+        "member_node_offset": 3177,
+        "node": [
+          1,
+          0,
+          55
+        ],
+        "pc": 90
+      },
+      {
+        "member_node_offset": 3181,
+        "node": [
+          9,
+          0,
+          61
+        ],
+        "pc": 91
+      },
+      {
+        "member_node_offset": 3185,
+        "node": [
+          447,
+          28,
+          6
+        ],
+        "pc": 92
+      },
+      {
+        "member_node_offset": 3189,
+        "node": [
+          -2,
+          0,
+          57
+        ],
+        "pc": 93
+      },
+      {
+        "member_node_offset": 3193,
+        "node": [
+          0,
+          0,
+          3
+        ],
+        "pc": 94
+      }
+    ],
+    "source": "dba/pack_data/lib_dba32.pak/dba/daemons/dbaserver/cmd_log_item_transfer.o"
+  },
+  {
+    "argc_status": "nonnegative",
+    "efun": "sprintf",
+    "function": "decrypt",
+    "function_index": 1,
+    "member_node_offset": 430,
+    "member_sha256": "3e1f32932ec3b2891c1a54162af683055b991ccec4a711f989bfe6510434c32c",
+    "mode": "object",
+    "nodes_offset": 410,
+    "par8_signed": 2,
+    "par8_unsigned": 2,
+    "pc": 5,
+    "segment_kind": "functions",
+    "segment_offset": 323,
+    "slot": 121,
+    "slot_status": "registered",
+    "snippet": [
+      {
+        "member_node_offset": 422,
+        "node": [
+          0,
+          0,
+          55
+        ],
+        "pc": 3
+      },
+      {
+        "member_node_offset": 426,
+        "node": [
+          1,
+          0,
+          64
+        ],
+        "pc": 4
+      },
+      {
+        "member_node_offset": 430,
+        "node": [
+          121,
+          2,
+          6
+        ],
+        "pc": 5
+      },
+      {
+        "member_node_offset": 434,
+        "node": [
+          100,
+          1,
+          6
+        ],
+        "pc": 6
+      },
+      {
+        "member_node_offset": 438,
+        "node": [
+          -1,
+          0,
+          57
+        ],
+        "pc": 7
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/daemons/encryptd.o"
+  },
+  {
+    "argc_status": "nonnegative",
+    "efun": "mysql_bind_parameters",
+    "function": "main",
+    "function_index": 4,
+    "member_node_offset": 4118,
+    "member_sha256": "08b3691498482193966e50a8866203171ae1d789100adae1888ae3db6a69d08b",
+    "mode": "object",
+    "nodes_offset": 3346,
+    "par8_signed": 30,
+    "par8_unsigned": 30,
+    "pc": 193,
+    "segment_kind": "functions",
+    "segment_offset": 2918,
+    "slot": 447,
+    "slot_status": "registered",
+    "snippet": [
+      {
+        "member_node_offset": 4110,
+        "node": [
+          0,
+          0,
+          67
+        ],
+        "pc": 191
+      },
+      {
+        "member_node_offset": 4114,
+        "node": [
+          42,
+          0,
+          64
+        ],
+        "pc": 192
+      },
+      {
+        "member_node_offset": 4118,
+        "node": [
+          447,
+          30,
+          6
+        ],
+        "pc": 193
+      },
+      {
+        "member_node_offset": 4122,
+        "node": [
+          -2,
+          0,
+          57
+        ],
+        "pc": 194
+      },
+      {
+        "member_node_offset": 4126,
+        "node": [
+          0,
+          0,
+          3
+        ],
+        "pc": 195
+      }
+    ],
+    "source": "dba/pack_data/lib_dba32.pak/dba/daemons/dbaserver/cmd_log_collect_data.o"
+  },
+  {
+    "argc_status": "nonnegative",
+    "efun": "des",
+    "function": "decrypt",
+    "function_index": 1,
+    "member_node_offset": 514,
+    "member_sha256": "3e1f32932ec3b2891c1a54162af683055b991ccec4a711f989bfe6510434c32c",
+    "mode": "object",
+    "nodes_offset": 410,
+    "par8_signed": 3,
+    "par8_unsigned": 3,
+    "pc": 26,
+    "segment_kind": "functions",
+    "segment_offset": 323,
+    "slot": 210,
+    "slot_status": "registered",
+    "snippet": [
+      {
+        "member_node_offset": 506,
+        "node": [
+          1,
+          0,
+          59
+        ],
+        "pc": 24
+      },
+      {
+        "member_node_offset": 510,
+        "node": [
+          -1,
+          0,
+          55
+        ],
+        "pc": 25
+      },
+      {
+        "member_node_offset": 514,
+        "node": [
+          210,
+          3,
+          6
+        ],
+        "pc": 26
+      },
+      {
+        "member_node_offset": 518,
+        "node": [
+          4,
+          0,
+          13
+        ],
+        "pc": 27
+      },
+      {
+        "member_node_offset": 522,
+        "node": [
+          -2,
+          0,
+          57
+        ],
+        "pc": 28
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/daemons/encryptd.o"
+  },
+  {
+    "argc_status": "nonnegative",
+    "efun": "wait_event",
+    "function": "post_request",
+    "function_index": 35,
+    "member_node_offset": 3738,
+    "member_sha256": "277cac16ad15447b900b3112f0ca5c442cde8b100553ae7497f875370e628839",
+    "mode": "object",
+    "nodes_offset": 3682,
+    "par8_signed": 4,
+    "par8_unsigned": 4,
+    "pc": 14,
+    "segment_kind": "functions",
+    "segment_offset": 3615,
+    "slot": 318,
+    "slot_status": "registered",
+    "snippet": [
+      {
+        "member_node_offset": 3730,
+        "node": [
+          0,
+          0,
+          25
+        ],
+        "pc": 12
+      },
+      {
+        "member_node_offset": 3734,
+        "node": [
+          0,
+          0,
+          1
+        ],
+        "pc": 13
+      },
+      {
+        "member_node_offset": 3738,
+        "node": [
+          318,
+          4,
+          6
+        ],
+        "pc": 14
+      },
+      {
+        "member_node_offset": 3742,
+        "node": [
+          0,
+          0,
+          51
+        ],
+        "pc": 15
+      },
+      {
+        "member_node_offset": 3746,
+        "node": [
+          0,
+          0,
+          59
+        ],
+        "pc": 16
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/daemons/mmd.o"
+  },
+  {
+    "argc_status": "nonnegative",
+    "efun": "sprintf",
+    "function": "convert_to_save_mapping",
+    "function_index": 3,
+    "member_node_offset": 1694,
+    "member_sha256": "ee91ef8f6893d4d44fc3c61d70340cc29fad36efac5715ecda7473ee28c9f054",
+    "mode": "object",
+    "nodes_offset": 1422,
+    "par8_signed": 5,
+    "par8_unsigned": 5,
+    "pc": 68,
+    "segment_kind": "functions",
+    "segment_offset": 1029,
+    "slot": 121,
+    "slot_status": "registered",
+    "snippet": [
+      {
+        "member_node_offset": 1686,
+        "node": [
+          0,
+          0,
+          67
+        ],
+        "pc": 66
+      },
+      {
+        "member_node_offset": 1690,
+        "node": [
+          9,
+          0,
+          64
+        ],
+        "pc": 67
+      },
+      {
+        "member_node_offset": 1694,
+        "node": [
+          121,
+          5,
+          6
+        ],
+        "pc": 68
+      },
+      {
+        "member_node_offset": 1698,
+        "node": [
+          -2,
+          0,
+          57
+        ],
+        "pc": 69
+      },
+      {
+        "member_node_offset": 1702,
+        "node": [
+          -1,
+          0,
+          55
+        ],
+        "pc": 70
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/daemons/data_save/user.o"
+  },
+  {
+    "argc_status": "nonnegative",
+    "efun": "sscanf",
+    "function": "convert_to_save_data",
+    "function_index": 0,
+    "member_node_offset": 4861,
+    "member_sha256": "ee91ef8f6893d4d44fc3c61d70340cc29fad36efac5715ecda7473ee28c9f054",
+    "mode": "object",
+    "nodes_offset": 4649,
+    "par8_signed": 6,
+    "par8_unsigned": 6,
+    "pc": 53,
+    "segment_kind": "functions",
+    "segment_offset": 4276,
+    "slot": 120,
+    "slot_status": "registered",
+    "snippet": [
+      {
+        "member_node_offset": 4853,
+        "node": [
+          9,
+          0,
+          64
+        ],
+        "pc": 51
+      },
+      {
+        "member_node_offset": 4857,
+        "node": [
+          -6,
+          0,
+          55
+        ],
+        "pc": 52
+      },
+      {
+        "member_node_offset": 4861,
+        "node": [
+          120,
+          6,
+          6
+        ],
+        "pc": 53
+      },
+      {
+        "member_node_offset": 4865,
+        "node": [
+          4,
+          0,
+          59
+        ],
+        "pc": 54
+      },
+      {
+        "member_node_offset": 4869,
+        "node": [
+          0,
+          0,
+          42
+        ],
+        "pc": 55
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/daemons/data_save/user.o"
+  },
+  {
+    "argc_status": "nonnegative",
+    "efun": "sprintf",
+    "function": "get_new_file_name",
+    "function_index": 11,
+    "member_node_offset": 17795,
+    "member_sha256": "231579235d7d6aa1c1b2d1f88f5cff3c4416adef9eb75f8ecbabbb8e6561079c",
+    "mode": "object",
+    "nodes_offset": 17635,
+    "par8_signed": 7,
+    "par8_unsigned": 7,
+    "pc": 40,
+    "segment_kind": "functions",
+    "segment_offset": 17486,
+    "slot": 121,
+    "slot_status": "registered",
+    "snippet": [
+      {
+        "member_node_offset": 17787,
+        "node": [
+          0,
+          0,
+          67
+        ],
+        "pc": 38
+      },
+      {
+        "member_node_offset": 17791,
+        "node": [
+          53,
+          0,
+          64
+        ],
+        "pc": 39
+      },
+      {
+        "member_node_offset": 17795,
+        "node": [
+          121,
+          7,
+          6
+        ],
+        "pc": 40
+      },
+      {
+        "member_node_offset": 17799,
+        "node": [
+          0,
+          0,
+          1
+        ],
+        "pc": 41
+      },
+      {
+        "member_node_offset": 17803,
+        "node": [
+          37,
+          0,
+          64
+        ],
+        "pc": 42
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/daemons/sorterrord.o"
+  },
+  {
+    "argc_status": "nonnegative",
+    "efun": "sprintf",
+    "function": "gen_dynamic_key",
+    "function_index": 0,
+    "member_node_offset": 1332,
+    "member_sha256": "3e1f32932ec3b2891c1a54162af683055b991ccec4a711f989bfe6510434c32c",
+    "mode": "object",
+    "nodes_offset": 984,
+    "par8_signed": 8,
+    "par8_unsigned": 8,
+    "pc": 87,
+    "segment_kind": "functions",
+    "segment_offset": 902,
+    "slot": 121,
+    "slot_status": "registered",
+    "snippet": [
+      {
+        "member_node_offset": 1324,
+        "node": [
+          0,
+          0,
+          1
+        ],
+        "pc": 85
+      },
+      {
+        "member_node_offset": 1328,
+        "node": [
+          0,
+          0,
+          64
+        ],
+        "pc": 86
+      },
+      {
+        "member_node_offset": 1332,
+        "node": [
+          121,
+          8,
+          6
+        ],
+        "pc": 87
+      },
+      {
+        "member_node_offset": 1336,
+        "node": [
+          0,
+          0,
+          73
+        ],
+        "pc": 88
+      },
+      {
+        "member_node_offset": 1340,
+        "node": [
+          0,
+          0,
+          46
+        ],
+        "pc": 89
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/daemons/encryptd.o"
+  },
+  {
+    "argc_status": "nonnegative",
+    "efun": "printf",
+    "function": "size_variables",
+    "function_index": 6,
+    "member_node_offset": 4726,
+    "member_sha256": "28ce63ef5211c6e4c00ef2022263b9aef9bd3bc7b41ba4301fdac4d5a7587ec5",
+    "mode": "object",
+    "nodes_offset": 4222,
+    "par8_signed": 9,
+    "par8_unsigned": 9,
+    "pc": 126,
+    "segment_kind": "functions",
+    "segment_offset": 3997,
+    "slot": 90,
+    "slot_status": "registered",
+    "snippet": [
+      {
+        "member_node_offset": 4718,
+        "node": [
+          121,
+          3,
+          6
+        ],
+        "pc": 124
+      },
+      {
+        "member_node_offset": 4722,
+        "node": [
+          16,
+          0,
+          64
+        ],
+        "pc": 125
+      },
+      {
+        "member_node_offset": 4726,
+        "node": [
+          90,
+          9,
+          6
+        ],
+        "pc": 126
+      },
+      {
+        "member_node_offset": 4730,
+        "node": [
+          0,
+          0,
+          51
+        ],
+        "pc": 127
+      },
+      {
+        "member_node_offset": 4734,
+        "node": [
+          -2,
+          0,
+          57
+        ],
+        "pc": 128
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/daemons/statmoduled.o"
+  },
+  {
+    "argc_status": "nonnegative",
+    "efun": "time",
+    "function": "__init__",
+    "function_index": null,
+    "member_node_offset": 29154,
+    "member_sha256": "ec95d04ed883211dbad2f045a3cc6b6767b1e548631b433bb733fd19534e5bc6",
+    "mode": "object",
+    "nodes_offset": 29154,
+    "par8_signed": 0,
+    "par8_unsigned": 0,
+    "pc": 0,
+    "segment_kind": "init",
+    "segment_offset": 29086,
+    "slot": 137,
+    "slot_status": "registered",
+    "snippet": [
+      {
+        "member_node_offset": 29154,
+        "node": [
+          137,
+          0,
+          6
+        ],
+        "pc": 0
+      },
+      {
+        "member_node_offset": 29158,
+        "node": [
+          10,
+          0,
+          59
+        ],
+        "pc": 1
+      },
+      {
+        "member_node_offset": 29162,
+        "node": [
+          0,
+          0,
+          38
+        ],
+        "pc": 2
+      }
+    ],
+    "source": "ccs/pack_data/lib_ccs32.pak/daemons/rpcd.o"
+  },
+  {
+    "argc_status": "nonnegative",
+    "efun": "mysql_bind_parameters",
+    "function": "__init__",
+    "function_index": null,
+    "member_node_offset": 17515,
+    "member_sha256": "9dd8fc291aef86714f55e79ec7c58496e8704f9b7344539bc7fe059893bf23dc",
+    "mode": "object",
+    "nodes_offset": 17423,
+    "par8_signed": 11,
+    "par8_unsigned": 11,
+    "pc": 23,
+    "segment_kind": "init",
+    "segment_offset": 17295,
+    "slot": 447,
+    "slot_status": "registered",
+    "snippet": [
+      {
+        "member_node_offset": 17507,
+        "node": [
+          63,
+          0,
+          64
+        ],
+        "pc": 21
+      },
+      {
+        "member_node_offset": 17511,
+        "node": [
+          64,
+          0,
+          64
+        ],
+        "pc": 22
+      },
+      {
+        "member_node_offset": 17515,
+        "node": [
+          447,
+          11,
+          6
+        ],
+        "pc": 23
+      },
+      {
+        "member_node_offset": 17519,
+        "node": [
+          3,
+          0,
+          62
+        ],
+        "pc": 24
+      },
+      {
+        "member_node_offset": 17523,
+        "node": [
+          0,
+          0,
+          3
+        ],
+        "pc": 25
+      }
+    ],
+    "source": "dba/pack_data/lib_dba32.pak/dba/daemons/peel_datad.o"
+  },
+  {
+    "argc_status": "nonnegative",
+    "efun": "keys",
+    "function": "__init__",
+    "function_index": null,
+    "member_node_offset": 6048,
+    "member_sha256": "40cd97a597a74f913dcd65896880074bc085a48af31b4630e4de65e163459949",
+    "mode": "object",
+    "nodes_offset": 5984,
+    "par8_signed": 1,
+    "par8_unsigned": 1,
+    "pc": 16,
+    "segment_kind": "init",
+    "segment_offset": 5884,
+    "slot": 78,
+    "slot_status": "registered",
+    "snippet": [
+      {
+        "member_node_offset": 6040,
+        "node": [
+          0,
+          0,
+          51
+        ],
+        "pc": 14
+      },
+      {
+        "member_node_offset": 6044,
+        "node": [
+          1,
+          0,
+          61
+        ],
+        "pc": 15
+      },
+      {
+        "member_node_offset": 6048,
+        "node": [
+          78,
+          1,
+          6
+        ],
+        "pc": 16
+      },
+      {
+        "member_node_offset": 6052,
+        "node": [
+          2,
+          0,
+          62
+        ],
+        "pc": 17
+      },
+      {
+        "member_node_offset": 6056,
+        "node": [
+          0,
+          0,
+          3
+        ],
+        "pc": 18
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/daemons/server/cmd_l_request_coupon.o"
+  },
+  {
+    "argc_status": "nonnegative",
+    "efun": "sprintf",
+    "function": "__init__",
+    "function_index": null,
+    "member_node_offset": 74581,
+    "member_sha256": "3d92f6b7c6e9d8bee6f55f934b28055bee0290f8dadfb093ab4bf63c4ba6e34c",
+    "mode": "object",
+    "nodes_offset": 74361,
+    "par8_signed": 2,
+    "par8_unsigned": 2,
+    "pc": 55,
+    "segment_kind": "init",
+    "segment_offset": 74056,
+    "slot": 121,
+    "slot_status": "registered",
+    "snippet": [
+      {
+        "member_node_offset": 74573,
+        "node": [
+          121,
+          3,
+          6
+        ],
+        "pc": 53
+      },
+      {
+        "member_node_offset": 74577,
+        "node": [
+          229,
+          0,
+          64
+        ],
+        "pc": 54
+      },
+      {
+        "member_node_offset": 74581,
+        "node": [
+          121,
+          2,
+          6
+        ],
+        "pc": 55
+      },
+      {
+        "member_node_offset": 74585,
+        "node": [
+          0,
+          0,
+          60
+        ],
+        "pc": 56
+      },
+      {
+        "member_node_offset": 74589,
+        "node": [
+          102,
+          0,
+          64
+        ],
+        "pc": 57
+      }
+    ],
+    "source": "ccs/pack_data/lib_ccs32.pak/ccs/daemons/cross_server/shidao_dahui.o"
+  },
+  {
+    "argc_status": "nonnegative",
+    "efun": "read_ini",
+    "function": "__init__",
+    "function_index": null,
+    "member_node_offset": 23759,
+    "member_sha256": "ea1390a059039b69034d237130d1d11c10702819932e447c1a23b5ad74a1a953",
+    "mode": "object",
+    "nodes_offset": 23743,
+    "par8_signed": 3,
+    "par8_unsigned": 3,
+    "pc": 4,
+    "segment_kind": "init",
+    "segment_offset": 23627,
+    "slot": 95,
+    "slot_status": "registered",
+    "snippet": [
+      {
+        "member_node_offset": 23751,
+        "node": [
+          65,
+          0,
+          64
+        ],
+        "pc": 2
+      },
+      {
+        "member_node_offset": 23755,
+        "node": [
+          29,
+          0,
+          64
+        ],
+        "pc": 3
+      },
+      {
+        "member_node_offset": 23759,
+        "node": [
+          95,
+          3,
+          6
+        ],
+        "pc": 4
+      },
+      {
+        "member_node_offset": 23763,
+        "node": [
+          5,
+          1,
+          6
+        ],
+        "pc": 5
+      },
+      {
+        "member_node_offset": 23767,
+        "node": [
+          1,
+          0,
+          62
+        ],
+        "pc": 6
+      }
+    ],
+    "source": "ccs/pack_data/lib_ccs32.pak/ccs/daemons/pollingd.o"
+  },
+  {
+    "argc_status": "nonnegative",
+    "efun": "sprintf",
+    "function": "__init__",
+    "function_index": null,
+    "member_node_offset": 120916,
+    "member_sha256": "f8109ca43d23670a0abe76426c674db11ae5fe14b531f9ef431bd1885f5f6972",
+    "mode": "object",
+    "nodes_offset": 116860,
+    "par8_signed": 4,
+    "par8_unsigned": 4,
+    "pc": 1014,
+    "segment_kind": "init",
+    "segment_offset": 115770,
+    "slot": 121,
+    "slot_status": "registered",
+    "snippet": [
+      {
+        "member_node_offset": 120908,
+        "node": [
+          264,
+          0,
+          60
+        ],
+        "pc": 1012
+      },
+      {
+        "member_node_offset": 120912,
+        "node": [
+          514,
+          0,
+          64
+        ],
+        "pc": 1013
+      },
+      {
+        "member_node_offset": 120916,
+        "node": [
+          121,
+          4,
+          6
+        ],
+        "pc": 1014
+      },
+      {
+        "member_node_offset": 120920,
+        "node": [
+          74,
+          0,
+          64
+        ],
+        "pc": 1015
+      },
+      {
+        "member_node_offset": 120924,
+        "node": [
+          2,
+          0,
+          24
+        ],
+        "pc": 1016
+      }
+    ],
+    "source": "gs/pack_data/lib_gs32.pak/gs/daemons/tasks/2016/national_day/zhongzhou_cifu.o"
+  },
+  {
+    "argc_status": "nonnegative",
+    "efun": "make16",
+    "function": "__init__",
+    "function_index": null,
+    "member_node_offset": 32100,
+    "member_sha256": "2e9198a65a50428f5539b9c2940eef81d4257f1bac5586f49c9d6aef4de1f9a7",
+    "mode": "object",
+    "nodes_offset": 32056,
+    "par8_signed": 5,
+    "par8_unsigned": 5,
+    "pc": 11,
+    "segment_kind": "init",
+    "segment_offset": 31916,
+    "slot": 519,
+    "slot_status": "registered",
+    "snippet": [
+      {
+        "member_node_offset": 32092,
+        "node": [
+          4485,
+          0,
+          59
+        ],
+        "pc": 9
+      },
+      {
+        "member_node_offset": 32096,
+        "node": [
+          2,
+          0,
+          59
+        ],
+        "pc": 10
+      },
+      {
+        "member_node_offset": 32100,
+        "node": [
+          519,
+          5,
+          6
+        ],
+        "pc": 11
+      },
+      {
+        "member_node_offset": 32104,
+        "node": [
+          1,
+          0,
+          59
+        ],
+        "pc": 12
+      },
+      {
+        "member_node_offset": 32108,
+        "node": [
+          150,
+          0,
+          59
+        ],
+        "pc": 13
+      }
+    ],
+    "source": "gs/pack_data/lib_gs32.pak/gs/daemons/asktaotaotaod.o"
+  }
+]

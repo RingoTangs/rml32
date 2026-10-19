@@ -1,0 +1,5592 @@
+[
+  {
+    "call_sites": 723,
+    "index": "0",
+    "name": "allocate_array",
+    "native_address": "0x80d58b4",
+    "native_name": "vm_f_allocate_array",
+    "record": "0x83d01a0",
+    "return_type": "6",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 468,
+    "index": "1",
+    "name": "allocate_buffer",
+    "native_address": "0x80d444c",
+    "native_name": "vm_f_allocate_buffer",
+    "record": "0x83d01bc",
+    "return_type": "5",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 52,
+    "index": "2",
+    "name": "allocate_mapping",
+    "native_address": "0x80d44c4",
+    "native_name": "vm_f_allocate_mapping",
+    "record": "0x83d01d8",
+    "return_type": "7",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 396,
+    "index": "3",
+    "name": "abs",
+    "native_address": "0x80d453c",
+    "native_name": "vm_f_abs",
+    "record": "0x83d01f4",
+    "return_type": "255",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 40,
+    "index": "4",
+    "name": "atof",
+    "native_address": "0x80d45f4",
+    "native_name": "vm_f_atof",
+    "record": "0x83d0210",
+    "return_type": "3",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 1253,
+    "index": "5",
+    "name": "atoi",
+    "native_address": "0x80d46d8",
+    "native_name": "vm_f_atoi",
+    "record": "0x83d022c",
+    "return_type": "2",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 33,
+    "index": "6",
+    "name": "atoinet",
+    "native_address": "0x80d4800",
+    "native_name": "vm_f_atoinet",
+    "record": "0x83d0248",
+    "return_type": "2",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "7",
+    "name": "atomac",
+    "native_address": "0x80d497c",
+    "native_name": "vm_f_atomac",
+    "record": "0x83d0264",
+    "return_type": "5",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 6,
+    "index": "8",
+    "name": "bind_parameters",
+    "native_address": "0x80df374",
+    "native_name": "vm_f_bind_parameters",
+    "record": "0x83d0280",
+    "return_type": "4",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 2,
+    "index": "9",
+    "name": "bind_parameters_arr",
+    "native_address": "0x80df310",
+    "native_name": "vm_f_bind_parameters_arr",
+    "record": "0x83d029c",
+    "return_type": "4",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 110,
+    "index": "10",
+    "name": "broadcast",
+    "native_address": "0x80dc4f8",
+    "native_name": "vm_f_broadcast",
+    "record": "0x83d02b8",
+    "return_type": "2",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "11",
+    "name": "change_pconfig",
+    "native_address": "0x80d4bd0",
+    "native_name": "vm_f_change_pconfig",
+    "record": "0x83d02d4",
+    "return_type": "1",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 2099,
+    "index": "12",
+    "name": "clean_array",
+    "native_address": "0x80d4c34",
+    "native_name": "vm_f_clean_array",
+    "record": "0x83d02f0",
+    "return_type": "255",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 105,
+    "index": "13",
+    "name": "clean_mapping_by_key",
+    "native_address": "0x80d4d18",
+    "native_name": "vm_f_clean_mapping_by_key",
+    "record": "0x83d030c",
+    "return_type": "7",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 276,
+    "index": "14",
+    "name": "clean_mapping_by_value",
+    "native_address": "0x80d4dfc",
+    "native_name": "vm_f_clean_mapping_by_value",
+    "record": "0x83d0328",
+    "return_type": "7",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "15",
+    "name": "clear_env",
+    "native_address": "0x80d4ee0",
+    "native_name": "vm_f_clear_env",
+    "record": "0x83d0344",
+    "return_type": "1",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 28,
+    "index": "16",
+    "name": "close_telnet",
+    "native_address": "0x80d4efc",
+    "native_name": "vm_f_close_telnet",
+    "record": "0x83d0360",
+    "return_type": "1",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 94,
+    "index": "17",
+    "name": "count_total",
+    "native_address": "0x80d5250",
+    "native_name": "vm_f_count_total",
+    "record": "0x83d037c",
+    "return_type": "255",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 1069,
+    "index": "18",
+    "name": "ctime",
+    "native_address": "0x80d4f68",
+    "native_name": "vm_f_ctime",
+    "record": "0x83d0398",
+    "return_type": "4",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "19",
+    "name": "create_io_buffer",
+    "native_address": "0x80d5124",
+    "native_name": "vm_f_create_io_buffer",
+    "record": "0x83d03b4",
+    "return_type": "2",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 21,
+    "index": "20",
+    "name": "defined",
+    "native_address": "0x80d51f4",
+    "native_name": "vm_f_defined",
+    "record": "0x83d03d0",
+    "return_type": "2",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "21",
+    "name": "delete_io_buffer",
+    "native_address": "0x80d5498",
+    "native_name": "vm_f_delete_io_buffer",
+    "record": "0x83d03ec",
+    "return_type": "2",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 42,
+    "index": "22",
+    "name": "expand_macro",
+    "native_address": "0x80d5598",
+    "native_name": "vm_f_expand_macro",
+    "record": "0x83d0408",
+    "return_type": "255",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 2212,
+    "index": "23",
+    "name": "dup",
+    "native_address": "0x80d588c",
+    "native_name": "vm_f_dup",
+    "record": "0x83d0424",
+    "return_type": "255",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "24",
+    "name": "dump_memory",
+    "native_address": "0x80d5700",
+    "native_name": "vm_f_dump_memory",
+    "record": "0x83d0440",
+    "return_type": "5",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "25",
+    "name": "empty_value",
+    "native_address": "0x80d5a64",
+    "native_name": "vm_f_empty_value",
+    "record": "0x83d045c",
+    "return_type": "1",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "26",
+    "name": "enable_jit",
+    "native_address": "0x80d5b08",
+    "native_name": "vm_f_enable_jit",
+    "record": "0x83d0478",
+    "return_type": "2",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 5,
+    "index": "27",
+    "name": "enable_trace",
+    "native_address": "0x80d5b90",
+    "native_name": "vm_f_enable_trace",
+    "record": "0x83d0494",
+    "return_type": "2",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 1903,
+    "index": "28",
+    "name": "error",
+    "native_address": "0x80dc4a8",
+    "native_name": "vm_f_error",
+    "record": "0x83d04b0",
+    "return_type": "1",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "29",
+    "name": "exit",
+    "native_address": "0x80d5c4c",
+    "native_name": "vm_f_exit",
+    "record": "0x83d04cc",
+    "return_type": "1",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 530,
+    "index": "30",
+    "name": "explode",
+    "native_address": "0x80d5c68",
+    "native_name": "vm_f_explode",
+    "record": "0x83d04e8",
+    "return_type": "6",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 11,
+    "index": "31",
+    "name": "express_add",
+    "native_address": "0x80d5fd4",
+    "native_name": "vm_f_express_add",
+    "record": "0x83d0504",
+    "return_type": "255",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 18,
+    "index": "32",
+    "name": "express_delete",
+    "native_address": "0x80d6074",
+    "native_name": "vm_f_express_delete",
+    "record": "0x83d0520",
+    "return_type": "2",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 97,
+    "index": "33",
+    "name": "express_query",
+    "native_address": "0x80d6124",
+    "native_name": "vm_f_express_query",
+    "record": "0x83d053c",
+    "return_type": "255",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 32,
+    "index": "34",
+    "name": "express_set",
+    "native_address": "0x80d61bc",
+    "native_name": "vm_f_express_set",
+    "record": "0x83d0558",
+    "return_type": "255",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 18,
+    "index": "35",
+    "name": "find_function",
+    "native_address": "0x80d626c",
+    "native_name": "vm_f_find_function",
+    "record": "0x83d0574",
+    "return_type": "255",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 1240,
+    "index": "36",
+    "name": "find_function_arg",
+    "native_address": "0x80d62d4",
+    "native_name": "vm_f_find_function_arg",
+    "record": "0x83d0590",
+    "return_type": "255",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "37",
+    "name": "get_all_io_buffers_info",
+    "native_address": "0x80d635c",
+    "native_name": "vm_f_get_all_io_buffers_info",
+    "record": "0x83d05ac",
+    "return_type": "6",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "38",
+    "name": "get_args",
+    "native_address": "0x80d6418",
+    "native_name": "vm_f_get_args",
+    "record": "0x83d05c8",
+    "return_type": "6",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "39",
+    "name": "get_bits",
+    "native_address": "0x80d64c0",
+    "native_name": "vm_f_get_bits",
+    "record": "0x83d05e4",
+    "return_type": "1",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "40",
+    "name": "get_first_data",
+    "native_address": "0x80d64d4",
+    "native_name": "vm_f_get_first_data",
+    "record": "0x83d0600",
+    "return_type": "255",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "41",
+    "name": "get_function_info",
+    "native_address": "0x80d6570",
+    "native_name": "vm_f_get_function_info",
+    "record": "0x83d061c",
+    "return_type": "255",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 11,
+    "index": "42",
+    "name": "get_function_owner",
+    "native_address": "0x80d6724",
+    "native_name": "vm_f_get_function_owner",
+    "record": "0x83d0638",
+    "return_type": "255",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "43",
+    "name": "get_io_buffer",
+    "native_address": "0x80d67b4",
+    "native_name": "vm_f_get_io_buffer",
+    "record": "0x83d0654",
+    "return_type": "255",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "44",
+    "name": "get_pconfig",
+    "native_address": "0x80d68bc",
+    "native_name": "vm_f_get_pconfig",
+    "record": "0x83d0670",
+    "return_type": "2",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "45",
+    "name": "get_pointer",
+    "native_address": "0x80d6918",
+    "native_name": "vm_f_get_pointer",
+    "record": "0x83d068c",
+    "return_type": "2",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "46",
+    "name": "get_prompt",
+    "native_address": "0x80d6a00",
+    "native_name": "vm_f_get_prompt",
+    "record": "0x83d06a8",
+    "return_type": "4",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "47",
+    "name": "get_ref_counter",
+    "native_address": "0x80d6a48",
+    "native_name": "vm_f_get_ref_counter",
+    "record": "0x83d06c4",
+    "return_type": "2",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "48",
+    "name": "get_string_stat",
+    "native_address": "0x80d6acc",
+    "native_name": "vm_f_get_string_stat",
+    "record": "0x83d06e0",
+    "return_type": "7",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "49",
+    "name": "get_system_id",
+    "native_address": "0x80d6b38",
+    "native_name": "vm_f_get_system_id",
+    "record": "0x83d06fc",
+    "return_type": "2",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 39,
+    "index": "50",
+    "name": "get_system_info",
+    "native_address": "0x80d6b88",
+    "native_name": "vm_f_get_system_info",
+    "record": "0x83d0718",
+    "return_type": "7",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "51",
+    "name": "get_telnet_info",
+    "native_address": "0x80debe0",
+    "native_name": "vm_f_get_telnet_info",
+    "record": "0x83d0734",
+    "return_type": "255",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 1,
+    "index": "52",
+    "name": "get_var",
+    "native_address": "0x80d7194",
+    "native_name": "vm_f_get_var",
+    "record": "0x83d0750",
+    "return_type": "255",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "53",
+    "name": "hash",
+    "native_address": "0x80d7204",
+    "native_name": "vm_f_hash",
+    "record": "0x83d076c",
+    "return_type": "2",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 2054,
+    "index": "54",
+    "name": "implode",
+    "native_address": "0x80d72dc",
+    "native_name": "vm_f_implode",
+    "record": "0x83d0788",
+    "return_type": "4",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 6,
+    "index": "55",
+    "name": "inettoa",
+    "native_address": "0x80d750c",
+    "native_name": "vm_f_inettoa",
+    "record": "0x83d07a4",
+    "return_type": "4",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 13,
+    "index": "56",
+    "name": "info",
+    "native_address": "0x80d7578",
+    "native_name": "vm_f_info",
+    "record": "0x83d07c0",
+    "return_type": "255",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 20,
+    "index": "57",
+    "name": "input_string",
+    "native_address": "0x80d798c",
+    "native_name": "vm_f_input_string",
+    "record": "0x83d07dc",
+    "return_type": "255",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 30,
+    "index": "58",
+    "name": "int32",
+    "native_address": "0x80d7b5c",
+    "native_name": "vm_f_int32",
+    "record": "0x83d07f8",
+    "return_type": "2",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 21,
+    "index": "59",
+    "name": "isalpha",
+    "native_address": "0x80d7b9c",
+    "native_name": "vm_f_isalpha",
+    "record": "0x83d0814",
+    "return_type": "2",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 26,
+    "index": "60",
+    "name": "ischinese",
+    "native_address": "0x80d7c04",
+    "native_name": "vm_f_ischinese",
+    "record": "0x83d0830",
+    "return_type": "2",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 16,
+    "index": "61",
+    "name": "isdigit",
+    "native_address": "0x80d7c64",
+    "native_name": "vm_f_isdigit",
+    "record": "0x83d084c",
+    "return_type": "2",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "62",
+    "name": "islower",
+    "native_address": "0x80d7ccc",
+    "native_name": "vm_f_islower",
+    "record": "0x83d0868",
+    "return_type": "2",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 5,
+    "index": "63",
+    "name": "isupper",
+    "native_address": "0x80d7d34",
+    "native_name": "vm_f_isupper",
+    "record": "0x83d0884",
+    "return_type": "2",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 14,
+    "index": "64",
+    "name": "isxdigit",
+    "native_address": "0x80d7d9c",
+    "native_name": "vm_f_isxdigit",
+    "record": "0x83d08a0",
+    "return_type": "2",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "65",
+    "name": "is_array",
+    "native_address": "0x80d7e04",
+    "native_name": "vm_f_is_array",
+    "record": "0x83d08bc",
+    "return_type": "2",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "66",
+    "name": "is_buffer",
+    "native_address": "0x80d7e54",
+    "native_name": "vm_f_is_buffer",
+    "record": "0x83d08d8",
+    "return_type": "2",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 14,
+    "index": "67",
+    "name": "is_compiling",
+    "native_address": "0x80d7ea4",
+    "native_name": "vm_f_is_compiling",
+    "record": "0x83d08f4",
+    "return_type": "2",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "68",
+    "name": "is_int",
+    "native_address": "0x80d7ee8",
+    "native_name": "vm_f_is_int",
+    "record": "0x83d0910",
+    "return_type": "2",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "69",
+    "name": "is_function",
+    "native_address": "0x80d7f38",
+    "native_name": "vm_f_is_function",
+    "record": "0x83d092c",
+    "return_type": "2",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "70",
+    "name": "is_mapping",
+    "native_address": "0x80d7f88",
+    "native_name": "vm_f_is_mapping",
+    "record": "0x83d0948",
+    "return_type": "2",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "71",
+    "name": "is_object",
+    "native_address": "0x80d7fd8",
+    "native_name": "vm_f_is_object",
+    "record": "0x83d0964",
+    "return_type": "2",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "72",
+    "name": "is_real",
+    "native_address": "0x80d804c",
+    "native_name": "vm_f_is_real",
+    "record": "0x83d0980",
+    "return_type": "2",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "73",
+    "name": "is_string",
+    "native_address": "0x80d809c",
+    "native_name": "vm_f_is_string",
+    "record": "0x83d099c",
+    "return_type": "2",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "74",
+    "name": "is_undefined",
+    "native_address": "0x80d80ec",
+    "native_name": "vm_f_is_undefined",
+    "record": "0x83d09b8",
+    "return_type": "2",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "75",
+    "name": "is_void",
+    "native_address": "0x80d813c",
+    "native_name": "vm_f_is_void",
+    "record": "0x83d09d4",
+    "return_type": "2",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 481,
+    "index": "76",
+    "name": "local_time",
+    "native_address": "0x80d818c",
+    "native_name": "vm_f_local_time",
+    "record": "0x83d09f0",
+    "return_type": "255",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 132,
+    "index": "77",
+    "name": "log_file",
+    "native_address": "0x80d8318",
+    "native_name": "vm_f_log_file",
+    "record": "0x83d0a0c",
+    "return_type": "2",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 3943,
+    "index": "78",
+    "name": "keys",
+    "native_address": "0x80d84ac",
+    "native_name": "vm_f_keys",
+    "record": "0x83d0a28",
+    "return_type": "6",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 17,
+    "index": "79",
+    "name": "map_add_values",
+    "native_address": "0x80d84f8",
+    "native_name": "vm_f_map_add_values",
+    "record": "0x83d0a44",
+    "return_type": "7",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 3594,
+    "index": "80",
+    "name": "map_delete",
+    "native_address": "0x80d8568",
+    "native_name": "vm_f_map_delete",
+    "record": "0x83d0a60",
+    "return_type": "1",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 22,
+    "index": "81",
+    "name": "mapping_array",
+    "native_address": "0x80d876c",
+    "native_name": "vm_f_mapping_array",
+    "record": "0x83d0a7c",
+    "return_type": "6",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 1372,
+    "index": "82",
+    "name": "maximum",
+    "native_address": "0x80deea4",
+    "native_name": "vm_f_maximum",
+    "record": "0x83d0a98",
+    "return_type": "255",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 2615,
+    "index": "83",
+    "name": "member_array",
+    "native_address": "0x80d895c",
+    "native_name": "vm_f_member_array",
+    "record": "0x83d0ab4",
+    "return_type": "2",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 1887,
+    "index": "84",
+    "name": "minimum",
+    "native_address": "0x80deda4",
+    "native_name": "vm_f_minimum",
+    "record": "0x83d0ad0",
+    "return_type": "255",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 202,
+    "index": "85",
+    "name": "mktime",
+    "native_address": "0x80d8a08",
+    "native_name": "vm_f_mktime",
+    "record": "0x83d0aec",
+    "return_type": "2",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "86",
+    "name": "modify_memory",
+    "native_address": "0x80d8af4",
+    "native_name": "vm_f_modify_memory",
+    "record": "0x83d0b08",
+    "return_type": "1",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "87",
+    "name": "padd",
+    "native_address": "0x80d8d98",
+    "native_name": "vm_f_padd",
+    "record": "0x83d0b24",
+    "return_type": "255",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "88",
+    "name": "pcmp",
+    "native_address": "0x80d91b0",
+    "native_name": "vm_f_pcmp",
+    "record": "0x83d0b40",
+    "return_type": "255",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "89",
+    "name": "peek_io_buffer",
+    "native_address": "0x80d9434",
+    "native_name": "vm_f_peek_io_buffer",
+    "record": "0x83d0b5c",
+    "return_type": "255",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 1453,
+    "index": "90",
+    "name": "printf",
+    "native_address": "0x80dd850",
+    "native_name": "vm_f_printf",
+    "record": "0x83d0b78",
+    "return_type": "1",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "91",
+    "name": "psub",
+    "native_address": "0x80d95a8",
+    "native_name": "vm_f_psub",
+    "record": "0x83d0b94",
+    "return_type": "255",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "92",
+    "name": "psum",
+    "native_address": "0x80d99b8",
+    "native_name": "vm_f_psum",
+    "record": "0x83d0bb0",
+    "return_type": "2",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 31,
+    "index": "93",
+    "name": "put_sub_data",
+    "native_address": "0x80d9b64",
+    "native_name": "vm_f_put_sub_data",
+    "record": "0x83d0bcc",
+    "return_type": "1",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 14887,
+    "index": "94",
+    "name": "random",
+    "native_address": "0x80d9d9c",
+    "native_name": "vm_f_random",
+    "record": "0x83d0be8",
+    "return_type": "2",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 156,
+    "index": "95",
+    "name": "read_ini",
+    "native_address": "0x80d9ebc",
+    "native_name": "vm_f_read_ini",
+    "record": "0x83d0c04",
+    "return_type": "4",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 5,
+    "index": "96",
+    "name": "read_whole_ini",
+    "native_address": "0x80d9f5c",
+    "native_name": "vm_f_read_whole_ini",
+    "record": "0x83d0c20",
+    "return_type": "7",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 22,
+    "index": "97",
+    "name": "regexp",
+    "native_address": "0x80da25c",
+    "native_name": "vm_f_regexp",
+    "record": "0x83d0c3c",
+    "return_type": "255",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "98",
+    "name": "remove_escape",
+    "native_address": "0x80da478",
+    "native_name": "vm_f_remove_escape",
+    "record": "0x83d0c58",
+    "return_type": "4",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 626,
+    "index": "99",
+    "name": "replace_string",
+    "native_address": "0x80da530",
+    "native_name": "vm_f_replace_string",
+    "record": "0x83d0c74",
+    "return_type": "4",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 1442,
+    "index": "100",
+    "name": "restore_value",
+    "native_address": "0x80dae84",
+    "native_name": "vm_f_restore_value",
+    "record": "0x83d0c90",
+    "return_type": "255",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 20,
+    "index": "101",
+    "name": "save_buffer",
+    "native_address": "0x80dafe4",
+    "native_name": "vm_f_save_buffer",
+    "record": "0x83d0cac",
+    "return_type": "5",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 6190,
+    "index": "102",
+    "name": "save_string",
+    "native_address": "0x80db0d0",
+    "native_name": "vm_f_save_string",
+    "record": "0x83d0cc8",
+    "return_type": "4",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 4,
+    "index": "103",
+    "name": "set_bits",
+    "native_address": "0x80db1bc",
+    "native_name": "vm_f_set_bits",
+    "record": "0x83d0ce4",
+    "return_type": "1",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "104",
+    "name": "set_broadcast",
+    "native_address": "0x80db4c4",
+    "native_name": "vm_f_set_broadcast",
+    "record": "0x83d0d00",
+    "return_type": "2",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 31,
+    "index": "105",
+    "name": "set_case_check",
+    "native_address": "0x80db520",
+    "native_name": "vm_f_set_case_check",
+    "record": "0x83d0d1c",
+    "return_type": "7",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 3,
+    "index": "106",
+    "name": "set_driver_caption",
+    "native_address": "0x80db5e4",
+    "native_name": "vm_f_set_driver_caption",
+    "record": "0x83d0d38",
+    "return_type": "1",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "107",
+    "name": "set_echo_input",
+    "native_address": "0x80db64c",
+    "native_name": "vm_f_set_echo_input",
+    "record": "0x83d0d54",
+    "return_type": "2",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 5,
+    "index": "108",
+    "name": "set_log_file",
+    "native_address": "0x80db6dc",
+    "native_name": "vm_f_set_log_file",
+    "record": "0x83d0d70",
+    "return_type": "2",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 5,
+    "index": "109",
+    "name": "set_log_on",
+    "native_address": "0x80db7a4",
+    "native_name": "vm_f_set_log_on",
+    "record": "0x83d0d8c",
+    "return_type": "2",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "110",
+    "name": "set_stdout",
+    "native_address": "0x80db80c",
+    "native_name": "vm_f_set_stdout",
+    "record": "0x83d0da8",
+    "return_type": "2",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "111",
+    "name": "set_prompt",
+    "native_address": "0x80db8d4",
+    "native_name": "vm_f_set_prompt",
+    "record": "0x83d0dc4",
+    "return_type": "4",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "112",
+    "name": "set_trace_level",
+    "native_address": "0x80db948",
+    "native_name": "vm_f_set_trace_level",
+    "record": "0x83d0de0",
+    "return_type": "2",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "113",
+    "name": "set_var",
+    "native_address": "0x80db950",
+    "native_name": "vm_f_set_var",
+    "record": "0x83d0dfc",
+    "return_type": "2",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 5,
+    "index": "114",
+    "name": "shift_time",
+    "native_address": "0x80dba40",
+    "native_name": "vm_f_shift_time",
+    "record": "0x83d0e18",
+    "return_type": "2",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 18,
+    "index": "115",
+    "name": "shutdown",
+    "native_address": "0x80dbab0",
+    "native_name": "vm_f_shutdown",
+    "record": "0x83d0e34",
+    "return_type": "1",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 10,
+    "index": "116",
+    "name": "sig",
+    "native_address": "0x80dbb18",
+    "native_name": "vm_f_sig",
+    "record": "0x83d0e50",
+    "return_type": "2",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 11,
+    "index": "117",
+    "name": "similar_keys",
+    "native_address": "0x80dbc00",
+    "native_name": "vm_f_similar_keys",
+    "record": "0x83d0e6c",
+    "return_type": "255",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "118",
+    "name": "sizeof",
+    "native_address": "0x80dbcec",
+    "native_name": "vm_f_sizeof",
+    "record": "0x83d0e88",
+    "return_type": "2",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 823,
+    "index": "119",
+    "name": "sort",
+    "native_address": "0x80dbf4c",
+    "native_name": "vm_f_sort",
+    "record": "0x83d0ea4",
+    "return_type": "6",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 1269,
+    "index": "120",
+    "name": "sscanf",
+    "native_address": "0x80dc298",
+    "native_name": "vm_f_sscanf",
+    "record": "0x83d0ec0",
+    "return_type": "2",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 32308,
+    "index": "121",
+    "name": "sprintf",
+    "native_address": "0x80dc3cc",
+    "native_name": "vm_f_sprintf",
+    "record": "0x83d0edc",
+    "return_type": "4",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 1241,
+    "index": "122",
+    "name": "strlen",
+    "native_address": "0x80dc738",
+    "native_name": "vm_f_strlen",
+    "record": "0x83d0ef8",
+    "return_type": "2",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 45,
+    "index": "123",
+    "name": "strcmp",
+    "native_address": "0x80dc550",
+    "native_name": "vm_f_strcmp",
+    "record": "0x83d0f14",
+    "return_type": "2",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "124",
+    "name": "strdiff",
+    "native_address": "0x80dc5bc",
+    "native_name": "vm_f_strdiff",
+    "record": "0x83d0f30",
+    "return_type": "2",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 225,
+    "index": "125",
+    "name": "stricmp",
+    "native_address": "0x80dc670",
+    "native_name": "vm_f_stricmp",
+    "record": "0x83d0f4c",
+    "return_type": "2",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 280,
+    "index": "126",
+    "name": "strsrch",
+    "native_address": "0x80dc77c",
+    "native_name": "vm_f_strsrch",
+    "record": "0x83d0f68",
+    "return_type": "2",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 14,
+    "index": "127",
+    "name": "strsrchw",
+    "native_address": "0x80dc8fc",
+    "native_name": "vm_f_strsrchw",
+    "record": "0x83d0f84",
+    "return_type": "2",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 5,
+    "index": "128",
+    "name": "switch_include_dir",
+    "native_address": "0x80dca94",
+    "native_name": "vm_f_switch_include_dir",
+    "record": "0x83d0fa0",
+    "return_type": "1",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "129",
+    "name": "switch_root_dir",
+    "native_address": "0x80dcad8",
+    "native_name": "vm_f_switch_root_dir",
+    "record": "0x83d0fbc",
+    "return_type": "1",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "130",
+    "name": "system",
+    "native_address": "0x80dcb6c",
+    "native_name": "vm_f_system",
+    "record": "0x83d0fd8",
+    "return_type": "2",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "131",
+    "name": "telnet_check_password",
+    "native_address": "0x80dcbe4",
+    "native_name": "vm_f_telnet_check_password",
+    "record": "0x83d0ff4",
+    "return_type": "2",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 20,
+    "index": "132",
+    "name": "telnet_config",
+    "native_address": "0x80dcc54",
+    "native_name": "vm_f_telnet_config",
+    "record": "0x83d1010",
+    "return_type": "1",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "133",
+    "name": "telnet_config_info",
+    "native_address": "0x80dcddc",
+    "native_name": "vm_f_telnet_config_info",
+    "record": "0x83d102c",
+    "return_type": "7",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 5,
+    "index": "134",
+    "name": "telnet_on",
+    "native_address": "0x80dce98",
+    "native_name": "vm_f_telnet_on",
+    "record": "0x83d1048",
+    "return_type": "2",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "135",
+    "name": "telnet_second_password",
+    "native_address": "0x80dcf94",
+    "native_name": "vm_f_telnet_second_password",
+    "record": "0x83d1064",
+    "return_type": "2",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 1651,
+    "index": "136",
+    "name": "tick",
+    "native_address": "0x80dcffc",
+    "native_name": "vm_f_tick",
+    "record": "0x83d1080",
+    "return_type": "2",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 11578,
+    "index": "137",
+    "name": "time",
+    "native_address": "0x80dd030",
+    "native_name": "vm_f_time",
+    "record": "0x83d109c",
+    "return_type": "2",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 47,
+    "index": "138",
+    "name": "toupper",
+    "native_address": "0x80dd230",
+    "native_name": "vm_f_toupper",
+    "record": "0x83d10b8",
+    "return_type": "255",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 274,
+    "index": "139",
+    "name": "tolower",
+    "native_address": "0x80dd2d8",
+    "native_name": "vm_f_tolower",
+    "record": "0x83d10d4",
+    "return_type": "255",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "140",
+    "name": "trace_modules",
+    "native_address": "0x80dd380",
+    "native_name": "vm_f_trace_modules",
+    "record": "0x83d10f0",
+    "return_type": "7",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 443,
+    "index": "141",
+    "name": "trim",
+    "native_address": "0x80dd3a8",
+    "native_name": "vm_f_trim",
+    "record": "0x83d110c",
+    "return_type": "4",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 13,
+    "index": "142",
+    "name": "ucmp",
+    "native_address": "0x80dd580",
+    "native_name": "vm_f_ucmp",
+    "record": "0x83d1128",
+    "return_type": "2",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 7,
+    "index": "143",
+    "name": "uptime",
+    "native_address": "0x80dd5f4",
+    "native_name": "vm_f_uptime",
+    "record": "0x83d1144",
+    "return_type": "2",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "144",
+    "name": "uscounter",
+    "native_address": "0x80dd63c",
+    "native_name": "vm_f_uscounter",
+    "record": "0x83d1160",
+    "return_type": "2",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 1497,
+    "index": "145",
+    "name": "values",
+    "native_address": "0x80dd678",
+    "native_name": "vm_f_values",
+    "record": "0x83d117c",
+    "return_type": "6",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 4,
+    "index": "146",
+    "name": "var_raw_type",
+    "native_address": "0x80dd6c4",
+    "native_name": "vm_f_var_raw_type",
+    "record": "0x83d1198",
+    "return_type": "2",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 38,
+    "index": "147",
+    "name": "var_type",
+    "native_address": "0x80dd70c",
+    "native_name": "vm_f_var_type",
+    "record": "0x83d11b4",
+    "return_type": "4",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "148",
+    "name": "write",
+    "native_address": "0x80dd7c8",
+    "native_name": "vm_f_write",
+    "record": "0x83d11d0",
+    "return_type": "1",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 2,
+    "index": "149",
+    "name": "write_buffer",
+    "native_address": "0x80dd90c",
+    "native_name": "vm_f_write_buffer",
+    "record": "0x83d11ec",
+    "return_type": "2",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 17,
+    "index": "150",
+    "name": "sin",
+    "native_address": "0x80dda74",
+    "native_name": "vm_f_sin",
+    "record": "0x83d1208",
+    "return_type": "3",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 5,
+    "index": "151",
+    "name": "cos",
+    "native_address": "0x80ddb00",
+    "native_name": "vm_f_cos",
+    "record": "0x83d1224",
+    "return_type": "3",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "152",
+    "name": "tan",
+    "native_address": "0x80ddb8c",
+    "native_name": "vm_f_tan",
+    "record": "0x83d1240",
+    "return_type": "3",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "153",
+    "name": "asin",
+    "native_address": "0x80ddc1c",
+    "native_name": "vm_f_asin",
+    "record": "0x83d125c",
+    "return_type": "3",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "154",
+    "name": "acos",
+    "native_address": "0x80ddca8",
+    "native_name": "vm_f_acos",
+    "record": "0x83d1278",
+    "return_type": "3",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 1,
+    "index": "155",
+    "name": "atan",
+    "native_address": "0x80ddd34",
+    "native_name": "vm_f_atan",
+    "record": "0x83d1294",
+    "return_type": "3",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 858,
+    "index": "156",
+    "name": "pow",
+    "native_address": "0x80dddc4",
+    "native_name": "vm_f_pow",
+    "record": "0x83d12b0",
+    "return_type": "3",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 44,
+    "index": "157",
+    "name": "exp",
+    "native_address": "0x80dde88",
+    "native_name": "vm_f_exp",
+    "record": "0x83d12cc",
+    "return_type": "3",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 19,
+    "index": "158",
+    "name": "log",
+    "native_address": "0x80ddfc0",
+    "native_name": "vm_f_log",
+    "record": "0x83d12e8",
+    "return_type": "3",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 214,
+    "index": "159",
+    "name": "ceil",
+    "native_address": "0x80de0f8",
+    "native_name": "vm_f_ceil",
+    "record": "0x83d1304",
+    "return_type": "3",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 46,
+    "index": "160",
+    "name": "floor",
+    "native_address": "0x80de180",
+    "native_name": "vm_f_floor",
+    "record": "0x83d1320",
+    "return_type": "3",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "161",
+    "name": "fabs",
+    "native_address": "0x80de208",
+    "native_name": "vm_f_fabs",
+    "record": "0x83d133c",
+    "return_type": "3",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 2,
+    "index": "162",
+    "name": "fmod",
+    "native_address": "0x80de278",
+    "native_name": "vm_f_fmod",
+    "record": "0x83d1358",
+    "return_type": "3",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "163",
+    "name": "fxn",
+    "native_address": "0x80de3a4",
+    "native_name": "vm_f_fxn",
+    "record": "0x83d1374",
+    "return_type": "3",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 5,
+    "index": "164",
+    "name": "config_driver",
+    "native_address": "0x80de488",
+    "native_name": "vm_f_config_driver",
+    "record": "0x83d1390",
+    "return_type": "255",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "165",
+    "name": "xdebug",
+    "native_address": "0x80de9ec",
+    "native_name": "vm_f_xdebug",
+    "record": "0x83d13ac",
+    "return_type": "255",
+    "table": "efuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "166",
+    "name": "debug_disassemble",
+    "native_address": "0x80fb1b8",
+    "native_name": "vm_f_debug_disassemble",
+    "record": "0x83d2d00",
+    "return_type": "1",
+    "table": "efunsDebug"
+  },
+  {
+    "call_sites": 0,
+    "index": "167",
+    "name": "debug_quick_show_values",
+    "native_address": "0x80fb348",
+    "native_name": "vm_f_debug_quick_show_values",
+    "record": "0x83d2d1c",
+    "return_type": "1",
+    "table": "efunsDebug"
+  },
+  {
+    "call_sites": 0,
+    "index": "168",
+    "name": "debug_command",
+    "native_address": "0x80fb134",
+    "native_name": "vm_f_debug_command",
+    "record": "0x83d2d38",
+    "return_type": "2",
+    "table": "efunsDebug"
+  },
+  {
+    "call_sites": 0,
+    "index": "169",
+    "name": "debug_delete_breakpoint",
+    "native_address": "0x80fb418",
+    "native_name": "vm_f_debug_delete_breakpoint",
+    "record": "0x83d2d54",
+    "return_type": "1",
+    "table": "efunsDebug"
+  },
+  {
+    "call_sites": 0,
+    "index": "170",
+    "name": "debug_get_breakpoint",
+    "native_address": "0x80fb698",
+    "native_name": "vm_f_debug_get_breakpoint",
+    "record": "0x83d2d70",
+    "return_type": "255",
+    "table": "efunsDebug"
+  },
+  {
+    "call_sites": 0,
+    "index": "171",
+    "name": "debug_trap",
+    "native_address": "0x80fb47c",
+    "native_name": "vm_f_debug_trap",
+    "record": "0x83d2d8c",
+    "return_type": "2",
+    "table": "efunsDebug"
+  },
+  {
+    "call_sites": 0,
+    "index": "172",
+    "name": "debug_enter",
+    "native_address": "0x80fb4f0",
+    "native_name": "vm_f_debug_enter",
+    "record": "0x83d2da8",
+    "return_type": "1",
+    "table": "efunsDebug"
+  },
+  {
+    "call_sites": 0,
+    "index": "173",
+    "name": "pp_get_profiling_time",
+    "native_address": "0x80fb794",
+    "native_name": "vm_f_pp_get_profiling_time",
+    "record": "0x83d2de0",
+    "return_type": "2",
+    "table": "efunsPerformanceProfile"
+  },
+  {
+    "call_sites": 5,
+    "index": "174",
+    "name": "pp_get_report",
+    "native_address": "0x80fb7d0",
+    "native_name": "vm_f_pp_get_report",
+    "record": "0x83d2dfc",
+    "return_type": "255",
+    "table": "efunsPerformanceProfile"
+  },
+  {
+    "call_sites": 10,
+    "index": "175",
+    "name": "pp_is_profiling",
+    "native_address": "0x80fb824",
+    "native_name": "vm_f_pp_is_profiling",
+    "record": "0x83d2e18",
+    "return_type": "2",
+    "table": "efunsPerformanceProfile"
+  },
+  {
+    "call_sites": 5,
+    "index": "176",
+    "name": "pp_start_profiling",
+    "native_address": "0x80fb85c",
+    "native_name": "vm_f_pp_start_profiling",
+    "record": "0x83d2e34",
+    "return_type": "2",
+    "table": "efunsPerformanceProfile"
+  },
+  {
+    "call_sites": 5,
+    "index": "177",
+    "name": "pp_stop_profiling",
+    "native_address": "0x80fb928",
+    "native_name": "vm_f_pp_stop_profiling",
+    "record": "0x83d2e50",
+    "return_type": "2",
+    "table": "efunsPerformanceProfile"
+  },
+  {
+    "call_sites": 0,
+    "index": "178",
+    "name": "check_var_closed_loop",
+    "native_address": "0x80f9978",
+    "native_name": "vm_f_check_var_closed_loop",
+    "record": "0x83d2c00",
+    "return_type": "255",
+    "table": "varEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "179",
+    "name": "garbage_collect",
+    "native_address": "0x80f9628",
+    "native_name": "vm_f_garbage_collect",
+    "record": "0x83d2c1c",
+    "return_type": "2",
+    "table": "varEfuns"
+  },
+  {
+    "call_sites": 5,
+    "index": "180",
+    "name": "get_all_global_vars",
+    "native_address": "0x80f96e4",
+    "native_name": "vm_f_get_all_global_vars",
+    "record": "0x83d2c38",
+    "return_type": "7",
+    "table": "varEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "181",
+    "name": "orphan_values",
+    "native_address": "0x80f9a18",
+    "native_name": "vm_f_orphan_values",
+    "record": "0x83d2c54",
+    "return_type": "6",
+    "table": "varEfuns"
+  },
+  {
+    "call_sites": 28,
+    "index": "182",
+    "name": "size_object",
+    "native_address": "0x80fac20",
+    "native_name": "vm_f_size_object",
+    "record": "0x83d2c70",
+    "return_type": "7",
+    "table": "varEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "183",
+    "name": "size_program",
+    "native_address": "0x80fa81c",
+    "native_name": "vm_f_size_program",
+    "record": "0x83d2c8c",
+    "return_type": "7",
+    "table": "varEfuns"
+  },
+  {
+    "call_sites": 10,
+    "index": "184",
+    "name": "size_value",
+    "native_address": "0x80fa32c",
+    "native_name": "vm_f_size_value",
+    "record": "0x83d2ca8",
+    "return_type": "7",
+    "table": "varEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "185",
+    "name": "var_info",
+    "native_address": "0x80f9ab4",
+    "native_name": "vm_f_var_info",
+    "record": "0x83d2cc4",
+    "return_type": "7",
+    "table": "varEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "186",
+    "name": "itable_build",
+    "native_address": "0x80fc308",
+    "native_name": "vm_f_itable_build",
+    "record": "0x83d2ea0",
+    "return_type": "2",
+    "table": "itableEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "187",
+    "name": "itable_fetch_field",
+    "native_address": "0x80fce1c",
+    "native_name": "vm_f_itable_fetch_field",
+    "record": "0x83d2ebc",
+    "return_type": "255",
+    "table": "itableEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "188",
+    "name": "itable_free",
+    "native_address": "0x80fbc2c",
+    "native_name": "vm_f_itable_free",
+    "record": "0x83d2ed8",
+    "return_type": "2",
+    "table": "itableEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "189",
+    "name": "itable_get_info",
+    "native_address": "0x80fd170",
+    "native_name": "vm_f_itable_get_info",
+    "record": "0x83d2ef4",
+    "return_type": "255",
+    "table": "itableEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "190",
+    "name": "itable_load",
+    "native_address": "0x80fbcc8",
+    "native_name": "vm_f_itable_load",
+    "record": "0x83d2f10",
+    "return_type": "2",
+    "table": "itableEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "191",
+    "name": "itable_save",
+    "native_address": "0x80fbbc4",
+    "native_name": "vm_f_itable_save",
+    "record": "0x83d2f2c",
+    "return_type": "5",
+    "table": "itableEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "192",
+    "name": "itree_build",
+    "native_address": "0x80fea84",
+    "native_name": "vm_f_itree_build",
+    "record": "0x83d2f80",
+    "return_type": "2",
+    "table": "itreeEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "193",
+    "name": "itree_fetch_field",
+    "native_address": "0x80fe1b4",
+    "native_name": "vm_f_itree_fetch_field",
+    "record": "0x83d2f9c",
+    "return_type": "255",
+    "table": "itreeEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "194",
+    "name": "itree_free",
+    "native_address": "0x80fe110",
+    "native_name": "vm_f_itree_free",
+    "record": "0x83d2fb8",
+    "return_type": "2",
+    "table": "itreeEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "195",
+    "name": "itree_get_field_child_by_index",
+    "native_address": "0x80fe028",
+    "native_name": "vm_f_itree_get_field_child_by_index",
+    "record": "0x83d2fd4",
+    "return_type": "2",
+    "table": "itreeEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "196",
+    "name": "itree_get_field_child_by_key",
+    "native_address": "0x80fde20",
+    "native_name": "vm_f_itree_get_field_child_by_key",
+    "record": "0x83d2ff0",
+    "return_type": "2",
+    "table": "itreeEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "197",
+    "name": "itree_get_field_keys",
+    "native_address": "0x80ff64c",
+    "native_name": "vm_f_itree_get_field_keys",
+    "record": "0x83d300c",
+    "return_type": "255",
+    "table": "itreeEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "198",
+    "name": "itree_get_field_type",
+    "native_address": "0x80fddc0",
+    "native_name": "vm_f_itree_get_field_type",
+    "record": "0x83d3028",
+    "return_type": "2",
+    "table": "itreeEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "199",
+    "name": "itree_get_field_size",
+    "native_address": "0x80fdd10",
+    "native_name": "vm_f_itree_get_field_size",
+    "record": "0x83d3044",
+    "return_type": "2",
+    "table": "itreeEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "200",
+    "name": "itree_get_field_value",
+    "native_address": "0x80ff5e8",
+    "native_name": "vm_f_itree_get_field_value",
+    "record": "0x83d3060",
+    "return_type": "255",
+    "table": "itreeEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "201",
+    "name": "itree_get_info",
+    "native_address": "0x80ff344",
+    "native_name": "vm_f_itree_get_info",
+    "record": "0x83d307c",
+    "return_type": "255",
+    "table": "itreeEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "202",
+    "name": "itree_get_root_field",
+    "native_address": "0x80fdcbc",
+    "native_name": "vm_f_itree_get_root_field",
+    "record": "0x83d3098",
+    "return_type": "2",
+    "table": "itreeEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "203",
+    "name": "itree_load",
+    "native_address": "0x80fe400",
+    "native_name": "vm_f_itree_load",
+    "record": "0x83d30b4",
+    "return_type": "2",
+    "table": "itreeEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "204",
+    "name": "itree_save",
+    "native_address": "0x80fdc54",
+    "native_name": "vm_f_itree_save",
+    "record": "0x83d30d0",
+    "return_type": "5",
+    "table": "itreeEfuns"
+  },
+  {
+    "call_sites": 6,
+    "index": "205",
+    "name": "bzip_compress",
+    "native_address": "0x80df55c",
+    "native_name": "vm_f_bzip_compress",
+    "record": "0x83d1400",
+    "return_type": "5",
+    "table": "dpEfuns"
+  },
+  {
+    "call_sites": 5,
+    "index": "206",
+    "name": "bzip_decompress",
+    "native_address": "0x80df71c",
+    "native_name": "vm_f_bzip_decompress",
+    "record": "0x83d141c",
+    "return_type": "5",
+    "table": "dpEfuns"
+  },
+  {
+    "call_sites": 21,
+    "index": "207",
+    "name": "lzss_compress",
+    "native_address": "0x80df860",
+    "native_name": "vm_f_lzss_compress",
+    "record": "0x83d1438",
+    "return_type": "5",
+    "table": "dpEfuns"
+  },
+  {
+    "call_sites": 16,
+    "index": "208",
+    "name": "lzss_decompress",
+    "native_address": "0x80df9b4",
+    "native_name": "vm_f_lzss_decompress",
+    "record": "0x83d1454",
+    "return_type": "5",
+    "table": "dpEfuns"
+  },
+  {
+    "call_sites": 4,
+    "index": "209",
+    "name": "std_des",
+    "native_address": "0x80dfabc",
+    "native_name": "vm_f_std_des",
+    "record": "0x83d1470",
+    "return_type": "5",
+    "table": "dpEfuns"
+  },
+  {
+    "call_sites": 49,
+    "index": "210",
+    "name": "des",
+    "native_address": "0x80dff9c",
+    "native_name": "vm_f_des",
+    "record": "0x83d148c",
+    "return_type": "5",
+    "table": "dpEfuns"
+  },
+  {
+    "call_sites": 111,
+    "index": "211",
+    "name": "md5",
+    "native_address": "0x80e0228",
+    "native_name": "vm_f_md5",
+    "record": "0x83d14a8",
+    "return_type": "5",
+    "table": "dpEfuns"
+  },
+  {
+    "call_sites": 10,
+    "index": "212",
+    "name": "rdl",
+    "native_address": "0x80e0314",
+    "native_name": "vm_f_rdl",
+    "record": "0x83d14c4",
+    "return_type": "5",
+    "table": "dpEfuns"
+  },
+  {
+    "call_sites": 30,
+    "index": "213",
+    "name": "create_check_sum",
+    "native_address": "0x80e0664",
+    "native_name": "vm_f_create_check_sum",
+    "record": "0x83d14e0",
+    "return_type": "2",
+    "table": "dpEfuns"
+  },
+  {
+    "call_sites": 15,
+    "index": "214",
+    "name": "atoi64",
+    "native_address": "0x80e0854",
+    "native_name": "vm_f_atoi64",
+    "record": "0x83d14fc",
+    "return_type": "6",
+    "table": "dpEfuns"
+  },
+  {
+    "call_sites": 8,
+    "index": "215",
+    "name": "itoa64",
+    "native_address": "0x80e09ac",
+    "native_name": "vm_f_itoa64",
+    "record": "0x83d1518",
+    "return_type": "4",
+    "table": "dpEfuns"
+  },
+  {
+    "call_sites": 3,
+    "index": "216",
+    "name": "buffer_to_string",
+    "native_address": "0x80e0b28",
+    "native_name": "vm_f_buffer_to_string",
+    "record": "0x83d1534",
+    "return_type": "4",
+    "table": "dpEfuns"
+  },
+  {
+    "call_sites": 6,
+    "index": "217",
+    "name": "string_to_buffer",
+    "native_address": "0x80e0c0c",
+    "native_name": "vm_f_string_to_buffer",
+    "record": "0x83d1550",
+    "return_type": "5",
+    "table": "dpEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "218",
+    "name": "csv_parse",
+    "native_address": "0x80e0cd4",
+    "native_name": "vm_f_csv_parse",
+    "record": "0x83d156c",
+    "return_type": "6",
+    "table": "dpEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "219",
+    "name": "net8",
+    "native_address": "0x80e0fcc",
+    "native_name": "vm_f_net8",
+    "record": "0x83d1588",
+    "return_type": "5",
+    "table": "dpEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "220",
+    "name": "net16",
+    "native_address": "0x80e1078",
+    "native_name": "vm_f_net16",
+    "record": "0x83d15a4",
+    "return_type": "5",
+    "table": "dpEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "221",
+    "name": "net32",
+    "native_address": "0x80e1130",
+    "native_name": "vm_f_net32",
+    "record": "0x83d15c0",
+    "return_type": "5",
+    "table": "dpEfuns"
+  },
+  {
+    "call_sites": 5,
+    "index": "222",
+    "name": "pkt_init_analyser",
+    "native_address": "0x80e11f0",
+    "native_name": "vm_f_pkt_init_analyser",
+    "record": "0x83d15dc",
+    "return_type": "1",
+    "table": "dpEfuns"
+  },
+  {
+    "call_sites": 5,
+    "index": "223",
+    "name": "pkt_destruct_analyser",
+    "native_address": "0x80e1280",
+    "native_name": "vm_f_pkt_destruct_analyser",
+    "record": "0x83d15f8",
+    "return_type": "1",
+    "table": "dpEfuns"
+  },
+  {
+    "call_sites": 5,
+    "index": "224",
+    "name": "pkt_add_def",
+    "native_address": "0x80e12b0",
+    "native_name": "vm_f_pkt_add_def",
+    "record": "0x83d1614",
+    "return_type": "1",
+    "table": "dpEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "225",
+    "name": "pkt_add_field",
+    "native_address": "0x80e1310",
+    "native_name": "vm_f_pkt_add_field",
+    "record": "0x83d1630",
+    "return_type": "1",
+    "table": "dpEfuns"
+  },
+  {
+    "call_sites": 5,
+    "index": "226",
+    "name": "pkt_add_interface",
+    "native_address": "0x80e1388",
+    "native_name": "vm_f_pkt_add_interface",
+    "record": "0x83d164c",
+    "return_type": "1",
+    "table": "dpEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "227",
+    "name": "pkt_remove_def",
+    "native_address": "0x80e1444",
+    "native_name": "vm_f_pkt_remove_def",
+    "record": "0x83d1668",
+    "return_type": "2",
+    "table": "dpEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "228",
+    "name": "pkt_remove_field",
+    "native_address": "0x80e148c",
+    "native_name": "vm_f_pkt_remove_field",
+    "record": "0x83d1684",
+    "return_type": "2",
+    "table": "dpEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "229",
+    "name": "pkt_remove_interface",
+    "native_address": "0x80e1570",
+    "native_name": "vm_f_pkt_remove_interface",
+    "record": "0x83d16a0",
+    "return_type": "2",
+    "table": "dpEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "230",
+    "name": "pkt_analyse",
+    "native_address": "0x80e162c",
+    "native_name": "vm_f_pkt_analyse",
+    "record": "0x83d16bc",
+    "return_type": "255",
+    "table": "dpEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "231",
+    "name": "pkt_get_def",
+    "native_address": "0x80e2218",
+    "native_name": "vm_f_pkt_get_def",
+    "record": "0x83d16d8",
+    "return_type": "255",
+    "table": "dpEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "232",
+    "name": "pkt_get_field",
+    "native_address": "0x80e1e6c",
+    "native_name": "vm_f_pkt_get_field",
+    "record": "0x83d16f4",
+    "return_type": "255",
+    "table": "dpEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "233",
+    "name": "pkt_get_interface",
+    "native_address": "0x80e23c0",
+    "native_name": "vm_f_pkt_get_interface",
+    "record": "0x83d1710",
+    "return_type": "255",
+    "table": "dpEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "234",
+    "name": "pkt_get_interface_name",
+    "native_address": "0x80e1750",
+    "native_name": "vm_f_pkt_get_interface_name",
+    "record": "0x83d172c",
+    "return_type": "255",
+    "table": "dpEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "235",
+    "name": "pkt_get_all_defs",
+    "native_address": "0x80e21b8",
+    "native_name": "vm_f_pkt_get_all_defs",
+    "record": "0x83d1748",
+    "return_type": "6",
+    "table": "dpEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "236",
+    "name": "pkt_get_all_fields",
+    "native_address": "0x80e1df8",
+    "native_name": "vm_f_pkt_get_all_fields",
+    "record": "0x83d1764",
+    "return_type": "6",
+    "table": "dpEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "237",
+    "name": "pkt_get_all_interfaces",
+    "native_address": "0x80e234c",
+    "native_name": "vm_f_pkt_get_all_interfaces",
+    "record": "0x83d1780",
+    "return_type": "6",
+    "table": "dpEfuns"
+  },
+  {
+    "call_sites": 3,
+    "index": "238",
+    "name": "pkt_pad_buffer",
+    "native_address": "0x80e2428",
+    "native_name": "vm_f_pkt_pad_buffer",
+    "record": "0x83d179c",
+    "return_type": "255",
+    "table": "dpEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "239",
+    "name": "pkt_pad_field",
+    "native_address": "0x80e17c0",
+    "native_name": "vm_f_pkt_pad_field",
+    "record": "0x83d17b8",
+    "return_type": "255",
+    "table": "dpEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "240",
+    "name": "pkt_pad_map",
+    "native_address": "0x80e1930",
+    "native_name": "vm_f_pkt_pad_map",
+    "record": "0x83d17d4",
+    "return_type": "255",
+    "table": "dpEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "241",
+    "name": "pkt_pad_part_map",
+    "native_address": "0x80e1a4c",
+    "native_name": "vm_f_pkt_pad_part_map",
+    "record": "0x83d17f0",
+    "return_type": "255",
+    "table": "dpEfuns"
+  },
+  {
+    "call_sites": 5,
+    "index": "242",
+    "name": "pkt_pad_interface",
+    "native_address": "0x80e1c48",
+    "native_name": "vm_f_pkt_pad_interface",
+    "record": "0x83d180c",
+    "return_type": "255",
+    "table": "dpEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "243",
+    "name": "add_resource_string",
+    "native_address": "0x80c31e4",
+    "native_name": "vm_f_add_resource_string",
+    "record": "0x83cfc60",
+    "return_type": "2",
+    "table": "resourceEfuns"
+  },
+  {
+    "call_sites": 11,
+    "index": "244",
+    "name": "get_resource_string",
+    "native_address": "0x80c2eb0",
+    "native_name": "vm_f_get_resource_string",
+    "record": "0x83cfc7c",
+    "return_type": "255",
+    "table": "resourceEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "245",
+    "name": "load_resource_strings",
+    "native_address": "0x80c34f8",
+    "native_name": "vm_f_load_resource_strings",
+    "record": "0x83cfc98",
+    "return_type": "2",
+    "table": "resourceEfuns"
+  },
+  {
+    "call_sites": 5,
+    "index": "246",
+    "name": "remove_resource_string",
+    "native_address": "0x80c2fc4",
+    "native_name": "vm_f_remove_resource_string",
+    "record": "0x83cfcb4",
+    "return_type": "2",
+    "table": "resourceEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "247",
+    "name": "is_line_crossed",
+    "native_address": "0x80e2594",
+    "native_name": "vm_f_is_line_crossed",
+    "record": "0x83d1880",
+    "return_type": "2",
+    "table": "graphEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "248",
+    "name": "is_pt_in_line",
+    "native_address": "0x80e264c",
+    "native_name": "vm_f_is_pt_in_line",
+    "record": "0x83d189c",
+    "return_type": "2",
+    "table": "graphEfuns"
+  },
+  {
+    "call_sites": 48,
+    "index": "249",
+    "name": "is_pt_in_poly",
+    "native_address": "0x80e26e4",
+    "native_name": "vm_f_is_pt_in_poly",
+    "record": "0x83d18b8",
+    "return_type": "2",
+    "table": "graphEfuns"
+  },
+  {
+    "call_sites": 1,
+    "index": "250",
+    "name": "is_pt_in_rect",
+    "native_address": "0x80e28a0",
+    "native_name": "vm_f_is_pt_in_rect",
+    "record": "0x83d18d4",
+    "return_type": "2",
+    "table": "graphEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "251",
+    "name": "is_rect_crossed",
+    "native_address": "0x80e2938",
+    "native_name": "vm_f_is_rect_crossed",
+    "record": "0x83d18f0",
+    "return_type": "2",
+    "table": "graphEfuns"
+  },
+  {
+    "call_sites": 1,
+    "index": "252",
+    "name": "accept",
+    "native_address": "0x80e8908",
+    "native_name": "vm_f_accept",
+    "record": "0x83d1940",
+    "return_type": "2",
+    "table": "socketEfuns"
+  },
+  {
+    "call_sites": 1,
+    "index": "253",
+    "name": "bind",
+    "native_address": "0x80e411c",
+    "native_name": "vm_f_bind",
+    "record": "0x83d195c",
+    "return_type": "2",
+    "table": "socketEfuns"
+  },
+  {
+    "call_sites": 24,
+    "index": "254",
+    "name": "connect",
+    "native_address": "0x80e83b4",
+    "native_name": "vm_f_connect",
+    "record": "0x83d1978",
+    "return_type": "2",
+    "table": "socketEfuns"
+  },
+  {
+    "call_sites": 60,
+    "index": "255",
+    "name": "close_socket",
+    "native_address": "0x80e69f8",
+    "native_name": "vm_f_close_socket",
+    "record": "0x83d1994",
+    "return_type": "2",
+    "table": "socketEfuns"
+  },
+  {
+    "call_sites": 3,
+    "index": "256",
+    "name": "get_sock_info",
+    "native_address": "0x80e3e1c",
+    "native_name": "vm_f_get_sock_info",
+    "record": "0x83d19b0",
+    "return_type": "255",
+    "table": "socketEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "257",
+    "name": "get_sock_opt",
+    "native_address": "0x80e2e68",
+    "native_name": "vm_f_get_sock_opt",
+    "record": "0x83d19cc",
+    "return_type": "2",
+    "table": "socketEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "258",
+    "name": "ioctl_socket",
+    "native_address": "0x80e31b8",
+    "native_name": "vm_f_ioctl_socket",
+    "record": "0x83d19e8",
+    "return_type": "2",
+    "table": "socketEfuns"
+  },
+  {
+    "call_sites": 1,
+    "index": "259",
+    "name": "listen",
+    "native_address": "0x80e3320",
+    "native_name": "vm_f_listen",
+    "record": "0x83d1a04",
+    "return_type": "2",
+    "table": "socketEfuns"
+  },
+  {
+    "call_sites": 11,
+    "index": "260",
+    "name": "recv",
+    "native_address": "0x80e80c8",
+    "native_name": "vm_f_recv",
+    "record": "0x83d1a20",
+    "return_type": "2",
+    "table": "socketEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "261",
+    "name": "recv_from",
+    "native_address": "0x80e7e24",
+    "native_name": "vm_f_recv_from",
+    "record": "0x83d1a3c",
+    "return_type": "2",
+    "table": "socketEfuns"
+  },
+  {
+    "call_sites": 6,
+    "index": "262",
+    "name": "resolve",
+    "native_address": "0x80e3708",
+    "native_name": "vm_f_resolve",
+    "record": "0x83d1a58",
+    "return_type": "6",
+    "table": "socketEfuns"
+  },
+  {
+    "call_sites": 9,
+    "index": "263",
+    "name": "select",
+    "native_address": "0x80e7348",
+    "native_name": "vm_f_select",
+    "record": "0x83d1a74",
+    "return_type": "2",
+    "table": "socketEfuns"
+  },
+  {
+    "call_sites": 13,
+    "index": "264",
+    "name": "send",
+    "native_address": "0x80e7034",
+    "native_name": "vm_f_send",
+    "record": "0x83d1a90",
+    "return_type": "2",
+    "table": "socketEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "265",
+    "name": "send_to",
+    "native_address": "0x80e6bac",
+    "native_name": "vm_f_send_to",
+    "record": "0x83d1aac",
+    "return_type": "2",
+    "table": "socketEfuns"
+  },
+  {
+    "call_sites": 14,
+    "index": "266",
+    "name": "set_sock_opt",
+    "native_address": "0x80e3914",
+    "native_name": "vm_f_set_sock_opt",
+    "record": "0x83d1ac8",
+    "return_type": "2",
+    "table": "socketEfuns"
+  },
+  {
+    "call_sites": 25,
+    "index": "267",
+    "name": "socket",
+    "native_address": "0x80e3f4c",
+    "native_name": "vm_f_socket",
+    "record": "0x83d1ae4",
+    "return_type": "2",
+    "table": "socketEfuns"
+  },
+  {
+    "call_sites": 200,
+    "index": "268",
+    "name": "create_thread",
+    "native_address": "0x80ecbc0",
+    "native_name": "vm_f_create_thread",
+    "record": "0x83d1ee0",
+    "return_type": "2",
+    "table": "procEfuns"
+  },
+  {
+    "call_sites": 81,
+    "index": "269",
+    "name": "delete_thread",
+    "native_address": "0x80ef984",
+    "native_name": "vm_f_delete_thread",
+    "record": "0x83d1efc",
+    "return_type": "2",
+    "table": "procEfuns"
+  },
+  {
+    "call_sites": 5,
+    "index": "270",
+    "name": "execute_data",
+    "native_address": "0x80ece3c",
+    "native_name": "vm_f_execute_data",
+    "record": "0x83d1f18",
+    "return_type": "2",
+    "table": "procEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "271",
+    "name": "execute_file",
+    "native_address": "0x80ed050",
+    "native_name": "vm_f_execute_file",
+    "record": "0x83d1f34",
+    "return_type": "2",
+    "table": "procEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "272",
+    "name": "exit_thread",
+    "native_address": "0x80ed268",
+    "native_name": "vm_f_exit_thread",
+    "record": "0x83d1f50",
+    "return_type": "1",
+    "table": "procEfuns"
+  },
+  {
+    "call_sites": 10,
+    "index": "273",
+    "name": "get_all_threads",
+    "native_address": "0x80f21dc",
+    "native_name": "vm_f_get_all_threads",
+    "record": "0x83d1f6c",
+    "return_type": "6",
+    "table": "procEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "274",
+    "name": "get_function_report",
+    "native_address": "0x80ed2c8",
+    "native_name": "vm_f_get_function_report",
+    "record": "0x83d1f88",
+    "return_type": "255",
+    "table": "procEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "275",
+    "name": "get_output",
+    "native_address": "0x80ed5f0",
+    "native_name": "vm_f_get_output",
+    "record": "0x83d1fa4",
+    "return_type": "2",
+    "table": "procEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "276",
+    "name": "get_thread_attr",
+    "native_address": "0x80ed62c",
+    "native_name": "vm_f_get_thread_attr",
+    "record": "0x83d1fc0",
+    "return_type": "2",
+    "table": "procEfuns"
+  },
+  {
+    "call_sites": 338,
+    "index": "277",
+    "name": "get_thread_id",
+    "native_address": "0x80ed79c",
+    "native_name": "vm_f_get_thread_id",
+    "record": "0x83d1fdc",
+    "return_type": "2",
+    "table": "procEfuns"
+  },
+  {
+    "call_sites": 56,
+    "index": "278",
+    "name": "get_thread_info",
+    "native_address": "0x80f205c",
+    "native_name": "vm_f_get_thread_info",
+    "record": "0x83d1ff8",
+    "return_type": "255",
+    "table": "procEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "279",
+    "name": "get_thread_name",
+    "native_address": "0x80ed88c",
+    "native_name": "vm_f_get_thread_name",
+    "record": "0x83d2014",
+    "return_type": "255",
+    "table": "procEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "280",
+    "name": "get_thread_priority",
+    "native_address": "0x80ed9b8",
+    "native_name": "vm_f_get_thread_priority",
+    "record": "0x83d2030",
+    "return_type": "2",
+    "table": "procEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "281",
+    "name": "get_thread_seq_no",
+    "native_address": "0x80edae8",
+    "native_name": "vm_f_get_thread_seq_no",
+    "record": "0x83d204c",
+    "return_type": "255",
+    "table": "procEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "282",
+    "name": "previous_arguments",
+    "native_address": "0x80edc10",
+    "native_name": "vm_f_previous_arguments",
+    "record": "0x83d2068",
+    "return_type": "255",
+    "table": "procEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "283",
+    "name": "ps",
+    "native_address": "0x80eddbc",
+    "native_name": "vm_f_ps",
+    "record": "0x83d2084",
+    "return_type": "1",
+    "table": "procEfuns"
+  },
+  {
+    "call_sites": 10,
+    "index": "284",
+    "name": "relinquish",
+    "native_address": "0x80ede34",
+    "native_name": "vm_f_relinquish",
+    "record": "0x83d20a0",
+    "return_type": "2",
+    "table": "procEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "285",
+    "name": "reset_eval_cost",
+    "native_address": "0x80edf48",
+    "native_name": "vm_f_reset_eval_cost",
+    "record": "0x83d20bc",
+    "return_type": "1",
+    "table": "procEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "286",
+    "name": "reset_thread_seq_no",
+    "native_address": "0x80ee0ac",
+    "native_name": "vm_f_reset_thread_seq_no",
+    "record": "0x83d20d8",
+    "return_type": "2",
+    "table": "procEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "287",
+    "name": "reset_function_mark",
+    "native_address": "0x80edf94",
+    "native_name": "vm_f_reset_function_mark",
+    "record": "0x83d20f4",
+    "return_type": "1",
+    "table": "procEfuns"
+  },
+  {
+    "call_sites": 1,
+    "index": "288",
+    "name": "resume_thread",
+    "native_address": "0x80ee20c",
+    "native_name": "vm_f_resume_thread",
+    "record": "0x83d2110",
+    "return_type": "2",
+    "table": "procEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "289",
+    "name": "seq_no_to_tid",
+    "native_address": "0x80edd2c",
+    "native_name": "vm_f_seq_no_to_tid",
+    "record": "0x83d212c",
+    "return_type": "2",
+    "table": "procEfuns"
+  },
+  {
+    "call_sites": 128,
+    "index": "290",
+    "name": "set_as_daemon",
+    "native_address": "0x80ee368",
+    "native_name": "vm_f_set_as_daemon",
+    "record": "0x83d2148",
+    "return_type": "2",
+    "table": "procEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "291",
+    "name": "set_force_relinquish",
+    "native_address": "0x80ee4ec",
+    "native_name": "vm_f_set_force_relinquish",
+    "record": "0x83d2164",
+    "return_type": "1",
+    "table": "procEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "292",
+    "name": "set_output",
+    "native_address": "0x80ee558",
+    "native_name": "vm_f_set_output",
+    "record": "0x83d2180",
+    "return_type": "2",
+    "table": "procEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "293",
+    "name": "set_primitive",
+    "native_address": "0x80ee644",
+    "native_name": "vm_f_set_primitive",
+    "record": "0x83d219c",
+    "return_type": "1",
+    "table": "procEfuns"
+  },
+  {
+    "call_sites": 1,
+    "index": "294",
+    "name": "set_priority",
+    "native_address": "0x80ee66c",
+    "native_name": "vm_f_set_priority",
+    "record": "0x83d21b8",
+    "return_type": "2",
+    "table": "procEfuns"
+  },
+  {
+    "call_sites": 15,
+    "index": "295",
+    "name": "set_nohalt",
+    "native_address": "0x80ee798",
+    "native_name": "vm_f_set_nohalt",
+    "record": "0x83d21d4",
+    "return_type": "1",
+    "table": "procEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "296",
+    "name": "set_thread_attr",
+    "native_address": "0x80ee7a4",
+    "native_name": "vm_f_set_thread_attr",
+    "record": "0x83d21f0",
+    "return_type": "2",
+    "table": "procEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "297",
+    "name": "set_thread_deletion",
+    "native_address": "0x80ee8e8",
+    "native_name": "vm_f_set_thread_deletion",
+    "record": "0x83d220c",
+    "return_type": "2",
+    "table": "procEfuns"
+  },
+  {
+    "call_sites": 307,
+    "index": "298",
+    "name": "sleep",
+    "native_address": "0x80eeab8",
+    "native_name": "vm_f_sleep",
+    "record": "0x83d2228",
+    "return_type": "2",
+    "table": "procEfuns"
+  },
+  {
+    "call_sites": 18,
+    "index": "299",
+    "name": "suspend_thread",
+    "native_address": "0x80eebfc",
+    "native_name": "vm_f_suspend_thread",
+    "record": "0x83d2244",
+    "return_type": "2",
+    "table": "procEfuns"
+  },
+  {
+    "call_sites": 1,
+    "index": "300",
+    "name": "get_all_pend_objects",
+    "native_address": "0x80f2738",
+    "native_name": "vm_f_get_all_pend_objects",
+    "record": "0x83d2260",
+    "return_type": "6",
+    "table": "procEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "301",
+    "name": "get_pend_object_id",
+    "native_address": "0x80f1a90",
+    "native_name": "vm_f_get_pend_object_id",
+    "record": "0x83d227c",
+    "return_type": "2",
+    "table": "procEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "302",
+    "name": "get_pend_object_info",
+    "native_address": "0x80f2660",
+    "native_name": "vm_f_get_pend_object_info",
+    "record": "0x83d2298",
+    "return_type": "255",
+    "table": "procEfuns"
+  },
+  {
+    "call_sites": 31,
+    "index": "303",
+    "name": "create_mutex",
+    "native_address": "0x80eed58",
+    "native_name": "vm_f_create_mutex",
+    "record": "0x83d22b4",
+    "return_type": "2",
+    "table": "procEfuns"
+  },
+  {
+    "call_sites": 31,
+    "index": "304",
+    "name": "delete_mutex",
+    "native_address": "0x80f1958",
+    "native_name": "vm_f_delete_mutex",
+    "record": "0x83d22d0",
+    "return_type": "2",
+    "table": "procEfuns"
+  },
+  {
+    "call_sites": 123,
+    "index": "305",
+    "name": "take_mutex",
+    "native_address": "0x80f16cc",
+    "native_name": "vm_f_take_mutex",
+    "record": "0x83d22ec",
+    "return_type": "2",
+    "table": "procEfuns"
+  },
+  {
+    "call_sites": 139,
+    "index": "306",
+    "name": "give_mutex",
+    "native_address": "0x80f1564",
+    "native_name": "vm_f_give_mutex",
+    "record": "0x83d2308",
+    "return_type": "2",
+    "table": "procEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "307",
+    "name": "create_semaphore",
+    "native_address": "0x80eee0c",
+    "native_name": "vm_f_create_semaphore",
+    "record": "0x83d2324",
+    "return_type": "2",
+    "table": "procEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "308",
+    "name": "delete_semaphore",
+    "native_address": "0x80f142c",
+    "native_name": "vm_f_delete_semaphore",
+    "record": "0x83d2340",
+    "return_type": "2",
+    "table": "procEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "309",
+    "name": "take_semaphore",
+    "native_address": "0x80f11c8",
+    "native_name": "vm_f_take_semaphore",
+    "record": "0x83d235c",
+    "return_type": "2",
+    "table": "procEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "310",
+    "name": "give_semaphore",
+    "native_address": "0x80f1080",
+    "native_name": "vm_f_give_semaphore",
+    "record": "0x83d2378",
+    "return_type": "2",
+    "table": "procEfuns"
+  },
+  {
+    "call_sites": 39,
+    "index": "311",
+    "name": "create_queue",
+    "native_address": "0x80eef1c",
+    "native_name": "vm_f_create_queue",
+    "record": "0x83d2394",
+    "return_type": "2",
+    "table": "procEfuns"
+  },
+  {
+    "call_sites": 34,
+    "index": "312",
+    "name": "delete_queue",
+    "native_address": "0x80f0f48",
+    "native_name": "vm_f_delete_queue",
+    "record": "0x83d23b0",
+    "return_type": "2",
+    "table": "procEfuns"
+  },
+  {
+    "call_sites": 284,
+    "index": "313",
+    "name": "send_to_queue",
+    "native_address": "0x80f2d94",
+    "native_name": "vm_f_send_to_queue",
+    "record": "0x83d23cc",
+    "return_type": "2",
+    "table": "procEfuns"
+  },
+  {
+    "call_sites": 39,
+    "index": "314",
+    "name": "receive_from_queue",
+    "native_address": "0x80f29f8",
+    "native_name": "vm_f_receive_from_queue",
+    "record": "0x83d23e8",
+    "return_type": "2",
+    "table": "procEfuns"
+  },
+  {
+    "call_sites": 45,
+    "index": "315",
+    "name": "create_event",
+    "native_address": "0x80ef008",
+    "native_name": "vm_f_create_event",
+    "record": "0x83d2404",
+    "return_type": "2",
+    "table": "procEfuns"
+  },
+  {
+    "call_sites": 36,
+    "index": "316",
+    "name": "delete_event",
+    "native_address": "0x80f0e10",
+    "native_name": "vm_f_delete_event",
+    "record": "0x83d2420",
+    "return_type": "2",
+    "table": "procEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "317",
+    "name": "check_event",
+    "native_address": "0x80f0cd4",
+    "native_name": "vm_f_check_event",
+    "record": "0x83d243c",
+    "return_type": "2",
+    "table": "procEfuns"
+  },
+  {
+    "call_sites": 98,
+    "index": "318",
+    "name": "wait_event",
+    "native_address": "0x80f097c",
+    "native_name": "vm_f_wait_event",
+    "record": "0x83d2458",
+    "return_type": "2",
+    "table": "procEfuns"
+  },
+  {
+    "call_sites": 63,
+    "index": "319",
+    "name": "raise_event",
+    "native_address": "0x80f07b8",
+    "native_name": "vm_f_raise_event",
+    "record": "0x83d2474",
+    "return_type": "2",
+    "table": "procEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "320",
+    "name": "pend_on_event",
+    "native_address": "0x80f060c",
+    "native_name": "vm_f_pend_on_event",
+    "record": "0x83d2490",
+    "return_type": "255",
+    "table": "procEfuns"
+  },
+  {
+    "call_sites": 1,
+    "index": "321",
+    "name": "create_mailbox",
+    "native_address": "0x80ef08c",
+    "native_name": "vm_f_create_mailbox",
+    "record": "0x83d24ac",
+    "return_type": "2",
+    "table": "procEfuns"
+  },
+  {
+    "call_sites": 1,
+    "index": "322",
+    "name": "delete_mailbox",
+    "native_address": "0x80f04d4",
+    "native_name": "vm_f_delete_mailbox",
+    "record": "0x83d24c8",
+    "return_type": "2",
+    "table": "procEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "323",
+    "name": "list_mailbox",
+    "native_address": "0x80f0320",
+    "native_name": "vm_f_list_mailbox",
+    "record": "0x83d24e4",
+    "return_type": "255",
+    "table": "procEfuns"
+  },
+  {
+    "call_sites": 2,
+    "index": "324",
+    "name": "peek_mailbox",
+    "native_address": "0x80effc0",
+    "native_name": "vm_f_peek_mailbox",
+    "record": "0x83d2500",
+    "return_type": "2",
+    "table": "procEfuns"
+  },
+  {
+    "call_sites": 2,
+    "index": "325",
+    "name": "post_mailbox",
+    "native_address": "0x80efdc4",
+    "native_name": "vm_f_post_mailbox",
+    "record": "0x83d251c",
+    "return_type": "2",
+    "table": "procEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "326",
+    "name": "pend_on_mailbox",
+    "native_address": "0x80efc18",
+    "native_name": "vm_f_pend_on_mailbox",
+    "record": "0x83d2538",
+    "return_type": "255",
+    "table": "procEfuns"
+  },
+  {
+    "call_sites": 1711,
+    "index": "327",
+    "name": "set_timer",
+    "native_address": "0x80ef1e4",
+    "native_name": "vm_f_set_timer",
+    "record": "0x83d2554",
+    "return_type": "2",
+    "table": "procEfuns"
+  },
+  {
+    "call_sites": 552,
+    "index": "328",
+    "name": "delete_timer",
+    "native_address": "0x80ef3fc",
+    "native_name": "vm_f_delete_timer",
+    "record": "0x83d2570",
+    "return_type": "2",
+    "table": "procEfuns"
+  },
+  {
+    "call_sites": 80,
+    "index": "329",
+    "name": "get_timer",
+    "native_address": "0x80ef4d0",
+    "native_name": "vm_f_get_timer",
+    "record": "0x83d258c",
+    "return_type": "255",
+    "table": "procEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "330",
+    "name": "get_timer_id",
+    "native_address": "0x80ef6d4",
+    "native_name": "vm_f_get_timer_id",
+    "record": "0x83d25a8",
+    "return_type": "2",
+    "table": "procEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "331",
+    "name": "get_all_timers",
+    "native_address": "0x80ef784",
+    "native_name": "vm_f_get_all_timers",
+    "record": "0x83d25c4",
+    "return_type": "6",
+    "table": "procEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "332",
+    "name": "create_fs",
+    "native_address": "0x80e8e68",
+    "native_name": "vm_f_create_fs",
+    "record": "0x83d1b40",
+    "return_type": "1",
+    "table": "fileEfuns"
+  },
+  {
+    "call_sites": 80,
+    "index": "333",
+    "name": "file_size",
+    "native_address": "0x80e8f48",
+    "native_name": "vm_f_file_size",
+    "record": "0x83d1b5c",
+    "return_type": "2",
+    "table": "fileEfuns"
+  },
+  {
+    "call_sites": 5,
+    "index": "334",
+    "name": "file_stat",
+    "native_address": "0x80e8fd4",
+    "native_name": "vm_f_file_stat",
+    "record": "0x83d1b78",
+    "return_type": "255",
+    "table": "fileEfuns"
+  },
+  {
+    "call_sites": 44,
+    "index": "335",
+    "name": "get_dir",
+    "native_address": "0x80e90c0",
+    "native_name": "vm_f_get_dir",
+    "record": "0x83d1b94",
+    "return_type": "255",
+    "table": "fileEfuns"
+  },
+  {
+    "call_sites": 15,
+    "index": "336",
+    "name": "mkdir",
+    "native_address": "0x80e9110",
+    "native_name": "vm_f_mkdir",
+    "record": "0x83d1bb0",
+    "return_type": "2",
+    "table": "fileEfuns"
+  },
+  {
+    "call_sites": 2,
+    "index": "337",
+    "name": "pack_dir",
+    "native_address": "0x80e9218",
+    "native_name": "vm_f_pack_dir",
+    "record": "0x83d1bcc",
+    "return_type": "2",
+    "table": "fileEfuns"
+  },
+  {
+    "call_sites": 2,
+    "index": "338",
+    "name": "rmdir",
+    "native_address": "0x80e9380",
+    "native_name": "vm_f_rmdir",
+    "record": "0x83d1be8",
+    "return_type": "2",
+    "table": "fileEfuns"
+  },
+  {
+    "call_sites": 36,
+    "index": "339",
+    "name": "read_file",
+    "native_address": "0x80e9480",
+    "native_name": "vm_f_read_file",
+    "record": "0x83d1c04",
+    "return_type": "255",
+    "table": "fileEfuns"
+  },
+  {
+    "call_sites": 3,
+    "index": "340",
+    "name": "append_file",
+    "native_address": "0x80e9c08",
+    "native_name": "vm_f_append_file",
+    "record": "0x83d1c20",
+    "return_type": "1",
+    "table": "fileEfuns"
+  },
+  {
+    "call_sites": 30,
+    "index": "341",
+    "name": "write_file",
+    "native_address": "0x80e9d6c",
+    "native_name": "vm_f_write_file",
+    "record": "0x83d1c3c",
+    "return_type": "1",
+    "table": "fileEfuns"
+  },
+  {
+    "call_sites": 44,
+    "index": "342",
+    "name": "delete_file",
+    "native_address": "0x80ea028",
+    "native_name": "vm_f_delete_file",
+    "record": "0x83d1c58",
+    "return_type": "2",
+    "table": "fileEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "343",
+    "name": "rename_file",
+    "native_address": "0x80ea10c",
+    "native_name": "vm_f_rename_file",
+    "record": "0x83d1c74",
+    "return_type": "2",
+    "table": "fileEfuns"
+  },
+  {
+    "call_sites": 18,
+    "index": "344",
+    "name": "fclose",
+    "native_address": "0x80ea20c",
+    "native_name": "vm_f_fclose",
+    "record": "0x83d1c90",
+    "return_type": "1",
+    "table": "fileEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "345",
+    "name": "fgetfpinfo",
+    "native_address": "0x80ea2bc",
+    "native_name": "vm_f_fgetfpinfo",
+    "record": "0x83d1cac",
+    "return_type": "255",
+    "table": "fileEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "346",
+    "name": "fgets",
+    "native_address": "0x80ea47c",
+    "native_name": "vm_f_fgets",
+    "record": "0x83d1cc8",
+    "return_type": "255",
+    "table": "fileEfuns"
+  },
+  {
+    "call_sites": 18,
+    "index": "347",
+    "name": "fopen",
+    "native_address": "0x80ea5f0",
+    "native_name": "vm_f_fopen",
+    "record": "0x83d1ce4",
+    "return_type": "2",
+    "table": "fileEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "348",
+    "name": "fprintf",
+    "native_address": "0x80ea754",
+    "native_name": "vm_f_fprintf",
+    "record": "0x83d1d00",
+    "return_type": "2",
+    "table": "fileEfuns"
+  },
+  {
+    "call_sites": 11,
+    "index": "349",
+    "name": "fread",
+    "native_address": "0x80ea818",
+    "native_name": "vm_f_fread",
+    "record": "0x83d1d1c",
+    "return_type": "5",
+    "table": "fileEfuns"
+  },
+  {
+    "call_sites": 3,
+    "index": "350",
+    "name": "fseek",
+    "native_address": "0x80ea940",
+    "native_name": "vm_f_fseek",
+    "record": "0x83d1d38",
+    "return_type": "2",
+    "table": "fileEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "351",
+    "name": "ftell",
+    "native_address": "0x80eaa14",
+    "native_name": "vm_f_ftell",
+    "record": "0x83d1d54",
+    "return_type": "2",
+    "table": "fileEfuns"
+  },
+  {
+    "call_sites": 9,
+    "index": "352",
+    "name": "fwrite",
+    "native_address": "0x80eaac4",
+    "native_name": "vm_f_fwrite",
+    "record": "0x83d1d70",
+    "return_type": "2",
+    "table": "fileEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "353",
+    "name": "dbfs_compact",
+    "native_address": "0x80eac04",
+    "native_name": "vm_f_dbfs_compact",
+    "record": "0x83d1d8c",
+    "return_type": "2",
+    "table": "fileEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "354",
+    "name": "dbfs_openfs",
+    "native_address": "0x80eac78",
+    "native_name": "vm_f_dbfs_openfs",
+    "record": "0x83d1da8",
+    "return_type": "2",
+    "table": "fileEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "355",
+    "name": "bind_value",
+    "native_address": "0x80f5874",
+    "native_name": "vm_f_bind_value",
+    "record": "0x83d2780",
+    "return_type": "255",
+    "table": "objectEfuns"
+  },
+  {
+    "call_sites": 23,
+    "index": "356",
+    "name": "call_other",
+    "native_address": "0x80f5aa0",
+    "native_name": "vm_f_call_other",
+    "record": "0x83d279c",
+    "return_type": "255",
+    "table": "objectEfuns"
+  },
+  {
+    "call_sites": 116,
+    "index": "357",
+    "name": "call_other_arg",
+    "native_address": "0x80f5afc",
+    "native_name": "vm_f_call_other_arg",
+    "record": "0x83d27b8",
+    "return_type": "255",
+    "table": "objectEfuns"
+  },
+  {
+    "call_sites": 11,
+    "index": "358",
+    "name": "child_objects",
+    "native_address": "0x80f5d9c",
+    "native_name": "vm_f_child_objects",
+    "record": "0x83d27d4",
+    "return_type": "6",
+    "table": "objectEfuns"
+  },
+  {
+    "call_sites": 3870,
+    "index": "359",
+    "name": "clone_object",
+    "native_address": "0x80f8eac",
+    "native_name": "vm_f_clone_object",
+    "record": "0x83d27f0",
+    "return_type": "255",
+    "table": "objectEfuns"
+  },
+  {
+    "call_sites": 5,
+    "index": "360",
+    "name": "compile_program",
+    "native_address": "0x80f5fd0",
+    "native_name": "vm_f_compile_program",
+    "record": "0x83d280c",
+    "return_type": "2",
+    "table": "objectEfuns"
+  },
+  {
+    "call_sites": 4734,
+    "index": "361",
+    "name": "destruct_object",
+    "native_address": "0x80f9420",
+    "native_name": "vm_f_destruct_object",
+    "record": "0x83d2828",
+    "return_type": "1",
+    "table": "objectEfuns"
+  },
+  {
+    "call_sites": 2499,
+    "index": "362",
+    "name": "env_object",
+    "native_address": "0x80f4388",
+    "native_name": "vm_f_env_object",
+    "record": "0x83d2844",
+    "return_type": "255",
+    "table": "objectEfuns"
+  },
+  {
+    "call_sites": 1318,
+    "index": "363",
+    "name": "find_object",
+    "native_address": "0x80f60a4",
+    "native_name": "vm_f_find_object",
+    "record": "0x83d2860",
+    "return_type": "255",
+    "table": "objectEfuns"
+  },
+  {
+    "call_sites": 6,
+    "index": "364",
+    "name": "find_object_function",
+    "native_address": "0x80f6194",
+    "native_name": "vm_f_find_object_function",
+    "record": "0x83d287c",
+    "return_type": "255",
+    "table": "objectEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "365",
+    "name": "get_euid",
+    "native_address": "0x80f647c",
+    "native_name": "vm_f_get_euid",
+    "record": "0x83d2898",
+    "return_type": "2",
+    "table": "objectEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "366",
+    "name": "get_global_function",
+    "native_address": "0x80f65ec",
+    "native_name": "vm_f_get_global_function",
+    "record": "0x83d28b4",
+    "return_type": "255",
+    "table": "objectEfuns"
+  },
+  {
+    "call_sites": 7,
+    "index": "367",
+    "name": "get_obj_function",
+    "native_address": "0x80f6958",
+    "native_name": "vm_f_get_obj_function",
+    "record": "0x83d28d0",
+    "return_type": "255",
+    "table": "objectEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "368",
+    "name": "get_obj_string",
+    "native_address": "0x80f6dac",
+    "native_name": "vm_f_get_obj_string",
+    "record": "0x83d28ec",
+    "return_type": "255",
+    "table": "objectEfuns"
+  },
+  {
+    "call_sites": 7,
+    "index": "369",
+    "name": "get_obj_var",
+    "native_address": "0x80f6fdc",
+    "native_name": "vm_f_get_obj_var",
+    "record": "0x83d2908",
+    "return_type": "255",
+    "table": "objectEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "370",
+    "name": "get_uid",
+    "native_address": "0x80f71ac",
+    "native_name": "vm_f_get_uid",
+    "record": "0x83d2924",
+    "return_type": "2",
+    "table": "objectEfuns"
+  },
+  {
+    "call_sites": 12,
+    "index": "371",
+    "name": "info_object",
+    "native_address": "0x80f731c",
+    "native_name": "vm_f_info_object",
+    "record": "0x83d2940",
+    "return_type": "7",
+    "table": "objectEfuns"
+  },
+  {
+    "call_sites": 1059,
+    "index": "372",
+    "name": "is_clone",
+    "native_address": "0x80f7900",
+    "native_name": "vm_f_is_clone",
+    "record": "0x83d295c",
+    "return_type": "2",
+    "table": "objectEfuns"
+  },
+  {
+    "call_sites": 10,
+    "index": "373",
+    "name": "is_compiled_object",
+    "native_address": "0x80f567c",
+    "native_name": "vm_f_is_compiled_object",
+    "record": "0x83d2978",
+    "return_type": "2",
+    "table": "objectEfuns"
+  },
+  {
+    "call_sites": 16,
+    "index": "374",
+    "name": "leave_object",
+    "native_address": "0x80f56dc",
+    "native_name": "vm_f_leave_object",
+    "record": "0x83d2994",
+    "return_type": "255",
+    "table": "objectEfuns"
+  },
+  {
+    "call_sites": 36,
+    "index": "375",
+    "name": "load_object",
+    "native_address": "0x80f8cbc",
+    "native_name": "vm_f_load_object",
+    "record": "0x83d29b0",
+    "return_type": "255",
+    "table": "objectEfuns"
+  },
+  {
+    "call_sites": 282,
+    "index": "376",
+    "name": "lodger_object",
+    "native_address": "0x80f41c8",
+    "native_name": "vm_f_lodger_object",
+    "record": "0x83d29cc",
+    "return_type": "255",
+    "table": "objectEfuns"
+  },
+  {
+    "call_sites": 56,
+    "index": "377",
+    "name": "move_object",
+    "native_address": "0x80f5348",
+    "native_name": "vm_f_move_object",
+    "record": "0x83d29e8",
+    "return_type": "255",
+    "table": "objectEfuns"
+  },
+  {
+    "call_sites": 1,
+    "index": "378",
+    "name": "neighbour_object",
+    "native_address": "0x80f4528",
+    "native_name": "vm_f_neighbour_object",
+    "record": "0x83d2a04",
+    "return_type": "255",
+    "table": "objectEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "379",
+    "name": "object_dir",
+    "native_address": "0x80f4720",
+    "native_name": "vm_f_object_dir",
+    "record": "0x83d2a20",
+    "return_type": "4",
+    "table": "objectEfuns"
+  },
+  {
+    "call_sites": 522,
+    "index": "380",
+    "name": "object_name",
+    "native_address": "0x80f48e4",
+    "native_name": "vm_f_object_name",
+    "record": "0x83d2a3c",
+    "return_type": "4",
+    "table": "objectEfuns"
+  },
+  {
+    "call_sites": 2,
+    "index": "381",
+    "name": "object_template",
+    "native_address": "0x80f4b9c",
+    "native_name": "vm_f_object_template",
+    "record": "0x83d2a58",
+    "return_type": "255",
+    "table": "objectEfuns"
+  },
+  {
+    "call_sites": 96,
+    "index": "382",
+    "name": "objects",
+    "native_address": "0x80f4d40",
+    "native_name": "vm_f_objects",
+    "record": "0x83d2a74",
+    "return_type": "6",
+    "table": "objectEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "383",
+    "name": "previous_context",
+    "native_address": "0x80f4e04",
+    "native_name": "vm_f_previous_context",
+    "record": "0x83d2a90",
+    "return_type": "255",
+    "table": "objectEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "384",
+    "name": "previous_function",
+    "native_address": "0x80f508c",
+    "native_name": "vm_f_previous_function",
+    "record": "0x83d2aac",
+    "return_type": "255",
+    "table": "objectEfuns"
+  },
+  {
+    "call_sites": 20,
+    "index": "385",
+    "name": "previous_object",
+    "native_address": "0x80f517c",
+    "native_name": "vm_f_previous_object",
+    "record": "0x83d2ac8",
+    "return_type": "255",
+    "table": "objectEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "386",
+    "name": "previous_objects",
+    "native_address": "0x80f5270",
+    "native_name": "vm_f_previous_objects",
+    "record": "0x83d2ae4",
+    "return_type": "6",
+    "table": "objectEfuns"
+  },
+  {
+    "call_sites": 271,
+    "index": "387",
+    "name": "replace_owner",
+    "native_address": "0x80f7a7c",
+    "native_name": "vm_f_replace_owner",
+    "record": "0x83d2b00",
+    "return_type": "9",
+    "table": "objectEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "388",
+    "name": "restore_object",
+    "native_address": "0x80f7c4c",
+    "native_name": "vm_f_restore_object",
+    "record": "0x83d2b1c",
+    "return_type": "2",
+    "table": "objectEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "389",
+    "name": "save_object",
+    "native_address": "0x80f8120",
+    "native_name": "vm_f_save_object",
+    "record": "0x83d2b38",
+    "return_type": "4",
+    "table": "objectEfuns"
+  },
+  {
+    "call_sites": 52,
+    "index": "390",
+    "name": "set_euid",
+    "native_address": "0x80f8594",
+    "native_name": "vm_f_set_euid",
+    "record": "0x83d2b54",
+    "return_type": "1",
+    "table": "objectEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "391",
+    "name": "set_obj_var",
+    "native_address": "0x80f8658",
+    "native_name": "vm_f_set_obj_var",
+    "record": "0x83d2b70",
+    "return_type": "255",
+    "table": "objectEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "392",
+    "name": "set_previous_context_var",
+    "native_address": "0x80f8874",
+    "native_name": "vm_f_set_previous_context_var",
+    "record": "0x83d2b8c",
+    "return_type": "255",
+    "table": "objectEfuns"
+  },
+  {
+    "call_sites": 5,
+    "index": "393",
+    "name": "set_uid",
+    "native_address": "0x80f8ae8",
+    "native_name": "vm_f_set_uid",
+    "record": "0x83d2ba8",
+    "return_type": "1",
+    "table": "objectEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "394",
+    "name": "this_object",
+    "native_address": "0x80f8c6c",
+    "native_name": "vm_f_this_object",
+    "record": "0x83d2bc4",
+    "return_type": "255",
+    "table": "objectEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "395",
+    "name": "mem_l2_stat",
+    "native_address": "0x80ebcd0",
+    "native_name": "vm_f_pdb_mem_l2_stat",
+    "record": "0x83d1de0",
+    "return_type": "6",
+    "table": "pdbEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "396",
+    "name": "mem_list",
+    "native_address": "0x80ebd0c",
+    "native_name": "vm_f_pdb_mem_list",
+    "record": "0x83d1dfc",
+    "return_type": "7",
+    "table": "pdbEfuns"
+  },
+  {
+    "call_sites": 2,
+    "index": "397",
+    "name": "mem_stat",
+    "native_address": "0x80ebf9c",
+    "native_name": "vm_f_pdb_mem_stat",
+    "record": "0x83d1e18",
+    "return_type": "7",
+    "table": "pdbEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "398",
+    "name": "mem_dump",
+    "native_address": "0x80ec404",
+    "native_name": "vm_f_pdb_mem_dump",
+    "record": "0x83d1e34",
+    "return_type": "2",
+    "table": "pdbEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "399",
+    "name": "mem_mark",
+    "native_address": "0x80ec498",
+    "native_name": "vm_f_pdb_mem_mark",
+    "record": "0x83d1e50",
+    "return_type": "2",
+    "table": "pdbEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "400",
+    "name": "mem_unmark",
+    "native_address": "0x80ec564",
+    "native_name": "vm_f_pdb_mem_unmark",
+    "record": "0x83d1e6c",
+    "return_type": "2",
+    "table": "pdbEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "401",
+    "name": "mem_show_marked",
+    "native_address": "0x80ec630",
+    "native_name": "vm_f_pdb_mem_show_marked",
+    "record": "0x83d1e88",
+    "return_type": "2",
+    "table": "pdbEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "402",
+    "name": "mem_reset_alloc_stat",
+    "native_address": "0x80ec738",
+    "native_name": "vm_f_pdb_mem_reset_alloc_stat",
+    "record": "0x83d1ea4",
+    "return_type": "1",
+    "table": "pdbEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "403",
+    "name": "rpc_call",
+    "native_address": "0x80f34f0",
+    "native_name": "vm_f_rpc_call",
+    "record": "0x83d2600",
+    "return_type": "2",
+    "table": "rpcEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "404",
+    "name": "rpc_close_client",
+    "native_address": "0x80f3b18",
+    "native_name": "vm_f_rpc_close_client",
+    "record": "0x83d261c",
+    "return_type": "2",
+    "table": "rpcEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "405",
+    "name": "rpc_debug_on",
+    "native_address": "0x80f3b74",
+    "native_name": "vm_f_rpc_debug_on",
+    "record": "0x83d2638",
+    "return_type": "1",
+    "table": "rpcEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "406",
+    "name": "rpc_debug_off",
+    "native_address": "0x80f3b9c",
+    "native_name": "vm_f_rpc_debug_off",
+    "record": "0x83d2654",
+    "return_type": "1",
+    "table": "rpcEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "407",
+    "name": "rpc_info",
+    "native_address": "0x80f3bc4",
+    "native_name": "vm_f_rpc_info",
+    "record": "0x83d2670",
+    "return_type": "255",
+    "table": "rpcEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "408",
+    "name": "rpc_is_child",
+    "native_address": "0x80f3e08",
+    "native_name": "vm_f_rpc_is_child",
+    "record": "0x83d268c",
+    "return_type": "2",
+    "table": "rpcEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "409",
+    "name": "rpc_is_client_on",
+    "native_address": "0x80f3e3c",
+    "native_name": "vm_f_rpc_is_client_on",
+    "record": "0x83d26a8",
+    "return_type": "2",
+    "table": "rpcEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "410",
+    "name": "rpc_pass_auth",
+    "native_address": "0x80f3ec8",
+    "native_name": "vm_f_rpc_pass_auth",
+    "record": "0x83d26c4",
+    "return_type": "2",
+    "table": "rpcEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "411",
+    "name": "rpc_relay_to",
+    "native_address": "0x80f3f3c",
+    "native_name": "vm_f_rpc_relay_to",
+    "record": "0x83d26e0",
+    "return_type": "2",
+    "table": "rpcEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "412",
+    "name": "rpc_set_port",
+    "native_address": "0x80f403c",
+    "native_name": "vm_f_rpc_set_port",
+    "record": "0x83d26fc",
+    "return_type": "2",
+    "table": "rpcEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "413",
+    "name": "rpc_stop_server",
+    "native_address": "0x80f40cc",
+    "native_name": "vm_f_rpc_stop_server",
+    "record": "0x83d2718",
+    "return_type": "1",
+    "table": "rpcEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "414",
+    "name": "rpc_this_client",
+    "native_address": "0x80f4100",
+    "native_name": "vm_f_rpc_this_client",
+    "record": "0x83d2734",
+    "return_type": "2",
+    "table": "rpcEfuns"
+  },
+  {
+    "call_sites": 9,
+    "index": "415",
+    "name": "sql_close_db",
+    "native_address": "0x8129370",
+    "native_name": "vm_f_sql_close_db",
+    "record": "0x83d4b60",
+    "return_type": "1",
+    "table": "sqliteEfuns"
+  },
+  {
+    "call_sites": 90,
+    "index": "416",
+    "name": "sql_execute",
+    "native_address": "0x81299f0",
+    "native_name": "vm_f_sql_execute",
+    "record": "0x83d4b7c",
+    "return_type": "2",
+    "table": "sqliteEfuns"
+  },
+  {
+    "call_sites": 10,
+    "index": "417",
+    "name": "sql_finalize",
+    "native_address": "0x8129310",
+    "native_name": "vm_f_sql_finalize",
+    "record": "0x83d4b98",
+    "return_type": "1",
+    "table": "sqliteEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "418",
+    "name": "sql_get_db_info",
+    "native_address": "0x812a610",
+    "native_name": "vm_f_sql_get_db_info",
+    "record": "0x83d4bb4",
+    "return_type": "255",
+    "table": "sqliteEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "419",
+    "name": "sql_get_insert_id",
+    "native_address": "0x812a7e0",
+    "native_name": "vm_f_sql_get_insert_id",
+    "record": "0x83d4bd0",
+    "return_type": "4",
+    "table": "sqliteEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "420",
+    "name": "sql_get_error",
+    "native_address": "0x812a580",
+    "native_name": "vm_f_sql_get_error",
+    "record": "0x83d4bec",
+    "return_type": "4",
+    "table": "sqliteEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "421",
+    "name": "sql_get_state_info",
+    "native_address": "0x812a330",
+    "native_name": "vm_f_sql_get_state_info",
+    "record": "0x83d4c08",
+    "return_type": "255",
+    "table": "sqliteEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "422",
+    "name": "sql_mem_stat",
+    "native_address": "0x812a1f0",
+    "native_name": "vm_f_sql_mem_stat",
+    "record": "0x83d4c24",
+    "return_type": "7",
+    "table": "sqliteEfuns"
+  },
+  {
+    "call_sites": 14,
+    "index": "423",
+    "name": "sql_open_db",
+    "native_address": "0x81299a0",
+    "native_name": "vm_f_sql_open_db",
+    "record": "0x83d4c40",
+    "return_type": "2",
+    "table": "sqliteEfuns"
+  },
+  {
+    "call_sites": 10,
+    "index": "424",
+    "name": "sql_query",
+    "native_address": "0x8129950",
+    "native_name": "vm_f_sql_query",
+    "record": "0x83d4c5c",
+    "return_type": "2",
+    "table": "sqliteEfuns"
+  },
+  {
+    "call_sites": 10,
+    "index": "425",
+    "name": "sql_step",
+    "native_address": "0x8129270",
+    "native_name": "vm_f_sql_step",
+    "record": "0x83d4c78",
+    "return_type": "255",
+    "table": "sqliteEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "426",
+    "name": "tixml_save_mapping",
+    "native_address": "0x8167ee0",
+    "native_name": "_Z23vm_f_tixml_save_mappingv",
+    "record": "0x83d4d60",
+    "return_type": "4",
+    "table": "tinyXmlEfuns"
+  },
+  {
+    "call_sites": 5,
+    "index": "427",
+    "name": "tixml_parse",
+    "native_address": "0x8168260",
+    "native_name": "_Z16vm_f_tixml_parsev",
+    "record": "0x83d4d7c",
+    "return_type": "255",
+    "table": "tinyXmlEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "428",
+    "name": "tixml_load_mapping",
+    "native_address": "0x81680a0",
+    "native_name": "_Z23vm_f_tixml_load_mappingv",
+    "record": "0x83d4d98",
+    "return_type": "255",
+    "table": "tinyXmlEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "429",
+    "name": "mysql_debug_on",
+    "native_address": "0x81708f0",
+    "native_name": "vm_f_mysql_debug_on",
+    "record": "0x83d4e80",
+    "return_type": "2",
+    "table": "dbMysqlEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "430",
+    "name": "mysql_debug_off",
+    "native_address": "0x81708b0",
+    "native_name": "vm_f_mysql_debug_off",
+    "record": "0x83d4e9c",
+    "return_type": "2",
+    "table": "dbMysqlEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "431",
+    "name": "mysql_connect",
+    "native_address": "0x81706e0",
+    "native_name": "vm_f_mysql_connect",
+    "record": "0x83d4eb8",
+    "return_type": "2",
+    "table": "dbMysqlEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "432",
+    "name": "mysql_disconnect",
+    "native_address": "0x8170690",
+    "native_name": "vm_f_mysql_disconnect",
+    "record": "0x83d4ed4",
+    "return_type": "2",
+    "table": "dbMysqlEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "433",
+    "name": "mysql_is_connected",
+    "native_address": "0x8170640",
+    "native_name": "vm_f_mysql_is_connected",
+    "record": "0x83d4ef0",
+    "return_type": "2",
+    "table": "dbMysqlEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "434",
+    "name": "mysql_set_auto_commit",
+    "native_address": "0x8171230",
+    "native_name": "vm_f_mysql_set_auto_commit",
+    "record": "0x83d4f0c",
+    "return_type": "2",
+    "table": "dbMysqlEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "435",
+    "name": "mysql_select_db",
+    "native_address": "0x81705f0",
+    "native_name": "vm_f_mysql_select_db",
+    "record": "0x83d4f28",
+    "return_type": "2",
+    "table": "dbMysqlEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "436",
+    "name": "mysql_execute",
+    "native_address": "0x81705a0",
+    "native_name": "vm_f_mysql_execute",
+    "record": "0x83d4f44",
+    "return_type": "2",
+    "table": "dbMysqlEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "437",
+    "name": "mysql_query",
+    "native_address": "0x8170550",
+    "native_name": "vm_f_mysql_query",
+    "record": "0x83d4f60",
+    "return_type": "2",
+    "table": "dbMysqlEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "438",
+    "name": "mysql_finalize",
+    "native_address": "0x8170500",
+    "native_name": "vm_f_mysql_finalize",
+    "record": "0x83d4f7c",
+    "return_type": "1",
+    "table": "dbMysqlEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "439",
+    "name": "mysql_fetch_record",
+    "native_address": "0x81704b0",
+    "native_name": "vm_f_mysql_fetch_record",
+    "record": "0x83d4f98",
+    "return_type": "255",
+    "table": "dbMysqlEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "440",
+    "name": "mysql_this_record",
+    "native_address": "0x8170d70",
+    "native_name": "vm_f_mysql_this_record",
+    "record": "0x83d4fb4",
+    "return_type": "255",
+    "table": "dbMysqlEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "441",
+    "name": "mysql_field_name",
+    "native_address": "0x8170be0",
+    "native_name": "vm_f_mysql_field_name",
+    "record": "0x83d4fd0",
+    "return_type": "255",
+    "table": "dbMysqlEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "442",
+    "name": "mysql_field_value",
+    "native_address": "0x8170a10",
+    "native_name": "vm_f_mysql_field_value",
+    "record": "0x83d4fec",
+    "return_type": "255",
+    "table": "dbMysqlEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "443",
+    "name": "mysql_num_fields",
+    "native_address": "0x81709a0",
+    "native_name": "vm_f_mysql_num_fields",
+    "record": "0x83d5008",
+    "return_type": "2",
+    "table": "dbMysqlEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "444",
+    "name": "mysql_num_records",
+    "native_address": "0x8170930",
+    "native_name": "vm_f_mysql_num_records",
+    "record": "0x83d5024",
+    "return_type": "2",
+    "table": "dbMysqlEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "445",
+    "name": "mysql_int_field",
+    "native_address": "0x8170820",
+    "native_name": "vm_f_mysql_int_field",
+    "record": "0x83d5040",
+    "return_type": "2",
+    "table": "dbMysqlEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "446",
+    "name": "mysql_get_insert_id",
+    "native_address": "0x8170450",
+    "native_name": "vm_f_mysql_get_insert_id",
+    "record": "0x83d505c",
+    "return_type": "4",
+    "table": "dbMysqlEfuns"
+  },
+  {
+    "call_sites": 494,
+    "index": "447",
+    "name": "mysql_bind_parameters",
+    "native_address": "0x81703b0",
+    "native_name": "vm_f_mysql_bind_parameters",
+    "record": "0x83d5078",
+    "return_type": "4",
+    "table": "dbMysqlEfuns"
+  },
+  {
+    "call_sites": 93,
+    "index": "448",
+    "name": "mysql_bind_parameters_arr",
+    "native_address": "0x8170330",
+    "native_name": "vm_f_mysql_bind_parameters_arr",
+    "record": "0x83d5094",
+    "return_type": "4",
+    "table": "dbMysqlEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "449",
+    "name": "mysql_escape_string",
+    "native_address": "0x816fee0",
+    "native_name": "vm_f_mysql_escape_string",
+    "record": "0x83d50b0",
+    "return_type": "4",
+    "table": "dbMysqlEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "450",
+    "name": "mysql_get_error",
+    "native_address": "0x816fe50",
+    "native_name": "vm_f_mysql_get_error",
+    "record": "0x83d50cc",
+    "return_type": "4",
+    "table": "dbMysqlEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "451",
+    "name": "mysql_get_connection_info",
+    "native_address": "0x816fda0",
+    "native_name": "vm_f_mysql_get_connection_info",
+    "record": "0x83d50e8",
+    "return_type": "255",
+    "table": "dbMysqlEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "452",
+    "name": "mysql_get_view_info",
+    "native_address": "0x816fbf0",
+    "native_name": "vm_f_mysql_get_view_info",
+    "record": "0x83d5104",
+    "return_type": "255",
+    "table": "dbMysqlEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "453",
+    "name": "mysql_get_version_info",
+    "native_address": "0x816fa30",
+    "native_name": "vm_f_mysql_get_version_info",
+    "record": "0x83d5120",
+    "return_type": "7",
+    "table": "dbMysqlEfuns"
+  },
+  {
+    "call_sites": 2,
+    "index": "454",
+    "name": "verigen_load_font",
+    "native_address": "0x81767f0",
+    "native_name": "vm_f_verigen_load_font",
+    "record": "0x83d5240",
+    "return_type": "2",
+    "table": "verigenEfuns"
+  },
+  {
+    "call_sites": 2,
+    "index": "455",
+    "name": "verigen_remove_font",
+    "native_address": "0x81767a0",
+    "native_name": "vm_f_verigen_remove_font",
+    "record": "0x83d525c",
+    "return_type": "2",
+    "table": "verigenEfuns"
+  },
+  {
+    "call_sites": 4,
+    "index": "456",
+    "name": "verigen_render",
+    "native_address": "0x8176750",
+    "native_name": "vm_f_verigen_render",
+    "record": "0x83d5278",
+    "return_type": "255",
+    "table": "verigenEfuns"
+  },
+  {
+    "call_sites": 2,
+    "index": "457",
+    "name": "verigen_render_chars",
+    "native_address": "0x8176700",
+    "native_name": "vm_f_verigen_render_chars",
+    "record": "0x83d5294",
+    "return_type": "255",
+    "table": "verigenEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "458",
+    "name": "verigen_new_background",
+    "native_address": "0x8177170",
+    "native_name": "vm_f_verigen_new_background",
+    "record": "0x83d52b0",
+    "return_type": "255",
+    "table": "verigenEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "459",
+    "name": "verigen_mem_stat",
+    "native_address": "0x8177270",
+    "native_name": "vm_f_verigen_mem_stat",
+    "record": "0x83d52cc",
+    "return_type": "7",
+    "table": "verigenEfuns"
+  },
+  {
+    "call_sites": 2,
+    "index": "460",
+    "name": "verigen_merge",
+    "native_address": "0x8176e70",
+    "native_name": "vm_f_verigen_merge",
+    "record": "0x83d52e8",
+    "return_type": "5",
+    "table": "verigenEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "461",
+    "name": "verigen_get_distortion_index",
+    "native_address": "0x8176de0",
+    "native_name": "vm_f_verigen_get_distortion_index",
+    "record": "0x83d5304",
+    "return_type": "2",
+    "table": "verigenEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "462",
+    "name": "verigen_set_no_distortion_char",
+    "native_address": "0x8176d30",
+    "native_name": "vm_f_verigen_set_no_distortion_char",
+    "record": "0x83d5320",
+    "return_type": "2",
+    "table": "verigenEfuns"
+  },
+  {
+    "call_sites": 1,
+    "index": "463",
+    "name": "verigen_take_word_glyph",
+    "native_address": "0x81766b0",
+    "native_name": "vm_f_verigen_take_word_glyph",
+    "record": "0x83d533c",
+    "return_type": "255",
+    "table": "verigenEfuns"
+  },
+  {
+    "call_sites": 2,
+    "index": "464",
+    "name": "verigen_layout_word_glyphs",
+    "native_address": "0x81766a0",
+    "native_name": "vm_f_verigen_layout_word_glyphs",
+    "record": "0x83d5358",
+    "return_type": "255",
+    "table": "verigenEfuns"
+  },
+  {
+    "call_sites": 2,
+    "index": "465",
+    "name": "verigen_transform_glyph",
+    "native_address": "0x8176690",
+    "native_name": "vm_f_verigen_transform_glyph",
+    "record": "0x83d5374",
+    "return_type": "255",
+    "table": "verigenEfuns"
+  },
+  {
+    "call_sites": 1,
+    "index": "466",
+    "name": "verigen_render_glyph",
+    "native_address": "0x81761d0",
+    "native_name": "vm_f_verigen_render_glyph",
+    "record": "0x83d5390",
+    "return_type": "255",
+    "table": "verigenEfuns"
+  },
+  {
+    "call_sites": 1,
+    "index": "467",
+    "name": "verigen_add_noise_to_glyph",
+    "native_address": "0x8176050",
+    "native_name": "vm_f_verigen_add_noise_to_glyph",
+    "record": "0x83d53ac",
+    "return_type": "1",
+    "table": "verigenEfuns"
+  },
+  {
+    "call_sites": 1,
+    "index": "468",
+    "name": "verigen_add_noise_to_pic",
+    "native_address": "0x8175ed0",
+    "native_name": "vm_f_verigen_add_noise_to_pic",
+    "record": "0x83d53c8",
+    "return_type": "1",
+    "table": "verigenEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "469",
+    "name": "verigen_scale_pic",
+    "native_address": "0x8175930",
+    "native_name": "vm_f_verigen_scale_pic",
+    "record": "0x83d53e4",
+    "return_type": "7",
+    "table": "verigenEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "470",
+    "name": "verigen_scale_glyph",
+    "native_address": "0x8175c20",
+    "native_name": "vm_f_verigen_scale_glyph",
+    "record": "0x83d5400",
+    "return_type": "7",
+    "table": "verigenEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "471",
+    "name": "break_utf8",
+    "native_address": "0x817b2a0",
+    "native_name": "vm_f_break_utf8",
+    "record": "0x83d5460",
+    "return_type": "6",
+    "table": "languageEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "472",
+    "name": "combine_utf8",
+    "native_address": "0x817b150",
+    "native_name": "vm_f_combine_utf8",
+    "record": "0x83d547c",
+    "return_type": "4",
+    "table": "languageEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "473",
+    "name": "get_internal_encoding",
+    "native_address": "0x817b110",
+    "native_name": "vm_f_get_internal_encoding",
+    "record": "0x83d5498",
+    "return_type": "4",
+    "table": "languageEfuns"
+  },
+  {
+    "call_sites": 23,
+    "index": "474",
+    "name": "iconv",
+    "native_address": "0x817af00",
+    "native_name": "vm_f_iconv",
+    "record": "0x83d54b4",
+    "return_type": "255",
+    "table": "languageEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "475",
+    "name": "set_io_translator",
+    "native_address": "0x817a900",
+    "native_name": "vm_f_set_io_translator",
+    "record": "0x83d54d0",
+    "return_type": "2",
+    "table": "languageEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "476",
+    "name": "set_internal_encoding",
+    "native_address": "0x817a7b0",
+    "native_name": "vm_f_set_internal_encoding",
+    "record": "0x83d54ec",
+    "return_type": "1",
+    "table": "languageEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "477",
+    "name": "strwidth",
+    "native_address": "0x817a710",
+    "native_name": "vm_f_strwidth",
+    "record": "0x83d5508",
+    "return_type": "2",
+    "table": "languageEfuns"
+  },
+  {
+    "call_sites": 1,
+    "index": "478",
+    "name": "allocate_id",
+    "native_address": "0x8078394",
+    "native_name": "vm_f_allocate_id",
+    "record": "0x83cb220",
+    "return_type": "2",
+    "table": "mapEfuns"
+  },
+  {
+    "call_sites": 2,
+    "index": "479",
+    "name": "build_map",
+    "native_address": "0x807bf80",
+    "native_name": "vm_f_build_map",
+    "record": "0x83cb23c",
+    "return_type": "2",
+    "table": "mapEfuns"
+  },
+  {
+    "call_sites": 118,
+    "index": "480",
+    "name": "calc_offset",
+    "native_address": "0x8079320",
+    "native_name": "vm_f_calc_offset",
+    "record": "0x83cb258",
+    "return_type": "2",
+    "table": "mapEfuns"
+  },
+  {
+    "call_sites": 1,
+    "index": "481",
+    "name": "check_steps",
+    "native_address": "0x8078568",
+    "native_name": "vm_f_check_steps",
+    "record": "0x83cb274",
+    "return_type": "2",
+    "table": "mapEfuns"
+  },
+  {
+    "call_sites": 1,
+    "index": "482",
+    "name": "destruct_map",
+    "native_address": "0x807bf20",
+    "native_name": "vm_f_destruct_map",
+    "record": "0x83cb290",
+    "return_type": "1",
+    "table": "mapEfuns"
+  },
+  {
+    "call_sites": 24,
+    "index": "483",
+    "name": "find_reachable",
+    "native_address": "0x807bc24",
+    "native_name": "vm_f_find_reachable",
+    "record": "0x83cb2ac",
+    "return_type": "2",
+    "table": "mapEfuns"
+  },
+  {
+    "call_sites": 1,
+    "index": "484",
+    "name": "find_reachable_ex",
+    "native_address": "0x807b828",
+    "native_name": "vm_f_find_reachable_ex",
+    "record": "0x83cb2c8",
+    "return_type": "2",
+    "table": "mapEfuns"
+  },
+  {
+    "call_sites": 1,
+    "index": "485",
+    "name": "free_id",
+    "native_address": "0x8079624",
+    "native_name": "vm_f_free_id",
+    "record": "0x83cb2e4",
+    "return_type": "1",
+    "table": "mapEfuns"
+  },
+  {
+    "call_sites": 1,
+    "index": "486",
+    "name": "get_all_objects",
+    "native_address": "0x807876c",
+    "native_name": "vm_f_get_all_objects",
+    "record": "0x83cb300",
+    "return_type": "6",
+    "table": "mapEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "487",
+    "name": "get_all_map",
+    "native_address": "0x8079a68",
+    "native_name": "vm_f_get_all_map",
+    "record": "0x83cb31c",
+    "return_type": "6",
+    "table": "mapEfuns"
+  },
+  {
+    "call_sites": 8,
+    "index": "488",
+    "name": "get_from_map",
+    "native_address": "0x807b54c",
+    "native_name": "vm_f_get_from_map",
+    "record": "0x83cb338",
+    "return_type": "6",
+    "table": "mapEfuns"
+  },
+  {
+    "call_sites": 8,
+    "index": "489",
+    "name": "get_in_polygens",
+    "native_address": "0x807b148",
+    "native_name": "vm_f_get_in_polygens",
+    "record": "0x83cb354",
+    "return_type": "6",
+    "table": "mapEfuns"
+  },
+  {
+    "call_sites": 13,
+    "index": "490",
+    "name": "get_in_sight",
+    "native_address": "0x807aee8",
+    "native_name": "vm_f_get_in_sight",
+    "record": "0x83cb370",
+    "return_type": "6",
+    "table": "mapEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "491",
+    "name": "get_map_events",
+    "native_address": "0x807adb4",
+    "native_name": "vm_f_get_map_events",
+    "record": "0x83cb38c",
+    "return_type": "6",
+    "table": "mapEfuns"
+  },
+  {
+    "call_sites": 7,
+    "index": "492",
+    "name": "get_map_info",
+    "native_address": "0x807ad5c",
+    "native_name": "vm_f_get_map_info",
+    "record": "0x83cb3a8",
+    "return_type": "7",
+    "table": "mapEfuns"
+  },
+  {
+    "call_sites": 1,
+    "index": "493",
+    "name": "get_map_plot",
+    "native_address": "0x807aca8",
+    "native_name": "vm_f_get_map_plot",
+    "record": "0x83cb3c4",
+    "return_type": "2",
+    "table": "mapEfuns"
+  },
+  {
+    "call_sites": 551,
+    "index": "494",
+    "name": "get_object_by_id",
+    "native_address": "0x8078844",
+    "native_name": "vm_f_get_object_by_id",
+    "record": "0x83cb3e0",
+    "return_type": "255",
+    "table": "mapEfuns"
+  },
+  {
+    "call_sites": 5,
+    "index": "495",
+    "name": "hook_map_event",
+    "native_address": "0x807aa24",
+    "native_name": "vm_f_hook_map_event",
+    "record": "0x83cb3fc",
+    "return_type": "2",
+    "table": "mapEfuns"
+  },
+  {
+    "call_sites": 1,
+    "index": "496",
+    "name": "init_id_pool",
+    "native_address": "0x80788c4",
+    "native_name": "vm_f_init_id_pool",
+    "record": "0x83cb418",
+    "return_type": "1",
+    "table": "mapEfuns"
+  },
+  {
+    "call_sites": 56,
+    "index": "497",
+    "name": "is_blocked",
+    "native_address": "0x807a978",
+    "native_name": "vm_f_is_blocked",
+    "record": "0x83cb434",
+    "return_type": "2",
+    "table": "mapEfuns"
+  },
+  {
+    "call_sites": 4,
+    "index": "498",
+    "name": "mark_map_plot",
+    "native_address": "0x807a8b4",
+    "native_name": "vm_f_mark_map_plot",
+    "record": "0x83cb450",
+    "return_type": "1",
+    "table": "mapEfuns"
+  },
+  {
+    "call_sites": 3,
+    "index": "499",
+    "name": "move_in_map",
+    "native_address": "0x807a630",
+    "native_name": "vm_f_move_in_map",
+    "record": "0x83cb46c",
+    "return_type": "1",
+    "table": "mapEfuns"
+  },
+  {
+    "call_sites": 3,
+    "index": "500",
+    "name": "new_view_point",
+    "native_address": "0x807a150",
+    "native_name": "vm_f_new_view_point",
+    "record": "0x83cb488",
+    "return_type": "2",
+    "table": "mapEfuns"
+  },
+  {
+    "call_sites": 2,
+    "index": "501",
+    "name": "put_in_map",
+    "native_address": "0x8079fdc",
+    "native_name": "vm_f_put_in_map",
+    "record": "0x83cb4a4",
+    "return_type": "1",
+    "table": "mapEfuns"
+  },
+  {
+    "call_sites": 3,
+    "index": "502",
+    "name": "read_map_info",
+    "native_address": "0x8078a8c",
+    "native_name": "vm_f_read_map_info",
+    "record": "0x83cb4c0",
+    "return_type": "255",
+    "table": "mapEfuns"
+  },
+  {
+    "call_sites": 2,
+    "index": "503",
+    "name": "remove_from_map",
+    "native_address": "0x8079e58",
+    "native_name": "vm_f_remove_from_map",
+    "record": "0x83cb4dc",
+    "return_type": "1",
+    "table": "mapEfuns"
+  },
+  {
+    "call_sites": 2,
+    "index": "504",
+    "name": "save_map_info",
+    "native_address": "0x8078ed8",
+    "native_name": "vm_f_save_map_info",
+    "record": "0x83cb4f8",
+    "return_type": "1",
+    "table": "mapEfuns"
+  },
+  {
+    "call_sites": 5,
+    "index": "505",
+    "name": "unhook_map_event",
+    "native_address": "0x8079cb0",
+    "native_name": "vm_f_unhook_map_event",
+    "record": "0x83cb514",
+    "return_type": "1",
+    "table": "mapEfuns"
+  },
+  {
+    "call_sites": 4,
+    "index": "506",
+    "name": "unmark_map_plot",
+    "native_address": "0x8079be8",
+    "native_name": "vm_f_unmark_map_plot",
+    "record": "0x83cb530",
+    "return_type": "1",
+    "table": "mapEfuns"
+  },
+  {
+    "call_sites": 1,
+    "index": "507",
+    "name": "get_id_in_map",
+    "native_address": "0x807c56c",
+    "native_name": "vm_f_get_id_in_map",
+    "record": "0x83cb54c",
+    "return_type": "6",
+    "table": "mapEfuns"
+  },
+  {
+    "call_sites": 14,
+    "index": "508",
+    "name": "bind_to_client",
+    "native_address": "0x804ee68",
+    "native_name": "vm_f_bind_to_client",
+    "record": "0x83cab40",
+    "return_type": "2",
+    "table": "magicEfuns"
+  },
+  {
+    "call_sites": 30,
+    "index": "509",
+    "name": "close_client",
+    "native_address": "0x804e5d8",
+    "native_name": "vm_f_close_client",
+    "record": "0x83cab5c",
+    "return_type": "1",
+    "table": "magicEfuns"
+  },
+  {
+    "call_sites": 44,
+    "index": "510",
+    "name": "set_client_attrib",
+    "native_address": "0x804d0ac",
+    "native_name": "vm_f_set_client_attrib",
+    "record": "0x83cab78",
+    "return_type": "2",
+    "table": "magicEfuns"
+  },
+  {
+    "call_sites": 2,
+    "index": "511",
+    "name": "enable_client_record",
+    "native_address": "0x804f94c",
+    "native_name": "vm_f_enable_client_record",
+    "record": "0x83cab94",
+    "return_type": "2",
+    "table": "magicEfuns"
+  },
+  {
+    "call_sites": 2,
+    "index": "512",
+    "name": "enable_client_snapshot",
+    "native_address": "0x804f840",
+    "native_name": "vm_f_enable_client_snapshot",
+    "record": "0x83cabb0",
+    "return_type": "2",
+    "table": "magicEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "513",
+    "name": "enable_message_stat",
+    "native_address": "0x804d3a0",
+    "native_name": "vm_f_enable_message_stat",
+    "record": "0x83cabcc",
+    "return_type": "1",
+    "table": "magicEfuns"
+  },
+  {
+    "call_sites": 15,
+    "index": "514",
+    "name": "get_all_client_no",
+    "native_address": "0x804d3f8",
+    "native_name": "vm_f_get_all_client_no",
+    "record": "0x83cabe8",
+    "return_type": "6",
+    "table": "magicEfuns"
+  },
+  {
+    "call_sites": 76,
+    "index": "515",
+    "name": "get_client_info",
+    "native_address": "0x804d478",
+    "native_name": "vm_f_get_client_info",
+    "record": "0x83cac04",
+    "return_type": "7",
+    "table": "magicEfuns"
+  },
+  {
+    "call_sites": 5,
+    "index": "516",
+    "name": "get_client_stat",
+    "native_address": "0x804d6f8",
+    "native_name": "vm_f_get_client_stat",
+    "record": "0x83cac20",
+    "return_type": "7",
+    "table": "magicEfuns"
+  },
+  {
+    "call_sites": 10,
+    "index": "517",
+    "name": "get_message_stat",
+    "native_address": "0x804daac",
+    "native_name": "vm_f_get_message_stat",
+    "record": "0x83cac3c",
+    "return_type": "255",
+    "table": "magicEfuns"
+  },
+  {
+    "call_sites": 1774,
+    "index": "518",
+    "name": "make8",
+    "native_address": "0x804db48",
+    "native_name": "vm_f_make8",
+    "record": "0x83cac58",
+    "return_type": "5",
+    "table": "magicEfuns"
+  },
+  {
+    "call_sites": 1365,
+    "index": "519",
+    "name": "make16",
+    "native_address": "0x804dc28",
+    "native_name": "vm_f_make16",
+    "record": "0x83cac74",
+    "return_type": "5",
+    "table": "magicEfuns"
+  },
+  {
+    "call_sites": 1,
+    "index": "520",
+    "name": "make16i",
+    "native_address": "0x804dd14",
+    "native_name": "vm_f_make16i",
+    "record": "0x83cac90",
+    "return_type": "5",
+    "table": "magicEfuns"
+  },
+  {
+    "call_sites": 5250,
+    "index": "521",
+    "name": "make32",
+    "native_address": "0x804ddf8",
+    "native_name": "vm_f_make32",
+    "record": "0x83cacac",
+    "return_type": "5",
+    "table": "magicEfuns"
+  },
+  {
+    "call_sites": 12,
+    "index": "522",
+    "name": "make32i",
+    "native_address": "0x804deec",
+    "native_name": "vm_f_make32i",
+    "record": "0x83cacc8",
+    "return_type": "5",
+    "table": "magicEfuns"
+  },
+  {
+    "call_sites": 136,
+    "index": "523",
+    "name": "make_iid",
+    "native_address": "0x804dfd4",
+    "native_name": "vm_f_make_iid",
+    "record": "0x83cace4",
+    "return_type": "5",
+    "table": "magicEfuns"
+  },
+  {
+    "call_sites": 3038,
+    "index": "524",
+    "name": "pad_buffer",
+    "native_address": "0x804ec6c",
+    "native_name": "vm_f_pad_buffer",
+    "record": "0x83cad00",
+    "return_type": "5",
+    "table": "magicEfuns"
+  },
+  {
+    "call_sites": 5,
+    "index": "525",
+    "name": "reset_client_stat",
+    "native_address": "0x804e0b4",
+    "native_name": "vm_f_reset_client_stat",
+    "record": "0x83cad1c",
+    "return_type": "1",
+    "table": "magicEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "526",
+    "name": "reset_message_stat",
+    "native_address": "0x804e148",
+    "native_name": "vm_f_reset_message_stat",
+    "record": "0x83cad38",
+    "return_type": "1",
+    "table": "magicEfuns"
+  },
+  {
+    "call_sites": 323,
+    "index": "527",
+    "name": "send_to_client",
+    "native_address": "0x804fdfc",
+    "native_name": "vm_f_send_to_client",
+    "record": "0x83cad54",
+    "return_type": "2",
+    "table": "magicEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "528",
+    "name": "set_internal_comm",
+    "native_address": "0x804e1b8",
+    "native_name": "vm_f_set_internal_comm",
+    "record": "0x83cad70",
+    "return_type": "2",
+    "table": "magicEfuns"
+  },
+  {
+    "call_sites": 8,
+    "index": "529",
+    "name": "start_service_on",
+    "native_address": "0x804e824",
+    "native_name": "vm_f_start_service_on",
+    "record": "0x83cad8c",
+    "return_type": "2",
+    "table": "magicEfuns"
+  },
+  {
+    "call_sites": 2,
+    "index": "530",
+    "name": "to_unsigned_str",
+    "native_address": "0x804e248",
+    "native_name": "vm_f_to_unsigned_str",
+    "record": "0x83cada8",
+    "return_type": "4",
+    "table": "magicEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "531",
+    "name": "get_bad_tick_times",
+    "native_address": "0x806e3a8",
+    "native_name": "vm_f_get_bad_tick_times",
+    "record": "0x83cadc4",
+    "return_type": "2",
+    "table": "magicEfuns"
+  },
+  {
+    "call_sites": 2,
+    "index": "532",
+    "name": "get_system_tick",
+    "native_address": "0x806e3bc",
+    "native_name": "vm_get_system_tick",
+    "record": "0x83cade0",
+    "return_type": "2",
+    "table": "magicEfuns"
+  },
+  {
+    "call_sites": 2,
+    "index": "533",
+    "name": "get_server_tick",
+    "native_address": "0x806e3d4",
+    "native_name": "vm_get_server_tick",
+    "record": "0x83cadfc",
+    "return_type": "2",
+    "table": "magicEfuns"
+  },
+  {
+    "call_sites": 1,
+    "index": "534",
+    "name": "set_mobile_client",
+    "native_address": "0x804e2b8",
+    "native_name": "vm_f_set_mobile_client",
+    "record": "0x83cae18",
+    "return_type": "2",
+    "table": "magicEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "535",
+    "name": "debug_client",
+    "native_address": "0x804e360",
+    "native_name": "vm_f_debug_client",
+    "record": "0x83cae34",
+    "return_type": "2",
+    "table": "magicEfuns"
+  },
+  {
+    "call_sites": 10,
+    "index": "536",
+    "name": "debug_on",
+    "native_address": "0x804e40c",
+    "native_name": "vm_f_debug_on",
+    "record": "0x83cae50",
+    "return_type": "2",
+    "table": "magicEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "537",
+    "name": "debug_off",
+    "native_address": "0x804e4a4",
+    "native_name": "vm_f_debug_off",
+    "record": "0x83cae6c",
+    "return_type": "2",
+    "table": "magicEfuns"
+  },
+  {
+    "call_sites": 1,
+    "index": "538",
+    "name": "convert_mapping_to_string",
+    "native_address": "0x807c904",
+    "native_name": "vm_f_convert_mapping_to_string",
+    "record": "0x83cb5a0",
+    "return_type": "4",
+    "table": "gameEfuns"
+  },
+  {
+    "call_sites": 1,
+    "index": "539",
+    "name": "explode_to_mapping",
+    "native_address": "0x807cab0",
+    "native_name": "vm_f_explode_to_mapping",
+    "record": "0x83cb5bc",
+    "return_type": "7",
+    "table": "gameEfuns"
+  },
+  {
+    "call_sites": 2,
+    "index": "540",
+    "name": "explode_to_mapping_ex",
+    "native_address": "0x807cc74",
+    "native_name": "vm_f_explode_to_mapping_ex",
+    "record": "0x83cb5d8",
+    "return_type": "7",
+    "table": "gameEfuns"
+  },
+  {
+    "call_sites": 25,
+    "index": "541",
+    "name": "random_attrib",
+    "native_address": "0x807d870",
+    "native_name": "vm_f_random_attrib",
+    "record": "0x83cb5f4",
+    "return_type": "2",
+    "table": "gameEfuns"
+  },
+  {
+    "call_sites": 1494,
+    "index": "542",
+    "name": "random_select",
+    "native_address": "0x807ceec",
+    "native_name": "vm_f_random_select",
+    "record": "0x83cb610",
+    "return_type": "2",
+    "table": "gameEfuns"
+  },
+  {
+    "call_sites": 5,
+    "index": "543",
+    "name": "set_valid_chinese",
+    "native_address": "0x807daf0",
+    "native_name": "vm_f_set_valid_chinese",
+    "record": "0x83cb62c",
+    "return_type": "1",
+    "table": "gameEfuns"
+  },
+  {
+    "call_sites": 55,
+    "index": "544",
+    "name": "std_attack",
+    "native_address": "0x807d30c",
+    "native_name": "vm_f_std_attack",
+    "record": "0x83cb648",
+    "return_type": "2",
+    "table": "gameEfuns"
+  },
+  {
+    "call_sites": 38,
+    "index": "545",
+    "name": "std_defense",
+    "native_address": "0x807d40c",
+    "native_name": "vm_f_std_defense",
+    "record": "0x83cb664",
+    "return_type": "2",
+    "table": "gameEfuns"
+  },
+  {
+    "call_sites": 34,
+    "index": "546",
+    "name": "std_mana",
+    "native_address": "0x807d5ec",
+    "native_name": "vm_f_std_mana",
+    "record": "0x83cb680",
+    "return_type": "2",
+    "table": "gameEfuns"
+  },
+  {
+    "call_sites": 113,
+    "index": "547",
+    "name": "std_life",
+    "native_address": "0x807d508",
+    "native_name": "vm_f_std_life",
+    "record": "0x83cb69c",
+    "return_type": "2",
+    "table": "gameEfuns"
+  },
+  {
+    "call_sites": 53,
+    "index": "548",
+    "name": "std_speed",
+    "native_address": "0x807d6d0",
+    "native_name": "vm_f_std_speed",
+    "record": "0x83cb6b8",
+    "return_type": "2",
+    "table": "gameEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "549",
+    "name": "valid_chinese",
+    "native_address": "0x807dd78",
+    "native_name": "vm_f_valid_chinese",
+    "record": "0x83cb6d4",
+    "return_type": "2",
+    "table": "gameEfuns"
+  },
+  {
+    "call_sites": 83,
+    "index": "550",
+    "name": "std_tao",
+    "native_address": "0x807d788",
+    "native_name": "vm_f_std_tao",
+    "record": "0x83cb6f0",
+    "return_type": "2",
+    "table": "gameEfuns"
+  },
+  {
+    "call_sites": 60,
+    "index": "551",
+    "name": "random_from_m_to_n",
+    "native_address": "0x807c79c",
+    "native_name": "vm_f_random_from_m_to_n",
+    "record": "0x83cb70c",
+    "return_type": "6",
+    "table": "gameEfuns"
+  },
+  {
+    "call_sites": 4,
+    "index": "552",
+    "name": "std_dodge",
+    "native_address": "0x807df40",
+    "native_name": "vm_f_std_dodge",
+    "record": "0x83cb728",
+    "return_type": "2",
+    "table": "gameEfuns"
+  },
+  {
+    "call_sites": 2,
+    "index": "553",
+    "name": "get_seed",
+    "native_address": "0x807e260",
+    "native_name": "vm_f_get_seed",
+    "record": "0x83cb7c0",
+    "return_type": "7",
+    "table": "kbdpwdEfuns"
+  },
+  {
+    "call_sites": 1,
+    "index": "554",
+    "name": "get_pwd",
+    "native_address": "0x807e3ac",
+    "native_name": "vm_f_get_pwd",
+    "record": "0x83cb7dc",
+    "return_type": "255",
+    "table": "kbdpwdEfuns"
+  },
+  {
+    "call_sites": 0,
+    "index": "555",
+    "name": "decrypt",
+    "native_address": "0x807e500",
+    "native_name": "vm_f_decrypt",
+    "record": "0x83cb7f8",
+    "return_type": "2",
+    "table": "kbdpwdEfuns"
+  },
+  {
+    "call_sites": 6,
+    "index": "556",
+    "name": "attach_illegal_list",
+    "native_address": "0x807e85c",
+    "native_name": "vm_f_attach_illegal_list",
+    "record": "0x83cb840",
+    "return_type": "2",
+    "table": "acMatchEfuns"
+  },
+  {
+    "call_sites": 8,
+    "index": "557",
+    "name": "detach_illegal_list",
+    "native_address": "0x807e74c",
+    "native_name": "vm_f_detach_illegal_list",
+    "record": "0x83cb85c",
+    "return_type": "1",
+    "table": "acMatchEfuns"
+  },
+  {
+    "call_sites": 6,
+    "index": "558",
+    "name": "find_illegal_string",
+    "native_address": "0x807e7b8",
+    "native_name": "vm_f_find_illegal_string",
+    "record": "0x83cb878",
+    "return_type": "2",
+    "table": "acMatchEfuns"
+  }
+]

@@ -1,0 +1,96 @@
+[
+  {
+    "classification": "observation",
+    "evidence_ids": [
+      "ev_be433ed21232d17e29f35f068109d8dd00bd74149a9fd91468d8680cabda6fe3"
+    ],
+    "id": "operands",
+    "statement": "06 is a two-parameter action; regular interpreter sign-extends par16 and par8 without the 07 argc mask."
+  },
+  {
+    "classification": "observation",
+    "evidence_ids": [
+      "ev_f7a9dddeb7edb2f09a574fb30d22a4cf7af8ca2f93f06fb113081ac12811e04f"
+    ],
+    "id": "context",
+    "statement": "06 copies 40 bytes of caller context, then changes bp, argNum, flags and efun pointer before the indirect native call."
+  },
+  {
+    "classification": "static-inference",
+    "evidence_ids": [
+      "ev_a83bf890b4b1b7b1e670ffd84e2caf433106c4b1521c658ee8c18bbdb826b9a1",
+      "ev_f7a9dddeb7edb2f09a574fb30d22a4cf7af8ca2f93f06fb113081ac12811e04f"
+    ],
+    "id": "slot-validation",
+    "statement": "Native capacity validation alone does not prove that a selected global function table entry is an efun. Rust must use an explicitly typed registry."
+  },
+  {
+    "classification": "observation",
+    "evidence_ids": [
+      "ev_80271c109d8b170b4dac40d9836f89a9722c8d04023f8e58b881ce2adc69c17e",
+      "ev_aaa80e13c3c88b9a455d4ba6569e69518889b1fcc26a966c8e433f5f746c7126",
+      "ev_d908ab85c3b336c3108d0113d535ec9b5582b136bb6b35d6ca5975a896519b6d",
+      "ev_f7a9dddeb7edb2f09a574fb30d22a4cf7af8ca2f93f06fb113081ac12811e04f"
+    ],
+    "id": "argument-access",
+    "statement": "vm_getArgument uses context bp+n and exact raw tag or mixed; dispatch does not invoke user-function 0d argument checking."
+  },
+  {
+    "classification": "observation",
+    "evidence_ids": [
+      "ev_2d1bf533fc49d724997930c78837496b2b5ad806bd6bcc2f6b7c0b0977d5a0ba",
+      "ev_c4611a370e790c377051346043a5c698f4e975dc9cadbcaf69c7b8520c207983",
+      "ev_e1d24b79fb397b943d57fc71f60c961852e9a969ae6f32b18bc0203f254b6ed4"
+    ],
+    "id": "callback-stack",
+    "statement": "Callbacks manage native stack values: abs edits its input, time pops argc then pushes its result."
+  },
+  {
+    "classification": "observation",
+    "evidence_ids": [
+      "ev_e86eb89e60b57e211e2efdce9ee32fdd5b9d630f548d18ca4e6b50e43675595c"
+    ],
+    "id": "return",
+    "statement": "Return count is bp+argc-sp: void requires zero then pushes Void; mixed permits zero or one; exact requires one matching raw tag."
+  },
+  {
+    "classification": "observation",
+    "evidence_ids": [
+      "ev_be433ed21232d17e29f35f068109d8dd00bd74149a9fd91468d8680cabda6fe3",
+      "ev_f7a9dddeb7edb2f09a574fb30d22a4cf7af8ca2f93f06fb113081ac12811e04f"
+    ],
+    "id": "flags",
+    "statement": "With ctrlFlags bit0x10 or bit4 (mask0x04), 06 skips immediate return; mask0x04 also sets PCB mask0x40. Other nonzero combinations without those masks take normal return."
+  },
+  {
+    "classification": "static-inference",
+    "evidence_ids": [
+      "ev_e1d24b79fb397b943d57fc71f60c961852e9a969ae6f32b18bc0203f254b6ed4",
+      "ev_1b494a92dfe3a6c5943ad427ec0ed25c0e15c7afc6932862b5221a85cb9ef7c7",
+      "ev_1f8d2b76898bf43dd8b24a370fca52729a822af343d566f8bc3216ef0b05c88f",
+      "ev_3aa06be9e85308cb2db022171ebc8b97169c4291640f5d39b9176041544f81e4",
+      "ev_a280841df7ce885805c45ba2b70f60cf4628279d7dbb748b1f816ba99a1ad2c4",
+      "ev_bfa094c0c50a60bb231088da09294746c5850d3124a018787a398173fdb3a0c2",
+      "ev_d9b9b1bd2399a379282bc11cbe8575420d3f316770e17d5a6ea5138fdee1b7a1",
+      "ev_e12a1e49fc37b28910632e7d22872a27b51e7c54f0c6478935e893b20f7c63fe"
+    ],
+    "id": "error-unwind",
+    "statement": "vm_error reaches errorQuit(-3); traceError drops values before unwinding contexts and skips object unExecRef for efun frames; doActions handles retained script catch state."
+  },
+  {
+    "classification": "design",
+    "evidence_ids": [],
+    "id": "sync-boundary",
+    "statement": "The first host interface is synchronous, value-only, explicitly opted in, without reentry or new script-catch error sites."
+  },
+  {
+    "classification": "unknown",
+    "evidence_ids": [
+      "ev_e86eb89e60b57e211e2efdce9ee32fdd5b9d630f548d18ca4e6b50e43675595c",
+      "ev_be433ed21232d17e29f35f068109d8dd00bd74149a9fd91468d8680cabda6fe3",
+      "ev_f7a9dddeb7edb2f09a574fb30d22a4cf7af8ca2f93f06fb113081ac12811e04f"
+    ],
+    "id": "scheduler",
+    "statement": "Flag masks are observed, but complete suspension, PCB resumption, callback hook and JIT scheduling contracts are outside this synchronous specification."
+  }
+]
