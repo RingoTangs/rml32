@@ -11,6 +11,22 @@ pub(crate) enum SlotPayload {
     Loop(Box<crate::vm::LoopControl>),
 }
 static NEXT_ID: AtomicU64 = AtomicU64::new(1);
+// Thread-local, scoped fault injection never changes production allocation behavior.
+#[cfg(test)]
+thread_local! {
+    static FAIL_AFTER: std::cell::Cell<Option<usize>> = const { std::cell::Cell::new(None) };
+}
+#[cfg(test)]
+pub(crate) fn with_allocation_failure<T>(after: usize, action: impl FnOnce() -> T) -> T {
+    struct Restore(Option<usize>);
+    impl Drop for Restore {
+        fn drop(&mut self) {
+            FAIL_AFTER.set(self.0);
+        }
+    }
+    let _restore = Restore(FAIL_AFTER.replace(Some(after)));
+    action()
+}
 #[derive(Debug)]
 pub(crate) struct Cell {
     id: u64,
@@ -18,6 +34,20 @@ pub(crate) struct Cell {
 }
 impl Cell {
     pub(crate) fn new(value: Value) -> Result<Rc<Self>, VmError> {
+        #[cfg(test)]
+        if FAIL_AFTER.with(|counter| match counter.get() {
+            Some(0) => true,
+            Some(n) => {
+                counter.set(Some(n - 1));
+                false
+            }
+            None => false,
+        }) {
+            return Err(VmError::new(
+                VmErrorKind::Limit,
+                "injected cell allocation failure",
+            ));
+        }
         let id = NEXT_ID
             .try_update(Ordering::Relaxed, Ordering::Relaxed, |n| n.checked_add(1))
             .map_err(|_| VmError::new(VmErrorKind::Limit, "cell ID space exhausted"))?;

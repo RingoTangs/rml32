@@ -1,6 +1,8 @@
 # rml32
 
-阶段2AA已完成全局35/36、全局07及06分派边界的静态取证与语料统计，锁定[显式银行及后续全局调用规格](docs/stage2aa-evidence/global-runtime-design.md)。见[全局语义报告](docs/vm-global-semantics.md)。本轮未改运行时、API或依赖，当前仍为70种限定操作码、359项Rust测试；全局存储和调用尚未实现。
+阶段2AB已实现显式共享全局表与 `35/36`，支持72种操作码的限定路径，384项Rust测试通过。新增 `GlobalBankSchema`、`prepare_program_with_globals`、全局表安装/移除/快照接口和公开枚举变体 `ReferenceKind::Global`。旧引用在移除后保留旧槽，重装不别名。见[全局运行时](docs/vm-global-runtime.md)和[当前矩阵](docs/stage2ab-evidence/matrix.md)。全局程序加载、全局07/06、真实启动、继承及生命周期内全局访问仍排除；依赖不变。
+
+阶段2AA完成了[全局语义取证](docs/vm-global-semantics.md)与[两批实施规格](docs/stage2aa-evidence/global-runtime-design.md)，其交付保留历史快照。第一批现由阶段2AB实现，第二批全局调用与帧上下文迁移尚未实施。
 
 阶段2Z已实现 `10` 的普通函数直接槽引用检查，共70种限定操作码、359项Rust测试通过。检查原始引用形态，不解引用或改变引用配额；`11`、生命周期及默认表达式仍排除。见[引用类型检查运行时](docs/vm-reference-type-check-runtime.md)与[当前矩阵](docs/stage2z-evidence/matrix.md)。
 
@@ -8,7 +10,7 @@
 
 阶段2X已完成范围查询 `45` 的静态取证、3,452处语料统计及后续受限 Bytes/Array 实现规格，见[范围查询语义与设计](docs/vm-range-semantics.md)。本轮运行时、公共API、依赖与68种限定操作码支持集合保持不变，`45`尚未实现。
 
-对 `magic_Linux32` 进行静态分析，并以 Rust 重写兼容驱动。当前已实现**只读离线加载器**和阶段 2Z 的**数值、共享容器、引用参数及类型检查、受限默认/可变参数、继承链接、初始化、构造回滚及受限跨对象调用、switch、整数/数组循环、范围查询及受限 catch VM 库**，支持 70 种操作码的限定路径。VM 仅在人工构造程序上验证，尚无可运行服务端；`rml32-inspect` 继续只读检查制品。
+对 `magic_Linux32` 进行静态分析，并以 Rust 重写兼容驱动。当前已实现**只读离线加载器**和阶段 2AB 的**数值、共享容器、引用参数及类型检查、受限默认/可变参数、继承链接、初始化、构造回滚及受限跨对象调用、switch、整数/数组循环、范围查询、显式全局表及受限 catch VM 库**，支持 72 种操作码的限定路径。VM 仅在人工构造程序上验证，尚无可运行服务端；`rml32-inspect` 继续只读检查制品。
 
 阶段2W已扩展实数/混合除零、整数余数零及相应复合赋值捕获，323项Rust测试通过。见[数值错误捕获](docs/vm-numeric-catch-runtime.md)和[当前矩阵](docs/stage2w-evidence/matrix.md)。仍为68种限定操作码；生命周期内catch、其他错误来源及回调/JIT保持限制。
 

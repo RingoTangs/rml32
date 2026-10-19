@@ -45,12 +45,65 @@ impl Object {
 pub struct ObjectStore {
     programs: BTreeMap<ProgramId, Rc<PreparedProgram>>,
     objects: BTreeMap<ObjectId, Object>,
+    globals: Option<Vec<Rc<crate::cell::Cell>>>,
     next_program: u32,
     next_object: u32,
 }
 impl ObjectStore {
     pub fn new() -> Self {
         Self::default()
+    }
+    /// Install writable synthetic slots atomically; no script code is executed.
+    pub fn register_globals(&mut self, values: Vec<Value>) -> Result<(), VmError> {
+        if self.globals.is_some() {
+            return Err(VmError::new(
+                VmErrorKind::InvalidState,
+                "global bank is already installed",
+            ));
+        }
+        if values.len() > crate::prepared::MAX_GLOBAL_SLOTS {
+            return Err(VmError::new(
+                VmErrorKind::Limit,
+                "global bank exceeds 32768 slots",
+            ));
+        }
+        // Validate each value independently: the bank is not an Array nesting level.
+        for value in &values {
+            match value {
+                Value::Array(a) => {
+                    a.depth()?;
+                }
+                Value::Mapping(m) => {
+                    m.depth()?;
+                }
+                _ => {}
+            }
+        }
+        let cells = values
+            .into_iter()
+            .map(crate::cell::Cell::new)
+            .collect::<Result<_, _>>()?;
+        self.globals = Some(cells);
+        Ok(())
+    }
+    /// Release bank roots. References already held by a VM retain their own cells.
+    pub fn remove_globals(&mut self) -> Result<(), VmError> {
+        self.globals
+            .take()
+            .map(|_| ())
+            .ok_or_else(|| VmError::new(VmErrorKind::InvalidState, "global bank is not installed"))
+    }
+    /// Shallow inspection snapshot; does not normalize deleted Object values.
+    pub fn global_values(&self) -> Result<Vec<Value>, VmError> {
+        self.global_cells()?
+            .iter()
+            .map(|cell| cell.read())
+            .collect()
+    }
+    pub(crate) fn global_cells(&self) -> Result<&[Rc<crate::cell::Cell>], VmError> {
+        self.globals
+            .as_deref()
+            .ok_or_else(|| VmError::new(VmErrorKind::InvalidState, "global bank is not installed"))
     }
     pub fn register_program(&mut self, program: PreparedProgram) -> Result<ProgramId, VmError> {
         let id = ProgramId(self.next_program);

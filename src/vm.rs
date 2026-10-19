@@ -42,6 +42,7 @@ impl Default for VmLimits {
 pub enum ReferenceKind {
     Local,
     Object,
+    Global,
     ArrayMember,
     MappingMember,
     Temporary,
@@ -57,6 +58,7 @@ pub enum StackSnapshot {
 }
 #[derive(Debug, Clone)]
 enum Target {
+    Global { cell: Rc<Cell> },
     Local { frame: u64, cell: Weak<Cell> },
     Object { object: ObjectId, cell: Weak<Cell> },
     Owned { cell: Rc<Cell>, kind: ReferenceKind },
@@ -71,6 +73,7 @@ struct Reference {
 impl Reference {
     fn kind(&self) -> ReferenceKind {
         match &self.target {
+            Target::Global { .. } => ReferenceKind::Global,
             Target::Local { .. } => ReferenceKind::Local,
             Target::Object { .. } => ReferenceKind::Object,
             Target::Owned { kind, .. } => *kind,
@@ -733,7 +736,7 @@ impl Vm {
                 cell.upgrade()
                     .ok_or_else(|| err(VmErrorKind::InvalidObject, "object slot was removed"))
             }
-            Target::Owned { cell, .. } => Ok(cell.clone()),
+            Target::Global { cell } | Target::Owned { cell, .. } => Ok(cell.clone()),
         }
     }
     fn writable(&self, r: &Reference, value: &Value) -> Result<Rc<Cell>, VmError> {
@@ -2222,6 +2225,62 @@ impl Vm {
                     StackEntry::Value(c) => c.replace(value),
                 }
             }
+            0x35 | 0x36 => {
+                if self.initialization.is_some()
+                    || self.construction.is_some()
+                    || !matches!(frame.body, FrameBody::Function(_))
+                {
+                    return Err(err(
+                        VmErrorKind::UnsupportedFeature,
+                        format!("global slot {a} is unavailable during lifecycle execution"),
+                    ));
+                }
+                if self.stack.len() >= self.limits.max_stack {
+                    return Err(err(
+                        VmErrorKind::Limit,
+                        format!("global slot {a}: value stack limit exceeded"),
+                    ));
+                }
+                let schema = p.global_schema.ok_or_else(|| {
+                    err(
+                        VmErrorKind::UnsupportedFeature,
+                        format!("global slot {a} requires explicit schema"),
+                    )
+                })?;
+                let cells = self.objects.global_cells().map_err(|mut e| {
+                    e.message = format!("global slot {a}: {}", e.message).into();
+                    e
+                })?;
+                if cells.len() != schema.slots {
+                    return Err(err(
+                        VmErrorKind::InvalidState,
+                        format!("global slot {a}: bank capacity differs from program schema"),
+                    ));
+                }
+                let cell = usize::try_from(a)
+                    .ok()
+                    .and_then(|i| cells.get(i))
+                    .cloned()
+                    .ok_or_else(|| {
+                        err(VmErrorKind::Bounds, format!("global slot {a} outside bank"))
+                    })?;
+                let reference = Reference {
+                    id: cell.id(),
+                    target: Target::Global { cell },
+                    readonly: false,
+                    _lease: None,
+                };
+                let entry = if opcode == 0x35 {
+                    self.read_reference(&reference).map_err(|mut e| {
+                        e.message = format!("global slot {a}: {}", e.message).into();
+                        e
+                    })?
+                } else {
+                    StackEntry::Reference(reference)
+                };
+                self.stack.push(entry);
+                Ok(())
+            }
             0x3d => {
                 let value = self.copy_value(&self.object_cell(&frame, a)?.read()?);
                 self.push(value)
@@ -2648,6 +2707,7 @@ mod tests {
             return_attrib: 0,
         };
         let program = PreparedProgram {
+            global_schema: None,
             source: "synthetic-loop".into(),
             variable_count: 0,
             strings: vec![],
@@ -2995,6 +3055,7 @@ mod catch_tests {
             return_attrib: 0,
         };
         let program = PreparedProgram {
+            global_schema: None,
             source: "synthetic-catch".into(),
             variable_count: 0,
             strings: vec![],
@@ -3308,5 +3369,161 @@ mod numeric_fault_tests {
         assert!(source.is_none());
         assert_eq!(vm.stack().unwrap(), before);
         assert_eq!(cell.read().unwrap(), Value::Int(9));
+    }
+}
+
+#[cfg(test)]
+mod global_tests {
+    use super::*;
+    use crate::prepared::GlobalBankSchema;
+
+    fn fixture(opcode: u8, schema: Option<GlobalBankSchema>) -> (Vm, ObjectId) {
+        let function = PreparedFunction {
+            index: 0,
+            name: None,
+            private: false,
+            instructions: Rc::new(vec![Instruction {
+                opcode,
+                operands: [0, 0],
+                offset: 42,
+            }]),
+            origin: None,
+            pool: None,
+            function_base: 0,
+            variable_base: 0,
+            local_count: 0,
+            args: vec![],
+            min_args: 0,
+            max_args: 0,
+            variadic: false,
+            entry: None,
+            return_type: 255,
+            return_attrib: 0,
+        };
+        let program = PreparedProgram {
+            source: "synthetic-global".into(),
+            global_schema: schema,
+            variable_count: 0,
+            strings: vec![],
+            functions: BTreeMap::from([(0, function)]),
+            unimplemented: Default::default(),
+            initializations: None,
+            init_order: vec![],
+            lifecycles: None,
+            methods: None,
+        };
+        let mut objects = ObjectStore::new();
+        let p = objects.register_program(program).unwrap();
+        let o = objects.create(p, vec![]).unwrap();
+        objects
+            .register_globals(vec![Value::Object(ObjectId(999))])
+            .unwrap();
+        let mut vm = Vm::new(objects);
+        vm.frames.push(Frame {
+            id: 1,
+            program: p,
+            object: o,
+            body: FrameBody::Function(0),
+            pc: 0,
+            bp: 0,
+            argc: 0,
+            entered: true,
+            phase: EntryPhase::Body,
+        });
+        (vm, o)
+    }
+    #[test]
+    fn globals_copy_allocation_and_borrow_failures_preserve_source_and_stack() {
+        for allocation in [false, true] {
+            let (mut vm, _) = fixture(0x35, Some(GlobalBankSchema { slots: 1 }));
+            let source = vm.objects.global_cells().unwrap()[0].clone();
+            let fail = || {
+                let error = vm.run(1).unwrap_err();
+                assert_eq!(
+                    error.kind,
+                    if allocation {
+                        VmErrorKind::Limit
+                    } else {
+                        VmErrorKind::InvalidState
+                    }
+                );
+                assert!(vm.stack.is_empty());
+            };
+            if allocation {
+                crate::cell::with_allocation_failure(0, fail);
+            } else {
+                source.with_read_borrow_for_test(fail);
+            }
+            assert_eq!(source.read().unwrap(), Value::Object(ObjectId(999)));
+        }
+    }
+    #[test]
+    fn globals_install_allocation_failure_does_not_publish_partial_bank() {
+        let mut objects = ObjectStore::new();
+        crate::cell::with_allocation_failure(1, || {
+            assert_eq!(
+                objects
+                    .register_globals(vec![Value::Int(1), Value::Int(2)])
+                    .unwrap_err()
+                    .kind,
+                VmErrorKind::Limit
+            )
+        });
+        assert!(objects.global_values().is_err());
+        objects.register_globals(vec![Value::Int(3)]).unwrap();
+        assert_eq!(objects.global_values().unwrap(), vec![Value::Int(3)]);
+    }
+    #[test]
+    fn globals_reference_creation_does_not_read_or_normalize_borrowed_source() {
+        let (mut vm, _) = fixture(0x36, Some(GlobalBankSchema { slots: 1 }));
+        let source = vm.objects.global_cells().unwrap()[0].clone();
+        source.with_read_borrow_for_test(|| {
+            vm.run(1).unwrap();
+        });
+        assert_eq!(source.read().unwrap(), Value::Object(ObjectId(999)));
+        assert!(matches!(vm.stack[0], StackEntry::Reference(_)));
+    }
+    #[test]
+    fn globals_runtime_requires_schema_even_for_internal_instruction() {
+        let (mut vm, _) = fixture(0x35, None);
+        assert_eq!(vm.run(1).unwrap_err().kind, VmErrorKind::UnsupportedFeature);
+    }
+    #[test]
+    fn globals_lifecycle_helpers_reject_access_and_clean_up_managed_objects() {
+        for opcode in [0x35, 0x36] {
+            for phase in [
+                None,
+                Some(LifecyclePhase::Create),
+                Some(LifecyclePhase::RollbackDestruct),
+            ] {
+                let (mut vm, o) = fixture(opcode, Some(GlobalBankSchema { slots: 1 }));
+                if let Some(phase) = phase {
+                    let program = vm.frames[0].program;
+                    vm.construction = Some(ConstructionTask {
+                        object: o,
+                        program,
+                        phase,
+                        position: 0,
+                        constitution: 0,
+                        parameter: None,
+                        primary: None,
+                    });
+                } else {
+                    vm.initialization = Some(InitializationTask {
+                        object: o,
+                        position: 0,
+                        constitution: 0,
+                    });
+                }
+                assert_eq!(vm.run(1).unwrap_err().kind, VmErrorKind::UnsupportedFeature);
+                assert!(vm.objects.get(o).is_err());
+                assert!(vm.stack.is_empty());
+                assert!(vm.frames.is_empty());
+                assert_eq!(
+                    vm.objects.global_values().unwrap(),
+                    vec![Value::Object(ObjectId(999))]
+                );
+            }
+        }
     }
 }

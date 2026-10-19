@@ -652,7 +652,7 @@ fn supported_types_have_explicit_legacy_tags() {
         [0, 1, 2, 4, 10]
     );
     let supported: BTreeSet<_> = rml32::prepared::SUPPORTED_OPCODES.iter().collect();
-    assert_eq!(supported.len(), 70);
+    assert_eq!(supported.len(), 72);
     assert_eq!(ByteString::new(b"\xff").bytes, b"\xff");
 }
 
@@ -8895,4 +8895,591 @@ fn ref_checks_rollback_helper_rejection_preserves_primary_error_and_cleans_task(
     );
     assert!(vm.objects().get(o).is_err());
     assert!(vm.stack().unwrap().is_empty());
+}
+
+// Stage 2AB: explicit synthetic banks only; no real global programs are executed.
+fn global_machine(p: ProgramImage, values: Vec<Value>, slots: usize) -> (Vm, rml32::ObjectId) {
+    let mut store = ObjectStore::new();
+    let vars = p.max_vars as usize;
+    let prepared =
+        rml32::prepare_program_with_globals(p, rml32::GlobalBankSchema { slots }).unwrap();
+    let program = store.register_program(prepared).unwrap();
+    let object = store.create(program, vec![Value::Undefined; vars]).unwrap();
+    store.register_globals(values).unwrap();
+    (Vm::new(store), object)
+}
+
+#[test]
+fn globals_preparation_is_explicit_and_checks_signed_slot_boundaries() {
+    use rml32::{GlobalBankSchema, prepare_program_with_globals};
+    for op in [0x35, 0x36] {
+        for (slots, slot, expected) in [
+            (0, 0, Some(VmErrorKind::InvalidProgram)),
+            (1, -1, Some(VmErrorKind::InvalidProgram)),
+            (1, 1, Some(VmErrorKind::InvalidProgram)),
+            (32768, 32767, None),
+            (32769, 0, Some(VmErrorKind::Limit)),
+        ] {
+            let p = image(&[fun(0, 0, 0, 255, &[(slot, -128, op)])], 0, &[]);
+            assert_eq!(
+                prepare_program(p.clone()).unwrap_err().kind,
+                VmErrorKind::UnsupportedFeature
+            );
+            let result = prepare_program_with_globals(p, GlobalBankSchema { slots });
+            if let Some(kind) = expected {
+                let error = result.unwrap_err();
+                assert_eq!(error.kind, kind);
+                if kind == VmErrorKind::InvalidProgram {
+                    assert_eq!(error.pc, Some(2));
+                    assert!(error.offset.is_some());
+                }
+            } else {
+                assert!(result.is_ok());
+            }
+        }
+    }
+    assert!(
+        prepare_program_with_globals(
+            image(&[fun(0, 0, 0, 1, &[])], 0, &[]),
+            GlobalBankSchema { slots: 0 }
+        )
+        .is_ok()
+    );
+}
+
+#[test]
+fn globals_preparation_does_not_enable_other_global_features_or_init() {
+    for node in [(0, 0, 0x06), (559, -128, 0x07)] {
+        let p = image(&[fun(0, 0, 0, 255, &[node])], 0, &[]);
+        assert_eq!(
+            rml32::prepare_program_with_globals(p, rml32::GlobalBankSchema { slots: 1 })
+                .unwrap_err()
+                .kind,
+            VmErrorKind::UnsupportedFeature
+        );
+    }
+    let mut p = image(&[fun(0, 0, 0, 255, &[(4, 0, 0x3b)])], 0, &[]);
+    p.mode = ProgramMode::Global;
+    assert_eq!(
+        rml32::prepare_program_with_globals(p.clone(), rml32::GlobalBankSchema { slots: 1 })
+            .unwrap_err()
+            .kind,
+        VmErrorKind::UnsupportedFeature
+    );
+    p.mode = ProgramMode::Object;
+    p.init.nodes = vec![(0, 0, 0x35)]; // Ignored by this preparation path.
+    let (mut vm, o) = global_machine(p, vec![Value::Int(8)], 1);
+    vm.start(o, 0, vec![]).unwrap();
+    returns(&mut vm, Value::Int(4));
+}
+
+#[test]
+fn globals_store_install_remove_empty_and_capacity_contracts() {
+    let mut s = ObjectStore::new();
+    assert_eq!(
+        s.global_values().unwrap_err().kind,
+        VmErrorKind::InvalidState
+    );
+    assert_eq!(
+        s.remove_globals().unwrap_err().kind,
+        VmErrorKind::InvalidState
+    );
+    assert_eq!(
+        s.register_globals(vec![Value::Undefined; 32769])
+            .unwrap_err()
+            .kind,
+        VmErrorKind::Limit
+    );
+    assert!(s.global_values().is_err());
+    s.register_globals(vec![]).unwrap();
+    assert_eq!(s.global_values().unwrap(), vec![]);
+    assert_eq!(
+        s.register_globals(vec![]).unwrap_err().kind,
+        VmErrorKind::InvalidState
+    );
+    s.remove_globals().unwrap();
+    s.register_globals(vec![Value::Undefined; 32768]).unwrap();
+    assert_eq!(s.global_values().unwrap().len(), 32768);
+    s.remove_globals().unwrap();
+    let mut nested = Value::Int(1);
+    for _ in 0..64 {
+        nested = Value::array(vec![nested]).unwrap();
+    }
+    s.register_globals(vec![nested]).unwrap(); // No artificial 65th bank level.
+}
+
+#[test]
+fn globals_missing_and_mismatched_banks_report_current_instruction() {
+    for values in [None, Some(vec![]), Some(vec![Value::Int(1), Value::Int(2)])] {
+        let p = rml32::prepare_program_with_globals(
+            image(&[fun(0, 0, 0, 255, &[(0, 0, 0x35)])], 0, &[]),
+            rml32::GlobalBankSchema { slots: 1 },
+        )
+        .unwrap();
+        let mut s = ObjectStore::new();
+        let id = s.register_program(p).unwrap();
+        let o = s.create(id, vec![]).unwrap();
+        if let Some(values) = values {
+            s.register_globals(values).unwrap();
+        }
+        let mut vm = Vm::new(s);
+        vm.start(o, 0, vec![]).unwrap();
+        let e = vm.run(100).unwrap_err();
+        assert_eq!(e.kind, VmErrorKind::InvalidState);
+        assert_eq!(e.pc, Some(2));
+        assert!(e.message.contains("global slot 0"));
+        assert_eq!(e.object, Some(o));
+    }
+}
+
+#[test]
+fn globals_read_is_shallow_and_normalizes_only_direct_deleted_objects() {
+    let shared = [
+        Value::bytes(b"shared"),
+        Value::array(vec![Value::Int(7)]).unwrap(),
+        Value::mapping(vec![(Value::Int(1), Value::Int(9))]).unwrap(),
+    ];
+    for value in shared {
+        let (mut vm, o) = global_machine(
+            image(&[fun(0, 0, 0, 255, &[(0, 127, 0x35)])], 0, &[]),
+            vec![value.clone()],
+            1,
+        );
+        vm.start(o, 0, vec![]).unwrap();
+        returns(&mut vm, value.clone());
+        assert_eq!(vm.objects().global_values().unwrap(), vec![value]);
+    }
+    let dead = deleted_global_test_object();
+    for (op, expected) in [(0x35, Value::Undefined), (0x36, dead.clone())] {
+        let (mut vm, o) = global_machine(
+            image(
+                &[fun(0, 0, 0, 255, &[(0, 0, op), (0, 0, 0x33), (7, 0, 0x3b)])],
+                0,
+                &[],
+            ),
+            vec![dead.clone()],
+            1,
+        );
+        assert_eq!(vm.objects().global_values().unwrap(), vec![dead.clone()]);
+        vm.start(o, 0, vec![]).unwrap();
+        returns(&mut vm, Value::Int(7));
+        assert_eq!(vm.objects().global_values().unwrap(), vec![expected]);
+    }
+    let nested = Value::array(vec![dead]).unwrap();
+    let (mut vm, o) = global_machine(
+        image(&[fun(0, 0, 0, 255, &[(0, 0, 0x35)])], 0, &[]),
+        vec![nested.clone()],
+        1,
+    );
+    vm.start(o, 0, vec![]).unwrap();
+    returns(&mut vm, nested);
+}
+
+#[test]
+fn globals_full_stack_failure_preserves_dead_source_and_operands() {
+    let dead = deleted_global_test_object();
+    let (vm, o) = global_machine(
+        image(&[fun(0, 0, 0, 255, &[(1, 0, 0x3b), (0, 0, 0x35)])], 0, &[]),
+        vec![dead.clone()],
+        1,
+    );
+    let mut vm = Vm::with_limits(
+        vm.into_objects(),
+        VmLimits {
+            max_stack: 1,
+            ..VmLimits::default()
+        },
+    );
+    vm.start(o, 0, vec![]).unwrap();
+    assert_eq!(vm.run(3).unwrap(), RunOutcome::BudgetExhausted);
+    let before = vm.stack().unwrap();
+    assert_eq!(vm.run(1).unwrap_err().kind, VmErrorKind::Limit);
+    assert_eq!(vm.stack().unwrap(), before);
+    assert_eq!(vm.objects().global_values().unwrap(), vec![dead]);
+}
+
+#[test]
+fn globals_root_write_and_compound_update_do_not_consume_member_quota() {
+    let nodes = [
+        (0, 0, 0x36),
+        (9, 0, 0x3b),
+        (0, 0, 0x04),
+        (0, 0, 0x33),
+        (0, 0, 0x36),
+        (1, 0, 0x22),
+        (0, 0, 0x35),
+    ];
+    let (vm, o) = global_machine(
+        image(&[fun(0, 0, 0, 255, &nodes)], 0, &[]),
+        vec![Value::Int(1)],
+        1,
+    );
+    let mut vm = Vm::with_limits(
+        vm.into_objects(),
+        VmLimits {
+            max_reference_cells: 0,
+            ..VmLimits::default()
+        },
+    );
+    vm.start(o, 0, vec![]).unwrap();
+    returns(&mut vm, Value::Int(10));
+    assert_eq!(vm.objects().global_values().unwrap(), vec![Value::Int(10)]);
+}
+
+#[test]
+fn globals_nested_reference_parameters_write_through_without_bank_checks() {
+    let caller = fun(
+        0,
+        0,
+        0,
+        255,
+        &[(0, 0, 0x36), (1, 1, 0x07), (0, 0, 0x33), (0, 0, 0x35)],
+    );
+    let forward = fun(1, 1, 0, 255, &[(0, 0, 0x39), (2, 1, 0x07)]);
+    let callee = fun(2, 1, 0, 1, &[(9, 0, 0x3b), (0, 0, 0x4d), (0, 0, 0x33)]);
+    let mut p = image(&[caller, forward, callee], 0, &[]);
+    ref_arg(&mut p, 1, 0, 2, 0);
+    ref_arg(&mut p, 2, 0, 2, 0);
+    let (mut vm, o) = global_machine(p, vec![Value::Int(3)], 1);
+    vm.start(o, 0, vec![]).unwrap();
+    returns(&mut vm, Value::Int(9));
+}
+
+#[test]
+fn globals_old_root_survives_removal_and_new_bank_has_distinct_identity() {
+    use rml32::{ReferenceKind, StackSnapshot};
+    let nodes = [
+        (0, 0, 0x36),
+        (0, 0, 0x14),
+        (0, 0, 0x33),
+        (0, 0, 0x36),
+        (0, 0, 0x33),
+        (0, 0, 0x35),
+    ];
+    let (mut vm, o) = global_machine(
+        image(&[fun(0, 0, 0, 255, &nodes)], 0, &[]),
+        vec![Value::Int(3)],
+        1,
+    );
+    vm.start(o, 0, vec![]).unwrap();
+    vm.run(3).unwrap();
+    let old = match vm.stack().unwrap()[0] {
+        StackSnapshot::Reference {
+            kind: ReferenceKind::Global,
+            target_id,
+            valid: true,
+        } => target_id,
+        _ => panic!(),
+    };
+    vm.objects_mut().remove_globals().unwrap();
+    vm.run(1).unwrap();
+    // 14 consumes the detached root and reads its retained value.
+    assert_eq!(
+        vm.stack().unwrap(),
+        vec![StackSnapshot::Value(Value::Int(3))]
+    );
+    vm.objects_mut()
+        .register_globals(vec![Value::Int(8)])
+        .unwrap();
+    vm.run(2).unwrap();
+    let new = match vm.stack().unwrap()[0] {
+        StackSnapshot::Reference {
+            kind: ReferenceKind::Global,
+            target_id,
+            valid: true,
+        } => target_id,
+        _ => panic!(),
+    };
+    assert_ne!(old, new);
+    returns(&mut vm, Value::Int(8));
+}
+
+#[test]
+fn globals_detached_root_writes_do_not_alias_reinstalled_bank() {
+    let nodes = [
+        (0, 0, 0x36),
+        (9, 0, 0x3b),
+        (0, 0, 0x04),
+        (0, 0, 0x33),
+        (0, 0, 0x35),
+    ];
+    let (mut vm, o) = global_machine(
+        image(&[fun(0, 0, 0, 255, &nodes)], 0, &[]),
+        vec![Value::Int(3)],
+        1,
+    );
+    vm.start(o, 0, vec![]).unwrap();
+    vm.run(3).unwrap();
+    vm.objects_mut().remove_globals().unwrap();
+    vm.objects_mut()
+        .register_globals(vec![Value::Int(8)])
+        .unwrap();
+    vm.run(2).unwrap();
+    assert_eq!(
+        vm.stack().unwrap(),
+        vec![rml32::StackSnapshot::Value(Value::Int(9))]
+    );
+    assert_eq!(vm.objects().global_values().unwrap(), vec![Value::Int(8)]);
+    returns(&mut vm, Value::Int(8));
+}
+
+#[test]
+fn globals_detached_container_members_keep_existing_mapping_array_lifetimes() {
+    for (container, expected) in [
+        (Value::array(vec![Value::Int(7)]).unwrap(), Value::Int(7)),
+        (
+            Value::mapping(vec![(Value::Int(0), Value::Int(7))]).unwrap(),
+            Value::Undefined,
+        ),
+    ] {
+        let nodes = [(0, 0, 0x36), (0, 0, 0x3b), (0, 0, 0x44), (0, 0, 0x14)];
+        let (mut vm, o) = global_machine(
+            image(&[fun(0, 0, 0, 255, &nodes)], 0, &[]),
+            vec![container],
+            1,
+        );
+        vm.start(o, 0, vec![]).unwrap();
+        vm.run(3).unwrap();
+        vm.objects_mut().remove_globals().unwrap();
+        returns(&mut vm, expected);
+    }
+}
+
+#[test]
+fn globals_member_queries_still_obey_member_quota() {
+    let nodes = [(0, 0, 0x36), (0, 0, 0x3b), (0, 0, 0x44)];
+    let (vm, o) = global_machine(
+        image(&[fun(0, 0, 0, 255, &nodes)], 0, &[]),
+        vec![Value::array(vec![Value::Int(7)]).unwrap()],
+        1,
+    );
+    let mut vm = Vm::with_limits(
+        vm.into_objects(),
+        VmLimits {
+            max_reference_cells: 0,
+            ..VmLimits::default()
+        },
+    );
+    vm.start(o, 0, vec![]).unwrap();
+    assert_eq!(vm.run(100).unwrap_err().kind, VmErrorKind::Limit);
+    assert_eq!(vm.objects().global_values().unwrap().len(), 1);
+}
+
+#[test]
+fn globals_objects_share_bank_but_keep_independent_object_variables() {
+    let nodes = [(0, 0, 0x36), (1, 0, 0x22), (0, 0, 0x35), (0, 0, 0x4e)];
+    let (mut vm, a) = global_machine(
+        image(&[fun(0, 0, 0, 255, &nodes)], 1, &[]),
+        vec![Value::Int(0)],
+        1,
+    );
+    let program = vm.objects().get(a).unwrap().program();
+    let b = vm
+        .objects_mut()
+        .create(program, vec![Value::Int(99)])
+        .unwrap();
+    vm.start(a, 0, vec![]).unwrap();
+    returns(&mut vm, Value::Int(1));
+    vm.start(b, 0, vec![]).unwrap();
+    returns(&mut vm, Value::Int(2));
+    assert_eq!(
+        vm.objects().get(a).unwrap().variables().unwrap(),
+        vec![Value::Int(1)]
+    );
+    assert_eq!(
+        vm.objects().get(b).unwrap().variables().unwrap(),
+        vec![Value::Int(2)]
+    );
+    assert_eq!(
+        vm.into_objects().global_values().unwrap(),
+        vec![Value::Int(2)]
+    );
+}
+
+#[test]
+fn globals_zero_and_single_step_budgets_match_continuous_execution() {
+    for step in [false, true] {
+        let (mut vm, o) = global_machine(
+            image(
+                &[fun(
+                    0,
+                    0,
+                    0,
+                    255,
+                    &[(0, 0, 0x36), (1, 0, 0x22), (0, 0, 0x35)],
+                )],
+                0,
+                &[],
+            ),
+            vec![Value::Int(1)],
+            1,
+        );
+        vm.start(o, 0, vec![]).unwrap();
+        let before = vm.stack().unwrap();
+        assert_eq!(vm.run(0).unwrap(), RunOutcome::BudgetExhausted);
+        assert_eq!(vm.stack().unwrap(), before);
+        assert_eq!(vm.objects().global_values().unwrap(), vec![Value::Int(1)]);
+        if step {
+            loop {
+                if let RunOutcome::Finished(result) = vm.run(1).unwrap() {
+                    assert_eq!(result, Completion::Returned(Value::Int(2)));
+                    break;
+                }
+            }
+        } else {
+            returns(&mut vm, Value::Int(2));
+        }
+    }
+}
+
+fn deleted_global_test_object() -> Value {
+    let (mut vm, id) = machine(image(&[fun(0, 0, 0, 1, &[])], 0, &[]), vec![]);
+    vm.objects_mut().remove(id).unwrap();
+    // Use a second identity so it cannot alias the first object in the test VM.
+    let p = vm
+        .objects_mut()
+        .register_program(prepare_program(image(&[fun(0, 0, 0, 1, &[])], 0, &[])).unwrap())
+        .unwrap();
+    let id = vm.objects_mut().create(p, vec![]).unwrap();
+    vm.objects_mut().remove(id).unwrap();
+    Value::Object(id)
+}
+
+#[test]
+fn globals_reference_shape_and_loop_binding_reuse_existing_rules() {
+    let caller = fun(0, 0, 0, 255, &[(0, 0, 0x36), (1, 1, 0x07)]);
+    let leaf = fun(1, 1, 0, 255, &[(0, 127, 0x10)]);
+    let mut p = image(&[caller, leaf], 0, &[]);
+    ref_arg(&mut p, 1, 0, 255, 0);
+    let (mut vm, o) = global_machine(p, vec![Value::Int(7)], 1);
+    vm.start(o, 0, vec![]).unwrap();
+    returns(&mut vm, Value::Int(1));
+    let mut f = numeric_loop(1, 3, 1, &[]);
+    f.nodes[5] = (0, 0, 0x36); // Loop variable binds the global root.
+    let last = f.nodes.len() - 2;
+    f.nodes[last] = (0, 0, 0x35);
+    let (mut vm, o) = global_machine(image(&[f], 0, &[]), vec![Value::Int(1)], 1);
+    vm.start(o, 0, vec![]).unwrap();
+    returns(&mut vm, Value::Int(4));
+    assert_eq!(vm.objects().global_values().unwrap(), vec![Value::Int(4)]);
+}
+
+#[test]
+fn globals_failures_inside_catch_remain_fatal_and_do_not_expand_catch_sources() {
+    let (mut vm, o) = global_machine(
+        image(&[catch_fun(0, 0, 0, 255, &[(0, 0, 0x35)])], 0, &[]),
+        vec![Value::Int(1)],
+        1,
+    );
+    vm.objects_mut().remove_globals().unwrap();
+    vm.start(o, 0, vec![]).unwrap();
+    let e = vm.run(100).unwrap_err();
+    assert_eq!(e.kind, VmErrorKind::InvalidState);
+    assert_eq!(vm.run(100).unwrap_err(), e);
+}
+
+#[test]
+fn globals_default_and_lifecycle_preparation_stay_closed() {
+    let f = optional_fun(0, 1, 0, 255, &[vec![(0, 0, 0x35)]], &[(0, 0, 0x37)]);
+    let mut p = image(&[f], 0, &[]);
+    optional_meta(&mut p, 0, 0, false, &[1]);
+    assert_eq!(
+        rml32::prepare_program_with_globals(p, rml32::GlobalBankSchema { slots: 1 })
+            .unwrap_err()
+            .kind,
+        VmErrorKind::UnsupportedFeature
+    );
+    for op in [0x35, 0x36] {
+        let mut p = image(&[fun(0, 0, 0, 1, &[])], 0, &[]);
+        set_init(&mut p, &[(0, 0, op), (0, 0, 0x48)]);
+        let c = init_catalog(p);
+        assert_eq!(
+            rml32::prepare_initializable_program(&c, "root", rml32::LinkLimits::default())
+                .unwrap_err()
+                .kind,
+            VmErrorKind::UnsupportedFeature
+        );
+    }
+}
+
+#[test]
+fn globals_cross_object_frames_check_the_callee_schema() {
+    use rml32::{GlobalBankSchema, MethodBinding, prepare_program_with_globals};
+    let caller = image(
+        &[fun(
+            0,
+            1,
+            0,
+            255,
+            &[(0, 0, 0x40), (0, 0, 0x37), (0, 0, 0x08)],
+        )],
+        0,
+        &[b"read\0"],
+    );
+    for slots in [1, 2] {
+        let target = prepare_program_with_globals(
+            image(&[fun(0, 0, 0, 255, &[(0, 0, 0x35)])], 0, &[]),
+            GlobalBankSchema { slots },
+        )
+        .unwrap()
+        .with_methods(vec![MethodBinding {
+            name: b"read".to_vec(),
+            slot: 0,
+        }])
+        .unwrap();
+        let (mut vm, o) = global_machine(caller.clone(), vec![Value::Int(7)], 1);
+        let p = vm.objects_mut().register_program(target).unwrap();
+        let target = vm.objects_mut().create(p, vec![]).unwrap();
+        vm.start(o, 0, vec![Value::Object(target)]).unwrap();
+        if slots == 1 {
+            returns(&mut vm, Value::Int(7));
+        } else {
+            let e = vm.run(100).unwrap_err();
+            assert_eq!(e.kind, VmErrorKind::InvalidState);
+            assert_eq!(e.object, Some(target));
+        }
+    }
+}
+
+#[test]
+fn globals_highest_signed_slot_executes_and_new_reads_require_current_bank() {
+    let p = image(&[fun(0, 0, 0, 255, &[(32767, -128, 0x35)])], 0, &[]);
+    let mut values = vec![Value::Undefined; 32768];
+    values[32767] = Value::Int(42);
+    let (mut vm, o) = global_machine(p, values, 32768);
+    vm.start(o, 0, vec![]).unwrap();
+    returns(&mut vm, Value::Int(42));
+    let (mut vm, o) = global_machine(
+        image(
+            &[fun(
+                0,
+                0,
+                0,
+                255,
+                &[(0, 0, 0x36), (0, 0, 0x14), (0, 0, 0x33), (0, 0, 0x35)],
+            )],
+            0,
+            &[],
+        ),
+        vec![Value::Int(3)],
+        1,
+    );
+    vm.start(o, 0, vec![]).unwrap();
+    vm.run(3).unwrap();
+    vm.objects_mut().remove_globals().unwrap();
+    vm.run(2).unwrap();
+    assert_eq!(vm.run(1).unwrap_err().kind, VmErrorKind::InvalidState);
+}
+
+#[test]
+fn globals_do_not_change_legacy_programs_that_do_not_access_the_bank() {
+    let (mut vm, o) = machine(image(&[fun(0, 0, 0, 255, &[(9, 0, 0x3b)])], 0, &[]), vec![]);
+    for values in [vec![], vec![Value::Int(7)]] {
+        vm.objects_mut().register_globals(values).unwrap();
+        vm.start(o, 0, vec![]).unwrap();
+        returns(&mut vm, Value::Int(9));
+        vm.objects_mut().remove_globals().unwrap();
+    }
+    vm.start(o, 0, vec![]).unwrap();
+    returns(&mut vm, Value::Int(9));
 }
