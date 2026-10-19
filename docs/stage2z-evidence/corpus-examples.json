@@ -1,0 +1,422 @@
+[
+  {
+    "source": "gs/pack_data/lib_gs32.pak/gs/daemons/taskcompilerd.o",
+    "source_package": "gs/pack_data/lib_gs32.pak",
+    "member_sha256": "bcbc0bb261c3ab4b922e7b9109036564d5e9cb5033f493ba5f80aaf21854306a",
+    "function": "match_scenario",
+    "function_index": 13,
+    "segment_kind": "functions",
+    "segment_offset": 12186,
+    "nodes_offset": 12666,
+    "node_count": 295,
+    "pc": 285,
+    "prototype": {
+      "min_args": 0,
+      "max_args": 1,
+      "local_count": 10
+    },
+    "argument_flags": [
+      {
+        "index": 0,
+        "flag": 0
+      }
+    ],
+    "member_node_offset": 13806,
+    "raw_operands": [
+      0,
+      0
+    ],
+    "snippet": [
+      {
+        "pc": 282,
+        "member_node_offset": 13794,
+        "node": [
+          0,
+          0,
+          51
+        ]
+      },
+      {
+        "pc": 283,
+        "member_node_offset": 13798,
+        "node": [
+          0,
+          0,
+          46
+        ]
+      },
+      {
+        "pc": 284,
+        "member_node_offset": 13802,
+        "node": [
+          -11,
+          -10,
+          80
+        ]
+      },
+      {
+        "pc": 285,
+        "member_node_offset": 13806,
+        "node": [
+          0,
+          0,
+          16
+        ]
+      },
+      {
+        "pc": 286,
+        "member_node_offset": 13810,
+        "node": [
+          4,
+          2,
+          33
+        ]
+      },
+      {
+        "pc": 287,
+        "member_node_offset": 13814,
+        "node": [
+          -2,
+          0,
+          55
+        ]
+      },
+      {
+        "pc": 288,
+        "member_node_offset": 13818,
+        "node": [
+          0,
+          0,
+          57
+        ]
+      }
+    ]
+  },
+  {
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/daemons/configd.o",
+    "source_package": "aaa/pack_data/lib_aaa32.pak",
+    "member_sha256": "769f9fd76c19dea7dbad7815dd235e7f7cbc8a9df12e2a98038466cbf92237ea",
+    "function": "expand_privilege_group",
+    "function_index": 49,
+    "segment_kind": "functions",
+    "segment_offset": 22327,
+    "nodes_offset": 22547,
+    "node_count": 98,
+    "pc": 85,
+    "prototype": {
+      "min_args": 2,
+      "max_args": 3,
+      "local_count": 6
+    },
+    "argument_flags": [
+      {
+        "index": 0,
+        "flag": 0
+      },
+      {
+        "index": 1,
+        "flag": 0
+      },
+      {
+        "index": 2,
+        "flag": 0
+      }
+    ],
+    "member_node_offset": 22887,
+    "raw_operands": [
+      2,
+      0
+    ],
+    "snippet": [
+      {
+        "pc": 82,
+        "member_node_offset": 22875,
+        "node": [
+          0,
+          0,
+          46
+        ]
+      },
+      {
+        "pc": 83,
+        "member_node_offset": 22879,
+        "node": [
+          0,
+          0,
+          46
+        ]
+      },
+      {
+        "pc": 84,
+        "member_node_offset": 22883,
+        "node": [
+          -55,
+          -6,
+          80
+        ]
+      },
+      {
+        "pc": 85,
+        "member_node_offset": 22887,
+        "node": [
+          2,
+          0,
+          16
+        ]
+      },
+      {
+        "pc": 86,
+        "member_node_offset": 22891,
+        "node": [
+          4,
+          2,
+          33
+        ]
+      },
+      {
+        "pc": 87,
+        "member_node_offset": 22895,
+        "node": [
+          -2,
+          0,
+          55
+        ]
+      },
+      {
+        "pc": 88,
+        "member_node_offset": 22899,
+        "node": [
+          2,
+          0,
+          57
+        ]
+      }
+    ]
+  },
+  {
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/daemons/accountd.o",
+    "source_package": "aaa/pack_data/lib_aaa32.pak",
+    "member_sha256": "fbad2268542cac34b915222e0e6ba038e390b5098d06295834c707654c4bbd05",
+    "function": "temp_block_account",
+    "function_index": 165,
+    "segment_kind": "functions",
+    "segment_offset": 63255,
+    "nodes_offset": 63531,
+    "node_count": 139,
+    "pc": 129,
+    "prototype": {
+      "min_args": 4,
+      "max_args": 5,
+      "local_count": 5
+    },
+    "argument_flags": [
+      {
+        "index": 0,
+        "flag": 0
+      },
+      {
+        "index": 1,
+        "flag": 0
+      },
+      {
+        "index": 2,
+        "flag": 0
+      },
+      {
+        "index": 3,
+        "flag": 0
+      },
+      {
+        "index": 4,
+        "flag": 1
+      }
+    ],
+    "member_node_offset": 64047,
+    "raw_operands": [
+      4,
+      0
+    ],
+    "snippet": [
+      {
+        "pc": 126,
+        "member_node_offset": 64035,
+        "node": [
+          0,
+          0,
+          46
+        ]
+      },
+      {
+        "pc": 127,
+        "member_node_offset": 64039,
+        "node": [
+          0,
+          0,
+          59
+        ]
+      },
+      {
+        "pc": 128,
+        "member_node_offset": 64043,
+        "node": [
+          -123,
+          3,
+          33
+        ]
+      },
+      {
+        "pc": 129,
+        "member_node_offset": 64047,
+        "node": [
+          4,
+          0,
+          16
+        ]
+      },
+      {
+        "pc": 130,
+        "member_node_offset": 64051,
+        "node": [
+          4,
+          2,
+          33
+        ]
+      },
+      {
+        "pc": 131,
+        "member_node_offset": 64055,
+        "node": [
+          -3,
+          0,
+          55
+        ]
+      },
+      {
+        "pc": 132,
+        "member_node_offset": 64059,
+        "node": [
+          4,
+          0,
+          57
+        ]
+      }
+    ]
+  },
+  {
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/daemons/accountd.o",
+    "source_package": "aaa/pack_data/lib_aaa32.pak",
+    "member_sha256": "fbad2268542cac34b915222e0e6ba038e390b5098d06295834c707654c4bbd05",
+    "function": "block_account",
+    "function_index": 37,
+    "segment_kind": "functions",
+    "segment_offset": 25246,
+    "nodes_offset": 25662,
+    "node_count": 220,
+    "pc": 74,
+    "prototype": {
+      "min_args": 5,
+      "max_args": 7,
+      "local_count": 5
+    },
+    "argument_flags": [
+      {
+        "index": 0,
+        "flag": 0
+      },
+      {
+        "index": 1,
+        "flag": 0
+      },
+      {
+        "index": 2,
+        "flag": 0
+      },
+      {
+        "index": 3,
+        "flag": 0
+      },
+      {
+        "index": 4,
+        "flag": 0
+      },
+      {
+        "index": 5,
+        "flag": 1
+      },
+      {
+        "index": 6,
+        "flag": 0
+      }
+    ],
+    "member_node_offset": 25958,
+    "raw_operands": [
+      5,
+      0
+    ],
+    "snippet": [
+      {
+        "pc": 71,
+        "member_node_offset": 25946,
+        "node": [
+          0,
+          0,
+          3
+        ]
+      },
+      {
+        "pc": 72,
+        "member_node_offset": 25950,
+        "node": [
+          0,
+          0,
+          51
+        ]
+      },
+      {
+        "pc": 73,
+        "member_node_offset": 25954,
+        "node": [
+          0,
+          0,
+          46
+        ]
+      },
+      {
+        "pc": 74,
+        "member_node_offset": 25958,
+        "node": [
+          5,
+          0,
+          16
+        ]
+      },
+      {
+        "pc": 75,
+        "member_node_offset": 25962,
+        "node": [
+          4,
+          2,
+          33
+        ]
+      },
+      {
+        "pc": 76,
+        "member_node_offset": 25966,
+        "node": [
+          -3,
+          0,
+          55
+        ]
+      },
+      {
+        "pc": 77,
+        "member_node_offset": 25970,
+        "node": [
+          5,
+          0,
+          57
+        ]
+      }
+    ]
+  }
+]

@@ -1,10 +1,12 @@
 # rml32
 
+阶段2Z已实现 `10` 的普通函数直接槽引用检查，共70种限定操作码、359项Rust测试通过。检查原始引用形态，不解引用或改变引用配额；`11`、生命周期及默认表达式仍排除。见[引用类型检查运行时](docs/vm-reference-type-check-runtime.md)与[当前矩阵](docs/stage2z-evidence/matrix.md)。
+
 阶段2Y已实现 `45` 的普通函数 Bytes/Array 只读范围查询，支持闭区间、尾部计数、NUL补零及数组源槽规范化，共69种限定操作码、344项Rust测试通过。见[范围查询运行时](docs/vm-range-runtime.md)和[当前矩阵](docs/stage2y-evidence/matrix.md)。Buffer、范围写入、生命周期及默认表达式仍排除。
 
 阶段2X已完成范围查询 `45` 的静态取证、3,452处语料统计及后续受限 Bytes/Array 实现规格，见[范围查询语义与设计](docs/vm-range-semantics.md)。本轮运行时、公共API、依赖与68种限定操作码支持集合保持不变，`45`尚未实现。
 
-对 `magic_Linux32` 进行静态分析，并以 Rust 重写兼容驱动。当前已实现**只读离线加载器**和阶段 2Y 的**数值、共享容器、引用参数、受限默认/可变参数、继承链接、初始化、构造回滚及受限跨对象调用、switch、整数/数组循环、范围查询及受限 catch VM 库**，支持 69 种操作码的限定路径。VM 仅在人工构造程序上验证，尚无可运行服务端；`rml32-inspect` 继续只读检查制品。
+对 `magic_Linux32` 进行静态分析，并以 Rust 重写兼容驱动。当前已实现**只读离线加载器**和阶段 2Z 的**数值、共享容器、引用参数及类型检查、受限默认/可变参数、继承链接、初始化、构造回滚及受限跨对象调用、switch、整数/数组循环、范围查询及受限 catch VM 库**，支持 70 种操作码的限定路径。VM 仅在人工构造程序上验证，尚无可运行服务端；`rml32-inspect` 继续只读检查制品。
 
 阶段2W已扩展实数/混合除零、整数余数零及相应复合赋值捕获，323项Rust测试通过。见[数值错误捕获](docs/vm-numeric-catch-runtime.md)和[当前矩阵](docs/stage2w-evidence/matrix.md)。仍为68种限定操作码；生命周期内catch、其他错误来源及回调/JIT保持限制。
 
@@ -44,6 +46,8 @@ python3 tests/compare_corpus.py --report target/stage1-validation.json
 比较器核对既有压缩证据中的成员、完整程序结构及继承记录。已知 `dba/pack_data/etc.pak/etc` 解压异常必须报告；直接执行 `corpus --root .` 因此返回 1，而比较器确认只有该已知异常时返回 0。新增错误不能被忽略。
 
 ## 文档与边界
+
+- [阶段 2Z 直接槽引用类型检查](docs/vm-reference-type-check-runtime.md)
 
 - [阶段 2Y 受限范围查询运行时](docs/vm-range-runtime.md)
 

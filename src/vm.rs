@@ -1592,6 +1592,23 @@ impl Vm {
         self.frames.last_mut().unwrap().pc = pc as usize;
         Ok(())
     }
+    // vm_checkIsRefType @0x08091750 inspects the raw tag before pushing.
+    // In particular, a dangling reference still has tag 8; do not resolve it.
+    fn check_reference_type(&mut self, frame: &Frame, index: i32) -> Result<(), VmError> {
+        if self.initialization.is_some() || self.construction.is_some() {
+            return Err(err(
+                VmErrorKind::UnsupportedFeature,
+                "reference type check during lifecycle task",
+            ));
+        }
+        if self.stack.len() >= self.limits.max_stack {
+            return Err(err(VmErrorKind::Limit, "value stack limit exceeded"));
+        }
+        let is_reference = self
+            .slot(index, frame)
+            .is_some_and(|pos| matches!(self.stack[pos], StackEntry::Reference(_)));
+        self.push(Value::Int(i32::from(is_reference)))
+    }
     // vm_queryRange @0x0808fd04: inclusive endpoints, bit0=end-relative,
     // bit1=begin-relative. Wide temporaries avoid native signed overflow.
     fn range_bounds(
@@ -1856,6 +1873,7 @@ impl Vm {
         let [a, b] = operands;
         let n = self.stack.len();
         match opcode {
+            0x10 => self.check_reference_type(&frame, a),
             0x45 => self.query_range(&frame, f.local_count, a),
             0x2c => self.register_script_catch(&frame, &f, a),
             0x1a => self.end_script_catch(&frame),
@@ -2799,6 +2817,151 @@ mod range_tests {
             Vm::range_bounds(0, &Value::Int(i32::MIN), &Value::Int(i32::MAX), 0).unwrap(),
             0..0
         );
+    }
+}
+
+#[cfg(test)]
+mod reference_type_tests {
+    use super::*;
+
+    #[test]
+    fn ref_checks_dangling_and_readonly_references_keep_raw_identity() {
+        for target in [
+            Target::Local {
+                frame: 999,
+                cell: Weak::new(),
+            },
+            Target::Local {
+                frame: 10,
+                cell: Weak::new(),
+            },
+            Target::Object {
+                object: ObjectId(999),
+                cell: Weak::new(),
+            },
+        ] {
+            let mut vm = super::catch_tests::fixture(0);
+            let frame = vm.frames[0].clone();
+            vm.stack.push(StackEntry::Reference(Reference {
+                id: 123,
+                target,
+                readonly: true,
+                _lease: None,
+            }));
+            let before = vm.stack().unwrap();
+            vm.check_reference_type(&frame, -1).unwrap();
+            assert_eq!(vm.stack().unwrap()[0], before[0]);
+            assert_eq!(vm.value(1).unwrap(), Value::Int(1));
+        }
+    }
+
+    #[test]
+    fn ref_checks_hidden_loop_and_dead_object_values_are_not_read_or_normalized() {
+        let mut vm = super::catch_tests::fixture(2);
+        let frame = vm.frames[0].clone();
+        let Value::Array(array) = Value::array(vec![Value::Int(7)]).unwrap() else {
+            unreachable!()
+        };
+        let StackEntry::Value(control) = vm.stack[0].clone() else {
+            unreachable!()
+        };
+        Cell::replace_payload_batch(vec![(
+            control.clone(),
+            SlotPayload::Loop(Box::new(LoopControl::for_test(array.clone()))),
+        )])
+        .unwrap();
+        let StackEntry::Value(dead) = vm.stack[1].clone() else {
+            unreachable!()
+        };
+        dead.replace(Value::Object(ObjectId(999))).unwrap();
+        let refs = array.header_refs();
+        control.with_read_borrow_for_test(|| {
+            vm.check_reference_type(&frame, -1).unwrap();
+        });
+        vm.check_reference_type(&frame, -2).unwrap();
+        assert_eq!(vm.value(2).unwrap(), Value::Int(0));
+        assert_eq!(vm.value(3).unwrap(), Value::Int(0));
+        assert!(control.is_loop().unwrap());
+        assert_eq!(array.header_refs(), refs);
+        assert_eq!(dead.read().unwrap(), Value::Object(ObjectId(999)));
+    }
+
+    #[test]
+    fn ref_checks_full_reference_quota_neither_reserves_nor_clones_a_lease() {
+        let mut vm = super::catch_tests::fixture(0);
+        let frame = vm.frames[0].clone();
+        vm.limits.max_reference_cells = 1;
+        let cell = Cell::new(Value::Object(ObjectId(999))).unwrap();
+        let reference = vm
+            .owned_reference(cell.clone(), ReferenceKind::Temporary)
+            .unwrap();
+        let lease_count = Rc::strong_count(reference._lease.as_ref().unwrap());
+        vm.stack.push(StackEntry::Reference(reference));
+        let cell_refs = Rc::strong_count(&cell);
+        vm.check_reference_type(&frame, -1).unwrap();
+        let StackEntry::Reference(reference) = &vm.stack[0] else {
+            unreachable!()
+        };
+        assert_eq!(
+            Rc::strong_count(reference._lease.as_ref().unwrap()),
+            lease_count
+        );
+        assert_eq!(Rc::strong_count(&cell), cell_refs);
+        assert_eq!(cell.read().unwrap(), Value::Object(ObjectId(999)));
+        assert_eq!(vm.reference_cells.len(), 1);
+        assert_eq!(vm.value(1).unwrap(), Value::Int(1));
+        let another = Cell::new(Value::Int(8)).unwrap();
+        assert_eq!(
+            vm.owned_reference(another.clone(), ReferenceKind::Temporary)
+                .unwrap_err()
+                .kind,
+            VmErrorKind::Limit
+        );
+        vm.stack.clear();
+        assert!(
+            vm.owned_reference(another, ReferenceKind::Temporary)
+                .is_ok()
+        );
+    }
+
+    #[test]
+    fn ref_checks_lookup_uses_actual_frame_bounds_and_signed_indices() {
+        let mut vm = super::catch_tests::fixture(0);
+        vm.stack.push(StackEntry::Reference(Reference {
+            id: 1,
+            target: Target::Local {
+                frame: 999,
+                cell: Weak::new(),
+            },
+            readonly: false,
+            _lease: None,
+        }));
+        vm.push(Value::Int(8)).unwrap();
+        let mut frame = vm.frames[0].clone();
+        frame.bp = 2;
+        frame.argc = 1; // First stack entry is caller prefix, never an argument here.
+        for (index, expected) in [(0, 0), (1, 0), (i32::MAX, 0), (i32::MIN, 0)] {
+            vm.check_reference_type(&frame, index).unwrap();
+            assert_eq!(vm.value(vm.stack.len() - 1).unwrap(), Value::Int(expected));
+            vm.stack.pop();
+        }
+        frame.argc = 2;
+        vm.check_reference_type(&frame, 1).unwrap();
+        assert_eq!(vm.value(2).unwrap(), Value::Int(1));
+    }
+
+    #[test]
+    fn ref_checks_limit_failure_preserves_slots_and_reference_registry() {
+        let mut vm = super::catch_tests::fixture(1);
+        let frame = vm.frames[0].clone();
+        vm.limits.max_stack = 1;
+        let before = vm.stack().unwrap();
+        assert_eq!(
+            vm.check_reference_type(&frame, -1).unwrap_err().kind,
+            VmErrorKind::Limit
+        );
+        assert_eq!(vm.stack().unwrap(), before);
+        assert!(vm.reference_cells.is_empty());
     }
 }
 

@@ -589,7 +589,7 @@ fn unsupported_program_shapes_fail_explicitly() {
         prepare_program(global).unwrap_err().kind,
         VmErrorKind::UnsupportedFeature
     );
-    for (opcode, b) in [(6, 0), (7, -128), (0x46, 0), (0x10, 0)] {
+    for (opcode, b) in [(6, 0), (7, -128), (0x46, 0), (0x11, 0)] {
         let p = image(&[fun(0, 0, 0, 255, &[(0, b, opcode)])], 0, &[]);
         let e = prepare_program(p).unwrap_err();
         assert_eq!(e.kind, VmErrorKind::UnsupportedFeature);
@@ -652,7 +652,7 @@ fn supported_types_have_explicit_legacy_tags() {
         [0, 1, 2, 4, 10]
     );
     let supported: BTreeSet<_> = rml32::prepared::SUPPORTED_OPCODES.iter().collect();
-    assert_eq!(supported.len(), 69);
+    assert_eq!(supported.len(), 70);
     assert_eq!(ByteString::new(b"\xff").bytes, b"\xff");
 }
 
@@ -8567,4 +8567,332 @@ fn numeric_catch_reference_quota_failure_before_zero_remains_fatal() {
     let e = vm.run(100).unwrap_err();
     assert_eq!((e.kind, e.pc), (VmErrorKind::Limit, Some(5)));
     assert_eq!(vm.run(100).unwrap_err(), e);
+}
+
+// Stage 2Z: direct reference shape checks, using synthetic programs only.
+#[test]
+fn ref_checks_plain_values_extreme_indices_and_ignored_par8() {
+    for index in [0, 1, i16::MAX, i16::MIN, -1, -2] {
+        let (mut vm, o) = machine(
+            image(&[fun(0, 1, 0, 255, &[(index, -128, 0x10)])], 0, &[]),
+            vec![],
+        );
+        vm.start(o, 0, vec![Value::Int(9)]).unwrap();
+        returns(&mut vm, Value::Int(0));
+    }
+}
+
+#[test]
+fn ref_checks_nested_forwarded_reference_preserves_source() {
+    let caller = fun(0, 1, 0, 255, &[(0, 0, 0x39), (1, 1, 0x07)]);
+    let middle = fun(1, 1, 0, 255, &[(0, 0, 0x39), (2, 1, 0x07)]);
+    let leaf = fun(2, 1, 0, 255, &[(0, 127, 0x10)]);
+    let mut p = image(&[caller, middle, leaf], 0, &[]);
+    ref_arg(&mut p, 1, 0, 255, 0);
+    ref_arg(&mut p, 2, 0, 255, 0);
+    let (mut vm, o) = machine(p, vec![]);
+    vm.start(o, 0, vec![Value::Int(9)]).unwrap();
+    returns(&mut vm, Value::Int(1));
+    assert_eq!(vm.frame_depth(), 0);
+}
+
+#[test]
+fn ref_checks_negative_local_and_calculation_slots_before_result_push() {
+    for (locals, body, expected) in [
+        (1, vec![(-1, 0, 0x10)], 0),
+        (0, vec![(0, 0, 0x39), (-1, 0, 0x10)], 1),
+        (1, vec![(0, 0, 0x39), (-2, 0, 0x10)], 1),
+        (0, vec![(0, 0, 0x39), (-2, 0, 0x10)], 0),
+        (0, vec![(9, 0, 0x3b), (-1, 0, 0x10)], 0),
+    ] {
+        let (mut vm, o) = machine(image(&[fun(0, 1, locals, 255, &body)], 0, &[]), vec![]);
+        vm.start(o, 0, vec![Value::Int(7)]).unwrap();
+        vm.run(2 + body.len()).unwrap();
+        assert_eq!(
+            vm.stack().unwrap().last(),
+            Some(&rml32::StackSnapshot::Value(Value::Int(expected)))
+        );
+    }
+}
+
+#[test]
+fn ref_checks_optional_default_and_variadic_slots() {
+    for (defaults, lengths, variadic, argc) in [
+        (vec![], vec![0], false, 0),
+        (vec![vec![(7, 0, 0x3b)]], vec![1], false, 0),
+        (vec![], vec![0], false, 1),
+        (vec![], vec![0], true, 3),
+    ] {
+        let f = optional_fun(
+            0,
+            1,
+            0,
+            255,
+            &defaults,
+            &[(0, 0, 0x10), (2, 0, 0x10), (2, 0, 0x16)],
+        );
+        let mut p = image(&[f], 0, &[]);
+        optional_meta(&mut p, 0, 0, variadic, &lengths);
+        let (mut vm, o) = machine(p, vec![]);
+        vm.start(o, 0, vec![Value::Int(9); argc]).unwrap();
+        assert_eq!(returned_array(&mut vm), vec![Value::Int(0), Value::Int(0)]);
+    }
+    let caller = fun(0, 1, 0, 255, &[(0, 0, 0x39), (1, 1, 0x07)]);
+    let leaf = optional_fun(
+        1,
+        2,
+        0,
+        255,
+        &[vec![], vec![(8, 0, 0x3b)]],
+        &[(0, 0, 0x10), (1, 0, 0x10), (2, 0, 0x16)],
+    );
+    let mut p = image(&[caller, leaf], 0, &[]);
+    optional_meta(&mut p, 1, 1, false, &[0, 1]);
+    ref_arg(&mut p, 1, 0, 255, 0);
+    let (mut vm, o) = machine(p, vec![]);
+    vm.start(o, 0, vec![Value::Int(9)]).unwrap();
+    assert_eq!(returned_array(&mut vm), vec![Value::Int(0), Value::Int(1)]);
+}
+
+#[test]
+fn ref_checks_budget_and_stack_limit_preserve_operand_identity() {
+    let p = image(&[fun(0, 1, 0, 255, &[(0, 0, 0x39), (-1, 0, 0x10)])], 0, &[]);
+    let (mut vm, o) = machine(p.clone(), vec![]);
+    vm.start(o, 0, vec![Value::Int(8)]).unwrap();
+    vm.run(3).unwrap();
+    let before = vm.stack().unwrap();
+    assert_eq!(vm.run(0).unwrap(), RunOutcome::BudgetExhausted);
+    assert_eq!(vm.stack().unwrap(), before);
+    assert_eq!(vm.run(1).unwrap(), RunOutcome::BudgetExhausted);
+    let after = vm.stack().unwrap();
+    assert_eq!(&after[..before.len()], &before);
+    assert_eq!(
+        after.last(),
+        Some(&rml32::StackSnapshot::Value(Value::Int(1)))
+    );
+    let (vm, o) = machine(p, vec![]);
+    let mut vm = Vm::with_limits(
+        vm.into_objects(),
+        VmLimits {
+            max_stack: 2,
+            ..Default::default()
+        },
+    );
+    vm.start(o, 0, vec![Value::Int(8)]).unwrap();
+    vm.run(3).unwrap();
+    let before = vm.stack().unwrap();
+    let e = vm.run(1).unwrap_err();
+    assert_eq!(
+        (e.kind, e.object, e.function, e.pc),
+        (VmErrorKind::Limit, Some(o), Some(0), Some(3))
+    );
+    assert_eq!(vm.stack().unwrap(), before);
+    assert_eq!(vm.run(100).unwrap_err(), e);
+}
+
+#[test]
+fn ref_checks_inherited_and_cross_object_frames() {
+    let (parent, child) = inherited_pair(&[(-1, 0, 0x10)], &[(0, 0, 0x07)]);
+    let (mut vm, o) = linked_vm(&linked_catalog(parent, child));
+    vm.start(o, 0, vec![]).unwrap();
+    returns(&mut vm, Value::Int(0));
+    let target = other_target(
+        image(&[fun(0, 1, 0, 255, &[(0, 0, 0x10)])], 0, &[]),
+        vec![method(b"check", 0)],
+    );
+    let (mut vm, a, b) = other_machine(
+        image(&[other_wrapper(1, 0)], 0, &[]),
+        target,
+        vec![],
+        vec![],
+    );
+    vm.start(
+        a,
+        0,
+        vec![Value::Object(b), Value::bytes(b"check"), Value::Int(5)],
+    )
+    .unwrap();
+    loop {
+        if let RunOutcome::Finished(result) = vm.run(1).unwrap() {
+            assert_eq!(result, Completion::Returned(Value::Int(0)));
+            break;
+        }
+    }
+    assert_eq!(vm.frame_depth(), 0);
+    let mut parent = image(&[fun(0, 1, 0, 255, &[(0, 0, 0x10)])], 1, &[]);
+    ref_arg(&mut parent, 0, 0, 255, 0);
+    let mut child = image(&[fun(1, 1, 0, 255, &[(0, 0, 0x39), (0, 1, 0x07)])], 2, &[]);
+    child.constitution_count = Some(2);
+    inherit(&mut child, &parent, b"parent\0", [1, 0, 1]);
+    let (mut vm, o) = linked_vm(&linked_catalog(parent, child));
+    vm.start(o, 1, vec![Value::Int(8)]).unwrap();
+    returns(&mut vm, Value::Int(1));
+
+    let caller = image(
+        &[fun(
+            0,
+            2,
+            0,
+            255,
+            &[(1, 0, 0x39), (0, 0, 0x40), (0, 0, 0x37), (0, 1, 0x08)],
+        )],
+        0,
+        &[b"check\0"],
+    );
+    let mut target = image(&[fun(0, 1, 0, 255, &[(0, 0, 0x10)])], 0, &[]);
+    ref_arg(&mut target, 0, 0, 255, 0);
+    let (mut vm, a, b) = other_machine(
+        caller,
+        other_target(target, vec![method(b"check", 0)]),
+        vec![],
+        vec![],
+    );
+    vm.start(a, 0, vec![Value::Object(b), Value::Int(8)])
+        .unwrap();
+    returns(&mut vm, Value::Int(1));
+}
+
+#[test]
+fn ref_checks_stack_limit_inside_catch_remains_fatal() {
+    let body = [(8, 0, 0x3b), (0, 0, 0x10)];
+    let (vm, o) = machine(image(&[catch_fun(0, 0, 0, 255, &body)], 0, &[]), vec![]);
+    let mut vm = Vm::with_limits(
+        vm.into_objects(),
+        VmLimits {
+            max_stack: 1,
+            ..Default::default()
+        },
+    );
+    vm.start(o, 0, vec![]).unwrap();
+    let e = vm.run(100).unwrap_err();
+    assert_eq!(e.kind, VmErrorKind::Limit);
+    assert_eq!(e.pc, Some(4));
+    assert_eq!(
+        vm.stack().unwrap(),
+        vec![rml32::StackSnapshot::Value(Value::Int(8))]
+    );
+    assert_eq!(vm.run(0).unwrap_err(), e);
+}
+
+#[test]
+fn ref_checks_preparation_rejects_init_defaults_and_dynamic_variant() {
+    let mut p = image(&[], 0, &[]);
+    set_init(&mut p, &[(0, 0, 0x10), (0, 0, 0x48)]);
+    let e = prepare_init(&init_catalog(p), "root").unwrap_err();
+    assert_eq!(
+        (e.kind, e.offset),
+        (VmErrorKind::UnsupportedFeature, Some(9000))
+    );
+    let mut p = image(
+        &[optional_fun(0, 1, 0, 255, &[vec![(0, 0, 0x10)]], &[])],
+        0,
+        &[],
+    );
+    optional_meta(&mut p, 0, 0, false, &[1]);
+    assert_eq!(
+        prepare_program(p).unwrap_err().kind,
+        VmErrorKind::UnsupportedFeature
+    );
+    assert_eq!(
+        prepare_program(image(&[fun(0, 0, 0, 255, &[(0, 0, 0x11)])], 0, &[]))
+            .unwrap_err()
+            .kind,
+        VmErrorKind::UnsupportedFeature
+    );
+}
+
+#[test]
+fn ref_checks_lifecycle_helper_rejection_cleans_initialization_and_construction() {
+    let helper = fun(
+        2,
+        0,
+        0,
+        1,
+        &[
+            (0, 0, 0x40),
+            (0, 0, 0x3b),
+            (0, 0, 0x3b),
+            (0, 0, 0x10),
+            (0, 0, 0x33),
+        ],
+    );
+    let mut p = image(
+        &[
+            fun(0, 0, 0, 1, &[(2, 0, 0x07)]),
+            fun(1, 0, 0, 1, &[]),
+            helper,
+        ],
+        0,
+        &[b"x"],
+    );
+    set_init(&mut p, &[(2, 0, 0x07), (0, 0, 0x48)]);
+    let (mut vm, id) = init_vm(&init_catalog(p.clone()), "root");
+    let o = vm.begin_initialize(id).unwrap();
+    let e = vm.run(100).unwrap_err();
+    assert_eq!(e.kind, VmErrorKind::UnsupportedFeature);
+    assert_eq!(e.function, Some(2));
+    assert!(vm.objects().get(o).is_err());
+    assert!(vm.stack().unwrap().is_empty());
+    lifecycle_name(&mut p, 0, b"create");
+    lifecycle_name(&mut p, 1, b"destruct");
+    set_init(&mut p, &[(0, 0, 0x48)]);
+    let c = single_construct_catalog(
+        p,
+        rml32::LifecycleBinding {
+            create: Some(0),
+            destruct: Some(1),
+        },
+    );
+    let (mut vm, id) = construct_vm(&c, "root");
+    let o = vm.begin_construct(id, None).unwrap();
+    let e = vm.run(100).unwrap_err();
+    assert_eq!(e.kind, VmErrorKind::UnsupportedFeature);
+    assert_eq!(
+        e.lifecycle.as_ref().unwrap().phase,
+        rml32::LifecyclePhase::Create
+    );
+    assert!(vm.rollback_errors().is_empty());
+    assert!(vm.objects().get(o).is_err());
+    assert!(vm.stack().unwrap().is_empty());
+}
+#[test]
+fn ref_checks_rollback_helper_rejection_preserves_primary_error_and_cleans_task() {
+    let mut p = image(
+        &[
+            fun(0, 0, 0, 1, &[(0, 0, 0x33)]),
+            fun(1, 0, 0, 1, &[(2, 0, 0x07)]),
+            fun(
+                2,
+                0,
+                0,
+                1,
+                &[(0, 0, 0x40), (0, 0, 0x3b), (0, 0, 0x3b), (0, 0, 0x10)],
+            ),
+        ],
+        0,
+        &[b"x"],
+    );
+    lifecycle_name(&mut p, 0, b"create");
+    lifecycle_name(&mut p, 1, b"destruct");
+    set_init(&mut p, &[(0, 0, 0x48)]);
+    let c = single_construct_catalog(
+        p,
+        rml32::LifecycleBinding {
+            create: Some(0),
+            destruct: Some(1),
+        },
+    );
+    let (mut vm, id) = construct_vm(&c, "root");
+    let o = vm.begin_construct(id, None).unwrap();
+    assert_eq!(vm.run(100).unwrap_err().kind, VmErrorKind::StackUnderflow);
+    assert_eq!(vm.rollback_errors().len(), 1);
+    let e = &vm.rollback_errors()[0];
+    assert_eq!(e.kind, VmErrorKind::UnsupportedFeature);
+    assert_eq!(e.function, Some(2));
+    assert_eq!(
+        e.lifecycle.as_ref().unwrap().phase,
+        rml32::LifecyclePhase::RollbackDestruct
+    );
+    assert!(vm.objects().get(o).is_err());
+    assert!(vm.stack().unwrap().is_empty());
 }

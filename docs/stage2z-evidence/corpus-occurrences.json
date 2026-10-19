@@ -1,0 +1,466 @@
+[
+  {
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/daemons/accountd.o",
+    "source_package": "aaa/pack_data/lib_aaa32.pak",
+    "member_sha256": "fbad2268542cac34b915222e0e6ba038e390b5098d06295834c707654c4bbd05",
+    "function": "block_account",
+    "function_index": 37,
+    "segment_kind": "functions",
+    "segment_offset": 25246,
+    "nodes_offset": 25662,
+    "node_count": 220,
+    "pc": 74,
+    "prototype": {
+      "min_args": 5,
+      "max_args": 7,
+      "local_count": 5
+    },
+    "argument_flags": [
+      {
+        "index": 0,
+        "flag": 0
+      },
+      {
+        "index": 1,
+        "flag": 0
+      },
+      {
+        "index": 2,
+        "flag": 0
+      },
+      {
+        "index": 3,
+        "flag": 0
+      },
+      {
+        "index": 4,
+        "flag": 0
+      },
+      {
+        "index": 5,
+        "flag": 1
+      },
+      {
+        "index": 6,
+        "flag": 0
+      }
+    ],
+    "member_node_offset": 25958,
+    "raw_operands": [
+      5,
+      0
+    ]
+  },
+  {
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/daemons/accountd.o",
+    "source_package": "aaa/pack_data/lib_aaa32.pak",
+    "member_sha256": "fbad2268542cac34b915222e0e6ba038e390b5098d06295834c707654c4bbd05",
+    "function": "block_account",
+    "function_index": 37,
+    "segment_kind": "functions",
+    "segment_offset": 25246,
+    "nodes_offset": 25662,
+    "node_count": 220,
+    "pc": 210,
+    "prototype": {
+      "min_args": 5,
+      "max_args": 7,
+      "local_count": 5
+    },
+    "argument_flags": [
+      {
+        "index": 0,
+        "flag": 0
+      },
+      {
+        "index": 1,
+        "flag": 0
+      },
+      {
+        "index": 2,
+        "flag": 0
+      },
+      {
+        "index": 3,
+        "flag": 0
+      },
+      {
+        "index": 4,
+        "flag": 0
+      },
+      {
+        "index": 5,
+        "flag": 1
+      },
+      {
+        "index": 6,
+        "flag": 0
+      }
+    ],
+    "member_node_offset": 26502,
+    "raw_operands": [
+      5,
+      0
+    ]
+  },
+  {
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/daemons/accountd.o",
+    "source_package": "aaa/pack_data/lib_aaa32.pak",
+    "member_sha256": "fbad2268542cac34b915222e0e6ba038e390b5098d06295834c707654c4bbd05",
+    "function": "control_account",
+    "function_index": 39,
+    "segment_kind": "functions",
+    "segment_offset": 43676,
+    "nodes_offset": 44077,
+    "node_count": 267,
+    "pc": 236,
+    "prototype": {
+      "min_args": 5,
+      "max_args": 6,
+      "local_count": 5
+    },
+    "argument_flags": [
+      {
+        "index": 0,
+        "flag": 0
+      },
+      {
+        "index": 1,
+        "flag": 0
+      },
+      {
+        "index": 2,
+        "flag": 0
+      },
+      {
+        "index": 3,
+        "flag": 0
+      },
+      {
+        "index": 4,
+        "flag": 0
+      },
+      {
+        "index": 5,
+        "flag": 1
+      }
+    ],
+    "member_node_offset": 45021,
+    "raw_operands": [
+      5,
+      0
+    ]
+  },
+  {
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/daemons/accountd.o",
+    "source_package": "aaa/pack_data/lib_aaa32.pak",
+    "member_sha256": "fbad2268542cac34b915222e0e6ba038e390b5098d06295834c707654c4bbd05",
+    "function": "temp_block_account",
+    "function_index": 165,
+    "segment_kind": "functions",
+    "segment_offset": 63255,
+    "nodes_offset": 63531,
+    "node_count": 139,
+    "pc": 129,
+    "prototype": {
+      "min_args": 4,
+      "max_args": 5,
+      "local_count": 5
+    },
+    "argument_flags": [
+      {
+        "index": 0,
+        "flag": 0
+      },
+      {
+        "index": 1,
+        "flag": 0
+      },
+      {
+        "index": 2,
+        "flag": 0
+      },
+      {
+        "index": 3,
+        "flag": 0
+      },
+      {
+        "index": 4,
+        "flag": 1
+      }
+    ],
+    "member_node_offset": 64047,
+    "raw_operands": [
+      4,
+      0
+    ]
+  },
+  {
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/daemons/accountd.o",
+    "source_package": "aaa/pack_data/lib_aaa32.pak",
+    "member_sha256": "fbad2268542cac34b915222e0e6ba038e390b5098d06295834c707654c4bbd05",
+    "function": "batch_block_account",
+    "function_index": 145,
+    "segment_kind": "functions",
+    "segment_offset": 84180,
+    "nodes_offset": 84911,
+    "node_count": 455,
+    "pc": 445,
+    "prototype": {
+      "min_args": 5,
+      "max_args": 6,
+      "local_count": 17
+    },
+    "argument_flags": [
+      {
+        "index": 0,
+        "flag": 0
+      },
+      {
+        "index": 1,
+        "flag": 0
+      },
+      {
+        "index": 2,
+        "flag": 0
+      },
+      {
+        "index": 3,
+        "flag": 0
+      },
+      {
+        "index": 4,
+        "flag": 0
+      },
+      {
+        "index": 5,
+        "flag": 1
+      }
+    ],
+    "member_node_offset": 86691,
+    "raw_operands": [
+      5,
+      0
+    ]
+  },
+  {
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/daemons/admintoold.o",
+    "source_package": "aaa/pack_data/lib_aaa32.pak",
+    "member_sha256": "5edcd6f286e10ca78fc30f01000a00b3f3aff14e7b9c7f4b811f1218be2b65a6",
+    "function": "auth_admintool",
+    "function_index": 14,
+    "segment_kind": "functions",
+    "segment_offset": 2117,
+    "nodes_offset": 2495,
+    "node_count": 244,
+    "pc": 6,
+    "prototype": {
+      "min_args": 4,
+      "max_args": 6,
+      "local_count": 6
+    },
+    "argument_flags": [
+      {
+        "index": 0,
+        "flag": 0
+      },
+      {
+        "index": 1,
+        "flag": 0
+      },
+      {
+        "index": 2,
+        "flag": 0
+      },
+      {
+        "index": 3,
+        "flag": 0
+      },
+      {
+        "index": 4,
+        "flag": 0
+      },
+      {
+        "index": 5,
+        "flag": 0
+      }
+    ],
+    "member_node_offset": 2519,
+    "raw_operands": [
+      4,
+      0
+    ]
+  },
+  {
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/daemons/configd.o",
+    "source_package": "aaa/pack_data/lib_aaa32.pak",
+    "member_sha256": "769f9fd76c19dea7dbad7815dd235e7f7cbc8a9df12e2a98038466cbf92237ea",
+    "function": "expand_privilege_group",
+    "function_index": 49,
+    "segment_kind": "functions",
+    "segment_offset": 22327,
+    "nodes_offset": 22547,
+    "node_count": 98,
+    "pc": 85,
+    "prototype": {
+      "min_args": 2,
+      "max_args": 3,
+      "local_count": 6
+    },
+    "argument_flags": [
+      {
+        "index": 0,
+        "flag": 0
+      },
+      {
+        "index": 1,
+        "flag": 0
+      },
+      {
+        "index": 2,
+        "flag": 0
+      }
+    ],
+    "member_node_offset": 22887,
+    "raw_operands": [
+      2,
+      0
+    ]
+  },
+  {
+    "source": "gs/pack_data/lib_gs32.pak/gs/daemons/carryd.o",
+    "source_package": "gs/pack_data/lib_gs32.pak",
+    "member_sha256": "555f77497a87371d9558ad2ec631d5e909f26543a82b4fe725a59853e65fcf58",
+    "function": "check_submit_items",
+    "function_index": 13,
+    "segment_kind": "functions",
+    "segment_offset": 15540,
+    "nodes_offset": 15878,
+    "node_count": 215,
+    "pc": 192,
+    "prototype": {
+      "min_args": 2,
+      "max_args": 3,
+      "local_count": 12
+    },
+    "argument_flags": [
+      {
+        "index": 0,
+        "flag": 0
+      },
+      {
+        "index": 1,
+        "flag": 0
+      },
+      {
+        "index": 2,
+        "flag": 0
+      }
+    ],
+    "member_node_offset": 16646,
+    "raw_operands": [
+      2,
+      0
+    ]
+  },
+  {
+    "source": "gs/pack_data/lib_gs32.pak/gs/daemons/taskcompilerd.o",
+    "source_package": "gs/pack_data/lib_gs32.pak",
+    "member_sha256": "bcbc0bb261c3ab4b922e7b9109036564d5e9cb5033f493ba5f80aaf21854306a",
+    "function": "match_scenario",
+    "function_index": 13,
+    "segment_kind": "functions",
+    "segment_offset": 12186,
+    "nodes_offset": 12666,
+    "node_count": 295,
+    "pc": 285,
+    "prototype": {
+      "min_args": 0,
+      "max_args": 1,
+      "local_count": 10
+    },
+    "argument_flags": [
+      {
+        "index": 0,
+        "flag": 0
+      }
+    ],
+    "member_node_offset": 13806,
+    "raw_operands": [
+      0,
+      0
+    ]
+  },
+  {
+    "source": "gs/pack_data/lib_gs32.pak/gs/daemons/taskcompilerd.o",
+    "source_package": "gs/pack_data/lib_gs32.pak",
+    "member_sha256": "bcbc0bb261c3ab4b922e7b9109036564d5e9cb5033f493ba5f80aaf21854306a",
+    "function": "compile_task",
+    "function_index": 0,
+    "segment_kind": "functions",
+    "segment_offset": 19353,
+    "nodes_offset": 19853,
+    "node_count": 270,
+    "pc": 217,
+    "prototype": {
+      "min_args": 2,
+      "max_args": 3,
+      "local_count": 4
+    },
+    "argument_flags": [
+      {
+        "index": 0,
+        "flag": 0
+      },
+      {
+        "index": 1,
+        "flag": 0
+      },
+      {
+        "index": 2,
+        "flag": 0
+      }
+    ],
+    "member_node_offset": 20721,
+    "raw_operands": [
+      2,
+      0
+    ]
+  },
+  {
+    "source": "gs/pack_data/lib_gs32.pak/gs/feature/char/carry.o",
+    "source_package": "gs/pack_data/lib_gs32.pak",
+    "member_sha256": "1fd06a3f310824d1dce4ea11cd25c684438dc453285fe5ff8accaea4fb4fa405",
+    "function": "check_submit_items",
+    "function_index": 34,
+    "segment_kind": "functions",
+    "segment_offset": 11820,
+    "nodes_offset": 11887,
+    "node_count": 21,
+    "pc": 2,
+    "prototype": {
+      "min_args": 2,
+      "max_args": 3,
+      "local_count": 0
+    },
+    "argument_flags": [
+      {
+        "index": 0,
+        "flag": 0
+      },
+      {
+        "index": 1,
+        "flag": 0
+      },
+      {
+        "index": 2,
+        "flag": 0
+      }
+    ],
+    "member_node_offset": 11895,
+    "raw_operands": [
+      2,
+      0
+    ]
+  }
+]
