@@ -1,0 +1,1197 @@
+[
+  {
+    "opcode": "0x07",
+    "source": "aaa/pack_data/lib_aaa32.pak/daemons/logd.o",
+    "source_package": "aaa/pack_data/lib_aaa32.pak",
+    "member_sha256": "96c4154b61dea5006ce612fefb65b3b797d68ae1b0216ac73189a197f49b938a",
+    "segment_kind": "functions",
+    "function": "log_local",
+    "function_index": 4,
+    "segment_offset": 5508,
+    "nodes_offset": 5606,
+    "pc": 2,
+    "member_node_offset": 5614,
+    "raw_operands": [
+      681,
+      -128
+    ],
+    "raw_b_unsigned": 128,
+    "global_unit": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o",
+    "global_function_slot": 681,
+    "argc": 0,
+    "other_flag_bits": 0,
+    "function_interval": "in_function_interval",
+    "numeric_namespace": "module_function_range",
+    "snippet": [
+      {
+        "pc": 0,
+        "node": [
+          0,
+          0,
+          15
+        ],
+        "member_node_offset": 5606
+      },
+      {
+        "pc": 1,
+        "node": [
+          0,
+          0,
+          27
+        ],
+        "member_node_offset": 5610
+      },
+      {
+        "pc": 2,
+        "node": [
+          681,
+          -128,
+          7
+        ],
+        "member_node_offset": 5614
+      },
+      {
+        "pc": 3,
+        "node": [
+          22,
+          0,
+          64
+        ],
+        "member_node_offset": 5618
+      },
+      {
+        "pc": 4,
+        "node": [
+          1,
+          0,
+          61
+        ],
+        "member_node_offset": 5622
+      }
+    ]
+  },
+  {
+    "opcode": "0x07",
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o",
+    "source_package": "aaa/pack_data/lib_aaa32.pak",
+    "member_sha256": "f9896828c87399be4977107fbfbe3f67fd71caebd3008bda84be16cc722d0a0e",
+    "segment_kind": "init",
+    "function": "__init__",
+    "function_index": null,
+    "segment_offset": 448680,
+    "nodes_offset": 450136,
+    "pc": 32,
+    "member_node_offset": 450264,
+    "raw_operands": [
+      585,
+      -128
+    ],
+    "raw_b_unsigned": 128,
+    "global_unit": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o",
+    "global_function_slot": 585,
+    "argc": 0,
+    "other_flag_bits": 0,
+    "function_interval": "in_function_interval",
+    "numeric_namespace": "module_function_range",
+    "snippet": [
+      {
+        "pc": 30,
+        "node": [
+          583,
+          -126,
+          7
+        ],
+        "member_node_offset": 450256
+      },
+      {
+        "pc": 31,
+        "node": [
+          0,
+          0,
+          51
+        ],
+        "member_node_offset": 450260
+      },
+      {
+        "pc": 32,
+        "node": [
+          585,
+          -128,
+          7
+        ],
+        "member_node_offset": 450264
+      },
+      {
+        "pc": 33,
+        "node": [
+          0,
+          0,
+          51
+        ],
+        "member_node_offset": 450268
+      },
+      {
+        "pc": 34,
+        "node": [
+          0,
+          0,
+          59
+        ],
+        "member_node_offset": 450272
+      }
+    ]
+  },
+  {
+    "opcode": "0x07",
+    "source": "aaa/pack_data/lib_aaa32.pak/daemons/connectiond.o",
+    "source_package": "aaa/pack_data/lib_aaa32.pak",
+    "member_sha256": "5f1a18f01d1bb1a75a05bf3bdf2788fddd1ca8f55134e59cd47eb9ab4847a896",
+    "segment_kind": "functions",
+    "function": "create",
+    "function_index": 13,
+    "segment_offset": 5983,
+    "nodes_offset": 6043,
+    "pc": 11,
+    "member_node_offset": 6087,
+    "raw_operands": [
+      817,
+      -127
+    ],
+    "raw_b_unsigned": 129,
+    "global_unit": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o",
+    "global_function_slot": 817,
+    "argc": 1,
+    "other_flag_bits": 0,
+    "function_interval": "in_function_interval",
+    "numeric_namespace": "module_function_range",
+    "snippet": [
+      {
+        "pc": 9,
+        "node": [
+          0,
+          0,
+          51
+        ],
+        "member_node_offset": 6079
+      },
+      {
+        "pc": 10,
+        "node": [
+          12,
+          0,
+          23
+        ],
+        "member_node_offset": 6083
+      },
+      {
+        "pc": 11,
+        "node": [
+          817,
+          -127,
+          7
+        ],
+        "member_node_offset": 6087
+      },
+      {
+        "pc": 12,
+        "node": [
+          0,
+          0,
+          51
+        ],
+        "member_node_offset": 6091
+      },
+      {
+        "pc": 13,
+        "node": [
+          0,
+          0,
+          46
+        ],
+        "member_node_offset": 6095
+      }
+    ]
+  },
+  {
+    "opcode": "0x07",
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o",
+    "source_package": "aaa/pack_data/lib_aaa32.pak",
+    "member_sha256": "f9896828c87399be4977107fbfbe3f67fd71caebd3008bda84be16cc722d0a0e",
+    "segment_kind": "init",
+    "function": "__init__",
+    "function_index": null,
+    "segment_offset": 448680,
+    "nodes_offset": 450136,
+    "pc": 651,
+    "member_node_offset": 452740,
+    "raw_operands": [
+      790,
+      -127
+    ],
+    "raw_b_unsigned": 129,
+    "global_unit": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o",
+    "global_function_slot": 790,
+    "argc": 1,
+    "other_flag_bits": 0,
+    "function_interval": "in_function_interval",
+    "numeric_namespace": "module_function_range",
+    "snippet": [
+      {
+        "pc": 649,
+        "node": [
+          0,
+          0,
+          51
+        ],
+        "member_node_offset": 452732
+      },
+      {
+        "pc": 650,
+        "node": [
+          3,
+          0,
+          59
+        ],
+        "member_node_offset": 452736
+      },
+      {
+        "pc": 651,
+        "node": [
+          790,
+          -127,
+          7
+        ],
+        "member_node_offset": 452740
+      },
+      {
+        "pc": 652,
+        "node": [
+          0,
+          0,
+          51
+        ],
+        "member_node_offset": 452744
+      },
+      {
+        "pc": 653,
+        "node": [
+          697,
+          0,
+          64
+        ],
+        "member_node_offset": 452748
+      }
+    ]
+  },
+  {
+    "opcode": "0x07",
+    "source": "aaa/pack_data/lib_aaa32.pak/daemons/communicated.o",
+    "source_package": "aaa/pack_data/lib_aaa32.pak",
+    "member_sha256": "acc2335fe2c4b61645bb6c5e1cfb3ed0b1dd2cf0db8306ae323ef7e3b8d2bef8",
+    "segment_kind": "functions",
+    "function": "create",
+    "function_index": 1,
+    "segment_offset": 885,
+    "nodes_offset": 941,
+    "pc": 8,
+    "member_node_offset": 973,
+    "raw_operands": [
+      816,
+      -126
+    ],
+    "raw_b_unsigned": 130,
+    "global_unit": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o",
+    "global_function_slot": 816,
+    "argc": 2,
+    "other_flag_bits": 0,
+    "function_interval": "in_function_interval",
+    "numeric_namespace": "module_function_range",
+    "snippet": [
+      {
+        "pc": 6,
+        "node": [
+          1,
+          0,
+          59
+        ],
+        "member_node_offset": 965
+      },
+      {
+        "pc": 7,
+        "node": [
+          0,
+          0,
+          23
+        ],
+        "member_node_offset": 969
+      },
+      {
+        "pc": 8,
+        "node": [
+          816,
+          -126,
+          7
+        ],
+        "member_node_offset": 973
+      },
+      {
+        "pc": 9,
+        "node": [
+          0,
+          0,
+          51
+        ],
+        "member_node_offset": 977
+      },
+      {
+        "pc": 10,
+        "node": [
+          0,
+          0,
+          46
+        ],
+        "member_node_offset": 981
+      }
+    ]
+  },
+  {
+    "opcode": "0x07",
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o",
+    "source_package": "aaa/pack_data/lib_aaa32.pak",
+    "member_sha256": "f9896828c87399be4977107fbfbe3f67fd71caebd3008bda84be16cc722d0a0e",
+    "segment_kind": "init",
+    "function": "__init__",
+    "function_index": null,
+    "segment_offset": 448680,
+    "nodes_offset": 450136,
+    "pc": 30,
+    "member_node_offset": 450256,
+    "raw_operands": [
+      583,
+      -126
+    ],
+    "raw_b_unsigned": 130,
+    "global_unit": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o",
+    "global_function_slot": 583,
+    "argc": 2,
+    "other_flag_bits": 0,
+    "function_interval": "in_function_interval",
+    "numeric_namespace": "module_function_range",
+    "snippet": [
+      {
+        "pc": 28,
+        "node": [
+          575,
+          0,
+          64
+        ],
+        "member_node_offset": 450248
+      },
+      {
+        "pc": 29,
+        "node": [
+          56,
+          0,
+          64
+        ],
+        "member_node_offset": 450252
+      },
+      {
+        "pc": 30,
+        "node": [
+          583,
+          -126,
+          7
+        ],
+        "member_node_offset": 450256
+      },
+      {
+        "pc": 31,
+        "node": [
+          0,
+          0,
+          51
+        ],
+        "member_node_offset": 450260
+      },
+      {
+        "pc": 32,
+        "node": [
+          585,
+          -128,
+          7
+        ],
+        "member_node_offset": 450264
+      }
+    ]
+  },
+  {
+    "opcode": "0x07",
+    "source": "aaa/pack_data/lib_aaa32.pak/daemons/statmoduled.o",
+    "source_package": "aaa/pack_data/lib_aaa32.pak",
+    "member_sha256": "28ce63ef5211c6e4c00ef2022263b9aef9bd3bc7b41ba4301fdac4d5a7587ec5",
+    "segment_kind": "functions",
+    "function": "destruct",
+    "function_index": 11,
+    "segment_offset": 995,
+    "nodes_offset": 1050,
+    "pc": 6,
+    "member_node_offset": 1074,
+    "raw_operands": [
+      641,
+      -125
+    ],
+    "raw_b_unsigned": 131,
+    "global_unit": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o",
+    "global_function_slot": 641,
+    "argc": 3,
+    "other_flag_bits": 0,
+    "function_interval": "in_function_interval",
+    "numeric_namespace": "module_function_range",
+    "snippet": [
+      {
+        "pc": 4,
+        "node": [
+          1,
+          0,
+          64
+        ],
+        "member_node_offset": 1066
+      },
+      {
+        "pc": 5,
+        "node": [
+          0,
+          0,
+          64
+        ],
+        "member_node_offset": 1070
+      },
+      {
+        "pc": 6,
+        "node": [
+          641,
+          -125,
+          7
+        ],
+        "member_node_offset": 1074
+      },
+      {
+        "pc": 7,
+        "node": [
+          0,
+          0,
+          51
+        ],
+        "member_node_offset": 1078
+      },
+      {
+        "pc": 8,
+        "node": [
+          3,
+          0,
+          7
+        ],
+        "member_node_offset": 1082
+      }
+    ]
+  },
+  {
+    "opcode": "0x07",
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/daemons/vip_smsd.o",
+    "source_package": "aaa/pack_data/lib_aaa32.pak",
+    "member_sha256": "cedbeb30d077af108e2f990f2bd4e90bdababb8b0387e57b3c83407a72fd89f5",
+    "segment_kind": "functions",
+    "function": "do_when_batch_block_account",
+    "function_index": 1,
+    "segment_offset": 2429,
+    "nodes_offset": 2570,
+    "pc": 46,
+    "member_node_offset": 2754,
+    "raw_operands": [
+      812,
+      -124
+    ],
+    "raw_b_unsigned": 132,
+    "global_unit": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o",
+    "global_function_slot": 812,
+    "argc": 4,
+    "other_flag_bits": 0,
+    "function_interval": "in_function_interval",
+    "numeric_namespace": "module_function_range",
+    "snippet": [
+      {
+        "pc": 44,
+        "node": [
+          -4,
+          0,
+          55
+        ],
+        "member_node_offset": 2746
+      },
+      {
+        "pc": 45,
+        "node": [
+          -1,
+          0,
+          55
+        ],
+        "member_node_offset": 2750
+      },
+      {
+        "pc": 46,
+        "node": [
+          812,
+          -124,
+          7
+        ],
+        "member_node_offset": 2754
+      },
+      {
+        "pc": 47,
+        "node": [
+          -3,
+          0,
+          57
+        ],
+        "member_node_offset": 2758
+      },
+      {
+        "pc": 48,
+        "node": [
+          0,
+          0,
+          3
+        ],
+        "member_node_offset": 2762
+      }
+    ]
+  },
+  {
+    "opcode": "0x07",
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o",
+    "source_package": "aaa/pack_data/lib_aaa32.pak",
+    "member_sha256": "f9896828c87399be4977107fbfbe3f67fd71caebd3008bda84be16cc722d0a0e",
+    "segment_kind": "functions",
+    "function": "xdbc_send_command",
+    "function_index": 576,
+    "segment_offset": 407860,
+    "nodes_offset": 407975,
+    "pc": 27,
+    "member_node_offset": 408083,
+    "raw_operands": [
+      584,
+      -123
+    ],
+    "raw_b_unsigned": 133,
+    "global_unit": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o",
+    "global_function_slot": 584,
+    "argc": 5,
+    "other_flag_bits": 0,
+    "function_interval": "in_function_interval",
+    "numeric_namespace": "module_function_range",
+    "snippet": [
+      {
+        "pc": 25,
+        "node": [
+          41,
+          0,
+          64
+        ],
+        "member_node_offset": 408075
+      },
+      {
+        "pc": 26,
+        "node": [
+          0,
+          0,
+          59
+        ],
+        "member_node_offset": 408079
+      },
+      {
+        "pc": 27,
+        "node": [
+          584,
+          -123,
+          7
+        ],
+        "member_node_offset": 408083
+      },
+      {
+        "pc": 28,
+        "node": [
+          0,
+          0,
+          51
+        ],
+        "member_node_offset": 408087
+      },
+      {
+        "pc": 29,
+        "node": [
+          1,
+          0,
+          55
+        ],
+        "member_node_offset": 408091
+      }
+    ]
+  },
+  {
+    "opcode": "0x07",
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o",
+    "source_package": "aaa/pack_data/lib_aaa32.pak",
+    "member_sha256": "f9896828c87399be4977107fbfbe3f67fd71caebd3008bda84be16cc722d0a0e",
+    "segment_kind": "functions",
+    "function": "valid_name_ex",
+    "function_index": 673,
+    "segment_offset": 293849,
+    "nodes_offset": 293916,
+    "pc": 12,
+    "member_node_offset": 293964,
+    "raw_operands": [
+      671,
+      -122
+    ],
+    "raw_b_unsigned": 134,
+    "global_unit": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o",
+    "global_function_slot": 671,
+    "argc": 6,
+    "other_flag_bits": 0,
+    "function_interval": "in_function_interval",
+    "numeric_namespace": "module_function_range",
+    "snippet": [
+      {
+        "pc": 10,
+        "node": [
+          1,
+          0,
+          55
+        ],
+        "member_node_offset": 293956
+      },
+      {
+        "pc": 11,
+        "node": [
+          0,
+          0,
+          55
+        ],
+        "member_node_offset": 293960
+      },
+      {
+        "pc": 12,
+        "node": [
+          671,
+          -122,
+          7
+        ],
+        "member_node_offset": 293964
+      },
+      {
+        "pc": 13,
+        "node": [
+          -1,
+          0,
+          57
+        ],
+        "member_node_offset": 293968
+      },
+      {
+        "pc": 14,
+        "node": [
+          0,
+          0,
+          3
+        ],
+        "member_node_offset": 293972
+      }
+    ]
+  },
+  {
+    "opcode": "0x07",
+    "source": "gs/pack_data/lib_gs32.pak/gs/daemons/backupd.o",
+    "source_package": "gs/pack_data/lib_gs32.pak",
+    "member_sha256": "04cec4375ad304e6c76164a5203e92181e23493c032a0dbaad28a741f407e1db",
+    "segment_kind": "functions",
+    "function": "menu_change_party",
+    "function_index": 69,
+    "segment_offset": 25526,
+    "nodes_offset": 25670,
+    "pc": 20,
+    "member_node_offset": 25750,
+    "raw_operands": [
+      713,
+      -121
+    ],
+    "raw_b_unsigned": 135,
+    "global_unit": "gs/pack_data/lib_gs32.pak/gs/start_gs.o",
+    "global_function_slot": 713,
+    "argc": 7,
+    "other_flag_bits": 0,
+    "function_interval": "in_function_interval",
+    "numeric_namespace": "module_function_range",
+    "snippet": [
+      {
+        "pc": 18,
+        "node": [
+          0,
+          0,
+          59
+        ],
+        "member_node_offset": 25742
+      },
+      {
+        "pc": 19,
+        "node": [
+          3,
+          0,
+          55
+        ],
+        "member_node_offset": 25746
+      },
+      {
+        "pc": 20,
+        "node": [
+          713,
+          -121,
+          7
+        ],
+        "member_node_offset": 25750
+      },
+      {
+        "pc": 21,
+        "node": [
+          -2,
+          0,
+          57
+        ],
+        "member_node_offset": 25754
+      },
+      {
+        "pc": 22,
+        "node": [
+          0,
+          0,
+          3
+        ],
+        "member_node_offset": 25758
+      }
+    ]
+  },
+  {
+    "opcode": "0x07",
+    "source": "gs/pack_data/lib_gs32.pak/gs/daemons/arenad.o",
+    "source_package": "gs/pack_data/lib_gs32.pak",
+    "member_sha256": "970fc7d00dca7f9db4a81475ddfb77dde8681f93dd07ec79ccb3096e4c678638",
+    "segment_kind": "functions",
+    "function": "exchange_tao_confirmed",
+    "function_index": 84,
+    "segment_offset": 43869,
+    "nodes_offset": 44067,
+    "pc": 58,
+    "member_node_offset": 44299,
+    "raw_operands": [
+      1841,
+      -120
+    ],
+    "raw_b_unsigned": 136,
+    "global_unit": "gs/pack_data/lib_gs32.pak/gs/start_gs.o",
+    "global_function_slot": 1841,
+    "argc": 8,
+    "other_flag_bits": 0,
+    "function_interval": "in_function_interval",
+    "numeric_namespace": "module_function_range",
+    "snippet": [
+      {
+        "pc": 56,
+        "node": [
+          0,
+          0,
+          55
+        ],
+        "member_node_offset": 44291
+      },
+      {
+        "pc": 57,
+        "node": [
+          1,
+          0,
+          22
+        ],
+        "member_node_offset": 44295
+      },
+      {
+        "pc": 58,
+        "node": [
+          1841,
+          -120,
+          7
+        ],
+        "member_node_offset": 44299
+      },
+      {
+        "pc": 59,
+        "node": [
+          0,
+          0,
+          46
+        ],
+        "member_node_offset": 44303
+      },
+      {
+        "pc": 60,
+        "node": [
+          0,
+          0,
+          55
+        ],
+        "member_node_offset": 44307
+      }
+    ]
+  },
+  {
+    "opcode": "0x07",
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/daemons/account/cmd_l_get_server_list.o",
+    "source_package": "aaa/pack_data/lib_aaa32.pak",
+    "member_sha256": "6ed41ca919868c24de8050fb367dedd9d6f4320c392a32a90812b0738d09b2e6",
+    "segment_kind": "functions",
+    "function": "main",
+    "function_index": 4,
+    "segment_offset": 1936,
+    "nodes_offset": 2343,
+    "pc": 268,
+    "member_node_offset": 3415,
+    "raw_operands": [
+      707,
+      -119
+    ],
+    "raw_b_unsigned": 137,
+    "global_unit": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o",
+    "global_function_slot": 707,
+    "argc": 9,
+    "other_flag_bits": 0,
+    "function_interval": "in_function_interval",
+    "numeric_namespace": "module_function_range",
+    "snippet": [
+      {
+        "pc": 266,
+        "node": [
+          -2,
+          0,
+          55
+        ],
+        "member_node_offset": 3407
+      },
+      {
+        "pc": 267,
+        "node": [
+          -1,
+          0,
+          55
+        ],
+        "member_node_offset": 3411
+      },
+      {
+        "pc": 268,
+        "node": [
+          707,
+          -119,
+          7
+        ],
+        "member_node_offset": 3415
+      },
+      {
+        "pc": 269,
+        "node": [
+          -4,
+          0,
+          57
+        ],
+        "member_node_offset": 3419
+      },
+      {
+        "pc": 270,
+        "node": [
+          0,
+          0,
+          3
+        ],
+        "member_node_offset": 3423
+      }
+    ]
+  },
+  {
+    "opcode": "0x35",
+    "source": "aaa/pack_data/lib_aaa32.pak/daemons/connectiond.o",
+    "source_package": "aaa/pack_data/lib_aaa32.pak",
+    "member_sha256": "5f1a18f01d1bb1a75a05bf3bdf2788fddd1ca8f55134e59cd47eb9ab4847a896",
+    "segment_kind": "functions",
+    "function": "process_command",
+    "function_index": 5,
+    "segment_offset": 5407,
+    "nodes_offset": 5492,
+    "pc": 2,
+    "member_node_offset": 5500,
+    "raw_operands": [
+      75,
+      0
+    ],
+    "raw_b_unsigned": 0,
+    "global_unit": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o",
+    "variable_bounds": "in_bounds",
+    "global_max_vars": 105,
+    "snippet": [
+      {
+        "pc": 0,
+        "node": [
+          0,
+          0,
+          15
+        ],
+        "member_node_offset": 5492
+      },
+      {
+        "pc": 1,
+        "node": [
+          0,
+          0,
+          27
+        ],
+        "member_node_offset": 5496
+      },
+      {
+        "pc": 2,
+        "node": [
+          75,
+          0,
+          53
+        ],
+        "member_node_offset": 5500
+      },
+      {
+        "pc": 3,
+        "node": [
+          11,
+          2,
+          33
+        ],
+        "member_node_offset": 5504
+      },
+      {
+        "pc": 4,
+        "node": [
+          77,
+          0,
+          53
+        ],
+        "member_node_offset": 5508
+      }
+    ]
+  },
+  {
+    "opcode": "0x35",
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o",
+    "source_package": "aaa/pack_data/lib_aaa32.pak",
+    "member_sha256": "f9896828c87399be4977107fbfbe3f67fd71caebd3008bda84be16cc722d0a0e",
+    "segment_kind": "init",
+    "function": "__init__",
+    "function_index": null,
+    "segment_offset": 448680,
+    "nodes_offset": 450136,
+    "pc": 106,
+    "member_node_offset": 450560,
+    "raw_operands": [
+      30,
+      0
+    ],
+    "raw_b_unsigned": 0,
+    "global_unit": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o",
+    "variable_bounds": "in_bounds",
+    "global_max_vars": 105,
+    "snippet": [
+      {
+        "pc": 104,
+        "node": [
+          0,
+          0,
+          3
+        ],
+        "member_node_offset": 450552
+      },
+      {
+        "pc": 105,
+        "node": [
+          0,
+          0,
+          51
+        ],
+        "member_node_offset": 450556
+      },
+      {
+        "pc": 106,
+        "node": [
+          30,
+          0,
+          53
+        ],
+        "member_node_offset": 450560
+      },
+      {
+        "pc": 107,
+        "node": [
+          1,
+          0,
+          59
+        ],
+        "member_node_offset": 450564
+      },
+      {
+        "pc": 108,
+        "node": [
+          2,
+          0,
+          59
+        ],
+        "member_node_offset": 450568
+      }
+    ]
+  },
+  {
+    "opcode": "0x36",
+    "source": "aaa/pack_data/lib_aaa32.pak/daemons/connectiond.o",
+    "source_package": "aaa/pack_data/lib_aaa32.pak",
+    "member_sha256": "5f1a18f01d1bb1a75a05bf3bdf2788fddd1ca8f55134e59cd47eb9ab4847a896",
+    "segment_kind": "functions",
+    "function": "process_command",
+    "function_index": 5,
+    "segment_offset": 5407,
+    "nodes_offset": 5492,
+    "pc": 10,
+    "member_node_offset": 5532,
+    "raw_operands": [
+      77,
+      0
+    ],
+    "raw_b_unsigned": 0,
+    "global_unit": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o",
+    "variable_bounds": "in_bounds",
+    "global_max_vars": 105,
+    "snippet": [
+      {
+        "pc": 8,
+        "node": [
+          1,
+          0,
+          59
+        ],
+        "member_node_offset": 5524
+      },
+      {
+        "pc": 9,
+        "node": [
+          0,
+          0,
+          1
+        ],
+        "member_node_offset": 5528
+      },
+      {
+        "pc": 10,
+        "node": [
+          77,
+          0,
+          54
+        ],
+        "member_node_offset": 5532
+      },
+      {
+        "pc": 11,
+        "node": [
+          1,
+          0,
+          55
+        ],
+        "member_node_offset": 5536
+      },
+      {
+        "pc": 12,
+        "node": [
+          0,
+          0,
+          68
+        ],
+        "member_node_offset": 5540
+      }
+    ]
+  },
+  {
+    "opcode": "0x36",
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o",
+    "source_package": "aaa/pack_data/lib_aaa32.pak",
+    "member_sha256": "f9896828c87399be4977107fbfbe3f67fd71caebd3008bda84be16cc722d0a0e",
+    "segment_kind": "init",
+    "function": "__init__",
+    "function_index": null,
+    "segment_offset": 448680,
+    "nodes_offset": 450136,
+    "pc": 2,
+    "member_node_offset": 450144,
+    "raw_operands": [
+      2,
+      0
+    ],
+    "raw_b_unsigned": 0,
+    "global_unit": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o",
+    "variable_bounds": "in_bounds",
+    "global_max_vars": 105,
+    "snippet": [
+      {
+        "pc": 0,
+        "node": [
+          1024,
+          0,
+          59
+        ],
+        "member_node_offset": 450136
+      },
+      {
+        "pc": 1,
+        "node": [
+          0,
+          1,
+          6
+        ],
+        "member_node_offset": 450140
+      },
+      {
+        "pc": 2,
+        "node": [
+          2,
+          0,
+          54
+        ],
+        "member_node_offset": 450144
+      },
+      {
+        "pc": 3,
+        "node": [
+          0,
+          0,
+          3
+        ],
+        "member_node_offset": 450148
+      },
+      {
+        "pc": 4,
+        "node": [
+          0,
+          0,
+          51
+        ],
+        "member_node_offset": 450152
+      }
+    ]
+  }
+]
