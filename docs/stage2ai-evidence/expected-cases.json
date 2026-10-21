@@ -1,0 +1,1127 @@
+{
+  "schema_version": 1,
+  "scope": "normal non-intern-attribute Rust Bytes; native cases are static deductions, never target runs",
+  "cases": [
+    {
+      "id": "concat-empty",
+      "opcode": "01",
+      "left": {
+        "type": "Bytes",
+        "hex": ""
+      },
+      "right": {
+        "type": "Bytes",
+        "hex": ""
+      },
+      "expected": {
+        "type": "Bytes",
+        "hex": ""
+      },
+      "classification": "static-deduction",
+      "evidence_ids": [
+        "ev_0ad799c15b35d517803d7b03ec4cfdcd869b5b8720539419cd55aaca475fa1eb"
+      ]
+    },
+    {
+      "id": "concat-nul",
+      "opcode": "01",
+      "left": {
+        "type": "Bytes",
+        "hex": "610078"
+      },
+      "right": {
+        "type": "Bytes",
+        "hex": "ff007a"
+      },
+      "expected": {
+        "type": "Bytes",
+        "hex": "610078ff007a"
+      },
+      "classification": "static-deduction",
+      "evidence_ids": [
+        "ev_0ad799c15b35d517803d7b03ec4cfdcd869b5b8720539419cd55aaca475fa1eb"
+      ]
+    },
+    {
+      "id": "concat-order",
+      "opcode": "01",
+      "left": {
+        "type": "Bytes",
+        "hex": "6c656674"
+      },
+      "right": {
+        "type": "Bytes",
+        "hex": "7269676874"
+      },
+      "expected": {
+        "type": "Bytes",
+        "hex": "6c6566747269676874"
+      },
+      "classification": "static-deduction",
+      "evidence_ids": [
+        "ev_0ad799c15b35d517803d7b03ec4cfdcd869b5b8720539419cd55aaca475fa1eb"
+      ]
+    },
+    {
+      "id": "eq-empty",
+      "opcode": "1c",
+      "left": {
+        "type": "Bytes",
+        "hex": ""
+      },
+      "right": {
+        "type": "Bytes",
+        "hex": ""
+      },
+      "expected": {
+        "type": "Int",
+        "value": 1
+      },
+      "classification": "static-deduction",
+      "evidence_ids": [
+        "ev_c98c01d582d90083a8c48681f7d36bdd274bd35ed834c0ef8fe22e6ac304baf1"
+      ]
+    },
+    {
+      "id": "eq-nul-suffix",
+      "opcode": "1c",
+      "left": {
+        "type": "Bytes",
+        "hex": "610078"
+      },
+      "right": {
+        "type": "Bytes",
+        "hex": "610079"
+      },
+      "expected": {
+        "type": "Int",
+        "value": 0
+      },
+      "classification": "static-deduction",
+      "evidence_ids": [
+        "ev_c98c01d582d90083a8c48681f7d36bdd274bd35ed834c0ef8fe22e6ac304baf1"
+      ]
+    },
+    {
+      "id": "ne-nul-suffix",
+      "opcode": "2a",
+      "left": {
+        "type": "Bytes",
+        "hex": "610078"
+      },
+      "right": {
+        "type": "Bytes",
+        "hex": "610079"
+      },
+      "expected": {
+        "type": "Int",
+        "value": 1
+      },
+      "classification": "static-deduction",
+      "evidence_ids": [
+        "ev_c98c01d582d90083a8c48681f7d36bdd274bd35ed834c0ef8fe22e6ac304baf1",
+        "ev_3d5dfe19263e352be0e9b4cec6b9dc663f1e155cc579e8be9b46ada0e1fdcd93"
+      ]
+    },
+    {
+      "id": "eq-length",
+      "opcode": "1c",
+      "left": {
+        "type": "Bytes",
+        "hex": "61"
+      },
+      "right": {
+        "type": "Bytes",
+        "hex": "6100"
+      },
+      "expected": {
+        "type": "Int",
+        "value": 0
+      },
+      "classification": "static-deduction",
+      "evidence_ids": [
+        "ev_c98c01d582d90083a8c48681f7d36bdd274bd35ed834c0ef8fe22e6ac304baf1"
+      ]
+    },
+    {
+      "id": "eq-independent-heads",
+      "opcode": "1c",
+      "left": {
+        "type": "Bytes",
+        "hex": "616263"
+      },
+      "right": {
+        "type": "Bytes",
+        "hex": "616263"
+      },
+      "expected": {
+        "type": "Int",
+        "value": 1
+      },
+      "classification": "static-deduction",
+      "evidence_ids": [
+        "ev_c98c01d582d90083a8c48681f7d36bdd274bd35ed834c0ef8fe22e6ac304baf1"
+      ]
+    },
+    {
+      "id": "eq-case",
+      "opcode": "1c",
+      "left": {
+        "type": "Bytes",
+        "hex": "41"
+      },
+      "right": {
+        "type": "Bytes",
+        "hex": "61"
+      },
+      "expected": {
+        "type": "Int",
+        "value": 0
+      },
+      "classification": "static-deduction",
+      "evidence_ids": [
+        "ev_c98c01d582d90083a8c48681f7d36bdd274bd35ed834c0ef8fe22e6ac304baf1"
+      ]
+    },
+    {
+      "id": "order-nul-less",
+      "opcode": "27",
+      "left": {
+        "type": "Bytes",
+        "hex": "610078"
+      },
+      "right": {
+        "type": "Bytes",
+        "hex": "610079"
+      },
+      "expected": {
+        "type": "Int",
+        "value": 0
+      },
+      "classification": "static-deduction",
+      "evidence_ids": [
+        "ev_deee5e8743aec13f48327236f9b0793ccd92a15e202b8459782b33ff3e514c4d",
+        "ev_33be0a61bad0f87ae5aadb6450c2cfe45eff8500361f60c1846e8a19b2953a6b"
+      ]
+    },
+    {
+      "id": "order-nul-greater",
+      "opcode": "20",
+      "left": {
+        "type": "Bytes",
+        "hex": "610078"
+      },
+      "right": {
+        "type": "Bytes",
+        "hex": "610079"
+      },
+      "expected": {
+        "type": "Int",
+        "value": 0
+      },
+      "classification": "static-deduction",
+      "evidence_ids": [
+        "ev_5046856efb8928064add53f8c3b8b91c64ee3e170372d0683e48cf9018ea0e36",
+        "ev_33be0a61bad0f87ae5aadb6450c2cfe45eff8500361f60c1846e8a19b2953a6b"
+      ]
+    },
+    {
+      "id": "order-nul-ge",
+      "opcode": "1e",
+      "left": {
+        "type": "Bytes",
+        "hex": "610078"
+      },
+      "right": {
+        "type": "Bytes",
+        "hex": "610079"
+      },
+      "expected": {
+        "type": "Int",
+        "value": 1
+      },
+      "classification": "static-deduction",
+      "evidence_ids": [
+        "ev_4442d99f8563c660f950f2e4e3d6fb934504618f8904fea7b1fb0f1d470b4151",
+        "ev_33be0a61bad0f87ae5aadb6450c2cfe45eff8500361f60c1846e8a19b2953a6b"
+      ]
+    },
+    {
+      "id": "order-nul-le",
+      "opcode": "25",
+      "left": {
+        "type": "Bytes",
+        "hex": "610078"
+      },
+      "right": {
+        "type": "Bytes",
+        "hex": "610079"
+      },
+      "expected": {
+        "type": "Int",
+        "value": 1
+      },
+      "classification": "static-deduction",
+      "evidence_ids": [
+        "ev_0e786f83fad6944f8f5973948ba408ed0a0a5200486741ce8f534333189dc7b2",
+        "ev_33be0a61bad0f87ae5aadb6450c2cfe45eff8500361f60c1846e8a19b2953a6b"
+      ]
+    },
+    {
+      "id": "order-prefix",
+      "opcode": "27",
+      "left": {
+        "type": "Bytes",
+        "hex": "61"
+      },
+      "right": {
+        "type": "Bytes",
+        "hex": "6162"
+      },
+      "expected": {
+        "type": "Int",
+        "value": 1
+      },
+      "classification": "static-deduction",
+      "evidence_ids": [
+        "ev_deee5e8743aec13f48327236f9b0793ccd92a15e202b8459782b33ff3e514c4d",
+        "ev_33be0a61bad0f87ae5aadb6450c2cfe45eff8500361f60c1846e8a19b2953a6b"
+      ]
+    },
+    {
+      "id": "order-high-bit",
+      "opcode": "20",
+      "left": {
+        "type": "Bytes",
+        "hex": "ff"
+      },
+      "right": {
+        "type": "Bytes",
+        "hex": "7f"
+      },
+      "expected": {
+        "type": "Int",
+        "value": 1
+      },
+      "classification": "static-deduction",
+      "evidence_ids": [
+        "ev_5046856efb8928064add53f8c3b8b91c64ee3e170372d0683e48cf9018ea0e36",
+        "ev_33be0a61bad0f87ae5aadb6450c2cfe45eff8500361f60c1846e8a19b2953a6b"
+      ]
+    },
+    {
+      "id": "order-case",
+      "opcode": "27",
+      "left": {
+        "type": "Bytes",
+        "hex": "41"
+      },
+      "right": {
+        "type": "Bytes",
+        "hex": "61"
+      },
+      "expected": {
+        "type": "Int",
+        "value": 1
+      },
+      "classification": "static-deduction",
+      "evidence_ids": [
+        "ev_deee5e8743aec13f48327236f9b0793ccd92a15e202b8459782b33ff3e514c4d",
+        "ev_33be0a61bad0f87ae5aadb6450c2cfe45eff8500361f60c1846e8a19b2953a6b"
+      ]
+    },
+    {
+      "id": "int-0",
+      "opcode": "01",
+      "left": {
+        "type": "Bytes",
+        "hex": "6e3d"
+      },
+      "right": {
+        "type": "Int",
+        "value": 0
+      },
+      "expected": {
+        "type": "Bytes",
+        "hex": "6e3d30"
+      },
+      "classification": "static-deduction",
+      "evidence_ids": [
+        "ev_78abb8fbaeb569a0b65639715b90654d8ae7cb48efb389df3771b99138ede0b3",
+        "ev_616461794c4cd7f622a095dfb402e863b4ff031428987af556db44e6bada65ba",
+        "ev_36ddefb514f4d1eee68076fb77ba6fd169f82925498e54e17c22e4d514ce716e"
+      ]
+    },
+    {
+      "id": "int--1",
+      "opcode": "01",
+      "left": {
+        "type": "Bytes",
+        "hex": "6e3d"
+      },
+      "right": {
+        "type": "Int",
+        "value": -1
+      },
+      "expected": {
+        "type": "Bytes",
+        "hex": "6e3d2d31"
+      },
+      "classification": "static-deduction",
+      "evidence_ids": [
+        "ev_78abb8fbaeb569a0b65639715b90654d8ae7cb48efb389df3771b99138ede0b3",
+        "ev_616461794c4cd7f622a095dfb402e863b4ff031428987af556db44e6bada65ba",
+        "ev_36ddefb514f4d1eee68076fb77ba6fd169f82925498e54e17c22e4d514ce716e"
+      ]
+    },
+    {
+      "id": "int-2147483647",
+      "opcode": "01",
+      "left": {
+        "type": "Bytes",
+        "hex": "6e3d"
+      },
+      "right": {
+        "type": "Int",
+        "value": 2147483647
+      },
+      "expected": {
+        "type": "Bytes",
+        "hex": "6e3d32313437343833363437"
+      },
+      "classification": "static-deduction",
+      "evidence_ids": [
+        "ev_78abb8fbaeb569a0b65639715b90654d8ae7cb48efb389df3771b99138ede0b3",
+        "ev_616461794c4cd7f622a095dfb402e863b4ff031428987af556db44e6bada65ba",
+        "ev_36ddefb514f4d1eee68076fb77ba6fd169f82925498e54e17c22e4d514ce716e"
+      ]
+    },
+    {
+      "id": "int--2147483648",
+      "opcode": "01",
+      "left": {
+        "type": "Bytes",
+        "hex": "6e3d"
+      },
+      "right": {
+        "type": "Int",
+        "value": -2147483648
+      },
+      "expected": {
+        "type": "Bytes",
+        "hex": "6e3d2d32313437343833363438"
+      },
+      "classification": "static-deduction",
+      "evidence_ids": [
+        "ev_78abb8fbaeb569a0b65639715b90654d8ae7cb48efb389df3771b99138ede0b3",
+        "ev_616461794c4cd7f622a095dfb402e863b4ff031428987af556db44e6bada65ba",
+        "ev_36ddefb514f4d1eee68076fb77ba6fd169f82925498e54e17c22e4d514ce716e"
+      ]
+    },
+    {
+      "id": "mixed-Undefined-1c",
+      "opcode": "1c",
+      "left": {
+        "type": "Bytes",
+        "hex": "78"
+      },
+      "right": {
+        "type": "Undefined"
+      },
+      "expected": {
+        "type": "Int",
+        "value": 0
+      },
+      "classification": "static-deduction",
+      "evidence_ids": [
+        "ev_c98c01d582d90083a8c48681f7d36bdd274bd35ed834c0ef8fe22e6ac304baf1"
+      ]
+    },
+    {
+      "id": "mixed-reverse-Undefined-1c",
+      "opcode": "1c",
+      "left": {
+        "type": "Undefined"
+      },
+      "right": {
+        "type": "Bytes",
+        "hex": "78"
+      },
+      "expected": {
+        "type": "Int",
+        "value": 0
+      },
+      "classification": "static-deduction",
+      "evidence_ids": [
+        "ev_c98c01d582d90083a8c48681f7d36bdd274bd35ed834c0ef8fe22e6ac304baf1"
+      ]
+    },
+    {
+      "id": "mixed-Undefined-2a",
+      "opcode": "2a",
+      "left": {
+        "type": "Bytes",
+        "hex": "78"
+      },
+      "right": {
+        "type": "Undefined"
+      },
+      "expected": {
+        "type": "Int",
+        "value": 1
+      },
+      "classification": "static-deduction",
+      "evidence_ids": [
+        "ev_c98c01d582d90083a8c48681f7d36bdd274bd35ed834c0ef8fe22e6ac304baf1",
+        "ev_3d5dfe19263e352be0e9b4cec6b9dc663f1e155cc579e8be9b46ada0e1fdcd93"
+      ]
+    },
+    {
+      "id": "mixed-reverse-Undefined-2a",
+      "opcode": "2a",
+      "left": {
+        "type": "Undefined"
+      },
+      "right": {
+        "type": "Bytes",
+        "hex": "78"
+      },
+      "expected": {
+        "type": "Int",
+        "value": 1
+      },
+      "classification": "static-deduction",
+      "evidence_ids": [
+        "ev_c98c01d582d90083a8c48681f7d36bdd274bd35ed834c0ef8fe22e6ac304baf1",
+        "ev_3d5dfe19263e352be0e9b4cec6b9dc663f1e155cc579e8be9b46ada0e1fdcd93"
+      ]
+    },
+    {
+      "id": "mixed-Void-1c",
+      "opcode": "1c",
+      "left": {
+        "type": "Bytes",
+        "hex": "78"
+      },
+      "right": {
+        "type": "Void"
+      },
+      "expected": {
+        "type": "Int",
+        "value": 0
+      },
+      "classification": "static-deduction",
+      "evidence_ids": [
+        "ev_c98c01d582d90083a8c48681f7d36bdd274bd35ed834c0ef8fe22e6ac304baf1"
+      ]
+    },
+    {
+      "id": "mixed-reverse-Void-1c",
+      "opcode": "1c",
+      "left": {
+        "type": "Void"
+      },
+      "right": {
+        "type": "Bytes",
+        "hex": "78"
+      },
+      "expected": {
+        "type": "Int",
+        "value": 0
+      },
+      "classification": "static-deduction",
+      "evidence_ids": [
+        "ev_c98c01d582d90083a8c48681f7d36bdd274bd35ed834c0ef8fe22e6ac304baf1"
+      ]
+    },
+    {
+      "id": "mixed-Void-2a",
+      "opcode": "2a",
+      "left": {
+        "type": "Bytes",
+        "hex": "78"
+      },
+      "right": {
+        "type": "Void"
+      },
+      "expected": {
+        "type": "Int",
+        "value": 1
+      },
+      "classification": "static-deduction",
+      "evidence_ids": [
+        "ev_c98c01d582d90083a8c48681f7d36bdd274bd35ed834c0ef8fe22e6ac304baf1",
+        "ev_3d5dfe19263e352be0e9b4cec6b9dc663f1e155cc579e8be9b46ada0e1fdcd93"
+      ]
+    },
+    {
+      "id": "mixed-reverse-Void-2a",
+      "opcode": "2a",
+      "left": {
+        "type": "Void"
+      },
+      "right": {
+        "type": "Bytes",
+        "hex": "78"
+      },
+      "expected": {
+        "type": "Int",
+        "value": 1
+      },
+      "classification": "static-deduction",
+      "evidence_ids": [
+        "ev_c98c01d582d90083a8c48681f7d36bdd274bd35ed834c0ef8fe22e6ac304baf1",
+        "ev_3d5dfe19263e352be0e9b4cec6b9dc663f1e155cc579e8be9b46ada0e1fdcd93"
+      ]
+    },
+    {
+      "id": "mixed-Int-1c",
+      "opcode": "1c",
+      "left": {
+        "type": "Bytes",
+        "hex": "78"
+      },
+      "right": {
+        "type": "Int"
+      },
+      "expected": {
+        "type": "Int",
+        "value": 0
+      },
+      "classification": "static-deduction",
+      "evidence_ids": [
+        "ev_c98c01d582d90083a8c48681f7d36bdd274bd35ed834c0ef8fe22e6ac304baf1"
+      ]
+    },
+    {
+      "id": "mixed-reverse-Int-1c",
+      "opcode": "1c",
+      "left": {
+        "type": "Int"
+      },
+      "right": {
+        "type": "Bytes",
+        "hex": "78"
+      },
+      "expected": {
+        "type": "Int",
+        "value": 0
+      },
+      "classification": "static-deduction",
+      "evidence_ids": [
+        "ev_c98c01d582d90083a8c48681f7d36bdd274bd35ed834c0ef8fe22e6ac304baf1"
+      ]
+    },
+    {
+      "id": "mixed-Int-2a",
+      "opcode": "2a",
+      "left": {
+        "type": "Bytes",
+        "hex": "78"
+      },
+      "right": {
+        "type": "Int"
+      },
+      "expected": {
+        "type": "Int",
+        "value": 1
+      },
+      "classification": "static-deduction",
+      "evidence_ids": [
+        "ev_c98c01d582d90083a8c48681f7d36bdd274bd35ed834c0ef8fe22e6ac304baf1",
+        "ev_3d5dfe19263e352be0e9b4cec6b9dc663f1e155cc579e8be9b46ada0e1fdcd93"
+      ]
+    },
+    {
+      "id": "mixed-reverse-Int-2a",
+      "opcode": "2a",
+      "left": {
+        "type": "Int"
+      },
+      "right": {
+        "type": "Bytes",
+        "hex": "78"
+      },
+      "expected": {
+        "type": "Int",
+        "value": 1
+      },
+      "classification": "static-deduction",
+      "evidence_ids": [
+        "ev_c98c01d582d90083a8c48681f7d36bdd274bd35ed834c0ef8fe22e6ac304baf1",
+        "ev_3d5dfe19263e352be0e9b4cec6b9dc663f1e155cc579e8be9b46ada0e1fdcd93"
+      ]
+    },
+    {
+      "id": "mixed-Real-1c",
+      "opcode": "1c",
+      "left": {
+        "type": "Bytes",
+        "hex": "78"
+      },
+      "right": {
+        "type": "Real"
+      },
+      "expected": {
+        "type": "Int",
+        "value": 0
+      },
+      "classification": "static-deduction",
+      "evidence_ids": [
+        "ev_c98c01d582d90083a8c48681f7d36bdd274bd35ed834c0ef8fe22e6ac304baf1"
+      ]
+    },
+    {
+      "id": "mixed-reverse-Real-1c",
+      "opcode": "1c",
+      "left": {
+        "type": "Real"
+      },
+      "right": {
+        "type": "Bytes",
+        "hex": "78"
+      },
+      "expected": {
+        "type": "Int",
+        "value": 0
+      },
+      "classification": "static-deduction",
+      "evidence_ids": [
+        "ev_c98c01d582d90083a8c48681f7d36bdd274bd35ed834c0ef8fe22e6ac304baf1"
+      ]
+    },
+    {
+      "id": "mixed-Real-2a",
+      "opcode": "2a",
+      "left": {
+        "type": "Bytes",
+        "hex": "78"
+      },
+      "right": {
+        "type": "Real"
+      },
+      "expected": {
+        "type": "Int",
+        "value": 1
+      },
+      "classification": "static-deduction",
+      "evidence_ids": [
+        "ev_c98c01d582d90083a8c48681f7d36bdd274bd35ed834c0ef8fe22e6ac304baf1",
+        "ev_3d5dfe19263e352be0e9b4cec6b9dc663f1e155cc579e8be9b46ada0e1fdcd93"
+      ]
+    },
+    {
+      "id": "mixed-reverse-Real-2a",
+      "opcode": "2a",
+      "left": {
+        "type": "Real"
+      },
+      "right": {
+        "type": "Bytes",
+        "hex": "78"
+      },
+      "expected": {
+        "type": "Int",
+        "value": 1
+      },
+      "classification": "static-deduction",
+      "evidence_ids": [
+        "ev_c98c01d582d90083a8c48681f7d36bdd274bd35ed834c0ef8fe22e6ac304baf1",
+        "ev_3d5dfe19263e352be0e9b4cec6b9dc663f1e155cc579e8be9b46ada0e1fdcd93"
+      ]
+    },
+    {
+      "id": "mixed-Object-1c",
+      "opcode": "1c",
+      "left": {
+        "type": "Bytes",
+        "hex": "78"
+      },
+      "right": {
+        "type": "Object"
+      },
+      "expected": {
+        "type": "Int",
+        "value": 0
+      },
+      "classification": "static-deduction",
+      "evidence_ids": [
+        "ev_c98c01d582d90083a8c48681f7d36bdd274bd35ed834c0ef8fe22e6ac304baf1"
+      ]
+    },
+    {
+      "id": "mixed-reverse-Object-1c",
+      "opcode": "1c",
+      "left": {
+        "type": "Object"
+      },
+      "right": {
+        "type": "Bytes",
+        "hex": "78"
+      },
+      "expected": {
+        "type": "Int",
+        "value": 0
+      },
+      "classification": "static-deduction",
+      "evidence_ids": [
+        "ev_c98c01d582d90083a8c48681f7d36bdd274bd35ed834c0ef8fe22e6ac304baf1"
+      ]
+    },
+    {
+      "id": "mixed-Object-2a",
+      "opcode": "2a",
+      "left": {
+        "type": "Bytes",
+        "hex": "78"
+      },
+      "right": {
+        "type": "Object"
+      },
+      "expected": {
+        "type": "Int",
+        "value": 1
+      },
+      "classification": "static-deduction",
+      "evidence_ids": [
+        "ev_c98c01d582d90083a8c48681f7d36bdd274bd35ed834c0ef8fe22e6ac304baf1",
+        "ev_3d5dfe19263e352be0e9b4cec6b9dc663f1e155cc579e8be9b46ada0e1fdcd93"
+      ]
+    },
+    {
+      "id": "mixed-reverse-Object-2a",
+      "opcode": "2a",
+      "left": {
+        "type": "Object"
+      },
+      "right": {
+        "type": "Bytes",
+        "hex": "78"
+      },
+      "expected": {
+        "type": "Int",
+        "value": 1
+      },
+      "classification": "static-deduction",
+      "evidence_ids": [
+        "ev_c98c01d582d90083a8c48681f7d36bdd274bd35ed834c0ef8fe22e6ac304baf1",
+        "ev_3d5dfe19263e352be0e9b4cec6b9dc663f1e155cc579e8be9b46ada0e1fdcd93"
+      ]
+    },
+    {
+      "id": "mixed-Array-1c",
+      "opcode": "1c",
+      "left": {
+        "type": "Bytes",
+        "hex": "78"
+      },
+      "right": {
+        "type": "Array"
+      },
+      "expected": {
+        "type": "Int",
+        "value": 0
+      },
+      "classification": "static-deduction",
+      "evidence_ids": [
+        "ev_c98c01d582d90083a8c48681f7d36bdd274bd35ed834c0ef8fe22e6ac304baf1"
+      ]
+    },
+    {
+      "id": "mixed-reverse-Array-1c",
+      "opcode": "1c",
+      "left": {
+        "type": "Array"
+      },
+      "right": {
+        "type": "Bytes",
+        "hex": "78"
+      },
+      "expected": {
+        "type": "Int",
+        "value": 0
+      },
+      "classification": "static-deduction",
+      "evidence_ids": [
+        "ev_c98c01d582d90083a8c48681f7d36bdd274bd35ed834c0ef8fe22e6ac304baf1"
+      ]
+    },
+    {
+      "id": "mixed-Array-2a",
+      "opcode": "2a",
+      "left": {
+        "type": "Bytes",
+        "hex": "78"
+      },
+      "right": {
+        "type": "Array"
+      },
+      "expected": {
+        "type": "Int",
+        "value": 1
+      },
+      "classification": "static-deduction",
+      "evidence_ids": [
+        "ev_c98c01d582d90083a8c48681f7d36bdd274bd35ed834c0ef8fe22e6ac304baf1",
+        "ev_3d5dfe19263e352be0e9b4cec6b9dc663f1e155cc579e8be9b46ada0e1fdcd93"
+      ]
+    },
+    {
+      "id": "mixed-reverse-Array-2a",
+      "opcode": "2a",
+      "left": {
+        "type": "Array"
+      },
+      "right": {
+        "type": "Bytes",
+        "hex": "78"
+      },
+      "expected": {
+        "type": "Int",
+        "value": 1
+      },
+      "classification": "static-deduction",
+      "evidence_ids": [
+        "ev_c98c01d582d90083a8c48681f7d36bdd274bd35ed834c0ef8fe22e6ac304baf1",
+        "ev_3d5dfe19263e352be0e9b4cec6b9dc663f1e155cc579e8be9b46ada0e1fdcd93"
+      ]
+    },
+    {
+      "id": "mixed-Mapping-1c",
+      "opcode": "1c",
+      "left": {
+        "type": "Bytes",
+        "hex": "78"
+      },
+      "right": {
+        "type": "Mapping"
+      },
+      "expected": {
+        "type": "Int",
+        "value": 0
+      },
+      "classification": "static-deduction",
+      "evidence_ids": [
+        "ev_c98c01d582d90083a8c48681f7d36bdd274bd35ed834c0ef8fe22e6ac304baf1"
+      ]
+    },
+    {
+      "id": "mixed-reverse-Mapping-1c",
+      "opcode": "1c",
+      "left": {
+        "type": "Mapping"
+      },
+      "right": {
+        "type": "Bytes",
+        "hex": "78"
+      },
+      "expected": {
+        "type": "Int",
+        "value": 0
+      },
+      "classification": "static-deduction",
+      "evidence_ids": [
+        "ev_c98c01d582d90083a8c48681f7d36bdd274bd35ed834c0ef8fe22e6ac304baf1"
+      ]
+    },
+    {
+      "id": "mixed-Mapping-2a",
+      "opcode": "2a",
+      "left": {
+        "type": "Bytes",
+        "hex": "78"
+      },
+      "right": {
+        "type": "Mapping"
+      },
+      "expected": {
+        "type": "Int",
+        "value": 1
+      },
+      "classification": "static-deduction",
+      "evidence_ids": [
+        "ev_c98c01d582d90083a8c48681f7d36bdd274bd35ed834c0ef8fe22e6ac304baf1",
+        "ev_3d5dfe19263e352be0e9b4cec6b9dc663f1e155cc579e8be9b46ada0e1fdcd93"
+      ]
+    },
+    {
+      "id": "mixed-reverse-Mapping-2a",
+      "opcode": "2a",
+      "left": {
+        "type": "Mapping"
+      },
+      "right": {
+        "type": "Bytes",
+        "hex": "78"
+      },
+      "expected": {
+        "type": "Int",
+        "value": 1
+      },
+      "classification": "static-deduction",
+      "evidence_ids": [
+        "ev_c98c01d582d90083a8c48681f7d36bdd274bd35ed834c0ef8fe22e6ac304baf1",
+        "ev_3d5dfe19263e352be0e9b4cec6b9dc663f1e155cc579e8be9b46ada0e1fdcd93"
+      ]
+    },
+    {
+      "id": "mixed-Function-1c",
+      "opcode": "1c",
+      "left": {
+        "type": "Bytes",
+        "hex": "78"
+      },
+      "right": {
+        "type": "Function"
+      },
+      "expected": {
+        "type": "Int",
+        "value": 0
+      },
+      "classification": "static-deduction",
+      "evidence_ids": [
+        "ev_c98c01d582d90083a8c48681f7d36bdd274bd35ed834c0ef8fe22e6ac304baf1"
+      ]
+    },
+    {
+      "id": "mixed-reverse-Function-1c",
+      "opcode": "1c",
+      "left": {
+        "type": "Function"
+      },
+      "right": {
+        "type": "Bytes",
+        "hex": "78"
+      },
+      "expected": {
+        "type": "Int",
+        "value": 0
+      },
+      "classification": "static-deduction",
+      "evidence_ids": [
+        "ev_c98c01d582d90083a8c48681f7d36bdd274bd35ed834c0ef8fe22e6ac304baf1"
+      ]
+    },
+    {
+      "id": "mixed-Function-2a",
+      "opcode": "2a",
+      "left": {
+        "type": "Bytes",
+        "hex": "78"
+      },
+      "right": {
+        "type": "Function"
+      },
+      "expected": {
+        "type": "Int",
+        "value": 1
+      },
+      "classification": "static-deduction",
+      "evidence_ids": [
+        "ev_c98c01d582d90083a8c48681f7d36bdd274bd35ed834c0ef8fe22e6ac304baf1",
+        "ev_3d5dfe19263e352be0e9b4cec6b9dc663f1e155cc579e8be9b46ada0e1fdcd93"
+      ]
+    },
+    {
+      "id": "mixed-reverse-Function-2a",
+      "opcode": "2a",
+      "left": {
+        "type": "Function"
+      },
+      "right": {
+        "type": "Bytes",
+        "hex": "78"
+      },
+      "expected": {
+        "type": "Int",
+        "value": 1
+      },
+      "classification": "static-deduction",
+      "evidence_ids": [
+        "ev_c98c01d582d90083a8c48681f7d36bdd274bd35ed834c0ef8fe22e6ac304baf1",
+        "ev_3d5dfe19263e352be0e9b4cec6b9dc663f1e155cc579e8be9b46ada0e1fdcd93"
+      ]
+    },
+    {
+      "id": "reject-real",
+      "opcode": "01",
+      "left": {
+        "type": "Bytes",
+        "hex": "78"
+      },
+      "right": {
+        "type": "Real",
+        "bits": "3f800000"
+      },
+      "expected": {
+        "rust_error": "UnsupportedType"
+      },
+      "classification": "rust-design",
+      "evidence_ids": [
+        "ev_42e127d62e334cc26bafbc7565df879a834dbffba8a6a59f495f385632e44e7d",
+        "ev_8586e710ba1b29fd3d65723eea725f94ecb7d991e37716a47b030c78514531c4"
+      ]
+    },
+    {
+      "id": "reject-numeric-left",
+      "opcode": "01",
+      "left": {
+        "type": "Int",
+        "value": 1
+      },
+      "right": {
+        "type": "Bytes",
+        "hex": "78"
+      },
+      "expected": {
+        "rust_error": "UnsupportedType"
+      },
+      "classification": "rust-design",
+      "evidence_ids": [
+        "ev_42e127d62e334cc26bafbc7565df879a834dbffba8a6a59f495f385632e44e7d",
+        "ev_8586e710ba1b29fd3d65723eea725f94ecb7d991e37716a47b030c78514531c4"
+      ]
+    },
+    {
+      "id": "reject-order-mixed",
+      "opcode": "27",
+      "left": {
+        "type": "Bytes",
+        "hex": "78"
+      },
+      "right": {
+        "type": "Int",
+        "value": 1
+      },
+      "expected": {
+        "rust_error": "UnsupportedType"
+      },
+      "classification": "rust-design",
+      "evidence_ids": [
+        "ev_42e127d62e334cc26bafbc7565df879a834dbffba8a6a59f495f385632e44e7d",
+        "ev_8586e710ba1b29fd3d65723eea725f94ecb7d991e37716a47b030c78514531c4"
+      ]
+    },
+    {
+      "id": "result-limit",
+      "opcode": "01",
+      "left": {
+        "type": "Bytes",
+        "repeat_hex": "61",
+        "length": 65536
+      },
+      "right": {
+        "type": "Bytes",
+        "hex": "78"
+      },
+      "expected": {
+        "rust_error": "Limit"
+      },
+      "classification": "rust-design",
+      "evidence_ids": [
+        "ev_42e127d62e334cc26bafbc7565df879a834dbffba8a6a59f495f385632e44e7d",
+        "ev_8586e710ba1b29fd3d65723eea725f94ecb7d991e37716a47b030c78514531c4"
+      ]
+    }
+  ]
+}

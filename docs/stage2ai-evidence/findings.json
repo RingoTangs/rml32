@@ -1,0 +1,168 @@
+[
+  {
+    "id": "operand-direction",
+    "classification": "observation",
+    "status": "answered",
+    "statement": "Native left is stack[sp+1], right stack[sp]; binary wrappers replace left and pop right. Rust upward Vec maps left=n-2,right=n-1.",
+    "evidence_ids": [
+      "ev_42e127d62e334cc26bafbc7565df879a834dbffba8a6a59f495f385632e44e7d",
+      "ev_9c31d92aeb045a089ff6361f0cf81330894208eb0520a78f0bf4bd4701c8d565",
+      "ev_4442d99f8563c660f950f2e4e3d6fb934504618f8904fea7b1fb0f1d470b4151",
+      "ev_6f8162a52b6dcead2e90f45ac594636448ad034684367dee557ea51b2cd7fc1f"
+    ],
+    "limitations": [
+      "Rust mapping is integration design corroborated by existing interpreter, not original execution."
+    ]
+  },
+  {
+    "id": "add-tag-matrix",
+    "classification": "observation",
+    "status": "answered",
+    "statement": "String-left accepts String,Int,Real; right Undefined/Void and other tags error. Numeric-left with String-right errors. Buffer/Array/Mapping branches are separate.",
+    "evidence_ids": [
+      "ev_42e127d62e334cc26bafbc7565df879a834dbffba8a6a59f495f385632e44e7d"
+    ],
+    "limitations": [
+      "These are selected native branches, not implementation of Buffer/container arithmetic."
+    ]
+  },
+  {
+    "id": "concat-stored-length",
+    "classification": "observation",
+    "status": "answered",
+    "statement": "vm_concatString uses both stored lengths, extends by right.len, increments result len, then memcpy(right.len+1) at old left.len. Embedded NUL bytes within stored length are copied.",
+    "evidence_ids": [
+      "ev_0ad799c15b35d517803d7b03ec4cfdcd869b5b8720539419cd55aaca475fa1eb"
+    ],
+    "limitations": [
+      "The terminating extra byte is native storage; Rust Bytes payload omits implicit terminator."
+    ]
+  },
+  {
+    "id": "concat-cstr",
+    "classification": "observation",
+    "status": "answered",
+    "statement": "vm_concatStringWithCStr measures the right C string to first NUL, appends measured bytes plus terminator after left stored len.",
+    "evidence_ids": [
+      "ev_36ddefb514f4d1eee68076fb77ba6fd169f82925498e54e17c22e4d514ce716e"
+    ],
+    "limitations": [
+      "Not the same length policy as arbitrary Bytes+Bytes."
+    ]
+  },
+  {
+    "id": "int-format",
+    "classification": "observation",
+    "status": "answered",
+    "statement": "String+Int calls vm_typeValueAt case2 then vm_intToString(base10,signFlag1,upperCase0) with80-byte buffer; sign+unsigned division covers all i32 including MIN.",
+    "evidence_ids": [
+      "ev_42e127d62e334cc26bafbc7565df879a834dbffba8a6a59f495f385632e44e7d",
+      "ev_5841b7654391f3ff5cb823d82e9f2e1f96f29fb0f3f21b2a0393e7fc70d7b03b",
+      "ev_616461794c4cd7f622a095dfb402e863b4ff031428987af556db44e6bada65ba",
+      "ev_78abb8fbaeb569a0b65639715b90654d8ae7cb48efb389df3771b99138ede0b3"
+    ],
+    "limitations": [
+      "Decimal behavior follows assembly; no interpreter execution was observed."
+    ]
+  },
+  {
+    "id": "real-format",
+    "classification": "observation",
+    "status": "partial",
+    "statement": "String+Real reaches sprintf(buffer,\"%g\", promoted binary32 double); exact locale/libc spelling and rounding behavior are not reproduced by Rust default formatting.",
+    "evidence_ids": [
+      "ev_616461794c4cd7f622a095dfb402e863b4ff031428987af556db44e6bada65ba"
+    ],
+    "limitations": [
+      "Native printf ABI/format identified; concrete runtime libc/locale and special-value equivalence remain untested. First Rust batch excludes Real concatenation."
+    ]
+  },
+  {
+    "id": "extend-sharing",
+    "classification": "observation",
+    "status": "answered",
+    "statement": "Zero extension returns left header; otherwise ref<2 and attrib bit2 clear selects realloc, other cases allocate/copy left.len+1, decrement old ref and conditionally free or unlink shared string.",
+    "evidence_ids": [
+      "ev_8586e710ba1b29fd3d65723eea725f94ecb7d991e37716a47b030c78514531c4",
+      "ev_3b41b116e430fa00da08494f00449afb2f46ed0419a2578c4709344c21af0b0b",
+      "ev_6e330b55533e99e1747ee4303d288a6a5ee66bce5902b04f191a59b5cbec2386"
+    ],
+    "limitations": [
+      "No claim of complete global interning, allocator or GC equivalence; bit2 is described numerically, not guessed as a language attribute."
+    ]
+  },
+  {
+    "id": "allocator-boundary",
+    "classification": "observation",
+    "status": "partial",
+    "statement": "extend computes 32-bit len+old_len+0x15 and tests allocator return; one reallocate path keeps old block when realloc returns NULL and later updates size metadata.",
+    "evidence_ids": [
+      "ev_8586e710ba1b29fd3d65723eea725f94ecb7d991e37716a47b030c78514531c4",
+      "ev_1a374a433e9a70d5821149d3a5ae4292e2b5de6701e3f2a14cc98b37bef78f48",
+      "ev_342684c2c2f42c0fe982ade201a648a6b726e3faf2f9b235155693a960875967"
+    ],
+    "limitations": [
+      "Selected static path only. No native OOM/overflow execution or full memory-manager proof. Rust must use checked length and controlled failure rather than imitate unsafe effects."
+    ]
+  },
+  {
+    "id": "eq-bytes",
+    "classification": "observation",
+    "status": "answered",
+    "statement": "String equality uses same-header fast success, length mismatch false, distinct shared-bit1 heads false, otherwise bounded byte comparison over stored length. String versus non-String is false. Inequality negates isEq.",
+    "evidence_ids": [
+      "ev_c98c01d582d90083a8c48681f7d36bdd274bd35ed834c0ef8fe22e6ac304baf1",
+      "ev_9c31d92aeb045a089ff6361f0cf81330894208eb0520a78f0bf4bd4701c8d565",
+      "ev_3d5dfe19263e352be0e9b4cec6b9dc663f1e155cc579e8be9b46ada0e1fdcd93"
+    ],
+    "limitations": [
+      "Distinct shared equal-content heads depend on native interning/attribute assumptions; Rust lacks those attributes and will use content equality."
+    ]
+  },
+  {
+    "id": "ordering-cstr",
+    "classification": "static-inference",
+    "status": "answered",
+    "statement": "All four ordering wrappers call strcmp(left.ptr,right.ptr), then convert the sign to the operator boolean. First-NUL prefix and unsigned-byte order follow the imported strcmp ABI.",
+    "evidence_ids": [
+      "ev_4442d99f8563c660f950f2e4e3d6fb934504618f8904fea7b1fb0f1d470b4151",
+      "ev_0e786f83fad6944f8f5973948ba408ed0a0a5200486741ce8f534333189dc7b2",
+      "ev_5046856efb8928064add53f8c3b8b91c64ee3e170372d0683e48cf9018ea0e36",
+      "ev_deee5e8743aec13f48327236f9b0793ccd92a15e202b8459782b33ff3e514c4d",
+      "ev_33be0a61bad0f87ae5aadb6450c2cfe45eff8500361f60c1846e8a19b2953a6b"
+    ],
+    "limitations": [
+      "The ELF PLT thunk/import is observed; the external libc implementation was not analyzed or executed. Not locale collation."
+    ]
+  },
+  {
+    "id": "ordering-mixed",
+    "classification": "observation",
+    "status": "answered",
+    "statement": "String-left ordering requires String-right; numeric-left rejects String. Buffer-left may compare stored bytes with String/Buffer through separate helper.",
+    "evidence_ids": [
+      "ev_4442d99f8563c660f950f2e4e3d6fb934504618f8904fea7b1fb0f1d470b4151",
+      "ev_0e786f83fad6944f8f5973948ba408ed0a0a5200486741ce8f534333189dc7b2",
+      "ev_5046856efb8928064add53f8c3b8b91c64ee3e170372d0683e48cf9018ea0e36",
+      "ev_deee5e8743aec13f48327236f9b0793ccd92a15e202b8459782b33ff3e514c4d",
+      "ev_da709b15fb9a5c8a7024ddc3b4967ee4128d489459cc0950606350f75efc7710"
+    ],
+    "limitations": [
+      "Buffer branches delimit scope and are not part of first Rust support."
+    ]
+  },
+  {
+    "id": "rust-bounded-contract",
+    "classification": "design",
+    "status": "answered",
+    "statement": "First ordinary-function batch accepts Bytes+Bytes/Int, Bytes equality/mixed ordinary values and Bytes-only ordering; preserve existing Function comparison branch and numeric semantics. No public API/dependency change.",
+    "evidence_ids": [
+      "ev_42e127d62e334cc26bafbc7565df879a834dbffba8a6a59f495f385632e44e7d",
+      "ev_c98c01d582d90083a8c48681f7d36bdd274bd35ed834c0ef8fe22e6ac304baf1",
+      "ev_8586e710ba1b29fd3d65723eea725f94ecb7d991e37716a47b030c78514531c4"
+    ],
+    "limitations": [
+      "Requires future implementation/tests; Rust/API/473-test baseline remains unchanged in2AI."
+    ]
+  }
+]

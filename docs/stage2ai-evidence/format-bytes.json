@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "target_sha256": "5d4ebac58d8c415d9cf95bbcdd50f78afac91adf4f7e667ea3afc6f5336a6f34",
+  "observations": [
+    {
+      "kind": "file-backed-ELF32-load-segment",
+      "virtual_address": "0x82acd87",
+      "file_offset": 2510215,
+      "bytes_hex": "256700",
+      "segment_index": 2,
+      "segment_file_offset": 0,
+      "segment_virtual_address": 134512640,
+      "segment_file_size": 3667660,
+      "source": "magic_Linux32",
+      "native_use_site": "0x808bcbd",
+      "evidence_id": "ev_616461794c4cd7f622a095dfb402e863b4ff031428987af556db44e6bada65ba"
+    }
+  ]
+}

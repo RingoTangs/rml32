@@ -1,0 +1,26 @@
+{
+  "stage": "2AI",
+  "scope": "static evidence and future Rust specification",
+  "evidence": {
+    "fresh_records": 12,
+    "reused_records": 15,
+    "combined_records": 27,
+    "selected_sites": 16,
+    "findings": 12,
+    "expected_cases": 56
+  },
+  "corpus_occurrences": 125747,
+  "corpus_examples": 96,
+  "rust_tests": 473,
+  "python_tests": 29,
+  "supported_opcode_kinds": 75,
+  "intersection_opcode_kinds": 73,
+  "runtime_changed": false,
+  "stage2_complete": false,
+  "target_execution": "none",
+  "unresolved": [
+    "Real libc/locale formatting equivalence",
+    "native OOM/overflow behavior",
+    "arbitrary intern headers and complete GC"
+  ]
+}

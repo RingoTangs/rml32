@@ -1,5 +1,7 @@
 # rml32
 
+阶段2AI已完成Bytes比较/拼接定向静态取证：新增12条、复用15条完整记录，复算125,747处指令并提供56条静态/设计期望及[首批Rust实施规格](docs/stage2ai-evidence/bytes-runtime-design.md)。见[语义报告](docs/vm-bytes-semantics.md)与[验证记录](docs/stage2ai-validation.json)。本批未实现Bytes运算；473项Rust测试、75种限定支持/73种语料交集保持不变，阶段2仍未完成。下一步按规格实施普通函数受限Bytes运算。以下保留历史状态。
+
 阶段2AH完成当前能力重审：75种限定支持、73种主语料交集与473项Rust测试保持不变。独立审计登记24项缺口（阶段2内19项、后续阶段5项），所有当前门槛仍未关闭；下一批优先进行Bytes比较/拼接定向取证。见[完成度报告](docs/stage2-completion-assessment-2ah.md)、[当前矩阵](docs/stage2ah-evidence/matrix.md)、[下一批规格](docs/stage2ah-evidence/next-batch.md)与[验证记录](docs/stage2ah-validation.json)。本批不修改运行时/API/依赖、不新增反编译、不执行原程序。以下条目保留历史状态。
 
 阶段2AG已实现受限Object函数值与 `05/17`：显式准备入口、标量捕获、身份比较、跨Object/Global调用者及失败原子性。473项Rust测试通过，支持75种限定操作码，主语料73种编号均有交集。见[函数值运行时](docs/vm-function-value-runtime.md)、[当前矩阵](docs/stage2ag-evidence/matrix.md)和[验证记录](docs/stage2ag-validation.json)。非标量捕获、Global/efun/string/OS目标及真实服务仍未实现，阶段2尚未完成。以下条目保留历史状态。

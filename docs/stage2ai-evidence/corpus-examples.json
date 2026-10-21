@@ -1,0 +1,5474 @@
+[
+  {
+    "function": "pp_get_report_ex",
+    "function_index": 834,
+    "member_node_offset": 342590,
+    "member_sha256": "f9896828c87399be4977107fbfbe3f67fd71caebd3008bda84be16cc722d0a0e",
+    "mode": "global",
+    "node": [
+      0,
+      0,
+      1
+    ],
+    "nodes_offset": 342454,
+    "opcode": "01",
+    "pc": 34,
+    "preceding_origin": "global_slot",
+    "segment_kind": "functions",
+    "segment_offset": 342303,
+    "snippet": [
+      {
+        "member_node_offset": 342582,
+        "node": [
+          565,
+          0,
+          64
+        ],
+        "pc": 32
+      },
+      {
+        "member_node_offset": 342586,
+        "node": [
+          79,
+          0,
+          53
+        ],
+        "pc": 33
+      },
+      {
+        "member_node_offset": 342590,
+        "node": [
+          0,
+          0,
+          1
+        ],
+        "pc": 34
+      },
+      {
+        "member_node_offset": 342594,
+        "node": [
+          62,
+          0,
+          64
+        ],
+        "pc": 35
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o"
+  },
+  {
+    "function": "telnet_daemon",
+    "function_index": 829,
+    "member_node_offset": 246301,
+    "member_sha256": "f9896828c87399be4977107fbfbe3f67fd71caebd3008bda84be16cc722d0a0e",
+    "mode": "global",
+    "node": [
+      0,
+      0,
+      1
+    ],
+    "nodes_offset": 245909,
+    "opcode": "01",
+    "pc": 98,
+    "preceding_origin": "local_slot",
+    "segment_kind": "functions",
+    "segment_offset": 245460,
+    "snippet": [
+      {
+        "member_node_offset": 246293,
+        "node": [
+          0,
+          0,
+          1
+        ],
+        "pc": 96
+      },
+      {
+        "member_node_offset": 246297,
+        "node": [
+          -1,
+          0,
+          55
+        ],
+        "pc": 97
+      },
+      {
+        "member_node_offset": 246301,
+        "node": [
+          0,
+          0,
+          1
+        ],
+        "pc": 98
+      },
+      {
+        "member_node_offset": 246305,
+        "node": [
+          -5,
+          0,
+          57
+        ],
+        "pc": 99
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o"
+  },
+  {
+    "function": "is_same_week",
+    "function_index": 700,
+    "member_node_offset": 244854,
+    "member_sha256": "f9896828c87399be4977107fbfbe3f67fd71caebd3008bda84be16cc722d0a0e",
+    "mode": "global",
+    "node": [
+      0,
+      0,
+      1
+    ],
+    "nodes_offset": 244802,
+    "opcode": "01",
+    "pc": 13,
+    "preceding_origin": "numeric_constant_metadata",
+    "segment_kind": "functions",
+    "segment_offset": 244740,
+    "snippet": [
+      {
+        "member_node_offset": 244846,
+        "node": [
+          0,
+          0,
+          55
+        ],
+        "pc": 11
+      },
+      {
+        "member_node_offset": 244850,
+        "node": [
+          4,
+          0,
+          60
+        ],
+        "pc": 12
+      },
+      {
+        "member_node_offset": 244854,
+        "node": [
+          0,
+          0,
+          1
+        ],
+        "pc": 13
+      },
+      {
+        "member_node_offset": 244858,
+        "node": [
+          8,
+          0,
+          60
+        ],
+        "pc": 14
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o"
+  },
+  {
+    "function": "decrypt_mask_md5",
+    "function_index": 753,
+    "member_node_offset": 256268,
+    "member_sha256": "f9896828c87399be4977107fbfbe3f67fd71caebd3008bda84be16cc722d0a0e",
+    "mode": "global",
+    "node": [
+      0,
+      0,
+      1
+    ],
+    "nodes_offset": 255844,
+    "opcode": "01",
+    "pc": 106,
+    "preceding_origin": "other_instruction",
+    "segment_kind": "functions",
+    "segment_offset": 255713,
+    "snippet": [
+      {
+        "member_node_offset": 256260,
+        "node": [
+          -6,
+          0,
+          55
+        ],
+        "pc": 104
+      },
+      {
+        "member_node_offset": 256264,
+        "node": [
+          54,
+          2,
+          6
+        ],
+        "pc": 105
+      },
+      {
+        "member_node_offset": 256268,
+        "node": [
+          0,
+          0,
+          1
+        ],
+        "pc": 106
+      },
+      {
+        "member_node_offset": 256272,
+        "node": [
+          0,
+          0,
+          55
+        ],
+        "pc": 107
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o"
+  },
+  {
+    "function": "calc_birthday_horoscope",
+    "function_index": 735,
+    "member_node_offset": 349705,
+    "member_sha256": "f9896828c87399be4977107fbfbe3f67fd71caebd3008bda84be16cc722d0a0e",
+    "mode": "global",
+    "node": [
+      0,
+      0,
+      1
+    ],
+    "nodes_offset": 349609,
+    "opcode": "01",
+    "pc": 24,
+    "preceding_origin": "real_constant_metadata",
+    "segment_kind": "functions",
+    "segment_offset": 349052,
+    "snippet": [
+      {
+        "member_node_offset": 349697,
+        "node": [
+          0,
+          0,
+          41
+        ],
+        "pc": 22
+      },
+      {
+        "member_node_offset": 349701,
+        "node": [
+          8,
+          0,
+          63
+        ],
+        "pc": 23
+      },
+      {
+        "member_node_offset": 349705,
+        "node": [
+          0,
+          0,
+          1
+        ],
+        "pc": 24
+      },
+      {
+        "member_node_offset": 349709,
+        "node": [
+          16,
+          0,
+          63
+        ],
+        "pc": 25
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o"
+  },
+  {
+    "function": "telnet_daemon",
+    "function_index": 829,
+    "member_node_offset": 246277,
+    "member_sha256": "f9896828c87399be4977107fbfbe3f67fd71caebd3008bda84be16cc722d0a0e",
+    "mode": "global",
+    "node": [
+      0,
+      0,
+      1
+    ],
+    "nodes_offset": 245909,
+    "opcode": "01",
+    "pc": 92,
+    "preceding_origin": "shared_string_pool_index",
+    "segment_kind": "functions",
+    "segment_offset": 245460,
+    "snippet": [
+      {
+        "member_node_offset": 246269,
+        "node": [
+          -4,
+          0,
+          55
+        ],
+        "pc": 90
+      },
+      {
+        "member_node_offset": 246273,
+        "node": [
+          164,
+          0,
+          64
+        ],
+        "pc": 91
+      },
+      {
+        "member_node_offset": 246277,
+        "node": [
+          0,
+          0,
+          1
+        ],
+        "pc": 92
+      },
+      {
+        "member_node_offset": 246281,
+        "node": [
+          546,
+          0,
+          64
+        ],
+        "pc": 93
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o"
+  },
+  {
+    "function": "decrypt_mask_md5",
+    "function_index": 753,
+    "member_node_offset": 255964,
+    "member_sha256": "f9896828c87399be4977107fbfbe3f67fd71caebd3008bda84be16cc722d0a0e",
+    "mode": "global",
+    "node": [
+      0,
+      0,
+      1
+    ],
+    "nodes_offset": 255844,
+    "opcode": "01",
+    "pc": 30,
+    "preceding_origin": "short_numeric_constant",
+    "segment_kind": "functions",
+    "segment_offset": 255713,
+    "snippet": [
+      {
+        "member_node_offset": 255956,
+        "node": [
+          -2,
+          0,
+          55
+        ],
+        "pc": 28
+      },
+      {
+        "member_node_offset": 255960,
+        "node": [
+          1,
+          0,
+          59
+        ],
+        "pc": 29
+      },
+      {
+        "member_node_offset": 255964,
+        "node": [
+          0,
+          0,
+          1
+        ],
+        "pc": 30
+      },
+      {
+        "member_node_offset": 255968,
+        "node": [
+          -1,
+          0,
+          55
+        ],
+        "pc": 31
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o"
+  },
+  {
+    "function": "__init__",
+    "function_index": null,
+    "member_node_offset": 452488,
+    "member_sha256": "f9896828c87399be4977107fbfbe3f67fd71caebd3008bda84be16cc722d0a0e",
+    "mode": "global",
+    "node": [
+      0,
+      0,
+      1
+    ],
+    "nodes_offset": 450136,
+    "opcode": "01",
+    "pc": 588,
+    "preceding_origin": "shared_string_pool_index",
+    "segment_kind": "init",
+    "segment_offset": 448680,
+    "snippet": [
+      {
+        "member_node_offset": 452480,
+        "node": [
+          87,
+          0,
+          53
+        ],
+        "pc": 586
+      },
+      {
+        "member_node_offset": 452484,
+        "node": [
+          685,
+          0,
+          64
+        ],
+        "pc": 587
+      },
+      {
+        "member_node_offset": 452488,
+        "node": [
+          0,
+          0,
+          1
+        ],
+        "pc": 588
+      },
+      {
+        "member_node_offset": 452492,
+        "node": [
+          90,
+          1,
+          6
+        ],
+        "pc": 589
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o"
+  },
+  {
+    "function": "load_db_config",
+    "function_index": 5,
+    "member_node_offset": 2875,
+    "member_sha256": "94a64dea59d79f6915ebefcac31c680e4f3dbcb685600412b4ee02ff00f4a653",
+    "mode": "object",
+    "node": [
+      0,
+      0,
+      1
+    ],
+    "nodes_offset": 2675,
+    "opcode": "01",
+    "pc": 50,
+    "preceding_origin": "global_slot",
+    "segment_kind": "functions",
+    "segment_offset": 2478,
+    "snippet": [
+      {
+        "member_node_offset": 2867,
+        "node": [
+          21,
+          0,
+          64
+        ],
+        "pc": 48
+      },
+      {
+        "member_node_offset": 2871,
+        "node": [
+          27,
+          0,
+          53
+        ],
+        "pc": 49
+      },
+      {
+        "member_node_offset": 2875,
+        "node": [
+          0,
+          0,
+          1
+        ],
+        "pc": 50
+      },
+      {
+        "member_node_offset": 2879,
+        "node": [
+          22,
+          0,
+          64
+        ],
+        "pc": 51
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/daemons/dbd.o"
+  },
+  {
+    "function": "main",
+    "function_index": 4,
+    "member_node_offset": 3763,
+    "member_sha256": "6ed41ca919868c24de8050fb367dedd9d6f4320c392a32a90812b0738d09b2e6",
+    "mode": "object",
+    "node": [
+      0,
+      0,
+      1
+    ],
+    "nodes_offset": 2343,
+    "opcode": "01",
+    "pc": 355,
+    "preceding_origin": "local_slot",
+    "segment_kind": "functions",
+    "segment_offset": 1936,
+    "snippet": [
+      {
+        "member_node_offset": 3755,
+        "node": [
+          -12,
+          0,
+          55
+        ],
+        "pc": 353
+      },
+      {
+        "member_node_offset": 3759,
+        "node": [
+          -13,
+          0,
+          55
+        ],
+        "pc": 354
+      },
+      {
+        "member_node_offset": 3763,
+        "node": [
+          0,
+          0,
+          1
+        ],
+        "pc": 355
+      },
+      {
+        "member_node_offset": 3767,
+        "node": [
+          17237,
+          0,
+          59
+        ],
+        "pc": 356
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/daemons/account/cmd_l_get_server_list.o"
+  },
+  {
+    "function": "get_coin_info",
+    "function_index": 181,
+    "member_node_offset": 82084,
+    "member_sha256": "fbad2268542cac34b915222e0e6ba038e390b5098d06295834c707654c4bbd05",
+    "mode": "object",
+    "node": [
+      0,
+      0,
+      1
+    ],
+    "nodes_offset": 81748,
+    "opcode": "01",
+    "pc": 84,
+    "preceding_origin": "numeric_constant_metadata",
+    "segment_kind": "functions",
+    "segment_offset": 81552,
+    "snippet": [
+      {
+        "member_node_offset": 82076,
+        "node": [
+          -1,
+          0,
+          55
+        ],
+        "pc": 82
+      },
+      {
+        "member_node_offset": 82080,
+        "node": [
+          0,
+          0,
+          60
+        ],
+        "pc": 83
+      },
+      {
+        "member_node_offset": 82084,
+        "node": [
+          0,
+          0,
+          1
+        ],
+        "pc": 84
+      },
+      {
+        "member_node_offset": 82088,
+        "node": [
+          137,
+          0,
+          6
+        ],
+        "pc": 85
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/daemons/accountd.o"
+  },
+  {
+    "function": "clear_timeout_precost_lock",
+    "function_index": 9,
+    "member_node_offset": 5967,
+    "member_sha256": "67c1060eb814ce072491b047ec2a5c60ec27c5ed4d7a98e34469201eea558d07",
+    "mode": "object",
+    "node": [
+      0,
+      0,
+      1
+    ],
+    "nodes_offset": 5807,
+    "opcode": "01",
+    "pc": 40,
+    "preceding_origin": "object_slot",
+    "segment_kind": "functions",
+    "segment_offset": 5654,
+    "snippet": [
+      {
+        "member_node_offset": 5959,
+        "node": [
+          -2,
+          0,
+          55
+        ],
+        "pc": 38
+      },
+      {
+        "member_node_offset": 5963,
+        "node": [
+          1,
+          0,
+          61
+        ],
+        "pc": 39
+      },
+      {
+        "member_node_offset": 5967,
+        "node": [
+          0,
+          0,
+          1
+        ],
+        "pc": 40
+      },
+      {
+        "member_node_offset": 5971,
+        "node": [
+          0,
+          0,
+          37
+        ],
+        "pc": 41
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/daemons/account_transactiond.o"
+  },
+  {
+    "function": "generate_auth_key",
+    "function_index": 98,
+    "member_node_offset": 97968,
+    "member_sha256": "fbad2268542cac34b915222e0e6ba038e390b5098d06295834c707654c4bbd05",
+    "mode": "object",
+    "node": [
+      0,
+      0,
+      1
+    ],
+    "nodes_offset": 97904,
+    "opcode": "01",
+    "pc": 16,
+    "preceding_origin": "other_instruction",
+    "segment_kind": "functions",
+    "segment_offset": 97853,
+    "snippet": [
+      {
+        "member_node_offset": 97960,
+        "node": [
+          24,
+          0,
+          59
+        ],
+        "pc": 14
+      },
+      {
+        "member_node_offset": 97964,
+        "node": [
+          0,
+          0,
+          38
+        ],
+        "pc": 15
+      },
+      {
+        "member_node_offset": 97968,
+        "node": [
+          0,
+          0,
+          1
+        ],
+        "pc": 16
+      },
+      {
+        "member_node_offset": 97972,
+        "node": [
+          0,
+          0,
+          73
+        ],
+        "pc": 17
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/daemons/accountd.o"
+  },
+  {
+    "function": "start_today_party_anniversary",
+    "function_index": 3,
+    "member_node_offset": 12031,
+    "member_sha256": "1ad2023b9abd365a5d36095417729bb23d96a708756815d560f4f29290ab6c92",
+    "mode": "object",
+    "node": [
+      0,
+      0,
+      1
+    ],
+    "nodes_offset": 11943,
+    "opcode": "01",
+    "pc": 22,
+    "preceding_origin": "real_constant_metadata",
+    "segment_kind": "functions",
+    "segment_offset": 11644,
+    "snippet": [
+      {
+        "member_node_offset": 12023,
+        "node": [
+          -1,
+          0,
+          55
+        ],
+        "pc": 20
+      },
+      {
+        "member_node_offset": 12027,
+        "node": [
+          0,
+          0,
+          63
+        ],
+        "pc": 21
+      },
+      {
+        "member_node_offset": 12031,
+        "node": [
+          0,
+          0,
+          1
+        ],
+        "pc": 22
+      },
+      {
+        "member_node_offset": 12035,
+        "node": [
+          0,
+          0,
+          32
+        ],
+        "pc": 23
+      }
+    ],
+    "source": "ccs/pack_data/lib_ccs32.pak/ccs/daemons/ccs_party_anniversary.o"
+  },
+  {
+    "function": "update_account_info",
+    "function_index": 8,
+    "member_node_offset": 2712,
+    "member_sha256": "67c1060eb814ce072491b047ec2a5c60ec27c5ed4d7a98e34469201eea558d07",
+    "mode": "object",
+    "node": [
+      0,
+      0,
+      1
+    ],
+    "nodes_offset": 2364,
+    "opcode": "01",
+    "pc": 87,
+    "preceding_origin": "shared_string_pool_index",
+    "segment_kind": "functions",
+    "segment_offset": 2156,
+    "snippet": [
+      {
+        "member_node_offset": 2704,
+        "node": [
+          1,
+          0,
+          69
+        ],
+        "pc": 85
+      },
+      {
+        "member_node_offset": 2708,
+        "node": [
+          13,
+          0,
+          64
+        ],
+        "pc": 86
+      },
+      {
+        "member_node_offset": 2712,
+        "node": [
+          0,
+          0,
+          1
+        ],
+        "pc": 87
+      },
+      {
+        "member_node_offset": 2716,
+        "node": [
+          -3,
+          0,
+          57
+        ],
+        "pc": 88
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/daemons/account_transactiond.o"
+  },
+  {
+    "function": "main",
+    "function_index": 3,
+    "member_node_offset": 7152,
+    "member_sha256": "ef67351f8df64f004f245963f44f7553b7edf7bf10f75d90867bfbc964195dd5",
+    "mode": "object",
+    "node": [
+      0,
+      0,
+      1
+    ],
+    "nodes_offset": 5876,
+    "opcode": "01",
+    "pc": 319,
+    "preceding_origin": "short_numeric_constant",
+    "segment_kind": "functions",
+    "segment_offset": 4129,
+    "snippet": [
+      {
+        "member_node_offset": 7144,
+        "node": [
+          -30,
+          0,
+          55
+        ],
+        "pc": 317
+      },
+      {
+        "member_node_offset": 7148,
+        "node": [
+          1,
+          0,
+          59
+        ],
+        "pc": 318
+      },
+      {
+        "member_node_offset": 7152,
+        "node": [
+          0,
+          0,
+          1
+        ],
+        "pc": 319
+      },
+      {
+        "member_node_offset": 7156,
+        "node": [
+          1,
+          0,
+          31
+        ],
+        "pc": 320
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/daemons/account/cmd_l_client_connect_agent.o"
+  },
+  {
+    "function": "__init__",
+    "function_index": null,
+    "member_node_offset": 76217,
+    "member_sha256": "aac987654c17f24abfc5154ff73899340c2479f5997477d74bbe3b12a5193029",
+    "mode": "object",
+    "node": [
+      0,
+      0,
+      1
+    ],
+    "nodes_offset": 75833,
+    "opcode": "01",
+    "pc": 96,
+    "preceding_origin": "global_slot",
+    "segment_kind": "init",
+    "segment_offset": 75535,
+    "snippet": [
+      {
+        "member_node_offset": 76209,
+        "node": [
+          0,
+          0,
+          1
+        ],
+        "pc": 94
+      },
+      {
+        "member_node_offset": 76213,
+        "node": [
+          347,
+          0,
+          53
+        ],
+        "pc": 95
+      },
+      {
+        "member_node_offset": 76217,
+        "node": [
+          0,
+          0,
+          1
+        ],
+        "pc": 96
+      },
+      {
+        "member_node_offset": 76221,
+        "node": [
+          347,
+          0,
+          53
+        ],
+        "pc": 97
+      }
+    ],
+    "source": "gs/pack_data/lib_gs32.pak/gs/daemons/arenas/tao_arena.o"
+  },
+  {
+    "function": "__init__",
+    "function_index": null,
+    "member_node_offset": 44716,
+    "member_sha256": "1ec36319212fb872d4e078fafcfa7b88ccc6ea18bb44a2f1b8c9735e75c52c04",
+    "mode": "object",
+    "node": [
+      0,
+      0,
+      1
+    ],
+    "nodes_offset": 44352,
+    "opcode": "01",
+    "pc": 91,
+    "preceding_origin": "numeric_constant_metadata",
+    "segment_kind": "init",
+    "segment_offset": 43950,
+    "snippet": [
+      {
+        "member_node_offset": 44708,
+        "node": [
+          67,
+          0,
+          53
+        ],
+        "pc": 89
+      },
+      {
+        "member_node_offset": 44712,
+        "node": [
+          0,
+          0,
+          60
+        ],
+        "pc": 90
+      },
+      {
+        "member_node_offset": 44716,
+        "node": [
+          0,
+          0,
+          1
+        ],
+        "pc": 91
+      },
+      {
+        "member_node_offset": 44720,
+        "node": [
+          267,
+          0,
+          64
+        ],
+        "pc": 92
+      }
+    ],
+    "source": "gs/pack_data/lib_gs32.pak/gs/daemons/tasks/benyue_daohang.o"
+  },
+  {
+    "function": "__init__",
+    "function_index": null,
+    "member_node_offset": 20622,
+    "member_sha256": "1888c764fb42c7141b2bdf9ba96b8c5a628cf39ece442ef9972c385cec10bcfd",
+    "mode": "object",
+    "node": [
+      0,
+      0,
+      1
+    ],
+    "nodes_offset": 20418,
+    "opcode": "01",
+    "pc": 51,
+    "preceding_origin": "object_slot",
+    "segment_kind": "init",
+    "segment_offset": 20247,
+    "snippet": [
+      {
+        "member_node_offset": 20614,
+        "node": [
+          0,
+          0,
+          61
+        ],
+        "pc": 49
+      },
+      {
+        "member_node_offset": 20618,
+        "node": [
+          1,
+          0,
+          61
+        ],
+        "pc": 50
+      },
+      {
+        "member_node_offset": 20622,
+        "node": [
+          0,
+          0,
+          1
+        ],
+        "pc": 51
+      },
+      {
+        "member_node_offset": 20626,
+        "node": [
+          2,
+          0,
+          61
+        ],
+        "pc": 52
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/daemons/threadd.o"
+  },
+  {
+    "function": "__init__",
+    "function_index": null,
+    "member_node_offset": 76209,
+    "member_sha256": "aac987654c17f24abfc5154ff73899340c2479f5997477d74bbe3b12a5193029",
+    "mode": "object",
+    "node": [
+      0,
+      0,
+      1
+    ],
+    "nodes_offset": 75833,
+    "opcode": "01",
+    "pc": 94,
+    "preceding_origin": "other_instruction",
+    "segment_kind": "init",
+    "segment_offset": 75535,
+    "snippet": [
+      {
+        "member_node_offset": 76201,
+        "node": [
+          119,
+          0,
+          64
+        ],
+        "pc": 92
+      },
+      {
+        "member_node_offset": 76205,
+        "node": [
+          524,
+          1,
+          6
+        ],
+        "pc": 93
+      },
+      {
+        "member_node_offset": 76209,
+        "node": [
+          0,
+          0,
+          1
+        ],
+        "pc": 94
+      },
+      {
+        "member_node_offset": 76213,
+        "node": [
+          347,
+          0,
+          53
+        ],
+        "pc": 95
+      }
+    ],
+    "source": "gs/pack_data/lib_gs32.pak/gs/daemons/arenas/tao_arena.o"
+  },
+  {
+    "function": "__init__",
+    "function_index": null,
+    "member_node_offset": 2220,
+    "member_sha256": "15f70b966272abed42726aed1b0a087b6264c43aacb4dd8fe8a9b7e9f706059c",
+    "mode": "object",
+    "node": [
+      0,
+      0,
+      1
+    ],
+    "nodes_offset": 2180,
+    "opcode": "01",
+    "pc": 10,
+    "preceding_origin": "real_constant_metadata",
+    "segment_kind": "init",
+    "segment_offset": 2124,
+    "snippet": [
+      {
+        "member_node_offset": 2212,
+        "node": [
+          0,
+          0,
+          81
+        ],
+        "pc": 8
+      },
+      {
+        "member_node_offset": 2216,
+        "node": [
+          0,
+          0,
+          63
+        ],
+        "pc": 9
+      },
+      {
+        "member_node_offset": 2220,
+        "node": [
+          0,
+          0,
+          1
+        ],
+        "pc": 10
+      },
+      {
+        "member_node_offset": 2224,
+        "node": [
+          0,
+          0,
+          62
+        ],
+        "pc": 11
+      }
+    ],
+    "source": "gs/pack_data/lib_gs32.pak/gs/daemons/formula/count_power.o"
+  },
+  {
+    "function": "__init__",
+    "function_index": null,
+    "member_node_offset": 405019,
+    "member_sha256": "8d381e39d806dad8931c9e727e99061690a77ec69907a006b296cbae6d8d44b8",
+    "mode": "object",
+    "node": [
+      0,
+      0,
+      1
+    ],
+    "nodes_offset": 403499,
+    "opcode": "01",
+    "pc": 380,
+    "preceding_origin": "shared_string_pool_index",
+    "segment_kind": "init",
+    "segment_offset": 401757,
+    "snippet": [
+      {
+        "member_node_offset": 405011,
+        "node": [
+          81,
+          0,
+          53
+        ],
+        "pc": 378
+      },
+      {
+        "member_node_offset": 405015,
+        "node": [
+          698,
+          0,
+          64
+        ],
+        "pc": 379
+      },
+      {
+        "member_node_offset": 405019,
+        "node": [
+          0,
+          0,
+          1
+        ],
+        "pc": 380
+      },
+      {
+        "member_node_offset": 405023,
+        "node": [
+          6,
+          0,
+          62
+        ],
+        "pc": 381
+      }
+    ],
+    "source": "ccs/pack_data/lib_ccs32.pak/ccs/daemons/party_masterd.o"
+  },
+  {
+    "function": "__init__",
+    "function_index": null,
+    "member_node_offset": 2204,
+    "member_sha256": "15f70b966272abed42726aed1b0a087b6264c43aacb4dd8fe8a9b7e9f706059c",
+    "mode": "object",
+    "node": [
+      0,
+      0,
+      1
+    ],
+    "nodes_offset": 2180,
+    "opcode": "01",
+    "pc": 6,
+    "preceding_origin": "short_numeric_constant",
+    "segment_kind": "init",
+    "segment_offset": 2124,
+    "snippet": [
+      {
+        "member_node_offset": 2196,
+        "node": [
+          0,
+          0,
+          25
+        ],
+        "pc": 4
+      },
+      {
+        "member_node_offset": 2200,
+        "node": [
+          10,
+          0,
+          59
+        ],
+        "pc": 5
+      },
+      {
+        "member_node_offset": 2204,
+        "node": [
+          0,
+          0,
+          1
+        ],
+        "pc": 6
+      },
+      {
+        "member_node_offset": 2208,
+        "node": [
+          6,
+          0,
+          59
+        ],
+        "pc": 7
+      }
+    ],
+    "source": "gs/pack_data/lib_gs32.pak/gs/daemons/formula/count_power.o"
+  },
+  {
+    "function": "analysis_ban_words_file",
+    "function_index": 663,
+    "member_node_offset": 252992,
+    "member_sha256": "f9896828c87399be4977107fbfbe3f67fd71caebd3008bda84be16cc722d0a0e",
+    "mode": "global",
+    "node": [
+      0,
+      0,
+      28
+    ],
+    "nodes_offset": 252828,
+    "opcode": "1c",
+    "pc": 41,
+    "preceding_origin": "local_slot",
+    "segment_kind": "functions",
+    "segment_offset": 252671,
+    "snippet": [
+      {
+        "member_node_offset": 252984,
+        "node": [
+          174,
+          0,
+          64
+        ],
+        "pc": 39
+      },
+      {
+        "member_node_offset": 252988,
+        "node": [
+          -4,
+          0,
+          55
+        ],
+        "pc": 40
+      },
+      {
+        "member_node_offset": 252992,
+        "node": [
+          0,
+          0,
+          28
+        ],
+        "pc": 41
+      },
+      {
+        "member_node_offset": 252996,
+        "node": [
+          2,
+          2,
+          33
+        ],
+        "pc": 42
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o"
+  },
+  {
+    "function": "is_same_week",
+    "function_index": 700,
+    "member_node_offset": 244886,
+    "member_sha256": "f9896828c87399be4977107fbfbe3f67fd71caebd3008bda84be16cc722d0a0e",
+    "mode": "global",
+    "node": [
+      0,
+      0,
+      28
+    ],
+    "nodes_offset": 244802,
+    "opcode": "1c",
+    "pc": 21,
+    "preceding_origin": "other_instruction",
+    "segment_kind": "functions",
+    "segment_offset": 244740,
+    "snippet": [
+      {
+        "member_node_offset": 244878,
+        "node": [
+          16,
+          0,
+          60
+        ],
+        "pc": 19
+      },
+      {
+        "member_node_offset": 244882,
+        "node": [
+          0,
+          0,
+          25
+        ],
+        "pc": 20
+      },
+      {
+        "member_node_offset": 244886,
+        "node": [
+          0,
+          0,
+          28
+        ],
+        "pc": 21
+      },
+      {
+        "member_node_offset": 244890,
+        "node": [
+          0,
+          0,
+          73
+        ],
+        "pc": 22
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o"
+  },
+  {
+    "function": "telnet_daemon",
+    "function_index": 829,
+    "member_node_offset": 246825,
+    "member_sha256": "f9896828c87399be4977107fbfbe3f67fd71caebd3008bda84be16cc722d0a0e",
+    "mode": "global",
+    "node": [
+      0,
+      0,
+      28
+    ],
+    "nodes_offset": 245909,
+    "opcode": "1c",
+    "pc": 229,
+    "preceding_origin": "shared_string_pool_index",
+    "segment_kind": "functions",
+    "segment_offset": 245460,
+    "snippet": [
+      {
+        "member_node_offset": 246817,
+        "node": [
+          141,
+          1,
+          6
+        ],
+        "pc": 227
+      },
+      {
+        "member_node_offset": 246821,
+        "node": [
+          4,
+          0,
+          64
+        ],
+        "pc": 228
+      },
+      {
+        "member_node_offset": 246825,
+        "node": [
+          0,
+          0,
+          28
+        ],
+        "pc": 229
+      },
+      {
+        "member_node_offset": 246829,
+        "node": [
+          8,
+          2,
+          33
+        ],
+        "pc": 230
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o"
+  },
+  {
+    "function": "analysis_ban_words_file",
+    "function_index": 663,
+    "member_node_offset": 252952,
+    "member_sha256": "f9896828c87399be4977107fbfbe3f67fd71caebd3008bda84be16cc722d0a0e",
+    "mode": "global",
+    "node": [
+      0,
+      0,
+      28
+    ],
+    "nodes_offset": 252828,
+    "opcode": "1c",
+    "pc": 31,
+    "preceding_origin": "short_numeric_constant",
+    "segment_kind": "functions",
+    "segment_offset": 252671,
+    "snippet": [
+      {
+        "member_node_offset": 252944,
+        "node": [
+          120,
+          3,
+          6
+        ],
+        "pc": 29
+      },
+      {
+        "member_node_offset": 252948,
+        "node": [
+          1,
+          0,
+          59
+        ],
+        "pc": 30
+      },
+      {
+        "member_node_offset": 252952,
+        "node": [
+          0,
+          0,
+          28
+        ],
+        "pc": 31
+      },
+      {
+        "member_node_offset": 252956,
+        "node": [
+          18,
+          2,
+          33
+        ],
+        "pc": 32
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o"
+  },
+  {
+    "function": "__init__",
+    "function_index": null,
+    "member_node_offset": 450604,
+    "member_sha256": "f9896828c87399be4977107fbfbe3f67fd71caebd3008bda84be16cc722d0a0e",
+    "mode": "global",
+    "node": [
+      0,
+      0,
+      28
+    ],
+    "nodes_offset": 450136,
+    "opcode": "1c",
+    "pc": 117,
+    "preceding_origin": "short_numeric_constant",
+    "segment_kind": "init",
+    "segment_offset": 448680,
+    "snippet": [
+      {
+        "member_node_offset": 450596,
+        "node": [
+          1,
+          0,
+          67
+        ],
+        "pc": 115
+      },
+      {
+        "member_node_offset": 450600,
+        "node": [
+          47,
+          0,
+          59
+        ],
+        "pc": 116
+      },
+      {
+        "member_node_offset": 450604,
+        "node": [
+          0,
+          0,
+          28
+        ],
+        "pc": 117
+      },
+      {
+        "member_node_offset": 450608,
+        "node": [
+          7,
+          2,
+          33
+        ],
+        "pc": 118
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o"
+  },
+  {
+    "function": "_do_block_account",
+    "function_index": 0,
+    "member_node_offset": 3019,
+    "member_sha256": "52a1e6df205f6a8674e9a6e9353ffc9cce16c2954e58726bd68ea1aee2c6721c",
+    "mode": "object",
+    "node": [
+      0,
+      0,
+      28
+    ],
+    "nodes_offset": 2347,
+    "opcode": "1c",
+    "pc": 168,
+    "preceding_origin": "global_slot",
+    "segment_kind": "functions",
+    "segment_offset": 2093,
+    "snippet": [
+      {
+        "member_node_offset": 3011,
+        "node": [
+          0,
+          0,
+          55
+        ],
+        "pc": 166
+      },
+      {
+        "member_node_offset": 3015,
+        "node": [
+          81,
+          0,
+          53
+        ],
+        "pc": 167
+      },
+      {
+        "member_node_offset": 3019,
+        "node": [
+          0,
+          0,
+          28
+        ],
+        "pc": 168
+      },
+      {
+        "member_node_offset": 3023,
+        "node": [
+          5,
+          2,
+          33
+        ],
+        "pc": 169
+      }
+    ],
+    "source": "ccs/pack_data/lib_ccs32.pak/ccs/cmds/ma/block_account_by_char.o"
+  },
+  {
+    "function": "main",
+    "function_index": 3,
+    "member_node_offset": 9384,
+    "member_sha256": "ef67351f8df64f004f245963f44f7553b7edf7bf10f75d90867bfbc964195dd5",
+    "mode": "object",
+    "node": [
+      0,
+      0,
+      28
+    ],
+    "nodes_offset": 5876,
+    "opcode": "1c",
+    "pc": 877,
+    "preceding_origin": "local_slot",
+    "segment_kind": "functions",
+    "segment_offset": 4129,
+    "snippet": [
+      {
+        "member_node_offset": 9376,
+        "node": [
+          -1,
+          0,
+          59
+        ],
+        "pc": 875
+      },
+      {
+        "member_node_offset": 9380,
+        "node": [
+          -19,
+          0,
+          55
+        ],
+        "pc": 876
+      },
+      {
+        "member_node_offset": 9384,
+        "node": [
+          0,
+          0,
+          28
+        ],
+        "pc": 877
+      },
+      {
+        "member_node_offset": 9388,
+        "node": [
+          32,
+          2,
+          33
+        ],
+        "pc": 878
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/daemons/account/cmd_l_client_connect_agent.o"
+  },
+  {
+    "function": "_main",
+    "function_index": 0,
+    "member_node_offset": 5343,
+    "member_sha256": "682c235989a1a95dd270745f2dab867759bdad6ce762228334c588aa34800445",
+    "mode": "object",
+    "node": [
+      0,
+      0,
+      28
+    ],
+    "nodes_offset": 4951,
+    "opcode": "1c",
+    "pc": 98,
+    "preceding_origin": "numeric_constant_metadata",
+    "segment_kind": "functions",
+    "segment_offset": 2869,
+    "snippet": [
+      {
+        "member_node_offset": 5335,
+        "node": [
+          2,
+          0,
+          55
+        ],
+        "pc": 96
+      },
+      {
+        "member_node_offset": 5339,
+        "node": [
+          0,
+          0,
+          60
+        ],
+        "pc": 97
+      },
+      {
+        "member_node_offset": 5343,
+        "node": [
+          0,
+          0,
+          28
+        ],
+        "pc": 98
+      },
+      {
+        "member_node_offset": 5347,
+        "node": [
+          596,
+          2,
+          33
+        ],
+        "pc": 99
+      }
+    ],
+    "source": "ccs/pack_data/lib_ccs32.pak/ccs/cmds/ma/regen_iid.o"
+  },
+  {
+    "function": "update_telnet_server",
+    "function_index": 44,
+    "member_node_offset": 17979,
+    "member_sha256": "769f9fd76c19dea7dbad7815dd235e7f7cbc8a9df12e2a98038466cbf92237ea",
+    "mode": "object",
+    "node": [
+      0,
+      0,
+      28
+    ],
+    "nodes_offset": 17863,
+    "opcode": "1c",
+    "pc": 29,
+    "preceding_origin": "object_slot",
+    "segment_kind": "functions",
+    "segment_offset": 17723,
+    "snippet": [
+      {
+        "member_node_offset": 17971,
+        "node": [
+          0,
+          0,
+          25
+        ],
+        "pc": 27
+      },
+      {
+        "member_node_offset": 17975,
+        "node": [
+          11,
+          0,
+          61
+        ],
+        "pc": 28
+      },
+      {
+        "member_node_offset": 17979,
+        "node": [
+          0,
+          0,
+          28
+        ],
+        "pc": 29
+      },
+      {
+        "member_node_offset": 17983,
+        "node": [
+          2,
+          2,
+          33
+        ],
+        "pc": 30
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/daemons/configd.o"
+  },
+  {
+    "function": "stop_service",
+    "function_index": 1,
+    "member_node_offset": 1118,
+    "member_sha256": "0b2367a5f99b8a43f653a5983f2b3831962c591f256ec761789b4f9255529a6b",
+    "mode": "object",
+    "node": [
+      0,
+      0,
+      28
+    ],
+    "nodes_offset": 1018,
+    "opcode": "1c",
+    "pc": 25,
+    "preceding_origin": "other_instruction",
+    "segment_kind": "functions",
+    "segment_offset": 915,
+    "snippet": [
+      {
+        "member_node_offset": 1110,
+        "node": [
+          -1,
+          0,
+          55
+        ],
+        "pc": 23
+      },
+      {
+        "member_node_offset": 1114,
+        "node": [
+          10,
+          0,
+          36
+        ],
+        "pc": 24
+      },
+      {
+        "member_node_offset": 1118,
+        "node": [
+          0,
+          0,
+          28
+        ],
+        "pc": 25
+      },
+      {
+        "member_node_offset": 1122,
+        "node": [
+          3,
+          2,
+          33
+        ],
+        "pc": 26
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/daemons/aaaserverd.o"
+  },
+  {
+    "function": "create_shangren_combat_team",
+    "function_index": 76,
+    "member_node_offset": 3008,
+    "member_sha256": "666413d6cb9f582c60673567e7886e364d99c5f4f25258bcca7ec8b976647f4d",
+    "mode": "object",
+    "node": [
+      0,
+      0,
+      28
+    ],
+    "nodes_offset": 2752,
+    "opcode": "1c",
+    "pc": 64,
+    "preceding_origin": "real_constant_metadata",
+    "segment_kind": "functions",
+    "segment_offset": 2419,
+    "snippet": [
+      {
+        "member_node_offset": 3000,
+        "node": [
+          -6,
+          0,
+          55
+        ],
+        "pc": 62
+      },
+      {
+        "member_node_offset": 3004,
+        "node": [
+          0,
+          0,
+          63
+        ],
+        "pc": 63
+      },
+      {
+        "member_node_offset": 3008,
+        "node": [
+          0,
+          0,
+          28
+        ],
+        "pc": 64
+      },
+      {
+        "member_node_offset": 3012,
+        "node": [
+          7,
+          2,
+          33
+        ],
+        "pc": 65
+      }
+    ],
+    "source": "gs/pack_data/lib_gs32.pak/gs/daemons/tasks/dungeon/qianbaogong/qianbaogong_template.o"
+  },
+  {
+    "function": "main",
+    "function_index": 3,
+    "member_node_offset": 8124,
+    "member_sha256": "ef67351f8df64f004f245963f44f7553b7edf7bf10f75d90867bfbc964195dd5",
+    "mode": "object",
+    "node": [
+      0,
+      0,
+      28
+    ],
+    "nodes_offset": 5876,
+    "opcode": "1c",
+    "pc": 562,
+    "preceding_origin": "shared_string_pool_index",
+    "segment_kind": "functions",
+    "segment_offset": 4129,
+    "snippet": [
+      {
+        "member_node_offset": 8116,
+        "node": [
+          4,
+          1,
+          8
+        ],
+        "pc": 560
+      },
+      {
+        "member_node_offset": 8120,
+        "node": [
+          32,
+          0,
+          64
+        ],
+        "pc": 561
+      },
+      {
+        "member_node_offset": 8124,
+        "node": [
+          0,
+          0,
+          28
+        ],
+        "pc": 562
+      },
+      {
+        "member_node_offset": 8128,
+        "node": [
+          4,
+          2,
+          33
+        ],
+        "pc": 563
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/daemons/account/cmd_l_client_connect_agent.o"
+  },
+  {
+    "function": "main",
+    "function_index": 3,
+    "member_node_offset": 7240,
+    "member_sha256": "ef67351f8df64f004f245963f44f7553b7edf7bf10f75d90867bfbc964195dd5",
+    "mode": "object",
+    "node": [
+      0,
+      0,
+      28
+    ],
+    "nodes_offset": 5876,
+    "opcode": "1c",
+    "pc": 341,
+    "preceding_origin": "short_numeric_constant",
+    "segment_kind": "functions",
+    "segment_offset": 4129,
+    "snippet": [
+      {
+        "member_node_offset": 7232,
+        "node": [
+          120,
+          3,
+          6
+        ],
+        "pc": 339
+      },
+      {
+        "member_node_offset": 7236,
+        "node": [
+          1,
+          0,
+          59
+        ],
+        "pc": 340
+      },
+      {
+        "member_node_offset": 7240,
+        "node": [
+          0,
+          0,
+          28
+        ],
+        "pc": 341
+      },
+      {
+        "member_node_offset": 7244,
+        "node": [
+          4,
+          2,
+          33
+        ],
+        "pc": 342
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/daemons/account/cmd_l_client_connect_agent.o"
+  },
+  {
+    "function": "destruct",
+    "function_index": 1,
+    "member_node_offset": 563,
+    "member_sha256": "33e1fb1aa25857dc2d7055adfe8839f60623f444f8e64579918d5f3d8a009cab",
+    "mode": "object",
+    "node": [
+      0,
+      0,
+      28
+    ],
+    "nodes_offset": 543,
+    "opcode": "1c",
+    "pc": 5,
+    "preceding_origin": "this_object",
+    "segment_kind": "functions",
+    "segment_offset": 466,
+    "snippet": [
+      {
+        "member_node_offset": 555,
+        "node": [
+          363,
+          1,
+          6
+        ],
+        "pc": 3
+      },
+      {
+        "member_node_offset": 559,
+        "node": [
+          0,
+          0,
+          65
+        ],
+        "pc": 4
+      },
+      {
+        "member_node_offset": 563,
+        "node": [
+          0,
+          0,
+          28
+        ],
+        "pc": 5
+      },
+      {
+        "member_node_offset": 567,
+        "node": [
+          1,
+          2,
+          33
+        ],
+        "pc": 6
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/feature/common/module_stat.o"
+  },
+  {
+    "function": "check_gs_result",
+    "function_index": 3,
+    "member_node_offset": 13056,
+    "member_sha256": "3e75cedf39eb7a6358c439ef73327e04a8e03f1f1d47a14763329290f32aeab0",
+    "mode": "object",
+    "node": [
+      0,
+      0,
+      28
+    ],
+    "nodes_offset": 12896,
+    "opcode": "1c",
+    "pc": 40,
+    "preceding_origin": "undefined_constant",
+    "segment_kind": "functions",
+    "segment_offset": 12697,
+    "snippet": [
+      {
+        "member_node_offset": 13048,
+        "node": [
+          -3,
+          0,
+          55
+        ],
+        "pc": 38
+      },
+      {
+        "member_node_offset": 13052,
+        "node": [
+          0,
+          0,
+          66
+        ],
+        "pc": 39
+      },
+      {
+        "member_node_offset": 13056,
+        "node": [
+          0,
+          0,
+          28
+        ],
+        "pc": 40
+      },
+      {
+        "member_node_offset": 13060,
+        "node": [
+          13,
+          2,
+          33
+        ],
+        "pc": 41
+      }
+    ],
+    "source": "ccs/pack_data/lib_ccs32.pak/ccs/daemons/ma_commandd.o"
+  },
+  {
+    "function": "is_in_ip_span",
+    "function_index": 725,
+    "member_node_offset": 275412,
+    "member_sha256": "f9896828c87399be4977107fbfbe3f67fd71caebd3008bda84be16cc722d0a0e",
+    "mode": "global",
+    "node": [
+      0,
+      0,
+      30
+    ],
+    "nodes_offset": 275348,
+    "opcode": "1e",
+    "pc": 16,
+    "preceding_origin": "local_slot",
+    "segment_kind": "functions",
+    "segment_offset": 275286,
+    "snippet": [
+      {
+        "member_node_offset": 275404,
+        "node": [
+          2,
+          0,
+          55
+        ],
+        "pc": 14
+      },
+      {
+        "member_node_offset": 275408,
+        "node": [
+          0,
+          0,
+          55
+        ],
+        "pc": 15
+      },
+      {
+        "member_node_offset": 275412,
+        "node": [
+          0,
+          0,
+          30
+        ],
+        "pc": 16
+      },
+      {
+        "member_node_offset": 275416,
+        "node": [
+          4,
+          0,
+          33
+        ],
+        "pc": 17
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o"
+  },
+  {
+    "function": "arabic_to_chinese",
+    "function_index": 745,
+    "member_node_offset": 378754,
+    "member_sha256": "f9896828c87399be4977107fbfbe3f67fd71caebd3008bda84be16cc722d0a0e",
+    "mode": "global",
+    "node": [
+      0,
+      0,
+      30
+    ],
+    "nodes_offset": 378666,
+    "opcode": "1e",
+    "pc": 22,
+    "preceding_origin": "numeric_constant_metadata",
+    "segment_kind": "functions",
+    "segment_offset": 378119,
+    "snippet": [
+      {
+        "member_node_offset": 378746,
+        "node": [
+          0,
+          0,
+          55
+        ],
+        "pc": 20
+      },
+      {
+        "member_node_offset": 378750,
+        "node": [
+          0,
+          0,
+          60
+        ],
+        "pc": 21
+      },
+      {
+        "member_node_offset": 378754,
+        "node": [
+          0,
+          0,
+          30
+        ],
+        "pc": 22
+      },
+      {
+        "member_node_offset": 378758,
+        "node": [
+          46,
+          2,
+          33
+        ],
+        "pc": 23
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o"
+  },
+  {
+    "function": "convert_into_char",
+    "function_index": 728,
+    "member_node_offset": 284915,
+    "member_sha256": "f9896828c87399be4977107fbfbe3f67fd71caebd3008bda84be16cc722d0a0e",
+    "mode": "global",
+    "node": [
+      0,
+      0,
+      30
+    ],
+    "nodes_offset": 284759,
+    "opcode": "1e",
+    "pc": 39,
+    "preceding_origin": "other_instruction",
+    "segment_kind": "functions",
+    "segment_offset": 284577,
+    "snippet": [
+      {
+        "member_node_offset": 284907,
+        "node": [
+          2,
+          0,
+          59
+        ],
+        "pc": 37
+      },
+      {
+        "member_node_offset": 284911,
+        "node": [
+          0,
+          0,
+          81
+        ],
+        "pc": 38
+      },
+      {
+        "member_node_offset": 284915,
+        "node": [
+          0,
+          0,
+          30
+        ],
+        "pc": 39
+      },
+      {
+        "member_node_offset": 284919,
+        "node": [
+          1,
+          2,
+          33
+        ],
+        "pc": 40
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o"
+  },
+  {
+    "function": "rpc_stat",
+    "function_index": 771,
+    "member_node_offset": 260989,
+    "member_sha256": "f9896828c87399be4977107fbfbe3f67fd71caebd3008bda84be16cc722d0a0e",
+    "mode": "global",
+    "node": [
+      0,
+      0,
+      30
+    ],
+    "nodes_offset": 260853,
+    "opcode": "1e",
+    "pc": 34,
+    "preceding_origin": "short_numeric_constant",
+    "segment_kind": "functions",
+    "segment_offset": 260230,
+    "snippet": [
+      {
+        "member_node_offset": 260981,
+        "node": [
+          126,
+          2,
+          6
+        ],
+        "pc": 32
+      },
+      {
+        "member_node_offset": 260985,
+        "node": [
+          0,
+          0,
+          59
+        ],
+        "pc": 33
+      },
+      {
+        "member_node_offset": 260989,
+        "node": [
+          0,
+          0,
+          30
+        ],
+        "pc": 34
+      },
+      {
+        "member_node_offset": 260993,
+        "node": [
+          5,
+          0,
+          33
+        ],
+        "pc": 35
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o"
+  },
+  {
+    "function": "__init__",
+    "function_index": null,
+    "member_node_offset": 1811020,
+    "member_sha256": "2f3ce58bb54584d2ce7bb3d90852893b97fcd5fb55d455b8eccff856fc696174",
+    "mode": "global",
+    "node": [
+      0,
+      0,
+      30
+    ],
+    "nodes_offset": 1793584,
+    "opcode": "1e",
+    "pc": 4359,
+    "preceding_origin": "short_numeric_constant",
+    "segment_kind": "init",
+    "segment_offset": 1788954,
+    "snippet": [
+      {
+        "member_node_offset": 1811012,
+        "node": [
+          126,
+          2,
+          6
+        ],
+        "pc": 4357
+      },
+      {
+        "member_node_offset": 1811016,
+        "node": [
+          0,
+          0,
+          59
+        ],
+        "pc": 4358
+      },
+      {
+        "member_node_offset": 1811020,
+        "node": [
+          0,
+          0,
+          30
+        ],
+        "pc": 4359
+      },
+      {
+        "member_node_offset": 1811024,
+        "node": [
+          5,
+          2,
+          33
+        ],
+        "pc": 4360
+      }
+    ],
+    "source": "gs/pack_data/lib_gs32.pak/gs/start_gs.o"
+  },
+  {
+    "function": "take_csl_bonus",
+    "function_index": 41,
+    "member_node_offset": 57588,
+    "member_sha256": "0ba8731efaae21f3b4272f6a6f32f95c7649fbd485070825278151f4ea83c0a6",
+    "mode": "object",
+    "node": [
+      0,
+      0,
+      30
+    ],
+    "nodes_offset": 57372,
+    "opcode": "1e",
+    "pc": 54,
+    "preceding_origin": "global_slot",
+    "segment_kind": "functions",
+    "segment_offset": 56654,
+    "snippet": [
+      {
+        "member_node_offset": 57580,
+        "node": [
+          -1,
+          0,
+          55
+        ],
+        "pc": 52
+      },
+      {
+        "member_node_offset": 57584,
+        "node": [
+          82,
+          0,
+          53
+        ],
+        "pc": 53
+      },
+      {
+        "member_node_offset": 57588,
+        "node": [
+          0,
+          0,
+          30
+        ],
+        "pc": 54
+      },
+      {
+        "member_node_offset": 57592,
+        "node": [
+          2,
+          2,
+          33
+        ],
+        "pc": 55
+      }
+    ],
+    "source": "gs/pack_data/lib_gs32.pak/gs/daemons/amendd.o"
+  },
+  {
+    "function": "add_coins",
+    "function_index": 169,
+    "member_node_offset": 105149,
+    "member_sha256": "fbad2268542cac34b915222e0e6ba038e390b5098d06295834c707654c4bbd05",
+    "mode": "object",
+    "node": [
+      0,
+      0,
+      30
+    ],
+    "nodes_offset": 104865,
+    "opcode": "1e",
+    "pc": 71,
+    "preceding_origin": "local_slot",
+    "segment_kind": "functions",
+    "segment_offset": 104644,
+    "snippet": [
+      {
+        "member_node_offset": 105141,
+        "node": [
+          0,
+          0,
+          81
+        ],
+        "pc": 69
+      },
+      {
+        "member_node_offset": 105145,
+        "node": [
+          -3,
+          0,
+          55
+        ],
+        "pc": 70
+      },
+      {
+        "member_node_offset": 105149,
+        "node": [
+          0,
+          0,
+          30
+        ],
+        "pc": 71
+      },
+      {
+        "member_node_offset": 105153,
+        "node": [
+          7,
+          2,
+          33
+        ],
+        "pc": 72
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/daemons/accountd.o"
+  },
+  {
+    "function": "get_recharge_return_credit",
+    "function_index": 3,
+    "member_node_offset": 2227,
+    "member_sha256": "57d7a2ff3c8f93d7306a7896991bfd46020e62b91e2d6054005fc0bfe180898f",
+    "mode": "object",
+    "node": [
+      0,
+      0,
+      30
+    ],
+    "nodes_offset": 1963,
+    "opcode": "1e",
+    "pc": 66,
+    "preceding_origin": "numeric_constant_metadata",
+    "segment_kind": "functions",
+    "segment_offset": 1573,
+    "snippet": [
+      {
+        "member_node_offset": 2219,
+        "node": [
+          6,
+          0,
+          55
+        ],
+        "pc": 64
+      },
+      {
+        "member_node_offset": 2223,
+        "node": [
+          0,
+          0,
+          60
+        ],
+        "pc": 65
+      },
+      {
+        "member_node_offset": 2227,
+        "node": [
+          0,
+          0,
+          30
+        ],
+        "pc": 66
+      },
+      {
+        "member_node_offset": 2231,
+        "node": [
+          10,
+          2,
+          33
+        ],
+        "pc": 67
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/daemons/server/cmd_l_update_recharge_return_credit.o"
+  },
+  {
+    "function": "is_cost_fail_times_full",
+    "function_index": 18,
+    "member_node_offset": 11397,
+    "member_sha256": "67c1060eb814ce072491b047ec2a5c60ec27c5ed4d7a98e34469201eea558d07",
+    "mode": "object",
+    "node": [
+      0,
+      0,
+      30
+    ],
+    "nodes_offset": 11369,
+    "opcode": "1e",
+    "pc": 7,
+    "preceding_origin": "object_slot",
+    "segment_kind": "functions",
+    "segment_offset": 11306,
+    "snippet": [
+      {
+        "member_node_offset": 11389,
+        "node": [
+          2,
+          0,
+          13
+        ],
+        "pc": 5
+      },
+      {
+        "member_node_offset": 11393,
+        "node": [
+          3,
+          0,
+          61
+        ],
+        "pc": 6
+      },
+      {
+        "member_node_offset": 11397,
+        "node": [
+          0,
+          0,
+          30
+        ],
+        "pc": 7
+      },
+      {
+        "member_node_offset": 11401,
+        "node": [
+          0,
+          0,
+          73
+        ],
+        "pc": 8
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/daemons/account_transactiond.o"
+  },
+  {
+    "function": "refresh_matrix_pic",
+    "function_index": 164,
+    "member_node_offset": 51070,
+    "member_sha256": "fbad2268542cac34b915222e0e6ba038e390b5098d06295834c707654c4bbd05",
+    "mode": "object",
+    "node": [
+      0,
+      0,
+      30
+    ],
+    "nodes_offset": 50826,
+    "opcode": "1e",
+    "pc": 61,
+    "preceding_origin": "other_instruction",
+    "segment_kind": "functions",
+    "segment_offset": 50630,
+    "snippet": [
+      {
+        "member_node_offset": 51062,
+        "node": [
+          -2,
+          0,
+          55
+        ],
+        "pc": 59
+      },
+      {
+        "member_node_offset": 51066,
+        "node": [
+          0,
+          0,
+          79
+        ],
+        "pc": 60
+      },
+      {
+        "member_node_offset": 51070,
+        "node": [
+          0,
+          0,
+          30
+        ],
+        "pc": 61
+      },
+      {
+        "member_node_offset": 51074,
+        "node": [
+          1,
+          2,
+          33
+        ],
+        "pc": 62
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/daemons/accountd.o"
+  },
+  {
+    "function": "calc_attrib_ability",
+    "function_index": 4,
+    "member_node_offset": 14254,
+    "member_sha256": "fa8f6ee20f630d44d7ae16abf451d041e72d5cf4bb15565fcaafdae0619828b2",
+    "mode": "object",
+    "node": [
+      0,
+      0,
+      30
+    ],
+    "nodes_offset": 13810,
+    "opcode": "1e",
+    "pc": 111,
+    "preceding_origin": "real_constant_metadata",
+    "segment_kind": "functions",
+    "segment_offset": 13647,
+    "snippet": [
+      {
+        "member_node_offset": 14246,
+        "node": [
+          -3,
+          0,
+          55
+        ],
+        "pc": 109
+      },
+      {
+        "member_node_offset": 14250,
+        "node": [
+          80,
+          0,
+          63
+        ],
+        "pc": 110
+      },
+      {
+        "member_node_offset": 14254,
+        "node": [
+          0,
+          0,
+          30
+        ],
+        "pc": 111
+      },
+      {
+        "member_node_offset": 14258,
+        "node": [
+          2,
+          2,
+          33
+        ],
+        "pc": 112
+      }
+    ],
+    "source": "gs/pack_data/lib_gs32.pak/gs/daemons/scored.o"
+  },
+  {
+    "function": "check_num",
+    "function_index": 11,
+    "member_node_offset": 29337,
+    "member_sha256": "d891b9ee840476ed818e6c1858ba34ed1aadd14e3cd3e99121e0d39b2e0c5e9f",
+    "mode": "object",
+    "node": [
+      0,
+      0,
+      30
+    ],
+    "nodes_offset": 29061,
+    "opcode": "1e",
+    "pc": 69,
+    "preceding_origin": "shared_string_pool_index",
+    "segment_kind": "functions",
+    "segment_offset": 28914,
+    "snippet": [
+      {
+        "member_node_offset": 29329,
+        "node": [
+          -2,
+          0,
+          55
+        ],
+        "pc": 67
+      },
+      {
+        "member_node_offset": 29333,
+        "node": [
+          43,
+          0,
+          64
+        ],
+        "pc": 68
+      },
+      {
+        "member_node_offset": 29337,
+        "node": [
+          0,
+          0,
+          30
+        ],
+        "pc": 69
+      },
+      {
+        "member_node_offset": 29341,
+        "node": [
+          4,
+          0,
+          33
+        ],
+        "pc": 70
+      }
+    ],
+    "source": "gs/pack_data/lib_gs32.pak/gs/daemons/easy_task/bonus.o"
+  },
+  {
+    "function": "main",
+    "function_index": 3,
+    "member_node_offset": 9236,
+    "member_sha256": "ef67351f8df64f004f245963f44f7553b7edf7bf10f75d90867bfbc964195dd5",
+    "mode": "object",
+    "node": [
+      0,
+      0,
+      30
+    ],
+    "nodes_offset": 5876,
+    "opcode": "1e",
+    "pc": 840,
+    "preceding_origin": "short_numeric_constant",
+    "segment_kind": "functions",
+    "segment_offset": 4129,
+    "snippet": [
+      {
+        "member_node_offset": 9228,
+        "node": [
+          0,
+          0,
+          79
+        ],
+        "pc": 838
+      },
+      {
+        "member_node_offset": 9232,
+        "node": [
+          50,
+          0,
+          59
+        ],
+        "pc": 839
+      },
+      {
+        "member_node_offset": 9236,
+        "node": [
+          0,
+          0,
+          30
+        ],
+        "pc": 840
+      },
+      {
+        "member_node_offset": 9240,
+        "node": [
+          4,
+          2,
+          33
+        ],
+        "pc": 841
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/daemons/account/cmd_l_client_connect_agent.o"
+  },
+  {
+    "function": "valid_content",
+    "function_index": 675,
+    "member_node_offset": 328482,
+    "member_sha256": "f9896828c87399be4977107fbfbe3f67fd71caebd3008bda84be16cc722d0a0e",
+    "mode": "global",
+    "node": [
+      0,
+      0,
+      32
+    ],
+    "nodes_offset": 328402,
+    "opcode": "20",
+    "pc": 20,
+    "preceding_origin": "local_slot",
+    "segment_kind": "functions",
+    "segment_offset": 328225,
+    "snippet": [
+      {
+        "member_node_offset": 328474,
+        "node": [
+          -1,
+          0,
+          55
+        ],
+        "pc": 18
+      },
+      {
+        "member_node_offset": 328478,
+        "node": [
+          2,
+          0,
+          55
+        ],
+        "pc": 19
+      },
+      {
+        "member_node_offset": 328482,
+        "node": [
+          0,
+          0,
+          32
+        ],
+        "pc": 20
+      },
+      {
+        "member_node_offset": 328486,
+        "node": [
+          7,
+          2,
+          33
+        ],
+        "pc": 21
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o"
+  },
+  {
+    "function": "is_same_week",
+    "function_index": 700,
+    "member_node_offset": 244830,
+    "member_sha256": "f9896828c87399be4977107fbfbe3f67fd71caebd3008bda84be16cc722d0a0e",
+    "mode": "global",
+    "node": [
+      0,
+      0,
+      32
+    ],
+    "nodes_offset": 244802,
+    "opcode": "20",
+    "pc": 7,
+    "preceding_origin": "numeric_constant_metadata",
+    "segment_kind": "functions",
+    "segment_offset": 244740,
+    "snippet": [
+      {
+        "member_node_offset": 244822,
+        "node": [
+          3,
+          1,
+          6
+        ],
+        "pc": 5
+      },
+      {
+        "member_node_offset": 244826,
+        "node": [
+          0,
+          0,
+          60
+        ],
+        "pc": 6
+      },
+      {
+        "member_node_offset": 244830,
+        "node": [
+          0,
+          0,
+          32
+        ],
+        "pc": 7
+      },
+      {
+        "member_node_offset": 244834,
+        "node": [
+          2,
+          2,
+          33
+        ],
+        "pc": 8
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o"
+  },
+  {
+    "function": "rpc_stat",
+    "function_index": 771,
+    "member_node_offset": 261185,
+    "member_sha256": "f9896828c87399be4977107fbfbe3f67fd71caebd3008bda84be16cc722d0a0e",
+    "mode": "global",
+    "node": [
+      0,
+      0,
+      32
+    ],
+    "nodes_offset": 260853,
+    "opcode": "20",
+    "pc": 83,
+    "preceding_origin": "other_instruction",
+    "segment_kind": "functions",
+    "segment_offset": 260230,
+    "snippet": [
+      {
+        "member_node_offset": 261177,
+        "node": [
+          416,
+          0,
+          64
+        ],
+        "pc": 81
+      },
+      {
+        "member_node_offset": 261181,
+        "node": [
+          0,
+          0,
+          67
+        ],
+        "pc": 82
+      },
+      {
+        "member_node_offset": 261185,
+        "node": [
+          0,
+          0,
+          32
+        ],
+        "pc": 83
+      },
+      {
+        "member_node_offset": 261189,
+        "node": [
+          4,
+          2,
+          33
+        ],
+        "pc": 84
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o"
+  },
+  {
+    "function": "rpc_stat",
+    "function_index": 771,
+    "member_node_offset": 261013,
+    "member_sha256": "f9896828c87399be4977107fbfbe3f67fd71caebd3008bda84be16cc722d0a0e",
+    "mode": "global",
+    "node": [
+      0,
+      0,
+      32
+    ],
+    "nodes_offset": 260853,
+    "opcode": "20",
+    "pc": 40,
+    "preceding_origin": "short_numeric_constant",
+    "segment_kind": "functions",
+    "segment_offset": 260230,
+    "snippet": [
+      {
+        "member_node_offset": 261005,
+        "node": [
+          0,
+          0,
+          79
+        ],
+        "pc": 38
+      },
+      {
+        "member_node_offset": 261009,
+        "node": [
+          0,
+          0,
+          59
+        ],
+        "pc": 39
+      },
+      {
+        "member_node_offset": 261013,
+        "node": [
+          0,
+          0,
+          32
+        ],
+        "pc": 40
+      },
+      {
+        "member_node_offset": 261017,
+        "node": [
+          59,
+          2,
+          33
+        ],
+        "pc": 41
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o"
+  },
+  {
+    "function": "prepare_start_game",
+    "function_index": 109,
+    "member_node_offset": 13919,
+    "member_sha256": "870ed052e5c70cf8a1c5cc8ad1abbf753eab5e15dd16f773e49abcd1f329bb76",
+    "mode": "object",
+    "node": [
+      0,
+      0,
+      32
+    ],
+    "nodes_offset": 13583,
+    "opcode": "20",
+    "pc": 84,
+    "preceding_origin": "global_slot",
+    "segment_kind": "functions",
+    "segment_offset": 13079,
+    "snippet": [
+      {
+        "member_node_offset": 13911,
+        "node": [
+          0,
+          0,
+          67
+        ],
+        "pc": 82
+      },
+      {
+        "member_node_offset": 13915,
+        "node": [
+          48,
+          0,
+          53
+        ],
+        "pc": 83
+      },
+      {
+        "member_node_offset": 13919,
+        "node": [
+          0,
+          0,
+          32
+        ],
+        "pc": 84
+      },
+      {
+        "member_node_offset": 13923,
+        "node": [
+          9,
+          2,
+          33
+        ],
+        "pc": 85
+      }
+    ],
+    "source": "gs/pack_data/lib_gs32.pak/gs/daemons/tasks/winter_vacation/winter_vacation.o"
+  },
+  {
+    "function": "get_value_from_matrix_text",
+    "function_index": 113,
+    "member_node_offset": 92128,
+    "member_sha256": "fbad2268542cac34b915222e0e6ba038e390b5098d06295834c707654c4bbd05",
+    "mode": "object",
+    "node": [
+      0,
+      0,
+      32
+    ],
+    "nodes_offset": 91728,
+    "opcode": "20",
+    "pc": 100,
+    "preceding_origin": "local_slot",
+    "segment_kind": "functions",
+    "segment_offset": 91557,
+    "snippet": [
+      {
+        "member_node_offset": 92120,
+        "node": [
+          0,
+          0,
+          41
+        ],
+        "pc": 98
+      },
+      {
+        "member_node_offset": 92124,
+        "node": [
+          -4,
+          0,
+          55
+        ],
+        "pc": 99
+      },
+      {
+        "member_node_offset": 92128,
+        "node": [
+          0,
+          0,
+          32
+        ],
+        "pc": 100
+      },
+      {
+        "member_node_offset": 92132,
+        "node": [
+          10,
+          1,
+          33
+        ],
+        "pc": 101
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/daemons/accountd.o"
+  },
+  {
+    "function": "insert_msg",
+    "function_index": 28,
+    "member_node_offset": 3491,
+    "member_sha256": "aa5ea1072d71285aaaa7bcc0feea7a0418a72e5d5d52b1ed441cdb0aa3e241be",
+    "mode": "object",
+    "node": [
+      0,
+      0,
+      32
+    ],
+    "nodes_offset": 3415,
+    "opcode": "20",
+    "pc": 19,
+    "preceding_origin": "numeric_constant_metadata",
+    "segment_kind": "functions",
+    "segment_offset": 3226,
+    "snippet": [
+      {
+        "member_node_offset": 3483,
+        "node": [
+          0,
+          0,
+          1
+        ],
+        "pc": 17
+      },
+      {
+        "member_node_offset": 3487,
+        "node": [
+          0,
+          0,
+          60
+        ],
+        "pc": 18
+      },
+      {
+        "member_node_offset": 3491,
+        "node": [
+          0,
+          0,
+          32
+        ],
+        "pc": 19
+      },
+      {
+        "member_node_offset": 3495,
+        "node": [
+          30,
+          2,
+          33
+        ],
+        "pc": 20
+      }
+    ],
+    "source": "ccs/pack_data/lib_ccs32.pak/ccs/clone/misc/leavemsg.o"
+  },
+  {
+    "function": "wakeup_qr_code_agent",
+    "function_index": 7,
+    "member_node_offset": 2027,
+    "member_sha256": "d6786fe3b85ff355ba35bc8daf8fb22fd2ff2bafd5ffced27d3900865565dd6e",
+    "mode": "object",
+    "node": [
+      0,
+      0,
+      32
+    ],
+    "nodes_offset": 1795,
+    "opcode": "20",
+    "pc": 58,
+    "preceding_origin": "object_slot",
+    "segment_kind": "functions",
+    "segment_offset": 1634,
+    "snippet": [
+      {
+        "member_node_offset": 2019,
+        "node": [
+          0,
+          0,
+          81
+        ],
+        "pc": 56
+      },
+      {
+        "member_node_offset": 2023,
+        "node": [
+          1,
+          0,
+          61
+        ],
+        "pc": 57
+      },
+      {
+        "member_node_offset": 2027,
+        "node": [
+          0,
+          0,
+          32
+        ],
+        "pc": 58
+      },
+      {
+        "member_node_offset": 2031,
+        "node": [
+          1,
+          2,
+          33
+        ],
+        "pc": 59
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/daemons/qr_coded.o"
+  },
+  {
+    "function": "main",
+    "function_index": 3,
+    "member_node_offset": 7056,
+    "member_sha256": "ef67351f8df64f004f245963f44f7553b7edf7bf10f75d90867bfbc964195dd5",
+    "mode": "object",
+    "node": [
+      0,
+      0,
+      32
+    ],
+    "nodes_offset": 5876,
+    "opcode": "20",
+    "pc": 295,
+    "preceding_origin": "other_instruction",
+    "segment_kind": "functions",
+    "segment_offset": 4129,
+    "snippet": [
+      {
+        "member_node_offset": 7048,
+        "node": [
+          -4,
+          0,
+          55
+        ],
+        "pc": 293
+      },
+      {
+        "member_node_offset": 7052,
+        "node": [
+          137,
+          0,
+          6
+        ],
+        "pc": 294
+      },
+      {
+        "member_node_offset": 7056,
+        "node": [
+          0,
+          0,
+          32
+        ],
+        "pc": 295
+      },
+      {
+        "member_node_offset": 7060,
+        "node": [
+          89,
+          2,
+          33
+        ],
+        "pc": 296
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/daemons/account/cmd_l_client_connect_agent.o"
+  },
+  {
+    "function": "get_combat_server",
+    "function_index": 14,
+    "member_node_offset": 40022,
+    "member_sha256": "76e4df780842403ac7588ba23b3dd3c072e74379e48d919212dee99aac607a4c",
+    "mode": "object",
+    "node": [
+      0,
+      0,
+      32
+    ],
+    "nodes_offset": 39746,
+    "opcode": "20",
+    "pc": 69,
+    "preceding_origin": "real_constant_metadata",
+    "segment_kind": "functions",
+    "segment_offset": 39579,
+    "snippet": [
+      {
+        "member_node_offset": 40014,
+        "node": [
+          0,
+          0,
+          79
+        ],
+        "pc": 67
+      },
+      {
+        "member_node_offset": 40018,
+        "node": [
+          24,
+          0,
+          63
+        ],
+        "pc": 68
+      },
+      {
+        "member_node_offset": 40022,
+        "node": [
+          0,
+          0,
+          32
+        ],
+        "pc": 69
+      },
+      {
+        "member_node_offset": 40026,
+        "node": [
+          1,
+          2,
+          33
+        ],
+        "pc": 70
+      }
+    ],
+    "source": "ccs/pack_data/lib_ccs32.pak/ccs/daemons/ccs_card_gamed.o"
+  },
+  {
+    "function": "when_iid_duplicated",
+    "function_index": 58,
+    "member_node_offset": 136889,
+    "member_sha256": "9c8289ead88713541ffcbbc0da4cf888d53fd4c02f88ca9b7cb1a50966535b6b",
+    "mode": "object",
+    "node": [
+      0,
+      0,
+      32
+    ],
+    "nodes_offset": 135949,
+    "opcode": "20",
+    "pc": 235,
+    "preceding_origin": "shared_string_pool_index",
+    "segment_kind": "functions",
+    "segment_offset": 135447,
+    "snippet": [
+      {
+        "member_node_offset": 136881,
+        "node": [
+          2,
+          0,
+          55
+        ],
+        "pc": 233
+      },
+      {
+        "member_node_offset": 136885,
+        "node": [
+          296,
+          0,
+          64
+        ],
+        "pc": 234
+      },
+      {
+        "member_node_offset": 136889,
+        "node": [
+          0,
+          0,
+          32
+        ],
+        "pc": 235
+      },
+      {
+        "member_node_offset": 136893,
+        "node": [
+          4,
+          1,
+          33
+        ],
+        "pc": 236
+      }
+    ],
+    "source": "gs/pack_data/lib_gs32.pak/gs/daemons/userd.o"
+  },
+  {
+    "function": "wait_finish_service",
+    "function_index": 2,
+    "member_node_offset": 2145,
+    "member_sha256": "0b2367a5f99b8a43f653a5983f2b3831962c591f256ec761789b4f9255529a6b",
+    "mode": "object",
+    "node": [
+      0,
+      0,
+      32
+    ],
+    "nodes_offset": 2109,
+    "opcode": "20",
+    "pc": 9,
+    "preceding_origin": "short_numeric_constant",
+    "segment_kind": "functions",
+    "segment_offset": 2031,
+    "snippet": [
+      {
+        "member_node_offset": 2137,
+        "node": [
+          0,
+          0,
+          79
+        ],
+        "pc": 7
+      },
+      {
+        "member_node_offset": 2141,
+        "node": [
+          0,
+          0,
+          59
+        ],
+        "pc": 8
+      },
+      {
+        "member_node_offset": 2145,
+        "node": [
+          0,
+          0,
+          32
+        ],
+        "pc": 9
+      },
+      {
+        "member_node_offset": 2149,
+        "node": [
+          9,
+          2,
+          33
+        ],
+        "pc": 10
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/daemons/aaaserverd.o"
+  },
+  {
+    "function": "is_in_ip_span",
+    "function_index": 725,
+    "member_node_offset": 275432,
+    "member_sha256": "f9896828c87399be4977107fbfbe3f67fd71caebd3008bda84be16cc722d0a0e",
+    "mode": "global",
+    "node": [
+      0,
+      0,
+      37
+    ],
+    "nodes_offset": 275348,
+    "opcode": "25",
+    "pc": 21,
+    "preceding_origin": "local_slot",
+    "segment_kind": "functions",
+    "segment_offset": 275286,
+    "snippet": [
+      {
+        "member_node_offset": 275424,
+        "node": [
+          2,
+          0,
+          55
+        ],
+        "pc": 19
+      },
+      {
+        "member_node_offset": 275428,
+        "node": [
+          1,
+          0,
+          55
+        ],
+        "pc": 20
+      },
+      {
+        "member_node_offset": 275432,
+        "node": [
+          0,
+          0,
+          37
+        ],
+        "pc": 21
+      },
+      {
+        "member_node_offset": 275436,
+        "node": [
+          0,
+          0,
+          73
+        ],
+        "pc": 22
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o"
+  },
+  {
+    "function": "rpc_stat",
+    "function_index": 771,
+    "member_node_offset": 262505,
+    "member_sha256": "f9896828c87399be4977107fbfbe3f67fd71caebd3008bda84be16cc722d0a0e",
+    "mode": "global",
+    "node": [
+      0,
+      0,
+      37
+    ],
+    "nodes_offset": 260853,
+    "opcode": "25",
+    "pc": 413,
+    "preceding_origin": "short_numeric_constant",
+    "segment_kind": "functions",
+    "segment_offset": 260230,
+    "snippet": [
+      {
+        "member_node_offset": 262497,
+        "node": [
+          122,
+          1,
+          6
+        ],
+        "pc": 411
+      },
+      {
+        "member_node_offset": 262501,
+        "node": [
+          0,
+          0,
+          59
+        ],
+        "pc": 412
+      },
+      {
+        "member_node_offset": 262505,
+        "node": [
+          0,
+          0,
+          37
+        ],
+        "pc": 413
+      },
+      {
+        "member_node_offset": 262509,
+        "node": [
+          4,
+          2,
+          33
+        ],
+        "pc": 414
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o"
+  },
+  {
+    "function": "pwd_protect_deny_fixed_ip",
+    "function_index": 127,
+    "member_node_offset": 28626,
+    "member_sha256": "fbad2268542cac34b915222e0e6ba038e390b5098d06295834c707654c4bbd05",
+    "mode": "object",
+    "node": [
+      0,
+      0,
+      37
+    ],
+    "nodes_offset": 28342,
+    "opcode": "25",
+    "pc": 71,
+    "preceding_origin": "local_slot",
+    "segment_kind": "functions",
+    "segment_offset": 28191,
+    "snippet": [
+      {
+        "member_node_offset": 28618,
+        "node": [
+          -5,
+          0,
+          55
+        ],
+        "pc": 69
+      },
+      {
+        "member_node_offset": 28622,
+        "node": [
+          -7,
+          0,
+          55
+        ],
+        "pc": 70
+      },
+      {
+        "member_node_offset": 28626,
+        "node": [
+          0,
+          0,
+          37
+        ],
+        "pc": 71
+      },
+      {
+        "member_node_offset": 28630,
+        "node": [
+          4,
+          0,
+          33
+        ],
+        "pc": 72
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/daemons/accountd.o"
+  },
+  {
+    "function": "get_party_anni_desc",
+    "function_index": 7,
+    "member_node_offset": 14153,
+    "member_sha256": "10f81ec7f1aff4005950461c013db6009c96376c5ad8e55f81e0373c1044dae4",
+    "mode": "object",
+    "node": [
+      0,
+      0,
+      37
+    ],
+    "nodes_offset": 13993,
+    "opcode": "25",
+    "pc": 40,
+    "preceding_origin": "numeric_constant_metadata",
+    "segment_kind": "functions",
+    "segment_offset": 13875,
+    "snippet": [
+      {
+        "member_node_offset": 14145,
+        "node": [
+          -2,
+          0,
+          55
+        ],
+        "pc": 38
+      },
+      {
+        "member_node_offset": 14149,
+        "node": [
+          0,
+          0,
+          60
+        ],
+        "pc": 39
+      },
+      {
+        "member_node_offset": 14153,
+        "node": [
+          0,
+          0,
+          37
+        ],
+        "pc": 40
+      },
+      {
+        "member_node_offset": 14157,
+        "node": [
+          4,
+          0,
+          33
+        ],
+        "pc": 41
+      }
+    ],
+    "source": "ccs/pack_data/lib_ccs32.pak/ccs/daemons/ccs_party_game_descd.o"
+  },
+  {
+    "function": "refresh_sort_info",
+    "function_index": 7,
+    "member_node_offset": 1562,
+    "member_sha256": "c05efe6fc1b06e42936d4eda4e85944797403f6245f56b2e9684656309775b78",
+    "mode": "object",
+    "node": [
+      0,
+      0,
+      37
+    ],
+    "nodes_offset": 1546,
+    "opcode": "25",
+    "pc": 4,
+    "preceding_origin": "object_slot",
+    "segment_kind": "functions",
+    "segment_offset": 1357,
+    "snippet": [
+      {
+        "member_node_offset": 1554,
+        "node": [
+          137,
+          0,
+          6
+        ],
+        "pc": 2
+      },
+      {
+        "member_node_offset": 1558,
+        "node": [
+          0,
+          0,
+          61
+        ],
+        "pc": 3
+      },
+      {
+        "member_node_offset": 1562,
+        "node": [
+          0,
+          0,
+          37
+        ],
+        "pc": 4
+      },
+      {
+        "member_node_offset": 1566,
+        "node": [
+          4,
+          0,
+          33
+        ],
+        "pc": 5
+      }
+    ],
+    "source": "ccs/pack_data/lib_ccs32.pak/ccs/daemons/mid_autumn_2011d.o"
+  },
+  {
+    "function": "clear_timeout_precost_lock",
+    "function_index": 9,
+    "member_node_offset": 5971,
+    "member_sha256": "67c1060eb814ce072491b047ec2a5c60ec27c5ed4d7a98e34469201eea558d07",
+    "mode": "object",
+    "node": [
+      0,
+      0,
+      37
+    ],
+    "nodes_offset": 5807,
+    "opcode": "25",
+    "pc": 41,
+    "preceding_origin": "other_instruction",
+    "segment_kind": "functions",
+    "segment_offset": 5654,
+    "snippet": [
+      {
+        "member_node_offset": 5963,
+        "node": [
+          1,
+          0,
+          61
+        ],
+        "pc": 39
+      },
+      {
+        "member_node_offset": 5967,
+        "node": [
+          0,
+          0,
+          1
+        ],
+        "pc": 40
+      },
+      {
+        "member_node_offset": 5971,
+        "node": [
+          0,
+          0,
+          37
+        ],
+        "pc": 41
+      },
+      {
+        "member_node_offset": 5975,
+        "node": [
+          1,
+          2,
+          33
+        ],
+        "pc": 42
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/daemons/account_transactiond.o"
+  },
+  {
+    "function": "get_combat_server",
+    "function_index": 14,
+    "member_node_offset": 39870,
+    "member_sha256": "76e4df780842403ac7588ba23b3dd3c072e74379e48d919212dee99aac607a4c",
+    "mode": "object",
+    "node": [
+      0,
+      0,
+      37
+    ],
+    "nodes_offset": 39746,
+    "opcode": "25",
+    "pc": 31,
+    "preceding_origin": "real_constant_metadata",
+    "segment_kind": "functions",
+    "segment_offset": 39579,
+    "snippet": [
+      {
+        "member_node_offset": 39862,
+        "node": [
+          -2,
+          0,
+          55
+        ],
+        "pc": 29
+      },
+      {
+        "member_node_offset": 39866,
+        "node": [
+          8,
+          0,
+          63
+        ],
+        "pc": 30
+      },
+      {
+        "member_node_offset": 39870,
+        "node": [
+          0,
+          0,
+          37
+        ],
+        "pc": 31
+      },
+      {
+        "member_node_offset": 39874,
+        "node": [
+          2,
+          2,
+          33
+        ],
+        "pc": 32
+      }
+    ],
+    "source": "ccs/pack_data/lib_ccs32.pak/ccs/daemons/ccs_card_gamed.o"
+  },
+  {
+    "function": "check_num",
+    "function_index": 11,
+    "member_node_offset": 29357,
+    "member_sha256": "d891b9ee840476ed818e6c1858ba34ed1aadd14e3cd3e99121e0d39b2e0c5e9f",
+    "mode": "object",
+    "node": [
+      0,
+      0,
+      37
+    ],
+    "nodes_offset": 29061,
+    "opcode": "25",
+    "pc": 74,
+    "preceding_origin": "shared_string_pool_index",
+    "segment_kind": "functions",
+    "segment_offset": 28914,
+    "snippet": [
+      {
+        "member_node_offset": 29349,
+        "node": [
+          -2,
+          0,
+          55
+        ],
+        "pc": 72
+      },
+      {
+        "member_node_offset": 29353,
+        "node": [
+          45,
+          0,
+          64
+        ],
+        "pc": 73
+      },
+      {
+        "member_node_offset": 29357,
+        "node": [
+          0,
+          0,
+          37
+        ],
+        "pc": 74
+      },
+      {
+        "member_node_offset": 29361,
+        "node": [
+          1,
+          2,
+          33
+        ],
+        "pc": 75
+      }
+    ],
+    "source": "gs/pack_data/lib_gs32.pak/gs/daemons/easy_task/bonus.o"
+  },
+  {
+    "function": "start_service",
+    "function_index": 0,
+    "member_node_offset": 2993,
+    "member_sha256": "0b2367a5f99b8a43f653a5983f2b3831962c591f256ec761789b4f9255529a6b",
+    "mode": "object",
+    "node": [
+      0,
+      0,
+      37
+    ],
+    "nodes_offset": 2901,
+    "opcode": "25",
+    "pc": 23,
+    "preceding_origin": "short_numeric_constant",
+    "segment_kind": "functions",
+    "segment_offset": 2763,
+    "snippet": [
+      {
+        "member_node_offset": 2985,
+        "node": [
+          -1,
+          0,
+          55
+        ],
+        "pc": 21
+      },
+      {
+        "member_node_offset": 2989,
+        "node": [
+          0,
+          0,
+          59
+        ],
+        "pc": 22
+      },
+      {
+        "member_node_offset": 2993,
+        "node": [
+          0,
+          0,
+          37
+        ],
+        "pc": 23
+      },
+      {
+        "member_node_offset": 2997,
+        "node": [
+          4,
+          2,
+          33
+        ],
+        "pc": 24
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/daemons/aaaserverd.o"
+  },
+  {
+    "function": "xdbc_log",
+    "function_index": 581,
+    "member_node_offset": 257042,
+    "member_sha256": "f9896828c87399be4977107fbfbe3f67fd71caebd3008bda84be16cc722d0a0e",
+    "mode": "global",
+    "node": [
+      0,
+      0,
+      39
+    ],
+    "nodes_offset": 257026,
+    "opcode": "27",
+    "pc": 4,
+    "preceding_origin": "global_slot",
+    "segment_kind": "functions",
+    "segment_offset": 256951,
+    "snippet": [
+      {
+        "member_node_offset": 257034,
+        "node": [
+          0,
+          0,
+          55
+        ],
+        "pc": 2
+      },
+      {
+        "member_node_offset": 257038,
+        "node": [
+          3,
+          0,
+          53
+        ],
+        "pc": 3
+      },
+      {
+        "member_node_offset": 257042,
+        "node": [
+          0,
+          0,
+          39
+        ],
+        "pc": 4
+      },
+      {
+        "member_node_offset": 257046,
+        "node": [
+          1,
+          2,
+          33
+        ],
+        "pc": 5
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o"
+  },
+  {
+    "function": "decrypt_mask_md5",
+    "function_index": 753,
+    "member_node_offset": 255924,
+    "member_sha256": "f9896828c87399be4977107fbfbe3f67fd71caebd3008bda84be16cc722d0a0e",
+    "mode": "global",
+    "node": [
+      0,
+      0,
+      39
+    ],
+    "nodes_offset": 255844,
+    "opcode": "27",
+    "pc": 20,
+    "preceding_origin": "local_slot",
+    "segment_kind": "functions",
+    "segment_offset": 255713,
+    "snippet": [
+      {
+        "member_node_offset": 255916,
+        "node": [
+          -2,
+          0,
+          55
+        ],
+        "pc": 18
+      },
+      {
+        "member_node_offset": 255920,
+        "node": [
+          -1,
+          0,
+          55
+        ],
+        "pc": 19
+      },
+      {
+        "member_node_offset": 255924,
+        "node": [
+          0,
+          0,
+          39
+        ],
+        "pc": 20
+      },
+      {
+        "member_node_offset": 255928,
+        "node": [
+          12,
+          1,
+          33
+        ],
+        "pc": 21
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o"
+  },
+  {
+    "function": "unload_all",
+    "function_index": 802,
+    "member_node_offset": 276050,
+    "member_sha256": "f9896828c87399be4977107fbfbe3f67fd71caebd3008bda84be16cc722d0a0e",
+    "mode": "global",
+    "node": [
+      0,
+      0,
+      39
+    ],
+    "nodes_offset": 275926,
+    "opcode": "27",
+    "pc": 31,
+    "preceding_origin": "other_instruction",
+    "segment_kind": "functions",
+    "segment_offset": 275796,
+    "snippet": [
+      {
+        "member_node_offset": 276042,
+        "node": [
+          -1,
+          0,
+          55
+        ],
+        "pc": 29
+      },
+      {
+        "member_node_offset": 276046,
+        "node": [
+          0,
+          0,
+          79
+        ],
+        "pc": 30
+      },
+      {
+        "member_node_offset": 276050,
+        "node": [
+          0,
+          0,
+          39
+        ],
+        "pc": 31
+      },
+      {
+        "member_node_offset": 276054,
+        "node": [
+          39,
+          2,
+          33
+        ],
+        "pc": 32
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o"
+  },
+  {
+    "function": "telnet_daemon",
+    "function_index": 829,
+    "member_node_offset": 245933,
+    "member_sha256": "f9896828c87399be4977107fbfbe3f67fd71caebd3008bda84be16cc722d0a0e",
+    "mode": "global",
+    "node": [
+      0,
+      0,
+      39
+    ],
+    "nodes_offset": 245909,
+    "opcode": "27",
+    "pc": 6,
+    "preceding_origin": "short_numeric_constant",
+    "segment_kind": "functions",
+    "segment_offset": 245460,
+    "snippet": [
+      {
+        "member_node_offset": 245925,
+        "node": [
+          0,
+          0,
+          81
+        ],
+        "pc": 4
+      },
+      {
+        "member_node_offset": 245929,
+        "node": [
+          5,
+          0,
+          59
+        ],
+        "pc": 5
+      },
+      {
+        "member_node_offset": 245933,
+        "node": [
+          0,
+          0,
+          39
+        ],
+        "pc": 6
+      },
+      {
+        "member_node_offset": 245937,
+        "node": [
+          8,
+          2,
+          33
+        ],
+        "pc": 7
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o"
+  },
+  {
+    "function": "party_contrib_auto_inc",
+    "function_index": 177,
+    "member_node_offset": 353216,
+    "member_sha256": "b75d311227c1fefc82bf43423e151cd8d312c0d3cef45e43e6dafb5482201890",
+    "mode": "object",
+    "node": [
+      0,
+      0,
+      39
+    ],
+    "nodes_offset": 352904,
+    "opcode": "27",
+    "pc": 78,
+    "preceding_origin": "global_slot",
+    "segment_kind": "functions",
+    "segment_offset": 352591,
+    "snippet": [
+      {
+        "member_node_offset": 353208,
+        "node": [
+          -4,
+          0,
+          55
+        ],
+        "pc": 76
+      },
+      {
+        "member_node_offset": 353212,
+        "node": [
+          48,
+          0,
+          53
+        ],
+        "pc": 77
+      },
+      {
+        "member_node_offset": 353216,
+        "node": [
+          0,
+          0,
+          39
+        ],
+        "pc": 78
+      },
+      {
+        "member_node_offset": 353220,
+        "node": [
+          4,
+          2,
+          33
+        ],
+        "pc": 79
+      }
+    ],
+    "source": "gs/pack_data/lib_gs32.pak/gs/daemons/partyd.o"
+  },
+  {
+    "function": "main",
+    "function_index": 4,
+    "member_node_offset": 3507,
+    "member_sha256": "6ed41ca919868c24de8050fb367dedd9d6f4320c392a32a90812b0738d09b2e6",
+    "mode": "object",
+    "node": [
+      0,
+      0,
+      39
+    ],
+    "nodes_offset": 2343,
+    "opcode": "27",
+    "pc": 291,
+    "preceding_origin": "local_slot",
+    "segment_kind": "functions",
+    "segment_offset": 1936,
+    "snippet": [
+      {
+        "member_node_offset": 3499,
+        "node": [
+          -2,
+          0,
+          55
+        ],
+        "pc": 289
+      },
+      {
+        "member_node_offset": 3503,
+        "node": [
+          -5,
+          0,
+          55
+        ],
+        "pc": 290
+      },
+      {
+        "member_node_offset": 3507,
+        "node": [
+          0,
+          0,
+          39
+        ],
+        "pc": 291
+      },
+      {
+        "member_node_offset": 3511,
+        "node": [
+          2,
+          0,
+          33
+        ],
+        "pc": 292
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/daemons/account/cmd_l_get_server_list.o"
+  },
+  {
+    "function": "main",
+    "function_index": 3,
+    "member_node_offset": 7096,
+    "member_sha256": "ef67351f8df64f004f245963f44f7553b7edf7bf10f75d90867bfbc964195dd5",
+    "mode": "object",
+    "node": [
+      0,
+      0,
+      39
+    ],
+    "nodes_offset": 5876,
+    "opcode": "27",
+    "pc": 305,
+    "preceding_origin": "numeric_constant_metadata",
+    "segment_kind": "functions",
+    "segment_offset": 4129,
+    "snippet": [
+      {
+        "member_node_offset": 7088,
+        "node": [
+          -29,
+          0,
+          55
+        ],
+        "pc": 303
+      },
+      {
+        "member_node_offset": 7092,
+        "node": [
+          0,
+          0,
+          60
+        ],
+        "pc": 304
+      },
+      {
+        "member_node_offset": 7096,
+        "node": [
+          0,
+          0,
+          39
+        ],
+        "pc": 305
+      },
+      {
+        "member_node_offset": 7100,
+        "node": [
+          29,
+          2,
+          33
+        ],
+        "pc": 306
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/daemons/account/cmd_l_client_connect_agent.o"
+  },
+  {
+    "function": "check_wait_login",
+    "function_index": 3,
+    "member_node_offset": 1330,
+    "member_sha256": "ff2c882d28037742dbc7c01245042079e3db5ce9184da719fbdb3c5ca2ed6356",
+    "mode": "object",
+    "node": [
+      0,
+      0,
+      39
+    ],
+    "nodes_offset": 1222,
+    "opcode": "27",
+    "pc": 27,
+    "preceding_origin": "object_slot",
+    "segment_kind": "functions",
+    "segment_offset": 1093,
+    "snippet": [
+      {
+        "member_node_offset": 1322,
+        "node": [
+          0,
+          0,
+          81
+        ],
+        "pc": 25
+      },
+      {
+        "member_node_offset": 1326,
+        "node": [
+          4,
+          0,
+          61
+        ],
+        "pc": 26
+      },
+      {
+        "member_node_offset": 1330,
+        "node": [
+          0,
+          0,
+          39
+        ],
+        "pc": 27
+      },
+      {
+        "member_node_offset": 1334,
+        "node": [
+          1,
+          2,
+          33
+        ],
+        "pc": 28
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/daemons/gameserverd.o"
+  },
+  {
+    "function": "pwd_protect_deny_fixed_tm",
+    "function_index": 128,
+    "member_node_offset": 35512,
+    "member_sha256": "fbad2268542cac34b915222e0e6ba038e390b5098d06295834c707654c4bbd05",
+    "mode": "object",
+    "node": [
+      0,
+      0,
+      39
+    ],
+    "nodes_offset": 35264,
+    "opcode": "27",
+    "pc": 62,
+    "preceding_origin": "other_instruction",
+    "segment_kind": "functions",
+    "segment_offset": 35138,
+    "snippet": [
+      {
+        "member_node_offset": 35504,
+        "node": [
+          0,
+          0,
+          59
+        ],
+        "pc": 60
+      },
+      {
+        "member_node_offset": 35508,
+        "node": [
+          0,
+          0,
+          67
+        ],
+        "pc": 61
+      },
+      {
+        "member_node_offset": 35512,
+        "node": [
+          0,
+          0,
+          39
+        ],
+        "pc": 62
+      },
+      {
+        "member_node_offset": 35516,
+        "node": [
+          6,
+          1,
+          33
+        ],
+        "pc": 63
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/daemons/accountd.o"
+  },
+  {
+    "function": "get_combat_server",
+    "function_index": 14,
+    "member_node_offset": 39846,
+    "member_sha256": "76e4df780842403ac7588ba23b3dd3c072e74379e48d919212dee99aac607a4c",
+    "mode": "object",
+    "node": [
+      0,
+      0,
+      39
+    ],
+    "nodes_offset": 39746,
+    "opcode": "27",
+    "pc": 25,
+    "preceding_origin": "real_constant_metadata",
+    "segment_kind": "functions",
+    "segment_offset": 39579,
+    "snippet": [
+      {
+        "member_node_offset": 39838,
+        "node": [
+          -1,
+          0,
+          55
+        ],
+        "pc": 23
+      },
+      {
+        "member_node_offset": 39842,
+        "node": [
+          0,
+          0,
+          63
+        ],
+        "pc": 24
+      },
+      {
+        "member_node_offset": 39846,
+        "node": [
+          0,
+          0,
+          39
+        ],
+        "pc": 25
+      },
+      {
+        "member_node_offset": 39850,
+        "node": [
+          2,
+          2,
+          33
+        ],
+        "pc": 26
+      }
+    ],
+    "source": "ccs/pack_data/lib_ccs32.pak/ccs/daemons/ccs_card_gamed.o"
+  },
+  {
+    "function": "update_account_info",
+    "function_index": 8,
+    "member_node_offset": 2800,
+    "member_sha256": "67c1060eb814ce072491b047ec2a5c60ec27c5ed4d7a98e34469201eea558d07",
+    "mode": "object",
+    "node": [
+      0,
+      0,
+      39
+    ],
+    "nodes_offset": 2364,
+    "opcode": "27",
+    "pc": 109,
+    "preceding_origin": "short_numeric_constant",
+    "segment_kind": "functions",
+    "segment_offset": 2156,
+    "snippet": [
+      {
+        "member_node_offset": 2792,
+        "node": [
+          0,
+          3,
+          5
+        ],
+        "pc": 107
+      },
+      {
+        "member_node_offset": 2796,
+        "node": [
+          1,
+          0,
+          59
+        ],
+        "pc": 108
+      },
+      {
+        "member_node_offset": 2800,
+        "node": [
+          0,
+          0,
+          39
+        ],
+        "pc": 109
+      },
+      {
+        "member_node_offset": 2804,
+        "node": [
+          3,
+          2,
+          33
+        ],
+        "pc": 110
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/daemons/account_transactiond.o"
+  },
+  {
+    "function": "telnet_daemon",
+    "function_index": 829,
+    "member_node_offset": 246417,
+    "member_sha256": "f9896828c87399be4977107fbfbe3f67fd71caebd3008bda84be16cc722d0a0e",
+    "mode": "global",
+    "node": [
+      0,
+      0,
+      42
+    ],
+    "nodes_offset": 245909,
+    "opcode": "2a",
+    "pc": 127,
+    "preceding_origin": "local_slot",
+    "segment_kind": "functions",
+    "segment_offset": 245460,
+    "snippet": [
+      {
+        "member_node_offset": 246409,
+        "node": [
+          -2,
+          0,
+          55
+        ],
+        "pc": 125
+      },
+      {
+        "member_node_offset": 246413,
+        "node": [
+          -6,
+          0,
+          55
+        ],
+        "pc": 126
+      },
+      {
+        "member_node_offset": 246417,
+        "node": [
+          0,
+          0,
+          42
+        ],
+        "pc": 127
+      },
+      {
+        "member_node_offset": 246421,
+        "node": [
+          8,
+          2,
+          33
+        ],
+        "pc": 128
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o"
+  },
+  {
+    "function": "telnet_daemon",
+    "function_index": 829,
+    "member_node_offset": 246157,
+    "member_sha256": "f9896828c87399be4977107fbfbe3f67fd71caebd3008bda84be16cc722d0a0e",
+    "mode": "global",
+    "node": [
+      0,
+      0,
+      42
+    ],
+    "nodes_offset": 245909,
+    "opcode": "2a",
+    "pc": 62,
+    "preceding_origin": "other_instruction",
+    "segment_kind": "functions",
+    "segment_offset": 245460,
+    "snippet": [
+      {
+        "member_node_offset": 246149,
+        "node": [
+          -1,
+          0,
+          55
+        ],
+        "pc": 60
+      },
+      {
+        "member_node_offset": 246153,
+        "node": [
+          122,
+          1,
+          6
+        ],
+        "pc": 61
+      },
+      {
+        "member_node_offset": 246157,
+        "node": [
+          0,
+          0,
+          42
+        ],
+        "pc": 62
+      },
+      {
+        "member_node_offset": 246161,
+        "node": [
+          8,
+          2,
+          33
+        ],
+        "pc": 63
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o"
+  },
+  {
+    "function": "xdbc_get_raw_password",
+    "function_index": 578,
+    "member_node_offset": 341573,
+    "member_sha256": "f9896828c87399be4977107fbfbe3f67fd71caebd3008bda84be16cc722d0a0e",
+    "mode": "global",
+    "node": [
+      0,
+      0,
+      42
+    ],
+    "nodes_offset": 341545,
+    "opcode": "2a",
+    "pc": 7,
+    "preceding_origin": "shared_string_pool_index",
+    "segment_kind": "functions",
+    "segment_offset": 341420,
+    "snippet": [
+      {
+        "member_node_offset": 341565,
+        "node": [
+          0,
+          0,
+          69
+        ],
+        "pc": 5
+      },
+      {
+        "member_node_offset": 341569,
+        "node": [
+          46,
+          0,
+          64
+        ],
+        "pc": 6
+      },
+      {
+        "member_node_offset": 341573,
+        "node": [
+          0,
+          0,
+          42
+        ],
+        "pc": 7
+      },
+      {
+        "member_node_offset": 341577,
+        "node": [
+          2,
+          2,
+          33
+        ],
+        "pc": 8
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o"
+  },
+  {
+    "function": "telnet_daemon",
+    "function_index": 829,
+    "member_node_offset": 246125,
+    "member_sha256": "f9896828c87399be4977107fbfbe3f67fd71caebd3008bda84be16cc722d0a0e",
+    "mode": "global",
+    "node": [
+      0,
+      0,
+      42
+    ],
+    "nodes_offset": 245909,
+    "opcode": "2a",
+    "pc": 54,
+    "preceding_origin": "short_numeric_constant",
+    "segment_kind": "functions",
+    "segment_offset": 245460,
+    "snippet": [
+      {
+        "member_node_offset": 246117,
+        "node": [
+          0,
+          0,
+          79
+        ],
+        "pc": 52
+      },
+      {
+        "member_node_offset": 246121,
+        "node": [
+          2,
+          0,
+          59
+        ],
+        "pc": 53
+      },
+      {
+        "member_node_offset": 246125,
+        "node": [
+          0,
+          0,
+          42
+        ],
+        "pc": 54
+      },
+      {
+        "member_node_offset": 246129,
+        "node": [
+          7,
+          1,
+          33
+        ],
+        "pc": 55
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o"
+  },
+  {
+    "function": "_main",
+    "function_index": 0,
+    "member_node_offset": 880,
+    "member_sha256": "65b9e5b10739e53219fda8fc15a09267117448065f394464802e3a76010220de",
+    "mode": "object",
+    "node": [
+      0,
+      0,
+      42
+    ],
+    "nodes_offset": 832,
+    "opcode": "2a",
+    "pc": 12,
+    "preceding_origin": "global_slot",
+    "segment_kind": "functions",
+    "segment_offset": 711,
+    "snippet": [
+      {
+        "member_node_offset": 872,
+        "node": [
+          0,
+          0,
+          67
+        ],
+        "pc": 10
+      },
+      {
+        "member_node_offset": 876,
+        "node": [
+          81,
+          0,
+          53
+        ],
+        "pc": 11
+      },
+      {
+        "member_node_offset": 880,
+        "node": [
+          0,
+          0,
+          42
+        ],
+        "pc": 12
+      },
+      {
+        "member_node_offset": 884,
+        "node": [
+          14,
+          2,
+          33
+        ],
+        "pc": 13
+      }
+    ],
+    "source": "ccs/pack_data/lib_ccs32.pak/ccs/cmds/cta/set_calendar.o"
+  },
+  {
+    "function": "main",
+    "function_index": 3,
+    "member_node_offset": 6480,
+    "member_sha256": "ef67351f8df64f004f245963f44f7553b7edf7bf10f75d90867bfbc964195dd5",
+    "mode": "object",
+    "node": [
+      0,
+      0,
+      42
+    ],
+    "nodes_offset": 5876,
+    "opcode": "2a",
+    "pc": 151,
+    "preceding_origin": "local_slot",
+    "segment_kind": "functions",
+    "segment_offset": 4129,
+    "snippet": [
+      {
+        "member_node_offset": 6472,
+        "node": [
+          -10,
+          0,
+          55
+        ],
+        "pc": 149
+      },
+      {
+        "member_node_offset": 6476,
+        "node": [
+          3,
+          0,
+          55
+        ],
+        "pc": 150
+      },
+      {
+        "member_node_offset": 6480,
+        "node": [
+          0,
+          0,
+          42
+        ],
+        "pc": 151
+      },
+      {
+        "member_node_offset": 6484,
+        "node": [
+          58,
+          2,
+          33
+        ],
+        "pc": 152
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/daemons/account/cmd_l_client_connect_agent.o"
+  },
+  {
+    "function": "get_pet_data",
+    "function_index": 7,
+    "member_node_offset": 55175,
+    "member_sha256": "ea66cdf5f1875fd17ff0410b53a4bb50efeb0d2af8465d3cb5a3fccafb8fd931",
+    "mode": "object",
+    "node": [
+      0,
+      0,
+      42
+    ],
+    "nodes_offset": 54867,
+    "opcode": "2a",
+    "pc": 77,
+    "preceding_origin": "numeric_constant_metadata",
+    "segment_kind": "functions",
+    "segment_offset": 54638,
+    "snippet": [
+      {
+        "member_node_offset": 55167,
+        "node": [
+          -1,
+          0,
+          55
+        ],
+        "pc": 75
+      },
+      {
+        "member_node_offset": 55171,
+        "node": [
+          4,
+          0,
+          60
+        ],
+        "pc": 76
+      },
+      {
+        "member_node_offset": 55175,
+        "node": [
+          0,
+          0,
+          42
+        ],
+        "pc": 77
+      },
+      {
+        "member_node_offset": 55179,
+        "node": [
+          1,
+          2,
+          33
+        ],
+        "pc": 78
+      }
+    ],
+    "source": "ccs/pack_data/lib_ccs32.pak/ccs/daemons/polling/qdb.o"
+  },
+  {
+    "function": "try_to_be_top_equip",
+    "function_index": 43,
+    "member_node_offset": 26347,
+    "member_sha256": "e81f62eb685580bc90f529be348b81afb1b9ff5e0ffd5cb2945a335d975368e8",
+    "mode": "object",
+    "node": [
+      0,
+      0,
+      42
+    ],
+    "nodes_offset": 26331,
+    "opcode": "2a",
+    "pc": 4,
+    "preceding_origin": "object_slot",
+    "segment_kind": "functions",
+    "segment_offset": 26170,
+    "snippet": [
+      {
+        "member_node_offset": 26339,
+        "node": [
+          3,
+          0,
+          59
+        ],
+        "pc": 2
+      },
+      {
+        "member_node_offset": 26343,
+        "node": [
+          35,
+          0,
+          61
+        ],
+        "pc": 3
+      },
+      {
+        "member_node_offset": 26347,
+        "node": [
+          0,
+          0,
+          42
+        ],
+        "pc": 4
+      },
+      {
+        "member_node_offset": 26351,
+        "node": [
+          2,
+          2,
+          33
+        ],
+        "pc": 5
+      }
+    ],
+    "source": "ccs/pack_data/lib_ccs32.pak/ccs/daemons/ccs_topd.o"
+  },
+  {
+    "function": "main",
+    "function_index": 3,
+    "member_node_offset": 6012,
+    "member_sha256": "ef67351f8df64f004f245963f44f7553b7edf7bf10f75d90867bfbc964195dd5",
+    "mode": "object",
+    "node": [
+      0,
+      0,
+      42
+    ],
+    "nodes_offset": 5876,
+    "opcode": "2a",
+    "pc": 34,
+    "preceding_origin": "other_instruction",
+    "segment_kind": "functions",
+    "segment_offset": 4129,
+    "snippet": [
+      {
+        "member_node_offset": 6004,
+        "node": [
+          0,
+          0,
+          55
+        ],
+        "pc": 32
+      },
+      {
+        "member_node_offset": 6008,
+        "node": [
+          4,
+          0,
+          8
+        ],
+        "pc": 33
+      },
+      {
+        "member_node_offset": 6012,
+        "node": [
+          0,
+          0,
+          42
+        ],
+        "pc": 34
+      },
+      {
+        "member_node_offset": 6016,
+        "node": [
+          14,
+          2,
+          33
+        ],
+        "pc": 35
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/daemons/account/cmd_l_client_connect_agent.o"
+  },
+  {
+    "function": "account_login",
+    "function_index": 84,
+    "member_node_offset": 53697,
+    "member_sha256": "fbad2268542cac34b915222e0e6ba038e390b5098d06295834c707654c4bbd05",
+    "mode": "object",
+    "node": [
+      0,
+      0,
+      42
+    ],
+    "nodes_offset": 53377,
+    "opcode": "2a",
+    "pc": 80,
+    "preceding_origin": "shared_string_pool_index",
+    "segment_kind": "functions",
+    "segment_offset": 53071,
+    "snippet": [
+      {
+        "member_node_offset": 53689,
+        "node": [
+          8,
+          0,
+          55
+        ],
+        "pc": 78
+      },
+      {
+        "member_node_offset": 53693,
+        "node": [
+          122,
+          0,
+          64
+        ],
+        "pc": 79
+      },
+      {
+        "member_node_offset": 53697,
+        "node": [
+          0,
+          0,
+          42
+        ],
+        "pc": 80
+      },
+      {
+        "member_node_offset": 53701,
+        "node": [
+          14,
+          2,
+          33
+        ],
+        "pc": 81
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/daemons/accountd.o"
+  },
+  {
+    "function": "main",
+    "function_index": 3,
+    "member_node_offset": 7556,
+    "member_sha256": "ef67351f8df64f004f245963f44f7553b7edf7bf10f75d90867bfbc964195dd5",
+    "mode": "object",
+    "node": [
+      0,
+      0,
+      42
+    ],
+    "nodes_offset": 5876,
+    "opcode": "2a",
+    "pc": 420,
+    "preceding_origin": "short_numeric_constant",
+    "segment_kind": "functions",
+    "segment_offset": 4129,
+    "snippet": [
+      {
+        "member_node_offset": 7548,
+        "node": [
+          125,
+          2,
+          6
+        ],
+        "pc": 418
+      },
+      {
+        "member_node_offset": 7552,
+        "node": [
+          0,
+          0,
+          59
+        ],
+        "pc": 419
+      },
+      {
+        "member_node_offset": 7556,
+        "node": [
+          0,
+          0,
+          42
+        ],
+        "pc": 420
+      },
+      {
+        "member_node_offset": 7560,
+        "node": [
+          41,
+          2,
+          33
+        ],
+        "pc": 421
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/daemons/account/cmd_l_client_connect_agent.o"
+  },
+  {
+    "function": "get_dead_opponents",
+    "function_index": 148,
+    "member_node_offset": 15316,
+    "member_sha256": "e459e897c11990f902e9397c13815af8a1df35bc6dae66efba00b7faed677b3e",
+    "mode": "object",
+    "node": [
+      0,
+      0,
+      42
+    ],
+    "nodes_offset": 15240,
+    "opcode": "2a",
+    "pc": 19,
+    "preceding_origin": "this_object",
+    "segment_kind": "functions",
+    "segment_offset": 15154,
+    "snippet": [
+      {
+        "member_node_offset": 15308,
+        "node": [
+          4,
+          1,
+          8
+        ],
+        "pc": 17
+      },
+      {
+        "member_node_offset": 15312,
+        "node": [
+          0,
+          0,
+          65
+        ],
+        "pc": 18
+      },
+      {
+        "member_node_offset": 15316,
+        "node": [
+          0,
+          0,
+          42
+        ],
+        "pc": 19
+      },
+      {
+        "member_node_offset": 15320,
+        "node": [
+          3,
+          2,
+          33
+        ],
+        "pc": 20
+      }
+    ],
+    "source": "gs/pack_data/lib_gs32.pak/gs/clone/misc/combat.o"
+  },
+  {
+    "function": "time_expired",
+    "function_index": 2046,
+    "member_node_offset": 22805,
+    "member_sha256": "4a9f77736fb29d04ff31a0238df65675c7ad482e611c0e02218770eb14fe5630",
+    "mode": "object",
+    "node": [
+      0,
+      0,
+      42
+    ],
+    "nodes_offset": 22741,
+    "opcode": "2a",
+    "pc": 16,
+    "preceding_origin": "undefined_constant",
+    "segment_kind": "functions",
+    "segment_offset": 22587,
+    "snippet": [
+      {
+        "member_node_offset": 22797,
+        "node": [
+          -1,
+          0,
+          55
+        ],
+        "pc": 14
+      },
+      {
+        "member_node_offset": 22801,
+        "node": [
+          0,
+          0,
+          66
+        ],
+        "pc": 15
+      },
+      {
+        "member_node_offset": 22805,
+        "node": [
+          0,
+          0,
+          42
+        ],
+        "pc": 16
+      },
+      {
+        "member_node_offset": 22809,
+        "node": [
+          4,
+          0,
+          33
+        ],
+        "pc": 17
+      }
+    ],
+    "source": "gs/pack_data/lib_gs32.pak/gs/clone/char/user.o"
+  }
+]

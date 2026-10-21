@@ -1,0 +1,368 @@
+{
+  "schema_version": 1,
+  "bundle": "reused.json.gz",
+  "bundle_sha256": "d5286171daf72ecec66c5110f3c102c62ebabf0146104de1cf18636fc10c2284",
+  "record_count": 15,
+  "records": [
+    {
+      "source": "docs/evidence/magic_Linux32-rea.json.gz",
+      "source_sha256": "41c6286a610215b9b281e1f2b195d0469b99bb92d103dfa7beda1bee3b2f8fc8",
+      "evidence_id": "ev_42e127d62e334cc26bafbc7565df879a834dbffba8a6a59f495f385632e44e7d",
+      "record_sha256": "a36276aba60b61b819d4a5b45d196ac342cb82b316b0ddf3d44f7d51c1690080",
+      "operation": "analyze_function",
+      "function": "vm_addValue",
+      "address": "0x808e3b8",
+      "provider": {
+        "id": "ghidra",
+        "name": "Ghidra",
+        "version": "12.1.4"
+      },
+      "subject": {
+        "architecture": "x86",
+        "digest": {
+          "sha256": "5d4ebac58d8c415d9cf95bbcdd50f78afac91adf4f7e667ea3afc6f5336a6f34"
+        },
+        "format": "elf",
+        "local_path": "/Users/ringo/OpenProjects/rml32/magic_Linux32",
+        "name": "magic_Linux32"
+      },
+      "canonicalization": "UTF-8 JSON ensure_ascii=false sort_keys=true separators=(comma,colon), no newline"
+    },
+    {
+      "source": "docs/stage2af-evidence/rea.json.gz",
+      "source_sha256": "3cd2cc630c9adc9cef66b6cd37993647e2414d28ab5053a593a6e91cf94ce205",
+      "evidence_id": "ev_69a23ae044935ae6f7450097987faa71f641c62091f885fc4b4b5f8d5b1929f4",
+      "record_sha256": "d39552e941a288170ae0006502663c1aa4e5e396115900af46c570d2fe87ff96",
+      "operation": "analyze_function",
+      "function": "vm_copyValue",
+      "address": "0x808be24",
+      "provider": {
+        "id": "ghidra",
+        "name": "Ghidra",
+        "version": "12.1.4"
+      },
+      "subject": {
+        "architecture": "x86",
+        "digest": {
+          "sha256": "5d4ebac58d8c415d9cf95bbcdd50f78afac91adf4f7e667ea3afc6f5336a6f34"
+        },
+        "format": "elf",
+        "local_path": "/Users/ringo/OpenProjects/rml32/magic_Linux32",
+        "name": "magic_Linux32"
+      },
+      "canonicalization": "UTF-8 JSON ensure_ascii=false sort_keys=true separators=(comma,colon), no newline"
+    },
+    {
+      "source": "docs/stage2af-evidence/rea.json.gz",
+      "source_sha256": "3cd2cc630c9adc9cef66b6cd37993647e2414d28ab5053a593a6e91cf94ce205",
+      "evidence_id": "ev_9c31d92aeb045a089ff6361f0cf81330894208eb0520a78f0bf4bd4701c8d565",
+      "record_sha256": "84830be2a7fb7b6a43ea9c7c36a880e8ee7a12b434f16aa27a7d033152a555ce",
+      "operation": "analyze_function",
+      "function": "vm_eqValue",
+      "address": "0x808eed4",
+      "provider": {
+        "id": "ghidra",
+        "name": "Ghidra",
+        "version": "12.1.4"
+      },
+      "subject": {
+        "architecture": "x86",
+        "digest": {
+          "sha256": "5d4ebac58d8c415d9cf95bbcdd50f78afac91adf4f7e667ea3afc6f5336a6f34"
+        },
+        "format": "elf",
+        "local_path": "/Users/ringo/OpenProjects/rml32/magic_Linux32",
+        "name": "magic_Linux32"
+      },
+      "canonicalization": "UTF-8 JSON ensure_ascii=false sort_keys=true separators=(comma,colon), no newline"
+    },
+    {
+      "source": "docs/stage2af-evidence/rea.json.gz",
+      "source_sha256": "3cd2cc630c9adc9cef66b6cd37993647e2414d28ab5053a593a6e91cf94ce205",
+      "evidence_id": "ev_c98c01d582d90083a8c48681f7d36bdd274bd35ed834c0ef8fe22e6ac304baf1",
+      "record_sha256": "08a42374090f719461f198d167fa2e3c11328a87ac914e1a6c1d6477a7f384c7",
+      "operation": "analyze_function",
+      "function": "vm_isEq",
+      "address": "0x808c908",
+      "provider": {
+        "id": "ghidra",
+        "name": "Ghidra",
+        "version": "12.1.4"
+      },
+      "subject": {
+        "architecture": "x86",
+        "digest": {
+          "sha256": "5d4ebac58d8c415d9cf95bbcdd50f78afac91adf4f7e667ea3afc6f5336a6f34"
+        },
+        "format": "elf",
+        "local_path": "/Users/ringo/OpenProjects/rml32/magic_Linux32",
+        "name": "magic_Linux32"
+      },
+      "canonicalization": "UTF-8 JSON ensure_ascii=false sort_keys=true separators=(comma,colon), no newline"
+    },
+    {
+      "source": "docs/stage2af-evidence/rea.json.gz",
+      "source_sha256": "3cd2cc630c9adc9cef66b6cd37993647e2414d28ab5053a593a6e91cf94ce205",
+      "evidence_id": "ev_d5e0fa5ed30b20859a959e09027480b13f6d9acdd746527dd5c2dac47520cadc",
+      "record_sha256": "0313d0b6261362365ca80c4055eeca8dc5d30a57a7444a3b66f9291952acbe40",
+      "operation": "analyze_function",
+      "function": "vm_cleanupValue",
+      "address": "0x808ad98",
+      "provider": {
+        "id": "ghidra",
+        "name": "Ghidra",
+        "version": "12.1.4"
+      },
+      "subject": {
+        "architecture": "x86",
+        "digest": {
+          "sha256": "5d4ebac58d8c415d9cf95bbcdd50f78afac91adf4f7e667ea3afc6f5336a6f34"
+        },
+        "format": "elf",
+        "local_path": "/Users/ringo/OpenProjects/rml32/magic_Linux32",
+        "name": "magic_Linux32"
+      },
+      "canonicalization": "UTF-8 JSON ensure_ascii=false sort_keys=true separators=(comma,colon), no newline"
+    },
+    {
+      "source": "docs/vm-core-evidence/rea.json.gz",
+      "source_sha256": "56d2b1a3e419b9c6c252468ac46ebf5c3eb60738bf0adc2ef429a40e42326fda",
+      "evidence_id": "ev_0e786f83fad6944f8f5973948ba408ed0a0a5200486741ce8f534333189dc7b2",
+      "record_sha256": "ffb376be84f6c96d2828038f1a1e245dfd1a341a1fe847a3ba07276955e72dff",
+      "operation": "procedure_pseudo_code",
+      "function": "vm_leValue",
+      "address": null,
+      "provider": {
+        "id": "ghidra",
+        "name": "Ghidra",
+        "version": "12.1.4"
+      },
+      "subject": {
+        "architecture": "x86",
+        "digest": {
+          "sha256": "5d4ebac58d8c415d9cf95bbcdd50f78afac91adf4f7e667ea3afc6f5336a6f34"
+        },
+        "format": "elf",
+        "local_path": "/Users/ringo/OpenProjects/rml32/magic_Linux32",
+        "name": "magic_Linux32"
+      },
+      "canonicalization": "UTF-8 JSON ensure_ascii=false sort_keys=true separators=(comma,colon), no newline"
+    },
+    {
+      "source": "docs/vm-core-evidence/rea.json.gz",
+      "source_sha256": "56d2b1a3e419b9c6c252468ac46ebf5c3eb60738bf0adc2ef429a40e42326fda",
+      "evidence_id": "ev_4442d99f8563c660f950f2e4e3d6fb934504618f8904fea7b1fb0f1d470b4151",
+      "record_sha256": "3723d3a463b0992534b6e160cc963de5a9a21321724fb4c69c15f5e6ebcf80be",
+      "operation": "procedure_pseudo_code",
+      "function": "vm_geValue",
+      "address": null,
+      "provider": {
+        "id": "ghidra",
+        "name": "Ghidra",
+        "version": "12.1.4"
+      },
+      "subject": {
+        "architecture": "x86",
+        "digest": {
+          "sha256": "5d4ebac58d8c415d9cf95bbcdd50f78afac91adf4f7e667ea3afc6f5336a6f34"
+        },
+        "format": "elf",
+        "local_path": "/Users/ringo/OpenProjects/rml32/magic_Linux32",
+        "name": "magic_Linux32"
+      },
+      "canonicalization": "UTF-8 JSON ensure_ascii=false sort_keys=true separators=(comma,colon), no newline"
+    },
+    {
+      "source": "docs/vm-core-evidence/rea.json.gz",
+      "source_sha256": "56d2b1a3e419b9c6c252468ac46ebf5c3eb60738bf0adc2ef429a40e42326fda",
+      "evidence_id": "ev_5046856efb8928064add53f8c3b8b91c64ee3e170372d0683e48cf9018ea0e36",
+      "record_sha256": "039fd1144a0ec4c56765ae35b846d771ad5ff889e0374c45ae4b376d9243d9fd",
+      "operation": "procedure_pseudo_code",
+      "function": "vm_gtValue",
+      "address": null,
+      "provider": {
+        "id": "ghidra",
+        "name": "Ghidra",
+        "version": "12.1.4"
+      },
+      "subject": {
+        "architecture": "x86",
+        "digest": {
+          "sha256": "5d4ebac58d8c415d9cf95bbcdd50f78afac91adf4f7e667ea3afc6f5336a6f34"
+        },
+        "format": "elf",
+        "local_path": "/Users/ringo/OpenProjects/rml32/magic_Linux32",
+        "name": "magic_Linux32"
+      },
+      "canonicalization": "UTF-8 JSON ensure_ascii=false sort_keys=true separators=(comma,colon), no newline"
+    },
+    {
+      "source": "docs/vm-core-evidence/rea.json.gz",
+      "source_sha256": "56d2b1a3e419b9c6c252468ac46ebf5c3eb60738bf0adc2ef429a40e42326fda",
+      "evidence_id": "ev_6f8162a52b6dcead2e90f45ac594636448ad034684367dee557ea51b2cd7fc1f",
+      "record_sha256": "e81a7b53dbb19ac2d6e01f45f498160baa56394baf68b43551ebf6549e5d6794",
+      "operation": "procedure_pseudo_code",
+      "function": "vm_popStack",
+      "address": null,
+      "provider": {
+        "id": "ghidra",
+        "name": "Ghidra",
+        "version": "12.1.4"
+      },
+      "subject": {
+        "architecture": "x86",
+        "digest": {
+          "sha256": "5d4ebac58d8c415d9cf95bbcdd50f78afac91adf4f7e667ea3afc6f5336a6f34"
+        },
+        "format": "elf",
+        "local_path": "/Users/ringo/OpenProjects/rml32/magic_Linux32",
+        "name": "magic_Linux32"
+      },
+      "canonicalization": "UTF-8 JSON ensure_ascii=false sort_keys=true separators=(comma,colon), no newline"
+    },
+    {
+      "source": "docs/vm-core-evidence/rea.json.gz",
+      "source_sha256": "56d2b1a3e419b9c6c252468ac46ebf5c3eb60738bf0adc2ef429a40e42326fda",
+      "evidence_id": "ev_deee5e8743aec13f48327236f9b0793ccd92a15e202b8459782b33ff3e514c4d",
+      "record_sha256": "733048ae53c166deb9a2fb5866075e08814b6d0770c6b6f0b4960acf400b02cd",
+      "operation": "procedure_pseudo_code",
+      "function": "vm_ltValue",
+      "address": null,
+      "provider": {
+        "id": "ghidra",
+        "name": "Ghidra",
+        "version": "12.1.4"
+      },
+      "subject": {
+        "architecture": "x86",
+        "digest": {
+          "sha256": "5d4ebac58d8c415d9cf95bbcdd50f78afac91adf4f7e667ea3afc6f5336a6f34"
+        },
+        "format": "elf",
+        "local_path": "/Users/ringo/OpenProjects/rml32/magic_Linux32",
+        "name": "magic_Linux32"
+      },
+      "canonicalization": "UTF-8 JSON ensure_ascii=false sort_keys=true separators=(comma,colon), no newline"
+    },
+    {
+      "source": "docs/vm-numeric-evidence/rea.json.gz",
+      "source_sha256": "8f9be3f2d27719dcdd20fc0839eb6a7032e4f70527bca1c5610674ded7d62d55",
+      "evidence_id": "ev_3d5dfe19263e352be0e9b4cec6b9dc663f1e155cc579e8be9b46ada0e1fdcd93",
+      "record_sha256": "5885ee0a2d9d36fe31e8151f741e858bd7e28ac1838c93557ab0a0f0b738f00d",
+      "operation": "procedure_pseudo_code",
+      "function": "vm_neValue",
+      "address": null,
+      "provider": {
+        "id": "ghidra",
+        "name": "Ghidra",
+        "version": "12.1.4"
+      },
+      "subject": {
+        "architecture": "x86",
+        "digest": {
+          "sha256": "5d4ebac58d8c415d9cf95bbcdd50f78afac91adf4f7e667ea3afc6f5336a6f34"
+        },
+        "format": "elf",
+        "local_path": "/Users/ringo/OpenProjects/rml32/magic_Linux32",
+        "name": "magic_Linux32"
+      },
+      "canonicalization": "UTF-8 JSON ensure_ascii=false sort_keys=true separators=(comma,colon), no newline"
+    },
+    {
+      "source": "docs/vm-numeric-evidence/rea.json.gz",
+      "source_sha256": "8f9be3f2d27719dcdd20fc0839eb6a7032e4f70527bca1c5610674ded7d62d55",
+      "evidence_id": "ev_5d21fedab56340ea91181a5f3d19f6bf37be94cab81f615413f75caf22ffbe9c",
+      "record_sha256": "b70e98f4da9ccc77d8a945b3ceac60320004542963fbe490146efacee9bb55f5",
+      "operation": "procedure_assembly",
+      "function": "vm_geValue",
+      "address": "0x808ef88",
+      "provider": {
+        "id": "ghidra",
+        "name": "Ghidra",
+        "version": "12.1.4"
+      },
+      "subject": {
+        "architecture": "x86",
+        "digest": {
+          "sha256": "5d4ebac58d8c415d9cf95bbcdd50f78afac91adf4f7e667ea3afc6f5336a6f34"
+        },
+        "format": "elf",
+        "local_path": "/Users/ringo/OpenProjects/rml32/magic_Linux32",
+        "name": "magic_Linux32"
+      },
+      "canonicalization": "UTF-8 JSON ensure_ascii=false sort_keys=true separators=(comma,colon), no newline"
+    },
+    {
+      "source": "docs/vm-numeric-evidence/rea.json.gz",
+      "source_sha256": "8f9be3f2d27719dcdd20fc0839eb6a7032e4f70527bca1c5610674ded7d62d55",
+      "evidence_id": "ev_e5655285c0776a4f44b0f8f21144e2a1f5912136f4b957408c2f757cf9801cf6",
+      "record_sha256": "249c0000f9ee9d72bf420e71d4a60ea9208a95c862949e562b2b00d28a09864b",
+      "operation": "procedure_assembly",
+      "function": "vm_leValue",
+      "address": "0x808f1c0",
+      "provider": {
+        "id": "ghidra",
+        "name": "Ghidra",
+        "version": "12.1.4"
+      },
+      "subject": {
+        "architecture": "x86",
+        "digest": {
+          "sha256": "5d4ebac58d8c415d9cf95bbcdd50f78afac91adf4f7e667ea3afc6f5336a6f34"
+        },
+        "format": "elf",
+        "local_path": "/Users/ringo/OpenProjects/rml32/magic_Linux32",
+        "name": "magic_Linux32"
+      },
+      "canonicalization": "UTF-8 JSON ensure_ascii=false sort_keys=true separators=(comma,colon), no newline"
+    },
+    {
+      "source": "docs/vm-numeric-evidence/rea.json.gz",
+      "source_sha256": "8f9be3f2d27719dcdd20fc0839eb6a7032e4f70527bca1c5610674ded7d62d55",
+      "evidence_id": "ev_ec37a2191d68d1b9ae0be0762456b6e784c40b47d237bbe075457071a3086d2d",
+      "record_sha256": "5f2c2bdf5d0538ae64d9921d559abd5712641b5f3ba87406263b51ed4c2ed9ca",
+      "operation": "procedure_assembly",
+      "function": "vm_ltValue",
+      "address": "0x808f4c8",
+      "provider": {
+        "id": "ghidra",
+        "name": "Ghidra",
+        "version": "12.1.4"
+      },
+      "subject": {
+        "architecture": "x86",
+        "digest": {
+          "sha256": "5d4ebac58d8c415d9cf95bbcdd50f78afac91adf4f7e667ea3afc6f5336a6f34"
+        },
+        "format": "elf",
+        "local_path": "/Users/ringo/OpenProjects/rml32/magic_Linux32",
+        "name": "magic_Linux32"
+      },
+      "canonicalization": "UTF-8 JSON ensure_ascii=false sort_keys=true separators=(comma,colon), no newline"
+    },
+    {
+      "source": "docs/vm-numeric-evidence/rea.json.gz",
+      "source_sha256": "8f9be3f2d27719dcdd20fc0839eb6a7032e4f70527bca1c5610674ded7d62d55",
+      "evidence_id": "ev_fd438ebc3f1882653512f33fc644071325a9c3e299a02f546e0887e66f20e3f7",
+      "record_sha256": "2c5f216b586b3a3967b8db8a781963455aa3a66239d294cc2c2ebe94aa1f113d",
+      "operation": "procedure_assembly",
+      "function": "vm_gtValue",
+      "address": "0x808f340",
+      "provider": {
+        "id": "ghidra",
+        "name": "Ghidra",
+        "version": "12.1.4"
+      },
+      "subject": {
+        "architecture": "x86",
+        "digest": {
+          "sha256": "5d4ebac58d8c415d9cf95bbcdd50f78afac91adf4f7e667ea3afc6f5336a6f34"
+        },
+        "format": "elf",
+        "local_path": "/Users/ringo/OpenProjects/rml32/magic_Linux32",
+        "name": "magic_Linux32"
+      },
+      "canonicalization": "UTF-8 JSON ensure_ascii=false sort_keys=true separators=(comma,colon), no newline"
+    }
+  ]
+}
