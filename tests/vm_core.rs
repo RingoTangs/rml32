@@ -2638,7 +2638,7 @@ fn numeric_update_errors_preserve_target_and_operand_stack_with_locations() {
         Some(real(-0.0)),
         VmErrorKind::Arithmetic,
     ));
-    for selector in 2..=11 {
+    for selector in 3..=11 {
         cases.push((
             0x2f,
             selector,
@@ -12078,4 +12078,147 @@ fn bytes_errors_bypass_numeric_catch_and_success_can_precede_catchable_fault() {
     );
     vm.start(o, 0, vec![]).unwrap();
     returns(&mut vm, Value::Int(1));
+}
+
+#[test]
+fn bytes_compound_add_writes_target_and_returns_full_payload() {
+    for (right, expected) in [
+        (Value::bytes(b"\0\xff"), Value::bytes(b"a\0\x80\0\xff")),
+        (Value::Int(0), Value::bytes(b"a\0\x800")),
+        (Value::Int(i32::MIN), Value::bytes(b"a\0\x80-2147483648")),
+        (Value::Int(i32::MAX), Value::bytes(b"a\0\x802147483647")),
+    ] {
+        let source = Value::bytes(b"a\0\x80");
+        assert_eq!(updated(0x2f, 2, source.clone(), Some(right)), expected);
+        assert_eq!(source, Value::bytes(b"a\0\x80"));
+    }
+    let source = Value::bytes(b"shared");
+    let Value::Bytes(result) = updated(0x2f, 2, source.clone(), Some(Value::bytes(b""))) else {
+        panic!()
+    };
+    let Value::Bytes(original) = source else {
+        panic!()
+    };
+    assert!(std::rc::Rc::ptr_eq(&result, &original));
+}
+
+#[test]
+fn bytes_compound_add_limits_and_unsupported_types_are_atomic() {
+    for (left, right, selector, kind) in [
+        (
+            Value::bytes(vec![b'a'; 65_536]),
+            Value::Int(0),
+            2,
+            VmErrorKind::Limit,
+        ),
+        (
+            Value::bytes(vec![b'a'; 65_537]),
+            Value::bytes(b""),
+            2,
+            VmErrorKind::Limit,
+        ),
+        (
+            Value::bytes(b"a"),
+            real(1.0),
+            2,
+            VmErrorKind::UnsupportedType,
+        ),
+        (
+            Value::Int(1),
+            Value::bytes(b"a"),
+            2,
+            VmErrorKind::UnsupportedType,
+        ),
+        (
+            Value::bytes(b"a"),
+            Value::bytes(b"b"),
+            3,
+            VmErrorKind::UnsupportedType,
+        ),
+    ] {
+        let (mut vm, o) = update_machine(0x2f, selector, left.clone(), Some(right));
+        // check_args, alloc, reference, RHS
+        vm.run(4).unwrap();
+        let before = vm.stack().unwrap();
+        let error = vm.run(1).unwrap_err();
+        assert_eq!(error.kind, kind);
+        assert_eq!(error.pc, Some(4));
+        assert!(error.offset.is_some());
+        assert_eq!(vm.stack().unwrap(), before);
+        assert_eq!(
+            vm.objects().get(o).unwrap().variables().unwrap(),
+            vec![left]
+        );
+        assert_eq!(vm.run(1).unwrap_err(), error);
+    }
+    assert_eq!(
+        updated(
+            0x2f,
+            2,
+            Value::bytes(vec![b'a'; 65_535]),
+            Some(Value::bytes(b"b"))
+        ),
+        Value::bytes([vec![b'a'; 65_535], vec![b'b']].concat())
+    );
+}
+
+#[test]
+fn bytes_compound_add_budget_pauses_before_write() {
+    let (mut vm, o) = update_machine(0x2f, 2, Value::bytes(b"a"), Some(Value::Int(12)));
+    vm.run(4).unwrap();
+    let before = vm.stack().unwrap();
+    vm.run(0).unwrap();
+    assert_eq!(vm.stack().unwrap(), before);
+    assert_eq!(
+        vm.objects().get(o).unwrap().variables().unwrap(),
+        vec![Value::bytes(b"a")]
+    );
+    vm.run(1).unwrap();
+    assert_eq!(
+        vm.objects().get(o).unwrap().variables().unwrap(),
+        vec![Value::bytes(b"a12")]
+    );
+    returns(&mut vm, Value::bytes(b"a12"));
+}
+
+#[test]
+fn bytes_compound_add_updates_shared_array_and_mapping_members() {
+    for container in [
+        Value::array(vec![Value::bytes(b"x")]).unwrap(),
+        Value::mapping(vec![(Value::Int(0), Value::bytes(b"x"))]).unwrap(),
+    ] {
+        let nodes = [
+            (0, 0, 0x3e),
+            (0, 0, 0x3b),
+            (0, 0, 0x44),
+            (7, 0, 0x3b),
+            (2, 0, 0x2f),
+            (0, 0, 0x33),
+            (0, 0, 0x3d),
+            (0, 0, 0x3b),
+            (0, 0, 0x43),
+        ];
+        let (mut vm, o) = machine(
+            image(&[fun(0, 0, 0, 255, &nodes)], 1, &[]),
+            vec![container.clone()],
+        );
+        vm.start(o, 0, vec![]).unwrap();
+        returns(&mut vm, Value::bytes(b"x7"));
+        let (mut other, o) = machine(
+            image(
+                &[fun(
+                    0,
+                    0,
+                    0,
+                    255,
+                    &[(0, 0, 0x3d), (0, 0, 0x3b), (0, 0, 0x43)],
+                )],
+                1,
+                &[],
+            ),
+            vec![container],
+        );
+        other.start(o, 0, vec![]).unwrap();
+        returns(&mut other, Value::bytes(b"x7"));
+    }
 }

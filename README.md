@@ -1,5 +1,7 @@
 # rml32
 
+阶段2AK已补齐受限 Bytes `+=`（Bytes/Int右值），支持现有可写引用槽并保留表达式结果；487项Rust测试在debug/release通过，fmt及clippy通过。见[本轮语义、证据和验证](docs/vm-bytes-compound-runtime.md)。操作码集合仍为75种；Real追加、其他Bytes复合运算及生命周期新分支仍排除，阶段2未完成。以下为历史快照。
+
 阶段2AJ已实现普通函数Bytes+Bytes/Int拼接、全长相等及首NUL前缀排序，482项Rust测试在debug/release通过。支持集合仍为75种、主语料交集73种。见[运行时说明](docs/vm-bytes-runtime.md)、[能力增量矩阵](docs/stage2aj-evidence/matrix.md)和[验证记录](docs/stage2aj-validation.json)。Real拼接、Buffer/Bytes写入、生命周期新分支及真实服务仍排除，阶段2未完成。以下为历史快照。
 
 阶段2AI已完成Bytes比较/拼接定向静态取证：新增12条、复用15条完整记录，复算125,747处指令并提供56条静态/设计期望及[首批Rust实施规格](docs/stage2ai-evidence/bytes-runtime-design.md)。见[语义报告](docs/vm-bytes-semantics.md)与[验证记录](docs/stage2ai-validation.json)。本批未实现Bytes运算；473项Rust测试、75种限定支持/73种语料交集保持不变，阶段2仍未完成。下一步按规格实施普通函数受限Bytes运算。以下保留历史状态。

@@ -1923,9 +1923,27 @@ impl Vm {
             crate::numeric::increment(&left, operand)?
         } else {
             let right = self.value(n - 1)?;
-            crate::numeric::compound(operand, &left, &right).inspect_err(|_| {
-                *fault_site = RuntimeFaultSite::compound(operand, &left, &right);
-            })?
+            if operand == 2 && crate::bytes::selected(1, &left, &right) {
+                // vm_opEqValue selector 2 delegates to vm_addValue (2F evidence).
+                // Keep the same restricted Bytes contract as ordinary addition.
+                if self.initialization.is_some() || self.construction.is_some() {
+                    return Err(err(
+                        VmErrorKind::UnsupportedFeature,
+                        "Bytes operations during lifecycle tasks are unsupported",
+                    ));
+                }
+                if matches!(&self.stack[n - 1], StackEntry::Value(c) if c.is_loop()?) {
+                    return Err(err(
+                        VmErrorKind::UnsupportedFeature,
+                        "Bytes operands require ordinary values",
+                    ));
+                }
+                crate::bytes::binary(1, &left, &right)?
+            } else {
+                crate::numeric::compound(operand, &left, &right).inspect_err(|_| {
+                    *fault_site = RuntimeFaultSite::compound(operand, &left, &right);
+                })?
+            }
         };
         // All computation and result allocation precede the commit. A failure
         // leaves both the target and operand stack intact (IP still advances).
@@ -3905,6 +3923,56 @@ mod numeric_fault_tests {
 mod global_tests {
     use super::*;
     use crate::prepared::GlobalBankSchema;
+
+    #[test]
+    fn bytes_compound_precommit_failures_preserve_target_and_operands() {
+        for failure in 0..4 {
+            let (mut vm, object) = fixture(0x2f, None);
+            let frame = vm.frames[0].clone();
+            let cell = Cell::new(Value::bytes(b"old")).unwrap();
+            let reference = vm
+                .owned_reference(cell.clone(), ReferenceKind::ArrayMember)
+                .unwrap();
+            vm.stack.push(StackEntry::Reference(reference));
+            vm.push(Value::bytes(b"new")).unwrap();
+            if failure == 2 {
+                vm.initialization = Some(InitializationTask {
+                    object,
+                    position: 0,
+                    constitution: 0,
+                });
+            } else if failure == 3 {
+                vm.construction = Some(ConstructionTask {
+                    object,
+                    program: frame.program(),
+                    phase: LifecyclePhase::Create,
+                    position: 0,
+                    constitution: 0,
+                    parameter: None,
+                    primary: None,
+                });
+            }
+            let before = vm.stack().unwrap();
+            let mut site = None;
+            let mut update = || vm.numeric_update(0x2f, 2, &frame, 0, &mut site);
+            let error = match failure {
+                0 => crate::cell::with_allocation_failure(0, update).unwrap_err(),
+                1 => cell.with_read_borrow_for_test(|| update().unwrap_err()),
+                _ => update().unwrap_err(),
+            };
+            assert_eq!(
+                error.kind,
+                match failure {
+                    0 => VmErrorKind::Limit,
+                    1 => VmErrorKind::InvalidState,
+                    _ => VmErrorKind::UnsupportedFeature,
+                }
+            );
+            assert!(site.is_none());
+            assert_eq!(cell.read().unwrap(), Value::bytes(b"old"));
+            assert_eq!(vm.stack().unwrap(), before);
+        }
+    }
 
     #[test]
     fn bytes_commit_borrow_failure_keeps_pc_slots_and_operands() {
