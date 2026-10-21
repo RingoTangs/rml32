@@ -1,0 +1,76 @@
+{
+  "stage": "2AJ",
+  "runtime_changed": true,
+  "public_api_changed": false,
+  "dependencies_changed": false,
+  "rust_tests": 482,
+  "new_rust_tests": 9,
+  "test_breakdown": {
+    "library": 56,
+    "parsers": 23,
+    "vm": 403
+  },
+  "static_expected_cases_executed": 56,
+  "supported_opcode_kinds": 75,
+  "intersection_opcode_kinds": 73,
+  "opcode_counts": "unchanged inherited from 2AH; dispatch/preparation support tables unchanged",
+  "target_execution": "none; synthetic Rust VM programs only",
+  "new_native_analysis": false,
+  "stage2_complete": false,
+  "reference_sha256": "5d4ebac58d8c415d9cf95bbcdd50f78afac91adf4f7e667ea3afc6f5336a6f34",
+  "commands": [
+    {
+      "command": "cargo test --locked --offline",
+      "exit_code": 0
+    },
+    {
+      "command": "cargo test --locked --offline --release",
+      "exit_code": 0
+    },
+    {
+      "command": "cargo fmt --check",
+      "exit_code": 0
+    },
+    {
+      "command": "cargo clippy --locked --offline --all-targets -- -D warnings",
+      "exit_code": 0
+    },
+    {
+      "command": "python3 tests/compare_corpus.py --report target/stage2aj-corpus-validation.json",
+      "exit_code": 0
+    }
+  ],
+  "corpus": {
+    "status": "pass",
+    "checked": {
+      "packages": 12,
+      "members": 9527,
+      "programs": 7159,
+      "inheritance": 9933
+    },
+    "summary": {
+      "decoded_files": 8921,
+      "errors": 1,
+      "files": 8922,
+      "functions": 101592,
+      "inheritance_matches": 9933,
+      "instructions": 6474773,
+      "members": 9527,
+      "packages": 12,
+      "programs": 7159
+    },
+    "originals_unchanged": 36,
+    "known_errors": [
+      "dba/pack_data/etc.pak/etc"
+    ],
+    "default_action_fields_checked": 358411,
+    "target_execution": "none",
+    "scope": "static structure; not execution equivalence"
+  },
+  "limitations": [
+    "No native runtime differential verification",
+    "No simulated system allocator exhaustion; final Rc OOM not recoverable",
+    "Real concatenation, Buffer, Bytes writes, compound assignment and lifecycle Bytes branches excluded",
+    "No exhaustive inherited/capture/member-slot combination tests"
+  ]
+}

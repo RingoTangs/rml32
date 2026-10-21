@@ -1233,14 +1233,14 @@ fn ranges_preparation_rejects_bad_modes_init_and_default_expressions() {
 }
 
 #[test]
-fn noninteger_arithmetic_and_deleted_execution_object_fail_explicitly() {
+fn unsupported_bytes_arithmetic_and_deleted_execution_object_fail_explicitly() {
     let p = image(
         &[fun(0, 2, 0, 255, &[(0, 0, 0x37), (1, 0, 0x37), (0, 0, 1)])],
         0,
         &[],
     );
     let (mut vm, o) = machine(p, vec![]);
-    vm.start(o, 0, vec![Value::bytes(b"b"), Value::bytes(b"a")])
+    vm.start(o, 0, vec![Value::Int(1), Value::bytes(b"a")])
         .unwrap();
     assert_eq!(vm.run(100).unwrap_err().kind, VmErrorKind::UnsupportedType);
     vm.start(o, 0, vec![Value::Int(1), Value::Int(2)]).unwrap();
@@ -9844,7 +9844,7 @@ fn global_calls_global_errors_have_actual_program_pool_and_no_object() {
             0,
             0,
             255,
-            &[(0, 0, 0x40), (1, 0, 0x3b), (0, 0, 0x01)],
+            &[(0, 0, 0x40), (1, 0, 0x3b), (0, 0, 0x20)],
         )],
         0,
         &[b"text\0"],
@@ -11853,4 +11853,229 @@ fn function_values_indirect_preflight_failures_bypass_numeric_catch() {
         assert_eq!(e.pc, Some(4));
         assert_eq!(vm.stack().unwrap(), before);
     }
+}
+
+// 2AI expected results are static deductions/design, not native runtime outputs.
+#[test]
+fn bytes_static_evidence_cases_execute_through_vm() {
+    let cases: serde_json::Value = serde_json::from_str(include_str!(
+        "../docs/stage2ai-evidence/expected-cases.json"
+    ))
+    .unwrap();
+    for case in cases["cases"].as_array().unwrap() {
+        let op = u8::from_str_radix(case["opcode"].as_str().unwrap(), 16).unwrap();
+        let p = image(
+            &[
+                fun(0, 2, 0, 255, &[(0, 0, 0x37), (1, 0, 0x37), (0, 0, op)]),
+                fun(1, 0, 0, 255, &[(0, 0, 0x17)]),
+            ],
+            0,
+            &[],
+        );
+        let (mut vm, o) = fv_machine(p, vec![]);
+        let function = fv_created(&mut vm, o, 1, vec![]);
+        let decode = |v: &serde_json::Value| -> Value {
+            match v["type"].as_str().unwrap() {
+                "Bytes" => {
+                    if let Some(hex) = v["hex"].as_str() {
+                        Value::bytes(
+                            (0..hex.len())
+                                .step_by(2)
+                                .map(|i| u8::from_str_radix(&hex[i..i + 2], 16).unwrap())
+                                .collect::<Vec<_>>(),
+                        )
+                    } else {
+                        Value::bytes(vec![b'a'; v["length"].as_u64().unwrap() as usize])
+                    }
+                }
+                "Int" => Value::Int(v["value"].as_i64().unwrap_or(7) as i32),
+                "Real" => Value::Real(rml32::RealBits::from_bits(
+                    u32::from_str_radix(v["bits"].as_str().unwrap_or("3f800000"), 16).unwrap(),
+                )),
+                "Undefined" => Value::Undefined,
+                "Void" => Value::Void,
+                "Object" => Value::Object(o),
+                "Array" => Value::array(vec![]).unwrap(),
+                "Mapping" => Value::mapping(vec![]).unwrap(),
+                "Function" => Value::Function(function.clone()),
+                other => panic!("{other}"),
+            }
+        };
+        vm.start(o, 0, vec![decode(&case["left"]), decode(&case["right"])])
+            .unwrap();
+        vm.run(4).unwrap();
+        let before = vm.stack().unwrap();
+        vm.run(0).unwrap();
+        assert_eq!(vm.stack().unwrap(), before);
+        if let Some(kind) = case["expected"]["rust_error"].as_str() {
+            let e = vm.run(1).unwrap_err();
+            assert_eq!(format!("{:?}", e.kind), kind, "{}", case["id"]);
+            assert_eq!(e.pc, Some(4));
+            assert!(e.offset.is_some());
+            assert_eq!(vm.stack().unwrap(), before);
+            assert_eq!(vm.run(1).unwrap_err(), e);
+        } else {
+            vm.run(1).unwrap();
+            returns(&mut vm, decode(&case["expected"]));
+        }
+    }
+}
+
+#[test]
+fn bytes_concat_boundary_and_aliases_preserve_source_payloads() {
+    for (length, suffix, ok) in [
+        (65_534, b"x".as_slice(), true),
+        (65_535, b"x", true),
+        (65_536, b"x", false),
+        (65_536, b"", true),
+        (65_537, b"", false),
+    ] {
+        let source = Value::bytes(vec![b'a'; length]);
+        let right = Value::bytes(suffix);
+        let (mut vm, o) = machine(
+            image(
+                &[fun(0, 2, 0, 255, &[(0, 0, 0x37), (1, 0, 0x37), (0, 0, 1)])],
+                0,
+                &[],
+            ),
+            vec![],
+        );
+        vm.start(o, 0, vec![source.clone(), right.clone()]).unwrap();
+        if ok {
+            let RunOutcome::Finished(Completion::Returned(Value::Bytes(result))) =
+                vm.run(20).unwrap()
+            else {
+                panic!()
+            };
+            assert_eq!(result.len(), length + suffix.len());
+            let Value::Bytes(original) = &source else {
+                panic!()
+            };
+            assert_eq!(std::rc::Rc::ptr_eq(&result, original), suffix.is_empty());
+            assert_eq!(original.as_ref(), vec![b'a'; length]);
+        } else {
+            vm.run(4).unwrap();
+            let before = vm.stack().unwrap();
+            assert_eq!(vm.run(1).unwrap_err().kind, VmErrorKind::Limit);
+            assert_eq!(vm.stack().unwrap(), before);
+        }
+    }
+    let large = Value::bytes(vec![b'a'; 70_000]);
+    let (mut vm, o) = machine(
+        image(
+            &[fun(0, 2, 0, 2, &[(0, 0, 0x37), (1, 0, 0x37), (0, 0, 0x1c)])],
+            0,
+            &[],
+        ),
+        vec![],
+    );
+    vm.start(o, 0, vec![large.clone(), large]).unwrap();
+    returns(&mut vm, Value::Int(1));
+}
+
+#[test]
+fn bytes_reference_operands_and_underflow_preserve_stack() {
+    for nodes in [
+        vec![(-1, 0, 0x39), (0, 0, 0x40), (0, 0, 1)],
+        vec![(0, 0, 0x40), (0, 0, 1)],
+    ] {
+        let count = nodes.len();
+        let (mut vm, o) = machine(image(&[fun(0, 0, 1, 255, &nodes)], 0, &[b"x\0"]), vec![]);
+        vm.start(o, 0, vec![]).unwrap();
+        vm.run(count + 1).unwrap();
+        let before = vm.stack().unwrap();
+        let e = vm.run(1).unwrap_err();
+        assert_eq!(
+            e.kind,
+            if count == 3 {
+                VmErrorKind::UnsupportedFeature
+            } else {
+                VmErrorKind::StackUnderflow
+            }
+        );
+        assert_eq!(e.pc, Some(count + 1));
+        assert_eq!(vm.stack().unwrap(), before);
+    }
+}
+
+#[test]
+fn bytes_calls_and_budgets_match_across_object_global_and_function_targets() {
+    let nodes = [(0, 0, 0x40), (1, 0, 0x40), (0, 0, 1)];
+    // Direct Object, 07 Object, 08 Object and 05 function value paths.
+    for caller in [
+        vec![(1, 0, 7)],
+        vec![(2, 0, 0x40), (0, 0, 0x41), (0, 0, 8)],
+        vec![(1, 0, 0x17), (0, 1, 5)],
+    ] {
+        let p = image(
+            &[fun(0, 0, 0, 255, &caller), fun(1, 0, 0, 255, &nodes)],
+            0,
+            &[b"a\0", b"\xff\0", b"f1\0"],
+        );
+        for stepped in [false, true] {
+            let mut store = ObjectStore::new();
+            let prepared = prepare_program_with_function_values(p.clone(), None)
+                .unwrap()
+                .with_methods(vec![method(b"f1", 1)])
+                .unwrap();
+            let pid = store.register_program(prepared).unwrap();
+            let o = store.create(pid, vec![]).unwrap();
+            let mut vm = Vm::new(store);
+            vm.start(o, 0, vec![]).unwrap();
+            if stepped {
+                loop {
+                    let before = vm.stack().unwrap();
+                    vm.run(0).unwrap();
+                    assert_eq!(vm.stack().unwrap(), before);
+                    if let RunOutcome::Finished(result) = vm.run(1).unwrap() {
+                        assert_eq!(result, Completion::Returned(Value::bytes(b"a\xff")));
+                        break;
+                    }
+                }
+            } else {
+                returns(&mut vm, Value::bytes(b"a\xff"));
+            }
+        }
+    }
+    let (mut vm, o, _) = global_call_machine(global_image(
+        &[fun(559, 0, 0, 255, &nodes)],
+        0,
+        &[b"a\0", b"\xff\0"],
+    ));
+    vm.start(o, 0, vec![]).unwrap();
+    returns(&mut vm, Value::bytes(b"a\xff"));
+}
+
+#[test]
+fn bytes_errors_bypass_numeric_catch_and_success_can_precede_catchable_fault() {
+    let (mut vm, o) = machine(
+        image(
+            &[catch_fun(
+                0,
+                0,
+                0,
+                255,
+                &[(0, 0, 0x40), (0, 0, 0x42), (0, 0, 1)],
+            )],
+            0,
+            &[b"x\0"],
+        ),
+        vec![],
+    );
+    vm.start(o, 0, vec![]).unwrap();
+    assert_eq!(vm.run(100).unwrap_err().kind, VmErrorKind::UnsupportedType);
+    let body = [
+        (0, 0, 0x40),
+        (0, 0, 0x40),
+        (0, 0, 1),
+        (1, 0, 0x3b),
+        (0, 0, 0x3b),
+        (0, 0, 0x19),
+    ];
+    let (mut vm, o) = machine(
+        image(&[catch_fun(0, 0, 0, 255, &body)], 0, &[b"x\0"]),
+        vec![],
+    );
+    vm.start(o, 0, vec![]).unwrap();
+    returns(&mut vm, Value::Int(1));
 }

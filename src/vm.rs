@@ -2390,6 +2390,42 @@ impl Vm {
         if opcode == 0x05 {
             return self.call_function_value(&frame, &p, &f, operands[0], operands[1]);
         }
+        // Bytes preflight and commit preserve the original PC on recoverable failure.
+        if matches!(opcode, 1 | 0x1c | 0x2a | 0x1e | 0x20 | 0x25 | 0x27) {
+            let n = self.stack.len();
+            let has_bytes = self.stack[n.saturating_sub(2)..].iter().any(|entry| {
+                matches!(entry, StackEntry::Value(c) if matches!(c.read(), Ok(Value::Bytes(_))))
+            });
+            if has_bytes {
+                self.need(2, &frame, f.local_count)?;
+                for entry in &self.stack[n - 2..] {
+                    match entry {
+                        StackEntry::Value(c) if !c.is_loop()? => (),
+                        _ => {
+                            return Err(err(
+                                VmErrorKind::UnsupportedFeature,
+                                "Bytes operands require ordinary values",
+                            ));
+                        }
+                    }
+                }
+                let left = self.value(n - 2)?;
+                let right = self.value(n - 1)?;
+                if crate::bytes::selected(opcode, &left, &right) {
+                    if self.initialization.is_some() || self.construction.is_some() {
+                        return Err(err(
+                            VmErrorKind::UnsupportedFeature,
+                            "Bytes operations during lifecycle tasks are unsupported",
+                        ));
+                    }
+                    let result = crate::bytes::binary(opcode, &left, &right)?;
+                    self.set(n - 2, result)?;
+                    self.stack.pop();
+                    self.frames.last_mut().unwrap().pc += 1;
+                    return Ok(());
+                }
+            }
+        }
         // vm_regularProcessor @0x080978c4 increments IP before dispatch.
         self.frames.last_mut().unwrap().pc += 1;
         let [a, b] = operands;
@@ -3869,6 +3905,95 @@ mod numeric_fault_tests {
 mod global_tests {
     use super::*;
     use crate::prepared::GlobalBankSchema;
+
+    #[test]
+    fn bytes_commit_borrow_failure_keeps_pc_slots_and_operands() {
+        let (mut vm, _) = fixture(1, None);
+        vm.push(Value::bytes(b"left")).unwrap();
+        vm.push(Value::bytes(b"right")).unwrap();
+        let StackEntry::Value(left) = vm.stack[0].clone() else {
+            panic!()
+        };
+        let before = vm.stack().unwrap();
+        left.with_read_borrow_for_test(|| {
+            let fault = vm.step().unwrap_err();
+            assert_eq!(fault.diagnostic.kind, VmErrorKind::InvalidState);
+            assert!(fault.site.is_none());
+        });
+        assert_eq!(vm.frames[0].pc, 0);
+        assert_eq!(vm.stack().unwrap(), before);
+        // This path reuses the left cell and requires no Cell allocation.
+        crate::cell::with_allocation_failure(0, || vm.step().unwrap());
+        assert_eq!(vm.frames[0].pc, 1);
+        assert_eq!(left.read().unwrap(), Value::bytes(b"leftright"));
+        assert_eq!(vm.stack.len(), 1);
+        assert!(matches!(&vm.stack[0], StackEntry::Value(c) if c.id() == left.id()));
+    }
+
+    #[test]
+    fn bytes_hidden_loop_is_rejected_without_projection_or_fault_provenance() {
+        let (mut vm, _) = fixture(0x1c, None);
+        vm.push(Value::Undefined).unwrap();
+        let StackEntry::Value(cell) = &vm.stack[0] else {
+            panic!()
+        };
+        let Value::Array(array) = Value::array(vec![]).unwrap() else {
+            panic!()
+        };
+        Cell::replace_payload_batch(vec![(
+            cell.clone(),
+            SlotPayload::Loop(Box::new(LoopControl::for_test(array))),
+        )])
+        .unwrap();
+        vm.push(Value::bytes(b"x")).unwrap();
+        let fault = vm.step().unwrap_err();
+        assert_eq!(fault.diagnostic.kind, VmErrorKind::UnsupportedFeature);
+        assert!(fault.site.is_none());
+        assert_eq!(vm.frames[0].pc, 0);
+        assert_eq!(vm.stack.len(), 2);
+        let StackEntry::Value(cell) = &vm.stack[0] else {
+            panic!()
+        };
+        assert!(cell.is_loop().unwrap());
+    }
+
+    #[test]
+    fn bytes_lifecycle_task_guard_applies_to_ordinary_helper_frames() {
+        for opcode in [1, 0x1c, 0x2a, 0x1e, 0x20, 0x25, 0x27] {
+            for phase in [
+                None,
+                Some(LifecyclePhase::Create),
+                Some(LifecyclePhase::RollbackDestruct),
+            ] {
+                let (mut vm, object) = fixture(opcode, None);
+                if let Some(phase) = phase {
+                    vm.construction = Some(ConstructionTask {
+                        object,
+                        program: vm.frames[0].program(),
+                        phase,
+                        position: 0,
+                        constitution: 0,
+                        parameter: None,
+                        primary: None,
+                    });
+                } else {
+                    vm.initialization = Some(InitializationTask {
+                        object,
+                        position: 0,
+                        constitution: 0,
+                    });
+                }
+                vm.push(Value::bytes(b"a")).unwrap();
+                vm.push(Value::bytes(b"b")).unwrap();
+                let before = vm.stack().unwrap();
+                let fault = vm.step().unwrap_err();
+                assert_eq!(fault.diagnostic.kind, VmErrorKind::UnsupportedFeature);
+                assert!(fault.site.is_none());
+                assert_eq!(vm.frames[0].pc, 0);
+                assert_eq!(vm.stack().unwrap(), before);
+            }
+        }
+    }
 
     fn fixture(opcode: u8, schema: Option<GlobalBankSchema>) -> (Vm, ObjectId) {
         let function = PreparedFunction {

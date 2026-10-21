@@ -1,5 +1,7 @@
 # rml32
 
+阶段2AJ已实现普通函数Bytes+Bytes/Int拼接、全长相等及首NUL前缀排序，482项Rust测试在debug/release通过。支持集合仍为75种、主语料交集73种。见[运行时说明](docs/vm-bytes-runtime.md)、[能力增量矩阵](docs/stage2aj-evidence/matrix.md)和[验证记录](docs/stage2aj-validation.json)。Real拼接、Buffer/Bytes写入、生命周期新分支及真实服务仍排除，阶段2未完成。以下为历史快照。
+
 阶段2AI已完成Bytes比较/拼接定向静态取证：新增12条、复用15条完整记录，复算125,747处指令并提供56条静态/设计期望及[首批Rust实施规格](docs/stage2ai-evidence/bytes-runtime-design.md)。见[语义报告](docs/vm-bytes-semantics.md)与[验证记录](docs/stage2ai-validation.json)。本批未实现Bytes运算；473项Rust测试、75种限定支持/73种语料交集保持不变，阶段2仍未完成。下一步按规格实施普通函数受限Bytes运算。以下保留历史状态。
 
 阶段2AH完成当前能力重审：75种限定支持、73种主语料交集与473项Rust测试保持不变。独立审计登记24项缺口（阶段2内19项、后续阶段5项），所有当前门槛仍未关闭；下一批优先进行Bytes比较/拼接定向取证。见[完成度报告](docs/stage2-completion-assessment-2ah.md)、[当前矩阵](docs/stage2ah-evidence/matrix.md)、[下一批规格](docs/stage2ah-evidence/next-batch.md)与[验证记录](docs/stage2ah-validation.json)。本批不修改运行时/API/依赖、不新增反编译、不执行原程序。以下条目保留历史状态。
@@ -24,7 +26,7 @@
 
 阶段2X已完成范围查询 `45` 的静态取证、3,452处语料统计及后续受限 Bytes/Array 实现规格，见[范围查询语义与设计](docs/vm-range-semantics.md)。本轮运行时、公共API、依赖与68种限定操作码支持集合保持不变，`45`尚未实现。
 
-对 `magic_Linux32` 进行静态分析，并以 Rust 重写兼容驱动。当前已实现**只读离线加载器**和阶段 2AG 的**数值、共享容器、引用参数及类型检查、受限默认/可变参数、继承链接、初始化、构造回滚及受限跨对象调用、switch、整数/数组循环、范围查询、显式全局表与全局函数调用、同步宿主调用、受限Object函数值及受限 catch VM 库**，支持 75 种操作码的限定路径。VM 仅在人工构造程序上验证，尚无可运行服务端；`rml32-inspect` 继续只读检查制品。
+对 `magic_Linux32` 进行静态分析，并以 Rust 重写兼容驱动。当前已实现**只读离线加载器**和阶段 2AJ 的**Bytes运算、数值、共享容器、引用参数及类型检查、受限默认/可变参数、继承链接、初始化、构造回滚及受限跨对象调用、switch、整数/数组循环、范围查询、显式全局表与全局函数调用、同步宿主调用、受限Object函数值及受限 catch VM 库**，支持 75 种操作码的限定路径。VM 仅在人工构造程序上验证，尚无可运行服务端；`rml32-inspect` 继续只读检查制品。
 
 阶段2W已扩展实数/混合除零、整数余数零及相应复合赋值捕获，323项Rust测试通过。见[数值错误捕获](docs/vm-numeric-catch-runtime.md)和[当前矩阵](docs/stage2w-evidence/matrix.md)。仍为68种限定操作码；生命周期内catch、其他错误来源及回调/JIT保持限制。
 
