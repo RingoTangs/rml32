@@ -7493,14 +7493,11 @@ fn loops_bad_modes_sources_aliases_and_missing_state_preserve_operands() {
     assert_eq!(vm.run(100).unwrap_err().kind, VmErrorKind::InvalidState);
 }
 #[test]
-fn loops_mapping_mode_and_member_binding_remain_explicitly_unsupported() {
+fn loops_empty_mapping_is_supported_but_member_binding_remains_unsupported() {
     let (mut vm, o) = machine(image(&[array_loop(&[])], 0, &[]), vec![]);
     vm.start(o, 0, vec![Value::mapping(vec![]).unwrap()])
         .unwrap();
-    assert_eq!(
-        vm.run(100).unwrap_err().kind,
-        VmErrorKind::UnsupportedFeature
-    );
+    returns(&mut vm, Value::Undefined);
     let f = fun(
         0,
         1,
@@ -12221,4 +12218,320 @@ fn bytes_compound_add_updates_shared_array_and_mapping_members() {
         other.start(o, 0, vec![]).unwrap();
         returns(&mut other, Value::bytes(b"x7"));
     }
+}
+
+// 2AM: synthetic Mapping997 programs. Retained native static cases are in 2AL.
+fn mapping_trace(source: Value, body: &[Node]) -> Vec<Vec<Value>> {
+    let mut instructions = vec![(-1, 0, 0x37), (0, 0, 0x4e), (0, 0, 0x33)];
+    instructions.extend_from_slice(body);
+    let (mut vm, o) = machine(
+        image(&[array_loop(&instructions)], 1, &[]),
+        vec![Value::Undefined],
+    );
+    vm.start(o, 0, vec![source]).unwrap();
+    let mut rows = vec![];
+    for _ in 0..10000 {
+        let done = matches!(vm.run(1).unwrap(), RunOutcome::Finished(_));
+        if let Value::Array(a) = &object_values(&vm, o)[0] {
+            let row = a.elements().unwrap();
+            if rows
+                .last()
+                .is_none_or(|last: &Vec<Value>| last[2] != row[2])
+            {
+                rows.push(row);
+            }
+        }
+        if done {
+            return rows;
+        }
+    }
+    panic!("mapping loop failed to terminate");
+}
+fn int_mapping(keys: &[i32]) -> Value {
+    Value::mapping(
+        keys.iter()
+            .map(|k| (Value::Int(*k), Value::Int(*k)))
+            .collect(),
+    )
+    .unwrap()
+}
+#[test]
+fn mapping_loops_emit_native_order_values_and_ordinal_under_single_step_budget() {
+    assert_eq!(
+        mapping_trace(int_mapping(&[0, 1, 2]), &[]),
+        vec![
+            vec![Value::Int(2), Value::Int(2), Value::Int(0)],
+            vec![Value::Int(1), Value::Int(1), Value::Int(1)],
+            vec![Value::Int(0), Value::Int(0), Value::Int(2)]
+        ]
+    );
+    let bytes = [b"a".as_slice(), b"a\0", b"a\0x", b"a\0y", b"\xff", b"\x80"];
+    let map = Value::mapping(
+        bytes
+            .iter()
+            .map(|b| (Value::bytes(b), Value::Int(7)))
+            .collect(),
+    )
+    .unwrap();
+    let keys = mapping_trace(map, &[])
+        .into_iter()
+        .map(|r| r[0].clone())
+        .collect::<Vec<_>>();
+    assert_eq!(
+        keys,
+        bytes.iter().rev().map(Value::bytes).collect::<Vec<_>>()
+    );
+}
+#[test]
+fn mapping_loops_head_insertion_repeats_old_key_and_new_member_value_is_visible() {
+    let body = [
+        (0, 0, 0x39),
+        (3, 0, 0x3b),
+        (0, 0, 0x44),
+        (33, 0, 0x3b),
+        (0, 0, 0x04),
+        (0, 0, 0x33),
+    ];
+    let rows = mapping_trace(int_mapping(&[0, 1, 2]), &body);
+    assert_eq!(
+        rows.iter().map(|r| r[0].clone()).collect::<Vec<_>>(),
+        vec![Value::Int(2), Value::Int(2), Value::Int(1), Value::Int(0)]
+    );
+    let body = [
+        (0, 0, 0x39),
+        (1, 0, 0x3b),
+        (0, 0, 0x44),
+        (99, 0, 0x3b),
+        (0, 0, 0x04),
+        (0, 0, 0x33),
+    ];
+    let rows = mapping_trace(int_mapping(&[0, 1, 2]), &body);
+    assert_eq!(rows[1], vec![Value::Int(1), Value::Int(99), Value::Int(1)]);
+}
+#[test]
+fn mapping_loops_live_growth_changes_remaining_bucket_scan() {
+    let body: Vec<_> = [16, 32, 48, 64, 80]
+        .into_iter()
+        .flat_map(|k| {
+            [
+                (0, 0, 0x39),
+                (k, 0, 0x3b),
+                (0, 0, 0x44),
+                (k, 0, 0x3b),
+                (0, 0, 0x04),
+                (0, 0, 0x33),
+            ]
+        })
+        .collect();
+    let rows = mapping_trace(int_mapping(&[0, 128, 256, 384, 640]), &body);
+    assert_eq!(
+        rows.iter().map(|r| r[0].clone()).collect::<Vec<_>>(),
+        [640, 0, 16, 32, 48, 64, 80, 128, 384, 640].map(Value::Int)
+    );
+}
+#[test]
+fn mapping_loops_retain_source_header_after_argument_rebinding() {
+    let rows = mapping_trace(
+        int_mapping(&[0, 1, 2]),
+        &[(0, 0, 0x42), (0, 0, 0x4d), (0, 0, 0x33)],
+    );
+    assert_eq!(
+        rows.iter().map(|r| r[0].clone()).collect::<Vec<_>>(),
+        [2, 1, 0].map(Value::Int)
+    );
+}
+#[test]
+fn mapping_loop_existing_array_alias_sees_latest_output_and_zero_budget_does_not_touch_it() {
+    let binding = Value::array(vec![Value::Int(9); 3]).unwrap();
+    let mut f = array_loop(&[]);
+    // Initialize the binding from arg1 before its reference is pushed.
+    f.args = 2;
+    f.nodes
+        .splice(2..2, [(1, 0, 0x37), (-1, 0, 0x4d), (0, 0, 0x33)]);
+    let (mut vm, o) = machine(image(&[f], 0, &[]), vec![]);
+    vm.start(o, 0, vec![int_mapping(&[0, 1, 2]), binding.clone()])
+        .unwrap();
+    assert_eq!(vm.run(0).unwrap(), RunOutcome::BudgetExhausted);
+    let Value::Array(alias) = binding.clone() else {
+        panic!()
+    };
+    assert_eq!(alias.elements().unwrap(), vec![Value::Int(9); 3]);
+    returns(&mut vm, binding);
+    assert_eq!(
+        alias.elements().unwrap(),
+        vec![Value::Int(0), Value::Int(0), Value::Int(2)]
+    );
+}
+#[test]
+fn mapping_loop_body_rebinds_to_another_array_and_only_new_binding_is_reused() {
+    let a = Value::array(vec![Value::Int(9); 3]).unwrap();
+    let b = Value::array(vec![Value::Int(8); 3]).unwrap();
+    let mut f = array_loop(&[(2, 0, 0x37), (-1, 0, 0x4d), (0, 0, 0x33)]);
+    f.args = 3;
+    f.nodes
+        .splice(2..2, [(1, 0, 0x37), (-1, 0, 0x4d), (0, 0, 0x33)]);
+    let (mut vm, o) = machine(image(&[f], 0, &[]), vec![]);
+    vm.start(o, 0, vec![int_mapping(&[0, 1, 2]), a.clone(), b.clone()])
+        .unwrap();
+    returns(&mut vm, b.clone());
+    let (Value::Array(a), Value::Array(b)) = (a, b) else {
+        panic!()
+    };
+    assert_eq!(
+        a.elements().unwrap(),
+        vec![Value::Int(2), Value::Int(2), Value::Int(0)]
+    );
+    assert_eq!(
+        b.elements().unwrap(),
+        vec![Value::Int(0), Value::Int(0), Value::Int(2)]
+    );
+}
+#[test]
+fn mapping_loops_normalize_dead_objects_and_allow_nested_container_values() {
+    let (mut vm, o) = machine(image(&[array_loop(&[])], 0, &[]), vec![]);
+    let p = vm.objects().get(o).unwrap().program();
+    let victim = vm.objects_mut().create(p, vec![]).unwrap();
+    let map = Value::mapping(vec![(Value::Int(0), Value::Object(victim))]).unwrap();
+    vm.objects_mut().remove(victim).unwrap();
+    vm.start(o, 0, vec![map.clone()]).unwrap();
+    let RunOutcome::Finished(Completion::Returned(Value::Array(a))) = vm.run(100).unwrap() else {
+        panic!()
+    };
+    assert_eq!(
+        a.elements().unwrap(),
+        vec![Value::Int(0), Value::Undefined, Value::Int(0)]
+    );
+    let Value::Mapping(m) = map else { panic!() };
+    assert_eq!(m.get(&Value::Int(0)).unwrap(), Some(Value::Undefined));
+    let nested = Value::array(vec![Value::Int(7)]).unwrap();
+    let map = Value::mapping(vec![
+        (Value::Int(0), nested.clone()),
+        (Value::Int(1), nested.clone()),
+    ])
+    .unwrap();
+    assert_eq!(
+        mapping_trace(map, &[])
+            .iter()
+            .map(|r| r[1].clone())
+            .collect::<Vec<_>>(),
+        vec![nested.clone(), nested]
+    );
+}
+#[test]
+fn mapping_loop_cross_source_output_alias_is_fatal_before_visible_writes() {
+    let a = Value::array(vec![Value::Int(9); 3]).unwrap();
+    let m = Value::mapping(vec![(Value::Int(0), a.clone())]).unwrap();
+    let mut f = array_loop(&[]);
+    f.args = 2;
+    f.nodes
+        .splice(2..2, [(1, 0, 0x37), (-1, 0, 0x4d), (0, 0, 0x33)]);
+    let (mut vm, o) = machine(image(&[f], 0, &[]), vec![]);
+    vm.start(o, 0, vec![m, a.clone()]).unwrap();
+    let e = vm.run(100).unwrap_err();
+    assert_eq!(e.kind, VmErrorKind::UnsupportedFeature);
+    assert_eq!(e.pc, Some(9)); // prologue2 + binding initialization3 + init4
+    assert_eq!(vm.run(100).unwrap_err(), e);
+    let Value::Array(a) = a else { panic!() };
+    assert_eq!(a.elements().unwrap(), vec![Value::Int(9); 3]);
+}
+#[test]
+fn mapping_loops_support_existing_global_and_object_bindings() {
+    let mut f = array_loop(&[]);
+    f.nodes[2] = (0, 0, 0x36);
+    let last = f.nodes.len() - 2;
+    f.nodes[last] = (0, 0, 0x35);
+    let (mut vm, o) = global_machine(image(&[f], 0, &[]), vec![Value::Undefined], 1);
+    vm.start(o, 0, vec![int_mapping(&[0, 1])]).unwrap();
+    let RunOutcome::Finished(Completion::Returned(Value::Array(a))) = vm.run(100).unwrap() else {
+        panic!()
+    };
+    assert_eq!(
+        a.elements().unwrap(),
+        vec![Value::Int(0), Value::Int(0), Value::Int(1)]
+    );
+    let mut f = array_loop(&[]);
+    f.nodes[2] = (0, 0, 0x3e);
+    let last = f.nodes.len() - 2;
+    f.nodes[last] = (0, 0, 0x3d);
+    let (mut vm, o) = machine(image(&[f], 1, &[]), vec![Value::Undefined]);
+    vm.start(o, 0, vec![int_mapping(&[0, 1])]).unwrap();
+    let RunOutcome::Finished(Completion::Returned(value)) = vm.run(100).unwrap() else {
+        panic!()
+    };
+    assert_eq!(object_values(&vm, o), vec![value]);
+}
+#[test]
+fn mapping_loop_helper_unwinds_through_existing_numeric_catch() {
+    let mut leaf = array_loop(INT_ZERO);
+    leaf.index = 1;
+    let caller = catch_fun(0, 1, 0, 255, &[(0, 0, 0x37), (1, 1, 0x07)]);
+    let (mut vm, o) = machine(image(&[caller, leaf], 0, &[]), vec![]);
+    vm.start(o, 0, vec![int_mapping(&[0, 1])]).unwrap();
+    returns(&mut vm, Value::Int(1));
+    assert_eq!(vm.frame_depth(), 0);
+}
+
+#[test]
+fn mapping_loops_nested_helper_frames_keep_independent_cursors() {
+    let outer = array_loop(&[(0, 0, 0x37), (1, 1, 0x07), (0, 0, 0x33)]);
+    let mut inner = array_loop(&[(0, 0, 0x3e), (1, 0, 0x22)]);
+    inner.index = 1;
+    let (mut vm, o) = machine(image(&[outer, inner], 1, &[]), vec![Value::Int(0)]);
+    vm.start(o, 0, vec![int_mapping(&[0, 1])]).unwrap();
+    let RunOutcome::Finished(Completion::Returned(Value::Array(a))) = vm.run(1000).unwrap() else {
+        panic!()
+    };
+    assert_eq!(
+        a.elements().unwrap(),
+        vec![Value::Int(0), Value::Int(0), Value::Int(1)]
+    );
+    assert_eq!(object_values(&vm, o), vec![Value::Int(4)]);
+}
+#[test]
+fn mapping_loop_recursion_limit_and_restart_discard_old_controls() {
+    let f = array_loop(&[(0, 0, 0x37), (0, 1, 0x07), (0, 0, 0x33)]);
+    let (vm, o) = machine(image(&[f], 0, &[]), vec![]);
+    let mut vm = Vm::with_limits(
+        vm.into_objects(),
+        VmLimits {
+            max_frames: 3,
+            ..Default::default()
+        },
+    );
+    vm.start(o, 0, vec![int_mapping(&[0])]).unwrap();
+    assert_eq!(vm.run(1000).unwrap_err().kind, VmErrorKind::Limit);
+    assert_eq!(vm.frame_depth(), 3);
+    vm.start(o, 0, vec![int_mapping(&[])]).unwrap();
+    returns(&mut vm, Value::Undefined);
+    assert_eq!(vm.frame_depth(), 0);
+}
+#[test]
+fn mapping_loop_early_break_and_return_keep_first_triple() {
+    for body in [vec![(1, 0, 0x1f)], vec![(-1, 0, 0x37), (0, 0, 0x49)]] {
+        let (mut vm, o) = machine(image(&[array_loop(&body)], 0, &[]), vec![]);
+        vm.start(o, 0, vec![int_mapping(&[0, 1, 2])]).unwrap();
+        let RunOutcome::Finished(Completion::Returned(Value::Array(a))) = vm.run(100).unwrap()
+        else {
+            panic!()
+        };
+        assert_eq!(
+            a.elements().unwrap(),
+            vec![Value::Int(2), Value::Int(2), Value::Int(0)]
+        );
+        assert_eq!(vm.frame_depth(), 0);
+    }
+}
+#[test]
+fn mapping_output_obeys_existing_result_depth_limit() {
+    let mut nested = Value::Int(1);
+    for _ in 0..63 {
+        nested = Value::array(vec![nested]).unwrap();
+    }
+    let source = Value::mapping(vec![(Value::Int(0), nested)]).unwrap();
+    let (mut vm, o) = machine(image(&[array_loop(&[])], 0, &[]), vec![]);
+    vm.start(o, 0, vec![source]).unwrap();
+    let RunOutcome::Finished(Completion::Returned(Value::Array(a))) = vm.run(100).unwrap() else {
+        panic!()
+    };
+    assert_eq!(a.depth().unwrap(), 64);
 }

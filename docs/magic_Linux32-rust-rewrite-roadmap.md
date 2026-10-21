@@ -1,5 +1,7 @@
 # magic_Linux32 Rust 重写实施路线图
 
+**当前阶段2AM：**按2AL规格实现普通函数Int/Bytes Mapping997及私有原生桶链，保留公开entries顺序与成员Cell身份，支持实时修改、输出Array3别名复用及现有调用/预算/清理契约。见[运行时说明](vm-mapping-runtime.md)、[能力增量](stage2am-evidence/matrix.md)及[验证记录](stage2am-validation.json)。515项Rust测试debug/release、19项Python检查及fmt/clippy通过；75种限定支持/73种交集不变。G05仅部分实现，删除后引用、其他键/属性、交叉别名与完整GC仍需后续证据；生命周期循环和真实efun未开放，阶段2未完成。以下为历史快照。
+
 **当前阶段2AL：**Int/Bytes Mapping桶链与遍历修改静态取证完成，见[语义报告](vm-mapping-iteration-semantics.md)、[下一批实施规格](stage2al-evidence/mapping-runtime-design.md)及[验证记录](stage2al-validation.json)。普通函数Mapping997仍未实现；下一批按原生哈希、空桶扩容预算、bucket/subindex/ordinal游标和三元数组别名语义接入。保留其他键/属性、删除后引用、交叉图与生命周期限制，G05仍未关闭。本轮运行时/API/依赖不变，28项Python检查、487项Rust测试debug/release及fmt/clippy通过，75种限定支持/73种交集不变。以下2AJ及更早条目保持历史快照；最新运行时为2AK受限Bytes `+=`。
 
 **当前阶段2AJ：**按2AI规格实现受限Bytes拼接与比较，482项Rust测试在debug/release通过。见[运行时说明](vm-bytes-runtime.md)、[能力增量矩阵](stage2aj-evidence/matrix.md)及[验证记录](stage2aj-validation.json)。75种限定操作码/73种主语料交集不变；G01与阶段2未完成，后续继续非数值运算、Mapping遍历及能力组合缺口。以下为历史快照。

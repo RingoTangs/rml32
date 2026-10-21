@@ -118,6 +118,12 @@ enum LoopState {
         owner: crate::container::ArrayValue,
         index: u32,
     },
+    Mapping {
+        owner: crate::container::MappingValue,
+        bucket: u32,
+        subindex: u32,
+        ordinal: u32,
+    },
 }
 #[derive(Debug, Clone)]
 enum StackEntry {
@@ -2029,12 +2035,12 @@ impl Vm {
                     }
                 }
                 (Value::Int(997), Value::Array(owner)) => LoopState::Array { owner, index: 0 },
-                (Value::Int(997), Value::Mapping(_)) => {
-                    return Err(err(
-                        VmErrorKind::UnsupportedFeature,
-                        "mapping loop order is unsupported",
-                    ));
-                }
+                (Value::Int(997), Value::Mapping(owner)) => LoopState::Mapping {
+                    owner,
+                    bucket: 0,
+                    subindex: 0,
+                    ordinal: 0,
+                },
                 (Value::Int(1 | -1 | 997), _) => {
                     return Err(err(
                         VmErrorKind::UnsupportedType,
@@ -2044,7 +2050,7 @@ impl Vm {
                 _ => {
                     return Err(err(
                         VmErrorKind::UnsupportedFeature,
-                        "loop mode requires +/-1 or Array mode997",
+                        "loop mode requires +/-1 or collection mode997",
                     ));
                 }
             };
@@ -2059,6 +2065,7 @@ impl Vm {
         self.validate_binding(&control.bound)?;
         let mut output = None;
         let mut source_update = None;
+        let mut member_updates = Vec::new();
         let valid = match &mut control.state {
             LoopState::Numeric {
                 next,
@@ -2096,6 +2103,32 @@ impl Vm {
                     false
                 }
             }
+            LoopState::Mapping {
+                owner,
+                bucket,
+                subindex,
+                ordinal,
+            } => {
+                let number = *ordinal;
+                *ordinal = ordinal.wrapping_add(1);
+                if let Some((key, source)) = owner.scan(bucket, subindex)? {
+                    let original = source.read()?;
+                    let value = self.copy_value(&original);
+                    if original != value {
+                        source_update = Some((source, SlotPayload::Value(value.clone())));
+                    }
+                    let values = [self.copy_value(&key), value, Value::Int(number as i32)];
+                    let binding = self.resolve(&control.bound)?.read()?;
+                    let array = crate::container::mapping_output(owner, binding, &values)?;
+                    for (i, value) in values.into_iter().enumerate() {
+                        member_updates.push((array.cell(i)?, SlotPayload::Value(value)));
+                    }
+                    output = Some(Value::Array(array));
+                    true
+                } else {
+                    false
+                }
+            }
         };
         let delta = if (opcode == 0x12 && !valid) || (opcode == 0x50 && valid) {
             a
@@ -2114,6 +2147,14 @@ impl Vm {
         }
         if let Some(update) = source_update {
             updates.push(update);
+        }
+        updates.extend(member_updates);
+        let mut ids = std::collections::BTreeSet::new();
+        if updates.iter().any(|(cell, _)| !ids.insert(cell.id())) {
+            return Err(err(
+                VmErrorKind::UnsupportedFeature,
+                "loop output aliases a pending write",
+            ));
         }
         Cell::replace_payload_batch(updates)?;
         self.frames.last_mut().unwrap().pc = pc as usize;
@@ -4814,5 +4855,235 @@ mod function_value_tests {
         assert_eq!(vm.frames.len(), 2);
         assert_eq!(vm.frames[1].bp, 1);
         assert_eq!(vm.frames[0].pc, 1);
+    }
+}
+
+#[cfg(test)]
+mod mapping_loop_tests {
+    use super::*;
+    fn fixture(
+        values: Vec<(Value, Value)>,
+        binding: Value,
+    ) -> (Vm, crate::container::MappingValue, Rc<Cell>, Rc<Cell>) {
+        let mut vm = super::catch_tests::fixture(2);
+        let StackEntry::Value(target) = vm.stack[0].clone() else {
+            panic!()
+        };
+        let StackEntry::Value(control) = vm.stack[1].clone() else {
+            panic!()
+        };
+        target.replace(binding).unwrap();
+        let Value::Mapping(owner) = Value::mapping(values).unwrap() else {
+            panic!()
+        };
+        vm.stack.push(StackEntry::Reference(Reference {
+            id: target.id(),
+            target: Target::Local {
+                frame: 10,
+                cell: Rc::downgrade(&target),
+            },
+            readonly: false,
+            _lease: None,
+        }));
+        vm.push(Value::Mapping(owner.clone())).unwrap();
+        vm.push(Value::Int(997)).unwrap();
+        let frame = vm.frames[0].clone();
+        let p = vm.objects.program(frame.program()).unwrap();
+        let code = CodeView::get(&p, frame.body).unwrap();
+        vm.loop_instruction(&frame, &code, 0x23, -2, 0).unwrap();
+        (vm, owner, target, control)
+    }
+    fn advance(vm: &mut Vm, delta: i32) -> Result<(), VmError> {
+        let frame = vm.frames[0].clone();
+        let p = vm.objects.program(frame.program()).unwrap();
+        let code = CodeView::get(&p, frame.body).unwrap();
+        vm.loop_instruction(&frame, &code, 0x50, delta, -2)
+    }
+    fn counts(control: &Cell) -> (u32, u32, u32) {
+        let LoopState::Mapping {
+            bucket,
+            subindex,
+            ordinal,
+            ..
+        } = control.loop_control().unwrap().state
+        else {
+            panic!()
+        };
+        (bucket, subindex, ordinal)
+    }
+    fn rows(target: &Cell) -> Vec<Value> {
+        let Value::Array(a) = target.read().unwrap() else {
+            panic!()
+        };
+        a.elements().unwrap()
+    }
+    #[test]
+    fn every_new_output_cell_allocation_failure_preserves_source_binding_and_cursor() {
+        for after in 0..3 {
+            let (mut vm, owner, target, control) = fixture(
+                vec![(Value::Int(0), Value::Object(ObjectId(999)))],
+                Value::Int(7),
+            );
+            crate::cell::with_allocation_failure(after, || {
+                assert_eq!(advance(&mut vm, 0).unwrap_err().kind, VmErrorKind::Limit)
+            });
+            assert_eq!(counts(&control), (0, 0, 0));
+            assert_eq!(target.read().unwrap(), Value::Int(7));
+            assert_eq!(
+                owner.get(&Value::Int(0)).unwrap(),
+                Some(Value::Object(ObjectId(999)))
+            );
+            advance(&mut vm, 0).unwrap();
+            assert_eq!(
+                rows(&target),
+                vec![Value::Int(0), Value::Undefined, Value::Int(0)]
+            );
+        }
+    }
+    #[test]
+    fn reuse_needs_no_new_cells_and_late_borrow_conflicts_preserve_all_slots() {
+        for conflict in 0..5 {
+            let array = Value::array(vec![Value::Int(9); 3]).unwrap();
+            let Value::Array(a) = array.clone() else {
+                panic!()
+            };
+            let (mut vm, owner, target, control) =
+                fixture(vec![(Value::Int(0), Value::Object(ObjectId(999)))], array);
+            let locked = match conflict {
+                0 => control.clone(),
+                1 => target.clone(),
+                _ => a.cell(conflict - 2).unwrap(),
+            };
+            locked.with_read_borrow_for_test(|| {
+                assert_eq!(
+                    advance(&mut vm, 0).unwrap_err().kind,
+                    VmErrorKind::InvalidState
+                )
+            });
+            assert_eq!(counts(&control), (0, 0, 0));
+            assert_eq!(a.elements().unwrap(), vec![Value::Int(9); 3]);
+            assert_eq!(
+                owner.get(&Value::Int(0)).unwrap(),
+                Some(Value::Object(ObjectId(999)))
+            );
+            crate::cell::with_allocation_failure(0, || advance(&mut vm, 0).unwrap());
+            assert_eq!(
+                rows(&target),
+                vec![Value::Int(0), Value::Undefined, Value::Int(0)]
+            );
+            assert_eq!(target.read().unwrap(), Value::Array(a));
+        }
+    }
+    #[test]
+    fn bad_branch_source_borrow_and_readonly_binding_do_not_commit_normalization() {
+        let (mut vm, owner, target, control) = fixture(
+            vec![(Value::Int(0), Value::Object(ObjectId(999)))],
+            Value::Undefined,
+        );
+        assert_eq!(advance(&mut vm, 1).unwrap_err().kind, VmErrorKind::Bounds);
+        assert_eq!(counts(&control), (0, 0, 0));
+        assert_eq!(target.read().unwrap(), Value::Undefined);
+        let source = owner.member(&Value::Int(0)).unwrap();
+        source.with_write_borrow_for_test(|| {
+            assert_eq!(
+                advance(&mut vm, 0).unwrap_err().kind,
+                VmErrorKind::InvalidState
+            )
+        });
+        let mut payload = control.loop_control().unwrap();
+        payload.bound.readonly = true;
+        Cell::replace_payload_batch(vec![(
+            control.clone(),
+            SlotPayload::Loop(Box::new(payload)),
+        )])
+        .unwrap();
+        assert_eq!(
+            advance(&mut vm, 0).unwrap_err().kind,
+            VmErrorKind::UnsupportedFeature
+        );
+        assert_eq!(counts(&control), (0, 0, 0));
+        assert_eq!(source.read().unwrap(), Value::Object(ObjectId(999)));
+    }
+    #[test]
+    fn output_length_replacement_empty_binding_and_wrapping_counters() {
+        for length in [0, 2, 4] {
+            let short = Value::array(vec![Value::Int(9); length]).unwrap();
+            let (mut vm, _, target, _) =
+                fixture(vec![(Value::Int(0), Value::Int(1))], short.clone());
+            advance(&mut vm, 0).unwrap();
+            assert_ne!(target.read().unwrap(), short);
+            let Value::Array(a) = short else { panic!() };
+            assert_eq!(a.elements().unwrap(), vec![Value::Int(9); length]);
+        }
+        let (mut vm, _, target, control) = fixture(vec![], Value::Int(9));
+        advance(&mut vm, 0).unwrap();
+        advance(&mut vm, 0).unwrap();
+        assert_eq!(target.read().unwrap(), Value::Int(9));
+        assert_eq!(counts(&control), (8, 2, 2));
+        let (mut vm, _, target, control) = fixture(
+            vec![
+                (Value::Int(0), Value::Int(1)),
+                (Value::Int(1), Value::Int(2)),
+            ],
+            Value::Undefined,
+        );
+        let mut c = control.loop_control().unwrap();
+        let LoopState::Mapping {
+            ordinal, subindex, ..
+        } = &mut c.state
+        else {
+            panic!()
+        };
+        *ordinal = i32::MAX as u32;
+        *subindex = 0x80000000;
+        Cell::replace_payload_batch(vec![(control.clone(), SlotPayload::Loop(Box::new(c)))])
+            .unwrap();
+        advance(&mut vm, 0).unwrap();
+        assert_eq!(rows(&target)[2], Value::Int(i32::MAX));
+        // Reset only the scan position to select another real entry.
+        let mut c = control.loop_control().unwrap();
+        let LoopState::Mapping { subindex, .. } = &mut c.state else {
+            panic!()
+        };
+        *subindex = 1;
+        Cell::replace_payload_batch(vec![(control.clone(), SlotPayload::Loop(Box::new(c)))])
+            .unwrap();
+        advance(&mut vm, 0).unwrap();
+        assert_eq!(rows(&target)[2], Value::Int(i32::MIN));
+    }
+    #[test]
+    fn source_cross_alias_and_reverse_owner_graph_are_rejected_without_writes() {
+        let a = Value::array(vec![Value::Int(9); 3]).unwrap();
+        let (mut vm, _, target, control) = fixture(vec![(Value::Int(0), a.clone())], a.clone());
+        assert_eq!(
+            advance(&mut vm, 0).unwrap_err().kind,
+            VmErrorKind::UnsupportedFeature
+        );
+        assert_eq!(counts(&control), (0, 0, 0));
+        assert_eq!(target.read().unwrap(), a);
+        let (mut vm, owner, target, control) =
+            fixture(vec![(Value::Int(0), Value::Int(1))], Value::Undefined);
+        let a = Value::array(vec![Value::Mapping(owner), Value::Int(8), Value::Int(9)]).unwrap();
+        target.replace(a.clone()).unwrap();
+        assert_eq!(
+            advance(&mut vm, 0).unwrap_err().kind,
+            VmErrorKind::UnsupportedFeature
+        );
+        assert_eq!(counts(&control), (0, 0, 0));
+        assert_eq!(target.read().unwrap(), a);
+    }
+    #[test]
+    fn mapping_controls_hold_owner_until_overwrite_return_or_restart() {
+        let (mut vm, owner, _, control) = fixture(vec![], Value::Undefined);
+        assert_eq!(owner.header_refs(), 2);
+        advance(&mut vm, 0).unwrap();
+        assert_eq!(owner.header_refs(), 2);
+        control.replace(Value::Undefined).unwrap();
+        assert_eq!(owner.header_refs(), 1);
+        let (mut vm, owner, _, control) = fixture(vec![], Value::Undefined);
+        vm.stack.clear(); // external control still retains payload, as a real Cell owner would
+        assert_eq!(owner.header_refs(), 2);
+        drop(control);
+        assert_eq!(owner.header_refs(), 1);
     }
 }

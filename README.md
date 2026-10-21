@@ -1,5 +1,7 @@
 # rml32
 
+阶段2AM已实现普通函数受限Mapping997，包含Int/Bytes原生哈希桶链、实时遍历顺序与三元输出数组别名复用。见[运行时说明](docs/vm-mapping-runtime.md)、[能力增量](docs/stage2am-evidence/matrix.md)及[验证记录](docs/stage2am-validation.json)。515项Rust测试debug/release、19项Python模型/语料测试及fmt/clippy通过；公开API/依赖不变，75种限定支持/73种交集不变。其他键/属性、删除后引用、复杂交叉图、完整GC与生命周期循环仍排除，G05部分实现，阶段2未完成。以下为历史快照。
+
 阶段2AL已完成Int/Bytes Mapping哈希、桶链顺序及遍历修改的静态取证与[后续实施规格](docs/stage2al-evidence/mapping-runtime-design.md)，见[语义报告](docs/vm-mapping-iteration-semantics.md)和[验证记录](docs/stage2al-validation.json)。复用13条REA记录、本地LLVM补查21个函数，复算298,369处相关位置；28项Python检查及487项Rust测试debug/release通过，fmt/clippy通过。运行时/API/依赖不变，Mapping997仍未开放，75种限定支持/73种交集不变；G05与阶段2未完成。新REA会话被客户端审批策略拦截，证据来源与剩余别名/删除引用限制已明确记录。以下为历史快照。
 
 阶段2AK已补齐受限 Bytes `+=`（Bytes/Int右值），支持现有可写引用槽并保留表达式结果；487项Rust测试在debug/release通过，fmt及clippy通过。见[本轮语义、证据和验证](docs/vm-bytes-compound-runtime.md)。操作码集合仍为75种；Real追加、其他Bytes复合运算及生命周期新分支仍排除，阶段2未完成。以下为历史快照。

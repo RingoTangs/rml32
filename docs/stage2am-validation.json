@@ -1,0 +1,25 @@
+{
+  "artifact_sha256": {
+    "README.md": "0e42571c008a692f1b0fdc3603ed34a7518536cae5d8392b27b6e74b9b9ba130",
+    "docs/magic_Linux32-rust-rewrite-roadmap.md": "c1ccca6566183a702afb3c949f73aa3a7472069a4f0064f4d99ae7c18e6d1e61",
+    "docs/stage2am-evidence/matrix.md": "bbfcfd0ba69069684beaab1222af5cb7eaf8cc8751696a44a3aecaf23ffb305f",
+    "docs/stage2am-evidence/validation-logs.json.gz": "9749050cd3ed3266813cb0011d88338b392d8759e70a2b87a51a1a77e0d2dd5f",
+    "docs/stage2am-evidence/verify_static_evidence.py": "42b9e964751f10f56b46dc52504a019d46b72ac359bc6ebdb816905151b53eac",
+    "docs/stage2am-evidence/verify_validation.py": "178fa2f0aff0c371e46919c7da4861bd39e5a7e93bf24b9277ac1b9326f127b7",
+    "docs/vm-mapping-runtime.md": "c71c625d07ce364b7d183118f812fea2f1665bed7eedced8bf984e7811ce9dd6",
+    "src/container.rs": "6791905a50d5c81a1bb79cd6e781f8823ecdb4602a43cffd5974dc7ef51e8985",
+    "src/vm.rs": "bf43e684f53150960378c7d2ed60621062d38dfa4141148c1d36dfba3ca89536",
+    "tests/fixtures/mapping-order-2al.json": "854b0eac98997a8ce4b6befba0afe9fcfc6cba22fca0273882411607f12cfcd9",
+    "tests/vm_core.rs": "7e03bb4e74cba95dd01725001edcc280a04ff04eaefce08dfae7eb78e3963a93"
+  },
+  "corpus_intersection": 73,
+  "limitations": [
+    "Synthetic execution only; no reference executable or business bytecode.",
+    "G05 remains partial; deletion references, other keys/attributes, GC and lifecycle loops excluded."
+  ],
+  "logs_sha256": "9749050cd3ed3266813cb0011d88338b392d8759e70a2b87a51a1a77e0d2dd5f",
+  "python_tests": 19,
+  "rust_tests": 515,
+  "stage": "2AM",
+  "supported_opcodes": 75
+}
