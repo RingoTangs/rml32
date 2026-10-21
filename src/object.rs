@@ -43,6 +43,7 @@ impl Object {
 }
 #[derive(Debug, Default)]
 pub struct ObjectStore {
+    pub(crate) function_origin: Rc<()>,
     host_functions: BTreeMap<u16, crate::HostFunction>,
     programs: BTreeMap<ProgramId, Rc<PreparedProgram>>,
     objects: BTreeMap<ObjectId, Object>,

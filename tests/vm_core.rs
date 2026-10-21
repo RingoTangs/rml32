@@ -671,7 +671,7 @@ fn supported_types_have_explicit_legacy_tags() {
         [0, 1, 2, 4, 10]
     );
     let supported: BTreeSet<_> = rml32::prepared::SUPPORTED_OPCODES.iter().collect();
-    assert_eq!(supported.len(), 73);
+    assert_eq!(supported.len(), 75);
     assert_eq!(ByteString::new(b"\xff").bytes, b"\xff");
 }
 
@@ -10813,4 +10813,1044 @@ fn host_binding_at_last_slot_works_without_a_global_program_or_bank() {
     vm.objects_mut().register_host_function(558, f).unwrap();
     vm.start(o, 0, vec![]).unwrap();
     returns(&mut vm, Value::Int(18));
+}
+
+// Stage 2AG: synthetic Object function values; no packaged bytecode is executed.
+use rml32::{
+    FunctionValue, GlobalBankSchema, prepare_global_program_with_function_values,
+    prepare_program_with_function_values,
+};
+fn fv_machine(p: ProgramImage, values: Vec<Value>) -> (Vm, rml32::ObjectId) {
+    let mut store = ObjectStore::new();
+    let program = store
+        .register_program(prepare_program_with_function_values(p, None).unwrap())
+        .unwrap();
+    let owner = store.create(program, values).unwrap();
+    (Vm::new(store), owner)
+}
+fn fv_finished(vm: &mut Vm) -> Value {
+    let RunOutcome::Finished(Completion::Returned(value)) = vm.run(1000).unwrap() else {
+        panic!("expected returned value")
+    };
+    value
+}
+fn fv_created(vm: &mut Vm, owner: rml32::ObjectId, slot: i16, args: Vec<Value>) -> FunctionValue {
+    vm.start(owner, slot, args).unwrap();
+    let Value::Function(value) = fv_finished(vm) else {
+        panic!("expected function value")
+    };
+    value
+}
+fn fv_basic() -> ProgramImage {
+    image(
+        &[
+            fun(0, 0, 0, 9, &[(1, 0, 0x17)]),
+            fun(1, 0, 0, 2, &[(42, 0, 0x3b)]),
+            fun(2, 1, 0, 255, &[(0, 0, 0x37), (0, 1, 0x05)]),
+        ],
+        0,
+        &[],
+    )
+}
+#[test]
+fn function_values_prepare_opt_in_tags_and_host_isolation() {
+    assert_eq!(
+        prepare_program(fv_basic()).unwrap_err().kind,
+        VmErrorKind::UnsupportedType
+    );
+    let p = image(&[fun(0, 0, 0, 255, &[(0, 0, 0x17)])], 0, &[]);
+    assert_eq!(
+        prepare_program(p.clone()).unwrap_err().kind,
+        VmErrorKind::UnsupportedFeature
+    );
+    assert_eq!(
+        rml32::prepare_program_with_host_calls(p, None)
+            .unwrap_err()
+            .kind,
+        VmErrorKind::UnsupportedFeature
+    );
+    let p = image(&[fun(0, 0, 0, 255, &[(0, 0, 6)])], 0, &[]);
+    assert_eq!(
+        prepare_program_with_function_values(p, None)
+            .unwrap_err()
+            .kind,
+        VmErrorKind::UnsupportedFeature
+    );
+    let p = image(&[fun(0, 1, 0, 255, &[(0, 0, 0x37)])], 0, &[]);
+    let mut typed = p.clone();
+    typed.functions[0].arguments[0].r#type = 9;
+    assert_eq!(
+        prepare_program(typed.clone()).unwrap_err().kind,
+        VmErrorKind::UnsupportedType
+    );
+    assert!(prepare_program_with_function_values(typed, None).is_ok());
+}
+#[test]
+fn function_values_prepare_all_creation_flag_bytes_and_direct_private_slots() {
+    for byte in 0..=255u8 {
+        let mut p = image(
+            &[
+                fun(0, 0, 0, 255, &[(1, byte as i8, 0x17)]),
+                fun(1, 0, 0, 1, &[]),
+            ],
+            0,
+            &[],
+        );
+        p.functions[1].attrib |= 4;
+        let offset = p.functions[0].code.nodes_offset + 8;
+        let result = prepare_program_with_function_values(p, None);
+        if byte < 64 {
+            assert!(result.is_ok(), "{byte}");
+        } else {
+            let e = result.unwrap_err();
+            assert_eq!(e.kind, VmErrorKind::UnsupportedFeature);
+            assert_eq!(e.function, Some(0));
+            assert_eq!(e.pc, Some(2));
+            assert_eq!(e.offset, Some(offset));
+            assert!(e.source.starts_with("sha256:"));
+        }
+    }
+    let mut p = fv_basic();
+    p.functions[1].attrib |= 4;
+    let (mut vm, o) = fv_machine(p, vec![]);
+    let f = fv_created(&mut vm, o, 0, vec![]);
+    vm.start(o, 2, vec![Value::Function(f)]).unwrap();
+    returns(&mut vm, Value::Int(42));
+}
+#[test]
+fn function_values_prepare_signed_slots_counts_missing_bodies_and_reference_targets() {
+    for (slot, kind) in [
+        (-1, VmErrorKind::InvalidProgram),
+        (3, VmErrorKind::InvalidProgram),
+        (1, VmErrorKind::UnsupportedFeature),
+    ] {
+        let p = image(
+            &[fun(0, 0, 0, 255, &[(slot, 0, 0x17)]), fun(2, 0, 0, 1, &[])],
+            0,
+            &[],
+        );
+        let e = prepare_program_with_function_values(p, None).unwrap_err();
+        assert_eq!(e.kind, kind);
+        assert_eq!(e.pc, Some(2));
+    }
+    for count in [-128, -1, 0, 1, 127] {
+        let p = image(&[fun(0, 0, 0, 255, &[(0, count, 5)])], 0, &[]);
+        let r = prepare_program_with_function_values(p, None);
+        if count > 0 {
+            assert!(r.is_ok());
+        } else {
+            assert_eq!(r.unwrap_err().kind, VmErrorKind::InvalidProgram);
+        }
+    }
+    for flags in [-1, 1, 2, 3, 4, 5] {
+        let p = image(&[fun(0, 0, 0, 255, &[(flags, 1, 5)])], 0, &[]);
+        assert_eq!(
+            prepare_program_with_function_values(p, None).is_ok(),
+            flags == 4
+        );
+    }
+    let mut p = fv_basic();
+    p.functions[1].max_args = 1;
+    p.functions[1].min_args = 1;
+    p.functions[1].arguments = image(&[fun(0, 1, 0, 1, &[])], 0, &[])
+        .functions
+        .remove(0)
+        .arguments;
+    p.functions[1].arguments[0].flag = 1;
+    assert_eq!(
+        prepare_program_with_function_values(p, None)
+            .unwrap_err()
+            .kind,
+        VmErrorKind::UnsupportedFeature
+    );
+}
+#[test]
+fn function_values_global_preparation_allows_calls_but_rejects_creation() {
+    let schema = GlobalBankSchema { slots: 0 };
+    assert!(
+        prepare_global_program_with_function_values(
+            global_image(&[fun(559, 1, 0, 255, &[(0, 0, 0x37), (0, 1, 5)])], 0, &[]),
+            schema
+        )
+        .is_ok()
+    );
+    let e = prepare_global_program_with_function_values(
+        global_image(&[fun(559, 0, 0, 255, &[(559, 0, 0x17)])], 0, &[]),
+        schema,
+    )
+    .unwrap_err();
+    assert_eq!(e.kind, VmErrorKind::UnsupportedFeature);
+    assert_eq!(e.function, Some(559));
+    assert_eq!(e.pc, Some(2));
+}
+#[test]
+fn function_values_prepare_preserves_defaults_shape_and_global_gates() {
+    let default = optional_fun(0, 1, 0, 255, &[vec![(0, 0, 0x17)]], &[(0, 0, 0x37)]);
+    let mut p = image(&[default], 0, &[]);
+    optional_meta(&mut p, 0, 0, false, &[1]);
+    assert_eq!(
+        prepare_program_with_function_values(p, None)
+            .unwrap_err()
+            .kind,
+        VmErrorKind::UnsupportedFeature
+    );
+    let mut p = fv_basic();
+    p.constitution_count = Some(2);
+    assert_eq!(
+        prepare_program_with_function_values(p, None)
+            .unwrap_err()
+            .kind,
+        VmErrorKind::UnsupportedFeature
+    );
+    let p = image(&[fun(0, 0, 0, 255, &[(0, 0, 0x35)])], 0, &[]);
+    assert_eq!(
+        prepare_program_with_function_values(p.clone(), None)
+            .unwrap_err()
+            .kind,
+        VmErrorKind::UnsupportedFeature
+    );
+    assert!(prepare_program_with_function_values(p, Some(GlobalBankSchema { slots: 1 })).is_ok());
+}
+#[test]
+fn function_values_identity_metadata_and_debug_hide_captures() {
+    let p = image(
+        &[
+            fun(0, 1, 0, 9, &[(0, 0, 0x37), (1, 1, 0x17)]),
+            fun(1, 1, 0, 255, &[(0, 0, 0x37)]),
+        ],
+        0,
+        &[],
+    );
+    let (mut vm, o) = fv_machine(p, vec![]);
+    let a = fv_created(&mut vm, o, 0, vec![Value::bytes(b"secret capture")]);
+    let b = fv_created(&mut vm, o, 0, vec![Value::bytes(b"secret capture")]);
+    assert_eq!(a, a.clone());
+    assert_ne!(a, b);
+    assert_eq!(a.owner(), o);
+    assert_eq!(a.function(), 1);
+    assert_eq!(a.bound_count(), 1);
+    assert_eq!(a.program(), vm.objects().get(o).unwrap().program());
+    assert_eq!(Value::Function(a.clone()).tag(), 9);
+    let debug = format!("{a:?}");
+    assert!(debug.contains("bound_count"));
+    assert!(!debug.contains("secret"));
+}
+#[test]
+fn function_values_capture_scalars_without_bit_or_byte_conversion() {
+    let p = image(
+        &[
+            fun(0, 1, 0, 9, &[(0, 0, 0x37), (1, 1, 0x17)]),
+            fun(1, 1, 0, 255, &[(0, 0, 0x37)]),
+            fun(2, 1, 0, 255, &[(0, 0, 0x37), (0, 1, 5)]),
+        ],
+        0,
+        &[],
+    );
+    let (mut vm, o) = fv_machine(p, vec![]);
+    for value in [
+        Value::Undefined,
+        Value::Void,
+        Value::Int(i32::MIN),
+        Value::Real(rml32::RealBits::from_bits(0xffc01234)),
+        Value::Real(rml32::RealBits::from_bits(0x80000000)),
+        Value::bytes(b"a\0b\xff"),
+    ] {
+        let f = fv_created(&mut vm, o, 0, vec![value.clone()]);
+        vm.start(o, 2, vec![Value::Function(f.clone())]).unwrap();
+        returns(&mut vm, value.clone());
+        vm.start(o, 2, vec![Value::Function(f)]).unwrap();
+        returns(&mut vm, value);
+    }
+}
+#[test]
+fn function_values_bound_parameters_precede_new_parameters_in_stack_order() {
+    let p = image(
+        &[
+            fun(
+                0,
+                0,
+                0,
+                6,
+                &[
+                    (40, 0, 0x3b),
+                    (30, 0, 0x3b),
+                    (20, 0, 0x3b),
+                    (10, 0, 0x3b),
+                    (1, 2, 0x17),
+                    (0, 3, 5),
+                ],
+            ),
+            fun(1, 4, 0, 6, &[(0, 0, 0x15)]),
+        ],
+        0,
+        &[],
+    );
+    let (mut vm, o) = fv_machine(p, vec![]);
+    vm.start(o, 0, vec![]).unwrap();
+    assert_eq!(
+        returned_array(&mut vm),
+        vec![
+            Value::Int(10),
+            Value::Int(20),
+            Value::Int(30),
+            Value::Int(40)
+        ]
+    );
+}
+#[test]
+fn function_values_max_capture_and_total_argument_boundaries() {
+    for total in [127, 128] {
+        let mut body = vec![(1, 0, 0x3b); total - 63];
+        body.extend(vec![(2, 0, 0x3b); 63]);
+        body.push((1, 63, 0x17));
+        body.push((0, (total - 63 + 1) as i8, 5));
+        let mut p = image(
+            &[fun(0, 0, 0, 2, &body), fun(1, 0, 0, 2, &[(0, 0, 0x34)])],
+            0,
+            &[],
+        );
+        optional_meta(&mut p, 1, 0, true, &[]);
+        let (mut vm, o) = fv_machine(p, vec![]);
+        vm.start(o, 0, vec![]).unwrap();
+        if total == 127 {
+            returns(&mut vm, Value::Int(127));
+        } else {
+            vm.run(body.len() + 1).unwrap();
+            let before = vm.stack().unwrap();
+            let e = vm.run(1).unwrap_err();
+            assert_eq!(e.kind, VmErrorKind::Limit);
+            assert_eq!(vm.stack().unwrap(), before);
+        }
+    }
+}
+#[test]
+fn function_values_optional_defaults_and_variadic_extras() {
+    for (new_count, expected) in [
+        (0, vec![Value::Int(7), Value::Int(9)]),
+        (1, vec![Value::Int(7), Value::Int(3)]),
+        (2, vec![Value::Int(7), Value::Int(3), Value::Int(3)]),
+    ] {
+        let mut body = vec![(3, 0, 0x3b); new_count];
+        body.extend([(7, 0, 0x3b), (1, 1, 0x17), (0, (new_count + 1) as i8, 5)]);
+        let target = optional_fun(1, 2, 0, 6, &[vec![], vec![(9, 0, 0x3b)]], &[(0, 0, 0x15)]);
+        let mut p = image(&[fun(0, 0, 0, 6, &body), target], 0, &[]);
+        optional_meta(&mut p, 1, 1, true, &[0, 1]);
+        let (mut vm, o) = fv_machine(p, vec![]);
+        vm.start(o, 0, vec![]).unwrap();
+        assert_eq!(returned_array(&mut vm), expected);
+    }
+}
+#[test]
+fn function_values_argument_coercion_nullable_and_count_preflight() {
+    let p = image(
+        &[
+            fun(0, 0, 0, 9, &[(1, 0, 0x17)]),
+            fun(1, 1, 0, 255, &[(0, 0, 0x37)]),
+            fun(2, 2, 0, 255, &[(1, 0, 0x37), (0, 0, 0x37), (0, 2, 5)]),
+            fun(3, 1, 0, 255, &[(0, 0, 0x37), (0, 1, 5)]),
+        ],
+        0,
+        &[],
+    );
+    for (tag, nullable, input, expected) in [
+        (3, false, Value::Int(2), Some(real(2.0))),
+        (2, false, real(2.75), Some(Value::Int(2))),
+        (4, true, Value::Undefined, Some(Value::Undefined)),
+        (4, false, Value::Int(1), None),
+    ] {
+        let mut p = p.clone();
+        p.functions[1].arguments[0].r#type = tag;
+        p.functions[1].arguments[0].attrib = if nullable { 8 } else { 0 };
+        let (mut vm, o) = fv_machine(p, vec![]);
+        let f = fv_created(&mut vm, o, 0, vec![]);
+        vm.start(o, 2, vec![Value::Function(f.clone()), input])
+            .unwrap();
+        vm.run(4).unwrap();
+        let before = vm.stack().unwrap();
+        if let Some(value) = expected {
+            returns(&mut vm, value);
+        } else {
+            let e = vm.run(1).unwrap_err();
+            assert_eq!(e.kind, VmErrorKind::UnsupportedType);
+            assert_eq!(e.function, Some(2));
+            assert_eq!(e.pc, Some(4));
+            assert_eq!(vm.stack().unwrap(), before);
+        }
+        if vm.run(0).is_ok() {
+            vm.start(o, 3, vec![Value::Function(f)]).unwrap();
+            assert_eq!(vm.run(10).unwrap_err().kind, VmErrorKind::ArgumentCount);
+        }
+    }
+}
+#[test]
+fn function_values_reject_non_scalar_captures_without_consuming_operands() {
+    let p = image(
+        &[
+            fun(0, 1, 0, 9, &[(0, 0, 0x37), (1, 1, 0x17)]),
+            fun(1, 0, 0, 1, &[]),
+            fun(2, 0, 0, 9, &[(1, 0, 0x17)]),
+        ],
+        0,
+        &[],
+    );
+    let (mut vm, o) = fv_machine(p, vec![]);
+    let f = fv_created(&mut vm, o, 2, vec![]);
+    for value in [
+        Value::Object(o),
+        Value::array(vec![]).unwrap(),
+        Value::mapping(vec![]).unwrap(),
+        Value::Function(f),
+    ] {
+        vm.start(o, 0, vec![value]).unwrap();
+        vm.run(3).unwrap();
+        let before = vm.stack().unwrap();
+        let e = vm.run(1).unwrap_err();
+        assert_eq!(e.kind, VmErrorKind::UnsupportedType);
+        assert_eq!(e.pc, Some(3));
+        assert_eq!(vm.stack().unwrap(), before);
+    }
+}
+#[test]
+fn function_values_reject_reference_capture_target_and_new_argument() {
+    for body in [
+        vec![(0, 0, 0x39), (1, 1, 0x17)],
+        vec![(0, 0, 0x39), (0, 1, 5)],
+        vec![(0, 0, 0x39), (1, 0, 0x17), (0, 2, 5)],
+    ] {
+        let p = image(
+            &[fun(0, 1, 0, 255, &body), fun(1, 1, 0, 255, &[(0, 0, 0x37)])],
+            0,
+            &[],
+        );
+        let (mut vm, o) = fv_machine(p, vec![]);
+        vm.start(o, 0, vec![Value::Int(5)]).unwrap();
+        vm.run(body.len() + 1).unwrap();
+        let before = vm.stack().unwrap();
+        let e = vm.run(1).unwrap_err();
+        assert_eq!(e.kind, VmErrorKind::UnsupportedFeature);
+        assert_eq!(vm.stack().unwrap(), before);
+    }
+}
+#[test]
+fn function_values_reject_non_function_targets_even_with_may_null() {
+    for flags in [0, 4] {
+        let p = image(&[fun(0, 1, 0, 255, &[(0, 0, 0x37), (flags, 1, 5)])], 0, &[]);
+        let (mut vm, o) = fv_machine(p, vec![]);
+        for value in [
+            Value::Undefined,
+            Value::Void,
+            Value::Int(0),
+            Value::bytes(b"$name"),
+            Value::Object(o),
+        ] {
+            vm.start(o, 0, vec![value]).unwrap();
+            vm.run(3).unwrap();
+            let before = vm.stack().unwrap();
+            let e = vm.run(1).unwrap_err();
+            assert_eq!(e.kind, VmErrorKind::UnsupportedType);
+            assert_eq!(vm.stack().unwrap(), before);
+            assert_eq!(vm.run(100).unwrap_err(), e);
+        }
+    }
+}
+#[test]
+fn function_values_cross_store_rejects_colliding_ids_and_into_objects_keeps_origin() {
+    let (mut first, o1) = fv_machine(fv_basic(), vec![]);
+    let f = fv_created(&mut first, o1, 0, vec![]);
+    let (mut second, o2) = fv_machine(fv_basic(), vec![]);
+    assert_eq!(o1.get(), o2.get());
+    assert_eq!(
+        f.program().get(),
+        second.objects().get(o2).unwrap().program().get()
+    );
+    second
+        .start(o2, 2, vec![Value::Function(f.clone())])
+        .unwrap();
+    second.run(3).unwrap();
+    let before = second.stack().unwrap();
+    let e = second.run(1).unwrap_err();
+    assert_eq!(e.kind, VmErrorKind::InvalidState);
+    assert_eq!(second.stack().unwrap(), before);
+    let mut first = Vm::new(first.into_objects());
+    first.start(o1, 2, vec![Value::Function(f)]).unwrap();
+    returns(&mut first, Value::Int(42));
+}
+#[test]
+fn function_values_budget_creation_call_entry_and_shared_repeated_calls() {
+    let (mut vm, o) = fv_machine(fv_basic(), vec![]);
+    vm.start(o, 0, vec![]).unwrap();
+    let before = vm.stack().unwrap();
+    assert_eq!(vm.run(0).unwrap(), RunOutcome::BudgetExhausted);
+    assert_eq!(vm.stack().unwrap(), before);
+    vm.run(2).unwrap();
+    assert!(vm.stack().unwrap().is_empty());
+    vm.run(1).unwrap();
+    assert!(matches!(
+        &vm.stack().unwrap()[0],
+        rml32::StackSnapshot::Value(Value::Function(_))
+    ));
+    let Value::Function(f) = fv_finished(&mut vm) else {
+        panic!()
+    };
+    for flags in [0, 4] {
+        let mut p = image(&[fun(0, 1, 0, 255, &[(0, 0, 0x37), (flags, 1, 5)])], 0, &[]);
+        p.sha256 = format!("caller-{flags}");
+        let pid = vm
+            .objects_mut()
+            .register_program(prepare_program_with_function_values(p, None).unwrap())
+            .unwrap();
+        let caller = vm.objects_mut().create(pid, vec![]).unwrap();
+        vm.start(caller, 0, vec![Value::Function(f.clone())])
+            .unwrap();
+        vm.run(3).unwrap();
+        assert_eq!(vm.frame_depth(), 1);
+        vm.run(1).unwrap();
+        assert_eq!(vm.frame_depth(), 2);
+        assert_eq!(vm.run(0).unwrap(), RunOutcome::BudgetExhausted);
+        returns(&mut vm, Value::Int(42));
+    }
+}
+#[test]
+fn function_values_global_caller_restores_context_and_uses_saved_object_pool() {
+    let schema = GlobalBankSchema { slots: 0 };
+    let p = image(
+        &[
+            fun(0, 0, 0, 9, &[(1, 0, 0x17)]),
+            fun(1, 0, 0, 4, &[(0, 0, 0x40)]),
+            fun(
+                2,
+                1,
+                0,
+                6,
+                &[(0, 0, 0x37), (559, -127, 7), (0, 0, 0x41), (2, 0, 0x16)],
+            ),
+        ],
+        0,
+        &[b"object pool\0"],
+    );
+    let mut store = ObjectStore::new();
+    store.register_globals(vec![]).unwrap();
+    let pid = store
+        .register_program(prepare_program_with_function_values(p, Some(schema)).unwrap())
+        .unwrap();
+    let o = store.create(pid, vec![]).unwrap();
+    let mut vm = Vm::new(store);
+    let f = fv_created(&mut vm, o, 0, vec![]);
+    let gp = global_image(
+        &[fun(
+            559,
+            1,
+            0,
+            6,
+            &[(0, 0, 0x37), (0, 1, 5), (0, 0, 0x41), (2, 0, 0x16)],
+        )],
+        0,
+        &[b"wrong global pool\0"],
+    );
+    let g = vm
+        .objects_mut()
+        .register_program(prepare_global_program_with_function_values(gp, schema).unwrap())
+        .unwrap();
+    vm.objects_mut().bind_global_program(g).unwrap();
+    vm.start(o, 2, vec![Value::Function(f)]).unwrap();
+    let result = returned_array(&mut vm);
+    assert_eq!(result[0], Value::Object(o));
+    let Value::Array(inner) = &result[1] else {
+        panic!()
+    };
+    assert_eq!(
+        inner.elements().unwrap(),
+        vec![Value::Int(0), Value::bytes(b"object pool")]
+    );
+}
+#[test]
+fn function_values_cross_object_nested_07_and_08_keep_saved_owner() {
+    let p = image(
+        &[
+            fun(0, 0, 0, 9, &[(1, 0, 0x17)]),
+            fun(1, 0, 0, 10, &[(2, 0, 7)]),
+            fun(2, 0, 0, 10, &[(0, 0, 0x41)]),
+        ],
+        0,
+        &[],
+    );
+    let (mut vm, o) = fv_machine(p, vec![]);
+    let f = fv_created(&mut vm, o, 0, vec![]);
+    let target = image(&[fun(0, 1, 0, 255, &[(0, 0, 0x37), (0, 1, 5)])], 0, &[]);
+    let target = prepare_program_with_function_values(target, None)
+        .unwrap()
+        .with_methods(vec![rml32::MethodBinding {
+            name: b"invoke".to_vec(),
+            slot: 0,
+        }])
+        .unwrap();
+    let tp = vm.objects_mut().register_program(target).unwrap();
+    let to = vm.objects_mut().create(tp, vec![]).unwrap();
+    let caller = image(
+        &[fun(
+            0,
+            2,
+            0,
+            255,
+            &[(0, 0, 0x37), (0, 0, 0x40), (1, 0, 0x37), (0, 1, 8)],
+        )],
+        0,
+        &[b"invoke\0"],
+    );
+    let cp = vm
+        .objects_mut()
+        .register_program(prepare_program(caller).unwrap())
+        .unwrap();
+    let co = vm.objects_mut().create(cp, vec![]).unwrap();
+    vm.start(co, 0, vec![Value::Function(f), Value::Object(to)])
+        .unwrap();
+    returns(&mut vm, Value::Object(o));
+}
+#[test]
+fn function_values_tag9_arguments_returns_containers_and_mapping_key_rejection() {
+    let mut p = fv_basic();
+    p.functions.push(
+        image(&[fun(3, 1, 0, 9, &[(0, 0, 0x37)])], 0, &[])
+            .functions
+            .remove(0),
+    );
+    p.functions.push(
+        image(
+            &[fun(4, 1, 0, 9, &[(0, 0, 0x37), (3, 0, 0x17), (0, 2, 5)])],
+            0,
+            &[],
+        )
+        .functions
+        .remove(0),
+    );
+    p.max_functions = 5;
+    p.functions[3].arguments[0].r#type = 9;
+    let (mut vm, o) = fv_machine(p, vec![]);
+    let f = fv_created(&mut vm, o, 0, vec![]);
+    vm.start(o, 3, vec![Value::Function(f.clone())]).unwrap();
+    returns(&mut vm, Value::Function(f.clone()));
+    vm.start(o, 4, vec![Value::Function(f.clone())]).unwrap();
+    returns(&mut vm, Value::Function(f.clone()));
+    let a = Value::array(vec![Value::Function(f.clone())]).unwrap();
+    let Value::Array(array) = a else { panic!() };
+    assert_eq!(array.elements().unwrap(), vec![Value::Function(f.clone())]);
+    assert_eq!(array.depth().unwrap(), 1);
+    let m = Value::mapping(vec![(Value::Int(2), Value::Function(f.clone()))]).unwrap();
+    let Value::Mapping(mapping) = m else { panic!() };
+    assert_eq!(
+        mapping.get(&Value::Int(2)).unwrap(),
+        Some(Value::Function(f.clone()))
+    );
+    assert_eq!(mapping.depth().unwrap(), 1);
+    assert_eq!(
+        Value::mapping(vec![(Value::Function(f), Value::Int(0))])
+            .unwrap_err()
+            .kind,
+        VmErrorKind::UnsupportedType
+    );
+}
+#[test]
+fn function_values_vm_equality_uses_identity_and_rejects_arithmetic() {
+    let (mut vm, o) = fv_machine(fv_basic(), vec![]);
+    let a = fv_created(&mut vm, o, 0, vec![]);
+    let b = fv_created(&mut vm, o, 0, vec![]);
+    for (op, right, expected) in [
+        (0x1c, Value::Function(a.clone()), 1),
+        (0x1c, Value::Function(b.clone()), 0),
+        (0x2a, Value::Function(b), 1),
+        (0x1c, Value::Int(1), 0),
+        (0x2a, Value::Undefined, 1),
+    ] {
+        let p = image(
+            &[fun(0, 2, 0, 2, &[(0, 0, 0x37), (1, 0, 0x37), (0, 0, op)])],
+            0,
+            &[],
+        );
+        let pid = vm
+            .objects_mut()
+            .register_program(prepare_program(p).unwrap())
+            .unwrap();
+        let co = vm.objects_mut().create(pid, vec![]).unwrap();
+        vm.start(co, 0, vec![Value::Function(a.clone()), right])
+            .unwrap();
+        returns(&mut vm, Value::Int(expected));
+    }
+    for op in [1, 0x27, 0x19, 0x2b] {
+        let p = image(
+            &[fun(0, 2, 0, 255, &[(0, 0, 0x37), (1, 0, 0x37), (0, 0, op)])],
+            0,
+            &[],
+        );
+        let pid = vm
+            .objects_mut()
+            .register_program(prepare_program(p).unwrap())
+            .unwrap();
+        let co = vm.objects_mut().create(pid, vec![]).unwrap();
+        vm.start(
+            co,
+            0,
+            vec![Value::Function(a.clone()), Value::Function(a.clone())],
+        )
+        .unwrap();
+        assert_eq!(vm.run(100).unwrap_err().kind, VmErrorKind::UnsupportedType);
+    }
+}
+#[test]
+fn function_values_deleted_owner_raw_call_fails_but_later_copy_is_undefined() {
+    let (mut vm, o) = fv_machine(fv_basic(), vec![]);
+    let f = fv_created(&mut vm, o, 0, vec![]);
+    let p = image(
+        &[
+            fun(0, 1, 0, 255, &[(0, 0, 0x37), (4, 1, 5)]),
+            fun(1, 1, 0, 255, &[(0, 0, 0x37)]),
+        ],
+        0,
+        &[],
+    );
+    let pid = vm
+        .objects_mut()
+        .register_program(prepare_program_with_function_values(p, None).unwrap())
+        .unwrap();
+    let co = vm.objects_mut().create(pid, vec![]).unwrap();
+    vm.start(co, 0, vec![Value::Function(f.clone())]).unwrap();
+    vm.run(3).unwrap();
+    vm.objects_mut().remove(o).unwrap();
+    let before = vm.stack().unwrap();
+    let e = vm.run(1).unwrap_err();
+    assert_eq!(e.kind, VmErrorKind::InvalidObject);
+    assert_eq!(e.pc, Some(3));
+    assert_eq!(vm.stack().unwrap(), before);
+    vm.start(co, 1, vec![Value::Function(f.clone())]).unwrap();
+    returns(&mut vm, Value::Undefined);
+    assert_eq!(Value::Function(f.clone()), Value::Function(f));
+}
+#[test]
+fn function_values_deleted_owner_raw_truth_and_equality_do_not_normalize() {
+    for opcode in [0x2d, 0x21, 0x1c] {
+        let (mut vm, o) = fv_machine(fv_basic(), vec![]);
+        let f = fv_created(&mut vm, o, 0, vec![]);
+        let mut body = vec![(0, 0, 0x37)];
+        if opcode == 0x1c {
+            body.push((0, 0, 0x37));
+        }
+        let pause = 2 + body.len();
+        body.extend(match opcode {
+            0x21 => vec![(1, 3, 0x21), (9, 0, 0x3b), (0, 0, 0x3b)],
+            0x1c => vec![(0, 0, 0x1c)],
+            _ => vec![(0, 0, 0x2d)],
+        });
+        let p = image(&[fun(0, 1, 0, 2, &body)], 0, &[]);
+        let pid = vm
+            .objects_mut()
+            .register_program(prepare_program(p).unwrap())
+            .unwrap();
+        let co = vm.objects_mut().create(pid, vec![]).unwrap();
+        vm.start(co, 0, vec![Value::Function(f)]).unwrap();
+        vm.run(pause).unwrap();
+        vm.objects_mut().remove(o).unwrap();
+        returns(&mut vm, Value::Int(if opcode == 0x1c { 1 } else { 0 }));
+    }
+}
+#[test]
+fn function_values_indirect_callee_errors_keep_actual_function_and_offset() {
+    let p = image(
+        &[
+            fun(0, 0, 0, 255, &[(1, 0, 0x17), (0, 1, 5)]),
+            fun(1, 0, 0, 2, &[(1, 0, 0x3b), (0, 0, 0x3b), (0, 0, 0x19)]),
+        ],
+        0,
+        &[],
+    );
+    let expected = p.functions[1].code.nodes_offset + 4 * 4;
+    let (mut vm, o) = fv_machine(p, vec![]);
+    vm.start(o, 0, vec![]).unwrap();
+    let e = vm.run(100).unwrap_err();
+    assert_eq!(e.kind, VmErrorKind::Arithmetic);
+    assert_eq!(e.function, Some(1));
+    assert_eq!(e.pc, Some(4));
+    assert_eq!(e.offset, Some(expected));
+    assert_eq!(vm.frame_depth(), 2);
+}
+#[test]
+fn function_values_catch_unwinds_indirect_callee_numeric_fault() {
+    // catch at PC2 resumes at PC7 after the failing callee is discarded.
+    let p = image(
+        &[
+            fun(
+                0,
+                0,
+                0,
+                2,
+                &[
+                    (4, 0, 0x2c),
+                    (1, 0, 0x17),
+                    (0, 1, 5),
+                    (0, 0, 0x1a),
+                    (0, 0, 0x49),
+                    (0, 0, 0x0e),
+                ],
+            ),
+            fun(1, 0, 0, 2, &[(1, 0, 0x3b), (0, 0, 0x3b), (0, 0, 0x19)]),
+        ],
+        0,
+        &[],
+    );
+    let (mut vm, o) = fv_machine(p, vec![]);
+    vm.start(o, 0, vec![]).unwrap();
+    returns(&mut vm, Value::Int(1));
+    assert_eq!(vm.frame_depth(), 0);
+}
+#[test]
+fn function_values_resource_limits_and_underflow_preserve_call_operands() {
+    for frames in [1, 2] {
+        let mut body = vec![(1, 0, 0x3b); 3];
+        body.extend([(1, 3, 0x17), (0, 1, 5)]);
+        let p = image(
+            &[fun(0, 0, 0, 255, &body), fun(1, 3, 2, 255, &[(0, 0, 0x37)])],
+            0,
+            &[],
+        );
+        let (vm, o) = fv_machine(p, vec![]);
+        let mut vm = Vm::with_limits(
+            vm.into_objects(),
+            VmLimits {
+                max_stack: 4,
+                max_frames: frames,
+                max_reference_cells: 2,
+            },
+        );
+        vm.start(o, 0, vec![]).unwrap();
+        vm.run(6).unwrap();
+        let before = vm.stack().unwrap();
+        assert_eq!(vm.run(1).unwrap_err().kind, VmErrorKind::Limit);
+        assert_eq!(vm.stack().unwrap(), before);
+    }
+    for node in [(0, 1, 5), (0, 1, 0x17)] {
+        let (mut vm, o) = fv_machine(image(&[fun(0, 1, 0, 255, &[node])], 0, &[]), vec![]);
+        vm.start(o, 0, vec![Value::Int(7)]).unwrap();
+        vm.run(2).unwrap();
+        let before = vm.stack().unwrap();
+        assert_eq!(vm.run(1).unwrap_err().kind, VmErrorKind::StackUnderflow);
+        assert_eq!(vm.stack().unwrap(), before);
+    }
+}
+
+#[test]
+fn function_values_host_any_mixed_transfers_opaque_identity_and_exact_rejects() {
+    let (mut vm, o) = fv_machine(fv_basic(), vec![]);
+    let f = fv_created(&mut vm, o, 0, vec![]);
+    let p = image(&[fun(0, 1, 0, 255, &[(0, 0, 0x37), (0, 1, 6)])], 0, &[]);
+    let pid = vm
+        .objects_mut()
+        .register_program(rml32::prepare_program_with_host_calls(p, None).unwrap())
+        .unwrap();
+    let co = vm.objects_mut().create(pid, vec![]).unwrap();
+    vm.objects_mut()
+        .register_host_function(
+            0,
+            host_binding(vec![HostType::Any], HostReturn::Mixed, |_, args| {
+                Ok(Some(args[0].clone()))
+            }),
+        )
+        .unwrap();
+    vm.start(co, 0, vec![Value::Function(f.clone())]).unwrap();
+    returns(&mut vm, Value::Function(f.clone()));
+    // Callback returns a saved raw value after owner deletion; 06 must not normalize it.
+    vm.objects_mut().remove(o).unwrap();
+    vm.objects_mut().remove_host_function(0).unwrap();
+    let retained = f.clone();
+    vm.objects_mut()
+        .register_host_function(
+            0,
+            host_binding(vec![HostType::Any], HostReturn::Mixed, move |_, _| {
+                Ok(Some(Value::Function(retained.clone())))
+            }),
+        )
+        .unwrap();
+    vm.start(co, 0, vec![Value::Int(1)]).unwrap();
+    vm.run(4).unwrap();
+    assert_eq!(
+        vm.stack().unwrap().last(),
+        Some(&rml32::StackSnapshot::Value(Value::Function(f.clone())))
+    );
+    returns(&mut vm, Value::Undefined); // Ordinary return is a later VM copy boundary.
+    for policy in [
+        HostReturn::Exact(HostType::Int),
+        HostReturn::Exact(HostType::Object),
+    ] {
+        vm.objects_mut().remove_host_function(0).unwrap();
+        let retained = f.clone();
+        vm.objects_mut()
+            .register_host_function(
+                0,
+                host_binding(vec![HostType::Any], policy, move |_, _| {
+                    Ok(Some(Value::Function(retained.clone())))
+                }),
+            )
+            .unwrap();
+        vm.start(co, 0, vec![Value::Int(1)]).unwrap();
+        vm.run(3).unwrap();
+        let before = vm.stack().unwrap();
+        assert_eq!(vm.run(1).unwrap_err().kind, VmErrorKind::UnsupportedType);
+        assert_eq!(vm.stack().unwrap(), before);
+    }
+}
+#[test]
+fn function_values_store_in_object_global_local_and_container_member_slots() {
+    let schema = GlobalBankSchema { slots: 1 };
+    let p = image(
+        &[
+            fun(0, 0, 0, 9, &[(1, 0, 0x17)]),
+            fun(1, 0, 0, 2, &[(42, 0, 0x3b)]),
+            // Ordinary assignment to Object and Global references; return stored global.
+            fun(
+                2,
+                1,
+                1,
+                9,
+                &[
+                    (0, 0, 0x37),
+                    (0, 0, 0x3e),
+                    (0, 0, 3),
+                    (0, 0, 0x33),
+                    (0, 0, 0x3d),
+                    (0, 0, 0x36),
+                    (0, 0, 3),
+                    (0, 0, 0x33),
+                    (0, 0, 0x35),
+                ],
+            ),
+            fun(
+                3,
+                2,
+                0,
+                9,
+                &[
+                    (0, 0, 0x39),
+                    (0, 0, 0x3b),
+                    (0, 0, 0x44),
+                    (1, 0, 0x37),
+                    (0, 0, 4),
+                ],
+            ),
+            fun(
+                4,
+                1,
+                1,
+                9,
+                &[
+                    (0, 0, 0x37),
+                    (-1, 0, 0x39),
+                    (0, 0, 3),
+                    (0, 0, 0x33),
+                    (-1, 0, 0x37),
+                ],
+            ),
+        ],
+        1,
+        &[],
+    );
+    let mut store = ObjectStore::new();
+    store.register_globals(vec![Value::Undefined]).unwrap();
+    let pid = store
+        .register_program(prepare_program_with_function_values(p, Some(schema)).unwrap())
+        .unwrap();
+    let o = store.create(pid, vec![Value::Undefined]).unwrap();
+    let mut vm = Vm::new(store);
+    let f = fv_created(&mut vm, o, 0, vec![]);
+    vm.start(o, 2, vec![Value::Function(f.clone())]).unwrap();
+    returns(&mut vm, Value::Function(f.clone()));
+    assert_eq!(
+        vm.objects().get(o).unwrap().variables().unwrap(),
+        vec![Value::Function(f.clone())]
+    );
+    assert_eq!(
+        vm.objects().global_values().unwrap(),
+        vec![Value::Function(f.clone())]
+    );
+    for container in [
+        Value::array(vec![Value::Undefined]).unwrap(),
+        Value::mapping(vec![(Value::Int(0), Value::Undefined)]).unwrap(),
+    ] {
+        vm.start(o, 3, vec![container.clone(), Value::Function(f.clone())])
+            .unwrap();
+        returns(&mut vm, Value::Function(f.clone()));
+        let stored = match container {
+            Value::Array(a) => a.elements().unwrap()[0].clone(),
+            Value::Mapping(m) => m.get(&Value::Int(0)).unwrap().unwrap(),
+            _ => unreachable!(),
+        };
+        assert_eq!(stored, Value::Function(f.clone()));
+    }
+    vm.start(o, 4, vec![Value::Function(f.clone())]).unwrap();
+    returns(&mut vm, Value::Function(f));
+}
+#[test]
+fn function_values_global_rebinding_during_pause_preserves_saved_target_and_active_frame() {
+    let schema = GlobalBankSchema { slots: 0 };
+    let p = image(
+        &[
+            fun(0, 0, 0, 9, &[(1, 0, 0x17)]),
+            fun(1, 0, 0, 2, &[(7, 0, 0x3b)]),
+            fun(2, 1, 0, 255, &[(0, 0, 0x37), (559, -127, 7)]),
+        ],
+        0,
+        &[],
+    );
+    let mut store = ObjectStore::new();
+    store.register_globals(vec![]).unwrap();
+    let pid = store
+        .register_program(prepare_program_with_function_values(p, Some(schema)).unwrap())
+        .unwrap();
+    let o = store.create(pid, vec![]).unwrap();
+    let mut vm = Vm::new(store);
+    let f = fv_created(&mut vm, o, 0, vec![]);
+    let old = global_image(&[fun(559, 1, 0, 255, &[(0, 0, 0x37), (0, 1, 5)])], 0, &[]);
+    let gp = vm
+        .objects_mut()
+        .register_program(prepare_global_program_with_function_values(old, schema).unwrap())
+        .unwrap();
+    vm.objects_mut().bind_global_program(gp).unwrap();
+    vm.start(o, 2, vec![Value::Function(f)]).unwrap();
+    vm.run(5).unwrap();
+    assert_eq!(vm.frame_depth(), 2);
+    vm.objects_mut().clear_global_program().unwrap();
+    let new = global_image(&[fun(559, 1, 0, 2, &[(99, 0, 0x3b)])], 0, &[]);
+    let gp = vm
+        .objects_mut()
+        .register_program(rml32::prepare_global_program(new, schema).unwrap())
+        .unwrap();
+    vm.objects_mut().bind_global_program(gp).unwrap();
+    returns(&mut vm, Value::Int(7));
+}
+#[test]
+fn function_values_indirect_preflight_failures_bypass_numeric_catch() {
+    for flags in [0, 4] {
+        let p = image(
+            &[fun(
+                0,
+                0,
+                0,
+                255,
+                &[
+                    (4, 0, 0x2c),
+                    (0, 0, 0x42),
+                    (flags, 1, 5),
+                    (0, 0, 0x1a),
+                    (0, 0, 0x49),
+                    (0, 0, 0x0e),
+                ],
+            )],
+            0,
+            &[],
+        );
+        let (mut vm, o) = fv_machine(p, vec![]);
+        vm.start(o, 0, vec![]).unwrap();
+        vm.run(4).unwrap();
+        let before = vm.stack().unwrap();
+        let e = vm.run(1).unwrap_err();
+        assert_eq!(e.kind, VmErrorKind::UnsupportedType);
+        assert_eq!(e.pc, Some(4));
+        assert_eq!(vm.stack().unwrap(), before);
+    }
 }

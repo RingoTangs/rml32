@@ -11,11 +11,11 @@ use std::{
 };
 
 pub const SUPPORTED_OPCODES: &[u8] = &[
-    0x1, 0x2, 0x3, 0x4, 0x6, 0x7, 0x8, 0xa, 0xb, 0xc, 0xd, 0xe, 0xf, 0x10, 0x12, 0x13, 0x14, 0x15,
-    0x16, 0x18, 0x19, 0x1a, 0x1b, 0x1c, 0x1d, 0x1e, 0x1f, 0x20, 0x21, 0x22, 0x23, 0x24, 0x25, 0x26,
-    0x27, 0x28, 0x29, 0x2a, 0x2b, 0x2c, 0x2d, 0x2e, 0x2f, 0x30, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37,
-    0x39, 0x3b, 0x3c, 0x3d, 0x3e, 0x3f, 0x40, 0x41, 0x42, 0x43, 0x44, 0x45, 0x47, 0x48, 0x49, 0x4a,
-    0x4b, 0x4d, 0x4e, 0x4f, 0x50, 0x51, 0x55,
+    0x1, 0x2, 0x3, 0x4, 0x5, 0x6, 0x7, 0x8, 0xa, 0xb, 0xc, 0xd, 0xe, 0xf, 0x10, 0x12, 0x13, 0x14,
+    0x15, 0x16, 0x17, 0x18, 0x19, 0x1a, 0x1b, 0x1c, 0x1d, 0x1e, 0x1f, 0x20, 0x21, 0x22, 0x23, 0x24,
+    0x25, 0x26, 0x27, 0x28, 0x29, 0x2a, 0x2b, 0x2c, 0x2d, 0x2e, 0x2f, 0x30, 0x32, 0x33, 0x34, 0x35,
+    0x36, 0x37, 0x39, 0x3b, 0x3c, 0x3d, 0x3e, 0x3f, 0x40, 0x41, 0x42, 0x43, 0x44, 0x45, 0x47, 0x48,
+    0x49, 0x4a, 0x4b, 0x4d, 0x4e, 0x4f, 0x50, 0x51, 0x55,
 ];
 #[derive(Debug, Clone)]
 pub struct Instruction {
@@ -104,6 +104,7 @@ pub struct PreparedProgram {
     pub(crate) source: String,
     pub(crate) global_schema: Option<GlobalBankSchema>,
     pub(crate) allow_host_calls: bool,
+    pub(crate) allow_function_values: bool,
     pub(crate) kind: ProgramKind,
     pub(crate) function_capacity: usize,
     pub(crate) variable_count: usize,
@@ -188,15 +189,26 @@ fn bytes(hex: &str) -> Result<Vec<u8>, VmError> {
         .map(|i| u8::from_str_radix(&hex[i..i + 2], 16).map_err(|_| err("invalid hex record")))
         .collect()
 }
+#[derive(Clone, Copy, Default)]
+struct PreparationOptions {
+    globals: Option<GlobalBankSchema>,
+    global_code: bool,
+    host_calls: bool,
+    function_values: bool,
+}
 fn instructions(
     segment: &CodeSegment,
     strings: &[Option<crate::ByteString>],
     vars: usize,
     initialization: bool,
-    globals: Option<GlobalBankSchema>,
-    global_code: bool,
-    host_calls: bool,
+    options: PreparationOptions,
 ) -> Result<Vec<Instruction>, VmError> {
+    let PreparationOptions {
+        globals,
+        global_code,
+        host_calls,
+        function_values,
+    } = options;
     let metadata = bytes(&segment.metadata_hex)?;
     let mut result = Vec::new();
     for (pc, &(a, b, op)) in segment.nodes.iter().enumerate() {
@@ -227,7 +239,23 @@ fn instructions(
                 operands[1] = i32::from_le_bytes(raw[4..8].try_into().unwrap());
             }
         }
-        let check = if op == 0x06 {
+        let check = if matches!(op, 0x05 | 0x17) {
+            if !function_values || initialization || (global_code && op == 0x17) {
+                Err(unsupported(
+                    "function values require explicit supported ordinary-function preparation",
+                ))
+            } else if op == 0x17 && b as u8 & 0xc0 != 0 {
+                Err(unsupported(
+                    "only Object function values with scalar captures are supported",
+                ))
+            } else if op == 0x05 && !matches!(a, 0 | 4) {
+                Err(unsupported("indirect call requires flags zero or four"))
+            } else if op == 0x05 && b <= 0 {
+                Err(err("indirect argument count must include its target"))
+            } else {
+                Ok(())
+            }
+        } else if op == 0x06 {
             if !host_calls || initialization {
                 Err(unsupported(
                     "host calls require explicit ordinary-function preparation",
@@ -363,7 +391,7 @@ fn prepare_entry(
             .filter(|end| *end <= code.len())
             .ok_or_else(|| err("default segment outside code"))?;
         let mut depth = 0usize;
-        for instruction in &code[cursor..end] {
+        for (relative, instruction) in code[cursor..end].iter().enumerate() {
             match instruction.opcode {
                 0x3b | 0x3c | 0x3f | 0x40 | 0x42 | 0x3d => depth += 1,
                 0x16 | 0x18 => {
@@ -375,9 +403,11 @@ fn prepare_entry(
                     depth = depth - count + 1;
                 }
                 _ => {
-                    return Err(unsupported(
-                        "default expression opcode is outside the linear subset",
-                    ));
+                    let mut e =
+                        unsupported("default expression opcode is outside the linear subset");
+                    e.pc = Some(cursor + relative);
+                    e.offset = Some(instruction.offset);
+                    return Err(e);
                 }
             }
         }
@@ -418,9 +448,7 @@ fn prepare_function(
     f: Function,
     strings: &[Option<crate::ByteString>],
     vars: usize,
-    globals: Option<GlobalBankSchema>,
-    global_code: bool,
-    host_calls: bool,
+    options: PreparationOptions,
 ) -> Result<PreparedFunction, VmError> {
     let index = f
         .index
@@ -441,7 +469,9 @@ fn prepare_function(
     if raw[12] & 2 != 0 {
         return Err(unsupported("const return semantics are not supported"));
     }
-    if ![0, 1, 2, 3, 4, 6, 7, 10, 255].contains(&f.return_type) {
+    if ![0, 1, 2, 3, 4, 6, 7, 10, 255].contains(&f.return_type)
+        && !(options.function_values && f.return_type == 9)
+    {
         return Err(VmError::new(
             VmErrorKind::UnsupportedType,
             "return type is not supported",
@@ -456,7 +486,9 @@ fn prepare_function(
                 "unknown argument flags or const attributes are not supported",
             ));
         }
-        if ![0, 1, 2, 3, 4, 6, 7, 10, 255].contains(&a.r#type) {
+        if ![0, 1, 2, 3, 4, 6, 7, 10, 255].contains(&a.r#type)
+            && !(options.function_values && a.r#type == 9)
+        {
             return Err(VmError::new(
                 VmErrorKind::UnsupportedType,
                 "argument type is not supported",
@@ -469,15 +501,7 @@ fn prepare_function(
             return Err(err("argument descriptor index does not match position"));
         }
     }
-    let instructions = instructions(
-        &f.code,
-        strings,
-        vars,
-        false,
-        globals,
-        global_code,
-        host_calls,
-    )?;
+    let instructions = instructions(&f.code, strings, vars, false, options)?;
     for (pc, i) in instructions.iter().enumerate() {
         if matches!(i.opcode, 0x12 | 0x23 | 0x50) {
             let slot = i.operands[usize::from(i.opcode != 0x23)];
@@ -527,7 +551,7 @@ fn prepare_function(
     })
 }
 pub fn prepare_program(image: ProgramImage) -> Result<PreparedProgram, VmError> {
-    prepare_code_program(image, None, false, false)
+    prepare_code_program(image, PreparationOptions::default())
 }
 
 /// Prepare ordinary single-constitution Object functions with explicit global access.
@@ -536,7 +560,13 @@ pub fn prepare_program_with_globals(
     image: ProgramImage,
     schema: GlobalBankSchema,
 ) -> Result<PreparedProgram, VmError> {
-    prepare_code_program(image, Some(schema), false, false)
+    prepare_code_program(
+        image,
+        PreparationOptions {
+            globals: Some(schema),
+            ..PreparationOptions::default()
+        },
+    )
 }
 
 /// Prepare Global functions only; initialization and pre-module bootstrap are excluded.
@@ -544,7 +574,14 @@ pub fn prepare_global_program(
     image: ProgramImage,
     schema: GlobalBankSchema,
 ) -> Result<PreparedProgram, VmError> {
-    prepare_code_program(image, Some(schema), true, false)
+    prepare_code_program(
+        image,
+        PreparationOptions {
+            globals: Some(schema),
+            global_code: true,
+            ..PreparationOptions::default()
+        },
+    )
 }
 
 /// Prepare ordinary Object functions with synchronous synthetic host calls.
@@ -552,7 +589,14 @@ pub fn prepare_program_with_host_calls(
     image: ProgramImage,
     globals: Option<GlobalBankSchema>,
 ) -> Result<PreparedProgram, VmError> {
-    prepare_code_program(image, globals, false, true)
+    prepare_code_program(
+        image,
+        PreparationOptions {
+            globals,
+            host_calls: true,
+            ..PreparationOptions::default()
+        },
+    )
 }
 
 /// Prepare ordinary Global functions with synchronous synthetic host calls; init is ignored.
@@ -560,15 +604,56 @@ pub fn prepare_global_program_with_host_calls(
     image: ProgramImage,
     globals: GlobalBankSchema,
 ) -> Result<PreparedProgram, VmError> {
-    prepare_code_program(image, Some(globals), true, true)
+    prepare_code_program(
+        image,
+        PreparationOptions {
+            globals: Some(globals),
+            global_code: true,
+            host_calls: true,
+            ..PreparationOptions::default()
+        },
+    )
 }
 
-fn prepare_code_program(
+/// Prepare ordinary Object functions with scalar-capturing Object function values.
+pub fn prepare_program_with_function_values(
     image: ProgramImage,
     globals: Option<GlobalBankSchema>,
-    global_code: bool,
-    host_calls: bool,
 ) -> Result<PreparedProgram, VmError> {
+    prepare_code_program(
+        image,
+        PreparationOptions {
+            globals,
+            function_values: true,
+            ..PreparationOptions::default()
+        },
+    )
+}
+/// Prepare ordinary Global functions with indirect calls; creation and init are excluded.
+pub fn prepare_global_program_with_function_values(
+    image: ProgramImage,
+    globals: GlobalBankSchema,
+) -> Result<PreparedProgram, VmError> {
+    prepare_code_program(
+        image,
+        PreparationOptions {
+            globals: Some(globals),
+            global_code: true,
+            function_values: true,
+            ..PreparationOptions::default()
+        },
+    )
+}
+fn prepare_code_program(
+    image: ProgramImage,
+    options: PreparationOptions,
+) -> Result<PreparedProgram, VmError> {
+    let PreparationOptions {
+        globals,
+        global_code,
+        host_calls,
+        function_values,
+    } = options;
     let source = format!("sha256:{}", image.sha256);
     let build = || {
         if globals.is_some_and(|schema| schema.slots > MAX_GLOBAL_SLOTS) {
@@ -602,18 +687,12 @@ fn prepare_code_program(
         let mut functions = BTreeMap::new();
         for function in image.functions {
             let index = function.index;
-            let prepared = prepare_function(
-                function,
-                &image.strings,
-                image.max_vars as usize,
-                globals,
-                global_code,
-                host_calls,
-            )
-            .map_err(|mut e| {
-                e.function = index;
-                e
-            })?;
+            let prepared =
+                prepare_function(function, &image.strings, image.max_vars as usize, options)
+                    .map_err(|mut e| {
+                        e.function = index;
+                        e
+                    })?;
             if prepared.index >= image.max_functions
                 || (global_code && i32::from(prepared.index) < image.function_base)
                 || functions.contains_key(&prepared.index)
@@ -622,10 +701,38 @@ fn prepare_code_program(
             }
             functions.insert(prepared.index, prepared);
         }
+        // Resolve direct slots after all bodies have been prepared (forward targets included).
+        for f in functions.values() {
+            for (pc, i) in f
+                .instructions
+                .iter()
+                .enumerate()
+                .filter(|(_, i)| i.opcode == 0x17)
+            {
+                let slot = i.operands[0];
+                let check = if slot < 0 || slot >= i32::from(image.max_functions) {
+                    Err(err("function value slot outside capacity"))
+                } else {
+                    match functions.get(&(slot as i16)) {
+                        Some(target) if !target.args.iter().any(|a| a.flag != 0) => Ok(()),
+                        _ => Err(unsupported(
+                            "function value target requires a prepared body without reference parameters",
+                        )),
+                    }
+                };
+                check.map_err(|mut e| {
+                    e.function = Some(f.index);
+                    e.pc = Some(pc);
+                    e.offset = Some(i.offset);
+                    e
+                })?;
+            }
+        }
         Ok(PreparedProgram {
             source: source.clone(),
             global_schema: globals,
             allow_host_calls: host_calls,
+            allow_function_values: function_values,
             kind: if global_code {
                 ProgramKind::Global
             } else {
@@ -1060,9 +1167,7 @@ fn prepare_catalog(
                                 &image.strings,
                                 image.max_vars as usize,
                                 true,
-                                None,
-                                false,
-                                false,
+                                PreparationOptions::default(),
                             )?;
                             if !code.iter().any(|i| i.opcode == 0x48) {
                                 return Err(err("initialization has no return (48)"));
@@ -1132,9 +1237,7 @@ fn prepare_catalog(
                     body,
                     &image.strings,
                     image.max_vars as usize,
-                    None,
-                    false,
-                    false,
+                    PreparationOptions::default(),
                 )
                 .map_err(|mut e| {
                     e.source = c.key.clone();
@@ -1155,6 +1258,7 @@ fn prepare_catalog(
             source: root.into(),
             global_schema: None,
             allow_host_calls: false,
+            allow_function_values: false,
             kind: ProgramKind::Object,
             function_capacity: 0,
             variable_count: catalog.programs[root].max_vars as usize,

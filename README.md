@@ -1,5 +1,7 @@
 # rml32
 
+阶段2AG已实现受限Object函数值与 `05/17`：显式准备入口、标量捕获、身份比较、跨Object/Global调用者及失败原子性。473项Rust测试通过，支持75种限定操作码，主语料73种编号均有交集。见[函数值运行时](docs/vm-function-value-runtime.md)、[当前矩阵](docs/stage2ag-evidence/matrix.md)和[验证记录](docs/stage2ag-validation.json)。非标量捕获、Global/efun/string/OS目标及真实服务仍未实现，阶段2尚未完成。以下条目保留历史状态。
+
 阶段2AF已完成函数值 `05/17` 的静态取证、35,703处位置统计及[首批Object函数值/标量捕获规格](docs/stage2af-evidence/function-runtime-design.md)。确认05参数数目包含目标，17捕获参数前置；见[函数值语义](docs/vm-function-value-semantics.md)与[验证记录](docs/stage2af-validation.json)。本轮Rust/API/依赖不变，仍为2AE的433项Rust测试、73种限定操作码，05/17尚未实现。
 
 阶段2AE已实现显式注册的受限同步 `06` 宿主调用，433项Rust测试通过。新增宿主签名/上下文/返回接口及Object/Global准备入口；支持73种限定操作码，主语料仍缺05/17。见[宿主调用运行时](docs/vm-efun-runtime.md)、[当前矩阵](docs/stage2ae-evidence/matrix.md)和[验证记录](docs/stage2ae-validation.json)。真实efun、引用参数、异步/重入、Global init及服务启动仍未实现；以下条目保留历史状态。
@@ -18,7 +20,7 @@
 
 阶段2X已完成范围查询 `45` 的静态取证、3,452处语料统计及后续受限 Bytes/Array 实现规格，见[范围查询语义与设计](docs/vm-range-semantics.md)。本轮运行时、公共API、依赖与68种限定操作码支持集合保持不变，`45`尚未实现。
 
-对 `magic_Linux32` 进行静态分析，并以 Rust 重写兼容驱动。当前已实现**只读离线加载器**和阶段 2AE 的**数值、共享容器、引用参数及类型检查、受限默认/可变参数、继承链接、初始化、构造回滚及受限跨对象调用、switch、整数/数组循环、范围查询、显式全局表与全局函数调用、同步宿主调用及受限 catch VM 库**，支持 73 种操作码的限定路径。VM 仅在人工构造程序上验证，尚无可运行服务端；`rml32-inspect` 继续只读检查制品。
+对 `magic_Linux32` 进行静态分析，并以 Rust 重写兼容驱动。当前已实现**只读离线加载器**和阶段 2AG 的**数值、共享容器、引用参数及类型检查、受限默认/可变参数、继承链接、初始化、构造回滚及受限跨对象调用、switch、整数/数组循环、范围查询、显式全局表与全局函数调用、同步宿主调用、受限Object函数值及受限 catch VM 库**，支持 75 种操作码的限定路径。VM 仅在人工构造程序上验证，尚无可运行服务端；`rml32-inspect` 继续只读检查制品。
 
 阶段2W已扩展实数/混合除零、整数余数零及相应复合赋值捕获，323项Rust测试通过。见[数值错误捕获](docs/vm-numeric-catch-runtime.md)和[当前矩阵](docs/stage2w-evidence/matrix.md)。仍为68种限定操作码；生命周期内catch、其他错误来源及回调/JIT保持限制。
 
@@ -58,6 +60,9 @@ python3 tests/compare_corpus.py --report target/stage1-validation.json
 比较器核对既有压缩证据中的成员、完整程序结构及继承记录。已知 `dba/pack_data/etc.pak/etc` 解压异常必须报告；直接执行 `corpus --root .` 因此返回 1，而比较器确认只有该已知异常时返回 0。新增错误不能被忽略。
 
 ## 文档与边界
+
+- [阶段 2AG Object函数值运行时](docs/vm-function-value-runtime.md)
+- [阶段 2AG 当前能力矩阵与复现](docs/stage2ag-evidence/method.md)
 
 - [阶段 2AF 函数值创建、调用与寿命取证](docs/vm-function-value-semantics.md)
 - [阶段 2AF 复现方法与首批实施设计](docs/stage2af-evidence/method.md)

@@ -707,6 +707,12 @@ impl Vm {
     fn copy_value(&self, value: &Value) -> Value {
         match value {
             Value::Object(id) if self.objects.get(*id).is_err() => Value::Undefined,
+            Value::Function(f)
+                if Rc::ptr_eq(&f.0.origin, &self.objects.function_origin)
+                    && self.objects.get(f.owner()).is_err() =>
+            {
+                Value::Undefined
+            }
             _ => value.clone(),
         }
     }
@@ -1432,6 +1438,256 @@ impl Vm {
         self.frames.push(next);
         Ok(())
     }
+    fn check_function_context(&self, program: &PreparedProgram) -> Result<(), VmError> {
+        if !program.allow_function_values
+            || self.initialization.is_some()
+            || self.construction.is_some()
+        {
+            return Err(err(
+                VmErrorKind::UnsupportedFeature,
+                "function values require ordinary opt-in execution",
+            ));
+        }
+        Ok(())
+    }
+    /// Inspect raw storage: Cell::read alone would hide native loop-control payloads.
+    fn ordinary_value(&self, pos: usize) -> Result<Value, VmError> {
+        match &self.stack[pos] {
+            StackEntry::Value(cell) if !cell.is_loop()? => cell.read(),
+            _ => Err(err(
+                VmErrorKind::UnsupportedFeature,
+                "function values require ordinary value operands",
+            )),
+        }
+    }
+    fn function_target(program: &PreparedProgram, slot: i32) -> Result<&PreparedFunction, VmError> {
+        if slot < 0 || slot as usize >= program.function_capacity {
+            return Err(err(
+                VmErrorKind::Bounds,
+                "function value slot outside capacity",
+            ));
+        }
+        let target = program.functions.get(&(slot as i16)).ok_or_else(|| {
+            err(
+                VmErrorKind::UnsupportedFeature,
+                "function value body is unavailable",
+            )
+        })?;
+        if target.args.iter().any(|a| a.flag != 0) {
+            return Err(err(
+                VmErrorKind::UnsupportedFeature,
+                "function value reference parameters are unsupported",
+            ));
+        }
+        Self::check_user_entry(target)?;
+        Ok(target)
+    }
+    fn create_function_value(
+        &mut self,
+        frame: &Frame,
+        program: &PreparedProgram,
+        code: &CodeView<'_>,
+        slot: i32,
+        flags: i32,
+    ) -> Result<(), VmError> {
+        self.check_function_context(program)?;
+        if program.kind != ProgramKind::Object || !(0..64).contains(&flags) {
+            return Err(err(
+                VmErrorKind::UnsupportedFeature,
+                "unsupported function value creation flags or code kind",
+            ));
+        }
+        let owner = frame.object()?;
+        if self.objects.get(owner)?.program() != frame.program() {
+            return Err(err(
+                VmErrorKind::InvalidState,
+                "function owner code identity mismatch",
+            ));
+        }
+        Self::function_target(program, slot)?;
+        let count = flags as usize;
+        self.need(count, frame, code.local_count)?;
+        let n = self.stack.len();
+        let result_len = (n - count)
+            .checked_add(1)
+            .filter(|len| *len <= self.limits.max_stack)
+            .ok_or_else(|| {
+                err(
+                    VmErrorKind::Limit,
+                    "function value result exceeds stack limit",
+                )
+            })?;
+        let mut bound = Vec::new();
+        bound
+            .try_reserve(count)
+            .map_err(|_| err(VmErrorKind::Limit, "capture allocation failed"))?;
+        for pos in (n - count..n).rev() {
+            let value = self.ordinary_value(pos)?;
+            if !matches!(
+                value,
+                Value::Undefined | Value::Void | Value::Int(_) | Value::Real(_) | Value::Bytes(_)
+            ) {
+                return Err(err(
+                    VmErrorKind::UnsupportedType,
+                    "only scalar function captures are supported",
+                ));
+            }
+            bound.push(value);
+        }
+        self.stack
+            .try_reserve(result_len.saturating_sub(n))
+            .map_err(|_| {
+                err(
+                    VmErrorKind::Limit,
+                    "function value result allocation failed",
+                )
+            })?;
+        let cell = Cell::new(Value::Undefined)?;
+        let function = crate::FunctionValue(Rc::new(crate::value::FunctionData {
+            origin: self.objects.function_origin.clone(),
+            owner,
+            program: frame.program(),
+            function: slot as i16,
+            bound,
+        }));
+        cell.replace(Value::Function(function))?;
+        self.stack.truncate(n - count);
+        self.stack.push(StackEntry::Value(cell));
+        self.frames.last_mut().unwrap().pc += 1;
+        Ok(())
+    }
+    fn call_function_value(
+        &mut self,
+        frame: &Frame,
+        program: &PreparedProgram,
+        code: &CodeView<'_>,
+        flags: i32,
+        argn: i32,
+    ) -> Result<(), VmError> {
+        self.check_function_context(program)?;
+        if !matches!(flags, 0 | 4) || !(1..128).contains(&argn) {
+            return Err(err(
+                VmErrorKind::Bounds,
+                "indirect call flags or argument count outside supported range",
+            ));
+        }
+        let argn = argn as usize;
+        self.need(argn, frame, code.local_count)?;
+        let n = self.stack.len();
+        let Value::Function(function) = self.ordinary_value(n - 1)? else {
+            return Err(err(
+                VmErrorKind::UnsupportedType,
+                "indirect target requires a Function",
+            ));
+        };
+        if !Rc::ptr_eq(&function.0.origin, &self.objects.function_origin) {
+            return Err(err(
+                VmErrorKind::InvalidState,
+                "function value belongs to another ObjectStore",
+            ));
+        }
+        let owner = self.objects.get(function.owner())?;
+        if owner.program() != function.program() {
+            return Err(err(
+                VmErrorKind::InvalidState,
+                "saved function code identity mismatch",
+            ));
+        }
+        let target_program = self.objects.program(function.program())?;
+        if target_program.kind != ProgramKind::Object {
+            return Err(err(
+                VmErrorKind::InvalidState,
+                "saved function requires Object code",
+            ));
+        }
+        let target = Self::function_target(&target_program, i32::from(function.function()))?;
+        // Shape errors precede argument counts/types, without copying or normalizing sources.
+        for pos in (n - argn..n - 1).rev() {
+            self.ordinary_value(pos)?;
+        }
+        let argc = function
+            .bound_count()
+            .checked_add(argn - 1)
+            .filter(|argc| *argc <= 127)
+            .ok_or_else(|| err(VmErrorKind::Limit, "indirect call exceeds 127 arguments"))?;
+        let (_, defaults) = Self::argument_plan(target, argc)?;
+        let prefix = n - argn;
+        let bp = prefix
+            .checked_add(argc)
+            .ok_or_else(|| err(VmErrorKind::Limit, "indirect argument stack overflow"))?;
+        let mut arguments = Vec::new();
+        arguments
+            .try_reserve(argc)
+            .map_err(|_| err(VmErrorKind::Limit, "indirect argument allocation failed"))?;
+        for i in 0..argc {
+            let raw = if i < function.bound_count() {
+                function.0.bound[i].clone()
+            } else {
+                self.ordinary_value(n - 2 - (i - function.bound_count()))?
+            };
+            let mut value = self.copy_value(&raw);
+            if let Some(arg) = target.args.get(i) {
+                value = crate::numeric::coerce(value, arg.r#type);
+                if arg.r#type != 255
+                    && value.tag() != arg.r#type
+                    && !(arg.attrib & 8 != 0 && value == Value::Undefined)
+                {
+                    return Err(err(
+                        VmErrorKind::UnsupportedType,
+                        format!("argument {i} type does not match prototype"),
+                    ));
+                }
+            }
+            crate::host::validate_value(&value)?;
+            arguments.push(value);
+        }
+        if bp
+            .checked_add(defaults)
+            .and_then(|len| len.checked_add(target.local_count))
+            .is_none_or(|len| len > self.limits.max_stack)
+            || self.frames.len() >= self.limits.max_frames
+        {
+            return Err(err(
+                VmErrorKind::Limit,
+                "indirect call exceeds stack or frame limit",
+            ));
+        }
+        let next_id = self
+            .next_frame
+            .checked_add(1)
+            .ok_or_else(|| err(VmErrorKind::Limit, "frame ID space exhausted"))?;
+        let mut cells = Vec::new();
+        cells
+            .try_reserve(argc)
+            .map_err(|_| err(VmErrorKind::Limit, "indirect cell allocation failed"))?;
+        for value in arguments {
+            cells.push(StackEntry::Value(Cell::new(value)?));
+        }
+        self.stack
+            .try_reserve(bp.saturating_sub(n))
+            .map_err(|_| err(VmErrorKind::Limit, "indirect stack allocation failed"))?;
+        self.frames
+            .try_reserve(1)
+            .map_err(|_| err(VmErrorKind::Limit, "indirect frame allocation failed"))?;
+        let next = Frame {
+            id: self.next_frame,
+            execution: ExecutionSource::ObjectProgram(function.program()),
+            active_object: Some(function.owner()),
+            body: FrameBody::Function(function.function()),
+            pc: 0,
+            bp,
+            argc,
+            entered: false,
+            phase: EntryPhase::Unchecked,
+        };
+        // Commit only after every fallible check/allocation. Argument zero is nearest bp.
+        self.next_frame = next_id;
+        self.stack.truncate(prefix);
+        self.stack.extend(cells.into_iter().rev());
+        self.frames.last_mut().unwrap().pc += 1;
+        self.frames.push(next);
+        Ok(())
+    }
     fn call_host(
         &mut self,
         frame: &Frame,
@@ -2128,6 +2384,12 @@ impl Vm {
         if opcode == 0x06 {
             return self.call_host(&frame, &p, &f, operands[0], operands[1]);
         }
+        if opcode == 0x17 {
+            return self.create_function_value(&frame, &p, &f, operands[0], operands[1]);
+        }
+        if opcode == 0x05 {
+            return self.call_function_value(&frame, &p, &f, operands[0], operands[1]);
+        }
         // vm_regularProcessor @0x080978c4 increments IP before dispatch.
         self.frames.last_mut().unwrap().pc += 1;
         let [a, b] = operands;
@@ -2411,7 +2673,12 @@ impl Vm {
             }
             0x24 | 0x2d | 0x4a => {
                 self.need(1, &frame, f.local_count)?;
-                let value = self.copy_value(&self.value(n - 1)?);
+                let raw = self.value(n - 1)?;
+                let value = if opcode == 0x2d && matches!(raw, Value::Function(_)) {
+                    raw
+                } else {
+                    self.copy_value(&raw)
+                };
                 let result = match opcode {
                     0x24 => i32::from(i32::from(value.tag()) == a),
                     0x2d => i32::from(crate::numeric::zero(&value)),
@@ -2556,7 +2823,12 @@ impl Vm {
             0x1f => self.jump(a, f.instructions.len()),
             0x21 => {
                 self.need(1, &frame, f.local_count)?;
-                let value = self.copy_value(&self.value(n - 1)?);
+                let raw = self.value(n - 1)?;
+                let value = if matches!(raw, Value::Function(_)) {
+                    raw
+                } else {
+                    self.copy_value(&raw)
+                };
                 let zero = crate::numeric::zero(&value);
                 self.set(n - 1, value)?;
                 if zero != (b & 1 != 0) {
@@ -2922,6 +3194,7 @@ mod tests {
         let program = PreparedProgram {
             global_schema: None,
             allow_host_calls: false,
+            allow_function_values: false,
             kind: ProgramKind::Object,
             function_capacity: 0,
             source: "synthetic-loop".into(),
@@ -3273,6 +3546,7 @@ mod catch_tests {
         let program = PreparedProgram {
             global_schema: None,
             allow_host_calls: false,
+            allow_function_values: false,
             kind: ProgramKind::Object,
             function_capacity: 0,
             source: "synthetic-catch".into(),
@@ -3623,6 +3897,7 @@ mod global_tests {
             source: "synthetic-global".into(),
             global_schema: schema,
             allow_host_calls: false,
+            allow_function_values: false,
             kind: ProgramKind::Object,
             function_capacity: 0,
             variable_count: 0,
@@ -3821,6 +4096,7 @@ mod host_tests {
             source: "synthetic-host".into(),
             global_schema: None,
             allow_host_calls: allow,
+            allow_function_values: false,
             kind: ProgramKind::Object,
             function_capacity: 1,
             variable_count: 0,
@@ -4048,5 +4324,302 @@ mod host_tests {
         assert_eq!(vm.run(1).unwrap_err(), e);
         vm.start(frame.active_object.unwrap(), 0, vec![]).unwrap();
         assert_eq!(a.header_refs(), 1);
+    }
+}
+
+#[cfg(test)]
+mod function_value_tests {
+    use super::*;
+    use crate::cell::with_allocation_failure;
+    fn fixture(opcode: u8, operands: [i32; 2], argc: usize) -> Vm {
+        let mut vm = super::catch_tests::fixture(0);
+        let mut caller = vm
+            .objects
+            .program(vm.frames[0].program())
+            .unwrap()
+            .functions[&0]
+            .clone();
+        caller.return_type = 255;
+        caller.instructions = Rc::new(vec![Instruction {
+            opcode,
+            operands,
+            offset: 84,
+        }]);
+        let mut target = caller.clone();
+        target.index = 1;
+        target.args = (0..argc)
+            .map(|i| crate::program::Argument {
+                raw_hex: String::new(),
+                name: None,
+                flag: 0,
+                r#type: 255,
+                attrib: 0,
+                index: i as i16,
+                default_action_count: 0,
+            })
+            .collect();
+        target.min_args = argc;
+        target.max_args = argc;
+        target.instructions = Rc::new(vec![Instruction {
+            opcode: 0x1d,
+            operands: [0, 0],
+            offset: 88,
+        }]);
+        let program = PreparedProgram {
+            source: "synthetic-function-values".into(),
+            global_schema: None,
+            allow_host_calls: false,
+            allow_function_values: true,
+            kind: ProgramKind::Object,
+            function_capacity: 2,
+            variable_count: 0,
+            strings: vec![],
+            functions: BTreeMap::from([(0, caller), (1, target)]),
+            unimplemented: Default::default(),
+            initializations: None,
+            init_order: vec![],
+            lifecycles: None,
+            methods: None,
+        };
+        let p = vm.objects.register_program(program).unwrap();
+        let o = vm.objects.create(p, vec![]).unwrap();
+        vm.frames[0].execution = ExecutionSource::ObjectProgram(p);
+        vm.frames[0].active_object = Some(o);
+        vm
+    }
+    fn value(vm: &Vm, bound: Vec<Value>) -> crate::FunctionValue {
+        crate::FunctionValue(Rc::new(crate::value::FunctionData {
+            origin: vm.objects.function_origin.clone(),
+            owner: vm.frames[0].object().unwrap(),
+            program: vm.frames[0].program(),
+            function: 1,
+            bound,
+        }))
+    }
+    fn assert_atomic(vm: &mut Vm, kind: VmErrorKind) {
+        let before = vm.stack().unwrap();
+        let pc = vm.frames[0].pc;
+        let depth = vm.frames.len();
+        let id = vm.next_frame;
+        let e = vm.run(1).unwrap_err();
+        assert_eq!(e.kind, kind);
+        assert_eq!(e.pc, Some(pc));
+        assert_eq!(e.offset, Some(84));
+        assert_eq!(vm.frames[0].pc, pc);
+        assert_eq!(vm.frames.len(), depth);
+        assert_eq!(vm.next_frame, id);
+        assert_eq!(vm.stack().unwrap(), before);
+        assert_eq!(vm.run(1).unwrap_err(), e);
+    }
+    #[test]
+    fn function_values_create_allocation_failure_preserves_capture_and_pc() {
+        let mut vm = fixture(0x17, [1, 1], 1);
+        vm.push(Value::bytes(b"bound")).unwrap();
+        with_allocation_failure(0, || assert_atomic(&mut vm, VmErrorKind::Limit));
+    }
+    #[test]
+    fn function_values_call_every_argument_allocation_failure_is_atomic() {
+        for after in 0..3 {
+            let mut vm = fixture(5, [0, 2], 3);
+            let f = value(&vm, vec![Value::Int(1), Value::Int(2)]);
+            vm.push(Value::Int(3)).unwrap();
+            vm.push(Value::Function(f)).unwrap();
+            with_allocation_failure(after, || assert_atomic(&mut vm, VmErrorKind::Limit));
+        }
+    }
+    #[test]
+    fn function_values_creation_zero_capture_checks_result_stack_capacity() {
+        let mut vm = fixture(0x17, [1, 0], 0);
+        vm.limits.max_stack = 0;
+        assert_atomic(&mut vm, VmErrorKind::Limit);
+    }
+    #[test]
+    fn function_values_raw_loop_capture_target_and_new_argument_are_rejected() {
+        for (op, operands) in [(0x17, [1, 1]), (5, [0, 1]), (5, [0, 2])] {
+            let mut vm = fixture(op, operands, 0);
+            let Value::Array(owner) = Value::array(vec![]).unwrap() else {
+                unreachable!()
+            };
+            let c = Cell::new(Value::Undefined).unwrap();
+            Cell::replace_payload_batch(vec![(
+                c.clone(),
+                SlotPayload::Loop(Box::new(LoopControl::for_test(owner))),
+            )])
+            .unwrap();
+            vm.stack.push(StackEntry::Value(c.clone()));
+            if operands[1] == 2 {
+                let f = value(&vm, vec![]);
+                vm.push(Value::Function(f)).unwrap();
+            }
+            assert_atomic(&mut vm, VmErrorKind::UnsupportedFeature);
+            assert!(c.is_loop().unwrap());
+        }
+    }
+    #[test]
+    fn function_values_identity_token_default_new_and_foreign_copy() {
+        let a = ObjectStore::default();
+        let b = ObjectStore::new();
+        assert!(!Rc::ptr_eq(&a.function_origin, &b.function_origin));
+        let vm = fixture(5, [0, 1], 0);
+        let mut f = value(&vm, vec![]);
+        let other = Rc::new(());
+        Rc::get_mut(&mut f.0).unwrap().origin = other;
+        Rc::get_mut(&mut f.0).unwrap().owner = ObjectId(999);
+        assert_eq!(
+            vm.copy_value(&Value::Function(f.clone())),
+            Value::Function(f)
+        );
+    }
+    #[test]
+    fn function_values_dead_owner_reference_normalization_is_allocation_atomic() {
+        let mut vm = fixture(5, [0, 1], 0);
+        let f = value(&vm, vec![]);
+        vm.objects.remove(f.owner()).unwrap();
+        let c = Cell::new(Value::Function(f.clone())).unwrap();
+        let r = Reference {
+            id: c.id(),
+            target: Target::Global { cell: c.clone() },
+            readonly: false,
+            _lease: None,
+        };
+        with_allocation_failure(0, || {
+            assert_eq!(vm.read_reference(&r).unwrap_err().kind, VmErrorKind::Limit)
+        });
+        assert_eq!(c.read().unwrap(), Value::Function(f));
+        let entry = vm.read_reference(&r).unwrap();
+        assert!(matches!(entry,StackEntry::Value(cell) if cell.read().unwrap()==Value::Undefined));
+        assert_eq!(c.read().unwrap(), Value::Undefined);
+    }
+    #[test]
+    fn function_values_header_and_bytes_release_after_last_owner() {
+        let vm = fixture(5, [0, 1], 0);
+        let bytes: Rc<[u8]> = Rc::from(&b"capture"[..]);
+        let f = value(&vm, vec![Value::Bytes(bytes.clone())]);
+        let weak = Rc::downgrade(&f.0);
+        let a = Value::array(vec![Value::Function(f.clone())]).unwrap();
+        let m = Value::mapping(vec![(Value::Int(0), Value::Function(f.clone()))]).unwrap();
+        let copy = f.clone();
+        drop(f);
+        drop(a);
+        drop(m);
+        assert!(weak.upgrade().is_some());
+        assert_eq!(Rc::strong_count(&bytes), 2);
+        drop(copy);
+        assert!(weak.upgrade().is_none());
+        assert_eq!(Rc::strong_count(&bytes), 1);
+    }
+    #[test]
+    fn function_values_defensive_flags_slots_code_identity_and_frame_id() {
+        for (op, operands, expected) in [
+            (5, [2, 1], VmErrorKind::Bounds),
+            (5, [0, 0], VmErrorKind::Bounds),
+            (0x17, [-1, 0], VmErrorKind::Bounds),
+            (0x17, [2, 0], VmErrorKind::Bounds),
+        ] {
+            let mut vm = fixture(op, operands, 0);
+            assert_atomic(&mut vm, expected);
+        }
+        for bad in 0..3 {
+            let mut vm = fixture(5, [0, 1], 0);
+            let mut f = value(&vm, vec![]);
+            if bad == 0 {
+                Rc::get_mut(&mut f.0).unwrap().program = ProgramId(999);
+            } else if bad == 1 {
+                Rc::get_mut(&mut f.0).unwrap().function = 2;
+            } else {
+                vm.next_frame = u64::MAX;
+            }
+            vm.push(Value::Function(f)).unwrap();
+            assert_atomic(
+                &mut vm,
+                match bad {
+                    0 => VmErrorKind::InvalidState,
+                    1 => VmErrorKind::Bounds,
+                    _ => VmErrorKind::Limit,
+                },
+            );
+        }
+    }
+    #[test]
+    fn function_values_lifecycle_context_guards_precede_operand_access() {
+        for op in [5, 0x17] {
+            let mut vm = fixture(op, [-1, -1], 0);
+            let frame = vm.frames[0].clone();
+            let p = vm.objects.program(frame.program()).unwrap();
+            let code = CodeView::get(&p, frame.body).unwrap();
+            let old = vm.objects.program(ProgramId(0)).unwrap();
+            let e = if op == 5 {
+                vm.call_function_value(&frame, &old, &code, -1, -1)
+            } else {
+                vm.create_function_value(&frame, &old, &code, -1, -1)
+            };
+            assert_eq!(e.unwrap_err().kind, VmErrorKind::UnsupportedFeature);
+            vm.initialization = Some(InitializationTask {
+                object: frame.object().unwrap(),
+                position: 0,
+                constitution: 0,
+            });
+            let call = |vm: &mut Vm| {
+                if op == 5 {
+                    vm.call_function_value(&frame, &p, &code, -1, -1)
+                } else {
+                    vm.create_function_value(&frame, &p, &code, -1, -1)
+                }
+            };
+            assert_eq!(
+                call(&mut vm).unwrap_err().kind,
+                VmErrorKind::UnsupportedFeature
+            );
+            vm.initialization = None;
+            for phase in [
+                LifecyclePhase::Initialize,
+                LifecyclePhase::Create,
+                LifecyclePhase::RollbackDestruct,
+            ] {
+                vm.construction = Some(ConstructionTask {
+                    object: frame.object().unwrap(),
+                    program: frame.program(),
+                    phase,
+                    position: 0,
+                    constitution: 0,
+                    parameter: None,
+                    primary: None,
+                });
+                assert_eq!(
+                    call(&mut vm).unwrap_err().kind,
+                    VmErrorKind::UnsupportedFeature
+                );
+                vm.construction = None;
+            }
+        }
+    }
+    #[test]
+    fn function_values_zero_budget_does_not_allocate_or_consume() {
+        for op in [5, 0x17] {
+            let mut vm = fixture(op, [1, 0], 0);
+            let before = vm.stack().unwrap();
+            with_allocation_failure(0, || {
+                assert_eq!(vm.run(0).unwrap(), RunOutcome::BudgetExhausted)
+            });
+            assert_eq!(vm.stack().unwrap(), before);
+            assert_eq!(vm.frames[0].pc, 0);
+        }
+    }
+    #[test]
+    fn function_values_call_preserves_reference_lease_prefix() {
+        let mut vm = fixture(5, [0, 1], 0);
+        let c = Cell::new(Value::Int(9)).unwrap();
+        let r = vm.owned_reference(c, ReferenceKind::Temporary).unwrap();
+        let id = r.id;
+        let lease = vm.reference_cells[&id].clone();
+        vm.stack.push(StackEntry::Reference(r));
+        let f = value(&vm, vec![]);
+        vm.push(Value::Function(f)).unwrap();
+        vm.run(1).unwrap();
+        assert!(lease.upgrade().is_some());
+        assert!(matches!(&vm.stack[0],StackEntry::Reference(r) if r.id==id));
+        assert_eq!(vm.frames.len(), 2);
+        assert_eq!(vm.frames[1].bp, 1);
+        assert_eq!(vm.frames[0].pc, 1);
     }
 }

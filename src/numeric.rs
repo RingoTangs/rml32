@@ -107,6 +107,16 @@ fn as64(v: &Value) -> Result<f64, VmError> {
     }
 }
 pub(crate) fn binary(op: u8, left: &Value, right: &Value) -> Result<Value, VmError> {
+    if matches!(op, 0x1c | 0x2a)
+        && (matches!(left, Value::Function(_)) || matches!(right, Value::Function(_)))
+    {
+        let equal = matches!((left, right), (Value::Function(a), Value::Function(b)) if a == b);
+        return Ok(Value::Int(i32::from(if op == 0x1c {
+            equal
+        } else {
+            !equal
+        })));
+    }
     if matches!(op, 2 | 0x30 | 0x55 | 0x26 | 0x4b) {
         let (Value::Int(a), Value::Int(b)) = (left, right) else {
             return Err(unsupported());

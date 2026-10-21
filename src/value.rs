@@ -44,6 +44,7 @@ pub enum Value {
     Object(ObjectId),
     Array(crate::container::ArrayValue),
     Mapping(crate::container::MappingValue),
+    Function(FunctionValue),
 }
 impl Value {
     /// Construct a shared array in element order. Clones share identity.
@@ -69,6 +70,49 @@ impl Value {
             Self::Object(_) => 10,
             Self::Array(_) => 6,
             Self::Mapping(_) => 7,
+            Self::Function(_) => 9,
         }
+    }
+}
+
+/// Opaque Object bytecode function with scalar bound parameters.
+/// Clones share identity; independent creations compare unequal.
+#[derive(Clone)]
+pub struct FunctionValue(pub(crate) Rc<FunctionData>);
+pub(crate) struct FunctionData {
+    pub(crate) origin: Rc<()>,
+    pub(crate) owner: ObjectId,
+    pub(crate) program: ProgramId,
+    pub(crate) function: i16,
+    pub(crate) bound: Vec<Value>,
+}
+impl FunctionValue {
+    pub fn owner(&self) -> ObjectId {
+        self.0.owner
+    }
+    pub fn program(&self) -> ProgramId {
+        self.0.program
+    }
+    pub fn function(&self) -> i16 {
+        self.0.function
+    }
+    pub fn bound_count(&self) -> usize {
+        self.0.bound.len()
+    }
+}
+impl PartialEq for FunctionValue {
+    fn eq(&self, other: &Self) -> bool {
+        Rc::ptr_eq(&self.0, &other.0)
+    }
+}
+impl Eq for FunctionValue {}
+impl std::fmt::Debug for FunctionValue {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.debug_struct("FunctionValue")
+            .field("owner", &self.owner())
+            .field("program", &self.program())
+            .field("function", &self.function())
+            .field("bound_count", &self.bound_count())
+            .finish()
     }
 }
