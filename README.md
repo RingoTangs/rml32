@@ -1,5 +1,7 @@
 # rml32
 
+阶段2AH完成当前能力重审：75种限定支持、73种主语料交集与473项Rust测试保持不变。独立审计登记24项缺口（阶段2内19项、后续阶段5项），所有当前门槛仍未关闭；下一批优先进行Bytes比较/拼接定向取证。见[完成度报告](docs/stage2-completion-assessment-2ah.md)、[当前矩阵](docs/stage2ah-evidence/matrix.md)、[下一批规格](docs/stage2ah-evidence/next-batch.md)与[验证记录](docs/stage2ah-validation.json)。本批不修改运行时/API/依赖、不新增反编译、不执行原程序。以下条目保留历史状态。
+
 阶段2AG已实现受限Object函数值与 `05/17`：显式准备入口、标量捕获、身份比较、跨Object/Global调用者及失败原子性。473项Rust测试通过，支持75种限定操作码，主语料73种编号均有交集。见[函数值运行时](docs/vm-function-value-runtime.md)、[当前矩阵](docs/stage2ag-evidence/matrix.md)和[验证记录](docs/stage2ag-validation.json)。非标量捕获、Global/efun/string/OS目标及真实服务仍未实现，阶段2尚未完成。以下条目保留历史状态。
 
 阶段2AF已完成函数值 `05/17` 的静态取证、35,703处位置统计及[首批Object函数值/标量捕获规格](docs/stage2af-evidence/function-runtime-design.md)。确认05参数数目包含目标，17捕获参数前置；见[函数值语义](docs/vm-function-value-semantics.md)与[验证记录](docs/stage2af-validation.json)。本轮Rust/API/依赖不变，仍为2AE的433项Rust测试、73种限定操作码，05/17尚未实现。
@@ -60,6 +62,9 @@ python3 tests/compare_corpus.py --report target/stage1-validation.json
 比较器核对既有压缩证据中的成员、完整程序结构及继承记录。已知 `dba/pack_data/etc.pak/etc` 解压异常必须报告；直接执行 `corpus --root .` 因此返回 1，而比较器确认只有该已知异常时返回 0。新增错误不能被忽略。
 
 ## 文档与边界
+
+- [阶段 2AH 完成度与独立能力审计](docs/stage2-completion-assessment-2ah.md)
+- [阶段 2AH 方法与复现](docs/stage2ah-evidence/method.md)
 
 - [阶段 2AG Object函数值运行时](docs/vm-function-value-runtime.md)
 - [阶段 2AG 当前能力矩阵与复现](docs/stage2ag-evidence/method.md)

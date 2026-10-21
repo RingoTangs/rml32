@@ -1,6 +1,8 @@
 # magic_Linux32 Rust 重写实施路线图
 
-**当前阶段2AG：**按2AF规格实现受限Object函数值05/17，支持标量捕获、Rc身份、显式能力入口、跨Object/Global调用者与既有数值catch。473项Rust测试通过，共75种限定支持/73种语料交集；见[运行时说明](vm-function-value-runtime.md)、[当前矩阵](stage2ag-evidence/matrix.md)及[验证记录](stage2ag-validation.json)。非标量捕获、Global/efun/string/OS目标、Buffer/范围写入、完整异常/生命周期和真实efun/bootstrap/调度仍有缺口，阶段2未完成。下一步先按当前矩阵的排除路径梳理阶段2退出条件，再选择取证和实施批次。以下为历史快照。
+**当前阶段2AH：**完成2AG源码/测试/证据重审，仍为473项Rust测试、75种限定支持/73种语料交集，阶段2未完成。新[完成度报告](stage2-completion-assessment-2ah.md)、[能力门槛](stage2ah-evidence/capabilities.md)与[当前矩阵](stage2ah-evidence/matrix.md)登记24项缺口，其中19项属阶段2、5项明确归后续阶段。下一批唯一首选为[2AI Bytes比较/拼接定向取证](stage2ah-evidence/next-batch.md)；其次Mapping顺序/遍历、函数值/能力组合、一般故障/主动删除。运行时/API/依赖保持不变，未新增反编译或原程序执行。以下为历史快照。
+
+**阶段2AG历史交付：**按2AF规格实现受限Object函数值05/17，支持标量捕获、Rc身份、显式能力入口、跨Object/Global调用者与既有数值catch。473项Rust测试通过，共75种限定支持/73种语料交集；见[运行时说明](vm-function-value-runtime.md)、[当前矩阵](stage2ag-evidence/matrix.md)及[验证记录](stage2ag-validation.json)。非标量捕获、Global/efun/string/OS目标、Buffer/范围写入、完整异常/生命周期和真实efun/bootstrap/调度仍有缺口，阶段2未完成。下一步先按当前矩阵的排除路径梳理阶段2退出条件，再选择取证和实施批次。以下为历史快照。
 
 **阶段2AF历史交付：**函数值05/17已完成静态取证、35,703处位置复算与[首批Object函数值/标量捕获实施规格](stage2af-evidence/function-runtime-design.md)，运行时尚未实现。见[语义报告](vm-function-value-semantics.md)与[验证记录](stage2af-validation.json)。运行时基线为2AE的同步合成06、433项Rust测试、73种限定支持/71种语料交集；真实efun、global/init/bootstrap、完整函数值和服务启动仍有缺口，阶段2未完成。以下2AC及更早条目保留历史状态。
 

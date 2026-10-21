@@ -1,0 +1,2400 @@
+{
+  "schema_version": 1,
+  "changes": [
+    {
+      "opcode": "01",
+      "previous_exclusions": [
+        "String/container arithmetic; all other native value-type branches; native floating environment equivalence"
+      ],
+      "current_exclusions": [
+        "非数值类型对（除含Function的1c/2a身份分支）未实现。",
+        "原生浮点环境、资源及失败现场未证明等价。",
+        "只有已取证数值零来源可catch；MIN/-1等仍终止。"
+      ],
+      "previous_tests": [
+        "executes_all_integer_arithmetic_and_comparison_operations",
+        "mixed_arithmetic_preserves_left_type_except_remainder",
+        "numeric_comparisons_round_integer_inputs_and_nan_is_unordered"
+      ],
+      "current_tests": [
+        "executes_all_integer_arithmetic_and_comparison_operations",
+        "mixed_arithmetic_preserves_left_type_except_remainder"
+      ],
+      "previous_implemented_cases": [
+        "Int wrapping add; Int/Real numeric add with left-type result policy"
+      ],
+      "current_implemented_cases": [
+        "Int wrapping add; Int/Real numeric add with left-type result policy"
+      ],
+      "reason": "对照当前源码与代表测试的输入/断言重新限定；关联缺口，不宣称完整逐分支覆盖。"
+    },
+    {
+      "opcode": "02",
+      "previous_exclusions": [
+        "non-Int operands; complete native coercion claims"
+      ],
+      "current_exclusions": [
+        "仅Int；其他tag及完整原生转换契约未闭合。"
+      ],
+      "previous_tests": [
+        "bitwise_operations_and_logical_right_shift_follow_guarded_native_counts"
+      ],
+      "current_tests": [
+        "bitwise_operations_and_logical_right_shift_follow_guarded_native_counts"
+      ],
+      "previous_implemented_cases": [
+        "Int bitwise AND"
+      ],
+      "current_implemented_cases": [
+        "Int bitwise AND"
+      ],
+      "reason": "对照当前源码与代表测试的输入/断言重新限定；关联缺口，不宣称完整逐分支覆盖。"
+    },
+    {
+      "opcode": "03",
+      "previous_exclusions": [
+        "reference escape; Buffer/String member writes; range refs; native full release timing; cycles"
+      ],
+      "current_exclusions": [
+        "Reference逃逸、Buffer/Bytes成员写和范围引用未开放。",
+        "成员Ref保活/源规范化有已知差异；容器重接/循环图受限。"
+      ],
+      "previous_tests": [
+        "reference_assignments_preserve_result_and_update_stable_local_slots",
+        "shared_array_and_mapping_member_writes_are_visible_to_aliases",
+        "references_cannot_escape_via_returns_arguments_or_containers",
+        "reference_modes_invalid_targets_and_invalid_keys_fail_explicitly",
+        "function_values_store_in_object_global_local_and_container_member_slots",
+        "function_values_tag9_arguments_returns_containers_and_mapping_key_rejection"
+      ],
+      "current_tests": [
+        "reference_assignments_preserve_result_and_update_stable_local_slots",
+        "shared_array_and_mapping_member_writes_are_visible_to_aliases",
+        "references_cannot_escape_via_returns_arguments_or_containers",
+        "reference_modes_invalid_targets_and_invalid_keys_fail_explicitly",
+        "function_values_store_in_object_global_local_and_container_member_slots",
+        "function_values_tag9_arguments_returns_containers_and_mapping_key_rejection"
+      ],
+      "previous_implemented_cases": [
+        "value,Ref assignment writes stable target and leaves value",
+        "Opaque Function values participate in existing bounded storage/return paths; captures remain scalar-only"
+      ],
+      "current_implemented_cases": [
+        "value,Ref assignment writes stable target and leaves value",
+        "Opaque Function values participate in existing bounded storage/return paths; captures remain scalar-only"
+      ],
+      "reason": "对照当前源码与代表测试的输入/断言重新限定；关联缺口，不宣称完整逐分支覆盖。"
+    },
+    {
+      "opcode": "04",
+      "previous_exclusions": [
+        "reference escape; Buffer/String member writes; range refs; native full release timing; cycles"
+      ],
+      "current_exclusions": [
+        "Reference逃逸、Buffer/Bytes成员写和范围引用未开放。",
+        "成员Ref保活/源规范化有已知差异；容器重接/循环图受限。"
+      ],
+      "previous_tests": [
+        "reference_assignments_preserve_result_and_update_stable_local_slots",
+        "shared_array_and_mapping_member_writes_are_visible_to_aliases",
+        "references_cannot_escape_via_returns_arguments_or_containers",
+        "reference_modes_invalid_targets_and_invalid_keys_fail_explicitly",
+        "function_values_store_in_object_global_local_and_container_member_slots",
+        "function_values_tag9_arguments_returns_containers_and_mapping_key_rejection"
+      ],
+      "current_tests": [
+        "reference_assignments_preserve_result_and_update_stable_local_slots",
+        "shared_array_and_mapping_member_writes_are_visible_to_aliases",
+        "references_cannot_escape_via_returns_arguments_or_containers",
+        "reference_modes_invalid_targets_and_invalid_keys_fail_explicitly",
+        "function_values_store_in_object_global_local_and_container_member_slots",
+        "function_values_tag9_arguments_returns_containers_and_mapping_key_rejection"
+      ],
+      "previous_implemented_cases": [
+        "Ref,value reverse assignment writes target and leaves value",
+        "Opaque Function values participate in existing bounded storage/return paths; captures remain scalar-only"
+      ],
+      "current_implemented_cases": [
+        "Ref,value reverse assignment writes target and leaves value",
+        "Opaque Function values participate in existing bounded storage/return paths; captures remain scalar-only"
+      ],
+      "reason": "对照当前源码与代表测试的输入/断言重新限定；关联缺口，不宣称完整逐分支覆盖。"
+    },
+    {
+      "opcode": "05",
+      "previous_exclusions": [
+        "Global/efun/string/OS targets; non-scalar captures; reference parameters; inherited/hidden functions; default/init/lifecycle execution",
+        "Native owner ref/execRef, active-object deferred deletion, full cleanup-source normalization, arbitrary cyclic capture graphs, scheduling/hooks/JIT"
+      ],
+      "current_exclusions": [
+        "Global/efun/string/OS目标、非标量捕获、引用原型和继承/hidden目标未开放。",
+        "生命周期、默认表达式及与宿主/继承能力合并受限。",
+        "owner物理保活、延迟删除、源cleanup与非标量move/copy未模拟。"
+      ],
+      "previous_tests": [
+        "function_values_bound_parameters_precede_new_parameters_in_stack_order",
+        "function_values_max_capture_and_total_argument_boundaries",
+        "function_values_optional_defaults_and_variadic_extras",
+        "function_values_argument_coercion_nullable_and_count_preflight",
+        "function_values_cross_store_rejects_colliding_ids_and_into_objects_keeps_origin",
+        "function_values_global_caller_restores_context_and_uses_saved_object_pool",
+        "function_values_cross_object_nested_07_and_08_keep_saved_owner",
+        "function_values_global_rebinding_during_pause_preserves_saved_target_and_active_frame",
+        "function_values_deleted_owner_raw_call_fails_but_later_copy_is_undefined",
+        "function_values_call_every_argument_allocation_failure_is_atomic",
+        "function_values_catch_unwinds_indirect_callee_numeric_fault",
+        "function_values_indirect_preflight_failures_bypass_numeric_catch",
+        "function_values_budget_creation_call_entry_and_shared_repeated_calls",
+        "function_values_lifecycle_context_guards_precede_operand_access",
+        "function_values_call_preserves_reference_lease_prefix"
+      ],
+      "current_tests": [
+        "function_values_bound_parameters_precede_new_parameters_in_stack_order",
+        "function_values_max_capture_and_total_argument_boundaries",
+        "function_values_optional_defaults_and_variadic_extras",
+        "function_values_argument_coercion_nullable_and_count_preflight",
+        "function_values_cross_store_rejects_colliding_ids_and_into_objects_keeps_origin",
+        "function_values_global_caller_restores_context_and_uses_saved_object_pool",
+        "function_values_cross_object_nested_07_and_08_keep_saved_owner",
+        "function_values_global_rebinding_during_pause_preserves_saved_target_and_active_frame",
+        "function_values_deleted_owner_raw_call_fails_but_later_copy_is_undefined",
+        "function_values_call_every_argument_allocation_failure_is_atomic",
+        "function_values_catch_unwinds_indirect_callee_numeric_fault",
+        "function_values_indirect_preflight_failures_bypass_numeric_catch",
+        "function_values_budget_creation_call_entry_and_shared_repeated_calls",
+        "function_values_lifecycle_context_guards_precede_operand_access",
+        "function_values_call_preserves_reference_lease_prefix"
+      ],
+      "previous_implemented_cases": [
+        "Flags0/4 and argc1..127 including raw Function target; bound parameters before new values, total<=127; ordinary prototype coercion/default/variadic handling",
+        "Store origin, owner and saved code validation; Object/Global caller restoration; preflight allocations and success-only PC/frame commit; raw owner deletion failure and numeric-catch unwind"
+      ],
+      "current_implemented_cases": [
+        "Flags0/4 and argc1..127 including raw Function target; bound parameters before new values, total<=127; ordinary prototype coercion/default/variadic handling",
+        "Store origin, owner and saved code validation; Object/Global caller restoration; preflight allocations and success-only PC/frame commit; raw owner deletion failure and numeric-catch unwind"
+      ],
+      "reason": "对照当前源码与代表测试的输入/断言重新限定；关联缺口，不宣称完整逐分支覆盖。"
+    },
+    {
+      "opcode": "06",
+      "previous_exclusions": [
+        "Real native efuns; reference or hidden Loop arguments; linked/default/init/lifecycle calls",
+        "Async suspension, VM reentry, callback hooks, JIT, new script-catch fault sites, Global init, bootstrap and service startup"
+      ],
+      "current_exclusions": [
+        "仅合成同步value回调；真实efun、bootstrap、引用ABI及异步重入未实现。",
+        "linked/default/init/lifecycle调用及函数值同入口组合受限；不增加catch来源。"
+      ],
+      "previous_tests": [
+        "host_preparation_requires_opt_in_and_validates_signed_operands",
+        "host_arguments_follow_stack_order_without_numeric_conversion",
+        "host_optional_and_rest_pass_actual_arguments_without_defaults",
+        "host_argc_64_and_127_are_not_masked_and_charge_one_instruction",
+        "host_return_policies_validate_void_mixed_and_exact_values",
+        "host_wrong_results_preserve_operands_and_are_not_replayed",
+        "host_callback_error_preserves_side_effect_and_bypasses_script_catch",
+        "host_stack_and_frame_limits_prevent_callback_and_preserve_stack",
+        "host_pause_rebinding_and_into_objects_keep_registry_and_never_replay",
+        "host_global_calls_restore_none_context_and_object_caller_code_pool",
+        "host_global_errors_have_no_object_and_point_to_global_06",
+        "function_values_host_any_mixed_transfers_opaque_identity_and_exact_rejects"
+      ],
+      "current_tests": [
+        "host_preparation_requires_opt_in_and_validates_signed_operands",
+        "host_arguments_follow_stack_order_without_numeric_conversion",
+        "host_optional_and_rest_pass_actual_arguments_without_defaults",
+        "host_argc_64_and_127_are_not_masked_and_charge_one_instruction",
+        "host_return_policies_validate_void_mixed_and_exact_values",
+        "host_wrong_results_preserve_operands_and_are_not_replayed",
+        "host_callback_error_preserves_side_effect_and_bypasses_script_catch",
+        "host_stack_and_frame_limits_prevent_callback_and_preserve_stack",
+        "host_pause_rebinding_and_into_objects_keep_registry_and_never_replay",
+        "host_global_calls_restore_none_context_and_object_caller_code_pool",
+        "host_global_errors_have_no_object_and_point_to_global_06",
+        "function_values_host_any_mixed_transfers_opaque_identity_and_exact_rejects"
+      ],
+      "previous_implemented_cases": [
+        "Explicit Object/Global ordinary-function opt-in; typed store-wide slots 0..558; signed argc0..127 without masks",
+        "Synchronous value-only required/optional/rest arguments and Void/Exact/Mixed result; inherited caller identity; no implicit numeric conversion or object normalization",
+        "Preflight before callback, result Cell reservation, success-only PC commit, budget pause/rebinding and terminal host errors",
+        "Host Any/Mixed can forward opaque Function identity; Exact kinds reject Function; host does not execute/normalize it"
+      ],
+      "current_implemented_cases": [
+        "Explicit Object/Global ordinary-function opt-in; typed store-wide slots 0..558; signed argc0..127 without masks",
+        "Synchronous value-only required/optional/rest arguments and Void/Exact/Mixed result; inherited caller identity; no implicit numeric conversion or object normalization",
+        "Preflight before callback, result Cell reservation, success-only PC commit, budget pause/rebinding and terminal host errors",
+        "Host Any/Mixed can forward opaque Function identity; Exact kinds reject Function; host does not execute/normalize it"
+      ],
+      "reason": "对照当前源码与代表测试的输入/断言重新限定；关联缺口，不宣称完整逐分支覆盖。"
+    },
+    {
+      "opcode": "07",
+      "previous_exclusions": [
+        "Legacy/lifecycle/default global calls; non-global07 in Global code; pre-module/native bootstrap bindings; code unloading; native efuns and host calls without separate opt-in",
+        "cross-object dispatch via07 (08 separately bounded); lifecycle user entry; hidden functions; diamond inheritance; hidden loop-control reference arguments"
+      ],
+      "current_exclusions": [
+        "hidden/重复祖先/完整命名及private规则未闭合；非global07不能从Global代码执行。",
+        "生命周期/默认表达式内全局调用受限；无原生bootstrap/efun注册。"
+      ],
+      "previous_tests": [
+        "linked_multilevel_calls_add_function_bases",
+        "linked_calls_use_body_string_pool_and_restore_caller",
+        "linked_reference_parameters_keep_object_cell_identity",
+        "global_calls_absolute_slots_flags_and_missing_bindings_have_distinct_errors",
+        "global_calls_nested_global_functions_use_absolute_slots_and_own_string_pool",
+        "global_calls_active_frames_survive_clear_and_new_calls_use_rebinding",
+        "global_calls_reference_parameters_forward_global_roots_and_object_locals",
+        "global_calls_parameter_preflight_failure_preserves_caller_operands_and_frames",
+        "global_calls_preflight_does_not_normalize_earlier_deleted_object_before_later_type_error",
+        "global_calls_catch_unwinds_both_execution_sources_and_keeps_correct_context"
+      ],
+      "current_tests": [
+        "linked_multilevel_calls_add_function_bases",
+        "linked_calls_use_body_string_pool_and_restore_caller",
+        "linked_reference_parameters_keep_object_cell_identity",
+        "global_calls_absolute_slots_flags_and_missing_bindings_have_distinct_errors",
+        "global_calls_nested_global_functions_use_absolute_slots_and_own_string_pool",
+        "global_calls_active_frames_survive_clear_and_new_calls_use_rebinding",
+        "global_calls_reference_parameters_forward_global_roots_and_object_locals",
+        "global_calls_parameter_preflight_failure_preserves_caller_operands_and_frames",
+        "global_calls_preflight_does_not_normalize_earlier_deleted_object_before_later_type_error",
+        "global_calls_catch_unwinds_both_execution_sources_and_keeps_correct_context"
+      ],
+      "previous_implemented_cases": [
+        "local current-object call; signed current-constitution function base; actual implementation source context",
+        "Explicit Object opt-in to bound Global code and Global-to-Global bit7 calls; absolute signed par16 slot, low6 argc, bit6 ignored; preflight then install no-object Global frame"
+      ],
+      "current_implemented_cases": [
+        "local current-object call; signed current-constitution function base; actual implementation source context",
+        "Explicit Object opt-in to bound Global code and Global-to-Global bit7 calls; absolute signed par16 slot, low6 argc, bit6 ignored; preflight then install no-object Global frame"
+      ],
+      "reason": "对照当前源码与代表测试的输入/断言重新限定；关联缺口，不宣称完整逐分支覆盖。"
+    },
+    {
+      "opcode": "08",
+      "previous_exclusions": [
+        "String/Array targets; embedded NUL method names; efun mode/other flags; lifecycle task cross-calls; automatic native name table construction; active destruction/delayed deletion and general catch",
+        "hidden loop-control reference arguments"
+      ],
+      "current_exclusions": [
+        "08仅直接Object及显式目录；String/Array、其他flags/NUL、完整名称/private和返回hook未开放。",
+        "生命周期重入、活动对象删除和native callback调度未模拟。"
+      ],
+      "previous_tests": [
+        "other_call_round_trip_restores_program_pool_and_object",
+        "other_call_private_lookup_and_fallback_preserve_method_argument",
+        "other_call_argument_and_fallback_orders_match_native_stack",
+        "other_call_reference_owner_survives_cross_program_and_nested_forwarding",
+        "other_call_entry_failures_preserve_operands_and_reference_targets",
+        "other_call_budget_pause_preserves_callee_and_restores_return_context",
+        "global_calls_can_call_object_methods_and_restore_global_none_context"
+      ],
+      "current_tests": [
+        "other_call_round_trip_restores_program_pool_and_object",
+        "other_call_private_lookup_and_fallback_preserve_method_argument",
+        "other_call_argument_and_fallback_orders_match_native_stack",
+        "other_call_reference_owner_survives_cross_program_and_nested_forwarding",
+        "other_call_entry_failures_preserve_operands_and_reference_targets",
+        "other_call_budget_pause_preserves_callee_and_restores_return_context",
+        "global_calls_can_call_object_methods_and_restore_global_none_context"
+      ],
+      "previous_implemented_cases": [
+        "Direct live Object targets; explicit complete method namespace; flags 0/2/4/6 and signed nonnegative argc; private lookup and default_interface argument insertion; Void on suppressed miss; cross-program/inherited frame restoration; ordinary return and budget resume",
+        "Global caller may invoke direct Object method; return restores Global code pool and active_object=None"
+      ],
+      "current_implemented_cases": [
+        "Direct live Object targets; explicit complete method namespace; flags 0/2/4/6 and signed nonnegative argc; private lookup and default_interface argument insertion; Void on suppressed miss; cross-program/inherited frame restoration; ordinary return and budget resume",
+        "Global caller may invoke direct Object method; return restores Global code pool and active_object=None"
+      ],
+      "reason": "对照当前源码与代表测试的输入/断言重新限定；关联缺口，不宣称完整逐分支覆盖。"
+    },
+    {
+      "opcode": "0a",
+      "previous_exclusions": [
+        "Reference selectors; direct initialization case nodes; branching default expressions; noncanonical native shared-string identity"
+      ],
+      "current_exclusions": [
+        "普通Int/Bytes selector；引用selector、init及分支默认代码受限。",
+        "共享字符串身份及原生资源/错误现场未证明等价。"
+      ],
+      "previous_tests": [
+        "switch_number_cases_match_only_exact_ints_and_default_consumes_selector",
+        "switch_miss_preserves_selector_and_hit_pops_exactly_one_value",
+        "switch_preparation_checks_metadata_sign_extension_truncation_and_offsets",
+        "switch_budget_pause_commits_case_only_once_and_zero_budget_is_inert"
+      ],
+      "current_tests": [
+        "switch_number_cases_match_only_exact_ints_and_default_consumes_selector",
+        "switch_miss_preserves_selector_and_hit_pops_exactly_one_value",
+        "switch_preparation_checks_metadata_sign_extension_truncation_and_offsets",
+        "switch_budget_pause_commits_case_only_once_and_zero_budget_is_inert"
+      ],
+      "previous_implemented_cases": [
+        "Signed fixed8B metadata [delta,i32 literal]; exact Int match; pop and pc+1+delta on hit; retain other Values on miss"
+      ],
+      "current_implemented_cases": [
+        "Signed fixed8B metadata [delta,i32 literal]; exact Int match; pop and pc+1+delta on hit; retain other Values on miss"
+      ],
+      "reason": "对照当前源码与代表测试的输入/断言重新限定；关联缺口，不宣称完整逐分支覆盖。"
+    },
+    {
+      "opcode": "0b",
+      "previous_exclusions": [
+        "Reference selectors; direct initialization case nodes; branching default expressions; noncanonical native shared-string identity"
+      ],
+      "current_exclusions": [
+        "普通Int/Bytes selector；引用selector、init及分支默认代码受限。",
+        "共享字符串身份及原生资源/错误现场未证明等价。"
+      ],
+      "previous_tests": [
+        "switch_string_cases_compare_length_and_raw_bytes_without_coercion",
+        "switch_preparation_rejects_bad_string_pool_before_selector_type",
+        "switch_inherited_bodies_validate_and_use_their_own_string_pools",
+        "switch_cross_object_calls_use_target_pool_and_restore_caller_case_context"
+      ],
+      "current_tests": [
+        "switch_string_cases_compare_length_and_raw_bytes_without_coercion",
+        "switch_preparation_rejects_bad_string_pool_before_selector_type",
+        "switch_inherited_bodies_validate_and_use_their_own_string_pools",
+        "switch_cross_object_calls_use_target_pool_and_restore_caller_case_context"
+      ],
+      "previous_implemented_cases": [
+        "Fixed8B metadata [delta,pool index]; validate nonnull source-body pool; raw Bytes equality; hit pops and jumps, miss retains"
+      ],
+      "current_implemented_cases": [
+        "Fixed8B metadata [delta,pool index]; validate nonnull source-body pool; raw Bytes equality; hit pops and jumps, miss retains"
+      ],
+      "reason": "对照当前源码与代表测试的输入/断言重新限定；关联缺口，不宣称完整逐分支覆盖。"
+    },
+    {
+      "opcode": "0c",
+      "previous_exclusions": [
+        "Reference selectors; direct initialization case nodes; branching default expressions; noncanonical native shared-string identity"
+      ],
+      "current_exclusions": [
+        "普通Int/Bytes selector；引用selector、init及分支默认代码受限。",
+        "共享字符串身份及原生资源/错误现场未证明等价。"
+      ],
+      "previous_tests": [
+        "switch_sequential_mixed_cases_and_default_choose_first_matching_case",
+        "switch_without_default_and_nested_selectors_need_no_hidden_state",
+        "switch_empty_calculation_region_and_reference_selectors_fail_without_consumption"
+      ],
+      "current_tests": [
+        "switch_sequential_mixed_cases_and_default_choose_first_matching_case",
+        "switch_without_default_and_nested_selectors_need_no_hidden_state",
+        "switch_empty_calculation_region_and_reference_selectors_fail_without_consumption"
+      ],
+      "previous_implemented_cases": [
+        "Pop one calculation Value and jump by signed par16; ignore par8; no implicit switch state"
+      ],
+      "current_implemented_cases": [
+        "Pop one calculation Value and jump by signed par16; ignore par8; no implicit switch state"
+      ],
+      "reason": "对照当前源码与代表测试的输入/断言重新限定；关联缺口，不宣称完整逐分支覆盖。"
+    },
+    {
+      "opcode": "0d",
+      "previous_exclusions": [
+        "const attributes and nonnumeric targets/sources"
+      ],
+      "current_exclusions": [
+        "仅非const数值cast；非数值及完整属性传播受限。"
+      ],
+      "previous_tests": [
+        "numeric_casts_reject_non_numeric_sources_and_const_attributes",
+        "float_to_integer_conversion_uses_indefinite_min_instead_of_rust_saturation"
+      ],
+      "current_tests": [
+        "numeric_casts_reject_non_numeric_sources_and_const_attributes",
+        "float_to_integer_conversion_uses_indefinite_min_instead_of_rust_saturation"
+      ],
+      "previous_implemented_cases": [
+        "non-const cast to Int/Real; Undefined/Void to zero; numeric coercion"
+      ],
+      "current_implemented_cases": [
+        "non-const cast to Int/Real; Undefined/Void to zero; numeric coercion"
+      ],
+      "reason": "对照当前源码与代表测试的输入/断言重新限定；关联缺口，不宣称完整逐分支覆盖。"
+    },
+    {
+      "opcode": "0e",
+      "previous_exclusions": [
+        "Lifecycle and callback catches; JIT/thread recovery; native malformed empty/cross-owner ends",
+        "Only proven numeric zero sources for19/28/2f are catchable; overflow, type, reference and resource faults remain fatal"
+      ],
+      "current_exclusions": [
+        "仅指定数值零来源；其他错误、返回hook及一般非局部退出未恢复。",
+        "生命周期及callback/调度重入catch未开放。"
+      ],
+      "previous_tests": [
+        "catches_normal_end_preserves_values_and_marker_is_an_independent_primitive",
+        "catches_marker_limit_remains_fatal_and_compound_zero_uses_handler",
+        "catches_budget_pause_before_marker_matches_uninterrupted_execution",
+        "global_calls_catch_unwinds_both_execution_sources_and_keeps_correct_context"
+      ],
+      "current_tests": [
+        "catches_normal_end_preserves_values_and_marker_is_an_independent_primitive",
+        "catches_marker_limit_remains_fatal_and_compound_zero_uses_handler",
+        "catches_budget_pause_before_marker_matches_uninterrupted_execution",
+        "global_calls_catch_unwinds_both_execution_sources_and_keeps_correct_context"
+      ],
+      "previous_implemented_cases": [
+        "Independent integer 1 marker with normal value-stack limits",
+        "Existing numeric fault recovery crosses Object/Global code sources and restores saved frame context"
+      ],
+      "current_implemented_cases": [
+        "Independent integer 1 marker with normal value-stack limits",
+        "Existing numeric fault recovery crosses Object/Global code sources and restores saved frame context"
+      ],
+      "reason": "对照当前源码与代表测试的输入/断言重新限定；关联缺口，不宣称完整逐分支覆盖。"
+    },
+    {
+      "opcode": "0f",
+      "previous_exclusions": [
+        "atomic function attribute; reference returns; non-linear defaults; omitted refs; general catch/hooks"
+      ],
+      "current_exclusions": [
+        "atomic/const属性、一般默认表达式、省略引用及Reference返回受限。",
+        "返回hook与一般异常/任务组合未恢复；已有数值catch不是全部catch。"
+      ],
+      "previous_tests": [
+        "defaults_preserve_declaration_order_for_every_accepted_arity",
+        "variadic_extras_are_direct_slots_and_explicit_array_keeps_argument_order",
+        "optional_calls_preserve_caller_prefix_and_reference_identity_during_resort",
+        "return_shape_and_type_errors_do_not_silently_succeed"
+      ],
+      "current_tests": [
+        "defaults_preserve_declaration_order_for_every_accepted_arity",
+        "variadic_extras_are_direct_slots_and_explicit_array_keeps_argument_order",
+        "optional_calls_preserve_caller_prefix_and_reference_identity_during_resort",
+        "return_shape_and_type_errors_do_not_silently_succeed"
+      ],
+      "previous_implemented_cases": [
+        "validate/coerce supplied ordinary args atomically; exact typed refs; skip/evaluate bounded defaults"
+      ],
+      "current_implemented_cases": [
+        "validate/coerce supplied ordinary args atomically; exact typed refs; skip/evaluate bounded defaults"
+      ],
+      "reason": "对照当前源码与代表测试的输入/断言重新限定；关联缺口，不宣称完整逐分支覆盖。"
+    },
+    {
+      "opcode": "10",
+      "previous_exclusions": [
+        "Opcode11 dynamic index remains unsupported; initialization, construction/rollback and default-expression execution; no native callback/JIT/global/no-frame compatibility claim",
+        "Corrupted native-frame arithmetic and allocation failure/recovery equivalence; errors are fatal without new catch provenance"
+      ],
+      "current_exclusions": [
+        "10为直接槽检查；11动态索引、引用类型扩展未实现。",
+        "init/构造/回滚/default及native callback语境未开放。"
+      ],
+      "previous_tests": [
+        "ref_checks_plain_values_extreme_indices_and_ignored_par8",
+        "ref_checks_nested_forwarded_reference_preserves_source",
+        "ref_checks_negative_local_and_calculation_slots_before_result_push",
+        "ref_checks_optional_default_and_variadic_slots",
+        "ref_checks_budget_and_stack_limit_preserve_operand_identity",
+        "ref_checks_inherited_and_cross_object_frames",
+        "ref_checks_stack_limit_inside_catch_remains_fatal",
+        "ref_checks_preparation_rejects_init_defaults_and_dynamic_variant",
+        "ref_checks_lifecycle_helper_rejection_cleans_initialization_and_construction",
+        "ref_checks_rollback_helper_rejection_preserves_primary_error_and_cleans_task"
+      ],
+      "current_tests": [
+        "ref_checks_plain_values_extreme_indices_and_ignored_par8",
+        "ref_checks_nested_forwarded_reference_preserves_source",
+        "ref_checks_negative_local_and_calculation_slots_before_result_push",
+        "ref_checks_optional_default_and_variadic_slots",
+        "ref_checks_budget_and_stack_limit_preserve_operand_identity",
+        "ref_checks_inherited_and_cross_object_frames",
+        "ref_checks_stack_limit_inside_catch_remains_fatal",
+        "ref_checks_preparation_rejects_init_defaults_and_dynamic_variant",
+        "ref_checks_lifecycle_helper_rejection_cleans_initialization_and_construction",
+        "ref_checks_rollback_helper_rejection_preserves_primary_error_and_cleans_task"
+      ],
+      "previous_implemented_cases": [
+        "Ordinary current-frame raw-slot inspection; signed par16 index with par8 ignored; push Int1 for Reference and Int0 for Values/unallocated/out-of-range slots",
+        "Actual effective argument bounds; negative allocated local/calculation slots; capture before push; dangling/readonly References keep identity without target resolution or normalization",
+        "Inherited/cross-object/forwarded reference parameters; optional/default/variadic layouts; one-instruction budget and zero-budget inert; no reference quota allocation"
+      ],
+      "current_implemented_cases": [
+        "Ordinary current-frame raw-slot inspection; signed par16 index with par8 ignored; push Int1 for Reference and Int0 for Values/unallocated/out-of-range slots",
+        "Actual effective argument bounds; negative allocated local/calculation slots; capture before push; dangling/readonly References keep identity without target resolution or normalization",
+        "Inherited/cross-object/forwarded reference parameters; optional/default/variadic layouts; one-instruction budget and zero-budget inert; no reference quota allocation"
+      ],
+      "reason": "对照当前源码与代表测试的输入/断言重新限定；关联缺口，不宣称完整逐分支覆盖。"
+    },
+    {
+      "opcode": "12",
+      "previous_exclusions": [
+        "Mapping hash order; buffer; source attribute propagation; member/temporary bindings; aliased or parameter control slots; lifecycle-task loops; general catch"
+      ],
+      "current_exclusions": [
+        "只实现整数±1及Array997；Mapping/Buffer、源属性及其他绑定受限。",
+        "任务内循环及一般异常清理未恢复；已有数值catch组合保持受限。"
+      ],
+      "previous_tests": [
+        "loops_numeric_i32_endpoints_wrap_once_without_reentering",
+        "loops_array_empty_single_and_multiple_copy_current_values",
+        "loops_array_reads_live_cells_but_retains_original_header_after_rebinding",
+        "loops_array_copy_normalizes_dead_object_source_atomically",
+        "catches_inside_numeric_loop_preserve_cursor_and_continue_after_each_error",
+        "catches_unwind_array_loop_helper_and_keep_shared_array_values"
+      ],
+      "current_tests": [
+        "loops_numeric_i32_endpoints_wrap_once_without_reentering",
+        "loops_array_empty_single_and_multiple_copy_current_values",
+        "loops_array_reads_live_cells_but_retains_original_header_after_rebinding",
+        "loops_array_copy_normalizes_dead_object_source_atomically",
+        "catches_inside_numeric_loop_preserve_cursor_and_continue_after_each_error",
+        "catches_unwind_array_loop_helper_and_keep_shared_array_values"
+      ],
+      "previous_implemented_cases": [
+        "Write current numeric/Array output; success fallthrough, failure pc+1+delta; failed numeric check still writes; exhaustion keeps controller/header",
+        "Saved owner control survives supported catch; young-frame control is released by unwind"
+      ],
+      "current_implemented_cases": [
+        "Write current numeric/Array output; success fallthrough, failure pc+1+delta; failed numeric check still writes; exhaustion keeps controller/header",
+        "Saved owner control survives supported catch; young-frame control is released by unwind"
+      ],
+      "reason": "对照当前源码与代表测试的输入/断言重新限定；关联缺口，不宣称完整逐分支覆盖。"
+    },
+    {
+      "opcode": "13",
+      "previous_exclusions": [
+        "reference escape; Buffer/String member writes; range refs; native full release timing; cycles"
+      ],
+      "current_exclusions": [
+        "Reference逃逸、Buffer/Bytes成员写和范围引用未开放。",
+        "成员Ref保活/源规范化有已知差异；容器重接/循环图受限。"
+      ],
+      "previous_tests": [
+        "reference_assignments_preserve_result_and_update_stable_local_slots",
+        "shared_array_and_mapping_member_writes_are_visible_to_aliases",
+        "references_cannot_escape_via_returns_arguments_or_containers",
+        "reference_modes_invalid_targets_and_invalid_keys_fail_explicitly"
+      ],
+      "current_tests": [
+        "temporary_array_and_mapping_conversion_release_headers_at_the_right_time",
+        "references_cannot_escape_via_returns_arguments_or_containers"
+      ],
+      "previous_implemented_cases": [
+        "Array/Mapping value to owned temporary cell reference; existing reference unchanged"
+      ],
+      "current_implemented_cases": [
+        "Array/Mapping value to owned temporary cell reference; existing reference unchanged"
+      ],
+      "reason": "对照当前源码与代表测试的输入/断言重新限定；关联缺口，不宣称完整逐分支覆盖。"
+    },
+    {
+      "opcode": "14",
+      "previous_exclusions": [
+        "reference escape; Buffer/String member writes; range refs; native full release timing; cycles"
+      ],
+      "current_exclusions": [
+        "Reference逃逸、Buffer/Bytes成员写和范围引用未开放。",
+        "成员Ref保活/源规范化有已知差异；容器重接/循环图受限。"
+      ],
+      "previous_tests": [
+        "reference_assignments_preserve_result_and_update_stable_local_slots",
+        "shared_array_and_mapping_member_writes_are_visible_to_aliases",
+        "references_cannot_escape_via_returns_arguments_or_containers",
+        "reference_modes_invalid_targets_and_invalid_keys_fail_explicitly",
+        "loops_control_reads_project_undefined_without_destroying_iteration",
+        "globals_old_root_survives_removal_and_new_bank_has_distinct_identity"
+      ],
+      "current_tests": [
+        "reference_assignments_preserve_result_and_update_stable_local_slots",
+        "shared_array_and_mapping_member_writes_are_visible_to_aliases",
+        "references_cannot_escape_via_returns_arguments_or_containers",
+        "reference_modes_invalid_targets_and_invalid_keys_fail_explicitly",
+        "loops_control_reads_project_undefined_without_destroying_iteration",
+        "globals_old_root_survives_removal_and_new_bank_has_distinct_identity"
+      ],
+      "previous_implemented_cases": [
+        "single explicit reference dereference with owner checks and dead-object normalization",
+        "Hidden loop-cell read projects Undefined without removing controller",
+        "Explicit Global root resolves retained Cell after bank removal/reinstallation"
+      ],
+      "current_implemented_cases": [
+        "single explicit reference dereference with owner checks and dead-object normalization",
+        "Hidden loop-cell read projects Undefined without removing controller",
+        "Explicit Global root resolves retained Cell after bank removal/reinstallation"
+      ],
+      "reason": "对照当前源码与代表测试的输入/断言重新限定；关联缺口，不宣称完整逐分支覆盖。"
+    },
+    {
+      "opcode": "15",
+      "previous_exclusions": [
+        "atomic function attribute; reference returns; non-linear defaults; omitted refs; general catch/hooks"
+      ],
+      "current_exclusions": [
+        "atomic/const属性、一般默认表达式、省略引用及Reference返回受限。",
+        "返回hook与一般异常/任务组合未恢复；已有数值catch不是全部catch。"
+      ],
+      "previous_tests": [
+        "defaults_preserve_declaration_order_for_every_accepted_arity",
+        "variadic_extras_are_direct_slots_and_explicit_array_keeps_argument_order",
+        "optional_calls_preserve_caller_prefix_and_reference_identity_during_resort",
+        "return_shape_and_type_errors_do_not_silently_succeed"
+      ],
+      "current_tests": [
+        "defaults_preserve_declaration_order_for_every_accepted_arity",
+        "variadic_extras_are_direct_slots_and_explicit_array_keeps_argument_order",
+        "optional_calls_preserve_caller_prefix_and_reference_identity_during_resort",
+        "return_shape_and_type_errors_do_not_silently_succeed"
+      ],
+      "previous_implemented_cases": [
+        "create array of effective args in declaration order; dereference reference params atomically"
+      ],
+      "current_implemented_cases": [
+        "create array of effective args in declaration order; dereference reference params atomically"
+      ],
+      "reason": "对照当前源码与代表测试的输入/断言重新限定；关联缺口，不宣称完整逐分支覆盖。"
+    },
+    {
+      "opcode": "16",
+      "previous_exclusions": [
+        "Buffer and range operations; arbitrary key types; circular containers; string indexing"
+      ],
+      "current_exclusions": [
+        "键限Int/Bytes，无Buffer/字符串索引、循环容器及一般容器运算。"
+      ],
+      "previous_tests": [
+        "array_constructor_preserves_top_first_order_and_empty_size",
+        "mapping_constructor_uses_total_value_count_and_oldest_pushed_duplicate_wins",
+        "container_type_restrictions_and_access_modes_are_explicit",
+        "function_values_store_in_object_global_local_and_container_member_slots",
+        "function_values_tag9_arguments_returns_containers_and_mapping_key_rejection"
+      ],
+      "current_tests": [
+        "array_constructor_preserves_top_first_order_and_empty_size",
+        "mapping_constructor_uses_total_value_count_and_oldest_pushed_duplicate_wins",
+        "container_type_restrictions_and_access_modes_are_explicit",
+        "function_values_store_in_object_global_local_and_container_member_slots",
+        "function_values_tag9_arguments_returns_containers_and_mapping_key_rejection"
+      ],
+      "previous_implemented_cases": [
+        "construct Array from top-first values; empty count allowed",
+        "Opaque Function values participate in existing bounded storage/return paths; captures remain scalar-only"
+      ],
+      "current_implemented_cases": [
+        "construct Array from top-first values; empty count allowed",
+        "Opaque Function values participate in existing bounded storage/return paths; captures remain scalar-only"
+      ],
+      "reason": "对照当前源码与代表测试的输入/断言重新限定；关联缺口，不宣称完整逐分支覆盖。"
+    },
+    {
+      "opcode": "17",
+      "previous_exclusions": [
+        "Global/efun/string/OS targets; non-scalar captures; reference parameters; inherited/hidden functions; default/init/lifecycle execution",
+        "Native owner ref/execRef, active-object deferred deletion, full cleanup-source normalization, arbitrary cyclic capture graphs, scheduling/hooks/JIT"
+      ],
+      "current_exclusions": [
+        "Global/efun/string/OS目标、非标量捕获、引用原型和继承/hidden目标未开放。",
+        "生命周期、默认表达式及与宿主/继承能力合并受限。",
+        "owner物理保活、延迟删除、源cleanup与非标量move/copy未模拟。"
+      ],
+      "previous_tests": [
+        "function_values_prepare_all_creation_flag_bytes_and_direct_private_slots",
+        "function_values_prepare_signed_slots_counts_missing_bodies_and_reference_targets",
+        "function_values_identity_metadata_and_debug_hide_captures",
+        "function_values_capture_scalars_without_bit_or_byte_conversion",
+        "function_values_reject_non_scalar_captures_without_consuming_operands",
+        "function_values_reject_reference_capture_target_and_new_argument",
+        "function_values_raw_loop_capture_target_and_new_argument_are_rejected",
+        "function_values_create_allocation_failure_preserves_capture_and_pc",
+        "function_values_creation_zero_capture_checks_result_stack_capacity",
+        "function_values_header_and_bytes_release_after_last_owner",
+        "function_values_zero_budget_does_not_allocate_or_consume",
+        "function_values_store_in_object_global_local_and_container_member_slots"
+      ],
+      "current_tests": [
+        "function_values_prepare_all_creation_flag_bytes_and_direct_private_slots",
+        "function_values_prepare_signed_slots_counts_missing_bodies_and_reference_targets",
+        "function_values_identity_metadata_and_debug_hide_captures",
+        "function_values_capture_scalars_without_bit_or_byte_conversion",
+        "function_values_reject_non_scalar_captures_without_consuming_operands",
+        "function_values_reject_reference_capture_target_and_new_argument",
+        "function_values_raw_loop_capture_target_and_new_argument_are_rejected",
+        "function_values_create_allocation_failure_preserves_capture_and_pc",
+        "function_values_creation_zero_capture_checks_result_stack_capacity",
+        "function_values_header_and_bytes_release_after_last_owner",
+        "function_values_zero_budget_does_not_allocate_or_consume",
+        "function_values_store_in_object_global_local_and_container_member_slots"
+      ],
+      "previous_implemented_cases": [
+        "Ordinary single-constitution Object target with flags0..63, direct prepared slot including private functions; scalar capture stack order and exact Real/Bytes payloads",
+        "Opaque tag9 Rc identity, independent store token, no public constructor; capture/result reservation before publication; failure keeps operands/PC and budgets pause after success"
+      ],
+      "current_implemented_cases": [
+        "Ordinary single-constitution Object target with flags0..63, direct prepared slot including private functions; scalar capture stack order and exact Real/Bytes payloads",
+        "Opaque tag9 Rc identity, independent store token, no public constructor; capture/result reservation before publication; failure keeps operands/PC and budgets pause after success"
+      ],
+      "reason": "对照当前源码与代表测试的输入/断言重新限定；关联缺口，不宣称完整逐分支覆盖。"
+    },
+    {
+      "opcode": "18",
+      "previous_exclusions": [
+        "Buffer and range operations; arbitrary key types; circular containers; string indexing"
+      ],
+      "current_exclusions": [
+        "键限Int/Bytes，无Buffer/字符串索引、循环容器及一般容器运算。"
+      ],
+      "previous_tests": [
+        "array_constructor_preserves_top_first_order_and_empty_size",
+        "mapping_constructor_uses_total_value_count_and_oldest_pushed_duplicate_wins",
+        "container_type_restrictions_and_access_modes_are_explicit",
+        "function_values_store_in_object_global_local_and_container_member_slots",
+        "function_values_tag9_arguments_returns_containers_and_mapping_key_rejection"
+      ],
+      "current_tests": [
+        "mapping_constructor_uses_total_value_count_and_oldest_pushed_duplicate_wins",
+        "container_type_restrictions_and_access_modes_are_explicit"
+      ],
+      "previous_implemented_cases": [
+        "construct Mapping using total key/value input count; bounded Int/Bytes keys; duplicate update policy",
+        "Opaque Function values participate in existing bounded storage/return paths; captures remain scalar-only"
+      ],
+      "current_implemented_cases": [
+        "construct Mapping using total key/value input count; bounded Int/Bytes keys; duplicate update policy",
+        "Opaque Function values participate in existing bounded storage/return paths; captures remain scalar-only"
+      ],
+      "reason": "对照当前源码与代表测试的输入/断言重新限定；关联缺口，不宣称完整逐分支覆盖。"
+    },
+    {
+      "opcode": "19",
+      "previous_exclusions": [
+        "String/container arithmetic; all other native value-type branches; native floating environment equivalence",
+        "MIN/-1 stays uncatchable; NaN divisor follows normal arithmetic; no blanket Arithmetic classification"
+      ],
+      "current_exclusions": [
+        "非数值类型对（除含Function的1c/2a身份分支）未实现。",
+        "原生浮点环境、资源及失败现场未证明等价。",
+        "只有已取证数值零来源可catch；MIN/-1等仍终止。"
+      ],
+      "previous_tests": [
+        "executes_all_integer_arithmetic_and_comparison_operations",
+        "mixed_arithmetic_preserves_left_type_except_remainder",
+        "numeric_comparisons_round_integer_inputs_and_nan_is_unordered",
+        "catches_integer_zero_discards_temporaries_but_keeps_committed_object_writes",
+        "catches_do_not_classify_other_arithmetic_errors_by_kind_or_message",
+        "catches_unhandled_integer_zero_preserves_original_diagnostic_and_operands",
+        "numeric_catch_division_accepts_numeric_pairs_and_both_real_zero_signs",
+        "numeric_catch_nan_divisors_do_not_enter_zero_handlers",
+        "numeric_catch_nonzero_divisors_keep_normal_numeric_results",
+        "numeric_catch_unhandled_real_zero_preserves_diagnostic_and_negative_zero_bits"
+      ],
+      "current_tests": [
+        "executes_all_integer_arithmetic_and_comparison_operations",
+        "mixed_arithmetic_preserves_left_type_except_remainder",
+        "catches_integer_zero_discards_temporaries_but_keeps_committed_object_writes",
+        "catches_do_not_classify_other_arithmetic_errors_by_kind_or_message",
+        "catches_unhandled_integer_zero_preserves_original_diagnostic_and_operands",
+        "numeric_catch_division_accepts_numeric_pairs_and_both_real_zero_signs",
+        "numeric_catch_nan_divisors_do_not_enter_zero_handlers",
+        "numeric_catch_nonzero_divisors_keep_normal_numeric_results",
+        "numeric_catch_unhandled_real_zero_preserves_diagnostic_and_negative_zero_bits"
+      ],
+      "previous_implemented_cases": [
+        "checked integer divide; mixed numeric divide; zero division is controlled error",
+        "Int/Int(0) script catch transfer using explicit private provenance",
+        "Int/Real, Real/Int and Real/Real zero division catch sources, including signed real zero"
+      ],
+      "current_implemented_cases": [
+        "checked integer divide; mixed numeric divide; zero division is controlled error",
+        "Int/Int(0) script catch transfer using explicit private provenance",
+        "Int/Real, Real/Int and Real/Real zero division catch sources, including signed real zero"
+      ],
+      "reason": "对照当前源码与代表测试的输入/断言重新限定；关联缺口，不宣称完整逐分支覆盖。"
+    },
+    {
+      "opcode": "1a",
+      "previous_exclusions": [
+        "Lifecycle and callback catches; JIT/thread recovery; native malformed empty/cross-owner ends",
+        "Only proven numeric zero sources for19/28/2f are catchable; overflow, type, reference and resource faults remain fatal"
+      ],
+      "current_exclusions": [
+        "仅指定数值零来源；其他错误、返回hook及一般非局部退出未恢复。",
+        "生命周期及callback/调度重入catch未开放。"
+      ],
+      "previous_tests": [
+        "catches_normal_inner_end_leaves_outer_handler_active",
+        "catches_empty_and_cross_owner_end_fail_without_consuming_caller_stack",
+        "catches_early_return_retires_callee_handler_before_caller_error",
+        "global_calls_catch_unwinds_both_execution_sources_and_keeps_correct_context"
+      ],
+      "current_tests": [
+        "catches_normal_inner_end_leaves_outer_handler_active",
+        "catches_empty_and_cross_owner_end_fail_without_consuming_caller_stack",
+        "catches_early_return_retires_callee_handler_before_caller_error",
+        "global_calls_catch_unwinds_both_execution_sources_and_keeps_correct_context"
+      ],
+      "previous_implemented_cases": [
+        "Pop one handler owned by the current frame without changing the value stack",
+        "Existing numeric fault recovery crosses Object/Global code sources and restores saved frame context"
+      ],
+      "current_implemented_cases": [
+        "Pop one handler owned by the current frame without changing the value stack",
+        "Existing numeric fault recovery crosses Object/Global code sources and restores saved frame context"
+      ],
+      "reason": "对照当前源码与代表测试的输入/断言重新限定；关联缺口，不宣称完整逐分支覆盖。"
+    },
+    {
+      "opcode": "1b",
+      "previous_exclusions": [
+        "atomic function attribute; reference returns; non-linear defaults; omitted refs; general catch/hooks"
+      ],
+      "current_exclusions": [
+        "atomic/const属性、一般默认表达式、省略引用及Reference返回受限。",
+        "返回hook与一般异常/任务组合未恢复；已有数值catch不是全部catch。"
+      ],
+      "previous_tests": [
+        "defaults_preserve_declaration_order_for_every_accepted_arity",
+        "variadic_extras_are_direct_slots_and_explicit_array_keeps_argument_order",
+        "optional_calls_preserve_caller_prefix_and_reference_identity_during_resort",
+        "return_shape_and_type_errors_do_not_silently_succeed"
+      ],
+      "current_tests": [
+        "defaults_preserve_declaration_order_for_every_accepted_arity",
+        "variadic_extras_are_direct_slots_and_explicit_array_keeps_argument_order",
+        "optional_calls_preserve_caller_prefix_and_reference_identity_during_resort",
+        "return_shape_and_type_errors_do_not_silently_succeed"
+      ],
+      "previous_implemented_cases": [
+        "allocate declared local Undefined cells once after argument/default entry"
+      ],
+      "current_implemented_cases": [
+        "allocate declared local Undefined cells once after argument/default entry"
+      ],
+      "reason": "对照当前源码与代表测试的输入/断言重新限定；关联缺口，不宣称完整逐分支覆盖。"
+    },
+    {
+      "opcode": "1c",
+      "previous_exclusions": [
+        "String/container arithmetic; all other native value-type branches; native floating environment equivalence"
+      ],
+      "current_exclusions": [
+        "非数值类型对（除含Function的1c/2a身份分支）未实现。",
+        "原生浮点环境、资源及失败现场未证明等价。",
+        "只有已取证数值零来源可catch；MIN/-1等仍终止。"
+      ],
+      "previous_tests": [
+        "executes_all_integer_arithmetic_and_comparison_operations",
+        "mixed_arithmetic_preserves_left_type_except_remainder",
+        "numeric_comparisons_round_integer_inputs_and_nan_is_unordered",
+        "function_values_vm_equality_uses_identity_and_rejects_arithmetic",
+        "function_values_deleted_owner_raw_truth_and_equality_do_not_normalize"
+      ],
+      "current_tests": [
+        "executes_all_integer_arithmetic_and_comparison_operations",
+        "numeric_comparisons_round_integer_inputs_and_nan_is_unordered",
+        "function_values_vm_equality_uses_identity_and_rejects_arithmetic",
+        "function_values_deleted_owner_raw_truth_and_equality_do_not_normalize"
+      ],
+      "previous_implemented_cases": [
+        "numeric equality; mixed numeric operands compare after binary32 conversion",
+        "Function pointer identity, including deleted-owner raw values; Function vs other ordinary values compares unequal"
+      ],
+      "current_implemented_cases": [
+        "Int/Int equality is exact; mixed/Real comparisons round numeric operands to binary32",
+        "Function pointer identity, including deleted-owner raw values; Function vs other ordinary values compares unequal"
+      ],
+      "reason": "对照当前源码与代表测试的输入/断言重新限定；关联缺口，不宣称完整逐分支覆盖。"
+    },
+    {
+      "opcode": "1d",
+      "previous_exclusions": [
+        "ordinary-function 48; successful init on finish; full native backend hooks; active destruction"
+      ],
+      "current_exclusions": [
+        "48只用于init，finish不能充当init成功；非普通返回和原生backend清理未证明兼容。",
+        "无完整主动析构/活动对象延迟删除。"
+      ],
+      "previous_tests": [
+        "finish_stops_the_action_without_fabricating_a_return_value",
+        "initialization_finish_action_is_failure_even_inside_called_function",
+        "initialization_balance_failure_removes_only_owned_object_and_is_sticky",
+        "construction_failure_rolls_back_failing_layer_and_previous_layers_in_reverse"
+      ],
+      "current_tests": [
+        "finish_stops_the_action_without_fabricating_a_return_value",
+        "initialization_finish_action_is_failure_even_inside_called_function",
+        "initialization_balance_failure_removes_only_owned_object_and_is_sticky",
+        "construction_failure_rolls_back_failing_layer_and_previous_layers_in_reverse"
+      ],
+      "previous_implemented_cases": [
+        "finish current action without fabricating return; fails initialization/construction tasks"
+      ],
+      "current_implemented_cases": [
+        "finish current action without fabricating return; fails initialization/construction tasks"
+      ],
+      "reason": "对照当前源码与代表测试的输入/断言重新限定；关联缺口，不宣称完整逐分支覆盖。"
+    },
+    {
+      "opcode": "1e",
+      "previous_exclusions": [
+        "String/container arithmetic; all other native value-type branches; native floating environment equivalence"
+      ],
+      "current_exclusions": [
+        "非数值类型对（除含Function的1c/2a身份分支）未实现。",
+        "原生浮点环境、资源及失败现场未证明等价。",
+        "只有已取证数值零来源可catch；MIN/-1等仍终止。"
+      ],
+      "previous_tests": [
+        "executes_all_integer_arithmetic_and_comparison_operations",
+        "mixed_arithmetic_preserves_left_type_except_remainder",
+        "numeric_comparisons_round_integer_inputs_and_nan_is_unordered"
+      ],
+      "current_tests": [
+        "executes_all_integer_arithmetic_and_comparison_operations",
+        "numeric_comparisons_round_integer_inputs_and_nan_is_unordered"
+      ],
+      "previous_implemented_cases": [
+        "numeric greater-or-equal; mixed operands binary32 compare"
+      ],
+      "current_implemented_cases": [
+        "numeric greater-or-equal; mixed operands binary32 compare"
+      ],
+      "reason": "对照当前源码与代表测试的输入/断言重新限定；关联缺口，不宣称完整逐分支覆盖。"
+    },
+    {
+      "opcode": "1f",
+      "previous_exclusions": [
+        "foreach/catch control state; arbitrary stack region mutation"
+      ],
+      "current_exclusions": [
+        "仅普通计算区变动；任意控制槽/参数区修改及一般非局部退出受限。"
+      ],
+      "previous_tests": [
+        "conditional_flags_choose_direction_and_pop_independently",
+        "pop_n_handles_nonpositive_counts_without_consuming_slots",
+        "budget_exhaustion_preserves_loop_state_and_can_resume"
+      ],
+      "current_tests": [
+        "conditional_flags_choose_direction_and_pop_independently",
+        "pop_n_handles_nonpositive_counts_without_consuming_slots",
+        "budget_exhaustion_preserves_loop_state_and_can_resume"
+      ],
+      "previous_implemented_cases": [
+        "signed relative jump from next PC within same code body"
+      ],
+      "current_implemented_cases": [
+        "signed relative jump from next PC within same code body"
+      ],
+      "reason": "对照当前源码与代表测试的输入/断言重新限定；关联缺口，不宣称完整逐分支覆盖。"
+    },
+    {
+      "opcode": "20",
+      "previous_exclusions": [
+        "String/container arithmetic; all other native value-type branches; native floating environment equivalence"
+      ],
+      "current_exclusions": [
+        "非数值类型对（除含Function的1c/2a身份分支）未实现。",
+        "原生浮点环境、资源及失败现场未证明等价。",
+        "只有已取证数值零来源可catch；MIN/-1等仍终止。"
+      ],
+      "previous_tests": [
+        "executes_all_integer_arithmetic_and_comparison_operations",
+        "mixed_arithmetic_preserves_left_type_except_remainder",
+        "numeric_comparisons_round_integer_inputs_and_nan_is_unordered"
+      ],
+      "current_tests": [
+        "executes_all_integer_arithmetic_and_comparison_operations",
+        "numeric_comparisons_round_integer_inputs_and_nan_is_unordered"
+      ],
+      "previous_implemented_cases": [
+        "numeric greater-than; mixed operands binary32 compare"
+      ],
+      "current_implemented_cases": [
+        "numeric greater-than; mixed operands binary32 compare"
+      ],
+      "reason": "对照当前源码与代表测试的输入/断言重新限定；关联缺口，不宣称完整逐分支覆盖。"
+    },
+    {
+      "opcode": "21",
+      "previous_exclusions": [
+        "foreach/catch control state; arbitrary stack region mutation"
+      ],
+      "current_exclusions": [
+        "仅普通计算区变动；任意控制槽/参数区修改及一般非局部退出受限。"
+      ],
+      "previous_tests": [
+        "conditional_flags_choose_direction_and_pop_independently",
+        "pop_n_handles_nonpositive_counts_without_consuming_slots",
+        "budget_exhaustion_preserves_loop_state_and_can_resume",
+        "function_values_deleted_owner_raw_truth_and_equality_do_not_normalize"
+      ],
+      "current_tests": [
+        "conditional_flags_choose_direction_and_pop_independently",
+        "pop_n_handles_nonpositive_counts_without_consuming_slots",
+        "budget_exhaustion_preserves_loop_state_and_can_resume",
+        "function_values_deleted_owner_raw_truth_and_equality_do_not_normalize"
+      ],
+      "previous_implemented_cases": [
+        "truth-conditional relative jump with independent direction/pop flags",
+        "Raw Function remains truthy after owner deletion; later ordinary copies become Undefined"
+      ],
+      "current_implemented_cases": [
+        "truth-conditional relative jump with independent direction/pop flags",
+        "Raw Function remains truthy after owner deletion; later ordinary copies become Undefined"
+      ],
+      "reason": "对照当前源码与代表测试的输入/断言重新限定；关联缺口，不宣称完整逐分支覆盖。"
+    },
+    {
+      "opcode": "22",
+      "previous_exclusions": [
+        "non-numeric compound operators; const writes; other selector values"
+      ],
+      "current_exclusions": [
+        "增减/复合更新只处理已实现数值及Int位操作；非数值运算和const受限。",
+        "MIN/-1、引用/类型/资源错误不进入catch；源规范化和失败现场并非全量原生模拟。"
+      ],
+      "previous_tests": [
+        "compound_selectors_cover_all_ten_operations_and_leave_result",
+        "numeric_update_errors_preserve_target_and_operand_stack_with_locations"
+      ],
+      "current_tests": [
+        "increment_accepts_signed_par16_and_wraps_integer_extremes",
+        "increment_consumes_reference_without_leaving_expression_result",
+        "numeric_update_errors_preserve_target_and_operand_stack_with_locations"
+      ],
+      "previous_implemented_cases": [
+        "consume writable numeric reference; add signed operand; no expression result"
+      ],
+      "current_implemented_cases": [
+        "consume writable numeric reference; add signed operand; no expression result"
+      ],
+      "reason": "对照当前源码与代表测试的输入/断言重新限定；关联缺口，不宣称完整逐分支覆盖。"
+    },
+    {
+      "opcode": "23",
+      "previous_exclusions": [
+        "Mapping hash order; buffer; source attribute propagation; member/temporary bindings; aliased or parameter control slots; lifecycle-task loops; general catch"
+      ],
+      "current_exclusions": [
+        "只实现整数±1及Array997；Mapping/Buffer、源属性及其他绑定受限。",
+        "任务内循环及一般异常清理未恢复；已有数值catch组合保持受限。"
+      ],
+      "previous_tests": [
+        "loops_numeric_closed_ranges_include_end_and_write_failed_check_value",
+        "loops_mapping_mode_and_member_binding_remain_explicitly_unsupported",
+        "loops_bad_modes_sources_aliases_and_missing_state_preserve_operands",
+        "loops_preparation_checks_slots_targets_and_lifecycle_helpers",
+        "catches_inside_numeric_loop_preserve_cursor_and_continue_after_each_error",
+        "catches_unwind_array_loop_helper_and_keep_shared_array_values",
+        "globals_reference_shape_and_loop_binding_reuse_existing_rules"
+      ],
+      "current_tests": [
+        "loops_numeric_closed_ranges_include_end_and_write_failed_check_value",
+        "loops_mapping_mode_and_member_binding_remain_explicitly_unsupported",
+        "loops_bad_modes_sources_aliases_and_missing_state_preserve_operands",
+        "loops_preparation_checks_slots_targets_and_lifecycle_helpers",
+        "catches_inside_numeric_loop_preserve_cursor_and_continue_after_each_error",
+        "catches_unwind_array_loop_helper_and_keep_shared_array_values",
+        "globals_reference_shape_and_loop_binding_reuse_existing_rules"
+      ],
+      "previous_implemented_cases": [
+        "Declared allocated negative local control; +/-1 Int initial/end or mode997 Array; valid local/argument/object/explicit Global Reference; consume3 after atomic installation",
+        "Saved owner control survives supported catch; young-frame control is released by unwind"
+      ],
+      "current_implemented_cases": [
+        "Declared allocated negative local control; +/-1 Int initial/end or mode997 Array; valid local/argument/object/explicit Global Reference; consume3 after atomic installation",
+        "Saved owner control survives supported catch; young-frame control is released by unwind"
+      ],
+      "reason": "对照当前源码与代表测试的输入/断言重新限定；关联缺口，不宣称完整逐分支覆盖。"
+    },
+    {
+      "opcode": "24",
+      "previous_exclusions": [
+        "Buffer and unimplemented Function target/capture branches and full native range-related value semantics; full attribute semantics"
+      ],
+      "current_exclusions": [
+        "未表示Buffer/完整属性；其他tag操作及cast需独立恢复，不能因Function已存在继续称其缺失。",
+        "普通复制的失效源规范化与原始Function真值需区分，全部接点仍有差异。"
+      ],
+      "previous_tests": [
+        "unary_numeric_type_and_truth_operations_handle_real_values",
+        "supported_types_have_explicit_legacy_tags",
+        "empty_strings_are_truthy_and_undefined_is_false"
+      ],
+      "current_tests": [
+        "unary_numeric_type_and_truth_operations_handle_real_values",
+        "supported_types_have_explicit_legacy_tags",
+        "empty_strings_are_truthy_and_undefined_is_false"
+      ],
+      "previous_implemented_cases": [
+        "test explicit supported Value tag against operand; mixed tag is not wildcard"
+      ],
+      "current_implemented_cases": [
+        "test explicit supported Value tag against operand; mixed tag is not wildcard"
+      ],
+      "reason": "对照当前源码与代表测试的输入/断言重新限定；关联缺口，不宣称完整逐分支覆盖。"
+    },
+    {
+      "opcode": "25",
+      "previous_exclusions": [
+        "String/container arithmetic; all other native value-type branches; native floating environment equivalence"
+      ],
+      "current_exclusions": [
+        "非数值类型对（除含Function的1c/2a身份分支）未实现。",
+        "原生浮点环境、资源及失败现场未证明等价。",
+        "只有已取证数值零来源可catch；MIN/-1等仍终止。"
+      ],
+      "previous_tests": [
+        "executes_all_integer_arithmetic_and_comparison_operations",
+        "mixed_arithmetic_preserves_left_type_except_remainder",
+        "numeric_comparisons_round_integer_inputs_and_nan_is_unordered"
+      ],
+      "current_tests": [
+        "executes_all_integer_arithmetic_and_comparison_operations",
+        "numeric_comparisons_round_integer_inputs_and_nan_is_unordered"
+      ],
+      "previous_implemented_cases": [
+        "numeric less-or-equal; mixed operands binary32 compare"
+      ],
+      "current_implemented_cases": [
+        "numeric less-or-equal; mixed operands binary32 compare"
+      ],
+      "reason": "对照当前源码与代表测试的输入/断言重新限定；关联缺口，不宣称完整逐分支覆盖。"
+    },
+    {
+      "opcode": "26",
+      "previous_exclusions": [
+        "non-Int operands; complete native coercion claims"
+      ],
+      "current_exclusions": [
+        "仅Int；其他tag及完整原生转换契约未闭合。"
+      ],
+      "previous_tests": [
+        "bitwise_operations_and_logical_right_shift_follow_guarded_native_counts"
+      ],
+      "current_tests": [
+        "bitwise_operations_and_logical_right_shift_follow_guarded_native_counts"
+      ],
+      "previous_implemented_cases": [
+        "Int wrapping left shift for counts0..31; otherwise zero"
+      ],
+      "current_implemented_cases": [
+        "Int wrapping left shift for counts0..31; otherwise zero"
+      ],
+      "reason": "对照当前源码与代表测试的输入/断言重新限定；关联缺口，不宣称完整逐分支覆盖。"
+    },
+    {
+      "opcode": "27",
+      "previous_exclusions": [
+        "String/container arithmetic; all other native value-type branches; native floating environment equivalence"
+      ],
+      "current_exclusions": [
+        "非数值类型对（除含Function的1c/2a身份分支）未实现。",
+        "原生浮点环境、资源及失败现场未证明等价。",
+        "只有已取证数值零来源可catch；MIN/-1等仍终止。"
+      ],
+      "previous_tests": [
+        "executes_all_integer_arithmetic_and_comparison_operations",
+        "mixed_arithmetic_preserves_left_type_except_remainder",
+        "numeric_comparisons_round_integer_inputs_and_nan_is_unordered"
+      ],
+      "current_tests": [
+        "executes_all_integer_arithmetic_and_comparison_operations",
+        "numeric_comparisons_round_integer_inputs_and_nan_is_unordered"
+      ],
+      "previous_implemented_cases": [
+        "numeric less-than; mixed operands binary32 compare"
+      ],
+      "current_implemented_cases": [
+        "numeric less-than; mixed operands binary32 compare"
+      ],
+      "reason": "对照当前源码与代表测试的输入/断言重新限定；关联缺口，不宣称完整逐分支覆盖。"
+    },
+    {
+      "opcode": "28",
+      "previous_exclusions": [
+        "String/container arithmetic; all other native value-type branches; native floating environment equivalence",
+        "MIN/-1 integer overflow remains fatal; mixed/real remainder zero does not raise a script fault"
+      ],
+      "current_exclusions": [
+        "非数值类型对（除含Function的1c/2a身份分支）未实现。",
+        "原生浮点环境、资源及失败现场未证明等价。",
+        "只有已取证数值零来源可catch；MIN/-1等仍终止。"
+      ],
+      "previous_tests": [
+        "executes_all_integer_arithmetic_and_comparison_operations",
+        "mixed_arithmetic_preserves_left_type_except_remainder",
+        "numeric_comparisons_round_integer_inputs_and_nan_is_unordered",
+        "numeric_catch_integer_remainder_zero_accepts_negative_and_minimum_dividends",
+        "numeric_catch_float_remainder_zero_keeps_fmod_nan_result",
+        "catches_do_not_classify_other_arithmetic_errors_by_kind_or_message"
+      ],
+      "current_tests": [
+        "executes_all_integer_arithmetic_and_comparison_operations",
+        "mixed_arithmetic_preserves_left_type_except_remainder",
+        "numeric_catch_integer_remainder_zero_accepts_negative_and_minimum_dividends",
+        "numeric_catch_float_remainder_zero_keeps_fmod_nan_result",
+        "catches_do_not_classify_other_arithmetic_errors_by_kind_or_message"
+      ],
+      "previous_implemented_cases": [
+        "integer checked remainder or numeric fmod adapter returning Real",
+        "Int/Int(0) remainder catch source; floating remainder zero remains normal fmod NaN"
+      ],
+      "current_implemented_cases": [
+        "integer checked remainder or numeric fmod adapter returning Real",
+        "Int/Int(0) remainder catch source; floating remainder zero remains normal fmod NaN"
+      ],
+      "reason": "对照当前源码与代表测试的输入/断言重新限定；关联缺口，不宣称完整逐分支覆盖。"
+    },
+    {
+      "opcode": "29",
+      "previous_exclusions": [
+        "String/container arithmetic; all other native value-type branches; native floating environment equivalence"
+      ],
+      "current_exclusions": [
+        "非数值类型对（除含Function的1c/2a身份分支）未实现。",
+        "原生浮点环境、资源及失败现场未证明等价。",
+        "只有已取证数值零来源可catch；MIN/-1等仍终止。"
+      ],
+      "previous_tests": [
+        "executes_all_integer_arithmetic_and_comparison_operations",
+        "mixed_arithmetic_preserves_left_type_except_remainder",
+        "numeric_comparisons_round_integer_inputs_and_nan_is_unordered"
+      ],
+      "current_tests": [
+        "executes_all_integer_arithmetic_and_comparison_operations",
+        "mixed_arithmetic_preserves_left_type_except_remainder"
+      ],
+      "previous_implemented_cases": [
+        "wrapping Int multiply; bounded Int/Real multiply preserving left-type policy"
+      ],
+      "current_implemented_cases": [
+        "wrapping Int multiply; bounded Int/Real multiply preserving left-type policy"
+      ],
+      "reason": "对照当前源码与代表测试的输入/断言重新限定；关联缺口，不宣称完整逐分支覆盖。"
+    },
+    {
+      "opcode": "2a",
+      "previous_exclusions": [
+        "String/container arithmetic; all other native value-type branches; native floating environment equivalence"
+      ],
+      "current_exclusions": [
+        "非数值类型对（除含Function的1c/2a身份分支）未实现。",
+        "原生浮点环境、资源及失败现场未证明等价。",
+        "只有已取证数值零来源可catch；MIN/-1等仍终止。"
+      ],
+      "previous_tests": [
+        "executes_all_integer_arithmetic_and_comparison_operations",
+        "mixed_arithmetic_preserves_left_type_except_remainder",
+        "numeric_comparisons_round_integer_inputs_and_nan_is_unordered",
+        "function_values_vm_equality_uses_identity_and_rejects_arithmetic",
+        "function_values_deleted_owner_raw_truth_and_equality_do_not_normalize"
+      ],
+      "current_tests": [
+        "executes_all_integer_arithmetic_and_comparison_operations",
+        "numeric_comparisons_round_integer_inputs_and_nan_is_unordered",
+        "function_values_vm_equality_uses_identity_and_rejects_arithmetic",
+        "function_values_deleted_owner_raw_truth_and_equality_do_not_normalize"
+      ],
+      "previous_implemented_cases": [
+        "numeric inequality; NaN behavior follows numeric comparison policy",
+        "Function pointer identity, including deleted-owner raw values; Function vs other ordinary values compares unequal"
+      ],
+      "current_implemented_cases": [
+        "numeric inequality; NaN behavior follows numeric comparison policy",
+        "Function pointer identity, including deleted-owner raw values; Function vs other ordinary values compares unequal"
+      ],
+      "reason": "对照当前源码与代表测试的输入/断言重新限定；关联缺口，不宣称完整逐分支覆盖。"
+    },
+    {
+      "opcode": "2b",
+      "previous_exclusions": [
+        "Buffer and unimplemented Function target/capture branches and full native range-related value semantics; full attribute semantics"
+      ],
+      "current_exclusions": [
+        "未表示Buffer/完整属性；其他tag操作及cast需独立恢复，不能因Function已存在继续称其缺失。",
+        "普通复制的失效源规范化与原始Function真值需区分，全部接点仍有差异。"
+      ],
+      "previous_tests": [
+        "unary_numeric_type_and_truth_operations_handle_real_values",
+        "supported_types_have_explicit_legacy_tags",
+        "empty_strings_are_truthy_and_undefined_is_false"
+      ],
+      "current_tests": [
+        "unary_numeric_type_and_truth_operations_handle_real_values",
+        "supported_types_have_explicit_legacy_tags",
+        "empty_strings_are_truthy_and_undefined_is_false"
+      ],
+      "previous_implemented_cases": [
+        "wrapping Int negate or Real sign-bit inversion"
+      ],
+      "current_implemented_cases": [
+        "wrapping Int negate or Real sign-bit inversion"
+      ],
+      "reason": "对照当前源码与代表测试的输入/断言重新限定；关联缺口，不宣称完整逐分支覆盖。"
+    },
+    {
+      "opcode": "2c",
+      "previous_exclusions": [
+        "Lifecycle and callback catches; JIT/thread recovery; native malformed empty/cross-owner ends",
+        "Only proven numeric zero sources for19/28/2f are catchable; overflow, type, reference and resource faults remain fatal"
+      ],
+      "current_exclusions": [
+        "仅指定数值零来源；其他错误、返回hook及一般非局部退出未恢复。",
+        "生命周期及callback/调度重入catch未开放。"
+      ],
+      "previous_tests": [
+        "catches_unwind_multiple_local_calls_and_restore_saved_caller_prefix",
+        "catches_nested_handler_failure_reaches_outer_handler",
+        "catches_registration_requires_entered_frame_and_honors_context_limit",
+        "catches_preparation_validates_targets_and_preserves_default_whitelist",
+        "catches_lifecycle_preparation_rejects_direct_and_all_linked_helper_bodies",
+        "catches_cross_object_error_restores_caller_program_and_object_context",
+        "catches_inherited_body_uses_its_own_target_and_relocated_variables",
+        "catches_preserve_saved_evaluation_prefix_and_optional_argument_storage",
+        "numeric_catch_nested_mixed_zero_then_remainder_matches_single_step_budget",
+        "numeric_catch_cross_object_compound_remainder_restores_caller_without_target_write",
+        "numeric_catch_handled_source_does_not_make_later_type_error_catchable",
+        "global_calls_catch_unwinds_both_execution_sources_and_keeps_correct_context"
+      ],
+      "current_tests": [
+        "catches_unwind_multiple_local_calls_and_restore_saved_caller_prefix",
+        "catches_nested_handler_failure_reaches_outer_handler",
+        "catches_registration_requires_entered_frame_and_honors_context_limit",
+        "catches_preparation_validates_targets_and_preserves_default_whitelist",
+        "catches_lifecycle_preparation_rejects_direct_and_all_linked_helper_bodies",
+        "catches_cross_object_error_restores_caller_program_and_object_context",
+        "catches_inherited_body_uses_its_own_target_and_relocated_variables",
+        "catches_preserve_saved_evaluation_prefix_and_optional_argument_storage",
+        "numeric_catch_nested_mixed_zero_then_remainder_matches_single_step_budget",
+        "numeric_catch_cross_object_compound_remainder_restores_caller_without_target_write",
+        "numeric_catch_handled_source_does_not_make_later_type_error_catchable",
+        "global_calls_catch_unwinds_both_execution_sources_and_keeps_correct_context"
+      ],
+      "previous_implemented_cases": [
+        "Entered ordinary frame; signed i16 relative target; saved frame identity and stack length; nested IntDivZero recovery",
+        "Nested per-site real/mixed divide zero, integer remainder zero, compound selectors5/11 zero recovery",
+        "Existing numeric fault recovery crosses Object/Global code sources and restores saved frame context"
+      ],
+      "current_implemented_cases": [
+        "Entered ordinary frame; signed i16 relative target; saved frame identity and stack length; nested IntDivZero recovery",
+        "Nested per-site real/mixed divide zero, integer remainder zero, compound selectors5/11 zero recovery",
+        "Existing numeric fault recovery crosses Object/Global code sources and restores saved frame context"
+      ],
+      "reason": "对照当前源码与代表测试的输入/断言重新限定；关联缺口，不宣称完整逐分支覆盖。"
+    },
+    {
+      "opcode": "2d",
+      "previous_exclusions": [
+        "Buffer and unimplemented Function target/capture branches and full native range-related value semantics; full attribute semantics"
+      ],
+      "current_exclusions": [
+        "未表示Buffer/完整属性；其他tag操作及cast需独立恢复，不能因Function已存在继续称其缺失。",
+        "普通复制的失效源规范化与原始Function真值需区分，全部接点仍有差异。"
+      ],
+      "previous_tests": [
+        "unary_numeric_type_and_truth_operations_handle_real_values",
+        "supported_types_have_explicit_legacy_tags",
+        "empty_strings_are_truthy_and_undefined_is_false",
+        "function_values_deleted_owner_raw_truth_and_equality_do_not_normalize"
+      ],
+      "current_tests": [
+        "unary_numeric_type_and_truth_operations_handle_real_values",
+        "supported_types_have_explicit_legacy_tags",
+        "empty_strings_are_truthy_and_undefined_is_false",
+        "function_values_deleted_owner_raw_truth_and_equality_do_not_normalize"
+      ],
+      "previous_implemented_cases": [
+        "logical NOT using supported-value truth (empty Bytes remains true)",
+        "Raw Function remains truthy after owner deletion; later ordinary copies become Undefined"
+      ],
+      "current_implemented_cases": [
+        "logical NOT using supported-value truth (empty Bytes remains true)",
+        "Raw Function remains truthy after owner deletion; later ordinary copies become Undefined"
+      ],
+      "reason": "对照当前源码与代表测试的输入/断言重新限定；关联缺口，不宣称完整逐分支覆盖。"
+    },
+    {
+      "opcode": "2e",
+      "previous_exclusions": [
+        "ordinary-function 48; successful init on finish; full native backend hooks; active destruction"
+      ],
+      "current_exclusions": [
+        "48只用于init，finish不能充当init成功；非普通返回和原生backend清理未证明兼容。",
+        "无完整主动析构/活动对象延迟删除。"
+      ],
+      "previous_tests": [
+        "initialization_loops_obey_budget_and_global_input_is_rejected"
+      ],
+      "current_tests": [
+        "initialization_creates_undefined_values_and_finishes_exactly_on_48"
+      ],
+      "previous_implemented_cases": [
+        "no operation, consumes one instruction budget unit"
+      ],
+      "current_implemented_cases": [
+        "no operation, consumes one instruction budget unit"
+      ],
+      "reason": "对照当前源码与代表测试的输入/断言重新限定；关联缺口，不宣称完整逐分支覆盖。"
+    },
+    {
+      "opcode": "2f",
+      "previous_exclusions": [
+        "non-numeric compound operators; const writes; other selector values",
+        "MIN/-1, readonly/dead references, unsupported types and limits remain fatal; no exact native temporary-stack layout claim"
+      ],
+      "current_exclusions": [
+        "增减/复合更新只处理已实现数值及Int位操作；非数值运算和const受限。",
+        "MIN/-1、引用/类型/资源错误不进入catch；源规范化和失败现场并非全量原生模拟。"
+      ],
+      "previous_tests": [
+        "compound_selectors_cover_all_ten_operations_and_leave_result",
+        "numeric_update_errors_preserve_target_and_operand_stack_with_locations",
+        "numeric_catch_compound_object_zero_preserves_every_supported_target_type",
+        "numeric_catch_compound_local_keeps_value_and_does_not_commit_a_result",
+        "numeric_catch_compound_members_release_discarded_leases_before_next_query",
+        "numeric_catch_keeps_mapping_insertions_committed_before_later_arithmetic_error",
+        "numeric_catch_compound_integer_overflow_is_still_fatal_for_division_and_remainder",
+        "numeric_catch_unhandled_compound_zero_preserves_operands_and_location",
+        "numeric_catch_compound_float_remainder_zero_and_nan_divisor_follow_normal_path",
+        "numeric_catch_reference_quota_failure_before_zero_remains_fatal"
+      ],
+      "current_tests": [
+        "compound_selectors_cover_all_ten_operations_and_leave_result",
+        "numeric_update_errors_preserve_target_and_operand_stack_with_locations",
+        "numeric_catch_compound_object_zero_preserves_every_supported_target_type",
+        "numeric_catch_compound_local_keeps_value_and_does_not_commit_a_result",
+        "numeric_catch_compound_members_release_discarded_leases_before_next_query",
+        "numeric_catch_keeps_mapping_insertions_committed_before_later_arithmetic_error",
+        "numeric_catch_compound_integer_overflow_is_still_fatal_for_division_and_remainder",
+        "numeric_catch_unhandled_compound_zero_preserves_operands_and_location",
+        "numeric_catch_compound_float_remainder_zero_and_nan_divisor_follow_normal_path",
+        "numeric_catch_reference_quota_failure_before_zero_remains_fatal"
+      ],
+      "previous_implemented_cases": [
+        "compound numeric selectors2..11; preflight and commit writable reference; leaves result",
+        "Selector5 numeric division zero and selector11 Int/Int remainder zero catch before target commit"
+      ],
+      "current_implemented_cases": [
+        "compound numeric selectors2..11; preflight and commit writable reference; leaves result",
+        "Selector5 numeric division zero and selector11 Int/Int remainder zero catch before target commit"
+      ],
+      "reason": "对照当前源码与代表测试的输入/断言重新限定；关联缺口，不宣称完整逐分支覆盖。"
+    },
+    {
+      "opcode": "30",
+      "previous_exclusions": [
+        "non-Int operands; complete native coercion claims"
+      ],
+      "current_exclusions": [
+        "仅Int；其他tag及完整原生转换契约未闭合。"
+      ],
+      "previous_tests": [
+        "bitwise_operations_and_logical_right_shift_follow_guarded_native_counts"
+      ],
+      "current_tests": [
+        "bitwise_operations_and_logical_right_shift_follow_guarded_native_counts"
+      ],
+      "previous_implemented_cases": [
+        "Int bitwise OR"
+      ],
+      "current_implemented_cases": [
+        "Int bitwise OR"
+      ],
+      "reason": "对照当前源码与代表测试的输入/断言重新限定；关联缺口，不宣称完整逐分支覆盖。"
+    },
+    {
+      "opcode": "32",
+      "previous_exclusions": [
+        "foreach/catch control state; arbitrary stack region mutation"
+      ],
+      "current_exclusions": [
+        "仅普通计算区变动；任意控制槽/参数区修改及一般非局部退出受限。"
+      ],
+      "previous_tests": [
+        "conditional_flags_choose_direction_and_pop_independently",
+        "pop_n_handles_nonpositive_counts_without_consuming_slots",
+        "budget_exhaustion_preserves_loop_state_and_can_resume"
+      ],
+      "current_tests": [
+        "conditional_flags_choose_direction_and_pop_independently",
+        "pop_n_handles_nonpositive_counts_without_consuming_slots",
+        "budget_exhaustion_preserves_loop_state_and_can_resume"
+      ],
+      "previous_implemented_cases": [
+        "pop positive operand count from calculation region; nonpositive no-op"
+      ],
+      "current_implemented_cases": [
+        "pop positive operand count from calculation region; nonpositive no-op"
+      ],
+      "reason": "对照当前源码与代表测试的输入/断言重新限定；关联缺口，不宣称完整逐分支覆盖。"
+    },
+    {
+      "opcode": "33",
+      "previous_exclusions": [
+        "foreach/catch control state; arbitrary stack region mutation"
+      ],
+      "current_exclusions": [
+        "仅普通计算区变动；任意控制槽/参数区修改及一般非局部退出受限。"
+      ],
+      "previous_tests": [
+        "conditional_flags_choose_direction_and_pop_independently",
+        "pop_n_handles_nonpositive_counts_without_consuming_slots",
+        "budget_exhaustion_preserves_loop_state_and_can_resume"
+      ],
+      "current_tests": [
+        "conditional_flags_choose_direction_and_pop_independently",
+        "pop_n_handles_nonpositive_counts_without_consuming_slots",
+        "budget_exhaustion_preserves_loop_state_and_can_resume"
+      ],
+      "previous_implemented_cases": [
+        "pop one calculation value without consuming declared locals/args"
+      ],
+      "current_implemented_cases": [
+        "pop one calculation value without consuming declared locals/args"
+      ],
+      "reason": "对照当前源码与代表测试的输入/断言重新限定；关联缺口，不宣称完整逐分支覆盖。"
+    },
+    {
+      "opcode": "34",
+      "previous_exclusions": [
+        "atomic function attribute; reference returns; non-linear defaults; omitted refs; general catch/hooks"
+      ],
+      "current_exclusions": [
+        "atomic/const属性、一般默认表达式、省略引用及Reference返回受限。",
+        "返回hook与一般异常/任务组合未恢复；已有数值catch不是全部catch。"
+      ],
+      "previous_tests": [
+        "defaults_preserve_declaration_order_for_every_accepted_arity",
+        "variadic_extras_are_direct_slots_and_explicit_array_keeps_argument_order",
+        "optional_calls_preserve_caller_prefix_and_reference_identity_during_resort",
+        "return_shape_and_type_errors_do_not_silently_succeed"
+      ],
+      "current_tests": [
+        "defaults_preserve_declaration_order_for_every_accepted_arity",
+        "variadic_extras_are_direct_slots_and_explicit_array_keeps_argument_order",
+        "optional_calls_preserve_caller_prefix_and_reference_identity_during_resort",
+        "return_shape_and_type_errors_do_not_silently_succeed"
+      ],
+      "previous_implemented_cases": [
+        "push effective actual argument count after bounded default resort"
+      ],
+      "current_implemented_cases": [
+        "push effective actual argument count after bounded default resort"
+      ],
+      "reason": "对照当前源码与代表测试的输入/断言重新限定；关联缺口，不宣称完整逐分支覆盖。"
+    },
+    {
+      "opcode": "35",
+      "previous_exclusions": [
+        "Legacy preparation, inherited/global lifecycle execution, initialization/default-expression global access",
+        "Real Global init/bootstrap loading, native efuns; synthetic06 requires separate opt-in, const/native declaration attributes, full hot reload/shutdown compatibility"
+      ],
+      "current_exclusions": [
+        "Global银行/程序是显式配置；init/default/继承/任务能力组合受限。",
+        "无真实bootstrap/efun注册、native属性及完整删除/关闭语义。"
+      ],
+      "previous_tests": [
+        "globals_preparation_is_explicit_and_checks_signed_slot_boundaries",
+        "globals_missing_and_mismatched_banks_report_current_instruction",
+        "globals_cross_object_frames_check_the_callee_schema",
+        "globals_zero_and_single_step_budgets_match_continuous_execution",
+        "globals_read_is_shallow_and_normalizes_only_direct_deleted_objects",
+        "globals_full_stack_failure_preserves_dead_source_and_operands",
+        "global_calls_variable_access_uses_global_schema_and_current_bank",
+        "function_values_store_in_object_global_local_and_container_member_slots",
+        "function_values_tag9_arguments_returns_containers_and_mapping_key_rejection"
+      ],
+      "current_tests": [
+        "globals_preparation_is_explicit_and_checks_signed_slot_boundaries",
+        "globals_missing_and_mismatched_banks_report_current_instruction",
+        "globals_cross_object_frames_check_the_callee_schema",
+        "globals_zero_and_single_step_budgets_match_continuous_execution",
+        "globals_read_is_shallow_and_normalizes_only_direct_deleted_objects",
+        "globals_full_stack_failure_preserves_dead_source_and_operands",
+        "global_calls_variable_access_uses_global_schema_and_current_bank",
+        "function_values_store_in_object_global_local_and_container_member_slots",
+        "function_values_tag9_arguments_returns_containers_and_mapping_key_rejection"
+      ],
+      "previous_implemented_cases": [
+        "Explicit single-constitution Object schema and current store-wide writable bank, signed par16 slot, ignored par8",
+        "Shallow value copy; direct dead Object source normalized only after result allocation",
+        "Prepared Global functions use their own schema against the current store-wide bank",
+        "Opaque Function values participate in existing bounded storage/return paths; captures remain scalar-only"
+      ],
+      "current_implemented_cases": [
+        "Explicit single-constitution Object schema and current store-wide writable bank, signed par16 slot, ignored par8",
+        "Shallow value copy; direct dead Object source normalized only after result allocation",
+        "Prepared Global functions use their own schema against the current store-wide bank",
+        "Opaque Function values participate in existing bounded storage/return paths; captures remain scalar-only"
+      ],
+      "reason": "对照当前源码与代表测试的输入/断言重新限定；关联缺口，不宣称完整逐分支覆盖。"
+    },
+    {
+      "opcode": "36",
+      "previous_exclusions": [
+        "Legacy preparation, inherited/global lifecycle execution, initialization/default-expression global access",
+        "Real Global init/bootstrap loading, native efuns; synthetic06 requires separate opt-in, const/native declaration attributes, full hot reload/shutdown compatibility"
+      ],
+      "current_exclusions": [
+        "Global银行/程序是显式配置；init/default/继承/任务能力组合受限。",
+        "无真实bootstrap/efun注册、native属性及完整删除/关闭语义。"
+      ],
+      "previous_tests": [
+        "globals_preparation_is_explicit_and_checks_signed_slot_boundaries",
+        "globals_missing_and_mismatched_banks_report_current_instruction",
+        "globals_cross_object_frames_check_the_callee_schema",
+        "globals_zero_and_single_step_budgets_match_continuous_execution",
+        "globals_old_root_survives_removal_and_new_bank_has_distinct_identity",
+        "globals_detached_root_writes_do_not_alias_reinstalled_bank",
+        "globals_detached_container_members_keep_existing_mapping_array_lifetimes",
+        "globals_nested_reference_parameters_write_through_without_bank_checks",
+        "globals_reference_shape_and_loop_binding_reuse_existing_rules",
+        "globals_member_queries_still_obey_member_quota",
+        "global_calls_variable_access_uses_global_schema_and_current_bank",
+        "function_values_store_in_object_global_local_and_container_member_slots",
+        "function_values_tag9_arguments_returns_containers_and_mapping_key_rejection"
+      ],
+      "current_tests": [
+        "globals_preparation_is_explicit_and_checks_signed_slot_boundaries",
+        "globals_missing_and_mismatched_banks_report_current_instruction",
+        "globals_cross_object_frames_check_the_callee_schema",
+        "globals_zero_and_single_step_budgets_match_continuous_execution",
+        "globals_old_root_survives_removal_and_new_bank_has_distinct_identity",
+        "globals_detached_root_writes_do_not_alias_reinstalled_bank",
+        "globals_detached_container_members_keep_existing_mapping_array_lifetimes",
+        "globals_nested_reference_parameters_write_through_without_bank_checks",
+        "globals_reference_shape_and_loop_binding_reuse_existing_rules",
+        "globals_member_queries_still_obey_member_quota",
+        "global_calls_variable_access_uses_global_schema_and_current_bank",
+        "function_values_store_in_object_global_local_and_container_member_slots",
+        "function_values_tag9_arguments_returns_containers_and_mapping_key_rejection"
+      ],
+      "previous_implemented_cases": [
+        "Explicit single-constitution Object schema and current store-wide writable bank, signed par16 slot, ignored par8",
+        "Strong retained global root Cell; removal/reinstall keeps old references separate; no member lease quota",
+        "Prepared Global functions use their own schema against the current store-wide bank",
+        "Opaque Function values participate in existing bounded storage/return paths; captures remain scalar-only"
+      ],
+      "current_implemented_cases": [
+        "Explicit single-constitution Object schema and current store-wide writable bank, signed par16 slot, ignored par8",
+        "Strong retained global root Cell; removal/reinstall keeps old references separate; no member lease quota",
+        "Prepared Global functions use their own schema against the current store-wide bank",
+        "Opaque Function values participate in existing bounded storage/return paths; captures remain scalar-only"
+      ],
+      "reason": "对照当前源码与代表测试的输入/断言重新限定；关联缺口，不宣称完整逐分支覆盖。"
+    },
+    {
+      "opcode": "37",
+      "previous_exclusions": [
+        "global slots; arbitrary native attributes; lifecycle destruction timing"
+      ],
+      "current_exclusions": [
+        "37/3d/4d/4e仅对应局部/对象槽；Global槽由35/36另行实现，原生属性/源cleanup未全模拟。",
+        "与生命周期及Global/继承能力组合仍有限制。"
+      ],
+      "previous_tests": [
+        "assignment_preserves_top_and_argument_local_slots_have_distinct_directions",
+        "linked_variables_relocate_and_objects_remain_isolated",
+        "unallocated_local_read_returns_undefined_but_write_errors",
+        "loops_control_reads_project_undefined_without_destroying_iteration",
+        "function_values_store_in_object_global_local_and_container_member_slots",
+        "function_values_tag9_arguments_returns_containers_and_mapping_key_rejection"
+      ],
+      "current_tests": [
+        "assignment_preserves_top_and_argument_local_slots_have_distinct_directions",
+        "linked_variables_relocate_and_objects_remain_isolated",
+        "unallocated_local_read_returns_undefined_but_write_errors",
+        "loops_control_reads_project_undefined_without_destroying_iteration",
+        "function_values_store_in_object_global_local_and_container_member_slots",
+        "function_values_tag9_arguments_returns_containers_and_mapping_key_rejection"
+      ],
+      "previous_implemented_cases": [
+        "copy argument/local; dereference bound ref params; invalid slot yields Undefined",
+        "Hidden loop-cell read projects Undefined without removing controller",
+        "Opaque Function values participate in existing bounded storage/return paths; captures remain scalar-only"
+      ],
+      "current_implemented_cases": [
+        "copy argument/local; dereference bound ref params; invalid slot yields Undefined",
+        "Hidden loop-cell read projects Undefined without removing controller",
+        "Opaque Function values participate in existing bounded storage/return paths; captures remain scalar-only"
+      ],
+      "reason": "对照当前源码与代表测试的输入/断言重新限定；关联缺口，不宣称完整逐分支覆盖。"
+    },
+    {
+      "opcode": "39",
+      "previous_exclusions": [
+        "reference escape; Buffer/String member writes; range refs; native full release timing; cycles"
+      ],
+      "current_exclusions": [
+        "Reference逃逸、Buffer/Bytes成员写和范围引用未开放。",
+        "成员Ref保活/源规范化有已知差异；容器重接/循环图受限。"
+      ],
+      "previous_tests": [
+        "reference_assignments_preserve_result_and_update_stable_local_slots",
+        "shared_array_and_mapping_member_writes_are_visible_to_aliases",
+        "references_cannot_escape_via_returns_arguments_or_containers",
+        "reference_modes_invalid_targets_and_invalid_keys_fail_explicitly"
+      ],
+      "current_tests": [
+        "reference_assignments_preserve_result_and_update_stable_local_slots",
+        "shared_array_and_mapping_member_writes_are_visible_to_aliases",
+        "references_cannot_escape_via_returns_arguments_or_containers",
+        "reference_modes_invalid_targets_and_invalid_keys_fail_explicitly"
+      ],
+      "previous_implemented_cases": [
+        "reference valid argument/local cell or forward bound reference parameter identity"
+      ],
+      "current_implemented_cases": [
+        "reference valid argument/local cell or forward bound reference parameter identity"
+      ],
+      "reason": "对照当前源码与代表测试的输入/断言重新限定；关联缺口，不宣称完整逐分支覆盖。"
+    },
+    {
+      "opcode": "3b",
+      "previous_exclusions": [
+        "live business execution equivalence; full native string interning identity"
+      ],
+      "current_exclusions": [
+        "C终止导入规则不证明完整原生共享字符串身份、资源策略或业务执行等价。"
+      ],
+      "previous_tests": [
+        "default_literals_decode_numeric_metadata_strings_and_undefined",
+        "real_constant_uses_first_word_only_and_retains_nan_and_signed_zero_bits",
+        "pool_strings_use_c_termination_without_utf8_conversion"
+      ],
+      "current_tests": [
+        "default_literals_decode_numeric_metadata_strings_and_undefined",
+        "real_constant_uses_first_word_only_and_retains_nan_and_signed_zero_bits",
+        "pool_strings_use_c_termination_without_utf8_conversion"
+      ],
+      "previous_implemented_cases": [
+        "push signed short integer operand"
+      ],
+      "current_implemented_cases": [
+        "push signed short integer operand"
+      ],
+      "reason": "对照当前源码与代表测试的输入/断言重新限定；关联缺口，不宣称完整逐分支覆盖。"
+    },
+    {
+      "opcode": "3c",
+      "previous_exclusions": [
+        "live business execution equivalence; full native string interning identity"
+      ],
+      "current_exclusions": [
+        "C终止导入规则不证明完整原生共享字符串身份、资源策略或业务执行等价。"
+      ],
+      "previous_tests": [
+        "default_literals_decode_numeric_metadata_strings_and_undefined",
+        "real_constant_uses_first_word_only_and_retains_nan_and_signed_zero_bits",
+        "pool_strings_use_c_termination_without_utf8_conversion"
+      ],
+      "current_tests": [
+        "default_literals_decode_numeric_metadata_strings_and_undefined",
+        "real_constant_uses_first_word_only_and_retains_nan_and_signed_zero_bits",
+        "pool_strings_use_c_termination_without_utf8_conversion"
+      ],
+      "previous_implemented_cases": [
+        "push little-endian signed32 metadata integer"
+      ],
+      "current_implemented_cases": [
+        "push little-endian signed32 metadata integer"
+      ],
+      "reason": "对照当前源码与代表测试的输入/断言重新限定；关联缺口，不宣称完整逐分支覆盖。"
+    },
+    {
+      "opcode": "3d",
+      "previous_exclusions": [
+        "global slots; arbitrary native attributes; lifecycle destruction timing"
+      ],
+      "current_exclusions": [
+        "37/3d/4d/4e仅对应局部/对象槽；Global槽由35/36另行实现，原生属性/源cleanup未全模拟。",
+        "与生命周期及Global/继承能力组合仍有限制。"
+      ],
+      "previous_tests": [
+        "assignment_preserves_top_and_argument_local_slots_have_distinct_directions",
+        "linked_variables_relocate_and_objects_remain_isolated",
+        "unallocated_local_read_returns_undefined_but_write_errors",
+        "function_values_store_in_object_global_local_and_container_member_slots",
+        "function_values_tag9_arguments_returns_containers_and_mapping_key_rejection"
+      ],
+      "current_tests": [
+        "assignment_preserves_top_and_argument_local_slots_have_distinct_directions",
+        "linked_variables_relocate_and_objects_remain_isolated",
+        "unallocated_local_read_returns_undefined_but_write_errors",
+        "function_values_store_in_object_global_local_and_container_member_slots",
+        "function_values_tag9_arguments_returns_containers_and_mapping_key_rejection"
+      ],
+      "previous_implemented_cases": [
+        "copy root object cell at current constitution variable base plus operand",
+        "Opaque Function values participate in existing bounded storage/return paths; captures remain scalar-only"
+      ],
+      "current_implemented_cases": [
+        "copy root object cell at current constitution variable base plus operand",
+        "Opaque Function values participate in existing bounded storage/return paths; captures remain scalar-only"
+      ],
+      "reason": "对照当前源码与代表测试的输入/断言重新限定；关联缺口，不宣称完整逐分支覆盖。"
+    },
+    {
+      "opcode": "3e",
+      "previous_exclusions": [
+        "reference escape; Buffer/String member writes; range refs; native full release timing; cycles"
+      ],
+      "current_exclusions": [
+        "Reference逃逸、Buffer/Bytes成员写和范围引用未开放。",
+        "成员Ref保活/源规范化有已知差异；容器重接/循环图受限。"
+      ],
+      "previous_tests": [
+        "reference_assignments_preserve_result_and_update_stable_local_slots",
+        "shared_array_and_mapping_member_writes_are_visible_to_aliases",
+        "references_cannot_escape_via_returns_arguments_or_containers",
+        "reference_modes_invalid_targets_and_invalid_keys_fail_explicitly"
+      ],
+      "current_tests": [
+        "reference_assignments_preserve_result_and_update_stable_local_slots",
+        "shared_array_and_mapping_member_writes_are_visible_to_aliases",
+        "references_cannot_escape_via_returns_arguments_or_containers",
+        "reference_modes_invalid_targets_and_invalid_keys_fail_explicitly"
+      ],
+      "previous_implemented_cases": [
+        "reference root object cell at current constitution variable base plus operand"
+      ],
+      "current_implemented_cases": [
+        "reference root object cell at current constitution variable base plus operand"
+      ],
+      "reason": "对照当前源码与代表测试的输入/断言重新限定；关联缺口，不宣称完整逐分支覆盖。"
+    },
+    {
+      "opcode": "3f",
+      "previous_exclusions": [
+        "live business execution equivalence; full native string interning identity"
+      ],
+      "current_exclusions": [
+        "C终止导入规则不证明完整原生共享字符串身份、资源策略或业务执行等价。"
+      ],
+      "previous_tests": [
+        "default_literals_decode_numeric_metadata_strings_and_undefined",
+        "real_constant_uses_first_word_only_and_retains_nan_and_signed_zero_bits",
+        "pool_strings_use_c_termination_without_utf8_conversion"
+      ],
+      "current_tests": [
+        "default_literals_decode_numeric_metadata_strings_and_undefined",
+        "real_constant_uses_first_word_only_and_retains_nan_and_signed_zero_bits",
+        "pool_strings_use_c_termination_without_utf8_conversion"
+      ],
+      "previous_implemented_cases": [
+        "push RealBits from first word of metadata pair; preserve raw NaN/zero bits"
+      ],
+      "current_implemented_cases": [
+        "push RealBits from first word of metadata pair; preserve raw NaN/zero bits"
+      ],
+      "reason": "对照当前源码与代表测试的输入/断言重新限定；关联缺口，不宣称完整逐分支覆盖。"
+    },
+    {
+      "opcode": "40",
+      "previous_exclusions": [
+        "live business execution equivalence; full native string interning identity"
+      ],
+      "current_exclusions": [
+        "C终止导入规则不证明完整原生共享字符串身份、资源策略或业务执行等价。"
+      ],
+      "previous_tests": [
+        "default_literals_decode_numeric_metadata_strings_and_undefined",
+        "real_constant_uses_first_word_only_and_retains_nan_and_signed_zero_bits",
+        "pool_strings_use_c_termination_without_utf8_conversion"
+      ],
+      "current_tests": [
+        "default_literals_decode_numeric_metadata_strings_and_undefined",
+        "real_constant_uses_first_word_only_and_retains_nan_and_signed_zero_bits",
+        "pool_strings_use_c_termination_without_utf8_conversion"
+      ],
+      "previous_implemented_cases": [
+        "push actual source-program C-terminated raw-byte shared string pool value"
+      ],
+      "current_implemented_cases": [
+        "push actual source-program C-terminated raw-byte shared string pool value"
+      ],
+      "reason": "对照当前源码与代表测试的输入/断言重新限定；关联缺口，不宣称完整逐分支覆盖。"
+    },
+    {
+      "opcode": "41",
+      "previous_exclusions": [
+        "Native callback/JIT/host reentry; full object lifecycle compatibility"
+      ],
+      "current_exclusions": [
+        "08仅直接Object及显式目录；String/Array、其他flags/NUL、完整名称/private和返回hook未开放。",
+        "生命周期重入、活动对象删除和native callback调度未模拟。"
+      ],
+      "previous_tests": [
+        "other_call_changes_this_object_and_restores_caller",
+        "other_call_same_program_keeps_instances_and_variable_banks_separate",
+        "this_object_works_during_initialization_and_obeys_stack_limit",
+        "global_calls_clear_object_context_and_restore_object_on_return",
+        "global_calls_can_call_object_methods_and_restore_global_none_context"
+      ],
+      "current_tests": [
+        "other_call_changes_this_object_and_restores_caller",
+        "other_call_same_program_keeps_instances_and_variable_banks_separate",
+        "this_object_works_during_initialization_and_obeys_stack_limit",
+        "global_calls_clear_object_context_and_restore_object_on_return",
+        "global_calls_can_call_object_methods_and_restore_global_none_context"
+      ],
+      "previous_implemented_cases": [
+        "Push current Object in ordinary, inherited, cross-object and initialization frames; stack limit checked",
+        "Global execution has no active Object and pushes Int0; Object calls and returns restore their saved active Object"
+      ],
+      "current_implemented_cases": [
+        "Push current Object in ordinary, inherited, cross-object and initialization frames; stack limit checked",
+        "Global execution has no active Object and pushes Int0; Object calls and returns restore their saved active Object"
+      ],
+      "reason": "对照当前源码与代表测试的输入/断言重新限定；关联缺口，不宣称完整逐分支覆盖。"
+    },
+    {
+      "opcode": "42",
+      "previous_exclusions": [
+        "live business execution equivalence; full native string interning identity"
+      ],
+      "current_exclusions": [
+        "C终止导入规则不证明完整原生共享字符串身份、资源策略或业务执行等价。"
+      ],
+      "previous_tests": [
+        "default_literals_decode_numeric_metadata_strings_and_undefined",
+        "real_constant_uses_first_word_only_and_retains_nan_and_signed_zero_bits",
+        "pool_strings_use_c_termination_without_utf8_conversion"
+      ],
+      "current_tests": [
+        "default_literals_decode_numeric_metadata_strings_and_undefined",
+        "real_constant_uses_first_word_only_and_retains_nan_and_signed_zero_bits",
+        "pool_strings_use_c_termination_without_utf8_conversion"
+      ],
+      "previous_implemented_cases": [
+        "push Undefined"
+      ],
+      "current_implemented_cases": [
+        "push Undefined"
+      ],
+      "reason": "对照当前源码与代表测试的输入/断言重新限定；关联缺口，不宣称完整逐分支覆盖。"
+    },
+    {
+      "opcode": "43",
+      "previous_exclusions": [
+        "Buffer and range operations; arbitrary key types; circular containers; string indexing"
+      ],
+      "current_exclusions": [
+        "键限Int/Bytes，无Buffer/字符串索引、循环容器及一般容器运算。"
+      ],
+      "previous_tests": [
+        "array_constructor_preserves_top_first_order_and_empty_size",
+        "mapping_constructor_uses_total_value_count_and_oldest_pushed_duplicate_wins",
+        "container_type_restrictions_and_access_modes_are_explicit"
+      ],
+      "current_tests": [
+        "array_query_truncates_real_index_and_reports_bounds_with_locations",
+        "mapping_bytes_are_case_sensitive_non_utf8_and_length_sensitive",
+        "container_type_restrictions_and_access_modes_are_explicit"
+      ],
+      "previous_implemented_cases": [
+        "Array/Mapping member copy; modes0/1; truncate numeric array index; missing map key Undefined"
+      ],
+      "current_implemented_cases": [
+        "Array/Mapping member copy; modes0/1; truncate numeric array index; missing map key Undefined"
+      ],
+      "reason": "对照当前源码与代表测试的输入/断言重新限定；关联缺口，不宣称完整逐分支覆盖。"
+    },
+    {
+      "opcode": "44",
+      "previous_exclusions": [
+        "reference escape; Buffer/String member writes; range refs; native full release timing; cycles"
+      ],
+      "current_exclusions": [
+        "Reference逃逸、Buffer/Bytes成员写和范围引用未开放。",
+        "成员Ref保活/源规范化有已知差异；容器重接/循环图受限。"
+      ],
+      "previous_tests": [
+        "reference_assignments_preserve_result_and_update_stable_local_slots",
+        "shared_array_and_mapping_member_writes_are_visible_to_aliases",
+        "references_cannot_escape_via_returns_arguments_or_containers",
+        "reference_modes_invalid_targets_and_invalid_keys_fail_explicitly"
+      ],
+      "current_tests": [
+        "reference_assignments_preserve_result_and_update_stable_local_slots",
+        "shared_array_and_mapping_member_writes_are_visible_to_aliases",
+        "references_cannot_escape_via_returns_arguments_or_containers",
+        "reference_modes_invalid_targets_and_invalid_keys_fail_explicitly"
+      ],
+      "previous_implemented_cases": [
+        "writable Array/Mapping member ref; modes0/1; missing map key inserts Undefined; stable cell identity"
+      ],
+      "current_implemented_cases": [
+        "writable Array/Mapping member ref; modes0/1; missing map key inserts Undefined; stable cell identity"
+      ],
+      "reason": "对照当前源码与代表测试的输入/断言重新限定；关联缺口，不宣称完整逐分支覆盖。"
+    },
+    {
+      "opcode": "45",
+      "previous_exclusions": [
+        "Buffer and other source types; direct References; range references/writes; lifecycle initialization/construction/rollback; default expressions",
+        "Modes outside0..3; native failure-side endpoint mutation/early pops; native shared empty-array identity; native string length/resource policy equivalence",
+        "Range errors are fatal and never acquire catch fault provenance; OOM and Cell ID rollback not guaranteed"
+      ],
+      "current_exclusions": [
+        "45只读Bytes/Array modes0..3；Buffer、范围引用/写及其他模式未开放。",
+        "default/任务执行受限；失败副作用、共享空数组身份和字符串资源策略未证明等价。",
+        "范围错误仍不进入现有数值catch。"
+      ],
+      "previous_tests": [
+        "ranges_arrays_have_independent_top_slots_and_shared_nested_values",
+        "ranges_array_normalization_updates_only_selected_direct_dead_objects",
+        "ranges_array_depth_item_limits_and_shared_subgraphs_are_preserved",
+        "ranges_stack_underflow_and_byte_limit_preserve_operands_and_diagnostics",
+        "ranges_errors_inside_catch_remain_fatal_and_restart_keeps_numeric_routing",
+        "ranges_inherited_body_uses_parent_pool_and_restores_child",
+        "ranges_cross_object_result_and_return_context_survive_single_steps",
+        "ranges_lifecycle_helper_rejection_cleans_initialization_and_construction",
+        "ranges_rollback_helper_rejection_preserves_primary_error_and_cleans_task",
+        "ranges_inclusive_modes_clip_both_types_and_preserve_order",
+        "ranges_empty_single_and_extreme_endpoints_are_safe",
+        "ranges_real_endpoints_use_legacy_truncation_and_indefinite_min",
+        "ranges_bytes_apply_strncpy_padding_only_inside_selected_region",
+        "ranges_bytes_result_limit_is_independent_of_source_length",
+        "ranges_types_and_reference_operands_remain_explicit_errors",
+        "ranges_zero_budget_and_single_step_match_continuous_execution",
+        "ranges_preparation_rejects_bad_modes_init_and_default_expressions"
+      ],
+      "current_tests": [
+        "ranges_arrays_have_independent_top_slots_and_shared_nested_values",
+        "ranges_array_normalization_updates_only_selected_direct_dead_objects",
+        "ranges_array_depth_item_limits_and_shared_subgraphs_are_preserved",
+        "ranges_stack_underflow_and_byte_limit_preserve_operands_and_diagnostics",
+        "ranges_errors_inside_catch_remain_fatal_and_restart_keeps_numeric_routing",
+        "ranges_inherited_body_uses_parent_pool_and_restores_child",
+        "ranges_cross_object_result_and_return_context_survive_single_steps",
+        "ranges_lifecycle_helper_rejection_cleans_initialization_and_construction",
+        "ranges_rollback_helper_rejection_preserves_primary_error_and_cleans_task",
+        "ranges_inclusive_modes_clip_both_types_and_preserve_order",
+        "ranges_empty_single_and_extreme_endpoints_are_safe",
+        "ranges_real_endpoints_use_legacy_truncation_and_indefinite_min",
+        "ranges_bytes_apply_strncpy_padding_only_inside_selected_region",
+        "ranges_bytes_result_limit_is_independent_of_source_length",
+        "ranges_types_and_reference_operands_remain_explicit_errors",
+        "ranges_zero_budget_and_single_step_match_continuous_execution",
+        "ranges_preparation_rejects_bad_modes_init_and_default_expressions"
+      ],
+      "previous_implemented_cases": [
+        "Ordinary-function Bytes/Array inclusive range; modes0..3; signed Int/Real endpoints with legacy truncation; clipping/empty results; par8 ignored",
+        "String strncpy NUL padding; max65536 result bytes; new Array top cells with shared nested values; selected direct dead Object source normalization committed atomically",
+        "One-instruction budget; zero-budget inert; inherited/cross-object frame preservation"
+      ],
+      "current_implemented_cases": [
+        "Ordinary-function Bytes/Array inclusive range; modes0..3; signed Int/Real endpoints with legacy truncation; clipping/empty results; par8 ignored",
+        "String strncpy NUL padding; max65536 result bytes; new Array top cells with shared nested values; selected direct dead Object source normalization committed atomically",
+        "One-instruction budget; zero-budget inert; inherited/cross-object frame preservation"
+      ],
+      "reason": "对照当前源码与代表测试的输入/断言重新限定；关联缺口，不宣称完整逐分支覆盖。"
+    },
+    {
+      "opcode": "47",
+      "previous_exclusions": [
+        "atomic function attribute; reference returns; non-linear defaults; omitted refs; general catch/hooks"
+      ],
+      "current_exclusions": [
+        "atomic/const属性、一般默认表达式、省略引用及Reference返回受限。",
+        "返回hook与一般异常/任务组合未恢复；已有数值catch不是全部catch。"
+      ],
+      "previous_tests": [
+        "defaults_preserve_declaration_order_for_every_accepted_arity",
+        "variadic_extras_are_direct_slots_and_explicit_array_keeps_argument_order",
+        "optional_calls_preserve_caller_prefix_and_reference_identity_during_resort",
+        "return_shape_and_type_errors_do_not_silently_succeed"
+      ],
+      "current_tests": [
+        "defaults_preserve_declaration_order_for_every_accepted_arity",
+        "variadic_extras_are_direct_slots_and_explicit_array_keeps_argument_order",
+        "optional_calls_preserve_caller_prefix_and_reference_identity_during_resort",
+        "return_shape_and_type_errors_do_not_silently_succeed"
+      ],
+      "previous_implemented_cases": [
+        "reverse newly evaluated defaults, rotate stable cells below prior args, update argc/bp once"
+      ],
+      "current_implemented_cases": [
+        "reverse newly evaluated defaults, rotate stable cells below prior args, update argc/bp once"
+      ],
+      "reason": "对照当前源码与代表测试的输入/断言重新限定；关联缺口，不宣称完整逐分支覆盖。"
+    },
+    {
+      "opcode": "48",
+      "previous_exclusions": [
+        "ordinary-function 48; successful init on finish; full native backend hooks; active destruction"
+      ],
+      "current_exclusions": [
+        "48只用于init，finish不能充当init成功；非普通返回和原生backend清理未证明兼容。",
+        "无完整主动析构/活动对象延迟删除。"
+      ],
+      "previous_tests": [
+        "finish_stops_the_action_without_fabricating_a_return_value",
+        "initialization_finish_action_is_failure_even_inside_called_function",
+        "initialization_balance_failure_removes_only_owned_object_and_is_sticky",
+        "construction_failure_rolls_back_failing_layer_and_previous_layers_in_reverse"
+      ],
+      "current_tests": [
+        "finish_stops_the_action_without_fabricating_a_return_value",
+        "initialization_finish_action_is_failure_even_inside_called_function",
+        "initialization_balance_failure_removes_only_owned_object_and_is_sticky",
+        "construction_failure_rolls_back_failing_layer_and_previous_layers_in_reverse"
+      ],
+      "previous_implemented_cases": [
+        "initialization-frame-only balanced return; advance task constitution or finish"
+      ],
+      "current_implemented_cases": [
+        "initialization-frame-only balanced return; advance task constitution or finish"
+      ],
+      "reason": "对照当前源码与代表测试的输入/断言重新限定；关联缺口，不宣称完整逐分支覆盖。"
+    },
+    {
+      "opcode": "49",
+      "previous_exclusions": [
+        "atomic function attribute; reference returns; non-linear defaults; omitted refs; general catch/hooks"
+      ],
+      "current_exclusions": [
+        "atomic/const属性、一般默认表达式、省略引用及Reference返回受限。",
+        "返回hook与一般异常/任务组合未恢复；已有数值catch不是全部catch。"
+      ],
+      "previous_tests": [
+        "defaults_preserve_declaration_order_for_every_accepted_arity",
+        "variadic_extras_are_direct_slots_and_explicit_array_keeps_argument_order",
+        "optional_calls_preserve_caller_prefix_and_reference_identity_during_resort",
+        "return_shape_and_type_errors_do_not_silently_succeed",
+        "catches_early_return_retires_callee_handler_before_caller_error",
+        "catches_return_validation_errors_remain_fatal_with_real_failure_location",
+        "function_values_store_in_object_global_local_and_container_member_slots",
+        "function_values_tag9_arguments_returns_containers_and_mapping_key_rejection"
+      ],
+      "current_tests": [
+        "defaults_preserve_declaration_order_for_every_accepted_arity",
+        "variadic_extras_are_direct_slots_and_explicit_array_keeps_argument_order",
+        "optional_calls_preserve_caller_prefix_and_reference_identity_during_resort",
+        "return_shape_and_type_errors_do_not_silently_succeed",
+        "catches_early_return_retires_callee_handler_before_caller_error",
+        "catches_return_validation_errors_remain_fatal_with_real_failure_location",
+        "function_values_store_in_object_global_local_and_container_member_slots",
+        "function_values_tag9_arguments_returns_containers_and_mapping_key_rejection"
+      ],
+      "previous_implemented_cases": [
+        "validate return shape/type; remove callee args/locals; restore caller or lifecycle task",
+        "Retire current-frame catches before return validation; validation faults remain fatal",
+        "Opaque Function values participate in existing bounded storage/return paths; captures remain scalar-only"
+      ],
+      "current_implemented_cases": [
+        "validate return shape/type; remove callee args/locals; restore caller or lifecycle task",
+        "Retire current-frame catches before return validation; validation faults remain fatal",
+        "Opaque Function values participate in existing bounded storage/return paths; captures remain scalar-only"
+      ],
+      "reason": "对照当前源码与代表测试的输入/断言重新限定；关联缺口，不宣称完整逐分支覆盖。"
+    },
+    {
+      "opcode": "4a",
+      "previous_exclusions": [
+        "non-Int operands; complete native coercion claims"
+      ],
+      "current_exclusions": [
+        "仅Int；其他tag及完整原生转换契约未闭合。"
+      ],
+      "previous_tests": [
+        "bitwise_operations_and_logical_right_shift_follow_guarded_native_counts"
+      ],
+      "current_tests": [
+        "unary_numeric_type_and_truth_operations_handle_real_values"
+      ],
+      "previous_implemented_cases": [
+        "Int bitwise NOT"
+      ],
+      "current_implemented_cases": [
+        "Int bitwise NOT"
+      ],
+      "reason": "对照当前源码与代表测试的输入/断言重新限定；关联缺口，不宣称完整逐分支覆盖。"
+    },
+    {
+      "opcode": "4b",
+      "previous_exclusions": [
+        "non-Int operands; complete native coercion claims"
+      ],
+      "current_exclusions": [
+        "仅Int；其他tag及完整原生转换契约未闭合。"
+      ],
+      "previous_tests": [
+        "bitwise_operations_and_logical_right_shift_follow_guarded_native_counts"
+      ],
+      "current_tests": [
+        "bitwise_operations_and_logical_right_shift_follow_guarded_native_counts"
+      ],
+      "previous_implemented_cases": [
+        "Int logical right shift for counts0..31; otherwise zero"
+      ],
+      "current_implemented_cases": [
+        "Int logical right shift for counts0..31; otherwise zero"
+      ],
+      "reason": "对照当前源码与代表测试的输入/断言重新限定；关联缺口，不宣称完整逐分支覆盖。"
+    },
+    {
+      "opcode": "4d",
+      "previous_exclusions": [
+        "global slots; arbitrary native attributes; lifecycle destruction timing"
+      ],
+      "current_exclusions": [
+        "37/3d/4d/4e仅对应局部/对象槽；Global槽由35/36另行实现，原生属性/源cleanup未全模拟。",
+        "与生命周期及Global/继承能力组合仍有限制。"
+      ],
+      "previous_tests": [
+        "assignment_preserves_top_and_argument_local_slots_have_distinct_directions",
+        "linked_variables_relocate_and_objects_remain_isolated",
+        "unallocated_local_read_returns_undefined_but_write_errors"
+      ],
+      "current_tests": [
+        "assignment_preserves_top_and_argument_local_slots_have_distinct_directions",
+        "linked_variables_relocate_and_objects_remain_isolated",
+        "unallocated_local_read_returns_undefined_but_write_errors"
+      ],
+      "previous_implemented_cases": [
+        "non-pop assignment to valid local/arg; reference params write through"
+      ],
+      "current_implemented_cases": [
+        "non-pop assignment to valid local/arg; reference params write through"
+      ],
+      "reason": "对照当前源码与代表测试的输入/断言重新限定；关联缺口，不宣称完整逐分支覆盖。"
+    },
+    {
+      "opcode": "4e",
+      "previous_exclusions": [
+        "global slots; arbitrary native attributes; lifecycle destruction timing"
+      ],
+      "current_exclusions": [
+        "37/3d/4d/4e仅对应局部/对象槽；Global槽由35/36另行实现，原生属性/源cleanup未全模拟。",
+        "与生命周期及Global/继承能力组合仍有限制。"
+      ],
+      "previous_tests": [
+        "assignment_preserves_top_and_argument_local_slots_have_distinct_directions",
+        "linked_variables_relocate_and_objects_remain_isolated",
+        "unallocated_local_read_returns_undefined_but_write_errors"
+      ],
+      "current_tests": [
+        "assignment_preserves_top_and_argument_local_slots_have_distinct_directions",
+        "linked_variables_relocate_and_objects_remain_isolated",
+        "unallocated_local_read_returns_undefined_but_write_errors"
+      ],
+      "previous_implemented_cases": [
+        "non-pop assignment to object cell using current constitution variable base"
+      ],
+      "current_implemented_cases": [
+        "non-pop assignment to object cell using current constitution variable base"
+      ],
+      "reason": "对照当前源码与代表测试的输入/断言重新限定；关联缺口，不宣称完整逐分支覆盖。"
+    },
+    {
+      "opcode": "4f",
+      "previous_exclusions": [
+        "Buffer and range operations; arbitrary key types; circular containers; string indexing"
+      ],
+      "current_exclusions": [
+        "键限Int/Bytes，无Buffer/字符串索引、循环容器及一般容器运算。"
+      ],
+      "previous_tests": [
+        "array_constructor_preserves_top_first_order_and_empty_size",
+        "mapping_constructor_uses_total_value_count_and_oldest_pushed_duplicate_wins",
+        "container_type_restrictions_and_access_modes_are_explicit"
+      ],
+      "current_tests": [
+        "container_size_tags_truth_and_typed_calls_are_supported",
+        "array_constructor_preserves_top_first_order_and_empty_size"
+      ],
+      "previous_implemented_cases": [
+        "Array/Mapping/Bytes size; other currently represented ordinary types zero"
+      ],
+      "current_implemented_cases": [
+        "Array/Mapping/Bytes size; other currently represented ordinary types zero"
+      ],
+      "reason": "对照当前源码与代表测试的输入/断言重新限定；关联缺口，不宣称完整逐分支覆盖。"
+    },
+    {
+      "opcode": "50",
+      "previous_exclusions": [
+        "Mapping hash order; buffer; source attribute propagation; member/temporary bindings; aliased or parameter control slots; lifecycle-task loops; general catch"
+      ],
+      "current_exclusions": [
+        "只实现整数±1及Array997；Mapping/Buffer、源属性及其他绑定受限。",
+        "任务内循环及一般异常清理未恢复；已有数值catch组合保持受限。"
+      ],
+      "previous_tests": [
+        "loops_budget_single_step_matches_uninterrupted_execution",
+        "loops_nested_cursors_and_calls_do_not_share_state",
+        "loops_cross_object_call_and_default_in_body_preserve_local_control",
+        "loops_bound_object_deleted_during_cross_call_does_not_advance_controller",
+        "catches_inside_numeric_loop_preserve_cursor_and_continue_after_each_error",
+        "catches_unwind_array_loop_helper_and_keep_shared_array_values"
+      ],
+      "current_tests": [
+        "loops_budget_single_step_matches_uninterrupted_execution",
+        "loops_nested_cursors_and_calls_do_not_share_state",
+        "loops_cross_object_call_and_default_in_body_preserve_local_control",
+        "loops_bound_object_deleted_during_cross_call_does_not_advance_controller",
+        "catches_inside_numeric_loop_preserve_cursor_and_continue_after_each_error",
+        "catches_unwind_array_loop_helper_and_keep_shared_array_values"
+      ],
+      "previous_implemented_cases": [
+        "Advance private state once; success pc+1+delta, exhausted fallthrough; recheck owner and atomically commit state/output/source normalization",
+        "Saved owner control survives supported catch; young-frame control is released by unwind"
+      ],
+      "current_implemented_cases": [
+        "Advance private state once; success pc+1+delta, exhausted fallthrough; recheck owner and atomically commit state/output/source normalization",
+        "Saved owner control survives supported catch; young-frame control is released by unwind"
+      ],
+      "reason": "对照当前源码与代表测试的输入/断言重新限定；关联缺口，不宣称完整逐分支覆盖。"
+    },
+    {
+      "opcode": "51",
+      "previous_exclusions": [
+        "String/container arithmetic; all other native value-type branches; native floating environment equivalence"
+      ],
+      "current_exclusions": [
+        "非数值类型对（除含Function的1c/2a身份分支）未实现。",
+        "原生浮点环境、资源及失败现场未证明等价。",
+        "只有已取证数值零来源可catch；MIN/-1等仍终止。"
+      ],
+      "previous_tests": [
+        "executes_all_integer_arithmetic_and_comparison_operations",
+        "mixed_arithmetic_preserves_left_type_except_remainder",
+        "numeric_comparisons_round_integer_inputs_and_nan_is_unordered"
+      ],
+      "current_tests": [
+        "executes_all_integer_arithmetic_and_comparison_operations",
+        "mixed_arithmetic_preserves_left_type_except_remainder"
+      ],
+      "previous_implemented_cases": [
+        "wrapping Int subtract; bounded Int/Real subtraction preserving left-type policy"
+      ],
+      "current_implemented_cases": [
+        "wrapping Int subtract; bounded Int/Real subtraction preserving left-type policy"
+      ],
+      "reason": "对照当前源码与代表测试的输入/断言重新限定；关联缺口，不宣称完整逐分支覆盖。"
+    },
+    {
+      "opcode": "55",
+      "previous_exclusions": [
+        "non-Int operands; complete native coercion claims"
+      ],
+      "current_exclusions": [
+        "仅Int；其他tag及完整原生转换契约未闭合。"
+      ],
+      "previous_tests": [
+        "bitwise_operations_and_logical_right_shift_follow_guarded_native_counts"
+      ],
+      "current_tests": [
+        "bitwise_operations_and_logical_right_shift_follow_guarded_native_counts"
+      ],
+      "previous_implemented_cases": [
+        "Int bitwise XOR"
+      ],
+      "current_implemented_cases": [
+        "Int bitwise XOR"
+      ],
+      "reason": "对照当前源码与代表测试的输入/断言重新限定；关联缺口，不宣称完整逐分支覆盖。"
+    }
+  ]
+}
