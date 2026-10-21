@@ -1,0 +1,136 @@
+{
+  "artifact_sha256": {
+    "README.md": "8066b015514bd2964ad7a0c1192b2647594718b072312ac53b1020e69fe41808",
+    "docs/magic_Linux32-rust-rewrite-roadmap.md": "f58856eef988f08569c23e30d6541302f98721fce26160dcd79d17a97434a7e3",
+    "docs/stage2al-evidence/analyze_corpus.py": "9b7e136012772a91e8e7b82ea87f2ba7e83f753026968edaddedb8fe223dc1f4",
+    "docs/stage2al-evidence/capture_native.py": "16940b58e2e14dcbd456620a8a7bf300adbe9dd5640b78748068e4ed13a5366e",
+    "docs/stage2al-evidence/corpus-examples.json": "a8a158099367e4ecc78bee50dcd56082b02be3f07148d8f0cf2cf87ead9a89aa",
+    "docs/stage2al-evidence/corpus-method.md": "a527fd02485b1c4a2dece20d2a74d3e3accb9f70da875edbf73605c15a86e397",
+    "docs/stage2al-evidence/corpus-summary.json": "d7e4e3b9a7d91bd39b9d33cd1675395308875eb8e271a4e9b17f23beb916a0c1",
+    "docs/stage2al-evidence/expected-cases.json": "6a4cbca69c4ded4ef8a64da25c049db00050428891185fe4d2ea74bd011d8409",
+    "docs/stage2al-evidence/findings.json": "b7b7db8d01103fe81a0f05b7281dff4acf5ac82a044c50589608cc8cbedf1ab9",
+    "docs/stage2al-evidence/function-manifest.json": "cad7b3ff65ca6d4d6d34fde6fa3811b3b50afb694b76fe1992a3e33bbc3d9170",
+    "docs/stage2al-evidence/functions.md": "2f35f25f1166623647996d6153f6196eeaac52c0053538c4241db70fa7b76747",
+    "docs/stage2al-evidence/mapping-runtime-design.md": "e4d71741f21d06710325e20d48238bc608823b038740674a28ca1f21599b5d30",
+    "docs/stage2al-evidence/mapping_model.py": "016ec58c863e8438c80e59fcc04febf48c2460e92b63f6b923d58740f862ca03",
+    "docs/stage2al-evidence/method.md": "aab6133242ab9f78b1c25a5f66b8ef77565491777f66f134985361178d9e4de5",
+    "docs/stage2al-evidence/native.json.gz": "dfcc77fc26721bf2fb1c5da1b47e737353da5b4db20aec62966d85074c010f21",
+    "docs/stage2al-evidence/protected-inputs.json": "29ebe6da0324391bdc91df36987b23788953a76d7f0bce9c164d11881e0e9048",
+    "docs/stage2al-evidence/record_validation.py": "b8d29f32f3cea5cf0959788c35cfcfc0df7bb06c0f2925d14379fe5434b9bee9",
+    "docs/stage2al-evidence/reused-manifest.json": "69fccf2bd5a7af1eddc0ab802f12c2e9037df59f3aee941158b04e80b8d1a16e",
+    "docs/stage2al-evidence/reused.json.gz": "3496d6af34c4f1cef21eed59073c9b686d69946448d39e253dda8d28d3091a7a",
+    "docs/stage2al-evidence/runtime-design-audit.md": "5c7a9035536714ff21af72efa68dc28696e57477e80c0c9793642e1ab3af2b47",
+    "docs/stage2al-evidence/test_analyze_corpus.py": "35a27fa5f3a4b581201c86ac297904b65ae79bb87e06aa5038dd3f8a3e161856",
+    "docs/stage2al-evidence/test_mapping_model.py": "583eee6d4218c301470d9206e3acb905104d628cea8a7ae0f3ae32b595c645cd",
+    "docs/stage2al-evidence/test_verify_evidence.py": "3e4fec6bbe966dfb0856c223dfebafd853bcbc438bd3d3b4e7e360d36fd7d5c1",
+    "docs/stage2al-evidence/validation-logs.json.gz": "1dfd1b762b37fad5da1397d555015b7140b9bf0e0d729985809e0929baaaabd4",
+    "docs/stage2al-evidence/verify_evidence.py": "d422dd7e323737dfd8a10e60d2f19483aa070c0cc6ad695076487f1a4875da82",
+    "docs/stage2al-evidence/verify_validation.py": "e1aee2593a98e19b3f3a900c2f249de0aa1b32ddec18bba878aa488e0e96d069",
+    "docs/vm-mapping-iteration-semantics.md": "c858520fb95fc6766f26df3c54d598f0933c2114ac3d8d710b57998c3b819e88"
+  },
+  "commands": [
+    {
+      "argv": [
+        "python3",
+        "-B",
+        "docs/stage2al-evidence/verify_evidence.py"
+      ],
+      "returncode": 0
+    },
+    {
+      "argv": [
+        "python3",
+        "-B",
+        "docs/stage2al-evidence/analyze_corpus.py"
+      ],
+      "returncode": 0
+    },
+    {
+      "argv": [
+        "python3",
+        "-B",
+        "docs/stage2al-evidence/capture_native.py"
+      ],
+      "returncode": 0
+    },
+    {
+      "argv": [
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "docs/stage2al-evidence",
+        "-p",
+        "test_*.py"
+      ],
+      "returncode": 0
+    },
+    {
+      "argv": [
+        "cargo",
+        "test",
+        "--locked",
+        "--offline"
+      ],
+      "returncode": 0
+    },
+    {
+      "argv": [
+        "cargo",
+        "test",
+        "--release",
+        "--locked",
+        "--offline"
+      ],
+      "returncode": 0
+    },
+    {
+      "argv": [
+        "cargo",
+        "fmt",
+        "--check"
+      ],
+      "returncode": 0
+    },
+    {
+      "argv": [
+        "cargo",
+        "clippy",
+        "--locked",
+        "--offline",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "returncode": 0
+    }
+  ],
+  "corpus_intersection": 73,
+  "evidence": {
+    "corpus_examples": 52,
+    "corpus_positions": 298369,
+    "expected_cases": 43,
+    "findings": 14,
+    "instruction_locations": 2018,
+    "local_functions": 21,
+    "reused_records": 13
+  },
+  "limitations": [
+    "No new REA session: client approval policy never rejected open_binary.",
+    "Local static disassembly and reused Evidence, not native execution.",
+    "Full Mapping/G05, alias cleanup, deleted references and GC remain incomplete."
+  ],
+  "logs_sha256": "1dfd1b762b37fad5da1397d555015b7140b9bf0e0d729985809e0929baaaabd4",
+  "runtime_changed": false,
+  "stage": "2AL",
+  "supported_opcodes": 75,
+  "target_sha256": "5d4ebac58d8c415d9cf95bbcdd50f78afac91adf4f7e667ea3afc6f5336a6f34",
+  "tests": {
+    "python": 28,
+    "rust_debug": 487,
+    "rust_release": 487
+  }
+}

@@ -1,0 +1,40 @@
+# 2AL Function evidence index
+
+New REA session was blocked by client approval policy. `local_sha256_*` identifies a local record hash, **not** a REA Evidence ID. Full LLVM stdout/commands/bytes are retained in `native.json.gz`; complete existing REA records remain in `reused.json.gz`.
+
+|Kind|Function|Entry (ELF symbol for local records)|Record ID|
+|---|---|---|---|
+|local-static-disassembly|vm_whashstr|0x8089dc8|`local_sha256_d9e14dfeaeb0aab88b0e8c055a3e4210a214b0d7b18562f5c53bf5896ec45273`|
+|local-static-disassembly|vm_whashstrc|0x8089e40|`local_sha256_9970625181bca84b720572d02324a6ff1fd82b35bbc00731c6101f747715f654`|
+|local-static-disassembly|vm_whashbuf|0x8089ecc|`local_sha256_c30b9559179c0b38fc7e27ffe65562addcec0927969ac431f837167e8488510c`|
+|local-static-disassembly|vm_safeAllocateMapping|0x809c20c|`local_sha256_8a6d3c5ec084c903aa4c9ab251ced391eaa18abcdbfab3a9f4cb19aa59fa86f9`|
+|local-static-disassembly|vm_allocateMapping|0x809c308|`local_sha256_7d4acf57ed6c6245fc41784ae8856e848b18f0933d8a06ccee7d9a6075f0fb42`|
+|local-static-disassembly|vm_growMapping|0x809c894|`local_sha256_1bfc077150e9643e977938dfbd5e56d5d014f3fd5722cae1793aa0cb7a82d4d3`|
+|local-static-disassembly|vm_safeFindForInsert|0x809d404|`local_sha256_c877c5fd6f546da3d6f816de7b43f118032a6444f552810114a5af17e07b3609`|
+|local-static-disassembly|vm_findForInsert|0x809d714|`local_sha256_9efb08b7a49f1771bd600d956977f946140470273f0a22c1b731ad3d9a0d3a4a`|
+|local-static-disassembly|vm_findInMapping|0x809d74c|`local_sha256_656efea049a80f5933931b604486d2618b39905aac72fa503b57dfdb87b4546f`|
+|local-static-disassembly|vm_nodeFindInMapping|0x809cdb8|`local_sha256_951241b556a1684309374783c3d066d38d432b87bfc61ca8da1c14ead8e21bc7`|
+|local-static-disassembly|vm_mappingDelete|0x809cf84|`local_sha256_22fc5825aab671a280224730f43dbaf481c8f6b03cae064fcf977da79c0fc479`|
+|local-static-disassembly|vm_deleteIntInMapping|0x809d294|`local_sha256_ac9ecdf7e4ebaddf26f93481fed0f7abe822f59fe95518b1e9ed8dbcfcc9a169`|
+|local-static-disassembly|vm_freeNode|0x809c33c|`local_sha256_6a9cfa4bd31f1fbd6b16a6b25bb19c1970ed2e4eb9e3b0927637e642caca2aa6`|
+|local-static-disassembly|vm_emptyMapping|0x809c3a0|`local_sha256_975d08a4fac9afc7f114646cc91f3ca72005efe6f9b95f0aa2d57cd38d34fc4f`|
+|local-static-disassembly|vm_unrefMapping|0x809c488|`local_sha256_9e60dec5a632977b2f35d87620717425dc1c3ada3cbb755db2f55ea8441a1ce3`|
+|local-static-disassembly|vm_createMapping|0x8091af0|`local_sha256_557463ad2fcfccae0978301ad14efdd221cd77741679cd99bfe00da61d9939e4`|
+|local-static-disassembly|vm_initForLoop|0x80bc8f0|`local_sha256_fe70003995ade370a1dd446e87717fff0af2ea366f7003548d6beebb8bb9b3a4`|
+|local-static-disassembly|vm_cmpAndJmpInLoop|0x80bcae0|`local_sha256_5f6852cd9a66b799fb586ea4351fa42644090536ec11b97a45f747cdd980ba2c`|
+|local-static-disassembly|vm_freeLoopValue|0x80bc884|`local_sha256_615d11d7f24de94dd4989472f271789e7e0d02e195397bb060162d621b52fd46`|
+|local-static-disassembly|vm_condJmpForLoop|0x80bcdc8|`local_sha256_44a5632e8691cad74e409bb718db453299040e656f0b753c71d51f13b6748011`|
+|local-static-disassembly|vm_stepJmpForLoop|0x80bcdb0|`local_sha256_2b33ec8482c3fbd6f19fc03c36254f40fef60a0f54ed40cdb9001dc5669fb49c`|
+|reused-rea|vm_condJmpForLoop|0x80bcdc8|`ev_2d0596b38377275abb8795f88716adc8a7d78bec1ef3c3ad3b34ba14eb6df030`|
+|reused-rea|vm_cmpAndJmpInLoop|0x80bcae0|`ev_2f7c7986819c8b0acae9e1cddb895fded61ac3d31a2c036489d87c95592ebcce`|
+|reused-rea|vm_initForLoop|0x80bc8f0|`ev_6493fcdaf5956b81b156c8fbb9cf5987c216a53b856561a1e6351de2ad42af92`|
+|reused-rea|vm_copyValue|0x808be24|`ev_69a23ae044935ae6f7450097987faa71f641c62091f885fc4b4b5f8d5b1929f4`|
+|reused-rea|vm_freeLoopValue|0x80bc884|`ev_7c730bb3ca6a220df55353b514f3cfe7e4d79e6347771e672ae459058017f177`|
+|reused-rea|vm_stepJmpForLoop|0x80bcdb0|`ev_e744e3e38e0be2946efa9fff437a287f867a4093ee99c36e5c78ddfbdad478bd`|
+|reused-rea|vm_createMapping|see original record|`ev_3f7785d6fbdad312aa5446459aa2616b97aa72c94385d825ee32adad3bf3fc65`|
+|reused-rea|vm_createMapping|see original record|`ev_76c678f220405160911aa5543fbdaf68e54b54a0ab78ffa9817f4b0658b68433`|
+|reused-rea|vm_findInMapping|see original record|`ev_7b72033db6fecc26f1af35a5aeac0b6f57c562f2646b4ca069595c0a6005208c`|
+|reused-rea|vm_allocateMapping|see original record|`ev_89868107773a8596a0aab453bee289cab747793e6f77ad1bc33cd308ad0af9bd`|
+|reused-rea|vm_safeAllocateMapping|see original record|`ev_8c4aee3d415edd9b0de9326ca1fb243b0d95a4cce704099135ea2da2c68628f5`|
+|reused-rea|vm_unrefMapping|see original record|`ev_d7c17baca06cfda52f8044cdba3a5aa752e6810b7a2335c3929fe6c7a82442f4`|
+|reused-rea|vm_copyValue|see original record|`ev_dc24362b2fe9c37388965c9aa282e02e66f7bbe5bd7fe56dbc2c22df1fae8b33`|

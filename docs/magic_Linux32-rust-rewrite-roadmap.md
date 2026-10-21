@@ -1,5 +1,7 @@
 # magic_Linux32 Rust 重写实施路线图
 
+**当前阶段2AL：**Int/Bytes Mapping桶链与遍历修改静态取证完成，见[语义报告](vm-mapping-iteration-semantics.md)、[下一批实施规格](stage2al-evidence/mapping-runtime-design.md)及[验证记录](stage2al-validation.json)。普通函数Mapping997仍未实现；下一批按原生哈希、空桶扩容预算、bucket/subindex/ordinal游标和三元数组别名语义接入。保留其他键/属性、删除后引用、交叉图与生命周期限制，G05仍未关闭。本轮运行时/API/依赖不变，28项Python检查、487项Rust测试debug/release及fmt/clippy通过，75种限定支持/73种交集不变。以下2AJ及更早条目保持历史快照；最新运行时为2AK受限Bytes `+=`。
+
 **当前阶段2AJ：**按2AI规格实现受限Bytes拼接与比较，482项Rust测试在debug/release通过。见[运行时说明](vm-bytes-runtime.md)、[能力增量矩阵](stage2aj-evidence/matrix.md)及[验证记录](stage2aj-validation.json)。75种限定操作码/73种主语料交集不变；G01与阶段2未完成，后续继续非数值运算、Mapping遍历及能力组合缺口。以下为历史快照。
 
 **当前阶段2AI：**Bytes比较/拼接静态取证与实施设计完成，新增12条/复用15条完整记录、125,747处位置复算及56条静态/设计期望。见[语义报告](vm-bytes-semantics.md)、[实施规格](stage2ai-evidence/bytes-runtime-design.md)和[验证记录](stage2ai-validation.json)。下一批实施普通函数Bytes+Bytes/Int、全长相等及首NUL排序；Real拼接、Buffer、复合赋值及生命周期新分支仍排除。本批运行时/API/依赖不变，473项Rust测试、75种限定支持/73种交集，阶段2未完成。以下保留历史快照。

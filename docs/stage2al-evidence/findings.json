@@ -1,0 +1,157 @@
+[
+  {
+    "classification": "static-inference",
+    "evidence_ids": [
+      "local_sha256_c877c5fd6f546da3d6f816de7b43f118032a6444f552810114a5af17e07b3609",
+      "local_sha256_656efea049a80f5933931b604486d2618b39905aac72fa503b57dfdb87b4546f",
+      "local_sha256_22fc5825aab671a280224730f43dbaf481c8f6b03cae064fcf977da79c0fc479",
+      "local_sha256_1bfc077150e9643e977938dfbd5e56d5d014f3fd5722cae1793aa0cb7a82d4d3"
+    ],
+    "id": "F01",
+    "limitations": "仅静态证据，未执行目标。",
+    "statement": "Int按32位有符号payload算术右移4位，再与tableSize掩码相与；不同Int可大量碰撞。",
+    "status": "answered"
+  },
+  {
+    "classification": "static-inference",
+    "evidence_ids": [
+      "local_sha256_d9e14dfeaeb0aab88b0e8c055a3e4210a214b0d7b18562f5c53bf5896ec45273",
+      "local_sha256_c877c5fd6f546da3d6f816de7b43f118032a6444f552810114a5af17e07b3609"
+    ],
+    "id": "F02",
+    "limitations": "仅静态证据，未执行目标。",
+    "statement": "attrib&1路径的Bytes采用缓存u16哈希；缓存为0时重新计算。hash读取首NUL之前最多32字节，首字节hi=T[b0],lo=0；后续hi=T[hi xor b],lo=T[lo xor b]；结果(hi<<8)|lo。表位于0x083cc3e0。",
+    "status": "answered"
+  },
+  {
+    "classification": "static-inference",
+    "evidence_ids": [
+      "local_sha256_c877c5fd6f546da3d6f816de7b43f118032a6444f552810114a5af17e07b3609",
+      "local_sha256_656efea049a80f5933931b604486d2618b39905aac72fa503b57dfdb87b4546f"
+    ],
+    "id": "F03",
+    "limitations": "仅静态证据，未执行目标。",
+    "statement": "Bytes键相等为同头快捷判断，否则长度相同且全长字节相同；两个不同shared头有额外拒绝优化。NUL及32字节之后仍参与相等。首批仅合法普通Bytes内容等价，不伪造intern头。",
+    "status": "answered"
+  },
+  {
+    "classification": "observation",
+    "evidence_ids": [
+      "local_sha256_8a6d3c5ec084c903aa4c9ab251ced391eaa18abcdbfab3a9f4cb19aa59fa86f9"
+    ],
+    "id": "F04",
+    "limitations": "仅静态证据，未执行目标。",
+    "statement": "容量hint先上限0x300000；hint<=8时8桶，否则严格大于hint的最小2次幂。tableSize为容量减1；unfilled初始化floor(80*capacity/100)，attrib=1,count=0。",
+    "status": "answered"
+  },
+  {
+    "classification": "static-inference",
+    "evidence_ids": [
+      "local_sha256_c877c5fd6f546da3d6f816de7b43f118032a6444f552810114a5af17e07b3609",
+      "local_sha256_557463ad2fcfccae0978301ad14efdd221cd77741679cd99bfe00da61d9939e4"
+    ],
+    "id": "F05",
+    "limitations": "仅静态证据，未执行目标。",
+    "statement": "查到已有键保留节点；clear参数非零时清理旧值。新键头插；仅原目标桶为空才先减unfilled，减到0则在插入前grow。18使用原始pair数作hint、从栈顶键值对开始处理。",
+    "status": "answered"
+  },
+  {
+    "classification": "static-inference",
+    "evidence_ids": [
+      "local_sha256_1bfc077150e9643e977938dfbd5e56d5d014f3fd5722cae1793aa0cb7a82d4d3"
+    ],
+    "id": "F06",
+    "limitations": "仅静态证据，未执行目标。",
+    "statement": "grow将桶数加倍，最高0x400000；旧桶倒序扫描，hash&old_capacity为0的节点保留相对顺序，高位节点逐个摘下头插到高位桶，故高位子链反转。重置unfilled=floor(80*old_capacity/100)，新高位桶首次占用减1、旧桶被搬空加1。",
+    "status": "answered"
+  },
+  {
+    "classification": "static-inference",
+    "evidence_ids": [
+      "local_sha256_22fc5825aab671a280224730f43dbaf481c8f6b03cae064fcf977da79c0fc479",
+      "local_sha256_6a9cfa4bd31f1fbd6b16a6b25bb19c1970ed2e4eb9e3b0927637e642caca2aa6"
+    ],
+    "id": "F07",
+    "limitations": "仅静态证据，未执行目标。",
+    "statement": "删除只摘除首个相等节点，不缩表、不调整循环游标；桶变空则unfilled加1。freeNode有值引用计数分支，可能将节点置回收链而非立即释放；任意悬挂引用/GC兼容未闭合。",
+    "status": "partial"
+  },
+  {
+    "classification": "static-inference",
+    "evidence_ids": [
+      "local_sha256_5f6852cd9a66b799fb586ea4351fa42644090536ec11b97a45f747cdd980ba2c"
+    ],
+    "id": "F08",
+    "limitations": "仅静态证据，未执行目标。",
+    "statement": "902控制块保存bucket/subindex/ordinal。每次先以32位INC推进ordinal和subindex，再由当前桶链头跳过旧subindex个节点；链耗尽时bucket++、本次skip=0、存储subindex=1，然后继续扫描。耗尽同样推进ordinal。 旧subindex以有符号TEST/JG判定，仅正数跳过节点；计数环绕为负时跳过0项。",
+    "status": "answered"
+  },
+  {
+    "classification": "static-inference",
+    "evidence_ids": [
+      "local_sha256_5f6852cd9a66b799fb586ea4351fa42644090536ec11b97a45f747cdd980ba2c",
+      "local_sha256_c877c5fd6f546da3d6f816de7b43f118032a6444f552810114a5af17e07b3609",
+      "local_sha256_22fc5825aab671a280224730f43dbaf481c8f6b03cae064fcf977da79c0fc479",
+      "local_sha256_1bfc077150e9643e977938dfbd5e56d5d014f3fd5722cae1793aa0cb7a82d4d3"
+    ],
+    "id": "F09",
+    "limitations": "仅静态证据，未执行目标。",
+    "statement": "游标不追踪节点身份或mutation版本，删除已输出节点会改变位置并可跳项，头插可重复旧项，已扫桶内插入可不见，扩容可改变后续顺序。耗尽无finished锁；后续扩容使bucket再次有效时可恢复扫描。",
+    "status": "answered"
+  },
+  {
+    "classification": "static-inference",
+    "evidence_ids": [
+      "local_sha256_5f6852cd9a66b799fb586ea4351fa42644090536ec11b97a45f747cdd980ba2c"
+    ],
+    "id": "F10",
+    "limitations": "仅静态证据，未执行目标。",
+    "statement": "有效节点输出[key,value,ordinal]。绑定当前值为长度3数组时原地改写三个成员，不检查独占引用；否则清理绑定并分配新数组。每次重新检查绑定当前值，不能永久缓存首个输出数组。",
+    "status": "answered"
+  },
+  {
+    "classification": "static-inference",
+    "evidence_ids": [
+      "local_sha256_fe70003995ade370a1dd446e87717fff0af2ea366f7003548d6beebb8bb9b3a4",
+      "local_sha256_5f6852cd9a66b799fb586ea4351fa42644090536ec11b97a45f747cdd980ba2c",
+      "local_sha256_615d11d7f24de94dd4989472f271789e7e0d02e195397bb060162d621b52fd46"
+    ],
+    "id": "F11",
+    "limitations": "普通成功路径和选定释放helper；通用catch、任务、任意属性和绑定成员别名仍未闭合。",
+    "statement": "初始化997 Mapping转902并持有header；源重绑不改变owner。source.attrib&1在新数组分配路径OR至绑定属性，复用分支不执行该OR。耗尽不改绑定，不自动释放控制块；覆盖/帧清理沿既有清理路径释放owner。",
+    "status": "partial"
+  },
+  {
+    "classification": "design",
+    "evidence_ids": [
+      "local_sha256_c877c5fd6f546da3d6f816de7b43f118032a6444f552810114a5af17e07b3609",
+      "local_sha256_1bfc077150e9643e977938dfbd5e56d5d014f3fd5722cae1793aa0cb7a82d4d3",
+      "local_sha256_5f6852cd9a66b799fb586ea4351fa42644090536ec11b97a45f747cdd980ba2c"
+    ],
+    "id": "F12",
+    "limitations": "仅静态证据，未执行目标。",
+    "statement": "原生失败路径非事务：计数在分配前增加，空桶预算在grow前递减，循环计数在输出分配前推进。Rust应按现有错误模型准备后批量提交；这属于安全策略，不是原生OOM等价。",
+    "status": "bounded"
+  },
+  {
+    "classification": "static-inference",
+    "evidence_ids": [
+      "local_sha256_c877c5fd6f546da3d6f816de7b43f118032a6444f552810114a5af17e07b3609",
+      "local_sha256_9970625181bca84b720572d02324a6ff1fd82b35bbc00731c6101f747715f654"
+    ],
+    "id": "F13",
+    "limitations": "仅静态证据，未执行目标。",
+    "statement": "attrib=0使用另一哈希/不区分大小写比较；Buffer、Real及其他tag另有分支。仅记录范围，首批不开放这些键类型、属性或任意原生图生命周期。",
+    "status": "bounded"
+  },
+  {
+    "classification": "design",
+    "evidence_ids": [
+      "local_sha256_5f6852cd9a66b799fb586ea4351fa42644090536ec11b97a45f747cdd980ba2c"
+    ],
+    "id": "F14",
+    "limitations": "仅静态证据，未执行目标。",
+    "statement": "下一批保留现有public API与entries()位置顺序，另建私有桶链，保持既有成员Cell身份；只开放普通函数/现有绑定类型，额外别名冲突保守拒绝。",
+    "status": "bounded"
+  }
+]

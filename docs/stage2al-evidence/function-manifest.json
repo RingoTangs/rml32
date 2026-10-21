@@ -1,0 +1,308 @@
+[
+  {
+    "address": 134782408,
+    "id": "local_sha256_d9e14dfeaeb0aab88b0e8c055a3e4210a214b0d7b18562f5c53bf5896ec45273",
+    "kind": "local-static-disassembly",
+    "name": "vm_whashstr",
+    "record_sha256": "9a263ee5a80bdeb2cb4648b58d3f7fabbf79af52e4322863e222dca02427bdad",
+    "source": "docs/stage2al-evidence/native.json.gz",
+    "source_sha256": "dfcc77fc26721bf2fb1c5da1b47e737353da5b4db20aec62966d85074c010f21"
+  },
+  {
+    "address": 134782528,
+    "id": "local_sha256_9970625181bca84b720572d02324a6ff1fd82b35bbc00731c6101f747715f654",
+    "kind": "local-static-disassembly",
+    "name": "vm_whashstrc",
+    "record_sha256": "b9c8f4228ba33230df37cf6fb38b4bc77fae176c3bce3ee9fa4ca8227d75e880",
+    "source": "docs/stage2al-evidence/native.json.gz",
+    "source_sha256": "dfcc77fc26721bf2fb1c5da1b47e737353da5b4db20aec62966d85074c010f21"
+  },
+  {
+    "address": 134782668,
+    "id": "local_sha256_c30b9559179c0b38fc7e27ffe65562addcec0927969ac431f837167e8488510c",
+    "kind": "local-static-disassembly",
+    "name": "vm_whashbuf",
+    "record_sha256": "1c6ca764477cbe5ea3c21737241305f06fb3ca6268792117cb5bcaa3f88fa15b",
+    "source": "docs/stage2al-evidence/native.json.gz",
+    "source_sha256": "dfcc77fc26721bf2fb1c5da1b47e737353da5b4db20aec62966d85074c010f21"
+  },
+  {
+    "address": 134857228,
+    "id": "local_sha256_8a6d3c5ec084c903aa4c9ab251ced391eaa18abcdbfab3a9f4cb19aa59fa86f9",
+    "kind": "local-static-disassembly",
+    "name": "vm_safeAllocateMapping",
+    "record_sha256": "deabfdb51aca4ff91c6c7a35fdb0676fc778e14bfef67b84d32063ff2b892659",
+    "source": "docs/stage2al-evidence/native.json.gz",
+    "source_sha256": "dfcc77fc26721bf2fb1c5da1b47e737353da5b4db20aec62966d85074c010f21"
+  },
+  {
+    "address": 134857480,
+    "id": "local_sha256_7d4acf57ed6c6245fc41784ae8856e848b18f0933d8a06ccee7d9a6075f0fb42",
+    "kind": "local-static-disassembly",
+    "name": "vm_allocateMapping",
+    "record_sha256": "bb7f6353ae6733f67574471f7ab2394e32dfdc96acfe0f8e9330eb0c688e67a4",
+    "source": "docs/stage2al-evidence/native.json.gz",
+    "source_sha256": "dfcc77fc26721bf2fb1c5da1b47e737353da5b4db20aec62966d85074c010f21"
+  },
+  {
+    "address": 134858900,
+    "id": "local_sha256_1bfc077150e9643e977938dfbd5e56d5d014f3fd5722cae1793aa0cb7a82d4d3",
+    "kind": "local-static-disassembly",
+    "name": "vm_growMapping",
+    "record_sha256": "904d1cb52a4f8e7d199c7a99410f2485b842d4600dac39f272a1b349a6071123",
+    "source": "docs/stage2al-evidence/native.json.gz",
+    "source_sha256": "dfcc77fc26721bf2fb1c5da1b47e737353da5b4db20aec62966d85074c010f21"
+  },
+  {
+    "address": 134861828,
+    "id": "local_sha256_c877c5fd6f546da3d6f816de7b43f118032a6444f552810114a5af17e07b3609",
+    "kind": "local-static-disassembly",
+    "name": "vm_safeFindForInsert",
+    "record_sha256": "5081a61f05742bbc474547597f1df92451472209e47fb2d5fac16348a9c10875",
+    "source": "docs/stage2al-evidence/native.json.gz",
+    "source_sha256": "dfcc77fc26721bf2fb1c5da1b47e737353da5b4db20aec62966d85074c010f21"
+  },
+  {
+    "address": 134862612,
+    "id": "local_sha256_9efb08b7a49f1771bd600d956977f946140470273f0a22c1b731ad3d9a0d3a4a",
+    "kind": "local-static-disassembly",
+    "name": "vm_findForInsert",
+    "record_sha256": "5a7e13ac96a03269b3038be0c5a4f8f3f7d17f36cedb7c2a6a902577634854d0",
+    "source": "docs/stage2al-evidence/native.json.gz",
+    "source_sha256": "dfcc77fc26721bf2fb1c5da1b47e737353da5b4db20aec62966d85074c010f21"
+  },
+  {
+    "address": 134862668,
+    "id": "local_sha256_656efea049a80f5933931b604486d2618b39905aac72fa503b57dfdb87b4546f",
+    "kind": "local-static-disassembly",
+    "name": "vm_findInMapping",
+    "record_sha256": "4c049aeda417d05b3fc7773d7c9320e99cf32fe56ceab02fe4682f9a5b4722e0",
+    "source": "docs/stage2al-evidence/native.json.gz",
+    "source_sha256": "dfcc77fc26721bf2fb1c5da1b47e737353da5b4db20aec62966d85074c010f21"
+  },
+  {
+    "address": 134860216,
+    "id": "local_sha256_951241b556a1684309374783c3d066d38d432b87bfc61ca8da1c14ead8e21bc7",
+    "kind": "local-static-disassembly",
+    "name": "vm_nodeFindInMapping",
+    "record_sha256": "946df104db30bfbe6034fce166844f85688253496da97b65c9bc563561b6a7bc",
+    "source": "docs/stage2al-evidence/native.json.gz",
+    "source_sha256": "dfcc77fc26721bf2fb1c5da1b47e737353da5b4db20aec62966d85074c010f21"
+  },
+  {
+    "address": 134860676,
+    "id": "local_sha256_22fc5825aab671a280224730f43dbaf481c8f6b03cae064fcf977da79c0fc479",
+    "kind": "local-static-disassembly",
+    "name": "vm_mappingDelete",
+    "record_sha256": "d895fd42f71a5d928df3c18ebeef8fd41c64f9c4f41eb85367f21e038150d7dd",
+    "source": "docs/stage2al-evidence/native.json.gz",
+    "source_sha256": "dfcc77fc26721bf2fb1c5da1b47e737353da5b4db20aec62966d85074c010f21"
+  },
+  {
+    "address": 134861460,
+    "id": "local_sha256_ac9ecdf7e4ebaddf26f93481fed0f7abe822f59fe95518b1e9ed8dbcfcc9a169",
+    "kind": "local-static-disassembly",
+    "name": "vm_deleteIntInMapping",
+    "record_sha256": "32c9bd185d17a55290f1dccb1ebe9356c3c23e400dbb53c7f26c736629de6c92",
+    "source": "docs/stage2al-evidence/native.json.gz",
+    "source_sha256": "dfcc77fc26721bf2fb1c5da1b47e737353da5b4db20aec62966d85074c010f21"
+  },
+  {
+    "address": 134857532,
+    "id": "local_sha256_6a9cfa4bd31f1fbd6b16a6b25bb19c1970ed2e4eb9e3b0927637e642caca2aa6",
+    "kind": "local-static-disassembly",
+    "name": "vm_freeNode",
+    "record_sha256": "4319d76c1fd521ed8ac56494f86803351c955c2675736af64d3497177d71e117",
+    "source": "docs/stage2al-evidence/native.json.gz",
+    "source_sha256": "dfcc77fc26721bf2fb1c5da1b47e737353da5b4db20aec62966d85074c010f21"
+  },
+  {
+    "address": 134857632,
+    "id": "local_sha256_975d08a4fac9afc7f114646cc91f3ca72005efe6f9b95f0aa2d57cd38d34fc4f",
+    "kind": "local-static-disassembly",
+    "name": "vm_emptyMapping",
+    "record_sha256": "9826570a1c0409cd5e225f301f6194b5db1e44b3f8dd43028ece79fda9364c8d",
+    "source": "docs/stage2al-evidence/native.json.gz",
+    "source_sha256": "dfcc77fc26721bf2fb1c5da1b47e737353da5b4db20aec62966d85074c010f21"
+  },
+  {
+    "address": 134857864,
+    "id": "local_sha256_9e60dec5a632977b2f35d87620717425dc1c3ada3cbb755db2f55ea8441a1ce3",
+    "kind": "local-static-disassembly",
+    "name": "vm_unrefMapping",
+    "record_sha256": "ab4049256458380ac984e6aef3cfa6f12f83212568a9eaf8db61fd063ef8ac0e",
+    "source": "docs/stage2al-evidence/native.json.gz",
+    "source_sha256": "dfcc77fc26721bf2fb1c5da1b47e737353da5b4db20aec62966d85074c010f21"
+  },
+  {
+    "address": 134814448,
+    "id": "local_sha256_557463ad2fcfccae0978301ad14efdd221cd77741679cd99bfe00da61d9939e4",
+    "kind": "local-static-disassembly",
+    "name": "vm_createMapping",
+    "record_sha256": "59bee4bd01d26b8c981e630ca0b4461f56390f004703998adc42e9684d123dba",
+    "source": "docs/stage2al-evidence/native.json.gz",
+    "source_sha256": "dfcc77fc26721bf2fb1c5da1b47e737353da5b4db20aec62966d85074c010f21"
+  },
+  {
+    "address": 134990064,
+    "id": "local_sha256_fe70003995ade370a1dd446e87717fff0af2ea366f7003548d6beebb8bb9b3a4",
+    "kind": "local-static-disassembly",
+    "name": "vm_initForLoop",
+    "record_sha256": "49a4cf21268372994c49fddb8bc75826acccc1695b59dd42d2a9399ec2a0e2ad",
+    "source": "docs/stage2al-evidence/native.json.gz",
+    "source_sha256": "dfcc77fc26721bf2fb1c5da1b47e737353da5b4db20aec62966d85074c010f21"
+  },
+  {
+    "address": 134990560,
+    "id": "local_sha256_5f6852cd9a66b799fb586ea4351fa42644090536ec11b97a45f747cdd980ba2c",
+    "kind": "local-static-disassembly",
+    "name": "vm_cmpAndJmpInLoop",
+    "record_sha256": "24b75dc01f6f1f9dc0485908e007a09b532d123f9559ee5eb747257559acf402",
+    "source": "docs/stage2al-evidence/native.json.gz",
+    "source_sha256": "dfcc77fc26721bf2fb1c5da1b47e737353da5b4db20aec62966d85074c010f21"
+  },
+  {
+    "address": 134989956,
+    "id": "local_sha256_615d11d7f24de94dd4989472f271789e7e0d02e195397bb060162d621b52fd46",
+    "kind": "local-static-disassembly",
+    "name": "vm_freeLoopValue",
+    "record_sha256": "384fcc0b013df4dbb5c6957b51742a6d22f7ee75aef5dfcefc8e03e2f53043f5",
+    "source": "docs/stage2al-evidence/native.json.gz",
+    "source_sha256": "dfcc77fc26721bf2fb1c5da1b47e737353da5b4db20aec62966d85074c010f21"
+  },
+  {
+    "address": 134991304,
+    "id": "local_sha256_44a5632e8691cad74e409bb718db453299040e656f0b753c71d51f13b6748011",
+    "kind": "local-static-disassembly",
+    "name": "vm_condJmpForLoop",
+    "record_sha256": "e1e1995878e9af418563986ede07d7ca5bdefcd71cb047adce26c91601b4072e",
+    "source": "docs/stage2al-evidence/native.json.gz",
+    "source_sha256": "dfcc77fc26721bf2fb1c5da1b47e737353da5b4db20aec62966d85074c010f21"
+  },
+  {
+    "address": 134991280,
+    "id": "local_sha256_2b33ec8482c3fbd6f19fc03c36254f40fef60a0f54ed40cdb9001dc5669fb49c",
+    "kind": "local-static-disassembly",
+    "name": "vm_stepJmpForLoop",
+    "record_sha256": "f3fbcd23948da258e3369c92e16a4595329dfa406b7aa757fd31d5c2ebe2d4b9",
+    "source": "docs/stage2al-evidence/native.json.gz",
+    "source_sha256": "dfcc77fc26721bf2fb1c5da1b47e737353da5b4db20aec62966d85074c010f21"
+  },
+  {
+    "address": "0x80bcdc8",
+    "id": "ev_2d0596b38377275abb8795f88716adc8a7d78bec1ef3c3ad3b34ba14eb6df030",
+    "kind": "reused-rea",
+    "name": "vm_condJmpForLoop",
+    "record_sha256": "825ec55a33e5f2ca1fcbd836861a24b9c5b0ab1e6cab70266bb552f664e558f5",
+    "source": "docs/stage2al-evidence/reused.json.gz",
+    "source_sha256": "3496d6af34c4f1cef21eed59073c9b686d69946448d39e253dda8d28d3091a7a"
+  },
+  {
+    "address": "0x80bcae0",
+    "id": "ev_2f7c7986819c8b0acae9e1cddb895fded61ac3d31a2c036489d87c95592ebcce",
+    "kind": "reused-rea",
+    "name": "vm_cmpAndJmpInLoop",
+    "record_sha256": "13e83ac10a02a41fe351811908c8651830145cdf506f328896c44cdd94d07eec",
+    "source": "docs/stage2al-evidence/reused.json.gz",
+    "source_sha256": "3496d6af34c4f1cef21eed59073c9b686d69946448d39e253dda8d28d3091a7a"
+  },
+  {
+    "address": "0x80bc8f0",
+    "id": "ev_6493fcdaf5956b81b156c8fbb9cf5987c216a53b856561a1e6351de2ad42af92",
+    "kind": "reused-rea",
+    "name": "vm_initForLoop",
+    "record_sha256": "5edd124b7198b92bff37c2094116d8b687304b81b784f8293d106d156fa5f997",
+    "source": "docs/stage2al-evidence/reused.json.gz",
+    "source_sha256": "3496d6af34c4f1cef21eed59073c9b686d69946448d39e253dda8d28d3091a7a"
+  },
+  {
+    "address": "0x808be24",
+    "id": "ev_69a23ae044935ae6f7450097987faa71f641c62091f885fc4b4b5f8d5b1929f4",
+    "kind": "reused-rea",
+    "name": "vm_copyValue",
+    "record_sha256": "d39552e941a288170ae0006502663c1aa4e5e396115900af46c570d2fe87ff96",
+    "source": "docs/stage2al-evidence/reused.json.gz",
+    "source_sha256": "3496d6af34c4f1cef21eed59073c9b686d69946448d39e253dda8d28d3091a7a"
+  },
+  {
+    "address": "0x80bc884",
+    "id": "ev_7c730bb3ca6a220df55353b514f3cfe7e4d79e6347771e672ae459058017f177",
+    "kind": "reused-rea",
+    "name": "vm_freeLoopValue",
+    "record_sha256": "dffe652933da58fd70d45a72e71d0611770413249693566eb0fccc51db42adb3",
+    "source": "docs/stage2al-evidence/reused.json.gz",
+    "source_sha256": "3496d6af34c4f1cef21eed59073c9b686d69946448d39e253dda8d28d3091a7a"
+  },
+  {
+    "address": "0x80bcdb0",
+    "id": "ev_e744e3e38e0be2946efa9fff437a287f867a4093ee99c36e5c78ddfbdad478bd",
+    "kind": "reused-rea",
+    "name": "vm_stepJmpForLoop",
+    "record_sha256": "b9ae24ff2abd6f84afc1f7600bd3de76d0c283d8d37b9139d9ac76be4a24731f",
+    "source": "docs/stage2al-evidence/reused.json.gz",
+    "source_sha256": "3496d6af34c4f1cef21eed59073c9b686d69946448d39e253dda8d28d3091a7a"
+  },
+  {
+    "address": null,
+    "id": "ev_3f7785d6fbdad312aa5446459aa2616b97aa72c94385d825ee32adad3bf3fc65",
+    "kind": "reused-rea",
+    "name": "vm_createMapping",
+    "record_sha256": "676b6958fa06f28696a4cc9feb23c6be13ae43c926ba901b9192612af25320fc",
+    "source": "docs/stage2al-evidence/reused.json.gz",
+    "source_sha256": "3496d6af34c4f1cef21eed59073c9b686d69946448d39e253dda8d28d3091a7a"
+  },
+  {
+    "address": null,
+    "id": "ev_76c678f220405160911aa5543fbdaf68e54b54a0ab78ffa9817f4b0658b68433",
+    "kind": "reused-rea",
+    "name": "vm_createMapping",
+    "record_sha256": "5660aae3ecb369bbd17837ffd74c4f0c23aee139adb31b275ebb48402e15e5c0",
+    "source": "docs/stage2al-evidence/reused.json.gz",
+    "source_sha256": "3496d6af34c4f1cef21eed59073c9b686d69946448d39e253dda8d28d3091a7a"
+  },
+  {
+    "address": null,
+    "id": "ev_7b72033db6fecc26f1af35a5aeac0b6f57c562f2646b4ca069595c0a6005208c",
+    "kind": "reused-rea",
+    "name": "vm_findInMapping",
+    "record_sha256": "d0d67daff1452f741cb6f19814eeee9fdf693c439a438039dab932905814fbee",
+    "source": "docs/stage2al-evidence/reused.json.gz",
+    "source_sha256": "3496d6af34c4f1cef21eed59073c9b686d69946448d39e253dda8d28d3091a7a"
+  },
+  {
+    "address": null,
+    "id": "ev_89868107773a8596a0aab453bee289cab747793e6f77ad1bc33cd308ad0af9bd",
+    "kind": "reused-rea",
+    "name": "vm_allocateMapping",
+    "record_sha256": "832c3c89a69a69940eb7ae6455b9707777c5807c6e6852103eae09c324f26eb5",
+    "source": "docs/stage2al-evidence/reused.json.gz",
+    "source_sha256": "3496d6af34c4f1cef21eed59073c9b686d69946448d39e253dda8d28d3091a7a"
+  },
+  {
+    "address": null,
+    "id": "ev_8c4aee3d415edd9b0de9326ca1fb243b0d95a4cce704099135ea2da2c68628f5",
+    "kind": "reused-rea",
+    "name": "vm_safeAllocateMapping",
+    "record_sha256": "b410a320dacc975c61f8dd4cf662c329a327c6368a52c13a28a1273c8ce9d56c",
+    "source": "docs/stage2al-evidence/reused.json.gz",
+    "source_sha256": "3496d6af34c4f1cef21eed59073c9b686d69946448d39e253dda8d28d3091a7a"
+  },
+  {
+    "address": null,
+    "id": "ev_d7c17baca06cfda52f8044cdba3a5aa752e6810b7a2335c3929fe6c7a82442f4",
+    "kind": "reused-rea",
+    "name": "vm_unrefMapping",
+    "record_sha256": "8b04ddf81df7416d1f7623b6d6826165230f2049cb91d63320ac3bc176b21fa5",
+    "source": "docs/stage2al-evidence/reused.json.gz",
+    "source_sha256": "3496d6af34c4f1cef21eed59073c9b686d69946448d39e253dda8d28d3091a7a"
+  },
+  {
+    "address": null,
+    "id": "ev_dc24362b2fe9c37388965c9aa282e02e66f7bbe5bd7fe56dbc2c22df1fae8b33",
+    "kind": "reused-rea",
+    "name": "vm_copyValue",
+    "record_sha256": "800c07875f68c0fd6a5a1de4b3e596b27f30585d4b901f0189ed222a83b0efbc",
+    "source": "docs/stage2al-evidence/reused.json.gz",
+    "source_sha256": "3496d6af34c4f1cef21eed59073c9b686d69946448d39e253dda8d28d3091a7a"
+  }
+]

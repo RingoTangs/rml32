@@ -1,0 +1,840 @@
+{
+  "authority": "Static deductions and explicit Rust design; no reference execution",
+  "cases": [
+    {
+      "action": "hash, then bucket with mask=7",
+      "category": "hash",
+      "classification": "static-deduction",
+      "evidence_ids": [
+        "local_sha256_c877c5fd6f546da3d6f816de7b43f118032a6444f552810114a5af17e07b3609"
+      ],
+      "expected": {
+        "bucket": 0,
+        "hash": 0
+      },
+      "id": "H01",
+      "setup": {
+        "key_int": 0
+      }
+    },
+    {
+      "action": "hash, then bucket with mask=7",
+      "category": "hash",
+      "classification": "static-deduction",
+      "evidence_ids": [
+        "local_sha256_c877c5fd6f546da3d6f816de7b43f118032a6444f552810114a5af17e07b3609"
+      ],
+      "expected": {
+        "bucket": 0,
+        "hash": 0
+      },
+      "id": "H02",
+      "setup": {
+        "key_int": 15
+      }
+    },
+    {
+      "action": "hash, then bucket with mask=7",
+      "category": "hash",
+      "classification": "static-deduction",
+      "evidence_ids": [
+        "local_sha256_c877c5fd6f546da3d6f816de7b43f118032a6444f552810114a5af17e07b3609"
+      ],
+      "expected": {
+        "bucket": 1,
+        "hash": 1
+      },
+      "id": "H03",
+      "setup": {
+        "key_int": 16
+      }
+    },
+    {
+      "action": "hash, then bucket with mask=7",
+      "category": "hash",
+      "classification": "static-deduction",
+      "evidence_ids": [
+        "local_sha256_c877c5fd6f546da3d6f816de7b43f118032a6444f552810114a5af17e07b3609"
+      ],
+      "expected": {
+        "bucket": 7,
+        "hash": -1
+      },
+      "id": "H04",
+      "setup": {
+        "key_int": -1
+      }
+    },
+    {
+      "action": "hash, then bucket with mask=7",
+      "category": "hash",
+      "classification": "static-deduction",
+      "evidence_ids": [
+        "local_sha256_c877c5fd6f546da3d6f816de7b43f118032a6444f552810114a5af17e07b3609"
+      ],
+      "expected": {
+        "bucket": 0,
+        "hash": -134217728
+      },
+      "id": "H05",
+      "setup": {
+        "key_int": -2147483648
+      }
+    },
+    {
+      "action": "hash, then bucket with mask=7",
+      "category": "hash",
+      "classification": "static-deduction",
+      "evidence_ids": [
+        "local_sha256_c877c5fd6f546da3d6f816de7b43f118032a6444f552810114a5af17e07b3609"
+      ],
+      "expected": {
+        "bucket": 7,
+        "hash": 134217727
+      },
+      "id": "H06",
+      "setup": {
+        "key_int": 2147483647
+      }
+    },
+    {
+      "action": "ordinary Bytes hash, then bucket with mask=7",
+      "category": "hash",
+      "classification": "static-deduction",
+      "evidence_ids": [
+        "local_sha256_d9e14dfeaeb0aab88b0e8c055a3e4210a214b0d7b18562f5c53bf5896ec45273",
+        "local_sha256_c877c5fd6f546da3d6f816de7b43f118032a6444f552810114a5af17e07b3609"
+      ],
+      "expected": {
+        "bucket": 0,
+        "hash": 0
+      },
+      "id": "H07",
+      "setup": {
+        "key_hex": ""
+      }
+    },
+    {
+      "action": "ordinary Bytes hash, then bucket with mask=7",
+      "category": "hash",
+      "classification": "static-deduction",
+      "evidence_ids": [
+        "local_sha256_d9e14dfeaeb0aab88b0e8c055a3e4210a214b0d7b18562f5c53bf5896ec45273",
+        "local_sha256_c877c5fd6f546da3d6f816de7b43f118032a6444f552810114a5af17e07b3609"
+      ],
+      "expected": {
+        "bucket": 0,
+        "hash": 14336
+      },
+      "id": "H08",
+      "setup": {
+        "key_hex": "61"
+      }
+    },
+    {
+      "action": "ordinary Bytes hash, then bucket with mask=7",
+      "category": "hash",
+      "classification": "static-deduction",
+      "evidence_ids": [
+        "local_sha256_d9e14dfeaeb0aab88b0e8c055a3e4210a214b0d7b18562f5c53bf5896ec45273",
+        "local_sha256_c877c5fd6f546da3d6f816de7b43f118032a6444f552810114a5af17e07b3609"
+      ],
+      "expected": {
+        "bucket": 4,
+        "hash": 4500
+      },
+      "id": "H09",
+      "setup": {
+        "key_hex": "6162"
+      }
+    },
+    {
+      "action": "ordinary Bytes hash, then bucket with mask=7",
+      "category": "hash",
+      "classification": "static-deduction",
+      "evidence_ids": [
+        "local_sha256_d9e14dfeaeb0aab88b0e8c055a3e4210a214b0d7b18562f5c53bf5896ec45273",
+        "local_sha256_c877c5fd6f546da3d6f816de7b43f118032a6444f552810114a5af17e07b3609"
+      ],
+      "expected": {
+        "bucket": 5,
+        "hash": 57277
+      },
+      "id": "H10",
+      "setup": {
+        "key_hex": "616263"
+      }
+    },
+    {
+      "action": "ordinary Bytes hash, then bucket with mask=7",
+      "category": "hash",
+      "classification": "static-deduction",
+      "evidence_ids": [
+        "local_sha256_d9e14dfeaeb0aab88b0e8c055a3e4210a214b0d7b18562f5c53bf5896ec45273",
+        "local_sha256_c877c5fd6f546da3d6f816de7b43f118032a6444f552810114a5af17e07b3609"
+      ],
+      "expected": {
+        "bucket": 0,
+        "hash": 14336
+      },
+      "id": "H11",
+      "setup": {
+        "key_hex": "610078"
+      }
+    },
+    {
+      "action": "ordinary Bytes hash, then bucket with mask=7",
+      "category": "hash",
+      "classification": "static-deduction",
+      "evidence_ids": [
+        "local_sha256_d9e14dfeaeb0aab88b0e8c055a3e4210a214b0d7b18562f5c53bf5896ec45273",
+        "local_sha256_c877c5fd6f546da3d6f816de7b43f118032a6444f552810114a5af17e07b3609"
+      ],
+      "expected": {
+        "bucket": 0,
+        "hash": 14336
+      },
+      "id": "H12",
+      "setup": {
+        "key_hex": "610079"
+      }
+    },
+    {
+      "action": "ordinary Bytes hash, then bucket with mask=7",
+      "category": "hash",
+      "classification": "static-deduction",
+      "evidence_ids": [
+        "local_sha256_d9e14dfeaeb0aab88b0e8c055a3e4210a214b0d7b18562f5c53bf5896ec45273",
+        "local_sha256_c877c5fd6f546da3d6f816de7b43f118032a6444f552810114a5af17e07b3609"
+      ],
+      "expected": {
+        "bucket": 0,
+        "hash": 53504
+      },
+      "id": "H13",
+      "setup": {
+        "key_hex": "ff"
+      }
+    },
+    {
+      "action": "ordinary Bytes hash, then bucket with mask=7",
+      "category": "hash",
+      "classification": "static-deduction",
+      "evidence_ids": [
+        "local_sha256_d9e14dfeaeb0aab88b0e8c055a3e4210a214b0d7b18562f5c53bf5896ec45273",
+        "local_sha256_c877c5fd6f546da3d6f816de7b43f118032a6444f552810114a5af17e07b3609"
+      ],
+      "expected": {
+        "bucket": 0,
+        "hash": 35328
+      },
+      "id": "H14",
+      "setup": {
+        "key_hex": "80"
+      }
+    },
+    {
+      "action": "ordinary Bytes hash, then bucket with mask=7",
+      "category": "hash",
+      "classification": "static-deduction",
+      "evidence_ids": [
+        "local_sha256_d9e14dfeaeb0aab88b0e8c055a3e4210a214b0d7b18562f5c53bf5896ec45273",
+        "local_sha256_c877c5fd6f546da3d6f816de7b43f118032a6444f552810114a5af17e07b3609"
+      ],
+      "expected": {
+        "bucket": 0,
+        "hash": 59904
+      },
+      "id": "H15",
+      "setup": {
+        "key_hex": "41"
+      }
+    },
+    {
+      "action": "ordinary Bytes hash, then bucket with mask=7",
+      "category": "hash",
+      "classification": "static-deduction",
+      "evidence_ids": [
+        "local_sha256_d9e14dfeaeb0aab88b0e8c055a3e4210a214b0d7b18562f5c53bf5896ec45273",
+        "local_sha256_c877c5fd6f546da3d6f816de7b43f118032a6444f552810114a5af17e07b3609"
+      ],
+      "expected": {
+        "bucket": 3,
+        "hash": 723
+      },
+      "id": "H16",
+      "setup": {
+        "key_hex": "6161616161616161616161616161616161616161616161616161616161616161"
+      }
+    },
+    {
+      "action": "ordinary Bytes hash, then bucket with mask=7",
+      "category": "hash",
+      "classification": "static-deduction",
+      "evidence_ids": [
+        "local_sha256_d9e14dfeaeb0aab88b0e8c055a3e4210a214b0d7b18562f5c53bf5896ec45273",
+        "local_sha256_c877c5fd6f546da3d6f816de7b43f118032a6444f552810114a5af17e07b3609"
+      ],
+      "expected": {
+        "bucket": 3,
+        "hash": 723
+      },
+      "id": "H17",
+      "setup": {
+        "key_hex": "616161616161616161616161616161616161616161616161616161616161616178"
+      }
+    },
+    {
+      "action": "allocate",
+      "category": "allocate",
+      "classification": "static-deduction",
+      "evidence_ids": [
+        "local_sha256_8a6d3c5ec084c903aa4c9ab251ced391eaa18abcdbfab3a9f4cb19aa59fa86f9"
+      ],
+      "expected": {
+        "capacity": 8,
+        "unfilled": 6
+      },
+      "id": "A0",
+      "setup": {
+        "hint": 0
+      }
+    },
+    {
+      "action": "allocate",
+      "category": "allocate",
+      "classification": "static-deduction",
+      "evidence_ids": [
+        "local_sha256_8a6d3c5ec084c903aa4c9ab251ced391eaa18abcdbfab3a9f4cb19aa59fa86f9"
+      ],
+      "expected": {
+        "capacity": 8,
+        "unfilled": 6
+      },
+      "id": "A8",
+      "setup": {
+        "hint": 8
+      }
+    },
+    {
+      "action": "allocate",
+      "category": "allocate",
+      "classification": "static-deduction",
+      "evidence_ids": [
+        "local_sha256_8a6d3c5ec084c903aa4c9ab251ced391eaa18abcdbfab3a9f4cb19aa59fa86f9"
+      ],
+      "expected": {
+        "capacity": 16,
+        "unfilled": 12
+      },
+      "id": "A9",
+      "setup": {
+        "hint": 9
+      }
+    },
+    {
+      "action": "allocate",
+      "category": "allocate",
+      "classification": "static-deduction",
+      "evidence_ids": [
+        "local_sha256_8a6d3c5ec084c903aa4c9ab251ced391eaa18abcdbfab3a9f4cb19aa59fa86f9"
+      ],
+      "expected": {
+        "capacity": 32,
+        "unfilled": 25
+      },
+      "id": "A16",
+      "setup": {
+        "hint": 16
+      }
+    },
+    {
+      "action": "iterate without mutation",
+      "category": "order",
+      "classification": "static-deduction",
+      "evidence_ids": [
+        "local_sha256_c877c5fd6f546da3d6f816de7b43f118032a6444f552810114a5af17e07b3609",
+        "local_sha256_5f6852cd9a66b799fb586ea4351fa42644090536ec11b97a45f747cdd980ba2c"
+      ],
+      "expected": {
+        "keys": [
+          2,
+          1,
+          0
+        ],
+        "ordinals": [
+          0,
+          1,
+          2
+        ]
+      },
+      "id": "O01",
+      "setup": {
+        "insert_ints": [
+          0,
+          1,
+          2
+        ]
+      }
+    },
+    {
+      "action": "iterate without mutation",
+      "category": "order",
+      "classification": "static-deduction",
+      "evidence_ids": [
+        "local_sha256_c877c5fd6f546da3d6f816de7b43f118032a6444f552810114a5af17e07b3609"
+      ],
+      "expected": {
+        "count": 2,
+        "pairs": [
+          [
+            1,
+            11
+          ],
+          [
+            0,
+            12
+          ]
+        ]
+      },
+      "id": "O02",
+      "setup": {
+        "pairs": [
+          [
+            0,
+            10
+          ],
+          [
+            1,
+            11
+          ],
+          [
+            0,
+            12
+          ]
+        ]
+      }
+    },
+    {
+      "action": "insert then lookup each",
+      "category": "equality",
+      "classification": "static-deduction",
+      "evidence_ids": [
+        "local_sha256_c877c5fd6f546da3d6f816de7b43f118032a6444f552810114a5af17e07b3609"
+      ],
+      "expected": {
+        "distinct_keys": 4,
+        "same_bucket": 0
+      },
+      "id": "O03",
+      "setup": {
+        "keys_hex": [
+          "61",
+          "6100",
+          "610078",
+          "610079"
+        ]
+      }
+    },
+    {
+      "action": "18 reads pairs from stack top",
+      "category": "construct",
+      "classification": "static-deduction",
+      "evidence_ids": [
+        "local_sha256_557463ad2fcfccae0978301ad14efdd221cd77741679cd99bfe00da61d9939e4",
+        "local_sha256_c877c5fd6f546da3d6f816de7b43f118032a6444f552810114a5af17e07b3609"
+      ],
+      "expected": {
+        "value_at_0": 10
+      },
+      "id": "O04",
+      "setup": {
+        "source_pairs": [
+          [
+            0,
+            10
+          ],
+          [
+            0,
+            20
+          ]
+        ]
+      }
+    },
+    {
+      "action": "sixth distinct bucket triggers grow before insert",
+      "category": "grow",
+      "classification": "static-deduction",
+      "evidence_ids": [
+        "local_sha256_1bfc077150e9643e977938dfbd5e56d5d014f3fd5722cae1793aa0cb7a82d4d3",
+        "local_sha256_c877c5fd6f546da3d6f816de7b43f118032a6444f552810114a5af17e07b3609"
+      ],
+      "expected": {
+        "capacity": 16,
+        "keys": [
+          256,
+          0,
+          16,
+          32,
+          48,
+          64,
+          80,
+          128,
+          384,
+          640
+        ],
+        "unfilled": 5
+      },
+      "id": "O05",
+      "setup": {
+        "insert_ints": [
+          0,
+          128,
+          256,
+          384,
+          640,
+          16,
+          32,
+          48,
+          64,
+          80
+        ]
+      }
+    },
+    {
+      "action": "delete 2, then continue",
+      "category": "mutation",
+      "classification": "static-deduction",
+      "evidence_ids": [
+        "local_sha256_22fc5825aab671a280224730f43dbaf481c8f6b03cae064fcf977da79c0fc479",
+        "local_sha256_5f6852cd9a66b799fb586ea4351fa42644090536ec11b97a45f747cdd980ba2c"
+      ],
+      "expected": {
+        "remaining_keys": [
+          0
+        ]
+      },
+      "id": "M01",
+      "setup": {
+        "first_key": 2,
+        "insert_ints": [
+          0,
+          1,
+          2
+        ]
+      }
+    },
+    {
+      "action": "delete not-yet-visited 1, then continue",
+      "category": "mutation",
+      "classification": "static-deduction",
+      "evidence_ids": [
+        "local_sha256_22fc5825aab671a280224730f43dbaf481c8f6b03cae064fcf977da79c0fc479",
+        "local_sha256_5f6852cd9a66b799fb586ea4351fa42644090536ec11b97a45f747cdd980ba2c"
+      ],
+      "expected": {
+        "remaining_keys": [
+          0
+        ]
+      },
+      "id": "M02",
+      "setup": {
+        "first_key": 2,
+        "insert_ints": [
+          0,
+          1,
+          2
+        ]
+      }
+    },
+    {
+      "action": "insert new colliding key 3, then continue",
+      "category": "mutation",
+      "classification": "static-deduction",
+      "evidence_ids": [
+        "local_sha256_c877c5fd6f546da3d6f816de7b43f118032a6444f552810114a5af17e07b3609",
+        "local_sha256_5f6852cd9a66b799fb586ea4351fa42644090536ec11b97a45f747cdd980ba2c"
+      ],
+      "expected": {
+        "new_key_3_seen": false,
+        "remaining_keys": [
+          2,
+          1,
+          0
+        ]
+      },
+      "id": "M03",
+      "setup": {
+        "first_key": 2,
+        "insert_ints": [
+          0,
+          1,
+          2
+        ]
+      }
+    },
+    {
+      "action": "overwrite value at 1 with 99, then continue",
+      "category": "mutation",
+      "classification": "static-deduction",
+      "evidence_ids": [
+        "local_sha256_c877c5fd6f546da3d6f816de7b43f118032a6444f552810114a5af17e07b3609",
+        "local_sha256_5f6852cd9a66b799fb586ea4351fa42644090536ec11b97a45f747cdd980ba2c"
+      ],
+      "expected": {
+        "next_output": [
+          1,
+          99,
+          1
+        ]
+      },
+      "id": "M04",
+      "setup": {
+        "first_key": 2,
+        "insert_ints": [
+          0,
+          1,
+          2
+        ]
+      }
+    },
+    {
+      "action": "insert 0 into already-scanned bucket 0",
+      "category": "mutation",
+      "classification": "static-deduction",
+      "evidence_ids": [
+        "local_sha256_c877c5fd6f546da3d6f816de7b43f118032a6444f552810114a5af17e07b3609",
+        "local_sha256_5f6852cd9a66b799fb586ea4351fa42644090536ec11b97a45f747cdd980ba2c"
+      ],
+      "expected": {
+        "remaining_keys": []
+      },
+      "id": "M05",
+      "setup": {
+        "first_key": 16,
+        "insert_ints": [
+          16
+        ]
+      }
+    },
+    {
+      "action": "insert 32 into later bucket 2",
+      "category": "mutation",
+      "classification": "static-deduction",
+      "evidence_ids": [
+        "local_sha256_c877c5fd6f546da3d6f816de7b43f118032a6444f552810114a5af17e07b3609",
+        "local_sha256_5f6852cd9a66b799fb586ea4351fa42644090536ec11b97a45f747cdd980ba2c"
+      ],
+      "expected": {
+        "next_output": [
+          32,
+          32,
+          1
+        ]
+      },
+      "id": "M06",
+      "setup": {
+        "first_key": 0,
+        "insert_ints": [
+          0
+        ]
+      }
+    },
+    {
+      "action": "insert 128,384 and 16,32,48,64,80; grow to16; retained subindex=1 skips bucket8 head",
+      "category": "mutation",
+      "classification": "static-deduction",
+      "evidence_ids": [
+        "local_sha256_1bfc077150e9643e977938dfbd5e56d5d014f3fd5722cae1793aa0cb7a82d4d3",
+        "local_sha256_5f6852cd9a66b799fb586ea4351fa42644090536ec11b97a45f747cdd980ba2c"
+      ],
+      "expected": {
+        "next_output": [
+          384,
+          384,
+          2
+        ]
+      },
+      "id": "M07",
+      "setup": {
+        "cursor_after_exhaustion": {
+          "bucket": 8,
+          "ordinal": 2
+        },
+        "insert_ints": [
+          0
+        ]
+      }
+    },
+    {
+      "action": "two failed checks",
+      "category": "empty",
+      "classification": "static-deduction",
+      "evidence_ids": [
+        "local_sha256_5f6852cd9a66b799fb586ea4351fa42644090536ec11b97a45f747cdd980ba2c",
+        "local_sha256_615d11d7f24de94dd4989472f271789e7e0d02e195397bb060162d621b52fd46"
+      ],
+      "expected": {
+        "binding": 9,
+        "ordinal": 2,
+        "owner_retained": true
+      },
+      "id": "L01",
+      "setup": {
+        "binding": 9,
+        "empty_mapping": true
+      }
+    },
+    {
+      "action": "two valid checks",
+      "category": "alias",
+      "classification": "static-deduction",
+      "evidence_ids": [
+        "local_sha256_5f6852cd9a66b799fb586ea4351fa42644090536ec11b97a45f747cdd980ba2c"
+      ],
+      "expected": {
+        "alias_sees_latest_triple": true,
+        "same_array_identity": true
+      },
+      "id": "L02",
+      "setup": {
+        "binding": "Array length3; alias retained"
+      }
+    },
+    {
+      "action": "next valid check",
+      "category": "alias",
+      "classification": "static-deduction",
+      "evidence_ids": [
+        "local_sha256_5f6852cd9a66b799fb586ea4351fa42644090536ec11b97a45f747cdd980ba2c"
+      ],
+      "expected": {
+        "A_unchanged": true,
+        "reuse": "B"
+      },
+      "id": "L03",
+      "setup": {
+        "binding": "first output A; then rebind to another Array length3 B"
+      }
+    },
+    {
+      "action": "valid check",
+      "category": "alias",
+      "classification": "static-deduction",
+      "evidence_ids": [
+        "local_sha256_5f6852cd9a66b799fb586ea4351fa42644090536ec11b97a45f747cdd980ba2c"
+      ],
+      "expected": {
+        "new_array_length": 3,
+        "old_array_alias_unchanged": true
+      },
+      "id": "L04",
+      "setup": {
+        "binding": "Int or Array length2"
+      }
+    },
+    {
+      "action": "rebind source variable to B",
+      "category": "owner",
+      "classification": "static-deduction",
+      "evidence_ids": [
+        "local_sha256_fe70003995ade370a1dd446e87717fff0af2ea366f7003548d6beebb8bb9b3a4"
+      ],
+      "expected": {
+        "next_scan_owner": "A"
+      },
+      "id": "L05",
+      "setup": {
+        "cursor_owner": "A",
+        "source_variable": "A"
+      }
+    },
+    {
+      "action": "two valid checks",
+      "category": "ordinal",
+      "classification": "static-deduction",
+      "evidence_ids": [
+        "local_sha256_5f6852cd9a66b799fb586ea4351fa42644090536ec11b97a45f747cdd980ba2c"
+      ],
+      "expected": {
+        "ordinals": [
+          2147483647,
+          -2147483648
+        ]
+      },
+      "id": "L06",
+      "setup": {
+        "ordinal": 2147483647,
+        "valid_nodes": 2
+      }
+    },
+    {
+      "action": "break then overwrite control/return",
+      "category": "cleanup",
+      "classification": "static-deduction",
+      "evidence_ids": [
+        "local_sha256_615d11d7f24de94dd4989472f271789e7e0d02e195397bb060162d621b52fd46",
+        "local_sha256_5f6852cd9a66b799fb586ea4351fa42644090536ec11b97a45f747cdd980ba2c"
+      ],
+      "expected": {
+        "break_releases_owner": false,
+        "control_drop_releases_owner": true
+      },
+      "id": "L07",
+      "setup": {
+        "control": "Mapping loop"
+      }
+    },
+    {
+      "action": "advance",
+      "category": "rust_failure",
+      "classification": "rust-design",
+      "evidence_ids": [
+        "local_sha256_5f6852cd9a66b799fb586ea4351fa42644090536ec11b97a45f747cdd980ba2c"
+      ],
+      "expected": {
+        "control_counters_unchanged": true,
+        "diagnostic_pc": "original instruction",
+        "internal_pc": "already advanced by dispatch",
+        "visible_data_unchanged": true
+      },
+      "id": "R01",
+      "setup": {
+        "fault": "borrow/allocation/invalid jump",
+        "output": "shared Array3"
+      }
+    },
+    {
+      "action": "first implementation",
+      "category": "rust_boundary",
+      "classification": "rust-design",
+      "evidence_ids": [
+        "local_sha256_c877c5fd6f546da3d6f816de7b43f118032a6444f552810114a5af17e07b3609"
+      ],
+      "expected": {
+        "outcome": "remain unsupported"
+      },
+      "id": "R02",
+      "setup": {
+        "key": "Real/Buffer/other or Mapping attrib=0"
+      }
+    },
+    {
+      "action": "sequential native cleanup and copy",
+      "category": "unresolved",
+      "classification": "unresolved",
+      "evidence_ids": [
+        "local_sha256_5f6852cd9a66b799fb586ea4351fa42644090536ec11b97a45f747cdd980ba2c",
+        "local_sha256_6a9cfa4bd31f1fbd6b16a6b25bb19c1970ed2e4eb9e3b0927637e642caca2aa6"
+      ],
+      "expected": {
+        "outcome": "blocked; no generalized alias equivalence claim"
+      },
+      "id": "U01",
+      "setup": {
+        "output": "Array whose element aliases source member or binding/control target"
+      }
+    }
+  ],
+  "schema_version": 1
+}

@@ -1,0 +1,2948 @@
+[
+  {
+    "function": "post_regen_iid",
+    "function_index": 651,
+    "member_node_offset": 242409,
+    "member_sha256": "f9896828c87399be4977107fbfbe3f67fd71caebd3008bda84be16cc722d0a0e",
+    "mode": "global",
+    "node": [
+      14,
+      -2,
+      18
+    ],
+    "nodes_offset": 242385,
+    "opcode": "12",
+    "pc": 6,
+    "preceding_origin": "other_instruction",
+    "segment_kind": "functions",
+    "segment_offset": 242303,
+    "snippet": [
+      {
+        "member_node_offset": 242401,
+        "node": [
+          997,
+          0,
+          59
+        ],
+        "pc": 4
+      },
+      {
+        "member_node_offset": 242405,
+        "node": [
+          -2,
+          0,
+          35
+        ],
+        "pc": 5
+      },
+      {
+        "member_node_offset": 242409,
+        "node": [
+          14,
+          -2,
+          18
+        ],
+        "pc": 6
+      },
+      {
+        "member_node_offset": 242413,
+        "node": [
+          -1,
+          0,
+          55
+        ],
+        "pc": 7
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o"
+  },
+  {
+    "function": "stop_service",
+    "function_index": 1,
+    "member_node_offset": 1102,
+    "member_sha256": "0b2367a5f99b8a43f653a5983f2b3831962c591f256ec761789b4f9255529a6b",
+    "mode": "object",
+    "node": [
+      9,
+      -2,
+      18
+    ],
+    "nodes_offset": 1018,
+    "opcode": "12",
+    "pc": 21,
+    "preceding_origin": "other_instruction",
+    "segment_kind": "functions",
+    "segment_offset": 915,
+    "snippet": [
+      {
+        "member_node_offset": 1094,
+        "node": [
+          997,
+          0,
+          59
+        ],
+        "pc": 19
+      },
+      {
+        "member_node_offset": 1098,
+        "node": [
+          -2,
+          0,
+          35
+        ],
+        "pc": 20
+      },
+      {
+        "member_node_offset": 1102,
+        "node": [
+          9,
+          -2,
+          18
+        ],
+        "pc": 21
+      },
+      {
+        "member_node_offset": 1106,
+        "node": [
+          1,
+          0,
+          59
+        ],
+        "pc": 22
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/daemons/aaaserverd.o"
+  },
+  {
+    "function": "is_valid_place",
+    "function_index": 1057,
+    "member_node_offset": 812652,
+    "member_sha256": "2f3ce58bb54584d2ce7bb3d90852893b97fcd5fb55d455b8eccff856fc696174",
+    "mode": "global",
+    "node": [
+      0,
+      0,
+      24
+    ],
+    "nodes_offset": 812472,
+    "opcode": "18",
+    "pc": 45,
+    "preceding_origin": "global_slot",
+    "segment_kind": "functions",
+    "segment_offset": 812343,
+    "snippet": [
+      {
+        "member_node_offset": 812644,
+        "node": [
+          0,
+          0,
+          73
+        ],
+        "pc": 43
+      },
+      {
+        "member_node_offset": 812648,
+        "node": [
+          118,
+          0,
+          53
+        ],
+        "pc": 44
+      },
+      {
+        "member_node_offset": 812652,
+        "node": [
+          0,
+          0,
+          24
+        ],
+        "pc": 45
+      },
+      {
+        "member_node_offset": 812656,
+        "node": [
+          0,
+          0,
+          28
+        ],
+        "pc": 46
+      }
+    ],
+    "source": "gs/pack_data/lib_gs32.pak/gs/start_gs.o"
+  },
+  {
+    "function": "register_daemon_data",
+    "function_index": 641,
+    "member_node_offset": 259592,
+    "member_sha256": "f9896828c87399be4977107fbfbe3f67fd71caebd3008bda84be16cc722d0a0e",
+    "mode": "global",
+    "node": [
+      2,
+      0,
+      24
+    ],
+    "nodes_offset": 259496,
+    "opcode": "18",
+    "pc": 24,
+    "preceding_origin": "local_slot",
+    "segment_kind": "functions",
+    "segment_offset": 259409,
+    "snippet": [
+      {
+        "member_node_offset": 259584,
+        "node": [
+          2,
+          0,
+          55
+        ],
+        "pc": 22
+      },
+      {
+        "member_node_offset": 259588,
+        "node": [
+          1,
+          0,
+          55
+        ],
+        "pc": 23
+      },
+      {
+        "member_node_offset": 259592,
+        "node": [
+          2,
+          0,
+          24
+        ],
+        "pc": 24
+      },
+      {
+        "member_node_offset": 259596,
+        "node": [
+          0,
+          0,
+          38
+        ],
+        "pc": 25
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o"
+  },
+  {
+    "function": "analysis_ban_words_file",
+    "function_index": 663,
+    "member_node_offset": 252836,
+    "member_sha256": "f9896828c87399be4977107fbfbe3f67fd71caebd3008bda84be16cc722d0a0e",
+    "mode": "global",
+    "node": [
+      0,
+      0,
+      24
+    ],
+    "nodes_offset": 252828,
+    "opcode": "18",
+    "pc": 2,
+    "preceding_origin": "other_instruction",
+    "segment_kind": "functions",
+    "segment_offset": 252671,
+    "snippet": [
+      {
+        "member_node_offset": 252828,
+        "node": [
+          0,
+          0,
+          15
+        ],
+        "pc": 0
+      },
+      {
+        "member_node_offset": 252832,
+        "node": [
+          0,
+          0,
+          27
+        ],
+        "pc": 1
+      },
+      {
+        "member_node_offset": 252836,
+        "node": [
+          0,
+          0,
+          24
+        ],
+        "pc": 2
+      },
+      {
+        "member_node_offset": 252840,
+        "node": [
+          -5,
+          0,
+          57
+        ],
+        "pc": 3
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o"
+  },
+  {
+    "function": "telnet_daemon",
+    "function_index": 829,
+    "member_node_offset": 246005,
+    "member_sha256": "f9896828c87399be4977107fbfbe3f67fd71caebd3008bda84be16cc722d0a0e",
+    "mode": "global",
+    "node": [
+      4,
+      0,
+      24
+    ],
+    "nodes_offset": 245909,
+    "opcode": "18",
+    "pc": 24,
+    "preceding_origin": "shared_string_pool_index",
+    "segment_kind": "functions",
+    "segment_offset": 245460,
+    "snippet": [
+      {
+        "member_node_offset": 245997,
+        "node": [
+          1,
+          0,
+          59
+        ],
+        "pc": 22
+      },
+      {
+        "member_node_offset": 246001,
+        "node": [
+          541,
+          0,
+          64
+        ],
+        "pc": 23
+      },
+      {
+        "member_node_offset": 246005,
+        "node": [
+          4,
+          0,
+          24
+        ],
+        "pc": 24
+      },
+      {
+        "member_node_offset": 246009,
+        "node": [
+          0,
+          0,
+          55
+        ],
+        "pc": 25
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o"
+  },
+  {
+    "function": "__init__",
+    "function_index": null,
+    "member_node_offset": 450204,
+    "member_sha256": "f9896828c87399be4977107fbfbe3f67fd71caebd3008bda84be16cc722d0a0e",
+    "mode": "global",
+    "node": [
+      0,
+      0,
+      24
+    ],
+    "nodes_offset": 450136,
+    "opcode": "18",
+    "pc": 17,
+    "preceding_origin": "other_instruction",
+    "segment_kind": "init",
+    "segment_offset": 448680,
+    "snippet": [
+      {
+        "member_node_offset": 450196,
+        "node": [
+          0,
+          0,
+          3
+        ],
+        "pc": 15
+      },
+      {
+        "member_node_offset": 450200,
+        "node": [
+          0,
+          0,
+          51
+        ],
+        "pc": 16
+      },
+      {
+        "member_node_offset": 450204,
+        "node": [
+          0,
+          0,
+          24
+        ],
+        "pc": 17
+      },
+      {
+        "member_node_offset": 450208,
+        "node": [
+          6,
+          0,
+          54
+        ],
+        "pc": 18
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o"
+  },
+  {
+    "function": "__init__",
+    "function_index": null,
+    "member_node_offset": 450440,
+    "member_sha256": "f9896828c87399be4977107fbfbe3f67fd71caebd3008bda84be16cc722d0a0e",
+    "mode": "global",
+    "node": [
+      34,
+      0,
+      24
+    ],
+    "nodes_offset": 450136,
+    "opcode": "18",
+    "pc": 76,
+    "preceding_origin": "shared_string_pool_index",
+    "segment_kind": "init",
+    "segment_offset": 448680,
+    "snippet": [
+      {
+        "member_node_offset": 450432,
+        "node": [
+          590,
+          0,
+          64
+        ],
+        "pc": 74
+      },
+      {
+        "member_node_offset": 450436,
+        "node": [
+          80,
+          0,
+          64
+        ],
+        "pc": 75
+      },
+      {
+        "member_node_offset": 450440,
+        "node": [
+          34,
+          0,
+          24
+        ],
+        "pc": 76
+      },
+      {
+        "member_node_offset": 450444,
+        "node": [
+          9,
+          0,
+          54
+        ],
+        "pc": 77
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o"
+  },
+  {
+    "function": "__init__",
+    "function_index": null,
+    "member_node_offset": 452120,
+    "member_sha256": "f9896828c87399be4977107fbfbe3f67fd71caebd3008bda84be16cc722d0a0e",
+    "mode": "global",
+    "node": [
+      4,
+      0,
+      24
+    ],
+    "nodes_offset": 450136,
+    "opcode": "18",
+    "pc": 496,
+    "preceding_origin": "short_numeric_constant",
+    "segment_kind": "init",
+    "segment_offset": 448680,
+    "snippet": [
+      {
+        "member_node_offset": 452112,
+        "node": [
+          4,
+          0,
+          24
+        ],
+        "pc": 494
+      },
+      {
+        "member_node_offset": 452116,
+        "node": [
+          16,
+          0,
+          59
+        ],
+        "pc": 495
+      },
+      {
+        "member_node_offset": 452120,
+        "node": [
+          4,
+          0,
+          24
+        ],
+        "pc": 496
+      },
+      {
+        "member_node_offset": 452124,
+        "node": [
+          90,
+          0,
+          54
+        ],
+        "pc": 497
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o"
+  },
+  {
+    "function": "apply",
+    "function_index": 224,
+    "member_node_offset": 1521,
+    "member_sha256": "42bd36b9d3fc158d1117a81a5ec3f12b4a9396353245ece8bb962044be006460",
+    "mode": "object",
+    "node": [
+      0,
+      0,
+      24
+    ],
+    "nodes_offset": 1229,
+    "opcode": "18",
+    "pc": 73,
+    "preceding_origin": "global_slot",
+    "segment_kind": "functions",
+    "segment_offset": 974,
+    "snippet": [
+      {
+        "member_node_offset": 1513,
+        "node": [
+          0,
+          0,
+          51
+        ],
+        "pc": 71
+      },
+      {
+        "member_node_offset": 1517,
+        "node": [
+          65,
+          0,
+          53
+        ],
+        "pc": 72
+      },
+      {
+        "member_node_offset": 1521,
+        "node": [
+          0,
+          0,
+          24
+        ],
+        "pc": 73
+      },
+      {
+        "member_node_offset": 1525,
+        "node": [
+          18,
+          0,
+          59
+        ],
+        "pc": 74
+      }
+    ],
+    "source": "gs/pack_data/lib_gs32.pak/gs/clone/item/special/shinian_huizhang_libao.o"
+  },
+  {
+    "function": "add_notice_gy",
+    "function_index": 13,
+    "member_node_offset": 5943,
+    "member_sha256": "5edcd6f286e10ca78fc30f01000a00b3f3aff14e7b9c7f4b811f1218be2b65a6",
+    "mode": "object",
+    "node": [
+      2,
+      0,
+      24
+    ],
+    "nodes_offset": 5783,
+    "opcode": "18",
+    "pc": 40,
+    "preceding_origin": "local_slot",
+    "segment_kind": "functions",
+    "segment_offset": 5640,
+    "snippet": [
+      {
+        "member_node_offset": 5935,
+        "node": [
+          1,
+          0,
+          59
+        ],
+        "pc": 38
+      },
+      {
+        "member_node_offset": 5939,
+        "node": [
+          0,
+          0,
+          55
+        ],
+        "pc": 39
+      },
+      {
+        "member_node_offset": 5943,
+        "node": [
+          2,
+          0,
+          24
+        ],
+        "pc": 40
+      },
+      {
+        "member_node_offset": 5947,
+        "node": [
+          3,
+          0,
+          62
+        ],
+        "pc": 41
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/daemons/admintoold.o"
+  },
+  {
+    "function": "insert_temp_task_time",
+    "function_index": 4,
+    "member_node_offset": 9810,
+    "member_sha256": "a97365734f9fd7f8b485717180fc1f8be44b42ea017e650672cd90688c913ebd",
+    "mode": "object",
+    "node": [
+      0,
+      0,
+      24
+    ],
+    "nodes_offset": 9790,
+    "opcode": "18",
+    "pc": 5,
+    "preceding_origin": "numeric_constant_metadata",
+    "segment_kind": "functions",
+    "segment_offset": 9609,
+    "snippet": [
+      {
+        "member_node_offset": 9802,
+        "node": [
+          0,
+          0,
+          66
+        ],
+        "pc": 3
+      },
+      {
+        "member_node_offset": 9806,
+        "node": [
+          0,
+          0,
+          60
+        ],
+        "pc": 4
+      },
+      {
+        "member_node_offset": 9810,
+        "node": [
+          0,
+          0,
+          24
+        ],
+        "pc": 5
+      },
+      {
+        "member_node_offset": 9814,
+        "node": [
+          0,
+          0,
+          59
+        ],
+        "pc": 6
+      }
+    ],
+    "source": "gs/pack_data/lib_gs32.pak/gs/feature/common/task_time_ex.o"
+  },
+  {
+    "function": "activate_account",
+    "function_index": 146,
+    "member_node_offset": 17980,
+    "member_sha256": "fbad2268542cac34b915222e0e6ba038e390b5098d06295834c707654c4bbd05",
+    "mode": "object",
+    "node": [
+      0,
+      0,
+      24
+    ],
+    "nodes_offset": 17972,
+    "opcode": "18",
+    "pc": 2,
+    "preceding_origin": "other_instruction",
+    "segment_kind": "functions",
+    "segment_offset": 17671,
+    "snippet": [
+      {
+        "member_node_offset": 17972,
+        "node": [
+          0,
+          0,
+          15
+        ],
+        "pc": 0
+      },
+      {
+        "member_node_offset": 17976,
+        "node": [
+          0,
+          0,
+          27
+        ],
+        "pc": 1
+      },
+      {
+        "member_node_offset": 17980,
+        "node": [
+          0,
+          0,
+          24
+        ],
+        "pc": 2
+      },
+      {
+        "member_node_offset": 17984,
+        "node": [
+          -4,
+          0,
+          57
+        ],
+        "pc": 3
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/daemons/accountd.o"
+  },
+  {
+    "function": "main",
+    "function_index": 3,
+    "member_node_offset": 10532,
+    "member_sha256": "ef67351f8df64f004f245963f44f7553b7edf7bf10f75d90867bfbc964195dd5",
+    "mode": "object",
+    "node": [
+      4,
+      0,
+      24
+    ],
+    "nodes_offset": 5876,
+    "opcode": "18",
+    "pc": 1164,
+    "preceding_origin": "shared_string_pool_index",
+    "segment_kind": "functions",
+    "segment_offset": 4129,
+    "snippet": [
+      {
+        "member_node_offset": 10524,
+        "node": [
+          0,
+          0,
+          67
+        ],
+        "pc": 1162
+      },
+      {
+        "member_node_offset": 10528,
+        "node": [
+          90,
+          0,
+          64
+        ],
+        "pc": 1163
+      },
+      {
+        "member_node_offset": 10532,
+        "node": [
+          4,
+          0,
+          24
+        ],
+        "pc": 1164
+      },
+      {
+        "member_node_offset": 10536,
+        "node": [
+          -20,
+          0,
+          57
+        ],
+        "pc": 1165
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/daemons/account/cmd_l_client_connect_agent.o"
+  },
+  {
+    "function": "send_lm",
+    "function_index": 38,
+    "member_node_offset": 9092,
+    "member_sha256": "aa5ea1072d71285aaaa7bcc0feea7a0418a72e5d5d52b1ed441cdb0aa3e241be",
+    "mode": "object",
+    "node": [
+      10,
+      0,
+      24
+    ],
+    "nodes_offset": 8804,
+    "opcode": "18",
+    "pc": 72,
+    "preceding_origin": "short_numeric_constant",
+    "segment_kind": "functions",
+    "segment_offset": 8565,
+    "snippet": [
+      {
+        "member_node_offset": 9084,
+        "node": [
+          0,
+          0,
+          67
+        ],
+        "pc": 70
+      },
+      {
+        "member_node_offset": 9088,
+        "node": [
+          11,
+          0,
+          59
+        ],
+        "pc": 71
+      },
+      {
+        "member_node_offset": 9092,
+        "node": [
+          10,
+          0,
+          24
+        ],
+        "pc": 72
+      },
+      {
+        "member_node_offset": 9096,
+        "node": [
+          102,
+          1,
+          6
+        ],
+        "pc": 73
+      }
+    ],
+    "source": "ccs/pack_data/lib_ccs32.pak/ccs/clone/misc/leavemsg.o"
+  },
+  {
+    "function": "can_start_magic",
+    "function_index": 40,
+    "member_node_offset": 5977,
+    "member_sha256": "b257176079b861e5141dee0ec2dcc36701505e49b8e73f242ffdfe1ed59c1cad",
+    "mode": "object",
+    "node": [
+      0,
+      0,
+      24
+    ],
+    "nodes_offset": 5969,
+    "opcode": "18",
+    "pc": 2,
+    "preceding_origin": "undefined_constant",
+    "segment_kind": "functions",
+    "segment_offset": 5021,
+    "snippet": [
+      {
+        "member_node_offset": 5969,
+        "node": [
+          4,
+          0,
+          15
+        ],
+        "pc": 0
+      },
+      {
+        "member_node_offset": 5973,
+        "node": [
+          0,
+          0,
+          66
+        ],
+        "pc": 1
+      },
+      {
+        "member_node_offset": 5977,
+        "node": [
+          0,
+          0,
+          24
+        ],
+        "pc": 2
+      },
+      {
+        "member_node_offset": 5981,
+        "node": [
+          0,
+          0,
+          59
+        ],
+        "pc": 3
+      }
+    ],
+    "source": "gs/pack_data/lib_gs32.pak/gs/daemons/luck_magicd.o"
+  },
+  {
+    "function": "__init__",
+    "function_index": null,
+    "member_node_offset": 38089,
+    "member_sha256": "bcbc0bb261c3ab4b922e7b9109036564d5e9cb5033f493ba5f80aaf21854306a",
+    "mode": "object",
+    "node": [
+      2,
+      0,
+      24
+    ],
+    "nodes_offset": 38077,
+    "opcode": "18",
+    "pc": 3,
+    "preceding_origin": "global_slot",
+    "segment_kind": "init",
+    "segment_offset": 38022,
+    "snippet": [
+      {
+        "member_node_offset": 38081,
+        "node": [
+          1,
+          0,
+          22
+        ],
+        "pc": 1
+      },
+      {
+        "member_node_offset": 38085,
+        "node": [
+          188,
+          0,
+          53
+        ],
+        "pc": 2
+      },
+      {
+        "member_node_offset": 38089,
+        "node": [
+          2,
+          0,
+          24
+        ],
+        "pc": 3
+      },
+      {
+        "member_node_offset": 38093,
+        "node": [
+          5,
+          0,
+          62
+        ],
+        "pc": 4
+      }
+    ],
+    "source": "gs/pack_data/lib_gs32.pak/gs/daemons/taskcompilerd.o"
+  },
+  {
+    "function": "__init__",
+    "function_index": null,
+    "member_node_offset": 31209,
+    "member_sha256": "809494ba14b5095658ba03276d2b9fb437e025de15f06127bcca03b914ba9e44",
+    "mode": "object",
+    "node": [
+      60,
+      0,
+      24
+    ],
+    "nodes_offset": 30073,
+    "opcode": "18",
+    "pc": 284,
+    "preceding_origin": "numeric_constant_metadata",
+    "segment_kind": "init",
+    "segment_offset": 28811,
+    "snippet": [
+      {
+        "member_node_offset": 31201,
+        "node": [
+          3,
+          0,
+          22
+        ],
+        "pc": 282
+      },
+      {
+        "member_node_offset": 31205,
+        "node": [
+          236,
+          0,
+          60
+        ],
+        "pc": 283
+      },
+      {
+        "member_node_offset": 31209,
+        "node": [
+          60,
+          0,
+          24
+        ],
+        "pc": 284
+      },
+      {
+        "member_node_offset": 31213,
+        "node": [
+          1,
+          0,
+          62
+        ],
+        "pc": 285
+      }
+    ],
+    "source": "ccs/pack_data/lib_ccs32.pak/ccs/daemons/bangshang_youmingd.o"
+  },
+  {
+    "function": "__init__",
+    "function_index": null,
+    "member_node_offset": 14522,
+    "member_sha256": "67c1060eb814ce072491b047ec2a5c60ec27c5ed4d7a98e34469201eea558d07",
+    "mode": "object",
+    "node": [
+      0,
+      0,
+      24
+    ],
+    "nodes_offset": 14490,
+    "opcode": "18",
+    "pc": 8,
+    "preceding_origin": "other_instruction",
+    "segment_kind": "init",
+    "segment_offset": 14382,
+    "snippet": [
+      {
+        "member_node_offset": 14514,
+        "node": [
+          0,
+          0,
+          3
+        ],
+        "pc": 6
+      },
+      {
+        "member_node_offset": 14518,
+        "node": [
+          0,
+          0,
+          51
+        ],
+        "pc": 7
+      },
+      {
+        "member_node_offset": 14522,
+        "node": [
+          0,
+          0,
+          24
+        ],
+        "pc": 8
+      },
+      {
+        "member_node_offset": 14526,
+        "node": [
+          2,
+          0,
+          62
+        ],
+        "pc": 9
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/daemons/account_transactiond.o"
+  },
+  {
+    "function": "__init__",
+    "function_index": null,
+    "member_node_offset": 10363,
+    "member_sha256": "d6786fe3b85ff355ba35bc8daf8fb22fd2ff2bafd5ffced27d3900865565dd6e",
+    "mode": "object",
+    "node": [
+      0,
+      0,
+      24
+    ],
+    "nodes_offset": 10363,
+    "opcode": "18",
+    "pc": 0,
+    "preceding_origin": "segment_start",
+    "segment_kind": "init",
+    "segment_offset": 10297,
+    "snippet": [
+      {
+        "member_node_offset": 10363,
+        "node": [
+          0,
+          0,
+          24
+        ],
+        "pc": 0
+      },
+      {
+        "member_node_offset": 10367,
+        "node": [
+          0,
+          0,
+          62
+        ],
+        "pc": 1
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/daemons/qr_coded.o"
+  },
+  {
+    "function": "__init__",
+    "function_index": null,
+    "member_node_offset": 14586,
+    "member_sha256": "67c1060eb814ce072491b047ec2a5c60ec27c5ed4d7a98e34469201eea558d07",
+    "mode": "object",
+    "node": [
+      4,
+      0,
+      24
+    ],
+    "nodes_offset": 14490,
+    "opcode": "18",
+    "pc": 24,
+    "preceding_origin": "shared_string_pool_index",
+    "segment_kind": "init",
+    "segment_offset": 14382,
+    "snippet": [
+      {
+        "member_node_offset": 14578,
+        "node": [
+          5,
+          0,
+          23
+        ],
+        "pc": 22
+      },
+      {
+        "member_node_offset": 14582,
+        "node": [
+          33,
+          0,
+          64
+        ],
+        "pc": 23
+      },
+      {
+        "member_node_offset": 14586,
+        "node": [
+          4,
+          0,
+          24
+        ],
+        "pc": 24
+      },
+      {
+        "member_node_offset": 14590,
+        "node": [
+          5,
+          0,
+          62
+        ],
+        "pc": 25
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/daemons/account_transactiond.o"
+  },
+  {
+    "function": "__init__",
+    "function_index": null,
+    "member_node_offset": 22495,
+    "member_sha256": "def69ddd80c88bdbccbdb55f3e1ec0d90d9249dcd558c24519b05a884b6a947a",
+    "mode": "object",
+    "node": [
+      8,
+      0,
+      24
+    ],
+    "nodes_offset": 22447,
+    "opcode": "18",
+    "pc": 12,
+    "preceding_origin": "short_numeric_constant",
+    "segment_kind": "init",
+    "segment_offset": 22342,
+    "snippet": [
+      {
+        "member_node_offset": 22487,
+        "node": [
+          0,
+          0,
+          59
+        ],
+        "pc": 10
+      },
+      {
+        "member_node_offset": 22491,
+        "node": [
+          103,
+          0,
+          59
+        ],
+        "pc": 11
+      },
+      {
+        "member_node_offset": 22495,
+        "node": [
+          8,
+          0,
+          24
+        ],
+        "pc": 12
+      },
+      {
+        "member_node_offset": 22499,
+        "node": [
+          4,
+          0,
+          62
+        ],
+        "pc": 13
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/daemons/express_recharged.o"
+  },
+  {
+    "function": "post_regen_iid",
+    "function_index": 651,
+    "member_node_offset": 242405,
+    "member_sha256": "f9896828c87399be4977107fbfbe3f67fd71caebd3008bda84be16cc722d0a0e",
+    "mode": "global",
+    "node": [
+      -2,
+      0,
+      35
+    ],
+    "nodes_offset": 242385,
+    "opcode": "23",
+    "pc": 5,
+    "preceding_origin": "short_numeric_constant",
+    "segment_kind": "functions",
+    "segment_offset": 242303,
+    "snippet": [
+      {
+        "member_node_offset": 242397,
+        "node": [
+          42,
+          0,
+          53
+        ],
+        "pc": 3
+      },
+      {
+        "member_node_offset": 242401,
+        "node": [
+          997,
+          0,
+          59
+        ],
+        "pc": 4
+      },
+      {
+        "member_node_offset": 242405,
+        "node": [
+          -2,
+          0,
+          35
+        ],
+        "pc": 5
+      },
+      {
+        "member_node_offset": 242409,
+        "node": [
+          14,
+          -2,
+          18
+        ],
+        "pc": 6
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o"
+  },
+  {
+    "function": "stop_service",
+    "function_index": 1,
+    "member_node_offset": 1098,
+    "member_sha256": "0b2367a5f99b8a43f653a5983f2b3831962c591f256ec761789b4f9255529a6b",
+    "mode": "object",
+    "node": [
+      -2,
+      0,
+      35
+    ],
+    "nodes_offset": 1018,
+    "opcode": "23",
+    "pc": 20,
+    "preceding_origin": "short_numeric_constant",
+    "segment_kind": "functions",
+    "segment_offset": 915,
+    "snippet": [
+      {
+        "member_node_offset": 1090,
+        "node": [
+          145,
+          1,
+          6
+        ],
+        "pc": 18
+      },
+      {
+        "member_node_offset": 1094,
+        "node": [
+          997,
+          0,
+          59
+        ],
+        "pc": 19
+      },
+      {
+        "member_node_offset": 1098,
+        "node": [
+          -2,
+          0,
+          35
+        ],
+        "pc": 20
+      },
+      {
+        "member_node_offset": 1102,
+        "node": [
+          9,
+          -2,
+          18
+        ],
+        "pc": 21
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/daemons/aaaserverd.o"
+  },
+  {
+    "function": "xdbc_get_cno_of_view",
+    "function_index": 602,
+    "member_node_offset": 249319,
+    "member_sha256": "f9896828c87399be4977107fbfbe3f67fd71caebd3008bda84be16cc722d0a0e",
+    "mode": "global",
+    "node": [
+      0,
+      0,
+      67
+    ],
+    "nodes_offset": 249303,
+    "opcode": "43",
+    "pc": 4,
+    "preceding_origin": "local_slot",
+    "segment_kind": "functions",
+    "segment_offset": 249241,
+    "snippet": [
+      {
+        "member_node_offset": 249311,
+        "node": [
+          8,
+          0,
+          53
+        ],
+        "pc": 2
+      },
+      {
+        "member_node_offset": 249315,
+        "node": [
+          0,
+          0,
+          55
+        ],
+        "pc": 3
+      },
+      {
+        "member_node_offset": 249319,
+        "node": [
+          0,
+          0,
+          67
+        ],
+        "pc": 4
+      },
+      {
+        "member_node_offset": 249323,
+        "node": [
+          -1,
+          0,
+          57
+        ],
+        "pc": 5
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o"
+  },
+  {
+    "function": "decrypt_mask_md5",
+    "function_index": 753,
+    "member_node_offset": 256184,
+    "member_sha256": "f9896828c87399be4977107fbfbe3f67fd71caebd3008bda84be16cc722d0a0e",
+    "mode": "global",
+    "node": [
+      0,
+      0,
+      67
+    ],
+    "nodes_offset": 255844,
+    "opcode": "43",
+    "pc": 85,
+    "preceding_origin": "other_instruction",
+    "segment_kind": "functions",
+    "segment_offset": 255713,
+    "snippet": [
+      {
+        "member_node_offset": 256176,
+        "node": [
+          -3,
+          0,
+          55
+        ],
+        "pc": 83
+      },
+      {
+        "member_node_offset": 256180,
+        "node": [
+          0,
+          0,
+          1
+        ],
+        "pc": 84
+      },
+      {
+        "member_node_offset": 256184,
+        "node": [
+          0,
+          0,
+          67
+        ],
+        "pc": 85
+      },
+      {
+        "member_node_offset": 256188,
+        "node": [
+          -5,
+          0,
+          55
+        ],
+        "pc": 86
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o"
+  },
+  {
+    "function": "telnet_daemon",
+    "function_index": 829,
+    "member_node_offset": 246473,
+    "member_sha256": "f9896828c87399be4977107fbfbe3f67fd71caebd3008bda84be16cc722d0a0e",
+    "mode": "global",
+    "node": [
+      0,
+      0,
+      67
+    ],
+    "nodes_offset": 245909,
+    "opcode": "43",
+    "pc": 141,
+    "preceding_origin": "shared_string_pool_index",
+    "segment_kind": "functions",
+    "segment_offset": 245460,
+    "snippet": [
+      {
+        "member_node_offset": 246465,
+        "node": [
+          0,
+          0,
+          46
+        ],
+        "pc": 139
+      },
+      {
+        "member_node_offset": 246469,
+        "node": [
+          15,
+          0,
+          64
+        ],
+        "pc": 140
+      },
+      {
+        "member_node_offset": 246473,
+        "node": [
+          0,
+          0,
+          67
+        ],
+        "pc": 141
+      },
+      {
+        "member_node_offset": 246477,
+        "node": [
+          4,
+          0,
+          13
+        ],
+        "pc": 142
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o"
+  },
+  {
+    "function": "telnet_daemon",
+    "function_index": 829,
+    "member_node_offset": 246145,
+    "member_sha256": "f9896828c87399be4977107fbfbe3f67fd71caebd3008bda84be16cc722d0a0e",
+    "mode": "global",
+    "node": [
+      0,
+      0,
+      67
+    ],
+    "nodes_offset": 245909,
+    "opcode": "43",
+    "pc": 59,
+    "preceding_origin": "short_numeric_constant",
+    "segment_kind": "functions",
+    "segment_offset": 245460,
+    "snippet": [
+      {
+        "member_node_offset": 246137,
+        "node": [
+          -3,
+          0,
+          55
+        ],
+        "pc": 57
+      },
+      {
+        "member_node_offset": 246141,
+        "node": [
+          1,
+          0,
+          59
+        ],
+        "pc": 58
+      },
+      {
+        "member_node_offset": 246145,
+        "node": [
+          0,
+          0,
+          67
+        ],
+        "pc": 59
+      },
+      {
+        "member_node_offset": 246149,
+        "node": [
+          -1,
+          0,
+          55
+        ],
+        "pc": 60
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o"
+  },
+  {
+    "function": "__init__",
+    "function_index": null,
+    "member_node_offset": 450596,
+    "member_sha256": "f9896828c87399be4977107fbfbe3f67fd71caebd3008bda84be16cc722d0a0e",
+    "mode": "global",
+    "node": [
+      1,
+      0,
+      67
+    ],
+    "nodes_offset": 450136,
+    "opcode": "43",
+    "pc": 115,
+    "preceding_origin": "short_numeric_constant",
+    "segment_kind": "init",
+    "segment_offset": 448680,
+    "snippet": [
+      {
+        "member_node_offset": 450588,
+        "node": [
+          30,
+          0,
+          53
+        ],
+        "pc": 113
+      },
+      {
+        "member_node_offset": 450592,
+        "node": [
+          1,
+          0,
+          59
+        ],
+        "pc": 114
+      },
+      {
+        "member_node_offset": 450596,
+        "node": [
+          1,
+          0,
+          67
+        ],
+        "pc": 115
+      },
+      {
+        "member_node_offset": 450600,
+        "node": [
+          47,
+          0,
+          59
+        ],
+        "pc": 116
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o"
+  },
+  {
+    "function": "start_cs_citywar",
+    "function_index": 22,
+    "member_node_offset": 5862,
+    "member_sha256": "2bed680e0fa0e09efc5ebcb144433b71e7b8b165c4a7f16da88da8cc3b86cd5b",
+    "mode": "object",
+    "node": [
+      0,
+      0,
+      67
+    ],
+    "nodes_offset": 5570,
+    "opcode": "43",
+    "pc": 73,
+    "preceding_origin": "global_slot",
+    "segment_kind": "functions",
+    "segment_offset": 5025,
+    "snippet": [
+      {
+        "member_node_offset": 5854,
+        "node": [
+          0,
+          0,
+          67
+        ],
+        "pc": 71
+      },
+      {
+        "member_node_offset": 5858,
+        "node": [
+          81,
+          0,
+          53
+        ],
+        "pc": 72
+      },
+      {
+        "member_node_offset": 5862,
+        "node": [
+          0,
+          0,
+          67
+        ],
+        "pc": 73
+      },
+      {
+        "member_node_offset": 5866,
+        "node": [
+          18,
+          1,
+          7
+        ],
+        "pc": 74
+      }
+    ],
+    "source": "ccs/pack_data/lib_ccs32.pak/ccs/daemons/ccs_cityward.o"
+  },
+  {
+    "function": "main",
+    "function_index": 4,
+    "member_node_offset": 3539,
+    "member_sha256": "6ed41ca919868c24de8050fb367dedd9d6f4320c392a32a90812b0738d09b2e6",
+    "mode": "object",
+    "node": [
+      0,
+      0,
+      67
+    ],
+    "nodes_offset": 2343,
+    "opcode": "43",
+    "pc": 299,
+    "preceding_origin": "local_slot",
+    "segment_kind": "functions",
+    "segment_offset": 1936,
+    "snippet": [
+      {
+        "member_node_offset": 3531,
+        "node": [
+          101,
+          0,
+          53
+        ],
+        "pc": 297
+      },
+      {
+        "member_node_offset": 3535,
+        "node": [
+          -14,
+          0,
+          55
+        ],
+        "pc": 298
+      },
+      {
+        "member_node_offset": 3539,
+        "node": [
+          0,
+          0,
+          67
+        ],
+        "pc": 299
+      },
+      {
+        "member_node_offset": 3543,
+        "node": [
+          7,
+          0,
+          36
+        ],
+        "pc": 300
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/daemons/account/cmd_l_get_server_list.o"
+  },
+  {
+    "function": "make_tao_ranking",
+    "function_index": 22,
+    "member_node_offset": 116044,
+    "member_sha256": "e81f62eb685580bc90f529be348b81afb1b9ff5e0ffd5cb2945a335d975368e8",
+    "mode": "object",
+    "node": [
+      0,
+      0,
+      67
+    ],
+    "nodes_offset": 115616,
+    "opcode": "43",
+    "pc": 107,
+    "preceding_origin": "numeric_constant_metadata",
+    "segment_kind": "functions",
+    "segment_offset": 115405,
+    "snippet": [
+      {
+        "member_node_offset": 116036,
+        "node": [
+          -4,
+          0,
+          55
+        ],
+        "pc": 105
+      },
+      {
+        "member_node_offset": 116040,
+        "node": [
+          8,
+          0,
+          60
+        ],
+        "pc": 106
+      },
+      {
+        "member_node_offset": 116044,
+        "node": [
+          0,
+          0,
+          67
+        ],
+        "pc": 107
+      },
+      {
+        "member_node_offset": 116048,
+        "node": [
+          -8,
+          0,
+          57
+        ],
+        "pc": 108
+      }
+    ],
+    "source": "ccs/pack_data/lib_ccs32.pak/ccs/daemons/ccs_topd.o"
+  },
+  {
+    "function": "msg_ab_user_check_data",
+    "function_index": 7,
+    "member_node_offset": 4846,
+    "member_sha256": "3af0007136519032ae44841d4c4006472132502ff3d7ab7581ad1ecf424e5f38",
+    "mode": "object",
+    "node": [
+      0,
+      0,
+      67
+    ],
+    "nodes_offset": 4790,
+    "opcode": "43",
+    "pc": 14,
+    "preceding_origin": "object_slot",
+    "segment_kind": "functions",
+    "segment_offset": 4679,
+    "snippet": [
+      {
+        "member_node_offset": 4838,
+        "node": [
+          3,
+          0,
+          61
+        ],
+        "pc": 12
+      },
+      {
+        "member_node_offset": 4842,
+        "node": [
+          2,
+          0,
+          61
+        ],
+        "pc": 13
+      },
+      {
+        "member_node_offset": 4846,
+        "node": [
+          0,
+          0,
+          67
+        ],
+        "pc": 14
+      },
+      {
+        "member_node_offset": 4850,
+        "node": [
+          -6,
+          0,
+          57
+        ],
+        "pc": 15
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/daemons/antibotd.o"
+  },
+  {
+    "function": "activate_account",
+    "function_index": 146,
+    "member_node_offset": 18240,
+    "member_sha256": "fbad2268542cac34b915222e0e6ba038e390b5098d06295834c707654c4bbd05",
+    "mode": "object",
+    "node": [
+      0,
+      0,
+      67
+    ],
+    "nodes_offset": 17972,
+    "opcode": "43",
+    "pc": 67,
+    "preceding_origin": "other_instruction",
+    "segment_kind": "functions",
+    "segment_offset": 17671,
+    "snippet": [
+      {
+        "member_node_offset": 18232,
+        "node": [
+          0,
+          0,
+          79
+        ],
+        "pc": 65
+      },
+      {
+        "member_node_offset": 18236,
+        "node": [
+          94,
+          1,
+          6
+        ],
+        "pc": 66
+      },
+      {
+        "member_node_offset": 18240,
+        "node": [
+          0,
+          0,
+          67
+        ],
+        "pc": 67
+      },
+      {
+        "member_node_offset": 18244,
+        "node": [
+          141,
+          1,
+          6
+        ],
+        "pc": 68
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/daemons/accountd.o"
+  },
+  {
+    "function": "start_service",
+    "function_index": 0,
+    "member_node_offset": 2917,
+    "member_sha256": "0b2367a5f99b8a43f653a5983f2b3831962c591f256ec761789b4f9255529a6b",
+    "mode": "object",
+    "node": [
+      0,
+      0,
+      67
+    ],
+    "nodes_offset": 2901,
+    "opcode": "43",
+    "pc": 4,
+    "preceding_origin": "shared_string_pool_index",
+    "segment_kind": "functions",
+    "segment_offset": 2763,
+    "snippet": [
+      {
+        "member_node_offset": 2909,
+        "node": [
+          1,
+          0,
+          61
+        ],
+        "pc": 2
+      },
+      {
+        "member_node_offset": 2913,
+        "node": [
+          2,
+          0,
+          64
+        ],
+        "pc": 3
+      },
+      {
+        "member_node_offset": 2917,
+        "node": [
+          0,
+          0,
+          67
+        ],
+        "pc": 4
+      },
+      {
+        "member_node_offset": 2921,
+        "node": [
+          2,
+          0,
+          36
+        ],
+        "pc": 5
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/daemons/aaaserverd.o"
+  },
+  {
+    "function": "update_account_info",
+    "function_index": 8,
+    "member_node_offset": 2500,
+    "member_sha256": "67c1060eb814ce072491b047ec2a5c60ec27c5ed4d7a98e34469201eea558d07",
+    "mode": "object",
+    "node": [
+      0,
+      0,
+      67
+    ],
+    "nodes_offset": 2364,
+    "opcode": "43",
+    "pc": 34,
+    "preceding_origin": "short_numeric_constant",
+    "segment_kind": "functions",
+    "segment_offset": 2156,
+    "snippet": [
+      {
+        "member_node_offset": 2492,
+        "node": [
+          -2,
+          0,
+          55
+        ],
+        "pc": 32
+      },
+      {
+        "member_node_offset": 2496,
+        "node": [
+          0,
+          0,
+          59
+        ],
+        "pc": 33
+      },
+      {
+        "member_node_offset": 2500,
+        "node": [
+          0,
+          0,
+          67
+        ],
+        "pc": 34
+      },
+      {
+        "member_node_offset": 2504,
+        "node": [
+          83,
+          2,
+          6
+        ],
+        "pc": 35
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/daemons/account_transactiond.o"
+  },
+  {
+    "function": "__init__",
+    "function_index": null,
+    "member_node_offset": 13822,
+    "member_sha256": "61e36326282f7bb1e8d19236126cfe8a67e3dbf95afcfa1a1c5b2c9761ee4e35",
+    "mode": "object",
+    "node": [
+      0,
+      0,
+      67
+    ],
+    "nodes_offset": 13374,
+    "opcode": "43",
+    "pc": 112,
+    "preceding_origin": "other_instruction",
+    "segment_kind": "init",
+    "segment_offset": 12978,
+    "snippet": [
+      {
+        "member_node_offset": 13814,
+        "node": [
+          0,
+          0,
+          79
+        ],
+        "pc": 110
+      },
+      {
+        "member_node_offset": 13818,
+        "node": [
+          94,
+          1,
+          6
+        ],
+        "pc": 111
+      },
+      {
+        "member_node_offset": 13822,
+        "node": [
+          0,
+          0,
+          67
+        ],
+        "pc": 112
+      },
+      {
+        "member_node_offset": 13826,
+        "node": [
+          75,
+          0,
+          64
+        ],
+        "pc": 113
+      }
+    ],
+    "source": "gs/pack_data/lib_gs32.pak/gs/daemons/tasks/instruction_v4/sub_tasks/instruction_82_template.o"
+  },
+  {
+    "function": "__init__",
+    "function_index": null,
+    "member_node_offset": 32248,
+    "member_sha256": "038467dcfc3a650bd3ac030ab7a092ee893cd2ca001a99af9ac23867285daa5d",
+    "mode": "object",
+    "node": [
+      0,
+      0,
+      67
+    ],
+    "nodes_offset": 31920,
+    "opcode": "43",
+    "pc": 82,
+    "preceding_origin": "shared_string_pool_index",
+    "segment_kind": "init",
+    "segment_offset": 31401,
+    "snippet": [
+      {
+        "member_node_offset": 32240,
+        "node": [
+          5,
+          0,
+          61
+        ],
+        "pc": 80
+      },
+      {
+        "member_node_offset": 32244,
+        "node": [
+          86,
+          0,
+          64
+        ],
+        "pc": 81
+      },
+      {
+        "member_node_offset": 32248,
+        "node": [
+          0,
+          0,
+          67
+        ],
+        "pc": 82
+      },
+      {
+        "member_node_offset": 32252,
+        "node": [
+          27,
+          0,
+          64
+        ],
+        "pc": 83
+      }
+    ],
+    "source": "gs/pack_data/lib_gs32.pak/gs/daemons/tasks/instruction/sub-tasks/instruction-20.o"
+  },
+  {
+    "function": "__init__",
+    "function_index": null,
+    "member_node_offset": 57532,
+    "member_sha256": "6f1b62c74eb5d564a813fe438b76fddab360111baf2b78877fb2cb3652fa6488",
+    "mode": "object",
+    "node": [
+      0,
+      0,
+      67
+    ],
+    "nodes_offset": 54716,
+    "opcode": "43",
+    "pc": 704,
+    "preceding_origin": "short_numeric_constant",
+    "segment_kind": "init",
+    "segment_offset": 49055,
+    "snippet": [
+      {
+        "member_node_offset": 57524,
+        "node": [
+          2,
+          0,
+          61
+        ],
+        "pc": 702
+      },
+      {
+        "member_node_offset": 57528,
+        "node": [
+          1,
+          0,
+          59
+        ],
+        "pc": 703
+      },
+      {
+        "member_node_offset": 57532,
+        "node": [
+          0,
+          0,
+          67
+        ],
+        "pc": 704
+      },
+      {
+        "member_node_offset": 57536,
+        "node": [
+          1830,
+          -127,
+          7
+        ],
+        "pc": 705
+      }
+    ],
+    "source": "gs/pack_data/lib_gs32.pak/gs/daemons/tasks/fengshenbang/juejing_yingjiu.o"
+  },
+  {
+    "function": "telnet_daemon",
+    "function_index": 829,
+    "member_node_offset": 246773,
+    "member_sha256": "f9896828c87399be4977107fbfbe3f67fd71caebd3008bda84be16cc722d0a0e",
+    "mode": "global",
+    "node": [
+      0,
+      0,
+      68
+    ],
+    "nodes_offset": 245909,
+    "opcode": "44",
+    "pc": 216,
+    "preceding_origin": "local_slot",
+    "segment_kind": "functions",
+    "segment_offset": 245460,
+    "snippet": [
+      {
+        "member_node_offset": 246765,
+        "node": [
+          95,
+          0,
+          54
+        ],
+        "pc": 214
+      },
+      {
+        "member_node_offset": 246769,
+        "node": [
+          0,
+          0,
+          55
+        ],
+        "pc": 215
+      },
+      {
+        "member_node_offset": 246773,
+        "node": [
+          0,
+          0,
+          68
+        ],
+        "pc": 216
+      },
+      {
+        "member_node_offset": 246777,
+        "node": [
+          0,
+          0,
+          3
+        ],
+        "pc": 217
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o"
+  },
+  {
+    "function": "sql_update",
+    "function_index": 757,
+    "member_node_offset": 274141,
+    "member_sha256": "f9896828c87399be4977107fbfbe3f67fd71caebd3008bda84be16cc722d0a0e",
+    "mode": "global",
+    "node": [
+      0,
+      0,
+      68
+    ],
+    "nodes_offset": 273717,
+    "opcode": "44",
+    "pc": 106,
+    "preceding_origin": "other_instruction",
+    "segment_kind": "functions",
+    "segment_offset": 273496,
+    "snippet": [
+      {
+        "member_node_offset": 274133,
+        "node": [
+          -1,
+          0,
+          57
+        ],
+        "pc": 104
+      },
+      {
+        "member_node_offset": 274137,
+        "node": [
+          1,
+          0,
+          34
+        ],
+        "pc": 105
+      },
+      {
+        "member_node_offset": 274141,
+        "node": [
+          0,
+          0,
+          68
+        ],
+        "pc": 106
+      },
+      {
+        "member_node_offset": 274145,
+        "node": [
+          3,
+          0,
+          55
+        ],
+        "pc": 107
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o"
+  },
+  {
+    "function": "xdbc_call_server",
+    "function_index": 601,
+    "member_node_offset": 290226,
+    "member_sha256": "f9896828c87399be4977107fbfbe3f67fd71caebd3008bda84be16cc722d0a0e",
+    "mode": "global",
+    "node": [
+      0,
+      0,
+      68
+    ],
+    "nodes_offset": 290170,
+    "opcode": "44",
+    "pc": 14,
+    "preceding_origin": "shared_string_pool_index",
+    "segment_kind": "functions",
+    "segment_offset": 290058,
+    "snippet": [
+      {
+        "member_node_offset": 290218,
+        "node": [
+          -1,
+          0,
+          57
+        ],
+        "pc": 12
+      },
+      {
+        "member_node_offset": 290222,
+        "node": [
+          112,
+          0,
+          64
+        ],
+        "pc": 13
+      },
+      {
+        "member_node_offset": 290226,
+        "node": [
+          0,
+          0,
+          68
+        ],
+        "pc": 14
+      },
+      {
+        "member_node_offset": 290230,
+        "node": [
+          0,
+          0,
+          3
+        ],
+        "pc": 15
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o"
+  },
+  {
+    "function": "get_sub_dirs_ex",
+    "function_index": 616,
+    "member_node_offset": 312294,
+    "member_sha256": "f9896828c87399be4977107fbfbe3f67fd71caebd3008bda84be16cc722d0a0e",
+    "mode": "global",
+    "node": [
+      0,
+      0,
+      68
+    ],
+    "nodes_offset": 312130,
+    "opcode": "44",
+    "pc": 41,
+    "preceding_origin": "short_numeric_constant",
+    "segment_kind": "functions",
+    "segment_offset": 311968,
+    "snippet": [
+      {
+        "member_node_offset": 312286,
+        "node": [
+          -3,
+          0,
+          57
+        ],
+        "pc": 39
+      },
+      {
+        "member_node_offset": 312290,
+        "node": [
+          0,
+          0,
+          59
+        ],
+        "pc": 40
+      },
+      {
+        "member_node_offset": 312294,
+        "node": [
+          0,
+          0,
+          68
+        ],
+        "pc": 41
+      },
+      {
+        "member_node_offset": 312298,
+        "node": [
+          0,
+          0,
+          3
+        ],
+        "pc": 42
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o"
+  },
+  {
+    "function": "__init__",
+    "function_index": null,
+    "member_node_offset": 1797180,
+    "member_sha256": "2f3ce58bb54584d2ce7bb3d90852893b97fcd5fb55d455b8eccff856fc696174",
+    "mode": "global",
+    "node": [
+      0,
+      0,
+      68
+    ],
+    "nodes_offset": 1793584,
+    "opcode": "44",
+    "pc": 899,
+    "preceding_origin": "global_slot",
+    "segment_kind": "init",
+    "segment_offset": 1788954,
+    "snippet": [
+      {
+        "member_node_offset": 1797172,
+        "node": [
+          136,
+          0,
+          54
+        ],
+        "pc": 897
+      },
+      {
+        "member_node_offset": 1797176,
+        "node": [
+          139,
+          0,
+          53
+        ],
+        "pc": 898
+      },
+      {
+        "member_node_offset": 1797180,
+        "node": [
+          0,
+          0,
+          68
+        ],
+        "pc": 899
+      },
+      {
+        "member_node_offset": 1797184,
+        "node": [
+          0,
+          0,
+          3
+        ],
+        "pc": 900
+      }
+    ],
+    "source": "gs/pack_data/lib_gs32.pak/gs/start_gs.o"
+  },
+  {
+    "function": "do_when_start_adventure",
+    "function_index": 13,
+    "member_node_offset": 115113,
+    "member_sha256": "621f1d525c1fc9faf6621053a4fe8ecb1038450927d8284359068a1a0fa10c4c",
+    "mode": "object",
+    "node": [
+      0,
+      0,
+      68
+    ],
+    "nodes_offset": 115017,
+    "opcode": "44",
+    "pc": 24,
+    "preceding_origin": "global_slot",
+    "segment_kind": "functions",
+    "segment_offset": 114868,
+    "snippet": [
+      {
+        "member_node_offset": 115105,
+        "node": [
+          -2,
+          0,
+          57
+        ],
+        "pc": 22
+      },
+      {
+        "member_node_offset": 115109,
+        "node": [
+          48,
+          0,
+          53
+        ],
+        "pc": 23
+      },
+      {
+        "member_node_offset": 115113,
+        "node": [
+          0,
+          0,
+          68
+        ],
+        "pc": 24
+      },
+      {
+        "member_node_offset": 115117,
+        "node": [
+          0,
+          0,
+          3
+        ],
+        "pc": 25
+      }
+    ],
+    "source": "gs/pack_data/lib_gs32.pak/gs/daemons/child_raised.o"
+  },
+  {
+    "function": "clear_timeout_precost_lock",
+    "function_index": 9,
+    "member_node_offset": 5879,
+    "member_sha256": "67c1060eb814ce072491b047ec2a5c60ec27c5ed4d7a98e34469201eea558d07",
+    "mode": "object",
+    "node": [
+      0,
+      0,
+      68
+    ],
+    "nodes_offset": 5807,
+    "opcode": "44",
+    "pc": 18,
+    "preceding_origin": "local_slot",
+    "segment_kind": "functions",
+    "segment_offset": 5654,
+    "snippet": [
+      {
+        "member_node_offset": 5871,
+        "node": [
+          2,
+          0,
+          62
+        ],
+        "pc": 16
+      },
+      {
+        "member_node_offset": 5875,
+        "node": [
+          -3,
+          0,
+          55
+        ],
+        "pc": 17
+      },
+      {
+        "member_node_offset": 5879,
+        "node": [
+          0,
+          0,
+          68
+        ],
+        "pc": 18
+      },
+      {
+        "member_node_offset": 5883,
+        "node": [
+          0,
+          0,
+          3
+        ],
+        "pc": 19
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/daemons/account_transactiond.o"
+  },
+  {
+    "function": "do_when_end_match",
+    "function_index": 57,
+    "member_node_offset": 75330,
+    "member_sha256": "e9ee2cf1c5e73ffd05bc1154698742a36c4e527a0e5a5ea047881f4917a246bb",
+    "mode": "object",
+    "node": [
+      0,
+      0,
+      68
+    ],
+    "nodes_offset": 75034,
+    "opcode": "44",
+    "pc": 74,
+    "preceding_origin": "object_slot",
+    "segment_kind": "functions",
+    "segment_offset": 74439,
+    "snippet": [
+      {
+        "member_node_offset": 75322,
+        "node": [
+          27,
+          0,
+          62
+        ],
+        "pc": 72
+      },
+      {
+        "member_node_offset": 75326,
+        "node": [
+          21,
+          0,
+          61
+        ],
+        "pc": 73
+      },
+      {
+        "member_node_offset": 75330,
+        "node": [
+          0,
+          0,
+          68
+        ],
+        "pc": 74
+      },
+      {
+        "member_node_offset": 75334,
+        "node": [
+          0,
+          0,
+          3
+        ],
+        "pc": 75
+      }
+    ],
+    "source": "gs/pack_data/lib_gs32.pak/gs/daemons/cross_server/celebrity_match.o"
+  },
+  {
+    "function": "init_matrix",
+    "function_index": 108,
+    "member_node_offset": 34574,
+    "member_sha256": "fbad2268542cac34b915222e0e6ba038e390b5098d06295834c707654c4bbd05",
+    "mode": "object",
+    "node": [
+      0,
+      0,
+      68
+    ],
+    "nodes_offset": 34438,
+    "opcode": "44",
+    "pc": 34,
+    "preceding_origin": "other_instruction",
+    "segment_kind": "functions",
+    "segment_offset": 34357,
+    "snippet": [
+      {
+        "member_node_offset": 34566,
+        "node": [
+          -2,
+          0,
+          57
+        ],
+        "pc": 32
+      },
+      {
+        "member_node_offset": 34570,
+        "node": [
+          1,
+          0,
+          34
+        ],
+        "pc": 33
+      },
+      {
+        "member_node_offset": 34574,
+        "node": [
+          0,
+          0,
+          68
+        ],
+        "pc": 34
+      },
+      {
+        "member_node_offset": 34578,
+        "node": [
+          -4,
+          0,
+          55
+        ],
+        "pc": 35
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/daemons/accountd.o"
+  },
+  {
+    "function": "main",
+    "function_index": 3,
+    "member_node_offset": 8860,
+    "member_sha256": "ef67351f8df64f004f245963f44f7553b7edf7bf10f75d90867bfbc964195dd5",
+    "mode": "object",
+    "node": [
+      0,
+      0,
+      68
+    ],
+    "nodes_offset": 5876,
+    "opcode": "44",
+    "pc": 746,
+    "preceding_origin": "shared_string_pool_index",
+    "segment_kind": "functions",
+    "segment_offset": 4129,
+    "snippet": [
+      {
+        "member_node_offset": 8852,
+        "node": [
+          -18,
+          0,
+          57
+        ],
+        "pc": 744
+      },
+      {
+        "member_node_offset": 8856,
+        "node": [
+          72,
+          0,
+          64
+        ],
+        "pc": 745
+      },
+      {
+        "member_node_offset": 8860,
+        "node": [
+          0,
+          0,
+          68
+        ],
+        "pc": 746
+      },
+      {
+        "member_node_offset": 8864,
+        "node": [
+          0,
+          0,
+          3
+        ],
+        "pc": 747
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/daemons/account/cmd_l_client_connect_agent.o"
+  },
+  {
+    "function": "_main",
+    "function_index": 3,
+    "member_node_offset": 1459,
+    "member_sha256": "52a9f0b964dfb354fc76536d427dbf0cb05925dea4b38a0411e3deaf7ee34753",
+    "mode": "object",
+    "node": [
+      0,
+      0,
+      68
+    ],
+    "nodes_offset": 1279,
+    "opcode": "44",
+    "pc": 45,
+    "preceding_origin": "short_numeric_constant",
+    "segment_kind": "functions",
+    "segment_offset": 1032,
+    "snippet": [
+      {
+        "member_node_offset": 1451,
+        "node": [
+          -5,
+          0,
+          57
+        ],
+        "pc": 43
+      },
+      {
+        "member_node_offset": 1455,
+        "node": [
+          1,
+          0,
+          59
+        ],
+        "pc": 44
+      },
+      {
+        "member_node_offset": 1459,
+        "node": [
+          0,
+          0,
+          68
+        ],
+        "pc": 45
+      },
+      {
+        "member_node_offset": 1463,
+        "node": [
+          0,
+          0,
+          3
+        ],
+        "pc": 46
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/daemons/server/cmd_l_auth_all_protect.o"
+  },
+  {
+    "function": "post_regen_iid",
+    "function_index": 651,
+    "member_node_offset": 242465,
+    "member_sha256": "f9896828c87399be4977107fbfbe3f67fd71caebd3008bda84be16cc722d0a0e",
+    "mode": "global",
+    "node": [
+      -14,
+      -2,
+      80
+    ],
+    "nodes_offset": 242385,
+    "opcode": "50",
+    "pc": 20,
+    "preceding_origin": "other_instruction",
+    "segment_kind": "functions",
+    "segment_offset": 242303,
+    "snippet": [
+      {
+        "member_node_offset": 242457,
+        "node": [
+          0,
+          0,
+          51
+        ],
+        "pc": 18
+      },
+      {
+        "member_node_offset": 242461,
+        "node": [
+          0,
+          0,
+          46
+        ],
+        "pc": 19
+      },
+      {
+        "member_node_offset": 242465,
+        "node": [
+          -14,
+          -2,
+          80
+        ],
+        "pc": 20
+      },
+      {
+        "member_node_offset": 242469,
+        "node": [
+          9,
+          0,
+          59
+        ],
+        "pc": 21
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o"
+  },
+  {
+    "function": "stop_service",
+    "function_index": 1,
+    "member_node_offset": 1138,
+    "member_sha256": "0b2367a5f99b8a43f653a5983f2b3831962c591f256ec761789b4f9255529a6b",
+    "mode": "object",
+    "node": [
+      -9,
+      -2,
+      80
+    ],
+    "nodes_offset": 1018,
+    "opcode": "50",
+    "pc": 30,
+    "preceding_origin": "other_instruction",
+    "segment_kind": "functions",
+    "segment_offset": 915,
+    "snippet": [
+      {
+        "member_node_offset": 1130,
+        "node": [
+          361,
+          1,
+          6
+        ],
+        "pc": 28
+      },
+      {
+        "member_node_offset": 1134,
+        "node": [
+          0,
+          0,
+          51
+        ],
+        "pc": 29
+      },
+      {
+        "member_node_offset": 1138,
+        "node": [
+          -9,
+          -2,
+          80
+        ],
+        "pc": 30
+      },
+      {
+        "member_node_offset": 1142,
+        "node": [
+          1,
+          0,
+          59
+        ],
+        "pc": 31
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/daemons/aaaserverd.o"
+  }
+]
