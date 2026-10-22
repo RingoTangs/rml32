@@ -1,0 +1,31 @@
+{
+  "artifact_sha256": {
+    "README.md": "5064162bcf280b50d27d95ef1c6ee0132a7f53d7f1b7f1199e828487f5618161",
+    "docs/magic_Linux32-rust-rewrite-roadmap.md": "fd2f8bb28ed003e6ceed58daa6cd63422774dbf5882424c69c8de6317dc24b9a",
+    "docs/stage2ao-evidence/baseline-inputs.json": "ce7863fb34b6250903930366a9f678ef6fc2e18c15ede9fd55fdf2faf1092a32",
+    "docs/stage2ao-evidence/matrix.md": "7c8c18fa2631536f733993508d48bdf2edc1bc1cd670e6b773bc18ea88f0fca5",
+    "docs/stage2ao-evidence/method.md": "4fc44f4194bb17337b3b8fb7cb989f3f787c27c10ed8d6a2c43eab90450f5271",
+    "docs/stage2ao-evidence/run_historical_tests.py": "c5e766a6c1e1cbe0dc96ce87e861043185b198624d423aab9fb00c053a33c35c",
+    "docs/stage2ao-evidence/test_static_evidence.py": "f5dbb5dded5e6eb0a8374c51c48b28caba3ae926ed5dab29b064124198b8661a",
+    "docs/stage2ao-evidence/validation-logs.json.gz": "0b02e361f485be31d700893c16718f3bef09bd1933e46492170f3dc5456b1a7f",
+    "docs/stage2ao-evidence/verify_static_evidence.py": "59c96146c8202abb08a324450f4d6bd9b24c9f91da3eca046af77f20845b6eec",
+    "docs/stage2ao-evidence/verify_validation.py": "1fa60f70e2cef0d3803d61b14554175fa019ecc81808f717f1002e27a18fb514",
+    "docs/vm-global-function-value-runtime.md": "46f7c12fededfd3c5a9309cafa0793076ebb32d53b377dcf5f9186e56afe644c",
+    "src/lib.rs": "954dbf7ced2344ed40f8d3b62ffe50fdaeca899e4879c0962e42d180b0850843",
+    "src/prepared.rs": "39c3e7ad19ed9b26a42a8bd0918d2db02b2291aebc1c36f61a5c2246d2c6ea43",
+    "src/value.rs": "cf5f3237927ebe03b525786eb6c7e212aef8a3baf93ba1ab53ab731a47c06ed9",
+    "src/vm.rs": "d3f1b727c755bb6488031ad35f09d01df237edfe2303ae19f454644c8de552e7",
+    "tests/vm_core.rs": "6a6a04ead03118f8ffab3cf639fa62d883414f881f7b4876caeeda8cd0ba94da"
+  },
+  "corpus_intersection": 73,
+  "limitations": [
+    "Synthetic execution only; no target or business bytecode execution.",
+    "Global/c new calls require the saved program to remain bound.",
+    "Host/K, non-scalar captures, native deferred deletion and stage 2 remain incomplete."
+  ],
+  "logs_sha256": "0b02e361f485be31d700893c16718f3bef09bd1933e46492170f3dc5456b1a7f",
+  "python_tests": 27,
+  "rust_tests": 544,
+  "stage": "2AO",
+  "supported_opcodes": 75
+}

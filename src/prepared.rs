@@ -105,6 +105,7 @@ pub struct PreparedProgram {
     pub(crate) global_schema: Option<GlobalBankSchema>,
     pub(crate) allow_host_calls: bool,
     pub(crate) allow_function_values: bool,
+    pub(crate) allow_global_function_values: bool,
     pub(crate) kind: ProgramKind,
     pub(crate) function_capacity: usize,
     pub(crate) variable_count: usize,
@@ -195,6 +196,7 @@ struct PreparationOptions {
     global_code: bool,
     host_calls: bool,
     function_values: bool,
+    global_function_values: bool,
 }
 fn instructions(
     segment: &CodeSegment,
@@ -208,6 +210,7 @@ fn instructions(
         global_code,
         host_calls,
         function_values,
+        global_function_values,
     } = options;
     let metadata = bytes(&segment.metadata_hex)?;
     let mut result = Vec::new();
@@ -240,14 +243,18 @@ fn instructions(
             }
         }
         let check = if matches!(op, 0x05 | 0x17) {
-            if !function_values || initialization || (global_code && op == 0x17) {
+            if !function_values || initialization {
                 Err(unsupported(
                     "function values require explicit supported ordinary-function preparation",
                 ))
-            } else if op == 0x17 && b as u8 & 0xc0 != 0 {
-                Err(unsupported(
-                    "only Object function values with scalar captures are supported",
-                ))
+            } else if op == 0x17
+                && (b as u8 & 0x40 != 0
+                    || (b as u8 & 0x80 != 0 && !global_function_values)
+                    || (global_code && b as u8 & 0x80 == 0))
+            {
+                Err(unsupported("function value target kind is not enabled"))
+            } else if op == 0x17 && a < 0 {
+                Err(err("negative function value slot"))
             } else if op == 0x05 && !matches!(a, 0 | 4) {
                 Err(unsupported("indirect call requires flags zero or four"))
             } else if op == 0x05 && b <= 0 {
@@ -644,6 +651,39 @@ pub fn prepare_global_program_with_function_values(
         },
     )
 }
+/// Prepare ordinary Object functions with scalar-capturing Object and Global targets.
+pub fn prepare_program_with_global_function_values(
+    image: ProgramImage,
+    globals: GlobalBankSchema,
+) -> Result<PreparedProgram, VmError> {
+    prepare_code_program(
+        image,
+        PreparationOptions {
+            globals: Some(globals),
+            function_values: true,
+            global_function_values: true,
+            ..PreparationOptions::default()
+        },
+    )
+}
+
+/// Prepare ordinary Global functions with Global target creation and indirect calls.
+pub fn prepare_global_program_with_global_function_values(
+    image: ProgramImage,
+    globals: GlobalBankSchema,
+) -> Result<PreparedProgram, VmError> {
+    prepare_code_program(
+        image,
+        PreparationOptions {
+            globals: Some(globals),
+            global_code: true,
+            function_values: true,
+            global_function_values: true,
+            ..PreparationOptions::default()
+        },
+    )
+}
+
 fn prepare_code_program(
     image: ProgramImage,
     options: PreparationOptions,
@@ -653,6 +693,7 @@ fn prepare_code_program(
         global_code,
         host_calls,
         function_values,
+        global_function_values,
     } = options;
     let source = format!("sha256:{}", image.sha256);
     let build = || {
@@ -707,7 +748,9 @@ fn prepare_code_program(
                 .instructions
                 .iter()
                 .enumerate()
-                .filter(|(_, i)| i.opcode == 0x17)
+                // Absolute Global targets resolve against the runtime binding,
+                // not the creating image's function directory/capacity.
+                .filter(|(_, i)| i.opcode == 0x17 && i.operands[1] as u8 & 0x80 == 0)
             {
                 let slot = i.operands[0];
                 let check = if slot < 0 || slot >= i32::from(image.max_functions) {
@@ -733,6 +776,7 @@ fn prepare_code_program(
             global_schema: globals,
             allow_host_calls: host_calls,
             allow_function_values: function_values,
+            allow_global_function_values: global_function_values,
             kind: if global_code {
                 ProgramKind::Global
             } else {
@@ -1259,6 +1303,7 @@ fn prepare_catalog(
             global_schema: None,
             allow_host_calls: false,
             allow_function_values: false,
+            allow_global_function_values: false,
             kind: ProgramKind::Object,
             function_capacity: 0,
             variable_count: catalog.programs[root].max_vars as usize,

@@ -715,7 +715,8 @@ impl Vm {
             Value::Object(id) if self.objects.get(*id).is_err() => Value::Undefined,
             Value::Function(f)
                 if Rc::ptr_eq(&f.0.origin, &self.objects.function_origin)
-                    && self.objects.get(f.owner()).is_err() =>
+                    && f.owner()
+                        .is_some_and(|owner| self.objects.get(owner).is_err()) =>
             {
                 Value::Undefined
             }
@@ -1497,21 +1498,42 @@ impl Vm {
         flags: i32,
     ) -> Result<(), VmError> {
         self.check_function_context(program)?;
-        if program.kind != ProgramKind::Object || !(0..64).contains(&flags) {
+        if !(-128..=127).contains(&flags) {
+            return Err(err(
+                VmErrorKind::UnsupportedFeature,
+                "invalid function creation flags",
+            ));
+        }
+        let flags = flags as u8;
+        let global = flags & 0x80 != 0;
+        if flags & 0x40 != 0
+            || (global && !program.allow_global_function_values)
+            || (!global && program.kind != ProgramKind::Object)
+        {
             return Err(err(
                 VmErrorKind::UnsupportedFeature,
                 "unsupported function value creation flags or code kind",
             ));
         }
-        let owner = frame.object()?;
-        if self.objects.get(owner)?.program() != frame.program() {
+        let owner = frame.active_object;
+        if let Some(owner) = owner {
+            if self.objects.get(owner)?.program() != frame.program() {
+                return Err(err(
+                    VmErrorKind::InvalidState,
+                    "function owner code identity mismatch",
+                ));
+            }
+        } else if !global {
             return Err(err(
                 VmErrorKind::InvalidState,
-                "function owner code identity mismatch",
+                "Object target requires an owner",
             ));
         }
-        Self::function_target(program, slot)?;
-        let count = flags as usize;
+        if !global {
+            // Preserve the existing Object target validation order.
+            Self::function_target(program, slot)?;
+        }
+        let count = usize::from(flags & 0x3f);
         self.need(count, frame, code.local_count)?;
         let n = self.stack.len();
         let result_len = (n - count)
@@ -1540,6 +1562,26 @@ impl Vm {
             }
             bound.push(value);
         }
+        let target = if global {
+            let id = self.objects.global_program()?;
+            let target_program = self.objects.program(id)?;
+            if target_program.kind != ProgramKind::Global {
+                return Err(err(
+                    VmErrorKind::InvalidState,
+                    "global binding requires Global code",
+                ));
+            }
+            Self::function_target(&target_program, slot)?;
+            crate::FunctionTarget::Global {
+                program: id,
+                function: slot as i16,
+            }
+        } else {
+            crate::FunctionTarget::Object {
+                program: frame.program(),
+                function: slot as i16,
+            }
+        };
         self.stack
             .try_reserve(result_len.saturating_sub(n))
             .map_err(|_| {
@@ -1552,8 +1594,7 @@ impl Vm {
         let function = crate::FunctionValue(Rc::new(crate::value::FunctionData {
             origin: self.objects.function_origin.clone(),
             owner,
-            program: frame.program(),
-            function: slot as i16,
+            target,
             bound,
         }));
         cell.replace(Value::Function(function))?;
@@ -1592,21 +1633,66 @@ impl Vm {
                 "function value belongs to another ObjectStore",
             ));
         }
-        let owner = self.objects.get(function.owner())?;
-        if owner.program() != function.program() {
+        if let Some(owner) = function.owner() {
+            self.objects.get(owner)?;
+        }
+        let (id, slot, execution, active_object, kind) = match function.target() {
+            crate::FunctionTarget::Object {
+                program,
+                function: slot,
+            } => {
+                let owner = function.owner().ok_or_else(|| {
+                    err(VmErrorKind::InvalidState, "Object target requires an owner")
+                })?;
+                if self.objects.get(owner)?.program() != program {
+                    return Err(err(
+                        VmErrorKind::InvalidState,
+                        "saved function code identity mismatch",
+                    ));
+                }
+                (
+                    program,
+                    slot,
+                    ExecutionSource::ObjectProgram(program),
+                    Some(owner),
+                    ProgramKind::Object,
+                )
+            }
+            crate::FunctionTarget::Global {
+                program: id,
+                function: slot,
+            } => {
+                if !program.allow_global_function_values {
+                    return Err(err(
+                        VmErrorKind::UnsupportedFeature,
+                        "Global function targets require explicit preparation",
+                    ));
+                }
+                // Bounded Rust policy: do not mix saved code with a replacement
+                // Global constitution. Already entered frames keep their source.
+                if self.objects.global_program()? != id {
+                    return Err(err(
+                        VmErrorKind::InvalidState,
+                        "saved Global function program is no longer bound",
+                    ));
+                }
+                (
+                    id,
+                    slot,
+                    ExecutionSource::GlobalProgram(id),
+                    None,
+                    ProgramKind::Global,
+                )
+            }
+        };
+        let target_program = self.objects.program(id)?;
+        if target_program.kind != kind {
             return Err(err(
                 VmErrorKind::InvalidState,
-                "saved function code identity mismatch",
+                "saved function target code kind mismatch",
             ));
         }
-        let target_program = self.objects.program(function.program())?;
-        if target_program.kind != ProgramKind::Object {
-            return Err(err(
-                VmErrorKind::InvalidState,
-                "saved function requires Object code",
-            ));
-        }
-        let target = Self::function_target(&target_program, i32::from(function.function()))?;
+        let target = Self::function_target(&target_program, i32::from(slot))?;
         // Shape errors precede argument counts/types, without copying or normalizing sources.
         for pos in (n - argn..n - 1).rev() {
             self.ordinary_value(pos)?;
@@ -1677,9 +1763,9 @@ impl Vm {
             .map_err(|_| err(VmErrorKind::Limit, "indirect frame allocation failed"))?;
         let next = Frame {
             id: self.next_frame,
-            execution: ExecutionSource::ObjectProgram(function.program()),
-            active_object: Some(function.owner()),
-            body: FrameBody::Function(function.function()),
+            execution,
+            active_object,
+            body: FrameBody::Function(slot),
             pc: 0,
             bp,
             argc,
@@ -3290,6 +3376,7 @@ mod tests {
             global_schema: None,
             allow_host_calls: false,
             allow_function_values: false,
+            allow_global_function_values: false,
             kind: ProgramKind::Object,
             function_capacity: 0,
             source: "synthetic-loop".into(),
@@ -3642,6 +3729,7 @@ mod catch_tests {
             global_schema: None,
             allow_host_calls: false,
             allow_function_values: false,
+            allow_global_function_values: false,
             kind: ProgramKind::Object,
             function_capacity: 0,
             source: "synthetic-catch".into(),
@@ -4132,6 +4220,7 @@ mod global_tests {
             global_schema: schema,
             allow_host_calls: false,
             allow_function_values: false,
+            allow_global_function_values: false,
             kind: ProgramKind::Object,
             function_capacity: 0,
             variable_count: 0,
@@ -4331,6 +4420,7 @@ mod host_tests {
             global_schema: None,
             allow_host_calls: allow,
             allow_function_values: false,
+            allow_global_function_values: false,
             kind: ProgramKind::Object,
             function_capacity: 1,
             variable_count: 0,
@@ -4566,6 +4656,14 @@ mod function_value_tests {
     use super::*;
     use crate::cell::with_allocation_failure;
     fn fixture(opcode: u8, operands: [i32; 2], argc: usize) -> Vm {
+        fixture_with_globals(opcode, operands, argc, false)
+    }
+    fn fixture_with_globals(
+        opcode: u8,
+        operands: [i32; 2],
+        argc: usize,
+        global_targets: bool,
+    ) -> Vm {
         let mut vm = super::catch_tests::fixture(0);
         let mut caller = vm
             .objects
@@ -4604,6 +4702,7 @@ mod function_value_tests {
             global_schema: None,
             allow_host_calls: false,
             allow_function_values: true,
+            allow_global_function_values: global_targets,
             kind: ProgramKind::Object,
             function_capacity: 2,
             variable_count: 0,
@@ -4624,11 +4723,51 @@ mod function_value_tests {
     fn value(vm: &Vm, bound: Vec<Value>) -> crate::FunctionValue {
         crate::FunctionValue(Rc::new(crate::value::FunctionData {
             origin: vm.objects.function_origin.clone(),
-            owner: vm.frames[0].object().unwrap(),
-            program: vm.frames[0].program(),
-            function: 1,
+            owner: vm.frames[0].active_object,
+            target: crate::FunctionTarget::Object {
+                program: vm.frames[0].program(),
+                function: 1,
+            },
             bound,
         }))
+    }
+    fn global_fixture(opcode: u8, operands: [i32; 2], argc: usize) -> Vm {
+        let mut vm = fixture_with_globals(opcode, operands, argc, true);
+        let mut target = vm
+            .objects
+            .program(vm.frames[0].program())
+            .unwrap()
+            .functions[&1]
+            .clone();
+        target.index = 600;
+        let program = PreparedProgram {
+            source: "synthetic-global-function-values".into(),
+            global_schema: Some(crate::GlobalBankSchema { slots: 0 }),
+            allow_host_calls: false,
+            allow_function_values: true,
+            allow_global_function_values: true,
+            kind: ProgramKind::Global,
+            function_capacity: 601,
+            variable_count: 0,
+            strings: vec![],
+            functions: BTreeMap::from([(600, target)]),
+            unimplemented: Default::default(),
+            initializations: None,
+            init_order: vec![],
+            lifecycles: None,
+            methods: None,
+        };
+        let p = vm.objects.register_program(program).unwrap();
+        vm.objects.bind_global_program(p).unwrap();
+        vm
+    }
+    fn global_value(vm: &Vm, bound: Vec<Value>) -> crate::FunctionValue {
+        let mut f = value(vm, bound);
+        Rc::get_mut(&mut f.0).unwrap().target = crate::FunctionTarget::Global {
+            program: vm.objects.global_program().unwrap(),
+            function: 600,
+        };
+        f
     }
     fn assert_atomic(vm: &mut Vm, kind: VmErrorKind) {
         let before = vm.stack().unwrap();
@@ -4698,7 +4837,7 @@ mod function_value_tests {
         let mut f = value(&vm, vec![]);
         let other = Rc::new(());
         Rc::get_mut(&mut f.0).unwrap().origin = other;
-        Rc::get_mut(&mut f.0).unwrap().owner = ObjectId(999);
+        Rc::get_mut(&mut f.0).unwrap().owner = Some(ObjectId(999));
         assert_eq!(
             vm.copy_value(&Value::Function(f.clone())),
             Value::Function(f)
@@ -4708,7 +4847,7 @@ mod function_value_tests {
     fn function_values_dead_owner_reference_normalization_is_allocation_atomic() {
         let mut vm = fixture(5, [0, 1], 0);
         let f = value(&vm, vec![]);
-        vm.objects.remove(f.owner()).unwrap();
+        vm.objects.remove(f.owner().unwrap()).unwrap();
         let c = Cell::new(Value::Function(f.clone())).unwrap();
         let r = Reference {
             id: c.id(),
@@ -4757,9 +4896,15 @@ mod function_value_tests {
             let mut vm = fixture(5, [0, 1], 0);
             let mut f = value(&vm, vec![]);
             if bad == 0 {
-                Rc::get_mut(&mut f.0).unwrap().program = ProgramId(999);
+                Rc::get_mut(&mut f.0).unwrap().target = crate::FunctionTarget::Object {
+                    program: ProgramId(999),
+                    function: 1,
+                };
             } else if bad == 1 {
-                Rc::get_mut(&mut f.0).unwrap().function = 2;
+                Rc::get_mut(&mut f.0).unwrap().target = crate::FunctionTarget::Object {
+                    program: vm.frames[0].program(),
+                    function: 2,
+                };
             } else {
                 vm.next_frame = u64::MAX;
             }
@@ -4855,6 +5000,195 @@ mod function_value_tests {
         assert_eq!(vm.frames.len(), 2);
         assert_eq!(vm.frames[1].bp, 1);
         assert_eq!(vm.frames[0].pc, 1);
+    }
+    #[test]
+    fn global_function_values_creation_and_each_argument_cell_failure_are_atomic() {
+        let mut vm = global_fixture(0x17, [600, -127], 1);
+        vm.push(Value::bytes(b"bound")).unwrap();
+        with_allocation_failure(0, || assert_atomic(&mut vm, VmErrorKind::Limit));
+        for after in 0..3 {
+            let mut vm = global_fixture(5, [0, 2], 3);
+            let f = global_value(&vm, vec![Value::Int(1), Value::Int(2)]);
+            vm.push(Value::Int(3)).unwrap();
+            vm.push(Value::Function(f)).unwrap();
+            with_allocation_failure(after, || assert_atomic(&mut vm, VmErrorKind::Limit));
+        }
+    }
+    #[test]
+    fn global_function_values_borrowed_capture_target_and_argument_preserve_every_operand() {
+        for (op, operands, borrowed) in [(0x17, [600, -127], 0), (5, [0, 2], 0), (5, [0, 2], 1)] {
+            let mut vm = global_fixture(op, operands, 1);
+            vm.push(Value::Int(9)).unwrap();
+            if op == 5 {
+                let f = global_value(&vm, vec![]);
+                vm.push(Value::Function(f)).unwrap();
+            }
+            let StackEntry::Value(cell) = vm.stack[borrowed].clone() else {
+                unreachable!()
+            };
+            let before = vm.stack().unwrap();
+            let next = vm.next_frame;
+            cell.with_write_borrow_for_test(|| {
+                let e = vm.run(1).unwrap_err();
+                assert_eq!(e.kind, VmErrorKind::InvalidState);
+                assert_eq!(e.pc, Some(0));
+            });
+            assert_eq!(vm.stack().unwrap(), before);
+            assert_eq!(vm.next_frame, next);
+            assert_eq!(vm.frames[0].pc, 0);
+            assert_eq!(vm.frames.len(), 1);
+        }
+    }
+    #[test]
+    fn global_function_values_limits_and_frame_id_exhaustion_do_not_commit() {
+        let mut vm = global_fixture(0x17, [600, -128], 0);
+        vm.limits.max_stack = 0;
+        assert_atomic(&mut vm, VmErrorKind::Limit);
+        for limit in 0..3 {
+            let mut vm = global_fixture(5, [0, 1], 1);
+            let f = global_value(&vm, vec![Value::Int(1)]);
+            vm.push(Value::Function(f)).unwrap();
+            match limit {
+                0 => vm.limits.max_frames = 1,
+                1 => vm.limits.max_stack = 0,
+                _ => vm.next_frame = u64::MAX,
+            }
+            assert_atomic(&mut vm, VmErrorKind::Limit);
+        }
+    }
+    #[test]
+    fn global_function_values_reference_and_hidden_loop_shapes_remain_rejected() {
+        for op in [5, 0x17] {
+            let mut vm = global_fixture(op, if op == 5 { [0, 2] } else { [600, -127] }, 1);
+            let cell = Cell::new(Value::Int(7)).unwrap();
+            let reference = vm.owned_reference(cell, ReferenceKind::Temporary).unwrap();
+            vm.stack.push(StackEntry::Reference(reference));
+            if op == 5 {
+                let f = global_value(&vm, vec![]);
+                vm.push(Value::Function(f)).unwrap();
+            }
+            assert_atomic(&mut vm, VmErrorKind::UnsupportedFeature);
+            let mut vm = global_fixture(op, if op == 5 { [0, 2] } else { [600, -127] }, 1);
+            let Value::Array(array) = Value::array(vec![]).unwrap() else {
+                unreachable!()
+            };
+            let cell = Cell::new(Value::Undefined).unwrap();
+            Cell::replace_payload_batch(vec![(
+                cell.clone(),
+                SlotPayload::Loop(Box::new(LoopControl::for_test(array))),
+            )])
+            .unwrap();
+            vm.stack.push(StackEntry::Value(cell.clone()));
+            if op == 5 {
+                let f = global_value(&vm, vec![]);
+                vm.push(Value::Function(f)).unwrap();
+            }
+            assert_atomic(&mut vm, VmErrorKind::UnsupportedFeature);
+            assert!(cell.is_loop().unwrap());
+        }
+        let mut vm = global_fixture(0x17, [600, -127], 1);
+        let f = global_value(&vm, vec![]);
+        vm.push(Value::Function(f)).unwrap();
+        assert_atomic(&mut vm, VmErrorKind::UnsupportedType);
+    }
+    #[test]
+    fn global_function_values_helpers_guard_all_lifecycle_phases_before_operands() {
+        for op in [5, 0x17] {
+            let mut vm = global_fixture(op, [-1, -1], 0);
+            let frame = vm.frames[0].clone();
+            let p = vm.objects.program(frame.program()).unwrap();
+            let code = CodeView::get(&p, frame.body).unwrap();
+            let call = |vm: &mut Vm| {
+                if op == 5 {
+                    vm.call_function_value(&frame, &p, &code, -1, -1)
+                } else {
+                    vm.create_function_value(&frame, &p, &code, -1, -1)
+                }
+            };
+            vm.initialization = Some(InitializationTask {
+                object: frame.object().unwrap(),
+                position: 0,
+                constitution: 0,
+            });
+            assert_eq!(
+                call(&mut vm).unwrap_err().kind,
+                VmErrorKind::UnsupportedFeature
+            );
+            vm.initialization = None;
+            for phase in [
+                LifecyclePhase::Initialize,
+                LifecyclePhase::Create,
+                LifecyclePhase::RollbackDestruct,
+            ] {
+                vm.construction = Some(ConstructionTask {
+                    object: frame.object().unwrap(),
+                    program: frame.program(),
+                    phase,
+                    position: 0,
+                    constitution: 0,
+                    parameter: None,
+                    primary: None,
+                });
+                assert_eq!(
+                    call(&mut vm).unwrap_err().kind,
+                    VmErrorKind::UnsupportedFeature
+                );
+                vm.construction = None;
+            }
+            assert_eq!(vm.frames[0].pc, 0);
+        }
+    }
+    #[test]
+    fn global_function_values_ownerless_reference_copy_and_last_header_release() {
+        let vm = global_fixture(5, [0, 1], 0);
+        let bytes: Rc<[u8]> = Rc::from(&b"secret"[..]);
+        let mut f = global_value(&vm, vec![Value::Bytes(bytes.clone())]);
+        Rc::get_mut(&mut f.0).unwrap().owner = None;
+        let weak = Rc::downgrade(&f.0);
+        assert!(!format!("{f:?}").contains("secret"));
+        assert_eq!(
+            vm.copy_value(&Value::Function(f.clone())),
+            Value::Function(f.clone())
+        );
+        let cell = Cell::new(Value::Function(f.clone())).unwrap();
+        let reference = Reference {
+            id: cell.id(),
+            target: Target::Global { cell: cell.clone() },
+            readonly: false,
+            _lease: None,
+        };
+        with_allocation_failure(0, || {
+            assert_eq!(
+                vm.read_reference(&reference).unwrap_err().kind,
+                VmErrorKind::Limit
+            )
+        });
+        assert_eq!(cell.read().unwrap(), Value::Function(f.clone()));
+        drop(reference);
+        drop(cell);
+        drop(f);
+        assert!(weak.upgrade().is_none());
+        assert_eq!(Rc::strong_count(&bytes), 1);
+    }
+    #[test]
+    fn global_function_values_call_keeps_reference_prefix_and_has_no_active_object() {
+        let mut vm = global_fixture(5, [0, 1], 0);
+        let c = Cell::new(Value::Int(9)).unwrap();
+        let reference = vm.owned_reference(c, ReferenceKind::Temporary).unwrap();
+        let id = reference.id;
+        let lease = vm.reference_cells[&id].clone();
+        vm.stack.push(StackEntry::Reference(reference));
+        let f = global_value(&vm, vec![]);
+        vm.push(Value::Function(f)).unwrap();
+        vm.run(1).unwrap();
+        assert!(lease.upgrade().is_some());
+        assert!(matches!(&vm.stack[0], StackEntry::Reference(r) if r.id == id));
+        assert_eq!(vm.frames[1].bp, 1);
+        assert_eq!(vm.frames[1].active_object, None);
+        assert!(matches!(
+            vm.frames[1].execution,
+            ExecutionSource::GlobalProgram(_)
+        ));
     }
 }
 

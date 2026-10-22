@@ -11023,10 +11023,10 @@ fn function_values_identity_metadata_and_debug_hide_captures() {
     let b = fv_created(&mut vm, o, 0, vec![Value::bytes(b"secret capture")]);
     assert_eq!(a, a.clone());
     assert_ne!(a, b);
-    assert_eq!(a.owner(), o);
+    assert_eq!(a.owner(), Some(o));
     assert_eq!(a.function(), 1);
     assert_eq!(a.bound_count(), 1);
-    assert_eq!(a.program(), vm.objects().get(o).unwrap().program());
+    assert_eq!(a.program(), Some(vm.objects().get(o).unwrap().program()));
     assert_eq!(Value::Function(a.clone()).tag(), 9);
     let debug = format!("{a:?}");
     assert!(debug.contains("bound_count"));
@@ -11257,7 +11257,7 @@ fn function_values_cross_store_rejects_colliding_ids_and_into_objects_keeps_orig
     let (mut second, o2) = fv_machine(fv_basic(), vec![]);
     assert_eq!(o1.get(), o2.get());
     assert_eq!(
-        f.program().get(),
+        f.program().unwrap().get(),
         second.objects().get(o2).unwrap().program().get()
     );
     second
@@ -12534,4 +12534,730 @@ fn mapping_output_obeys_existing_result_depth_limit() {
         panic!()
     };
     assert_eq!(a.depth().unwrap(), 64);
+}
+
+// Stage 2AO: Global/c function values, entirely synthetic execution.
+use rml32::{
+    FunctionTarget, prepare_global_program_with_global_function_values,
+    prepare_program_with_global_function_values,
+};
+fn gfv_machine(p: ProgramImage, gp: ProgramImage) -> (Vm, rml32::ObjectId, rml32::ProgramId) {
+    let mut store = ObjectStore::new();
+    let schema = GlobalBankSchema {
+        slots: gp.max_vars as usize,
+    };
+    store
+        .register_globals(vec![Value::Undefined; schema.slots])
+        .unwrap();
+    let vars = p.max_vars as usize;
+    let pid = store
+        .register_program(prepare_program_with_global_function_values(p, schema).unwrap())
+        .unwrap();
+    let owner = store.create(pid, vec![Value::Undefined; vars]).unwrap();
+    let global = store
+        .register_program(prepare_global_program_with_global_function_values(gp, schema).unwrap())
+        .unwrap();
+    store.bind_global_program(global).unwrap();
+    (Vm::new(store), owner, global)
+}
+fn gfv_caller() -> ProgramImage {
+    image(
+        &[
+            fun(0, 0, 0, 9, &[(600, -128, 0x17)]),
+            fun(1, 1, 0, 255, &[(0, 0, 0x37), (0, 1, 5)]),
+            fun(2, 0, 0, 9, &[(601, -128, 7)]),
+            fun(3, 1, 0, 255, &[(0, 0, 0x37)]),
+            fun(4, 0, 0, 9, &[(5, 0, 0x17)]),
+            fun(5, 0, 0, 2, &[(7, 0, 0x3b)]),
+        ],
+        0,
+        &[b"caller pool\0"],
+    )
+}
+fn gfv_global() -> ProgramImage {
+    global_image(
+        &[
+            fun(600, 0, 0, 4, &[(0, 0, 0x40)]),
+            fun(601, 0, 0, 9, &[(600, -128, 0x17)]),
+        ],
+        0,
+        &[b"global pool\0"],
+    )
+}
+#[test]
+fn global_function_values_all_flags_and_old_preparers_remain_isolated() {
+    let schema = GlobalBankSchema { slots: 0 };
+    for raw in 0u16..256 {
+        let slot = if raw & 128 != 0 { 700 } else { 1 };
+        let p = image(
+            &[
+                fun(0, 0, 0, 255, &[(slot, raw as i8, 0x17)]),
+                fun(1, 0, 0, 1, &[]),
+            ],
+            0,
+            &[],
+        );
+        assert_eq!(
+            prepare_program_with_global_function_values(p.clone(), schema).is_ok(),
+            raw & 64 == 0,
+            "{raw}"
+        );
+        assert_eq!(
+            prepare_program_with_function_values(p, None).is_ok(),
+            raw < 64,
+            "old {raw}"
+        );
+        let p = global_image(&[fun(600, 0, 0, 255, &[(700, raw as i8, 0x17)])], 0, &[]);
+        assert_eq!(
+            prepare_global_program_with_global_function_values(p.clone(), schema).is_ok(),
+            (128..192).contains(&raw),
+            "global {raw}"
+        );
+        assert!(prepare_global_program_with_function_values(p, schema).is_err());
+    }
+}
+#[test]
+fn global_function_values_prepare_absolute_slots_and_reject_negative_or_host() {
+    let schema = GlobalBankSchema { slots: 0 };
+    for slot in [0, 558, 559, 600, 32767] {
+        let p = image(&[fun(0, 0, 0, 9, &[(slot, -128, 0x17)])], 0, &[]);
+        assert!(prepare_program_with_global_function_values(p, schema).is_ok());
+    }
+    let p = image(&[fun(0, 0, 0, 9, &[(-1, -128, 0x17)])], 0, &[]);
+    let offset = p.functions[0].code.nodes_offset + 8;
+    let e = prepare_program_with_global_function_values(p, schema).unwrap_err();
+    assert_eq!(e.kind, VmErrorKind::InvalidProgram);
+    assert_eq!(
+        (e.function, e.pc, e.offset),
+        (Some(0), Some(2), Some(offset))
+    );
+    let p = image(&[fun(0, 0, 0, 255, &[(0, 0, 6)])], 0, &[]);
+    assert_eq!(
+        prepare_program_with_global_function_values(p, schema)
+            .unwrap_err()
+            .kind,
+        VmErrorKind::UnsupportedFeature
+    );
+}
+#[test]
+fn global_function_values_keep_creator_identity_and_execute_target_pool_from_another_object() {
+    let (mut vm, owner, gp) = gfv_machine(gfv_caller(), gfv_global());
+    let f = fv_created(&mut vm, owner, 0, vec![]);
+    assert_eq!(f.owner(), Some(owner));
+    assert_eq!(f.program(), Some(gp));
+    assert_eq!(
+        f.target(),
+        FunctionTarget::Global {
+            program: gp,
+            function: 600
+        }
+    );
+    let pid = vm_program(&vm, owner);
+    let caller = vm.objects_mut().create(pid, vec![]).unwrap();
+    vm.start(caller, 1, vec![Value::Function(f)]).unwrap();
+    returns(&mut vm, Value::bytes(b"global pool"));
+    // Old Object creation stays available through the new opt-in entry.
+    let local = fv_created(&mut vm, owner, 4, vec![]);
+    assert!(matches!(
+        local.target(),
+        FunctionTarget::Object { function: 5, .. }
+    ));
+    vm.start(caller, 1, vec![Value::Function(local)]).unwrap();
+    returns(&mut vm, Value::Int(7));
+}
+fn vm_program(vm: &Vm, owner: rml32::ObjectId) -> rml32::ProgramId {
+    vm.objects().get(owner).unwrap().program()
+}
+#[test]
+fn global_function_values_global_creation_has_no_owner_and_restores_object_caller() {
+    let (mut vm, owner, gp) = gfv_machine(gfv_caller(), gfv_global());
+    let f = fv_created(&mut vm, owner, 2, vec![]);
+    assert_eq!(f.owner(), None);
+    assert_eq!(f.program(), Some(gp));
+    vm.start(owner, 1, vec![Value::Function(f.clone())])
+        .unwrap();
+    returns(&mut vm, Value::bytes(b"global pool"));
+    let again = fv_created(&mut vm, owner, 2, vec![]);
+    assert_eq!(f, f.clone());
+    assert_ne!(f, again);
+    let debug = format!("{f:?}");
+    assert!(debug.contains("Global") && debug.contains("None"));
+}
+#[test]
+fn global_function_values_global_context_this_object_and_diagnostics() {
+    for nodes in [vec![(0, 0, 0x41)], vec![(0, 0, 0x3d)]] {
+        let gp = global_image(&[fun(600, 0, 0, 255, &nodes)], 1, &[]);
+        let offset = gp.functions[0].code.nodes_offset + 8;
+        let source = format!("sha256:{}", gp.sha256);
+        let (mut vm, owner, id) = gfv_machine(gfv_caller(), gp);
+        let f = fv_created(&mut vm, owner, 0, vec![]);
+        vm.start(owner, 1, vec![Value::Function(f)]).unwrap();
+        if nodes[0].2 == 0x41 {
+            returns(&mut vm, Value::Int(0));
+        } else {
+            let e = vm.run(100).unwrap_err();
+            assert_eq!(e.kind, VmErrorKind::UnsupportedFeature);
+            assert_eq!(
+                (e.program, e.object, e.function, e.pc, e.offset),
+                (Some(id), None, Some(600), Some(2), Some(offset))
+            );
+            assert_eq!(e.source, source);
+        }
+    }
+}
+#[test]
+fn global_function_values_binding_missing_bounds_body_and_reference_errors_are_atomic() {
+    for (slot, binding, reference, expected) in [
+        (600, false, false, VmErrorKind::InvalidState),
+        (601, true, false, VmErrorKind::Bounds),
+        (559, true, false, VmErrorKind::UnsupportedFeature),
+        (600, true, true, VmErrorKind::UnsupportedFeature),
+    ] {
+        let mut p = gfv_caller();
+        p.functions[0].code.nodes[2].0 = slot;
+        let mut gp = global_image(&[fun(600, usize::from(reference), 0, 255, &[])], 0, &[]);
+        if reference {
+            gp.functions[0].arguments[0].flag = 1;
+        }
+        let (mut vm, o, _) = gfv_machine(p, gp);
+        if !binding {
+            vm.objects_mut().clear_global_program().unwrap();
+        }
+        vm.start(o, 0, vec![]).unwrap();
+        vm.run(2).unwrap();
+        let before = vm.stack().unwrap();
+        let e = vm.run(1).unwrap_err();
+        assert_eq!(e.kind, expected);
+        assert_eq!(e.pc, Some(2));
+        assert_eq!(vm.stack().unwrap(), before);
+        assert_eq!(vm.frame_depth(), 1);
+        assert_eq!(vm.run(1).unwrap_err(), e);
+    }
+}
+#[test]
+fn global_function_values_clear_replace_and_restore_binding_before_new_call() {
+    let (mut vm, o, original) = gfv_machine(gfv_caller(), gfv_global());
+    let f = fv_created(&mut vm, o, 0, vec![]);
+    let replacement = vm
+        .objects_mut()
+        .register_program(
+            prepare_global_program_with_global_function_values(
+                gfv_global(),
+                GlobalBankSchema { slots: 0 },
+            )
+            .unwrap(),
+        )
+        .unwrap();
+    for bound in [None, Some(replacement), Some(original)] {
+        vm.objects_mut().clear_global_program().unwrap();
+        if let Some(id) = bound {
+            vm.objects_mut().bind_global_program(id).unwrap();
+        }
+        vm.start(o, 1, vec![Value::Function(f.clone())]).unwrap();
+        vm.run(3).unwrap();
+        let before = vm.stack().unwrap();
+        if bound == Some(original) {
+            returns(&mut vm, Value::bytes(b"global pool"));
+        } else {
+            let e = vm.run(1).unwrap_err();
+            assert_eq!(e.kind, VmErrorKind::InvalidState);
+            assert_eq!(e.pc, Some(3));
+            assert_eq!(vm.stack().unwrap(), before);
+            // Rebind to allow the next case, not a retry of the sticky failure.
+            if bound.is_none() {
+                vm.objects_mut().bind_global_program(original).unwrap();
+            }
+        }
+    }
+}
+#[test]
+fn global_function_values_entered_frame_keeps_old_code_nested_07_uses_new_binding() {
+    let gp = global_image(
+        &[
+            fun(600, 0, 0, 2, &[(601, -128, 7)]),
+            fun(601, 0, 0, 2, &[(7, 0, 0x3b)]),
+        ],
+        0,
+        &[],
+    );
+    let (mut vm, o, _) = gfv_machine(gfv_caller(), gp);
+    let f = fv_created(&mut vm, o, 0, vec![]);
+    vm.start(o, 1, vec![Value::Function(f.clone())]).unwrap();
+    assert_eq!(vm.run(4).unwrap(), RunOutcome::BudgetExhausted);
+    assert_eq!(vm.frame_depth(), 2);
+    let replacement = vm
+        .objects_mut()
+        .register_program(
+            prepare_global_program_with_global_function_values(
+                global_image(
+                    &[
+                        fun(600, 0, 0, 2, &[(111, 0, 0x3b)]),
+                        fun(601, 0, 0, 2, &[(99, 0, 0x3b)]),
+                    ],
+                    0,
+                    &[],
+                ),
+                GlobalBankSchema { slots: 0 },
+            )
+            .unwrap(),
+        )
+        .unwrap();
+    vm.objects_mut().clear_global_program().unwrap();
+    vm.objects_mut().bind_global_program(replacement).unwrap();
+    returns(&mut vm, Value::Int(99));
+    vm.start(o, 1, vec![Value::Function(f)]).unwrap();
+    vm.run(3).unwrap();
+    assert_eq!(vm.run(1).unwrap_err().kind, VmErrorKind::InvalidState);
+}
+#[test]
+fn global_function_values_entered_frame_survives_cleared_binding_and_restart_retains_origin() {
+    let (mut vm, o, gp) = gfv_machine(gfv_caller(), gfv_global());
+    let f = fv_created(&mut vm, o, 2, vec![]);
+    vm.start(o, 1, vec![Value::Function(f.clone())]).unwrap();
+    vm.run(4).unwrap();
+    vm.objects_mut().clear_global_program().unwrap();
+    returns(&mut vm, Value::bytes(b"global pool"));
+    vm.objects_mut().bind_global_program(gp).unwrap();
+    vm.start(o, 1, vec![Value::Function(f.clone())]).unwrap();
+    vm.run(4).unwrap();
+    // Reconstructing the VM discards the young frame while retaining storage/origin.
+    let mut vm = Vm::new(vm.into_objects());
+    vm.start(o, 1, vec![Value::Function(f)]).unwrap();
+    returns(&mut vm, Value::bytes(b"global pool"));
+}
+#[test]
+fn global_function_values_deleted_creator_raw_call_fails_but_copy_is_undefined() {
+    for flags in [0, 4] {
+        let mut p = gfv_caller();
+        p.functions[1].code.nodes[3].0 = flags;
+        let (mut vm, o, _) = gfv_machine(p, gfv_global());
+        let f = fv_created(&mut vm, o, 0, vec![]);
+        let pid = vm_program(&vm, o);
+        let caller = vm.objects_mut().create(pid, vec![]).unwrap();
+        vm.start(caller, 1, vec![Value::Function(f.clone())])
+            .unwrap();
+        vm.run(3).unwrap();
+        vm.objects_mut().remove(o).unwrap();
+        let before = vm.stack().unwrap();
+        assert_eq!(vm.run(1).unwrap_err().kind, VmErrorKind::InvalidObject);
+        assert_eq!(vm.stack().unwrap(), before);
+        vm.start(caller, 3, vec![Value::Function(f)]).unwrap();
+        returns(&mut vm, Value::Undefined);
+    }
+}
+#[test]
+fn global_function_values_ownerless_value_survives_deleted_outer_creator_object() {
+    let (mut vm, o, _) = gfv_machine(gfv_caller(), gfv_global());
+    let f = fv_created(&mut vm, o, 2, vec![]);
+    assert_eq!(f.owner(), None);
+    let pid = vm_program(&vm, o);
+    let caller = vm.objects_mut().create(pid, vec![]).unwrap();
+    vm.objects_mut().remove(o).unwrap();
+    vm.start(caller, 1, vec![Value::Function(f)]).unwrap();
+    returns(&mut vm, Value::bytes(b"global pool"));
+}
+#[test]
+fn global_function_values_foreign_store_and_old_entry_call_are_rejected() {
+    let (mut first, o, _) = gfv_machine(gfv_caller(), gfv_global());
+    let f = fv_created(&mut first, o, 0, vec![]);
+    let (mut second, o2, _) = gfv_machine(gfv_caller(), gfv_global());
+    second
+        .start(o2, 1, vec![Value::Function(f.clone())])
+        .unwrap();
+    second.run(3).unwrap();
+    assert_eq!(second.run(1).unwrap_err().kind, VmErrorKind::InvalidState);
+    let pid = first
+        .objects_mut()
+        .register_program(prepare_program_with_function_values(fv_basic(), None).unwrap())
+        .unwrap();
+    let old = first.objects_mut().create(pid, vec![]).unwrap();
+    first.start(old, 2, vec![Value::Function(f)]).unwrap();
+    first.run(3).unwrap();
+    assert_eq!(
+        first.run(1).unwrap_err().kind,
+        VmErrorKind::UnsupportedFeature
+    );
+}
+#[test]
+fn global_function_values_scalar_captures_preserve_bits_and_parameter_order() {
+    for scalar in [
+        Value::Undefined,
+        Value::Void,
+        Value::Int(-7),
+        Value::Real(rml32::RealBits::from_bits(0x7fc01234)),
+        Value::bytes([255, 0, 128]),
+    ] {
+        let p = image(
+            &[
+                fun(0, 1, 0, 9, &[(0, 0, 0x37), (600, -127, 0x17)]),
+                fun(1, 1, 0, 255, &[(0, 0, 0x37), (0, 1, 5)]),
+            ],
+            0,
+            &[],
+        );
+        let gp = global_image(&[fun(600, 1, 0, 255, &[(0, 0, 0x37)])], 0, &[]);
+        let (mut vm, o, _) = gfv_machine(p, gp);
+        let f = fv_created(&mut vm, o, 0, vec![scalar.clone()]);
+        vm.start(o, 1, vec![Value::Function(f)]).unwrap();
+        returns(&mut vm, scalar);
+    }
+    let p = image(
+        &[fun(
+            0,
+            0,
+            0,
+            6,
+            &[
+                (40, 0, 0x3b),
+                (30, 0, 0x3b),
+                (20, 0, 0x3b),
+                (10, 0, 0x3b),
+                (600, -126, 0x17),
+                (0, 3, 5),
+            ],
+        )],
+        0,
+        &[],
+    );
+    let (mut vm, o, _) = gfv_machine(
+        p,
+        global_image(&[fun(600, 4, 0, 6, &[(0, 0, 0x15)])], 0, &[]),
+    );
+    vm.start(o, 0, vec![]).unwrap();
+    assert_eq!(
+        returned_array(&mut vm),
+        vec![
+            Value::Int(10),
+            Value::Int(20),
+            Value::Int(30),
+            Value::Int(40)
+        ]
+    );
+}
+#[test]
+fn global_function_values_max_capture_total_arguments_defaults_and_variadic() {
+    for total in [127, 128] {
+        let mut body = vec![(1, 0, 0x3b); total - 63];
+        body.extend(vec![(2, 0, 0x3b); 63]);
+        body.extend([(600, -65, 0x17), (0, (total - 63 + 1) as i8, 5)]);
+        let mut gp = global_image(&[fun(600, 0, 0, 2, &[(0, 0, 0x34)])], 0, &[]);
+        optional_meta(&mut gp, 0, 0, true, &[]);
+        let (mut vm, o, _) = gfv_machine(image(&[fun(0, 0, 0, 2, &body)], 0, &[]), gp);
+        vm.start(o, 0, vec![]).unwrap();
+        if total == 127 {
+            returns(&mut vm, Value::Int(127));
+        } else {
+            vm.run(body.len() + 1).unwrap();
+            let before = vm.stack().unwrap();
+            assert_eq!(vm.run(1).unwrap_err().kind, VmErrorKind::Limit);
+            assert_eq!(vm.stack().unwrap(), before);
+        }
+    }
+    for (count, expected) in [
+        (0, vec![Value::Int(7), Value::Int(9)]),
+        (1, vec![Value::Int(7), Value::Int(3)]),
+        (2, vec![Value::Int(7), Value::Int(3), Value::Int(3)]),
+    ] {
+        let mut body = vec![(3, 0, 0x3b); count];
+        body.extend([(7, 0, 0x3b), (600, -127, 0x17), (0, (count + 1) as i8, 5)]);
+        let mut gp = global_image(
+            &[optional_fun(
+                600,
+                2,
+                0,
+                6,
+                &[vec![], vec![(9, 0, 0x3b)]],
+                &[(0, 0, 0x15)],
+            )],
+            0,
+            &[],
+        );
+        optional_meta(&mut gp, 0, 1, true, &[0, 1]);
+        let (mut vm, o, _) = gfv_machine(image(&[fun(0, 0, 0, 6, &body)], 0, &[]), gp);
+        vm.start(o, 0, vec![]).unwrap();
+        assert_eq!(returned_array(&mut vm), expected);
+    }
+}
+#[test]
+fn global_function_values_non_scalar_captures_stay_rejected_before_binding_lookup() {
+    let p = image(
+        &[fun(0, 1, 0, 9, &[(0, 0, 0x37), (600, -127, 0x17)])],
+        0,
+        &[],
+    );
+    let (mut vm, o, _) = gfv_machine(p, gfv_global());
+    vm.objects_mut().clear_global_program().unwrap();
+    for value in [
+        Value::Object(o),
+        Value::array(vec![]).unwrap(),
+        Value::mapping(vec![]).unwrap(),
+    ] {
+        vm.start(o, 0, vec![value]).unwrap();
+        vm.run(3).unwrap();
+        let before = vm.stack().unwrap();
+        assert_eq!(vm.run(1).unwrap_err().kind, VmErrorKind::UnsupportedType);
+        assert_eq!(vm.stack().unwrap(), before);
+    }
+}
+#[test]
+fn global_function_values_private_target_and_argument_coercion_preflight() {
+    let p = image(
+        &[
+            fun(0, 0, 0, 9, &[(600, -128, 0x17)]),
+            fun(1, 2, 0, 255, &[(1, 0, 0x37), (0, 0, 0x37), (0, 2, 5)]),
+        ],
+        0,
+        &[],
+    );
+    for (tag, input, expected) in [
+        (3, Value::Int(2), Some(real(2.0))),
+        (2, real(2.75), Some(Value::Int(2))),
+        (4, Value::Int(1), None),
+    ] {
+        let mut gp = global_image(&[fun(600, 1, 0, 255, &[(0, 0, 0x37)])], 0, &[]);
+        gp.functions[0].attrib = 4;
+        gp.functions[0].arguments[0].r#type = tag;
+        let (mut vm, o, _) = gfv_machine(p.clone(), gp);
+        let f = fv_created(&mut vm, o, 0, vec![]);
+        vm.start(o, 1, vec![Value::Function(f), input]).unwrap();
+        vm.run(4).unwrap();
+        let before = vm.stack().unwrap();
+        if let Some(expected) = expected {
+            returns(&mut vm, expected);
+        } else {
+            assert_eq!(vm.run(1).unwrap_err().kind, VmErrorKind::UnsupportedType);
+            assert_eq!(vm.stack().unwrap(), before);
+        }
+    }
+}
+#[test]
+fn global_function_values_budget_boundaries_and_global_numeric_catch() {
+    let (mut vm, o, _) = gfv_machine(gfv_caller(), gfv_global());
+    vm.start(o, 0, vec![]).unwrap();
+    assert_eq!(vm.run(0).unwrap(), RunOutcome::BudgetExhausted);
+    vm.run(2).unwrap();
+    assert_eq!(vm.run(1).unwrap(), RunOutcome::BudgetExhausted);
+    assert!(matches!(
+        vm.stack().unwrap().last(),
+        Some(rml32::StackSnapshot::Value(Value::Function(_)))
+    ));
+    let Value::Function(f) = fv_finished(&mut vm) else {
+        panic!()
+    };
+    vm.start(o, 1, vec![Value::Function(f)]).unwrap();
+    vm.run(3).unwrap();
+    assert_eq!(vm.frame_depth(), 1);
+    vm.run(1).unwrap();
+    assert_eq!(vm.frame_depth(), 2);
+    returns(&mut vm, Value::bytes(b"global pool"));
+    let p = image(
+        &[fun(
+            0,
+            0,
+            0,
+            2,
+            &[
+                (4, 0, 0x2c),
+                (600, -128, 0x17),
+                (0, 1, 5),
+                (0, 0, 0x1a),
+                (0, 0, 0x49),
+                (0, 0, 0x0e),
+            ],
+        )],
+        0,
+        &[],
+    );
+    let gp = global_image(
+        &[fun(
+            600,
+            0,
+            0,
+            2,
+            &[(1, 0, 0x3b), (0, 0, 0x3b), (0, 0, 0x19)],
+        )],
+        0,
+        &[],
+    );
+    let (mut vm, o, _) = gfv_machine(p, gp);
+    vm.start(o, 0, vec![]).unwrap();
+    returns(&mut vm, Value::Int(1));
+    assert_eq!(vm.frame_depth(), 0);
+}
+#[test]
+fn global_function_values_missing_binding_is_not_swallowed_by_catch_or_may_null() {
+    let p = image(
+        &[
+            fun(
+                0,
+                1,
+                0,
+                255,
+                &[
+                    (4, 0, 0x2c),
+                    (0, 0, 0x37),
+                    (4, 1, 5),
+                    (0, 0, 0x1a),
+                    (0, 0, 0x49),
+                    (0, 0, 0x0e),
+                ],
+            ),
+            fun(1, 0, 0, 9, &[(600, -128, 0x17)]),
+        ],
+        0,
+        &[],
+    );
+    let (mut vm, o, _) = gfv_machine(p, gfv_global());
+    let f = fv_created(&mut vm, o, 1, vec![]);
+    vm.start(o, 0, vec![Value::Function(f)]).unwrap();
+    vm.run(4).unwrap();
+    vm.objects_mut().clear_global_program().unwrap();
+    let before = vm.stack().unwrap();
+    let e = vm.run(1).unwrap_err();
+    assert_eq!(e.kind, VmErrorKind::InvalidState);
+    assert_eq!(e.pc, Some(4));
+    assert_eq!(vm.stack().unwrap(), before);
+    assert_eq!(vm.run(10).unwrap_err(), e);
+}
+#[test]
+fn global_function_values_default_and_lifecycle_preparation_remain_closed() {
+    let schema = GlobalBankSchema { slots: 0 };
+    let mut p = image(
+        &[optional_fun(
+            0,
+            1,
+            0,
+            255,
+            &[vec![(600, -128, 0x17)]],
+            &[(0, 0, 0x37)],
+        )],
+        0,
+        &[],
+    );
+    optional_meta(&mut p, 0, 0, false, &[1]);
+    assert_eq!(
+        prepare_program_with_global_function_values(p, schema)
+            .unwrap_err()
+            .kind,
+        VmErrorKind::UnsupportedFeature
+    );
+    let mut p = image(&[fun(0, 0, 0, 255, &[(600, -128, 0x17)])], 0, &[]);
+    p.init.nodes = vec![(0, 0, 0x48)];
+    let mut catalog = rml32::ProgramCatalog::new();
+    catalog.insert("root", p).unwrap();
+    let e = rml32::prepare_initializable_program(&catalog, "root", rml32::LinkLimits::default())
+        .unwrap_err();
+    assert_eq!(e.kind, VmErrorKind::UnsupportedFeature, "{e:?}");
+}
+#[test]
+fn global_function_values_target_schema_is_independent_of_creating_program() {
+    let mut store = ObjectStore::new();
+    store.register_globals(vec![Value::Int(23)]).unwrap();
+    let pid = store
+        .register_program(
+            prepare_program_with_global_function_values(
+                gfv_caller(),
+                GlobalBankSchema { slots: 0 },
+            )
+            .unwrap(),
+        )
+        .unwrap();
+    let o = store.create(pid, vec![]).unwrap();
+    let gp = global_image(&[fun(600, 0, 0, 255, &[(0, 0, 0x35)])], 1, &[]);
+    let id = store
+        .register_program(
+            prepare_global_program_with_global_function_values(gp, GlobalBankSchema { slots: 1 })
+                .unwrap(),
+        )
+        .unwrap();
+    store.bind_global_program(id).unwrap();
+    let mut vm = Vm::new(store);
+    let f = fv_created(&mut vm, o, 0, vec![]);
+    vm.start(o, 1, vec![Value::Function(f.clone())]).unwrap();
+    returns(&mut vm, Value::Int(23));
+    vm.objects_mut().remove_globals().unwrap();
+    vm.start(o, 1, vec![Value::Function(f)]).unwrap();
+    let e = vm.run(100).unwrap_err();
+    assert_eq!(e.kind, VmErrorKind::InvalidState);
+    assert_eq!(
+        (e.program, e.object, e.function),
+        (Some(id), None, Some(600))
+    );
+}
+#[test]
+fn global_function_values_nested_global_calls_restore_callers_object_and_pool() {
+    let p = image(
+        &[
+            fun(0, 0, 0, 9, &[(600, -128, 0x17)]),
+            fun(
+                1,
+                1,
+                0,
+                6,
+                &[
+                    (0, 0, 0x37),
+                    (0, 1, 5),
+                    (0, 0, 0x40),
+                    (0, 0, 0x41),
+                    (3, 0, 0x16),
+                ],
+            ),
+        ],
+        0,
+        &[b"caller\0"],
+    );
+    let gp = global_image(
+        &[
+            fun(600, 0, 0, 255, &[(601, -128, 0x17), (0, 1, 5)]),
+            fun(601, 0, 0, 4, &[(0, 0, 0x40)]),
+        ],
+        0,
+        &[b"callee\0"],
+    );
+    let (mut vm, o, _) = gfv_machine(p, gp);
+    let f = fv_created(&mut vm, o, 0, vec![]);
+    vm.start(o, 1, vec![Value::Function(f)]).unwrap();
+    // Array construction takes the topmost value first.
+    assert_eq!(
+        returned_array(&mut vm),
+        vec![
+            Value::Object(o),
+            Value::bytes(b"caller"),
+            Value::bytes(b"callee")
+        ]
+    );
+}
+#[test]
+fn global_function_values_nullable_and_argument_count_errors_preserve_operands() {
+    for nullable in [false, true] {
+        let p = image(
+            &[
+                fun(0, 0, 0, 9, &[(600, -128, 0x17)]),
+                fun(1, 2, 0, 255, &[(1, 0, 0x37), (0, 0, 0x37), (0, 2, 5)]),
+                fun(2, 1, 0, 255, &[(0, 0, 0x37), (0, 1, 5)]),
+            ],
+            0,
+            &[],
+        );
+        let mut gp = global_image(&[fun(600, 1, 0, 255, &[(0, 0, 0x37)])], 0, &[]);
+        gp.functions[0].arguments[0].r#type = 4;
+        gp.functions[0].arguments[0].attrib = if nullable { 8 } else { 0 };
+        let (mut vm, o, _) = gfv_machine(p, gp);
+        let f = fv_created(&mut vm, o, 0, vec![]);
+        vm.start(o, 1, vec![Value::Function(f.clone()), Value::Undefined])
+            .unwrap();
+        vm.run(4).unwrap();
+        let before = vm.stack().unwrap();
+        if nullable {
+            returns(&mut vm, Value::Undefined);
+        } else {
+            assert_eq!(vm.run(1).unwrap_err().kind, VmErrorKind::UnsupportedType);
+            assert_eq!(vm.stack().unwrap(), before);
+        }
+        vm.start(o, 2, vec![Value::Function(f)]).unwrap();
+        vm.run(3).unwrap();
+        let before = vm.stack().unwrap();
+        assert_eq!(vm.run(1).unwrap_err().kind, VmErrorKind::ArgumentCount);
+        assert_eq!(vm.stack().unwrap(), before);
+    }
 }

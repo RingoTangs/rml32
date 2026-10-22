@@ -27,13 +27,14 @@ pub use pak::PakArchive;
 pub use prepared::{
     GlobalBankSchema, LifecycleBinding, LinkLimits, MethodBinding, PreparedProgram, ProgramCatalog,
     prepare_constructible_program, prepare_global_program,
-    prepare_global_program_with_function_values, prepare_global_program_with_host_calls,
+    prepare_global_program_with_function_values,
+    prepare_global_program_with_global_function_values, prepare_global_program_with_host_calls,
     prepare_initializable_program, prepare_linked_program, prepare_program,
-    prepare_program_with_function_values, prepare_program_with_globals,
-    prepare_program_with_host_calls,
+    prepare_program_with_function_values, prepare_program_with_global_function_values,
+    prepare_program_with_globals, prepare_program_with_host_calls,
 };
 pub use program::{AbiProfile, ProgramImage, ProgramMode, parse_program};
-pub use value::{FunctionValue, ObjectId, ProgramId, RealBits, Value};
+pub use value::{FunctionTarget, FunctionValue, ObjectId, ProgramId, RealBits, Value};
 pub use vm::{Completion, ReferenceKind, RunOutcome, StackSnapshot, Vm, VmLimits};
 pub use vm_error::{LifecycleContext, LifecyclePhase, VmError, VmErrorKind};
 

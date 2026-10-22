@@ -75,26 +75,46 @@ impl Value {
     }
 }
 
-/// Opaque Object bytecode function with scalar bound parameters.
+/// Immutable bytecode target, independent of the optional creator object.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum FunctionTarget {
+    Object { program: ProgramId, function: i16 },
+    Global { program: ProgramId, function: i16 },
+}
+
+/// Opaque bytecode function with scalar bound parameters.
 /// Clones share identity; independent creations compare unequal.
 #[derive(Clone)]
 pub struct FunctionValue(pub(crate) Rc<FunctionData>);
 pub(crate) struct FunctionData {
     pub(crate) origin: Rc<()>,
-    pub(crate) owner: ObjectId,
-    pub(crate) program: ProgramId,
-    pub(crate) function: i16,
+    pub(crate) owner: Option<ObjectId>,
+    pub(crate) target: FunctionTarget,
     pub(crate) bound: Vec<Value>,
 }
 impl FunctionValue {
-    pub fn owner(&self) -> ObjectId {
+    /// Object active at creation, independent of the target; absent in Global context.
+    pub fn owner(&self) -> Option<ObjectId> {
         self.0.owner
     }
-    pub fn program(&self) -> ProgramId {
-        self.0.program
+    /// Target code identity. Both currently supported target kinds return Some.
+    pub fn program(&self) -> Option<ProgramId> {
+        match self.0.target {
+            FunctionTarget::Object { program, .. } | FunctionTarget::Global { program, .. } => {
+                Some(program)
+            }
+        }
+    }
+    /// Saved bytecode target; inspecting it does not resolve the current Global binding.
+    pub fn target(&self) -> FunctionTarget {
+        self.0.target
     }
     pub fn function(&self) -> i16 {
-        self.0.function
+        match self.0.target {
+            FunctionTarget::Object { function, .. } | FunctionTarget::Global { function, .. } => {
+                function
+            }
+        }
     }
     pub fn bound_count(&self) -> usize {
         self.0.bound.len()
@@ -110,8 +130,7 @@ impl std::fmt::Debug for FunctionValue {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         f.debug_struct("FunctionValue")
             .field("owner", &self.owner())
-            .field("program", &self.program())
-            .field("function", &self.function())
+            .field("target", &self.target())
             .field("bound_count", &self.bound_count())
             .finish()
     }
