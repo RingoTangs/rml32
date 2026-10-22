@@ -1,0 +1,30 @@
+{
+  "artifact_sha256": {
+    "README.md": "b02ef50fe0e5b7c3ad5ec97fa4259b5d1841d1b9bed7e98dece28ace52b5412f",
+    "docs/magic_Linux32-rust-rewrite-roadmap.md": "e04fcddbffca160ed2b0e45b608a345bdf03c3ea6b4315e28c22dd742b13003e",
+    "docs/stage2ap-evidence/matrix.md": "74b03995675470dc8300fddec4b448ee674a50f59fc6ad7807c9f50cb98baf4b",
+    "docs/stage2ap-evidence/method.md": "a5315a3ce71331bd6dc23382e1e398d842278bba4661f32968e62021807847fe",
+    "docs/stage2ap-evidence/run_historical_tests.py": "c5e766a6c1e1cbe0dc96ce87e861043185b198624d423aab9fb00c053a33c35c",
+    "docs/stage2ap-evidence/test_static_evidence.py": "5d286df9b562bbbdfd49edc0129981385fee3f0e74ec7b58458a25e0069a1e8b",
+    "docs/stage2ap-evidence/validation-logs.json.gz": "c1f43ea80e4c0b6baf802ca7386f0e565be38836a63c83eb7f7d51b1b1d2848e",
+    "docs/stage2ap-evidence/verify_static_evidence.py": "d7140a03e43d9f6923b17bf536f4fd8382d8eacb001dee141b327b65c04762c8",
+    "docs/stage2ap-evidence/verify_validation.py": "1cf834c74767ed8aab1f364e3166c6eae411b3bfc851a93a58a979f595675cab",
+    "docs/vm-host-function-value-runtime.md": "3c3d0f627d2ab381ef692710e54b860fb914c04352cee07e3249b80bcaaad52a",
+    "src/lib.rs": "b5c920f32b46a8ef7bc1eaba276c9c091c4b2362c9ce9f72c5fe96fa0a680d9b",
+    "src/prepared.rs": "f1cfff54fac077fd47ef88fdab9d362c5ca007e78b1cd2379a23124b8bd78afa",
+    "src/value.rs": "1b616cd6fbc56e5044839bbc431c5f814b52bcbf1c6544062c1e88f50ec91341",
+    "src/vm.rs": "876a27f802a56364ef5a8f5ea503a7842471d98798415a4fde38d2442c4221c5",
+    "tests/vm_core.rs": "df1a5d8002a29605348d10758324256f5fb062b7744c4cf76ada2d36044e15db"
+  },
+  "corpus_intersection": 73,
+  "limitations": [
+    "Synthetic execution only; no target or business bytecode execution.",
+    "Host targets store a slot and resolve the current registration on every call.",
+    "Real efuns, asynchronous/reentrant callbacks, non-scalar captures, and full lifecycle combinations remain incomplete."
+  ],
+  "logs_sha256": "c1f43ea80e4c0b6baf802ca7386f0e565be38836a63c83eb7f7d51b1b1d2848e",
+  "python_tests": 27,
+  "rust_tests": 558,
+  "stage": "2AP",
+  "supported_opcodes": 75
+}

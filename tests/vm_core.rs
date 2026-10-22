@@ -13261,3 +13261,584 @@ fn global_function_values_nullable_and_argument_count_errors_preserve_operands()
         assert_eq!(vm.stack().unwrap(), before);
     }
 }
+
+// Stage 2AP: synchronous synthetic Host/K targets, never native efun execution.
+use rml32::{prepare_global_program_with_callable_values, prepare_program_with_callable_values};
+fn hk_machine(p: ProgramImage, binding: Option<HostFunction>) -> (Vm, rml32::ObjectId) {
+    let mut store = ObjectStore::new();
+    let vars = p.max_vars as usize;
+    let p = store
+        .register_program(
+            prepare_program_with_callable_values(p, GlobalBankSchema { slots: 0 }).unwrap(),
+        )
+        .unwrap();
+    let o = store.create(p, vec![Value::Undefined; vars]).unwrap();
+    if let Some(binding) = binding {
+        store.register_host_function(0, binding).unwrap();
+    }
+    (Vm::new(store), o)
+}
+fn hk_caller() -> ProgramImage {
+    image(
+        &[
+            fun(0, 0, 0, 9, &[(0, -64, 0x17)]),
+            fun(1, 1, 0, 255, &[(0, 0, 0x37), (0, 1, 5)]),
+            fun(2, 1, 0, 255, &[(0, 0, 0x37)]),
+            fun(3, 1, 0, 9, &[(0, 0, 0x37), (0, -63, 0x17)]),
+            fun(4, 2, 0, 255, &[(1, 0, 0x37), (0, 0, 0x37), (0, 2, 5)]),
+            fun(5, 0, 0, 255, &[(0, 0, 6)]),
+            fun(6, 0, 0, 9, &[(7, 0, 0x17)]),
+            fun(7, 0, 0, 2, &[(7, 0, 0x3b)]),
+            fun(8, 0, 0, 9, &[(600, -128, 0x17)]),
+        ],
+        0,
+        &[],
+    )
+}
+fn hk_noop() -> HostFunction {
+    host_binding(vec![], HostReturn::Mixed, |_, _| Ok(Some(Value::Int(9))))
+}
+#[test]
+fn host_function_values_all_flags_and_old_entries_remain_isolated() {
+    let schema = GlobalBankSchema { slots: 0 };
+    for raw in 0u16..256 {
+        let slot = if raw & 128 != 0 { 0 } else { 1 };
+        let p = image(
+            &[
+                fun(0, 0, 0, 255, &[(slot, raw as i8, 0x17)]),
+                fun(1, 0, 0, 1, &[]),
+            ],
+            0,
+            &[],
+        );
+        assert_eq!(
+            prepare_program_with_callable_values(p.clone(), schema).is_ok(),
+            raw & 64 == 0 || raw & 128 != 0,
+            "{raw}"
+        );
+        if raw >= 192 {
+            assert!(prepare_program_with_global_function_values(p.clone(), schema).is_err());
+            assert!(prepare_program_with_function_values(p.clone(), None).is_err());
+            assert!(rml32::prepare_program_with_host_calls(p, None).is_err());
+        }
+        let p = global_image(&[fun(600, 0, 0, 255, &[(slot, raw as i8, 0x17)])], 0, &[]);
+        assert_eq!(
+            prepare_global_program_with_callable_values(p.clone(), schema).is_ok(),
+            raw >= 128
+        );
+        if raw >= 192 {
+            assert!(prepare_global_program_with_global_function_values(p, schema).is_err());
+        }
+    }
+    for slot in [-1, 559, 32767] {
+        let p = image(&[fun(0, 0, 0, 9, &[(slot, -64, 0x17)])], 0, &[]);
+        let e = prepare_program_with_callable_values(p, schema).unwrap_err();
+        assert_eq!(e.kind, VmErrorKind::InvalidProgram);
+        assert_eq!(e.pc, Some(2));
+    }
+    assert!(
+        prepare_program_with_callable_values(
+            image(&[fun(0, 0, 0, 9, &[(558, -64, 0x17)])], 0, &[]),
+            schema
+        )
+        .is_ok()
+    );
+}
+#[test]
+fn host_function_values_create_without_global_bank_binding_and_hide_captures() {
+    let calls = HostRc::new(HostCounter::new(0));
+    let mut binding = counted_host(&calls, HostReturn::Mixed);
+    binding.signature.rest = Some(HostType::Any);
+    let weak = HostRc::downgrade(&binding.callback);
+    let (mut vm, o) = hk_machine(hk_caller(), Some(binding));
+    let f = fv_created(&mut vm, o, 3, vec![Value::bytes(b"secret capture")]);
+    assert_eq!(calls.get(), 0);
+    assert_eq!(f.program(), None);
+    assert_eq!(f.owner(), Some(o));
+    assert_eq!(f.function(), 0);
+    assert_eq!(f.bound_count(), 1);
+    assert_eq!(f.target(), FunctionTarget::Host { slot: 0 });
+    assert!(!format!("{f:?}").contains("secret"));
+    assert_eq!(f, f.clone());
+    vm.objects_mut().remove_host_function(0).unwrap();
+    assert!(weak.upgrade().is_none());
+    vm.objects_mut()
+        .register_host_function(0, hk_noop())
+        .unwrap();
+    vm.start(o, 1, vec![Value::Function(f)]).unwrap();
+    assert_eq!(vm.run(10).unwrap_err().kind, VmErrorKind::ArgumentCount);
+}
+#[test]
+fn host_function_values_missing_registration_at_creation_and_call_is_atomic() {
+    let (mut vm, o) = hk_machine(hk_caller(), None);
+    vm.start(o, 0, vec![]).unwrap();
+    vm.run(2).unwrap();
+    let before = vm.stack().unwrap();
+    let e = vm.run(1).unwrap_err();
+    assert_eq!(e.kind, VmErrorKind::UnsupportedFeature);
+    assert_eq!(e.pc, Some(2));
+    assert_eq!(vm.stack().unwrap(), before);
+    vm.objects_mut()
+        .register_host_function(0, hk_noop())
+        .unwrap();
+    let f = fv_created(&mut vm, o, 0, vec![]);
+    vm.start(o, 1, vec![Value::Function(f)]).unwrap();
+    vm.run(3).unwrap();
+    vm.objects_mut().remove_host_function(0).unwrap();
+    let before = vm.stack().unwrap();
+    let e = vm.run(1).unwrap_err();
+    assert_eq!(e.kind, VmErrorKind::UnsupportedFeature);
+    assert_eq!(e.pc, Some(3));
+    assert_eq!(vm.stack().unwrap(), before);
+}
+#[test]
+fn host_function_values_each_call_reads_replacement_callback_and_signature() {
+    let a = HostRc::new(HostCounter::new(0));
+    let b = HostRc::new(HostCounter::new(0));
+    let (mut vm, o) = hk_machine(hk_caller(), Some(counted_host(&a, HostReturn::Mixed)));
+    let f = fv_created(&mut vm, o, 0, vec![]);
+    vm.start(o, 1, vec![Value::Function(f.clone())]).unwrap();
+    returns(&mut vm, Value::Int(9));
+    assert_eq!(a.get(), 1);
+    vm.start(o, 1, vec![Value::Function(f.clone())]).unwrap();
+    vm.run(3).unwrap();
+    vm.objects_mut().remove_host_function(0).unwrap();
+    let count = b.clone();
+    vm.objects_mut()
+        .register_host_function(
+            0,
+            host_binding(vec![HostType::Int], HostReturn::Mixed, move |_, _| {
+                count.set(count.get() + 1);
+                Ok(Some(Value::Int(20)))
+            }),
+        )
+        .unwrap();
+    let before = vm.stack().unwrap();
+    assert_eq!(vm.run(1).unwrap_err().kind, VmErrorKind::ArgumentCount);
+    assert_eq!(vm.stack().unwrap(), before);
+    assert_eq!(b.get(), 0);
+    vm.start(o, 4, vec![Value::Function(f), Value::Int(1)])
+        .unwrap();
+    returns(&mut vm, Value::Int(20));
+    assert_eq!(b.get(), 1);
+    assert_eq!(a.get(), 1);
+}
+#[test]
+fn host_function_values_context_comes_from_invoker_not_creator() {
+    let seen = HostRc::new(std::cell::RefCell::new(Vec::new()));
+    let record = seen.clone();
+    let (mut vm, creator) = hk_machine(
+        hk_caller(),
+        Some(host_binding(vec![], HostReturn::Mixed, move |c, _| {
+            record.borrow_mut().push(c.clone());
+            Ok(Some(Value::Int(3)))
+        })),
+    );
+    let f = fv_created(&mut vm, creator, 0, vec![]);
+    let p = image(&[fun(0, 1, 0, 255, &[(0, 0, 0x37), (0, 1, 5)])], 0, &[]);
+    let source = format!("sha256:{}", p.sha256);
+    let offset = p.functions[0].code.nodes_offset + 12;
+    let id = vm
+        .objects_mut()
+        .register_program(
+            prepare_program_with_callable_values(p, GlobalBankSchema { slots: 0 }).unwrap(),
+        )
+        .unwrap();
+    let caller = vm.objects_mut().create(id, vec![]).unwrap();
+    vm.start(caller, 0, vec![Value::Function(f)]).unwrap();
+    returns(&mut vm, Value::Int(3));
+    let contexts = seen.borrow();
+    let c = &contexts[0];
+    assert_eq!(c.slot, 0);
+    assert_eq!(c.object, Some(caller));
+    assert_ne!(c.object, Some(creator));
+    assert_eq!((c.program, c.function, c.pc, c.offset), (id, 0, 3, offset));
+    assert_eq!(c.source, source);
+}
+#[test]
+fn host_function_values_global_creation_and_invocation_have_no_current_object() {
+    let seen = HostRc::new(std::cell::RefCell::new(Vec::new()));
+    let record = seen.clone();
+    let p = image(
+        &[
+            fun(0, 0, 0, 9, &[(600, -128, 7)]),
+            fun(1, 1, 0, 255, &[(0, 0, 0x37), (601, -127, 7)]),
+        ],
+        0,
+        &[],
+    );
+    let (mut vm, o) = hk_machine(
+        p,
+        Some(host_binding(vec![], HostReturn::Mixed, move |c, _| {
+            record.borrow_mut().push(c.clone());
+            Ok(Some(Value::Int(31)))
+        })),
+    );
+    let gp = global_image(
+        &[
+            fun(600, 0, 0, 9, &[(0, -64, 0x17)]),
+            fun(601, 1, 0, 255, &[(0, 0, 0x37), (0, 1, 5)]),
+        ],
+        0,
+        &[],
+    );
+    let offset = gp.functions[1].code.nodes_offset + 12;
+    let id = vm
+        .objects_mut()
+        .register_program(
+            prepare_global_program_with_callable_values(gp, GlobalBankSchema { slots: 0 }).unwrap(),
+        )
+        .unwrap();
+    vm.objects_mut().bind_global_program(id).unwrap();
+    let f = fv_created(&mut vm, o, 0, vec![]);
+    assert_eq!(f.owner(), None);
+    vm.start(o, 1, vec![Value::Function(f)]).unwrap();
+    vm.run(8).unwrap(); // Global caller is paused before 05.
+    vm.objects_mut().clear_global_program().unwrap();
+    returns(&mut vm, Value::Int(31));
+    let c = &seen.borrow()[0];
+    assert_eq!(
+        (c.program, c.object, c.function, c.pc, c.offset),
+        (id, None, 601, 3, offset)
+    );
+}
+#[test]
+fn host_function_values_captures_precede_new_args_with_optional_and_rest_no_defaults() {
+    let p = image(
+        &[fun(
+            0,
+            0,
+            0,
+            6,
+            &[
+                (40, 0, 0x3b),
+                (30, 0, 0x3b),
+                (20, 0, 0x3b),
+                (10, 0, 0x3b),
+                (0, -62, 0x17),
+                (0, 3, 5),
+            ],
+        )],
+        0,
+        &[],
+    );
+    let mut binding = host_binding(
+        vec![HostType::Int],
+        HostReturn::Exact(HostType::Array),
+        |_, a| Ok(Some(Value::array(a.to_vec()).unwrap())),
+    );
+    binding.signature.optional = vec![HostType::Int];
+    binding.signature.rest = Some(HostType::Int);
+    let (mut vm, o) = hk_machine(p, Some(binding));
+    vm.start(o, 0, vec![]).unwrap();
+    assert_eq!(
+        returned_array(&mut vm),
+        vec![
+            Value::Int(10),
+            Value::Int(20),
+            Value::Int(30),
+            Value::Int(40)
+        ]
+    );
+    let mut binding = host_binding(vec![], HostReturn::Exact(HostType::Int), |_, a| {
+        Ok(Some(Value::Int(a.len() as i32)))
+    });
+    binding.signature.optional = vec![HostType::Int];
+    let (mut vm, o) = hk_machine(hk_caller(), Some(binding));
+    let f = fv_created(&mut vm, o, 0, vec![]);
+    vm.start(o, 1, vec![Value::Function(f)]).unwrap();
+    returns(&mut vm, Value::Int(0));
+}
+#[test]
+fn host_function_values_scalar_bits_and_max_capture_argument_boundaries() {
+    for scalar in [
+        Value::Undefined,
+        Value::Void,
+        Value::Int(-8),
+        real(2.5),
+        Value::Real(rml32::RealBits::from_bits(0x7fc01234)),
+        Value::bytes([255, 0, 128]),
+    ] {
+        let (mut vm, o) = hk_machine(
+            hk_caller(),
+            Some(host_binding(
+                vec![HostType::Any],
+                HostReturn::Mixed,
+                |_, a| Ok(Some(a[0].clone())),
+            )),
+        );
+        let f = fv_created(&mut vm, o, 3, vec![scalar.clone()]);
+        vm.start(o, 1, vec![Value::Function(f)]).unwrap();
+        returns(&mut vm, scalar);
+    }
+    for total in [127, 128] {
+        let mut body = vec![(1, 0, 0x3b); total - 63];
+        body.extend(vec![(2, 0, 0x3b); 63]);
+        body.extend([(0, -1, 0x17), (0, (total - 63 + 1) as i8, 5)]);
+        let calls = HostRc::new(HostCounter::new(0));
+        let count = calls.clone();
+        let mut binding = host_binding(vec![], HostReturn::Exact(HostType::Int), move |_, a| {
+            count.set(count.get() + 1);
+            Ok(Some(Value::Int(a.len() as i32)))
+        });
+        binding.signature.rest = Some(HostType::Int);
+        let (mut vm, o) = hk_machine(image(&[fun(0, 0, 0, 2, &body)], 0, &[]), Some(binding));
+        vm.start(o, 0, vec![]).unwrap();
+        if total == 127 {
+            returns(&mut vm, Value::Int(127));
+            assert_eq!(calls.get(), 1);
+        } else {
+            vm.run(body.len() + 1).unwrap();
+            let before = vm.stack().unwrap();
+            assert_eq!(vm.run(1).unwrap_err().kind, VmErrorKind::Limit);
+            assert_eq!(vm.stack().unwrap(), before);
+            assert_eq!(calls.get(), 0);
+        }
+    }
+}
+#[test]
+fn host_function_values_never_apply_user_numeric_coercion() {
+    for (expected, value) in [
+        (HostType::Int, real(2.0)),
+        (HostType::Real, Value::Int(2)),
+        (HostType::Bytes, Value::Int(2)),
+    ] {
+        let calls = HostRc::new(HostCounter::new(0));
+        let count = calls.clone();
+        let (mut vm, o) = hk_machine(
+            hk_caller(),
+            Some(host_binding(
+                vec![expected],
+                HostReturn::Mixed,
+                move |_, _| {
+                    count.set(count.get() + 1);
+                    Ok(None)
+                },
+            )),
+        );
+        let f = fv_created(&mut vm, o, 0, vec![]);
+        vm.start(o, 4, vec![Value::Function(f), value]).unwrap();
+        vm.run(4).unwrap();
+        let before = vm.stack().unwrap();
+        assert_eq!(vm.run(1).unwrap_err().kind, VmErrorKind::UnsupportedType);
+        assert_eq!(vm.stack().unwrap(), before);
+        assert_eq!(calls.get(), 0);
+    }
+}
+#[test]
+fn host_function_values_return_modes_errors_and_side_effects_are_never_replayed() {
+    for (returns_kind, result, valid) in [
+        (HostReturn::Void, None, true),
+        (HostReturn::Mixed, None, true),
+        (HostReturn::Mixed, Some(Value::Int(6)), true),
+        (HostReturn::Exact(HostType::Int), Some(Value::Int(6)), true),
+        (HostReturn::Void, Some(Value::Int(6)), false),
+        (HostReturn::Exact(HostType::Int), None, false),
+        (
+            HostReturn::Exact(HostType::Real),
+            Some(Value::Int(6)),
+            false,
+        ),
+    ] {
+        let calls = HostRc::new(HostCounter::new(0));
+        let count = calls.clone();
+        let response = result.clone();
+        let (mut vm, o) = hk_machine(
+            hk_caller(),
+            Some(host_binding(vec![], returns_kind, move |_, _| {
+                count.set(count.get() + 1);
+                Ok(response.clone())
+            })),
+        );
+        let f = fv_created(&mut vm, o, 0, vec![]);
+        vm.start(o, 1, vec![Value::Function(f)]).unwrap();
+        vm.run(3).unwrap();
+        let before = vm.stack().unwrap();
+        if valid {
+            returns(&mut vm, result.unwrap_or(Value::Void));
+        } else {
+            let e = vm.run(1).unwrap_err();
+            assert_eq!(e.kind, VmErrorKind::UnsupportedType);
+            assert_eq!(e.pc, Some(3));
+            assert_eq!(vm.stack().unwrap(), before);
+            assert_eq!(vm.run(100).unwrap_err(), e);
+        }
+        assert_eq!(calls.get(), 1);
+    }
+}
+#[test]
+fn host_function_values_callback_failure_bypasses_catch_and_may_null_and_can_restart() {
+    for flags in [0, 4] {
+        let p = image(
+            &[
+                fun(
+                    0,
+                    1,
+                    0,
+                    255,
+                    &[
+                        (4, 0, 0x2c),
+                        (0, 0, 0x37),
+                        (flags, 1, 5),
+                        (0, 0, 0x1a),
+                        (0, 0, 0x49),
+                        (0, 0, 0x0e),
+                    ],
+                ),
+                fun(1, 0, 0, 9, &[(0, -64, 0x17)]),
+            ],
+            0,
+            &[],
+        );
+        let offset = p.functions[0].code.nodes_offset + 16;
+        let calls = HostRc::new(HostCounter::new(0));
+        let count = calls.clone();
+        let (mut vm, o) = hk_machine(
+            p,
+            Some(host_binding(vec![], HostReturn::Mixed, move |_, _| {
+                count.set(count.get() + 1);
+                Err(HostError {
+                    kind: VmErrorKind::Arithmetic,
+                    message: "synthetic error".into(),
+                })
+            })),
+        );
+        let f = fv_created(&mut vm, o, 1, vec![]);
+        vm.start(o, 0, vec![Value::Function(f.clone())]).unwrap();
+        vm.run(4).unwrap();
+        let before = vm.stack().unwrap();
+        let e = vm.run(1).unwrap_err();
+        assert_eq!(e.kind, VmErrorKind::Arithmetic);
+        assert_eq!((e.pc, e.offset), (Some(4), Some(offset)));
+        assert!(e.message.contains("host slot 0"));
+        assert_eq!(vm.stack().unwrap(), before);
+        assert_eq!(vm.run(100).unwrap_err(), e);
+        assert_eq!(calls.get(), 1);
+        vm.start(o, 0, vec![Value::Function(f)]).unwrap();
+        assert!(vm.run(100).is_err());
+        assert_eq!(calls.get(), 2);
+    }
+}
+#[test]
+fn host_function_values_creator_deletion_foreign_store_and_old_caller_guards() {
+    for flags in [0, 4] {
+        let mut p = hk_caller();
+        p.functions[1].code.nodes[3].0 = flags;
+        let calls = HostRc::new(HostCounter::new(0));
+        let (mut vm, o) = hk_machine(p, Some(counted_host(&calls, HostReturn::Mixed)));
+        let f = fv_created(&mut vm, o, 0, vec![]);
+        let pid = vm_program(&vm, o);
+        let caller = vm.objects_mut().create(pid, vec![]).unwrap();
+        vm.start(caller, 1, vec![Value::Function(f.clone())])
+            .unwrap();
+        vm.run(3).unwrap();
+        vm.objects_mut().remove(o).unwrap();
+        assert_eq!(vm.run(1).unwrap_err().kind, VmErrorKind::InvalidObject);
+        assert_eq!(calls.get(), 0);
+        vm.start(caller, 2, vec![Value::Function(f)]).unwrap();
+        returns(&mut vm, Value::Undefined);
+    }
+    let (mut first, o) = hk_machine(hk_caller(), Some(hk_noop()));
+    let f = fv_created(&mut first, o, 0, vec![]);
+    let (mut second, o2) = hk_machine(hk_caller(), Some(hk_noop()));
+    second
+        .start(o2, 1, vec![Value::Function(f.clone())])
+        .unwrap();
+    second.run(3).unwrap();
+    assert_eq!(second.run(1).unwrap_err().kind, VmErrorKind::InvalidState);
+    for old in [
+        prepare_program_with_function_values(fv_basic(), None).unwrap(),
+        prepare_program_with_global_function_values(gfv_caller(), GlobalBankSchema { slots: 0 })
+            .unwrap(),
+    ] {
+        let id = first.objects_mut().register_program(old).unwrap();
+        let caller = first.objects_mut().create(id, vec![]).unwrap();
+        let slot = if vm_program(&first, caller) == id {
+            // both use their ordinary indirect caller
+            if first.objects().get(caller).unwrap().program() == id {
+                1
+            } else {
+                unreachable!()
+            }
+        } else {
+            unreachable!()
+        };
+        // fv_basic indirect caller is 2, gfv_caller is 1: select using its argument declaration below.
+        let _ = slot;
+        let result = first.start(caller, 1, vec![Value::Function(f.clone())]);
+        if result.is_err() {
+            first
+                .start(caller, 2, vec![Value::Function(f.clone())])
+                .unwrap();
+        }
+        // The fv_basic function 1 has no parameters, so start rejects it and uses 2.
+        first.run(3).unwrap();
+        assert_eq!(
+            first.run(1).unwrap_err().kind,
+            VmErrorKind::UnsupportedFeature
+        );
+    }
+}
+#[test]
+fn host_function_values_identity_opaque_forwarding_and_combined_06_object_global_paths() {
+    let (mut vm, o) = hk_machine(
+        hk_caller(),
+        Some(host_binding(
+            vec![HostType::Any],
+            HostReturn::Mixed,
+            |_, a| Ok(Some(a[0].clone())),
+        )),
+    );
+    let f = fv_created(&mut vm, o, 0, vec![]);
+    let other = fv_created(&mut vm, o, 0, vec![]);
+    assert_ne!(f, other);
+    vm.start(
+        o,
+        4,
+        vec![Value::Function(f.clone()), Value::Function(f.clone())],
+    )
+    .unwrap();
+    assert_eq!(fv_finished(&mut vm), Value::Function(f));
+    vm.objects_mut().remove_host_function(0).unwrap();
+    vm.objects_mut()
+        .register_host_function(0, hk_noop())
+        .unwrap();
+    vm.start(o, 5, vec![]).unwrap();
+    returns(&mut vm, Value::Int(9));
+    let local = fv_created(&mut vm, o, 6, vec![]);
+    vm.start(o, 1, vec![Value::Function(local)]).unwrap();
+    returns(&mut vm, Value::Int(7));
+    let gp = global_image(&[fun(600, 0, 0, 255, &[(0, 0, 6)])], 0, &[]);
+    let id = vm
+        .objects_mut()
+        .register_program(
+            prepare_global_program_with_callable_values(gp, GlobalBankSchema { slots: 0 }).unwrap(),
+        )
+        .unwrap();
+    vm.objects_mut().bind_global_program(id).unwrap();
+    let global = fv_created(&mut vm, o, 8, vec![]);
+    vm.start(o, 1, vec![Value::Function(global)]).unwrap();
+    returns(&mut vm, Value::Int(9));
+}
+#[test]
+fn host_function_values_zero_budget_and_single_step_call_never_enter_a_user_frame() {
+    let calls = HostRc::new(HostCounter::new(0));
+    let (mut vm, o) = hk_machine(hk_caller(), Some(counted_host(&calls, HostReturn::Mixed)));
+    vm.start(o, 0, vec![]).unwrap();
+    assert_eq!(vm.run(0).unwrap(), RunOutcome::BudgetExhausted);
+    vm.run(3).unwrap();
+    assert_eq!(calls.get(), 0);
+    let Value::Function(f) = fv_finished(&mut vm) else {
+        panic!()
+    };
+    vm.start(o, 1, vec![Value::Function(f)]).unwrap();
+    vm.run(3).unwrap();
+    assert_eq!(vm.frame_depth(), 1);
+    assert_eq!(vm.run(0).unwrap(), RunOutcome::BudgetExhausted);
+    assert_eq!(calls.get(), 0);
+    assert_eq!(vm.run(1).unwrap(), RunOutcome::BudgetExhausted);
+    assert_eq!(calls.get(), 1);
+    assert_eq!(vm.frame_depth(), 1);
+    returns(&mut vm, Value::Int(9));
+    assert_eq!(calls.get(), 1);
+}

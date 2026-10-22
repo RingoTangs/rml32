@@ -1506,8 +1506,9 @@ impl Vm {
         }
         let flags = flags as u8;
         let global = flags & 0x80 != 0;
-        if flags & 0x40 != 0
-            || (global && !program.allow_global_function_values)
+        let host = flags & 0x40 != 0;
+        if (host && (!global || !program.allow_host_function_values))
+            || (global && !host && !program.allow_global_function_values)
             || (!global && program.kind != ProgramKind::Object)
         {
             return Err(err(
@@ -1562,7 +1563,17 @@ impl Vm {
             }
             bound.push(value);
         }
-        let target = if global {
+        let target = if host {
+            if !(0..559).contains(&slot) {
+                return Err(err(
+                    VmErrorKind::Bounds,
+                    "host function slot outside 0..558",
+                ));
+            }
+            // Creation checks presence, but captures neither callback nor signature.
+            self.objects.host_function(slot as u16)?;
+            crate::FunctionTarget::Host { slot: slot as u16 }
+        } else if global {
             let id = self.objects.global_program()?;
             let target_program = self.objects.program(id)?;
             if target_program.kind != ProgramKind::Global {
@@ -1684,6 +1695,9 @@ impl Vm {
                     ProgramKind::Global,
                 )
             }
+            crate::FunctionTarget::Host { .. } => {
+                return self.call_indirect_host(frame, program, code, &function, argn);
+            }
         };
         let target_program = self.objects.program(id)?;
         if target_program.kind != kind {
@@ -1788,7 +1802,6 @@ impl Vm {
         slot: i32,
         argc: i32,
     ) -> Result<(), VmError> {
-        use crate::host::{HostActivation, HostCallContext, HostReturn, validate_value};
         if !program.allow_host_calls || self.initialization.is_some() || self.construction.is_some()
         {
             return Err(err(
@@ -1802,18 +1815,7 @@ impl Vm {
                 "host slot or argc outside supported range",
             ));
         }
-        let activation = HostActivation {
-            context: HostCallContext {
-                slot: slot as u16,
-                source: code.source.to_owned(),
-                program: frame.program(),
-                object: frame.active_object,
-                function: code.function()?.index,
-                pc: frame.pc,
-                offset: code.instructions[frame.pc].offset,
-            },
-            function: self.objects.host_function(slot as u16)?,
-        };
+        let activation = self.host_activation(frame, code, slot as u16)?;
         let invoke = |vm: &mut Self| -> Result<(), VmError> {
             let argc = argc as usize;
             vm.need(argc, frame, code.local_count)?;
@@ -1825,7 +1827,7 @@ impl Vm {
             }
             activation.function.signature.check_count(argc)?;
             let n = vm.stack.len();
-            // Inspect raw shape first. Cell::read intentionally hides Loop payloads.
+            // Preserve direct 06's shape/count ordering and raw-value semantics.
             for entry in &vm.stack[n - argc..] {
                 match entry {
                     StackEntry::Value(cell) if !cell.is_loop()? => {}
@@ -1843,55 +1845,161 @@ impl Vm {
                 .map_err(|_| err(VmErrorKind::Limit, "host argument allocation failed"))?;
             for i in 0..argc {
                 let value = vm.value(n - 1 - i)?;
-                let expected = activation.function.signature.argument(i);
-                if !expected.accepts(&value) {
-                    return Err(err(
-                        VmErrorKind::UnsupportedType,
-                        format!("host argument {i} expected {expected:?}"),
-                    ));
-                }
-                validate_value(&value)?;
+                Self::check_host_argument(&activation, i, &value)?;
                 arguments.push(value);
             }
-            let result_len = (n - argc)
-                .checked_add(1)
-                .ok_or_else(|| err(VmErrorKind::Limit, "host result stack overflow"))?;
-            if result_len > vm.limits.max_stack {
-                return Err(err(VmErrorKind::Limit, "host result exceeds stack limit"));
-            }
-            let cell = Cell::new(Value::Void)?;
-            vm.stack
-                .try_reserve(result_len.saturating_sub(n))
-                .map_err(|_| err(VmErrorKind::Limit, "host result allocation failed"))?;
-            let result = (activation.function.callback)(&activation.context, &arguments)
-                .map_err(|e| err(e.kind, e.message))?;
-            let value = match (activation.function.signature.returns, result) {
-                (HostReturn::Void, None) | (HostReturn::Mixed, None) => Value::Void,
-                (HostReturn::Mixed, Some(value)) => value,
-                (HostReturn::Exact(expected), Some(value)) if expected.accepts(&value) => value,
-                (expected, _) => {
-                    return Err(err(
-                        VmErrorKind::UnsupportedType,
-                        format!("host result expected {expected:?}"),
-                    ));
-                }
-            };
-            validate_value(&value)?;
-            cell.replace(value)?;
-            drop(arguments);
-            vm.stack.truncate(n - argc);
-            vm.stack.push(StackEntry::Value(cell));
-            vm.frames.last_mut().unwrap().pc += 1;
-            Ok(())
+            vm.commit_host_call(&activation, arguments, n - argc)
         };
-        invoke(self).map_err(|mut e| {
-            e.message = format!(
-                "host slot {} ({}): {}",
-                slot, activation.function.name, e.message
-            )
-            .into();
-            e
+        invoke(self).map_err(|e| Self::host_call_error(&activation, e))
+    }
+    fn host_activation(
+        &self,
+        frame: &Frame,
+        code: &CodeView<'_>,
+        slot: u16,
+    ) -> Result<crate::host::HostActivation, VmError> {
+        use crate::host::{HostActivation, HostCallContext};
+        Ok(HostActivation {
+            context: HostCallContext {
+                slot,
+                source: code.source.to_owned(),
+                program: frame.program(),
+                object: frame.active_object,
+                function: code.function()?.index,
+                pc: frame.pc,
+                offset: code.instructions[frame.pc].offset,
+            },
+            function: self.objects.host_function(slot)?,
         })
+    }
+    fn call_indirect_host(
+        &mut self,
+        frame: &Frame,
+        program: &PreparedProgram,
+        code: &CodeView<'_>,
+        function: &crate::FunctionValue,
+        argn: usize,
+    ) -> Result<(), VmError> {
+        self.check_function_context(program)?;
+        if !program.allow_host_function_values {
+            return Err(err(
+                VmErrorKind::UnsupportedFeature,
+                "Host function targets require explicit preparation",
+            ));
+        }
+        let crate::FunctionTarget::Host { slot } = function.target() else {
+            return Err(err(
+                VmErrorKind::InvalidState,
+                "indirect host requires a Host target",
+            ));
+        };
+        if slot >= 559 || !(1..128).contains(&argn) {
+            return Err(err(
+                VmErrorKind::Bounds,
+                "host function slot outside 0..558",
+            ));
+        }
+        let activation = self.host_activation(frame, code, slot)?;
+        let invoke = |vm: &mut Self| -> Result<(), VmError> {
+            vm.need(argn, frame, code.local_count)?;
+            let n = vm.stack.len();
+            for pos in (n - argn..n - 1).rev() {
+                vm.ordinary_value(pos)?;
+            }
+            let argc = function
+                .bound_count()
+                .checked_add(argn - 1)
+                .filter(|&n| n <= 127)
+                .ok_or_else(|| {
+                    err(
+                        VmErrorKind::Limit,
+                        "indirect host call exceeds 127 arguments",
+                    )
+                })?;
+            if vm.frames.len() >= vm.limits.max_frames {
+                return Err(err(
+                    VmErrorKind::Limit,
+                    "host activation exceeds frame limit",
+                ));
+            }
+            activation.function.signature.check_count(argc)?;
+            let mut arguments = Vec::new();
+            arguments
+                .try_reserve(argc)
+                .map_err(|_| err(VmErrorKind::Limit, "host argument allocation failed"))?;
+            for i in 0..argc {
+                let value = if i < function.bound_count() {
+                    function.0.bound[i].clone()
+                } else {
+                    vm.ordinary_value(n - 2 - (i - function.bound_count()))?
+                };
+                Self::check_host_argument(&activation, i, &value)?;
+                arguments.push(value);
+            }
+            vm.commit_host_call(&activation, arguments, n - argn)
+        };
+        invoke(self).map_err(|e| Self::host_call_error(&activation, e))
+    }
+    fn check_host_argument(
+        activation: &crate::host::HostActivation,
+        index: usize,
+        value: &Value,
+    ) -> Result<(), VmError> {
+        let expected = activation.function.signature.argument(index);
+        if !expected.accepts(value) {
+            return Err(err(
+                VmErrorKind::UnsupportedType,
+                format!("host argument {index} expected {expected:?}"),
+            ));
+        }
+        crate::host::validate_value(value)
+    }
+    fn commit_host_call(
+        &mut self,
+        activation: &crate::host::HostActivation,
+        arguments: Vec<Value>,
+        prefix: usize,
+    ) -> Result<(), VmError> {
+        use crate::host::{HostReturn, validate_value};
+        let n = self.stack.len();
+        let result_len = prefix
+            .checked_add(1)
+            .ok_or_else(|| err(VmErrorKind::Limit, "host result stack overflow"))?;
+        if result_len > self.limits.max_stack {
+            return Err(err(VmErrorKind::Limit, "host result exceeds stack limit"));
+        }
+        let cell = Cell::new(Value::Void)?;
+        self.stack
+            .try_reserve(result_len.saturating_sub(n))
+            .map_err(|_| err(VmErrorKind::Limit, "host result allocation failed"))?;
+        let result = (activation.function.callback)(&activation.context, &arguments)
+            .map_err(|e| err(e.kind, e.message))?;
+        let value = match (activation.function.signature.returns, result) {
+            (HostReturn::Void, None) | (HostReturn::Mixed, None) => Value::Void,
+            (HostReturn::Mixed, Some(value)) => value,
+            (HostReturn::Exact(expected), Some(value)) if expected.accepts(&value) => value,
+            (expected, _) => {
+                return Err(err(
+                    VmErrorKind::UnsupportedType,
+                    format!("host result expected {expected:?}"),
+                ));
+            }
+        };
+        validate_value(&value)?;
+        cell.replace(value)?;
+        drop(arguments);
+        self.stack.truncate(prefix);
+        self.stack.push(StackEntry::Value(cell));
+        self.frames.last_mut().unwrap().pc += 1;
+        Ok(())
+    }
+    fn host_call_error(activation: &crate::host::HostActivation, mut e: VmError) -> VmError {
+        e.message = format!(
+            "host slot {} ({}): {}",
+            activation.context.slot, activation.function.name, e.message
+        )
+        .into();
+        e
     }
     fn return_function(&mut self, frame: &Frame, f: &PreparedFunction) -> Result<(), VmError> {
         // vm_returnFromFun retires this frame's handlers before return validation.
@@ -3377,6 +3485,7 @@ mod tests {
             allow_host_calls: false,
             allow_function_values: false,
             allow_global_function_values: false,
+            allow_host_function_values: false,
             kind: ProgramKind::Object,
             function_capacity: 0,
             source: "synthetic-loop".into(),
@@ -3730,6 +3839,7 @@ mod catch_tests {
             allow_host_calls: false,
             allow_function_values: false,
             allow_global_function_values: false,
+            allow_host_function_values: false,
             kind: ProgramKind::Object,
             function_capacity: 0,
             source: "synthetic-catch".into(),
@@ -4221,6 +4331,7 @@ mod global_tests {
             allow_host_calls: false,
             allow_function_values: false,
             allow_global_function_values: false,
+            allow_host_function_values: false,
             kind: ProgramKind::Object,
             function_capacity: 0,
             variable_count: 0,
@@ -4421,6 +4532,7 @@ mod host_tests {
             allow_host_calls: allow,
             allow_function_values: false,
             allow_global_function_values: false,
+            allow_host_function_values: false,
             kind: ProgramKind::Object,
             function_capacity: 1,
             variable_count: 0,
@@ -4703,6 +4815,7 @@ mod function_value_tests {
             allow_host_calls: false,
             allow_function_values: true,
             allow_global_function_values: global_targets,
+            allow_host_function_values: false,
             kind: ProgramKind::Object,
             function_capacity: 2,
             variable_count: 0,
@@ -4746,6 +4859,7 @@ mod function_value_tests {
             allow_host_calls: false,
             allow_function_values: true,
             allow_global_function_values: true,
+            allow_host_function_values: false,
             kind: ProgramKind::Global,
             function_capacity: 601,
             variable_count: 0,

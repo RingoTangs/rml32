@@ -75,14 +75,15 @@ impl Value {
     }
 }
 
-/// Immutable bytecode target, independent of the optional creator object.
+/// Immutable target identity, independent of the optional creator object.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum FunctionTarget {
     Object { program: ProgramId, function: i16 },
     Global { program: ProgramId, function: i16 },
+    Host { slot: u16 },
 }
 
-/// Opaque bytecode function with scalar bound parameters.
+/// Opaque callable with scalar bound parameters.
 /// Clones share identity; independent creations compare unequal.
 #[derive(Clone)]
 pub struct FunctionValue(pub(crate) Rc<FunctionData>);
@@ -97,15 +98,16 @@ impl FunctionValue {
     pub fn owner(&self) -> Option<ObjectId> {
         self.0.owner
     }
-    /// Target code identity. Both currently supported target kinds return Some.
+    /// Target bytecode identity; Host targets have no program.
     pub fn program(&self) -> Option<ProgramId> {
         match self.0.target {
             FunctionTarget::Object { program, .. } | FunctionTarget::Global { program, .. } => {
                 Some(program)
             }
+            FunctionTarget::Host { .. } => None,
         }
     }
-    /// Saved bytecode target; inspecting it does not resolve the current Global binding.
+    /// Saved target identity; inspection does not resolve current code or host bindings.
     pub fn target(&self) -> FunctionTarget {
         self.0.target
     }
@@ -114,6 +116,7 @@ impl FunctionValue {
             FunctionTarget::Object { function, .. } | FunctionTarget::Global { function, .. } => {
                 function
             }
+            FunctionTarget::Host { slot } => slot as i16,
         }
     }
     pub fn bound_count(&self) -> usize {

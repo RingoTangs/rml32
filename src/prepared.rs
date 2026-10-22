@@ -106,6 +106,7 @@ pub struct PreparedProgram {
     pub(crate) allow_host_calls: bool,
     pub(crate) allow_function_values: bool,
     pub(crate) allow_global_function_values: bool,
+    pub(crate) allow_host_function_values: bool,
     pub(crate) kind: ProgramKind,
     pub(crate) function_capacity: usize,
     pub(crate) variable_count: usize,
@@ -197,6 +198,7 @@ struct PreparationOptions {
     host_calls: bool,
     function_values: bool,
     global_function_values: bool,
+    host_function_values: bool,
 }
 fn instructions(
     segment: &CodeSegment,
@@ -211,6 +213,7 @@ fn instructions(
         host_calls,
         function_values,
         global_function_values,
+        host_function_values,
     } = options;
     let metadata = bytes(&segment.metadata_hex)?;
     let mut result = Vec::new();
@@ -248,13 +251,13 @@ fn instructions(
                     "function values require explicit supported ordinary-function preparation",
                 ))
             } else if op == 0x17
-                && (b as u8 & 0x40 != 0
-                    || (b as u8 & 0x80 != 0 && !global_function_values)
+                && ((b as u8 & 0x40 != 0 && (b as u8 & 0x80 == 0 || !host_function_values))
+                    || (b as u8 & 0xc0 == 0x80 && !global_function_values)
                     || (global_code && b as u8 & 0x80 == 0))
             {
                 Err(unsupported("function value target kind is not enabled"))
-            } else if op == 0x17 && a < 0 {
-                Err(err("negative function value slot"))
+            } else if op == 0x17 && (a < 0 || (b as u8 & 0xc0 == 0xc0 && a >= 559)) {
+                Err(err("function value slot outside supported range"))
             } else if op == 0x05 && !matches!(a, 0 | 4) {
                 Err(unsupported("indirect call requires flags zero or four"))
             } else if op == 0x05 && b <= 0 {
@@ -684,6 +687,42 @@ pub fn prepare_global_program_with_global_function_values(
     )
 }
 
+/// Prepare ordinary Object code with bytecode function values and synchronous Host/K calls.
+pub fn prepare_program_with_callable_values(
+    image: ProgramImage,
+    globals: GlobalBankSchema,
+) -> Result<PreparedProgram, VmError> {
+    prepare_code_program(
+        image,
+        PreparationOptions {
+            globals: Some(globals),
+            host_calls: true,
+            function_values: true,
+            global_function_values: true,
+            host_function_values: true,
+            ..PreparationOptions::default()
+        },
+    )
+}
+
+/// Prepare ordinary Global code with bytecode function values and synchronous Host/K calls.
+pub fn prepare_global_program_with_callable_values(
+    image: ProgramImage,
+    globals: GlobalBankSchema,
+) -> Result<PreparedProgram, VmError> {
+    prepare_code_program(
+        image,
+        PreparationOptions {
+            globals: Some(globals),
+            global_code: true,
+            host_calls: true,
+            function_values: true,
+            global_function_values: true,
+            host_function_values: true,
+        },
+    )
+}
+
 fn prepare_code_program(
     image: ProgramImage,
     options: PreparationOptions,
@@ -694,6 +733,7 @@ fn prepare_code_program(
         host_calls,
         function_values,
         global_function_values,
+        host_function_values,
     } = options;
     let source = format!("sha256:{}", image.sha256);
     let build = || {
@@ -777,6 +817,7 @@ fn prepare_code_program(
             allow_host_calls: host_calls,
             allow_function_values: function_values,
             allow_global_function_values: global_function_values,
+            allow_host_function_values: host_function_values,
             kind: if global_code {
                 ProgramKind::Global
             } else {
@@ -1304,6 +1345,7 @@ fn prepare_catalog(
             allow_host_calls: false,
             allow_function_values: false,
             allow_global_function_values: false,
+            allow_host_function_values: false,
             kind: ProgramKind::Object,
             function_capacity: 0,
             variable_count: catalog.programs[root].max_vars as usize,
