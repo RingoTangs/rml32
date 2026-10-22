@@ -1,0 +1,284 @@
+[
+  {
+    "basis": "static-inference",
+    "expected": "Global/c absolute slot; save entry and optional creator owner",
+    "findings": [
+      "F01",
+      "F02"
+    ],
+    "id": "C01",
+    "input": "17 flags=0x80, bound=0"
+  },
+  {
+    "basis": "static-inference",
+    "expected": "Global/K descriptor; later dispatch reads descriptor canonical slot",
+    "findings": [
+      "F01",
+      "F05"
+    ],
+    "id": "C02",
+    "input": "17 flags=0xc0, bound=0"
+  },
+  {
+    "basis": "static-inference",
+    "expected": "Global/c or Global/K, 63 captures; raw signed par8 must be masked to u8",
+    "findings": [
+      "F01"
+    ],
+    "id": "C03",
+    "input": "17 flags=0xbf / 0xff"
+  },
+  {
+    "basis": "static-inference",
+    "expected": "Creator owner remains A; Global/c callee thisObject is null",
+    "findings": [
+      "F02",
+      "F04"
+    ],
+    "id": "C04",
+    "input": "Global creation from Object A, call from Object B"
+  },
+  {
+    "basis": "static-inference",
+    "expected": "Deleted-owner gate checks A; efun execution context inherits B",
+    "findings": [
+      "F03",
+      "F06"
+    ],
+    "id": "C05",
+    "input": "Global/K created in A, invoked in B"
+  },
+  {
+    "basis": "static-inference",
+    "expected": "Saved owner null; deleted-owner check does not reject solely for null",
+    "findings": [
+      "F02",
+      "F03"
+    ],
+    "id": "C06",
+    "input": "Global creation with no current Object"
+  },
+  {
+    "basis": "static-inference",
+    "expected": "05 signals owner error; mayNull does not turn it into successful Void",
+    "findings": [
+      "F03"
+    ],
+    "id": "C07",
+    "input": "Raw Global Function with deleted saved owner; mayNull=4"
+  },
+  {
+    "basis": "static-inference",
+    "expected": "Source cleanup and Undefined result differ from raw call",
+    "findings": [
+      "F03"
+    ],
+    "id": "C08",
+    "input": "Ordinary copy of Function with deleted saved owner"
+  },
+  {
+    "basis": "static-inference",
+    "expected": "Logical argument order [B0,B1,N0,N1]",
+    "findings": [
+      "F07"
+    ],
+    "id": "C09",
+    "input": "Captures [B0,B1], new arguments [N0,N1], either K or c"
+  },
+  {
+    "basis": "static-inference",
+    "expected": "Copy/move keep scalar values; no claim for non-scalar equivalence",
+    "findings": [
+      "F07"
+    ],
+    "id": "C10",
+    "input": "Shared versus unique scalar-capturing function"
+  },
+  {
+    "basis": "design",
+    "expected": "InvalidState, PC and operands preserved",
+    "findings": [
+      "D01"
+    ],
+    "id": "C11",
+    "input": "17 Global/c before Global binding exists"
+  },
+  {
+    "basis": "design",
+    "expected": "Bounds at runtime; invalid signed structural operands rejected during preparation",
+    "findings": [
+      "D01"
+    ],
+    "id": "C12",
+    "input": "17 negative slot / slot >= target capacity"
+  },
+  {
+    "basis": "design",
+    "expected": "UnsupportedFeature; do not synthesize a body",
+    "findings": [
+      "D01"
+    ],
+    "id": "C13",
+    "input": "Global/c slot in capacity but no prepared body, including bootstrap gap"
+  },
+  {
+    "basis": "design",
+    "expected": "InvalidState, do not execute P or Q; preserve call operands",
+    "findings": [
+      "D01"
+    ],
+    "id": "C14",
+    "input": "Global/c created under P, clear binding or rebind Q before 05"
+  },
+  {
+    "basis": "design",
+    "expected": "Entered frame keeps P; nested direct 07 uses Q; next new call of old Global/c fails",
+    "findings": [
+      "D01"
+    ],
+    "id": "C15",
+    "input": "Global/c entered under P, rebind Q while paused"
+  },
+  {
+    "basis": "design",
+    "expected": "Bounds outside ABI; UnsupportedFeature when slot unregistered",
+    "findings": [
+      "D02"
+    ],
+    "id": "C16",
+    "input": "17 Global/K slot outside 0..558 or unregistered"
+  },
+  {
+    "basis": "design",
+    "expected": "Invoke B once using B current signature; do not retain A callback",
+    "findings": [
+      "D02"
+    ],
+    "id": "C17",
+    "input": "Global/K created under host A; remove then register B at same slot before 05"
+  },
+  {
+    "basis": "design",
+    "expected": "UnsupportedFeature; callback count zero and operands/PC unchanged",
+    "findings": [
+      "D02"
+    ],
+    "id": "C18",
+    "input": "Global/K slot removed without replacement"
+  },
+  {
+    "basis": "design",
+    "expected": "ArgumentCount/UnsupportedType before callback; no user numeric conversion",
+    "findings": [
+      "D02",
+      "F08"
+    ],
+    "id": "C19",
+    "input": "Replaced host B rejects merged argument count or types"
+  },
+  {
+    "basis": "design",
+    "expected": "InvalidState before binding or callback lookup",
+    "findings": [
+      "D03"
+    ],
+    "id": "C20",
+    "input": "Foreign-store Function whose identifiers collide"
+  },
+  {
+    "basis": "design",
+    "expected": "Zero budget no effects; user 05 may pause at callee entry; synchronous host 05 completes callback and result atomically within one instruction",
+    "findings": [
+      "D01",
+      "D02"
+    ],
+    "id": "C21",
+    "input": "Zero budget; 17 one instruction; 05 one instruction"
+  },
+  {
+    "basis": "design",
+    "expected": "No PC/operand/visible slot commit and no callback invocation; frame ID not consumed",
+    "findings": [
+      "D01",
+      "D02"
+    ],
+    "id": "C22",
+    "input": "Allocation/borrow/frame/stack failure before publication or callback"
+  },
+  {
+    "basis": "design",
+    "expected": "Sticky failure at 05; VM operands preserved; external callback effects cannot roll back or replay",
+    "findings": [
+      "D02",
+      "F08"
+    ],
+    "id": "C23",
+    "input": "Host callback error or invalid return after side effects"
+  },
+  {
+    "basis": "design",
+    "expected": "Only established numeric fault source can unwind saved code/owner context",
+    "findings": [
+      "D01"
+    ],
+    "id": "C24",
+    "input": "Global/c callee division by zero inside existing caller catch"
+  },
+  {
+    "basis": "design",
+    "expected": "Fatal under existing catch policy; no new RuntimeFaultSite",
+    "findings": [
+      "D01",
+      "D02"
+    ],
+    "id": "C25",
+    "input": "Host error, wrong target, owner error or missing binding inside script catch"
+  },
+  {
+    "basis": "design",
+    "expected": "Non-scalars remain UnsupportedType; Reference/Loop UnsupportedFeature",
+    "findings": [
+      "U01"
+    ],
+    "id": "C26",
+    "input": "Object/Array/Mapping/Function capture or raw Reference/Loop"
+  },
+  {
+    "basis": "design",
+    "expected": "Preparation/helper guards continue explicit rejection",
+    "findings": [
+      "U02"
+    ],
+    "id": "C27",
+    "input": "Lifecycle, default-expression, hidden/inherited, string/OS or non-global K target"
+  },
+  {
+    "basis": "design",
+    "expected": "Clone identity equal; separate headers unequal; optional owner and target do not change equality",
+    "findings": [
+      "D03"
+    ],
+    "id": "C28",
+    "input": "Same function header clone versus independent equal-field creation"
+  },
+  {
+    "basis": "design",
+    "expected": "Use actual saved Global program, no fake ObjectId, diagnostics object=None",
+    "findings": [
+      "D01",
+      "F04"
+    ],
+    "id": "C29",
+    "input": "Global 41, strings and failure diagnostics after indirect entry"
+  },
+  {
+    "basis": "unresolved",
+    "expected": "Not proven; first Rust Global batch refuses changed binding and never unloads registered programs",
+    "findings": [
+      "F09",
+      "U01"
+    ],
+    "id": "C30",
+    "input": "Arbitrary native Global program or descriptor unload/recompile while saved function exists"
+  }
+]

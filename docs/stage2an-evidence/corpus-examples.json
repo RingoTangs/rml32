@@ -1,0 +1,6669 @@
+[
+  {
+    "bound_count": 3,
+    "efun_numeric_name": null,
+    "flags": 131,
+    "function": "log_local",
+    "function_index": 4,
+    "member_node_offset": 5702,
+    "member_sha256": "96c4154b61dea5006ce612fefb65b3b797d68ae1b0216ac73189a197f49b938a",
+    "mode": "object",
+    "nodes_offset": 5606,
+    "pc": 24,
+    "segment_kind": "functions",
+    "selector": "c",
+    "service": "aaa",
+    "slot": 755,
+    "snippet": [
+      {
+        "node": [
+          12,
+          0,
+          64
+        ],
+        "pc": 22
+      },
+      {
+        "node": [
+          0,
+          0,
+          61
+        ],
+        "pc": 23
+      },
+      {
+        "node": [
+          755,
+          -125,
+          23
+        ],
+        "pc": 24
+      },
+      {
+        "node": [
+          21,
+          0,
+          64
+        ],
+        "pc": 25
+      },
+      {
+        "node": [
+          30,
+          0,
+          64
+        ],
+        "pc": 26
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/daemons/logd.o"
+  },
+  {
+    "bound_count": 2,
+    "efun_numeric_name": "call_other",
+    "flags": 194,
+    "function": "__init__",
+    "function_index": null,
+    "member_node_offset": 14610,
+    "member_sha256": "67c1060eb814ce072491b047ec2a5c60ec27c5ed4d7a98e34469201eea558d07",
+    "mode": "object",
+    "nodes_offset": 14490,
+    "pc": 30,
+    "segment_kind": "init",
+    "selector": "K",
+    "service": "aaa",
+    "slot": 356,
+    "snippet": [
+      {
+        "node": [
+          8,
+          0,
+          64
+        ],
+        "pc": 28
+      },
+      {
+        "node": [
+          9,
+          0,
+          64
+        ],
+        "pc": 29
+      },
+      {
+        "node": [
+          356,
+          -62,
+          23
+        ],
+        "pc": 30
+      },
+      {
+        "node": [
+          14,
+          0,
+          64
+        ],
+        "pc": 31
+      },
+      {
+        "node": [
+          0,
+          0,
+          23
+        ],
+        "pc": 32
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/daemons/account_transactiond.o"
+  },
+  {
+    "bound_count": 13,
+    "efun_numeric_name": "call_other",
+    "flags": 205,
+    "function": "_main",
+    "function_index": 5,
+    "member_node_offset": 5950,
+    "member_sha256": "98ebb01e4321ac97a9f5f2e2c32b93e95bd9a08da0c0f82372c963271c99c4b1",
+    "mode": "object",
+    "nodes_offset": 5662,
+    "pc": 72,
+    "segment_kind": "functions",
+    "selector": "K",
+    "service": "aaa",
+    "slot": 356,
+    "snippet": [
+      {
+        "node": [
+          17,
+          0,
+          64
+        ],
+        "pc": 70
+      },
+      {
+        "node": [
+          19,
+          0,
+          64
+        ],
+        "pc": 71
+      },
+      {
+        "node": [
+          356,
+          -51,
+          23
+        ],
+        "pc": 72
+      },
+      {
+        "node": [
+          -10,
+          0,
+          57
+        ],
+        "pc": 73
+      },
+      {
+        "node": [
+          0,
+          0,
+          3
+        ],
+        "pc": 74
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/daemons/server/cmd_l_add_coin.o"
+  },
+  {
+    "bound_count": 11,
+    "efun_numeric_name": "call_other",
+    "flags": 203,
+    "function": "_main",
+    "function_index": 5,
+    "member_node_offset": 1643,
+    "member_sha256": "85dfb27de18bac734e8d10d30500c2ab9ee085105446d3726467c176fd3e3b8d",
+    "mode": "object",
+    "nodes_offset": 1483,
+    "pc": 40,
+    "segment_kind": "functions",
+    "selector": "K",
+    "service": "aaa",
+    "slot": 356,
+    "snippet": [
+      {
+        "node": [
+          7,
+          0,
+          64
+        ],
+        "pc": 38
+      },
+      {
+        "node": [
+          8,
+          0,
+          64
+        ],
+        "pc": 39
+      },
+      {
+        "node": [
+          356,
+          -53,
+          23
+        ],
+        "pc": 40
+      },
+      {
+        "node": [
+          -8,
+          0,
+          57
+        ],
+        "pc": 41
+      },
+      {
+        "node": [
+          0,
+          0,
+          3
+        ],
+        "pc": 42
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/daemons/server/cmd_l_convert_silver_coin.o"
+  },
+  {
+    "bound_count": 14,
+    "efun_numeric_name": "call_other",
+    "flags": 206,
+    "function": "_main",
+    "function_index": 5,
+    "member_node_offset": 6735,
+    "member_sha256": "8faed4bce6fc69a029c18167da349290f0cbc221c22ef07908761602c01a2f2c",
+    "mode": "object",
+    "nodes_offset": 6171,
+    "pc": 141,
+    "segment_kind": "functions",
+    "selector": "K",
+    "service": "aaa",
+    "slot": 356,
+    "snippet": [
+      {
+        "node": [
+          23,
+          0,
+          64
+        ],
+        "pc": 139
+      },
+      {
+        "node": [
+          36,
+          0,
+          64
+        ],
+        "pc": 140
+      },
+      {
+        "node": [
+          356,
+          -50,
+          23
+        ],
+        "pc": 141
+      },
+      {
+        "node": [
+          -9,
+          0,
+          57
+        ],
+        "pc": 142
+      },
+      {
+        "node": [
+          0,
+          0,
+          3
+        ],
+        "pc": 143
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/daemons/server/cmd_l_cost_coin.o"
+  },
+  {
+    "bound_count": 5,
+    "efun_numeric_name": "call_other",
+    "flags": 197,
+    "function": "block_account",
+    "function_index": 37,
+    "member_node_offset": 26462,
+    "member_sha256": "fbad2268542cac34b915222e0e6ba038e390b5098d06295834c707654c4bbd05",
+    "mode": "object",
+    "nodes_offset": 25662,
+    "pc": 200,
+    "segment_kind": "functions",
+    "selector": "K",
+    "service": "aaa",
+    "slot": 356,
+    "snippet": [
+      {
+        "node": [
+          76,
+          0,
+          64
+        ],
+        "pc": 198
+      },
+      {
+        "node": [
+          65,
+          0,
+          64
+        ],
+        "pc": 199
+      },
+      {
+        "node": [
+          356,
+          -59,
+          23
+        ],
+        "pc": 200
+      },
+      {
+        "node": [
+          10,
+          0,
+          59
+        ],
+        "pc": 201
+      },
+      {
+        "node": [
+          94,
+          1,
+          6
+        ],
+        "pc": 202
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/daemons/accountd.o"
+  },
+  {
+    "bound_count": 0,
+    "efun_numeric_name": "strlen",
+    "flags": 192,
+    "function": "analysis_ban_words_file",
+    "function_index": 663,
+    "member_node_offset": 253212,
+    "member_sha256": "f9896828c87399be4977107fbfbe3f67fd71caebd3008bda84be16cc722d0a0e",
+    "mode": "global",
+    "nodes_offset": 252828,
+    "pc": 96,
+    "segment_kind": "functions",
+    "selector": "K",
+    "service": "aaa",
+    "slot": 122,
+    "snippet": [
+      {
+        "node": [
+          -6,
+          0,
+          35
+        ],
+        "pc": 94
+      },
+      {
+        "node": [
+          12,
+          -6,
+          18
+        ],
+        "pc": 95
+      },
+      {
+        "node": [
+          122,
+          -64,
+          23
+        ],
+        "pc": 96
+      },
+      {
+        "node": [
+          -5,
+          0,
+          55
+        ],
+        "pc": 97
+      },
+      {
+        "node": [
+          -4,
+          0,
+          55
+        ],
+        "pc": 98
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o"
+  },
+  {
+    "bound_count": 1,
+    "efun_numeric_name": null,
+    "flags": 129,
+    "function": "xdbc_log",
+    "function_index": 581,
+    "member_node_offset": 257130,
+    "member_sha256": "f9896828c87399be4977107fbfbe3f67fd71caebd3008bda84be16cc722d0a0e",
+    "mode": "global",
+    "nodes_offset": 257026,
+    "pc": 26,
+    "segment_kind": "functions",
+    "selector": "c",
+    "service": "aaa",
+    "slot": 584,
+    "snippet": [
+      {
+        "node": [
+          1,
+          0,
+          69
+        ],
+        "pc": 24
+      },
+      {
+        "node": [
+          0,
+          0,
+          55
+        ],
+        "pc": 25
+      },
+      {
+        "node": [
+          584,
+          -127,
+          23
+        ],
+        "pc": 26
+      },
+      {
+        "node": [
+          36,
+          2,
+          6
+        ],
+        "pc": 27
+      },
+      {
+        "node": [
+          4,
+          1,
+          5
+        ],
+        "pc": 28
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o"
+  },
+  {
+    "bound_count": 1,
+    "efun_numeric_name": null,
+    "flags": 129,
+    "function": "cmd_internal_comm_closed",
+    "function_index": 828,
+    "member_node_offset": 271649,
+    "member_sha256": "f9896828c87399be4977107fbfbe3f67fd71caebd3008bda84be16cc722d0a0e",
+    "mode": "global",
+    "nodes_offset": 271589,
+    "pc": 15,
+    "segment_kind": "functions",
+    "selector": "c",
+    "service": "aaa",
+    "slot": 827,
+    "snippet": [
+      {
+        "node": [
+          0,
+          0,
+          46
+        ],
+        "pc": 13
+      },
+      {
+        "node": [
+          0,
+          0,
+          55
+        ],
+        "pc": 14
+      },
+      {
+        "node": [
+          827,
+          -127,
+          23
+        ],
+        "pc": 15
+      },
+      {
+        "node": [
+          531,
+          0,
+          64
+        ],
+        "pc": 16
+      },
+      {
+        "node": [
+          532,
+          0,
+          64
+        ],
+        "pc": 17
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o"
+  },
+  {
+    "bound_count": 1,
+    "efun_numeric_name": null,
+    "flags": 129,
+    "function": "cmd_new_connection",
+    "function_index": 820,
+    "member_node_offset": 282060,
+    "member_sha256": "f9896828c87399be4977107fbfbe3f67fd71caebd3008bda84be16cc722d0a0e",
+    "mode": "global",
+    "nodes_offset": 282048,
+    "pc": 3,
+    "segment_kind": "functions",
+    "selector": "c",
+    "service": "aaa",
+    "slot": 819,
+    "snippet": [
+      {
+        "node": [
+          0,
+          0,
+          27
+        ],
+        "pc": 1
+      },
+      {
+        "node": [
+          0,
+          0,
+          55
+        ],
+        "pc": 2
+      },
+      {
+        "node": [
+          819,
+          -127,
+          23
+        ],
+        "pc": 3
+      },
+      {
+        "node": [
+          531,
+          0,
+          64
+        ],
+        "pc": 4
+      },
+      {
+        "node": [
+          532,
+          0,
+          64
+        ],
+        "pc": 5
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o"
+  },
+  {
+    "bound_count": 3,
+    "efun_numeric_name": null,
+    "flags": 131,
+    "function": "read_content_to_ex",
+    "function_index": 718,
+    "member_node_offset": 283450,
+    "member_sha256": "f9896828c87399be4977107fbfbe3f67fd71caebd3008bda84be16cc722d0a0e",
+    "mode": "global",
+    "nodes_offset": 283430,
+    "pc": 5,
+    "segment_kind": "functions",
+    "selector": "c",
+    "service": "aaa",
+    "slot": 717,
+    "snippet": [
+      {
+        "node": [
+          0,
+          0,
+          55
+        ],
+        "pc": 3
+      },
+      {
+        "node": [
+          3,
+          0,
+          55
+        ],
+        "pc": 4
+      },
+      {
+        "node": [
+          717,
+          -125,
+          23
+        ],
+        "pc": 5
+      },
+      {
+        "node": [
+          2,
+          0,
+          55
+        ],
+        "pc": 6
+      },
+      {
+        "node": [
+          1,
+          0,
+          55
+        ],
+        "pc": 7
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o"
+  },
+  {
+    "bound_count": 2,
+    "efun_numeric_name": null,
+    "flags": 130,
+    "function": "write_content_to_ex",
+    "function_index": 722,
+    "member_node_offset": 301693,
+    "member_sha256": "f9896828c87399be4977107fbfbe3f67fd71caebd3008bda84be16cc722d0a0e",
+    "mode": "global",
+    "nodes_offset": 301621,
+    "pc": 18,
+    "segment_kind": "functions",
+    "selector": "c",
+    "service": "aaa",
+    "slot": 721,
+    "snippet": [
+      {
+        "node": [
+          4,
+          0,
+          55
+        ],
+        "pc": 16
+      },
+      {
+        "node": [
+          0,
+          0,
+          55
+        ],
+        "pc": 17
+      },
+      {
+        "node": [
+          721,
+          -126,
+          23
+        ],
+        "pc": 18
+      },
+      {
+        "node": [
+          -1,
+          0,
+          55
+        ],
+        "pc": 19
+      },
+      {
+        "node": [
+          2,
+          0,
+          55
+        ],
+        "pc": 20
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o"
+  },
+  {
+    "bound_count": 0,
+    "efun_numeric_name": null,
+    "flags": 128,
+    "function": "init_compile_module",
+    "function_index": 796,
+    "member_node_offset": 320457,
+    "member_sha256": "f9896828c87399be4977107fbfbe3f67fd71caebd3008bda84be16cc722d0a0e",
+    "mode": "global",
+    "nodes_offset": 320441,
+    "pc": 4,
+    "segment_kind": "functions",
+    "selector": "c",
+    "service": "aaa",
+    "slot": 798,
+    "snippet": [
+      {
+        "node": [
+          67,
+          0,
+          6
+        ],
+        "pc": 2
+      },
+      {
+        "node": [
+          17,
+          2,
+          33
+        ],
+        "pc": 3
+      },
+      {
+        "node": [
+          798,
+          -128,
+          23
+        ],
+        "pc": 4
+      },
+      {
+        "node": [
+          84,
+          0,
+          54
+        ],
+        "pc": 5
+      },
+      {
+        "node": [
+          0,
+          0,
+          3
+        ],
+        "pc": 6
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o"
+  },
+  {
+    "bound_count": 0,
+    "efun_numeric_name": null,
+    "flags": 128,
+    "function": "init_compile_module",
+    "function_index": 796,
+    "member_node_offset": 320485,
+    "member_sha256": "f9896828c87399be4977107fbfbe3f67fd71caebd3008bda84be16cc722d0a0e",
+    "mode": "global",
+    "nodes_offset": 320441,
+    "pc": 11,
+    "segment_kind": "functions",
+    "selector": "c",
+    "service": "aaa",
+    "slot": 804,
+    "snippet": [
+      {
+        "node": [
+          87,
+          0,
+          54
+        ],
+        "pc": 9
+      },
+      {
+        "node": [
+          0,
+          0,
+          3
+        ],
+        "pc": 10
+      },
+      {
+        "node": [
+          804,
+          -128,
+          23
+        ],
+        "pc": 11
+      },
+      {
+        "node": [
+          86,
+          0,
+          54
+        ],
+        "pc": 12
+      },
+      {
+        "node": [
+          0,
+          0,
+          3
+        ],
+        "pc": 13
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o"
+  },
+  {
+    "bound_count": 0,
+    "efun_numeric_name": null,
+    "flags": 128,
+    "function": "init_compile_module",
+    "function_index": 796,
+    "member_node_offset": 320497,
+    "member_sha256": "f9896828c87399be4977107fbfbe3f67fd71caebd3008bda84be16cc722d0a0e",
+    "mode": "global",
+    "nodes_offset": 320441,
+    "pc": 14,
+    "segment_kind": "functions",
+    "selector": "c",
+    "service": "aaa",
+    "slot": 797,
+    "snippet": [
+      {
+        "node": [
+          86,
+          0,
+          54
+        ],
+        "pc": 12
+      },
+      {
+        "node": [
+          0,
+          0,
+          3
+        ],
+        "pc": 13
+      },
+      {
+        "node": [
+          797,
+          -128,
+          23
+        ],
+        "pc": 14
+      },
+      {
+        "node": [
+          85,
+          0,
+          54
+        ],
+        "pc": 15
+      },
+      {
+        "node": [
+          0,
+          0,
+          3
+        ],
+        "pc": 16
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o"
+  },
+  {
+    "bound_count": 0,
+    "efun_numeric_name": null,
+    "flags": 128,
+    "function": "init_compile_module",
+    "function_index": 796,
+    "member_node_offset": 320525,
+    "member_sha256": "f9896828c87399be4977107fbfbe3f67fd71caebd3008bda84be16cc722d0a0e",
+    "mode": "global",
+    "nodes_offset": 320441,
+    "pc": 21,
+    "segment_kind": "functions",
+    "selector": "c",
+    "service": "aaa",
+    "slot": 800,
+    "snippet": [
+      {
+        "node": [
+          0,
+          0,
+          46
+        ],
+        "pc": 19
+      },
+      {
+        "node": [
+          16,
+          0,
+          31
+        ],
+        "pc": 20
+      },
+      {
+        "node": [
+          800,
+          -128,
+          23
+        ],
+        "pc": 21
+      },
+      {
+        "node": [
+          84,
+          0,
+          54
+        ],
+        "pc": 22
+      },
+      {
+        "node": [
+          0,
+          0,
+          3
+        ],
+        "pc": 23
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o"
+  },
+  {
+    "bound_count": 0,
+    "efun_numeric_name": null,
+    "flags": 128,
+    "function": "init_compile_module",
+    "function_index": 796,
+    "member_node_offset": 320553,
+    "member_sha256": "f9896828c87399be4977107fbfbe3f67fd71caebd3008bda84be16cc722d0a0e",
+    "mode": "global",
+    "nodes_offset": 320441,
+    "pc": 28,
+    "segment_kind": "functions",
+    "selector": "c",
+    "service": "aaa",
+    "slot": 805,
+    "snippet": [
+      {
+        "node": [
+          87,
+          0,
+          54
+        ],
+        "pc": 26
+      },
+      {
+        "node": [
+          0,
+          0,
+          3
+        ],
+        "pc": 27
+      },
+      {
+        "node": [
+          805,
+          -128,
+          23
+        ],
+        "pc": 28
+      },
+      {
+        "node": [
+          86,
+          0,
+          54
+        ],
+        "pc": 29
+      },
+      {
+        "node": [
+          0,
+          0,
+          3
+        ],
+        "pc": 30
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o"
+  },
+  {
+    "bound_count": 0,
+    "efun_numeric_name": null,
+    "flags": 128,
+    "function": "init_compile_module",
+    "function_index": 796,
+    "member_node_offset": 320565,
+    "member_sha256": "f9896828c87399be4977107fbfbe3f67fd71caebd3008bda84be16cc722d0a0e",
+    "mode": "global",
+    "nodes_offset": 320441,
+    "pc": 31,
+    "segment_kind": "functions",
+    "selector": "c",
+    "service": "aaa",
+    "slot": 799,
+    "snippet": [
+      {
+        "node": [
+          86,
+          0,
+          54
+        ],
+        "pc": 29
+      },
+      {
+        "node": [
+          0,
+          0,
+          3
+        ],
+        "pc": 30
+      },
+      {
+        "node": [
+          799,
+          -128,
+          23
+        ],
+        "pc": 31
+      },
+      {
+        "node": [
+          85,
+          0,
+          54
+        ],
+        "pc": 32
+      },
+      {
+        "node": [
+          0,
+          0,
+          3
+        ],
+        "pc": 33
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o"
+  },
+  {
+    "bound_count": 1,
+    "efun_numeric_name": null,
+    "flags": 129,
+    "function": "mysql_select_column",
+    "function_index": 812,
+    "member_node_offset": 327674,
+    "member_sha256": "f9896828c87399be4977107fbfbe3f67fd71caebd3008bda84be16cc722d0a0e",
+    "mode": "global",
+    "nodes_offset": 327650,
+    "pc": 6,
+    "segment_kind": "functions",
+    "selector": "c",
+    "service": "aaa",
+    "slot": 807,
+    "snippet": [
+      {
+        "node": [
+          3,
+          0,
+          55
+        ],
+        "pc": 4
+      },
+      {
+        "node": [
+          2,
+          0,
+          55
+        ],
+        "pc": 5
+      },
+      {
+        "node": [
+          807,
+          -127,
+          23
+        ],
+        "pc": 6
+      },
+      {
+        "node": [
+          1,
+          0,
+          55
+        ],
+        "pc": 7
+      },
+      {
+        "node": [
+          0,
+          0,
+          55
+        ],
+        "pc": 8
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o"
+  },
+  {
+    "bound_count": 0,
+    "efun_numeric_name": null,
+    "flags": 128,
+    "function": "start_stat_cmds",
+    "function_index": 788,
+    "member_node_offset": 372184,
+    "member_sha256": "f9896828c87399be4977107fbfbe3f67fd71caebd3008bda84be16cc722d0a0e",
+    "mode": "global",
+    "nodes_offset": 372040,
+    "pc": 36,
+    "segment_kind": "functions",
+    "selector": "c",
+    "service": "aaa",
+    "slot": 787,
+    "snippet": [
+      {
+        "node": [
+          0,
+          0,
+          3
+        ],
+        "pc": 34
+      },
+      {
+        "node": [
+          0,
+          0,
+          51
+        ],
+        "pc": 35
+      },
+      {
+        "node": [
+          787,
+          -128,
+          23
+        ],
+        "pc": 36
+      },
+      {
+        "node": [
+          478,
+          0,
+          64
+        ],
+        "pc": 37
+      },
+      {
+        "node": [
+          0,
+          0,
+          55
+        ],
+        "pc": 38
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o"
+  },
+  {
+    "bound_count": 2,
+    "efun_numeric_name": null,
+    "flags": 130,
+    "function": "cmd_disconnected",
+    "function_index": 824,
+    "member_node_offset": 384580,
+    "member_sha256": "f9896828c87399be4977107fbfbe3f67fd71caebd3008bda84be16cc722d0a0e",
+    "mode": "global",
+    "nodes_offset": 384508,
+    "pc": 18,
+    "segment_kind": "functions",
+    "selector": "c",
+    "service": "aaa",
+    "slot": 823,
+    "snippet": [
+      {
+        "node": [
+          1,
+          0,
+          55
+        ],
+        "pc": 16
+      },
+      {
+        "node": [
+          0,
+          0,
+          55
+        ],
+        "pc": 17
+      },
+      {
+        "node": [
+          823,
+          -126,
+          23
+        ],
+        "pc": 18
+      },
+      {
+        "node": [
+          531,
+          0,
+          64
+        ],
+        "pc": 19
+      },
+      {
+        "node": [
+          532,
+          0,
+          64
+        ],
+        "pc": 20
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o"
+  },
+  {
+    "bound_count": 1,
+    "efun_numeric_name": null,
+    "flags": 129,
+    "function": "size_max",
+    "function_index": 775,
+    "member_node_offset": 392936,
+    "member_sha256": "f9896828c87399be4977107fbfbe3f67fd71caebd3008bda84be16cc722d0a0e",
+    "mode": "global",
+    "nodes_offset": 392668,
+    "pc": 67,
+    "segment_kind": "functions",
+    "selector": "c",
+    "service": "aaa",
+    "slot": 774,
+    "snippet": [
+      {
+        "node": [
+          -1,
+          0,
+          59
+        ],
+        "pc": 65
+      },
+      {
+        "node": [
+          -1,
+          0,
+          55
+        ],
+        "pc": 66
+      },
+      {
+        "node": [
+          774,
+          -127,
+          23
+        ],
+        "pc": 67
+      },
+      {
+        "node": [
+          -1,
+          0,
+          55
+        ],
+        "pc": 68
+      },
+      {
+        "node": [
+          78,
+          1,
+          6
+        ],
+        "pc": 69
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o"
+  },
+  {
+    "bound_count": 0,
+    "efun_numeric_name": null,
+    "flags": 128,
+    "function": "mysql_select_array",
+    "function_index": 811,
+    "member_node_offset": 394239,
+    "member_sha256": "f9896828c87399be4977107fbfbe3f67fd71caebd3008bda84be16cc722d0a0e",
+    "mode": "global",
+    "nodes_offset": 394219,
+    "pc": 5,
+    "segment_kind": "functions",
+    "selector": "c",
+    "service": "aaa",
+    "slot": 809,
+    "snippet": [
+      {
+        "node": [
+          0,
+          0,
+          27
+        ],
+        "pc": 3
+      },
+      {
+        "node": [
+          2,
+          0,
+          55
+        ],
+        "pc": 4
+      },
+      {
+        "node": [
+          809,
+          -128,
+          23
+        ],
+        "pc": 5
+      },
+      {
+        "node": [
+          1,
+          0,
+          55
+        ],
+        "pc": 6
+      },
+      {
+        "node": [
+          0,
+          0,
+          55
+        ],
+        "pc": 7
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o"
+  },
+  {
+    "bound_count": 0,
+    "efun_numeric_name": null,
+    "flags": 128,
+    "function": "pp_start_profiling_ex",
+    "function_index": 832,
+    "member_node_offset": 395198,
+    "member_sha256": "f9896828c87399be4977107fbfbe3f67fd71caebd3008bda84be16cc722d0a0e",
+    "mode": "global",
+    "nodes_offset": 395050,
+    "pc": 37,
+    "segment_kind": "functions",
+    "selector": "c",
+    "service": "aaa",
+    "slot": 835,
+    "snippet": [
+      {
+        "node": [
+          0,
+          0,
+          73
+        ],
+        "pc": 35
+      },
+      {
+        "node": [
+          0,
+          0,
+          46
+        ],
+        "pc": 36
+      },
+      {
+        "node": [
+          835,
+          -128,
+          23
+        ],
+        "pc": 37
+      },
+      {
+        "node": [
+          562,
+          0,
+          64
+        ],
+        "pc": 38
+      },
+      {
+        "node": [
+          1,
+          0,
+          55
+        ],
+        "pc": 39
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o"
+  },
+  {
+    "bound_count": 0,
+    "efun_numeric_name": null,
+    "flags": 128,
+    "function": "xdbc_update_output_file",
+    "function_index": 587,
+    "member_node_offset": 400111,
+    "member_sha256": "f9896828c87399be4977107fbfbe3f67fd71caebd3008bda84be16cc722d0a0e",
+    "mode": "global",
+    "nodes_offset": 399939,
+    "pc": 43,
+    "segment_kind": "functions",
+    "selector": "c",
+    "service": "aaa",
+    "slot": 587,
+    "snippet": [
+      {
+        "node": [
+          0,
+          0,
+          51
+        ],
+        "pc": 41
+      },
+      {
+        "node": [
+          -19,
+          -3,
+          80
+        ],
+        "pc": 42
+      },
+      {
+        "node": [
+          587,
+          -128,
+          23
+        ],
+        "pc": 43
+      },
+      {
+        "node": [
+          61,
+          0,
+          64
+        ],
+        "pc": 44
+      },
+      {
+        "node": [
+          0,
+          0,
+          60
+        ],
+        "pc": 45
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o"
+  },
+  {
+    "bound_count": 1,
+    "efun_numeric_name": null,
+    "flags": 129,
+    "function": "telnet_new_client",
+    "function_index": 830,
+    "member_node_offset": 410628,
+    "member_sha256": "f9896828c87399be4977107fbfbe3f67fd71caebd3008bda84be16cc722d0a0e",
+    "mode": "global",
+    "nodes_offset": 410500,
+    "pc": 32,
+    "segment_kind": "functions",
+    "selector": "c",
+    "service": "aaa",
+    "slot": 829,
+    "snippet": [
+      {
+        "node": [
+          6,
+          2,
+          33
+        ],
+        "pc": 30
+      },
+      {
+        "node": [
+          0,
+          0,
+          55
+        ],
+        "pc": 31
+      },
+      {
+        "node": [
+          829,
+          -127,
+          23
+        ],
+        "pc": 32
+      },
+      {
+        "node": [
+          0,
+          0,
+          59
+        ],
+        "pc": 33
+      },
+      {
+        "node": [
+          268,
+          2,
+          6
+        ],
+        "pc": 34
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o"
+  },
+  {
+    "bound_count": 1,
+    "efun_numeric_name": null,
+    "flags": 129,
+    "function": "size_objects",
+    "function_index": 777,
+    "member_node_offset": 445381,
+    "member_sha256": "f9896828c87399be4977107fbfbe3f67fd71caebd3008bda84be16cc722d0a0e",
+    "mode": "global",
+    "nodes_offset": 445185,
+    "pc": 49,
+    "segment_kind": "functions",
+    "selector": "c",
+    "service": "aaa",
+    "slot": 776,
+    "snippet": [
+      {
+        "node": [
+          -1,
+          0,
+          59
+        ],
+        "pc": 47
+      },
+      {
+        "node": [
+          -1,
+          0,
+          55
+        ],
+        "pc": 48
+      },
+      {
+        "node": [
+          776,
+          -127,
+          23
+        ],
+        "pc": 49
+      },
+      {
+        "node": [
+          -1,
+          0,
+          55
+        ],
+        "pc": 50
+      },
+      {
+        "node": [
+          78,
+          1,
+          6
+        ],
+        "pc": 51
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o"
+  },
+  {
+    "bound_count": 0,
+    "efun_numeric_name": null,
+    "flags": 128,
+    "function": "mysql_select",
+    "function_index": 810,
+    "member_node_offset": 448381,
+    "member_sha256": "f9896828c87399be4977107fbfbe3f67fd71caebd3008bda84be16cc722d0a0e",
+    "mode": "global",
+    "nodes_offset": 448361,
+    "pc": 5,
+    "segment_kind": "functions",
+    "selector": "c",
+    "service": "aaa",
+    "slot": 808,
+    "snippet": [
+      {
+        "node": [
+          0,
+          0,
+          27
+        ],
+        "pc": 3
+      },
+      {
+        "node": [
+          2,
+          0,
+          55
+        ],
+        "pc": 4
+      },
+      {
+        "node": [
+          808,
+          -128,
+          23
+        ],
+        "pc": 5
+      },
+      {
+        "node": [
+          1,
+          0,
+          55
+        ],
+        "pc": 6
+      },
+      {
+        "node": [
+          0,
+          0,
+          55
+        ],
+        "pc": 7
+      }
+    ],
+    "source": "aaa/pack_data/lib_aaa32.pak/aaa/start_aaa.o"
+  },
+  {
+    "bound_count": 3,
+    "efun_numeric_name": null,
+    "flags": 131,
+    "function": "log_local",
+    "function_index": 4,
+    "member_node_offset": 5702,
+    "member_sha256": "f09f2b744e688f6c9d5df3c9fe9700db0ea01f38f14b2f0af22cd6780ac30639",
+    "mode": "object",
+    "nodes_offset": 5606,
+    "pc": 24,
+    "segment_kind": "functions",
+    "selector": "c",
+    "service": "ccs",
+    "slot": 760,
+    "snippet": [
+      {
+        "node": [
+          12,
+          0,
+          64
+        ],
+        "pc": 22
+      },
+      {
+        "node": [
+          0,
+          0,
+          61
+        ],
+        "pc": 23
+      },
+      {
+        "node": [
+          760,
+          -125,
+          23
+        ],
+        "pc": 24
+      },
+      {
+        "node": [
+          21,
+          0,
+          64
+        ],
+        "pc": 25
+      },
+      {
+        "node": [
+          30,
+          0,
+          64
+        ],
+        "pc": 26
+      }
+    ],
+    "source": "ccs/pack_data/lib_ccs32.pak/daemons/logd.o"
+  },
+  {
+    "bound_count": 6,
+    "efun_numeric_name": "call_other",
+    "flags": 198,
+    "function": "request_dispatch_city",
+    "function_index": 33,
+    "member_node_offset": 28361,
+    "member_sha256": "2bed680e0fa0e09efc5ebcb144433b71e7b8b165c4a7f16da88da8cc3b86cd5b",
+    "mode": "object",
+    "nodes_offset": 28197,
+    "pc": 41,
+    "segment_kind": "functions",
+    "selector": "K",
+    "service": "ccs",
+    "slot": 356,
+    "snippet": [
+      {
+        "node": [
+          84,
+          0,
+          64
+        ],
+        "pc": 39
+      },
+      {
+        "node": [
+          42,
+          0,
+          64
+        ],
+        "pc": 40
+      },
+      {
+        "node": [
+          356,
+          -58,
+          23
+        ],
+        "pc": 41
+      },
+      {
+        "node": [
+          81,
+          0,
+          64
+        ],
+        "pc": 42
+      },
+      {
+        "node": [
+          85,
+          0,
+          64
+        ],
+        "pc": 43
+      }
+    ],
+    "source": "ccs/pack_data/lib_ccs32.pak/ccs/daemons/ccs_cityward.o"
+  },
+  {
+    "bound_count": 3,
+    "efun_numeric_name": "call_other",
+    "flags": 195,
+    "function": "batch_revise_shops",
+    "function_index": 33,
+    "member_node_offset": 4298,
+    "member_sha256": "70d9452400cefc6619c612a5b9f47d664cf8606500a8eb7ab0f56317126e2eb3",
+    "mode": "object",
+    "nodes_offset": 4098,
+    "pc": 50,
+    "segment_kind": "functions",
+    "selector": "K",
+    "service": "ccs",
+    "slot": 356,
+    "snippet": [
+      {
+        "node": [
+          -2,
+          0,
+          55
+        ],
+        "pc": 48
+      },
+      {
+        "node": [
+          98,
+          0,
+          64
+        ],
+        "pc": 49
+      },
+      {
+        "node": [
+          356,
+          -61,
+          23
+        ],
+        "pc": 50
+      },
+      {
+        "node": [
+          -5,
+          0,
+          57
+        ],
+        "pc": 51
+      },
+      {
+        "node": [
+          0,
+          0,
+          3
+        ],
+        "pc": 52
+      }
+    ],
+    "source": "ccs/pack_data/lib_ccs32.pak/ccs/daemons/shop_mgrd.o"
+  },
+  {
+    "bound_count": 0,
+    "efun_numeric_name": "trim",
+    "flags": 192,
+    "function": "create_data",
+    "function_index": 32,
+    "member_node_offset": 11054,
+    "member_sha256": "70d9452400cefc6619c612a5b9f47d664cf8606500a8eb7ab0f56317126e2eb3",
+    "mode": "object",
+    "nodes_offset": 11018,
+    "pc": 9,
+    "segment_kind": "functions",
+    "selector": "K",
+    "service": "ccs",
+    "slot": 141,
+    "snippet": [
+      {
+        "node": [
+          0,
+          0,
+          3
+        ],
+        "pc": 7
+      },
+      {
+        "node": [
+          0,
+          0,
+          51
+        ],
+        "pc": 8
+      },
+      {
+        "node": [
+          141,
+          -64,
+          23
+        ],
+        "pc": 9
+      },
+      {
+        "node": [
+          91,
+          0,
+          64
+        ],
+        "pc": 10
+      },
+      {
+        "node": [
+          -2,
+          0,
+          55
+        ],
+        "pc": 11
+      }
+    ],
+    "source": "ccs/pack_data/lib_ccs32.pak/ccs/daemons/shop_mgrd.o"
+  },
+  {
+    "bound_count": 2,
+    "efun_numeric_name": "call_other",
+    "flags": 194,
+    "function": "do_init_others",
+    "function_index": 107,
+    "member_node_offset": 101904,
+    "member_sha256": "8d381e39d806dad8931c9e727e99061690a77ec69907a006b296cbae6d8d44b8",
+    "mode": "object",
+    "nodes_offset": 101380,
+    "pc": 131,
+    "segment_kind": "functions",
+    "selector": "K",
+    "service": "ccs",
+    "slot": 356,
+    "snippet": [
+      {
+        "node": [
+          246,
+          0,
+          64
+        ],
+        "pc": 129
+      },
+      {
+        "node": [
+          0,
+          0,
+          64
+        ],
+        "pc": 130
+      },
+      {
+        "node": [
+          356,
+          -62,
+          23
+        ],
+        "pc": 131
+      },
+      {
+        "node": [
+          245,
+          0,
+          64
+        ],
+        "pc": 132
+      },
+      {
+        "node": [
+          900,
+          0,
+          59
+        ],
+        "pc": 133
+      }
+    ],
+    "source": "ccs/pack_data/lib_ccs32.pak/ccs/daemons/party_masterd.o"
+  },
+  {
+    "bound_count": 4,
+    "efun_numeric_name": "call_other",
+    "flags": 196,
+    "function": "request_oper_city_from_csa",
+    "function_index": 28,
+    "member_node_offset": 19696,
+    "member_sha256": "55fc9a5e8a8dd8a7647e8d560cc09b20d006c4d097a6756a9f28cbb21989a018",
+    "mode": "object",
+    "nodes_offset": 19460,
+    "pc": 59,
+    "segment_kind": "functions",
+    "selector": "K",
+    "service": "ccs",
+    "slot": 356,
+    "snippet": [
+      {
+        "node": [
+          111,
+          0,
+          64
+        ],
+        "pc": 57
+      },
+      {
+        "node": [
+          74,
+          0,
+          64
+        ],
+        "pc": 58
+      },
+      {
+        "node": [
+          356,
+          -60,
+          23
+        ],
+        "pc": 59
+      },
+      {
+        "node": [
+          62,
+          0,
+          64
+        ],
+        "pc": 60
+      },
+      {
+        "node": [
+          65,
+          0,
+          64
+        ],
+        "pc": 61
+      }
+    ],
+    "source": "ccs/pack_data/lib_ccs32.pak/ccs/daemons/cross_server/citywar.o"
+  },
+  {
+    "bound_count": 2,
+    "efun_numeric_name": "map_delete",
+    "flags": 194,
+    "function": "restore_from_text",
+    "function_index": 29,
+    "member_node_offset": 3620,
+    "member_sha256": "52b57c4fb0ee76513882636e043a1f87af57d21892dbe8de5d838e31031aaf4b",
+    "mode": "object",
+    "nodes_offset": 3284,
+    "pc": 84,
+    "segment_kind": "functions",
+    "selector": "K",
+    "service": "ccs",
+    "slot": 80,
+    "snippet": [
+      {
+        "node": [
+          -3,
+          0,
+          55
+        ],
+        "pc": 82
+      },
+      {
+        "node": [
+          -2,
+          0,
+          55
+        ],
+        "pc": 83
+      },
+      {
+        "node": [
+          80,
+          -62,
+          23
+        ],
+        "pc": 84
+      },
+      {
+        "node": [
+          -12,
+          0,
+          57
+        ],
+        "pc": 85
+      },
+      {
+        "node": [
+          0,
+          0,
+          3
+        ],
+        "pc": 86
+      }
+    ],
+    "source": "ccs/pack_data/lib_ccs32.pak/ccs/clone/misc/store.o"
+  },
+  {
+    "bound_count": 1,
+    "efun_numeric_name": null,
+    "flags": 129,
+    "function": "cmd_internal_comm_closed",
+    "function_index": 979,
+    "member_node_offset": 321660,
+    "member_sha256": "256301c54d7c2b8bdf50aeded93c27325dad80690a2f488249d04acfe3f59b47",
+    "mode": "global",
+    "nodes_offset": 321600,
+    "pc": 15,
+    "segment_kind": "functions",
+    "selector": "c",
+    "service": "ccs",
+    "slot": 978,
+    "snippet": [
+      {
+        "node": [
+          0,
+          0,
+          46
+        ],
+        "pc": 13
+      },
+      {
+        "node": [
+          0,
+          0,
+          55
+        ],
+        "pc": 14
+      },
+      {
+        "node": [
+          978,
+          -127,
+          23
+        ],
+        "pc": 15
+      },
+      {
+        "node": [
+          725,
+          0,
+          64
+        ],
+        "pc": 16
+      },
+      {
+        "node": [
+          726,
+          0,
+          64
+        ],
+        "pc": 17
+      }
+    ],
+    "source": "ccs/pack_data/lib_ccs32.pak/ccs/start_ccs.o"
+  },
+  {
+    "bound_count": 1,
+    "efun_numeric_name": null,
+    "flags": 129,
+    "function": "cmd_new_connection",
+    "function_index": 971,
+    "member_node_offset": 333237,
+    "member_sha256": "256301c54d7c2b8bdf50aeded93c27325dad80690a2f488249d04acfe3f59b47",
+    "mode": "global",
+    "nodes_offset": 333225,
+    "pc": 3,
+    "segment_kind": "functions",
+    "selector": "c",
+    "service": "ccs",
+    "slot": 970,
+    "snippet": [
+      {
+        "node": [
+          0,
+          0,
+          27
+        ],
+        "pc": 1
+      },
+      {
+        "node": [
+          0,
+          0,
+          55
+        ],
+        "pc": 2
+      },
+      {
+        "node": [
+          970,
+          -127,
+          23
+        ],
+        "pc": 3
+      },
+      {
+        "node": [
+          725,
+          0,
+          64
+        ],
+        "pc": 4
+      },
+      {
+        "node": [
+          726,
+          0,
+          64
+        ],
+        "pc": 5
+      }
+    ],
+    "source": "ccs/pack_data/lib_ccs32.pak/ccs/start_ccs.o"
+  },
+  {
+    "bound_count": 3,
+    "efun_numeric_name": null,
+    "flags": 131,
+    "function": "read_content_to_ex",
+    "function_index": 721,
+    "member_node_offset": 336714,
+    "member_sha256": "256301c54d7c2b8bdf50aeded93c27325dad80690a2f488249d04acfe3f59b47",
+    "mode": "global",
+    "nodes_offset": 336694,
+    "pc": 5,
+    "segment_kind": "functions",
+    "selector": "c",
+    "service": "ccs",
+    "slot": 720,
+    "snippet": [
+      {
+        "node": [
+          0,
+          0,
+          55
+        ],
+        "pc": 3
+      },
+      {
+        "node": [
+          3,
+          0,
+          55
+        ],
+        "pc": 4
+      },
+      {
+        "node": [
+          720,
+          -125,
+          23
+        ],
+        "pc": 5
+      },
+      {
+        "node": [
+          2,
+          0,
+          55
+        ],
+        "pc": 6
+      },
+      {
+        "node": [
+          1,
+          0,
+          55
+        ],
+        "pc": 7
+      }
+    ],
+    "source": "ccs/pack_data/lib_ccs32.pak/ccs/start_ccs.o"
+  },
+  {
+    "bound_count": 2,
+    "efun_numeric_name": null,
+    "flags": 130,
+    "function": "write_content_to_ex",
+    "function_index": 725,
+    "member_node_offset": 365749,
+    "member_sha256": "256301c54d7c2b8bdf50aeded93c27325dad80690a2f488249d04acfe3f59b47",
+    "mode": "global",
+    "nodes_offset": 365677,
+    "pc": 18,
+    "segment_kind": "functions",
+    "selector": "c",
+    "service": "ccs",
+    "slot": 724,
+    "snippet": [
+      {
+        "node": [
+          4,
+          0,
+          55
+        ],
+        "pc": 16
+      },
+      {
+        "node": [
+          0,
+          0,
+          55
+        ],
+        "pc": 17
+      },
+      {
+        "node": [
+          724,
+          -126,
+          23
+        ],
+        "pc": 18
+      },
+      {
+        "node": [
+          -1,
+          0,
+          55
+        ],
+        "pc": 19
+      },
+      {
+        "node": [
+          2,
+          0,
+          55
+        ],
+        "pc": 20
+      }
+    ],
+    "source": "ccs/pack_data/lib_ccs32.pak/ccs/start_ccs.o"
+  },
+  {
+    "bound_count": 0,
+    "efun_numeric_name": null,
+    "flags": 128,
+    "function": "init_compile_module",
+    "function_index": 805,
+    "member_node_offset": 392536,
+    "member_sha256": "256301c54d7c2b8bdf50aeded93c27325dad80690a2f488249d04acfe3f59b47",
+    "mode": "global",
+    "nodes_offset": 392520,
+    "pc": 4,
+    "segment_kind": "functions",
+    "selector": "c",
+    "service": "ccs",
+    "slot": 807,
+    "snippet": [
+      {
+        "node": [
+          67,
+          0,
+          6
+        ],
+        "pc": 2
+      },
+      {
+        "node": [
+          17,
+          2,
+          33
+        ],
+        "pc": 3
+      },
+      {
+        "node": [
+          807,
+          -128,
+          23
+        ],
+        "pc": 4
+      },
+      {
+        "node": [
+          85,
+          0,
+          54
+        ],
+        "pc": 5
+      },
+      {
+        "node": [
+          0,
+          0,
+          3
+        ],
+        "pc": 6
+      }
+    ],
+    "source": "ccs/pack_data/lib_ccs32.pak/ccs/start_ccs.o"
+  },
+  {
+    "bound_count": 0,
+    "efun_numeric_name": null,
+    "flags": 128,
+    "function": "init_compile_module",
+    "function_index": 805,
+    "member_node_offset": 392564,
+    "member_sha256": "256301c54d7c2b8bdf50aeded93c27325dad80690a2f488249d04acfe3f59b47",
+    "mode": "global",
+    "nodes_offset": 392520,
+    "pc": 11,
+    "segment_kind": "functions",
+    "selector": "c",
+    "service": "ccs",
+    "slot": 813,
+    "snippet": [
+      {
+        "node": [
+          88,
+          0,
+          54
+        ],
+        "pc": 9
+      },
+      {
+        "node": [
+          0,
+          0,
+          3
+        ],
+        "pc": 10
+      },
+      {
+        "node": [
+          813,
+          -128,
+          23
+        ],
+        "pc": 11
+      },
+      {
+        "node": [
+          87,
+          0,
+          54
+        ],
+        "pc": 12
+      },
+      {
+        "node": [
+          0,
+          0,
+          3
+        ],
+        "pc": 13
+      }
+    ],
+    "source": "ccs/pack_data/lib_ccs32.pak/ccs/start_ccs.o"
+  },
+  {
+    "bound_count": 0,
+    "efun_numeric_name": null,
+    "flags": 128,
+    "function": "init_compile_module",
+    "function_index": 805,
+    "member_node_offset": 392576,
+    "member_sha256": "256301c54d7c2b8bdf50aeded93c27325dad80690a2f488249d04acfe3f59b47",
+    "mode": "global",
+    "nodes_offset": 392520,
+    "pc": 14,
+    "segment_kind": "functions",
+    "selector": "c",
+    "service": "ccs",
+    "slot": 806,
+    "snippet": [
+      {
+        "node": [
+          87,
+          0,
+          54
+        ],
+        "pc": 12
+      },
+      {
+        "node": [
+          0,
+          0,
+          3
+        ],
+        "pc": 13
+      },
+      {
+        "node": [
+          806,
+          -128,
+          23
+        ],
+        "pc": 14
+      },
+      {
+        "node": [
+          86,
+          0,
+          54
+        ],
+        "pc": 15
+      },
+      {
+        "node": [
+          0,
+          0,
+          3
+        ],
+        "pc": 16
+      }
+    ],
+    "source": "ccs/pack_data/lib_ccs32.pak/ccs/start_ccs.o"
+  },
+  {
+    "bound_count": 0,
+    "efun_numeric_name": null,
+    "flags": 128,
+    "function": "init_compile_module",
+    "function_index": 805,
+    "member_node_offset": 392632,
+    "member_sha256": "256301c54d7c2b8bdf50aeded93c27325dad80690a2f488249d04acfe3f59b47",
+    "mode": "global",
+    "nodes_offset": 392520,
+    "pc": 28,
+    "segment_kind": "functions",
+    "selector": "c",
+    "service": "ccs",
+    "slot": 814,
+    "snippet": [
+      {
+        "node": [
+          88,
+          0,
+          54
+        ],
+        "pc": 26
+      },
+      {
+        "node": [
+          0,
+          0,
+          3
+        ],
+        "pc": 27
+      },
+      {
+        "node": [
+          814,
+          -128,
+          23
+        ],
+        "pc": 28
+      },
+      {
+        "node": [
+          87,
+          0,
+          54
+        ],
+        "pc": 29
+      },
+      {
+        "node": [
+          0,
+          0,
+          3
+        ],
+        "pc": 30
+      }
+    ],
+    "source": "ccs/pack_data/lib_ccs32.pak/ccs/start_ccs.o"
+  },
+  {
+    "bound_count": 1,
+    "efun_numeric_name": null,
+    "flags": 129,
+    "function": "mysql_select_column",
+    "function_index": 990,
+    "member_node_offset": 402533,
+    "member_sha256": "256301c54d7c2b8bdf50aeded93c27325dad80690a2f488249d04acfe3f59b47",
+    "mode": "global",
+    "nodes_offset": 402509,
+    "pc": 6,
+    "segment_kind": "functions",
+    "selector": "c",
+    "service": "ccs",
+    "slot": 985,
+    "snippet": [
+      {
+        "node": [
+          3,
+          0,
+          55
+        ],
+        "pc": 4
+      },
+      {
+        "node": [
+          2,
+          0,
+          55
+        ],
+        "pc": 5
+      },
+      {
+        "node": [
+          985,
+          -127,
+          23
+        ],
+        "pc": 6
+      },
+      {
+        "node": [
+          1,
+          0,
+          55
+        ],
+        "pc": 7
+      },
+      {
+        "node": [
+          0,
+          0,
+          55
+        ],
+        "pc": 8
+      }
+    ],
+    "source": "ccs/pack_data/lib_ccs32.pak/ccs/start_ccs.o"
+  },
+  {
+    "bound_count": 0,
+    "efun_numeric_name": null,
+    "flags": 128,
+    "function": "start_stat_cmds",
+    "function_index": 797,
+    "member_node_offset": 458004,
+    "member_sha256": "256301c54d7c2b8bdf50aeded93c27325dad80690a2f488249d04acfe3f59b47",
+    "mode": "global",
+    "nodes_offset": 457860,
+    "pc": 36,
+    "segment_kind": "functions",
+    "selector": "c",
+    "service": "ccs",
+    "slot": 796,
+    "snippet": [
+      {
+        "node": [
+          0,
+          0,
+          3
+        ],
+        "pc": 34
+      },
+      {
+        "node": [
+          0,
+          0,
+          51
+        ],
+        "pc": 35
+      },
+      {
+        "node": [
+          796,
+          -128,
+          23
+        ],
+        "pc": 36
+      },
+      {
+        "node": [
+          500,
+          0,
+          64
+        ],
+        "pc": 37
+      },
+      {
+        "node": [
+          0,
+          0,
+          55
+        ],
+        "pc": 38
+      }
+    ],
+    "source": "ccs/pack_data/lib_ccs32.pak/ccs/start_ccs.o"
+  },
+  {
+    "bound_count": 2,
+    "efun_numeric_name": null,
+    "flags": 130,
+    "function": "cmd_disconnected",
+    "function_index": 975,
+    "member_node_offset": 473366,
+    "member_sha256": "256301c54d7c2b8bdf50aeded93c27325dad80690a2f488249d04acfe3f59b47",
+    "mode": "global",
+    "nodes_offset": 473294,
+    "pc": 18,
+    "segment_kind": "functions",
+    "selector": "c",
+    "service": "ccs",
+    "slot": 974,
+    "snippet": [
+      {
+        "node": [
+          1,
+          0,
+          55
+        ],
+        "pc": 16
+      },
+      {
+        "node": [
+          0,
+          0,
+          55
+        ],
+        "pc": 17
+      },
+      {
+        "node": [
+          974,
+          -126,
+          23
+        ],
+        "pc": 18
+      },
+      {
+        "node": [
+          725,
+          0,
+          64
+        ],
+        "pc": 19
+      },
+      {
+        "node": [
+          726,
+          0,
+          64
+        ],
+        "pc": 20
+      }
+    ],
+    "source": "ccs/pack_data/lib_ccs32.pak/ccs/start_ccs.o"
+  },
+  {
+    "bound_count": 1,
+    "efun_numeric_name": null,
+    "flags": 129,
+    "function": "size_max",
+    "function_index": 784,
+    "member_node_offset": 483128,
+    "member_sha256": "256301c54d7c2b8bdf50aeded93c27325dad80690a2f488249d04acfe3f59b47",
+    "mode": "global",
+    "nodes_offset": 482860,
+    "pc": 67,
+    "segment_kind": "functions",
+    "selector": "c",
+    "service": "ccs",
+    "slot": 783,
+    "snippet": [
+      {
+        "node": [
+          -1,
+          0,
+          59
+        ],
+        "pc": 65
+      },
+      {
+        "node": [
+          -1,
+          0,
+          55
+        ],
+        "pc": 66
+      },
+      {
+        "node": [
+          783,
+          -127,
+          23
+        ],
+        "pc": 67
+      },
+      {
+        "node": [
+          -1,
+          0,
+          55
+        ],
+        "pc": 68
+      },
+      {
+        "node": [
+          78,
+          1,
+          6
+        ],
+        "pc": 69
+      }
+    ],
+    "source": "ccs/pack_data/lib_ccs32.pak/ccs/start_ccs.o"
+  },
+  {
+    "bound_count": 0,
+    "efun_numeric_name": null,
+    "flags": 128,
+    "function": "mysql_select_array",
+    "function_index": 989,
+    "member_node_offset": 484831,
+    "member_sha256": "256301c54d7c2b8bdf50aeded93c27325dad80690a2f488249d04acfe3f59b47",
+    "mode": "global",
+    "nodes_offset": 484811,
+    "pc": 5,
+    "segment_kind": "functions",
+    "selector": "c",
+    "service": "ccs",
+    "slot": 987,
+    "snippet": [
+      {
+        "node": [
+          0,
+          0,
+          27
+        ],
+        "pc": 3
+      },
+      {
+        "node": [
+          2,
+          0,
+          55
+        ],
+        "pc": 4
+      },
+      {
+        "node": [
+          987,
+          -128,
+          23
+        ],
+        "pc": 5
+      },
+      {
+        "node": [
+          1,
+          0,
+          55
+        ],
+        "pc": 6
+      },
+      {
+        "node": [
+          0,
+          0,
+          55
+        ],
+        "pc": 7
+      }
+    ],
+    "source": "ccs/pack_data/lib_ccs32.pak/ccs/start_ccs.o"
+  },
+  {
+    "bound_count": 0,
+    "efun_numeric_name": null,
+    "flags": 128,
+    "function": "pp_start_profiling_ex",
+    "function_index": 997,
+    "member_node_offset": 486132,
+    "member_sha256": "256301c54d7c2b8bdf50aeded93c27325dad80690a2f488249d04acfe3f59b47",
+    "mode": "global",
+    "nodes_offset": 485984,
+    "pc": 37,
+    "segment_kind": "functions",
+    "selector": "c",
+    "service": "ccs",
+    "slot": 1000,
+    "snippet": [
+      {
+        "node": [
+          0,
+          0,
+          73
+        ],
+        "pc": 35
+      },
+      {
+        "node": [
+          0,
+          0,
+          46
+        ],
+        "pc": 36
+      },
+      {
+        "node": [
+          1000,
+          -128,
+          23
+        ],
+        "pc": 37
+      },
+      {
+        "node": [
+          764,
+          0,
+          64
+        ],
+        "pc": 38
+      },
+      {
+        "node": [
+          1,
+          0,
+          55
+        ],
+        "pc": 39
+      }
+    ],
+    "source": "ccs/pack_data/lib_ccs32.pak/ccs/start_ccs.o"
+  },
+  {
+    "bound_count": 1,
+    "efun_numeric_name": null,
+    "flags": 129,
+    "function": "telnet_new_client",
+    "function_index": 993,
+    "member_node_offset": 504458,
+    "member_sha256": "256301c54d7c2b8bdf50aeded93c27325dad80690a2f488249d04acfe3f59b47",
+    "mode": "global",
+    "nodes_offset": 504330,
+    "pc": 32,
+    "segment_kind": "functions",
+    "selector": "c",
+    "service": "ccs",
+    "slot": 992,
+    "snippet": [
+      {
+        "node": [
+          6,
+          2,
+          33
+        ],
+        "pc": 30
+      },
+      {
+        "node": [
+          0,
+          0,
+          55
+        ],
+        "pc": 31
+      },
+      {
+        "node": [
+          992,
+          -127,
+          23
+        ],
+        "pc": 32
+      },
+      {
+        "node": [
+          0,
+          0,
+          59
+        ],
+        "pc": 33
+      },
+      {
+        "node": [
+          268,
+          2,
+          6
+        ],
+        "pc": 34
+      }
+    ],
+    "source": "ccs/pack_data/lib_ccs32.pak/ccs/start_ccs.o"
+  },
+  {
+    "bound_count": 4,
+    "efun_numeric_name": null,
+    "flags": 132,
+    "function": "auto_recover_read_to",
+    "function_index": 983,
+    "member_node_offset": 512956,
+    "member_sha256": "256301c54d7c2b8bdf50aeded93c27325dad80690a2f488249d04acfe3f59b47",
+    "mode": "global",
+    "nodes_offset": 512932,
+    "pc": 6,
+    "segment_kind": "functions",
+    "selector": "c",
+    "service": "ccs",
+    "slot": 982,
+    "snippet": [
+      {
+        "node": [
+          1,
+          0,
+          55
+        ],
+        "pc": 4
+      },
+      {
+        "node": [
+          0,
+          0,
+          55
+        ],
+        "pc": 5
+      },
+      {
+        "node": [
+          982,
+          -124,
+          23
+        ],
+        "pc": 6
+      },
+      {
+        "node": [
+          2,
+          0,
+          55
+        ],
+        "pc": 7
+      },
+      {
+        "node": [
+          1,
+          0,
+          55
+        ],
+        "pc": 8
+      }
+    ],
+    "source": "ccs/pack_data/lib_ccs32.pak/ccs/start_ccs.o"
+  },
+  {
+    "bound_count": 1,
+    "efun_numeric_name": null,
+    "flags": 129,
+    "function": "size_objects",
+    "function_index": 786,
+    "member_node_offset": 548597,
+    "member_sha256": "256301c54d7c2b8bdf50aeded93c27325dad80690a2f488249d04acfe3f59b47",
+    "mode": "global",
+    "nodes_offset": 548401,
+    "pc": 49,
+    "segment_kind": "functions",
+    "selector": "c",
+    "service": "ccs",
+    "slot": 785,
+    "snippet": [
+      {
+        "node": [
+          -1,
+          0,
+          59
+        ],
+        "pc": 47
+      },
+      {
+        "node": [
+          -1,
+          0,
+          55
+        ],
+        "pc": 48
+      },
+      {
+        "node": [
+          785,
+          -127,
+          23
+        ],
+        "pc": 49
+      },
+      {
+        "node": [
+          -1,
+          0,
+          55
+        ],
+        "pc": 50
+      },
+      {
+        "node": [
+          78,
+          1,
+          6
+        ],
+        "pc": 51
+      }
+    ],
+    "source": "ccs/pack_data/lib_ccs32.pak/ccs/start_ccs.o"
+  },
+  {
+    "bound_count": 0,
+    "efun_numeric_name": null,
+    "flags": 128,
+    "function": "mysql_select",
+    "function_index": 988,
+    "member_node_offset": 555401,
+    "member_sha256": "256301c54d7c2b8bdf50aeded93c27325dad80690a2f488249d04acfe3f59b47",
+    "mode": "global",
+    "nodes_offset": 555381,
+    "pc": 5,
+    "segment_kind": "functions",
+    "selector": "c",
+    "service": "ccs",
+    "slot": 986,
+    "snippet": [
+      {
+        "node": [
+          0,
+          0,
+          27
+        ],
+        "pc": 3
+      },
+      {
+        "node": [
+          2,
+          0,
+          55
+        ],
+        "pc": 4
+      },
+      {
+        "node": [
+          986,
+          -128,
+          23
+        ],
+        "pc": 5
+      },
+      {
+        "node": [
+          1,
+          0,
+          55
+        ],
+        "pc": 6
+      },
+      {
+        "node": [
+          0,
+          0,
+          55
+        ],
+        "pc": 7
+      }
+    ],
+    "source": "ccs/pack_data/lib_ccs32.pak/ccs/start_ccs.o"
+  },
+  {
+    "bound_count": 1,
+    "efun_numeric_name": null,
+    "flags": 129,
+    "function": "cmd_internal_comm_closed",
+    "function_index": 970,
+    "member_node_offset": 276484,
+    "member_sha256": "9d73f41b25887221e015373f262945bd907a33af16785e5ea26fcdbad7df38a1",
+    "mode": "global",
+    "nodes_offset": 276424,
+    "pc": 15,
+    "segment_kind": "functions",
+    "selector": "c",
+    "service": "csa",
+    "slot": 969,
+    "snippet": [
+      {
+        "node": [
+          0,
+          0,
+          46
+        ],
+        "pc": 13
+      },
+      {
+        "node": [
+          0,
+          0,
+          55
+        ],
+        "pc": 14
+      },
+      {
+        "node": [
+          969,
+          -127,
+          23
+        ],
+        "pc": 15
+      },
+      {
+        "node": [
+          651,
+          0,
+          64
+        ],
+        "pc": 16
+      },
+      {
+        "node": [
+          652,
+          0,
+          64
+        ],
+        "pc": 17
+      }
+    ],
+    "source": "csa/pack_data/lib_csa32.pak/csa/start_csa.o"
+  },
+  {
+    "bound_count": 1,
+    "efun_numeric_name": null,
+    "flags": 129,
+    "function": "cmd_new_connection",
+    "function_index": 962,
+    "member_node_offset": 287688,
+    "member_sha256": "9d73f41b25887221e015373f262945bd907a33af16785e5ea26fcdbad7df38a1",
+    "mode": "global",
+    "nodes_offset": 287676,
+    "pc": 3,
+    "segment_kind": "functions",
+    "selector": "c",
+    "service": "csa",
+    "slot": 961,
+    "snippet": [
+      {
+        "node": [
+          0,
+          0,
+          27
+        ],
+        "pc": 1
+      },
+      {
+        "node": [
+          0,
+          0,
+          55
+        ],
+        "pc": 2
+      },
+      {
+        "node": [
+          961,
+          -127,
+          23
+        ],
+        "pc": 3
+      },
+      {
+        "node": [
+          651,
+          0,
+          64
+        ],
+        "pc": 4
+      },
+      {
+        "node": [
+          652,
+          0,
+          64
+        ],
+        "pc": 5
+      }
+    ],
+    "source": "csa/pack_data/lib_csa32.pak/csa/start_csa.o"
+  },
+  {
+    "bound_count": 0,
+    "efun_numeric_name": null,
+    "flags": 128,
+    "function": "init_compile_module",
+    "function_index": 938,
+    "member_node_offset": 344667,
+    "member_sha256": "9d73f41b25887221e015373f262945bd907a33af16785e5ea26fcdbad7df38a1",
+    "mode": "global",
+    "nodes_offset": 344651,
+    "pc": 4,
+    "segment_kind": "functions",
+    "selector": "c",
+    "service": "csa",
+    "slot": 940,
+    "snippet": [
+      {
+        "node": [
+          67,
+          0,
+          6
+        ],
+        "pc": 2
+      },
+      {
+        "node": [
+          17,
+          2,
+          33
+        ],
+        "pc": 3
+      },
+      {
+        "node": [
+          940,
+          -128,
+          23
+        ],
+        "pc": 4
+      },
+      {
+        "node": [
+          84,
+          0,
+          54
+        ],
+        "pc": 5
+      },
+      {
+        "node": [
+          0,
+          0,
+          3
+        ],
+        "pc": 6
+      }
+    ],
+    "source": "csa/pack_data/lib_csa32.pak/csa/start_csa.o"
+  },
+  {
+    "bound_count": 0,
+    "efun_numeric_name": null,
+    "flags": 128,
+    "function": "init_compile_module",
+    "function_index": 938,
+    "member_node_offset": 344695,
+    "member_sha256": "9d73f41b25887221e015373f262945bd907a33af16785e5ea26fcdbad7df38a1",
+    "mode": "global",
+    "nodes_offset": 344651,
+    "pc": 11,
+    "segment_kind": "functions",
+    "selector": "c",
+    "service": "csa",
+    "slot": 946,
+    "snippet": [
+      {
+        "node": [
+          87,
+          0,
+          54
+        ],
+        "pc": 9
+      },
+      {
+        "node": [
+          0,
+          0,
+          3
+        ],
+        "pc": 10
+      },
+      {
+        "node": [
+          946,
+          -128,
+          23
+        ],
+        "pc": 11
+      },
+      {
+        "node": [
+          86,
+          0,
+          54
+        ],
+        "pc": 12
+      },
+      {
+        "node": [
+          0,
+          0,
+          3
+        ],
+        "pc": 13
+      }
+    ],
+    "source": "csa/pack_data/lib_csa32.pak/csa/start_csa.o"
+  },
+  {
+    "bound_count": 0,
+    "efun_numeric_name": null,
+    "flags": 128,
+    "function": "init_compile_module",
+    "function_index": 938,
+    "member_node_offset": 344707,
+    "member_sha256": "9d73f41b25887221e015373f262945bd907a33af16785e5ea26fcdbad7df38a1",
+    "mode": "global",
+    "nodes_offset": 344651,
+    "pc": 14,
+    "segment_kind": "functions",
+    "selector": "c",
+    "service": "csa",
+    "slot": 939,
+    "snippet": [
+      {
+        "node": [
+          86,
+          0,
+          54
+        ],
+        "pc": 12
+      },
+      {
+        "node": [
+          0,
+          0,
+          3
+        ],
+        "pc": 13
+      },
+      {
+        "node": [
+          939,
+          -128,
+          23
+        ],
+        "pc": 14
+      },
+      {
+        "node": [
+          85,
+          0,
+          54
+        ],
+        "pc": 15
+      },
+      {
+        "node": [
+          0,
+          0,
+          3
+        ],
+        "pc": 16
+      }
+    ],
+    "source": "csa/pack_data/lib_csa32.pak/csa/start_csa.o"
+  },
+  {
+    "bound_count": 0,
+    "efun_numeric_name": null,
+    "flags": 128,
+    "function": "init_compile_module",
+    "function_index": 938,
+    "member_node_offset": 344735,
+    "member_sha256": "9d73f41b25887221e015373f262945bd907a33af16785e5ea26fcdbad7df38a1",
+    "mode": "global",
+    "nodes_offset": 344651,
+    "pc": 21,
+    "segment_kind": "functions",
+    "selector": "c",
+    "service": "csa",
+    "slot": 942,
+    "snippet": [
+      {
+        "node": [
+          0,
+          0,
+          46
+        ],
+        "pc": 19
+      },
+      {
+        "node": [
+          16,
+          0,
+          31
+        ],
+        "pc": 20
+      },
+      {
+        "node": [
+          942,
+          -128,
+          23
+        ],
+        "pc": 21
+      },
+      {
+        "node": [
+          84,
+          0,
+          54
+        ],
+        "pc": 22
+      },
+      {
+        "node": [
+          0,
+          0,
+          3
+        ],
+        "pc": 23
+      }
+    ],
+    "source": "csa/pack_data/lib_csa32.pak/csa/start_csa.o"
+  },
+  {
+    "bound_count": 0,
+    "efun_numeric_name": null,
+    "flags": 128,
+    "function": "init_compile_module",
+    "function_index": 938,
+    "member_node_offset": 344763,
+    "member_sha256": "9d73f41b25887221e015373f262945bd907a33af16785e5ea26fcdbad7df38a1",
+    "mode": "global",
+    "nodes_offset": 344651,
+    "pc": 28,
+    "segment_kind": "functions",
+    "selector": "c",
+    "service": "csa",
+    "slot": 947,
+    "snippet": [
+      {
+        "node": [
+          87,
+          0,
+          54
+        ],
+        "pc": 26
+      },
+      {
+        "node": [
+          0,
+          0,
+          3
+        ],
+        "pc": 27
+      },
+      {
+        "node": [
+          947,
+          -128,
+          23
+        ],
+        "pc": 28
+      },
+      {
+        "node": [
+          86,
+          0,
+          54
+        ],
+        "pc": 29
+      },
+      {
+        "node": [
+          0,
+          0,
+          3
+        ],
+        "pc": 30
+      }
+    ],
+    "source": "csa/pack_data/lib_csa32.pak/csa/start_csa.o"
+  },
+  {
+    "bound_count": 0,
+    "efun_numeric_name": null,
+    "flags": 128,
+    "function": "init_compile_module",
+    "function_index": 938,
+    "member_node_offset": 344775,
+    "member_sha256": "9d73f41b25887221e015373f262945bd907a33af16785e5ea26fcdbad7df38a1",
+    "mode": "global",
+    "nodes_offset": 344651,
+    "pc": 31,
+    "segment_kind": "functions",
+    "selector": "c",
+    "service": "csa",
+    "slot": 941,
+    "snippet": [
+      {
+        "node": [
+          86,
+          0,
+          54
+        ],
+        "pc": 29
+      },
+      {
+        "node": [
+          0,
+          0,
+          3
+        ],
+        "pc": 30
+      },
+      {
+        "node": [
+          941,
+          -128,
+          23
+        ],
+        "pc": 31
+      },
+      {
+        "node": [
+          85,
+          0,
+          54
+        ],
+        "pc": 32
+      },
+      {
+        "node": [
+          0,
+          0,
+          3
+        ],
+        "pc": 33
+      }
+    ],
+    "source": "csa/pack_data/lib_csa32.pak/csa/start_csa.o"
+  },
+  {
+    "bound_count": 1,
+    "efun_numeric_name": null,
+    "flags": 129,
+    "function": "mysql_select_column",
+    "function_index": 954,
+    "member_node_offset": 354611,
+    "member_sha256": "9d73f41b25887221e015373f262945bd907a33af16785e5ea26fcdbad7df38a1",
+    "mode": "global",
+    "nodes_offset": 354587,
+    "pc": 6,
+    "segment_kind": "functions",
+    "selector": "c",
+    "service": "csa",
+    "slot": 949,
+    "snippet": [
+      {
+        "node": [
+          3,
+          0,
+          55
+        ],
+        "pc": 4
+      },
+      {
+        "node": [
+          2,
+          0,
+          55
+        ],
+        "pc": 5
+      },
+      {
+        "node": [
+          949,
+          -127,
+          23
+        ],
+        "pc": 6
+      },
+      {
+        "node": [
+          1,
+          0,
+          55
+        ],
+        "pc": 7
+      },
+      {
+        "node": [
+          0,
+          0,
+          55
+        ],
+        "pc": 8
+      }
+    ],
+    "source": "csa/pack_data/lib_csa32.pak/csa/start_csa.o"
+  },
+  {
+    "bound_count": 2,
+    "efun_numeric_name": null,
+    "flags": 130,
+    "function": "cmd_disconnected",
+    "function_index": 966,
+    "member_node_offset": 421107,
+    "member_sha256": "9d73f41b25887221e015373f262945bd907a33af16785e5ea26fcdbad7df38a1",
+    "mode": "global",
+    "nodes_offset": 421035,
+    "pc": 18,
+    "segment_kind": "functions",
+    "selector": "c",
+    "service": "csa",
+    "slot": 965,
+    "snippet": [
+      {
+        "node": [
+          1,
+          0,
+          55
+        ],
+        "pc": 16
+      },
+      {
+        "node": [
+          0,
+          0,
+          55
+        ],
+        "pc": 17
+      },
+      {
+        "node": [
+          965,
+          -126,
+          23
+        ],
+        "pc": 18
+      },
+      {
+        "node": [
+          651,
+          0,
+          64
+        ],
+        "pc": 19
+      },
+      {
+        "node": [
+          652,
+          0,
+          64
+        ],
+        "pc": 20
+      }
+    ],
+    "source": "csa/pack_data/lib_csa32.pak/csa/start_csa.o"
+  },
+  {
+    "bound_count": 0,
+    "efun_numeric_name": null,
+    "flags": 128,
+    "function": "mysql_select_array",
+    "function_index": 953,
+    "member_node_offset": 432362,
+    "member_sha256": "9d73f41b25887221e015373f262945bd907a33af16785e5ea26fcdbad7df38a1",
+    "mode": "global",
+    "nodes_offset": 432342,
+    "pc": 5,
+    "segment_kind": "functions",
+    "selector": "c",
+    "service": "csa",
+    "slot": 951,
+    "snippet": [
+      {
+        "node": [
+          0,
+          0,
+          27
+        ],
+        "pc": 3
+      },
+      {
+        "node": [
+          2,
+          0,
+          55
+        ],
+        "pc": 4
+      },
+      {
+        "node": [
+          951,
+          -128,
+          23
+        ],
+        "pc": 5
+      },
+      {
+        "node": [
+          1,
+          0,
+          55
+        ],
+        "pc": 6
+      },
+      {
+        "node": [
+          0,
+          0,
+          55
+        ],
+        "pc": 7
+      }
+    ],
+    "source": "csa/pack_data/lib_csa32.pak/csa/start_csa.o"
+  },
+  {
+    "bound_count": 0,
+    "efun_numeric_name": null,
+    "flags": 128,
+    "function": "pp_start_profiling_ex",
+    "function_index": 974,
+    "member_node_offset": 433610,
+    "member_sha256": "9d73f41b25887221e015373f262945bd907a33af16785e5ea26fcdbad7df38a1",
+    "mode": "global",
+    "nodes_offset": 433462,
+    "pc": 37,
+    "segment_kind": "functions",
+    "selector": "c",
+    "service": "csa",
+    "slot": 977,
+    "snippet": [
+      {
+        "node": [
+          0,
+          0,
+          73
+        ],
+        "pc": 35
+      },
+      {
+        "node": [
+          0,
+          0,
+          46
+        ],
+        "pc": 36
+      },
+      {
+        "node": [
+          977,
+          -128,
+          23
+        ],
+        "pc": 37
+      },
+      {
+        "node": [
+          679,
+          0,
+          64
+        ],
+        "pc": 38
+      },
+      {
+        "node": [
+          1,
+          0,
+          55
+        ],
+        "pc": 39
+      }
+    ],
+    "source": "csa/pack_data/lib_csa32.pak/csa/start_csa.o"
+  },
+  {
+    "bound_count": 1,
+    "efun_numeric_name": null,
+    "flags": 129,
+    "function": "telnet_new_client",
+    "function_index": 972,
+    "member_node_offset": 450398,
+    "member_sha256": "9d73f41b25887221e015373f262945bd907a33af16785e5ea26fcdbad7df38a1",
+    "mode": "global",
+    "nodes_offset": 450270,
+    "pc": 32,
+    "segment_kind": "functions",
+    "selector": "c",
+    "service": "csa",
+    "slot": 971,
+    "snippet": [
+      {
+        "node": [
+          6,
+          2,
+          33
+        ],
+        "pc": 30
+      },
+      {
+        "node": [
+          0,
+          0,
+          55
+        ],
+        "pc": 31
+      },
+      {
+        "node": [
+          971,
+          -127,
+          23
+        ],
+        "pc": 32
+      },
+      {
+        "node": [
+          0,
+          0,
+          59
+        ],
+        "pc": 33
+      },
+      {
+        "node": [
+          268,
+          2,
+          6
+        ],
+        "pc": 34
+      }
+    ],
+    "source": "csa/pack_data/lib_csa32.pak/csa/start_csa.o"
+  },
+  {
+    "bound_count": 0,
+    "efun_numeric_name": null,
+    "flags": 128,
+    "function": "mysql_select",
+    "function_index": 952,
+    "member_node_offset": 498202,
+    "member_sha256": "9d73f41b25887221e015373f262945bd907a33af16785e5ea26fcdbad7df38a1",
+    "mode": "global",
+    "nodes_offset": 498182,
+    "pc": 5,
+    "segment_kind": "functions",
+    "selector": "c",
+    "service": "csa",
+    "slot": 950,
+    "snippet": [
+      {
+        "node": [
+          0,
+          0,
+          27
+        ],
+        "pc": 3
+      },
+      {
+        "node": [
+          2,
+          0,
+          55
+        ],
+        "pc": 4
+      },
+      {
+        "node": [
+          950,
+          -128,
+          23
+        ],
+        "pc": 5
+      },
+      {
+        "node": [
+          1,
+          0,
+          55
+        ],
+        "pc": 6
+      },
+      {
+        "node": [
+          0,
+          0,
+          55
+        ],
+        "pc": 7
+      }
+    ],
+    "source": "csa/pack_data/lib_csa32.pak/csa/start_csa.o"
+  },
+  {
+    "bound_count": 1,
+    "efun_numeric_name": null,
+    "flags": 129,
+    "function": "cmd_internal_comm_closed",
+    "function_index": 973,
+    "member_node_offset": 274239,
+    "member_sha256": "5fd2005c124be25643ebe19169ce2a3d798fbbde106efe1aa8b36287e0aebcd8",
+    "mode": "global",
+    "nodes_offset": 274179,
+    "pc": 15,
+    "segment_kind": "functions",
+    "selector": "c",
+    "service": "dba",
+    "slot": 972,
+    "snippet": [
+      {
+        "node": [
+          0,
+          0,
+          46
+        ],
+        "pc": 13
+      },
+      {
+        "node": [
+          0,
+          0,
+          55
+        ],
+        "pc": 14
+      },
+      {
+        "node": [
+          972,
+          -127,
+          23
+        ],
+        "pc": 15
+      },
+      {
+        "node": [
+          657,
+          0,
+          64
+        ],
+        "pc": 16
+      },
+      {
+        "node": [
+          658,
+          0,
+          64
+        ],
+        "pc": 17
+      }
+    ],
+    "source": "dba/pack_data/lib_dba32.pak/dba/start_dba.o"
+  },
+  {
+    "bound_count": 1,
+    "efun_numeric_name": null,
+    "flags": 129,
+    "function": "cmd_new_connection",
+    "function_index": 965,
+    "member_node_offset": 286098,
+    "member_sha256": "5fd2005c124be25643ebe19169ce2a3d798fbbde106efe1aa8b36287e0aebcd8",
+    "mode": "global",
+    "nodes_offset": 286086,
+    "pc": 3,
+    "segment_kind": "functions",
+    "selector": "c",
+    "service": "dba",
+    "slot": 964,
+    "snippet": [
+      {
+        "node": [
+          0,
+          0,
+          27
+        ],
+        "pc": 1
+      },
+      {
+        "node": [
+          0,
+          0,
+          55
+        ],
+        "pc": 2
+      },
+      {
+        "node": [
+          964,
+          -127,
+          23
+        ],
+        "pc": 3
+      },
+      {
+        "node": [
+          657,
+          0,
+          64
+        ],
+        "pc": 4
+      },
+      {
+        "node": [
+          658,
+          0,
+          64
+        ],
+        "pc": 5
+      }
+    ],
+    "source": "dba/pack_data/lib_dba32.pak/dba/start_dba.o"
+  },
+  {
+    "bound_count": 0,
+    "efun_numeric_name": null,
+    "flags": 128,
+    "function": "init_compile_module",
+    "function_index": 941,
+    "member_node_offset": 342960,
+    "member_sha256": "5fd2005c124be25643ebe19169ce2a3d798fbbde106efe1aa8b36287e0aebcd8",
+    "mode": "global",
+    "nodes_offset": 342944,
+    "pc": 4,
+    "segment_kind": "functions",
+    "selector": "c",
+    "service": "dba",
+    "slot": 943,
+    "snippet": [
+      {
+        "node": [
+          67,
+          0,
+          6
+        ],
+        "pc": 2
+      },
+      {
+        "node": [
+          17,
+          2,
+          33
+        ],
+        "pc": 3
+      },
+      {
+        "node": [
+          943,
+          -128,
+          23
+        ],
+        "pc": 4
+      },
+      {
+        "node": [
+          84,
+          0,
+          54
+        ],
+        "pc": 5
+      },
+      {
+        "node": [
+          0,
+          0,
+          3
+        ],
+        "pc": 6
+      }
+    ],
+    "source": "dba/pack_data/lib_dba32.pak/dba/start_dba.o"
+  },
+  {
+    "bound_count": 0,
+    "efun_numeric_name": null,
+    "flags": 128,
+    "function": "init_compile_module",
+    "function_index": 941,
+    "member_node_offset": 342988,
+    "member_sha256": "5fd2005c124be25643ebe19169ce2a3d798fbbde106efe1aa8b36287e0aebcd8",
+    "mode": "global",
+    "nodes_offset": 342944,
+    "pc": 11,
+    "segment_kind": "functions",
+    "selector": "c",
+    "service": "dba",
+    "slot": 949,
+    "snippet": [
+      {
+        "node": [
+          87,
+          0,
+          54
+        ],
+        "pc": 9
+      },
+      {
+        "node": [
+          0,
+          0,
+          3
+        ],
+        "pc": 10
+      },
+      {
+        "node": [
+          949,
+          -128,
+          23
+        ],
+        "pc": 11
+      },
+      {
+        "node": [
+          86,
+          0,
+          54
+        ],
+        "pc": 12
+      },
+      {
+        "node": [
+          0,
+          0,
+          3
+        ],
+        "pc": 13
+      }
+    ],
+    "source": "dba/pack_data/lib_dba32.pak/dba/start_dba.o"
+  },
+  {
+    "bound_count": 0,
+    "efun_numeric_name": null,
+    "flags": 128,
+    "function": "init_compile_module",
+    "function_index": 941,
+    "member_node_offset": 343028,
+    "member_sha256": "5fd2005c124be25643ebe19169ce2a3d798fbbde106efe1aa8b36287e0aebcd8",
+    "mode": "global",
+    "nodes_offset": 342944,
+    "pc": 21,
+    "segment_kind": "functions",
+    "selector": "c",
+    "service": "dba",
+    "slot": 945,
+    "snippet": [
+      {
+        "node": [
+          0,
+          0,
+          46
+        ],
+        "pc": 19
+      },
+      {
+        "node": [
+          16,
+          0,
+          31
+        ],
+        "pc": 20
+      },
+      {
+        "node": [
+          945,
+          -128,
+          23
+        ],
+        "pc": 21
+      },
+      {
+        "node": [
+          84,
+          0,
+          54
+        ],
+        "pc": 22
+      },
+      {
+        "node": [
+          0,
+          0,
+          3
+        ],
+        "pc": 23
+      }
+    ],
+    "source": "dba/pack_data/lib_dba32.pak/dba/start_dba.o"
+  },
+  {
+    "bound_count": 0,
+    "efun_numeric_name": null,
+    "flags": 128,
+    "function": "init_compile_module",
+    "function_index": 941,
+    "member_node_offset": 343068,
+    "member_sha256": "5fd2005c124be25643ebe19169ce2a3d798fbbde106efe1aa8b36287e0aebcd8",
+    "mode": "global",
+    "nodes_offset": 342944,
+    "pc": 31,
+    "segment_kind": "functions",
+    "selector": "c",
+    "service": "dba",
+    "slot": 944,
+    "snippet": [
+      {
+        "node": [
+          86,
+          0,
+          54
+        ],
+        "pc": 29
+      },
+      {
+        "node": [
+          0,
+          0,
+          3
+        ],
+        "pc": 30
+      },
+      {
+        "node": [
+          944,
+          -128,
+          23
+        ],
+        "pc": 31
+      },
+      {
+        "node": [
+          85,
+          0,
+          54
+        ],
+        "pc": 32
+      },
+      {
+        "node": [
+          0,
+          0,
+          3
+        ],
+        "pc": 33
+      }
+    ],
+    "source": "dba/pack_data/lib_dba32.pak/dba/start_dba.o"
+  },
+  {
+    "bound_count": 1,
+    "efun_numeric_name": null,
+    "flags": 129,
+    "function": "mysql_select_column",
+    "function_index": 957,
+    "member_node_offset": 352904,
+    "member_sha256": "5fd2005c124be25643ebe19169ce2a3d798fbbde106efe1aa8b36287e0aebcd8",
+    "mode": "global",
+    "nodes_offset": 352880,
+    "pc": 6,
+    "segment_kind": "functions",
+    "selector": "c",
+    "service": "dba",
+    "slot": 952,
+    "snippet": [
+      {
+        "node": [
+          3,
+          0,
+          55
+        ],
+        "pc": 4
+      },
+      {
+        "node": [
+          2,
+          0,
+          55
+        ],
+        "pc": 5
+      },
+      {
+        "node": [
+          952,
+          -127,
+          23
+        ],
+        "pc": 6
+      },
+      {
+        "node": [
+          1,
+          0,
+          55
+        ],
+        "pc": 7
+      },
+      {
+        "node": [
+          0,
+          0,
+          55
+        ],
+        "pc": 8
+      }
+    ],
+    "source": "dba/pack_data/lib_dba32.pak/dba/start_dba.o"
+  },
+  {
+    "bound_count": 0,
+    "efun_numeric_name": null,
+    "flags": 128,
+    "function": "start_stat_cmds",
+    "function_index": 791,
+    "member_node_offset": 406552,
+    "member_sha256": "5fd2005c124be25643ebe19169ce2a3d798fbbde106efe1aa8b36287e0aebcd8",
+    "mode": "global",
+    "nodes_offset": 406408,
+    "pc": 36,
+    "segment_kind": "functions",
+    "selector": "c",
+    "service": "dba",
+    "slot": 790,
+    "snippet": [
+      {
+        "node": [
+          0,
+          0,
+          3
+        ],
+        "pc": 34
+      },
+      {
+        "node": [
+          0,
+          0,
+          51
+        ],
+        "pc": 35
+      },
+      {
+        "node": [
+          790,
+          -128,
+          23
+        ],
+        "pc": 36
+      },
+      {
+        "node": [
+          484,
+          0,
+          64
+        ],
+        "pc": 37
+      },
+      {
+        "node": [
+          0,
+          0,
+          55
+        ],
+        "pc": 38
+      }
+    ],
+    "source": "dba/pack_data/lib_dba32.pak/dba/start_dba.o"
+  },
+  {
+    "bound_count": 2,
+    "efun_numeric_name": null,
+    "flags": 130,
+    "function": "cmd_disconnected",
+    "function_index": 969,
+    "member_node_offset": 420771,
+    "member_sha256": "5fd2005c124be25643ebe19169ce2a3d798fbbde106efe1aa8b36287e0aebcd8",
+    "mode": "global",
+    "nodes_offset": 420699,
+    "pc": 18,
+    "segment_kind": "functions",
+    "selector": "c",
+    "service": "dba",
+    "slot": 968,
+    "snippet": [
+      {
+        "node": [
+          1,
+          0,
+          55
+        ],
+        "pc": 16
+      },
+      {
+        "node": [
+          0,
+          0,
+          55
+        ],
+        "pc": 17
+      },
+      {
+        "node": [
+          968,
+          -126,
+          23
+        ],
+        "pc": 18
+      },
+      {
+        "node": [
+          657,
+          0,
+          64
+        ],
+        "pc": 19
+      },
+      {
+        "node": [
+          658,
+          0,
+          64
+        ],
+        "pc": 20
+      }
+    ],
+    "source": "dba/pack_data/lib_dba32.pak/dba/start_dba.o"
+  },
+  {
+    "bound_count": 1,
+    "efun_numeric_name": null,
+    "flags": 129,
+    "function": "size_max",
+    "function_index": 778,
+    "member_node_offset": 430595,
+    "member_sha256": "5fd2005c124be25643ebe19169ce2a3d798fbbde106efe1aa8b36287e0aebcd8",
+    "mode": "global",
+    "nodes_offset": 430327,
+    "pc": 67,
+    "segment_kind": "functions",
+    "selector": "c",
+    "service": "dba",
+    "slot": 777,
+    "snippet": [
+      {
+        "node": [
+          -1,
+          0,
+          59
+        ],
+        "pc": 65
+      },
+      {
+        "node": [
+          -1,
+          0,
+          55
+        ],
+        "pc": 66
+      },
+      {
+        "node": [
+          777,
+          -127,
+          23
+        ],
+        "pc": 67
+      },
+      {
+        "node": [
+          -1,
+          0,
+          55
+        ],
+        "pc": 68
+      },
+      {
+        "node": [
+          78,
+          1,
+          6
+        ],
+        "pc": 69
+      }
+    ],
+    "source": "dba/pack_data/lib_dba32.pak/dba/start_dba.o"
+  },
+  {
+    "bound_count": 0,
+    "efun_numeric_name": null,
+    "flags": 128,
+    "function": "mysql_select_array",
+    "function_index": 956,
+    "member_node_offset": 432298,
+    "member_sha256": "5fd2005c124be25643ebe19169ce2a3d798fbbde106efe1aa8b36287e0aebcd8",
+    "mode": "global",
+    "nodes_offset": 432278,
+    "pc": 5,
+    "segment_kind": "functions",
+    "selector": "c",
+    "service": "dba",
+    "slot": 954,
+    "snippet": [
+      {
+        "node": [
+          0,
+          0,
+          27
+        ],
+        "pc": 3
+      },
+      {
+        "node": [
+          2,
+          0,
+          55
+        ],
+        "pc": 4
+      },
+      {
+        "node": [
+          954,
+          -128,
+          23
+        ],
+        "pc": 5
+      },
+      {
+        "node": [
+          1,
+          0,
+          55
+        ],
+        "pc": 6
+      },
+      {
+        "node": [
+          0,
+          0,
+          55
+        ],
+        "pc": 7
+      }
+    ],
+    "source": "dba/pack_data/lib_dba32.pak/dba/start_dba.o"
+  },
+  {
+    "bound_count": 0,
+    "efun_numeric_name": null,
+    "flags": 128,
+    "function": "pp_start_profiling_ex",
+    "function_index": 977,
+    "member_node_offset": 433546,
+    "member_sha256": "5fd2005c124be25643ebe19169ce2a3d798fbbde106efe1aa8b36287e0aebcd8",
+    "mode": "global",
+    "nodes_offset": 433398,
+    "pc": 37,
+    "segment_kind": "functions",
+    "selector": "c",
+    "service": "dba",
+    "slot": 980,
+    "snippet": [
+      {
+        "node": [
+          0,
+          0,
+          73
+        ],
+        "pc": 35
+      },
+      {
+        "node": [
+          0,
+          0,
+          46
+        ],
+        "pc": 36
+      },
+      {
+        "node": [
+          980,
+          -128,
+          23
+        ],
+        "pc": 37
+      },
+      {
+        "node": [
+          686,
+          0,
+          64
+        ],
+        "pc": 38
+      },
+      {
+        "node": [
+          1,
+          0,
+          55
+        ],
+        "pc": 39
+      }
+    ],
+    "source": "dba/pack_data/lib_dba32.pak/dba/start_dba.o"
+  },
+  {
+    "bound_count": 1,
+    "efun_numeric_name": null,
+    "flags": 129,
+    "function": "telnet_new_client",
+    "function_index": 975,
+    "member_node_offset": 450334,
+    "member_sha256": "5fd2005c124be25643ebe19169ce2a3d798fbbde106efe1aa8b36287e0aebcd8",
+    "mode": "global",
+    "nodes_offset": 450206,
+    "pc": 32,
+    "segment_kind": "functions",
+    "selector": "c",
+    "service": "dba",
+    "slot": 974,
+    "snippet": [
+      {
+        "node": [
+          6,
+          2,
+          33
+        ],
+        "pc": 30
+      },
+      {
+        "node": [
+          0,
+          0,
+          55
+        ],
+        "pc": 31
+      },
+      {
+        "node": [
+          974,
+          -127,
+          23
+        ],
+        "pc": 32
+      },
+      {
+        "node": [
+          0,
+          0,
+          59
+        ],
+        "pc": 33
+      },
+      {
+        "node": [
+          268,
+          2,
+          6
+        ],
+        "pc": 34
+      }
+    ],
+    "source": "dba/pack_data/lib_dba32.pak/dba/start_dba.o"
+  },
+  {
+    "bound_count": 1,
+    "efun_numeric_name": null,
+    "flags": 129,
+    "function": "size_objects",
+    "function_index": 780,
+    "member_node_offset": 491769,
+    "member_sha256": "5fd2005c124be25643ebe19169ce2a3d798fbbde106efe1aa8b36287e0aebcd8",
+    "mode": "global",
+    "nodes_offset": 491573,
+    "pc": 49,
+    "segment_kind": "functions",
+    "selector": "c",
+    "service": "dba",
+    "slot": 779,
+    "snippet": [
+      {
+        "node": [
+          -1,
+          0,
+          59
+        ],
+        "pc": 47
+      },
+      {
+        "node": [
+          -1,
+          0,
+          55
+        ],
+        "pc": 48
+      },
+      {
+        "node": [
+          779,
+          -127,
+          23
+        ],
+        "pc": 49
+      },
+      {
+        "node": [
+          -1,
+          0,
+          55
+        ],
+        "pc": 50
+      },
+      {
+        "node": [
+          78,
+          1,
+          6
+        ],
+        "pc": 51
+      }
+    ],
+    "source": "dba/pack_data/lib_dba32.pak/dba/start_dba.o"
+  },
+  {
+    "bound_count": 0,
+    "efun_numeric_name": null,
+    "flags": 128,
+    "function": "mysql_select",
+    "function_index": 955,
+    "member_node_offset": 498355,
+    "member_sha256": "5fd2005c124be25643ebe19169ce2a3d798fbbde106efe1aa8b36287e0aebcd8",
+    "mode": "global",
+    "nodes_offset": 498335,
+    "pc": 5,
+    "segment_kind": "functions",
+    "selector": "c",
+    "service": "dba",
+    "slot": 953,
+    "snippet": [
+      {
+        "node": [
+          0,
+          0,
+          27
+        ],
+        "pc": 3
+      },
+      {
+        "node": [
+          2,
+          0,
+          55
+        ],
+        "pc": 4
+      },
+      {
+        "node": [
+          953,
+          -128,
+          23
+        ],
+        "pc": 5
+      },
+      {
+        "node": [
+          1,
+          0,
+          55
+        ],
+        "pc": 6
+      },
+      {
+        "node": [
+          0,
+          0,
+          55
+        ],
+        "pc": 7
+      }
+    ],
+    "source": "dba/pack_data/lib_dba32.pak/dba/start_dba.o"
+  },
+  {
+    "bound_count": 3,
+    "efun_numeric_name": "call_other_arg",
+    "flags": 195,
+    "function": "update_data_length_stat_info",
+    "function_index": 21,
+    "member_node_offset": 4571,
+    "member_sha256": "3d57f26f8a0439e875f7a990cb17973c88c5b74098c3f30036c1105ae82457b6",
+    "mode": "object",
+    "nodes_offset": 3959,
+    "pc": 153,
+    "segment_kind": "functions",
+    "selector": "K",
+    "service": "dba",
+    "slot": 357,
+    "snippet": [
+      {
+        "node": [
+          61,
+          0,
+          64
+        ],
+        "pc": 151
+      },
+      {
+        "node": [
+          -3,
+          0,
+          55
+        ],
+        "pc": 152
+      },
+      {
+        "node": [
+          357,
+          -61,
+          23
+        ],
+        "pc": 153
+      },
+      {
+        "node": [
+          14,
+          0,
+          64
+        ],
+        "pc": 154
+      },
+      {
+        "node": [
+          22,
+          0,
+          64
+        ],
+        "pc": 155
+      }
+    ],
+    "source": "dba/pack_data/lib_dba32.pak/dba/daemons/dbaserverd.o"
+  },
+  {
+    "bound_count": 3,
+    "efun_numeric_name": null,
+    "flags": 131,
+    "function": "log_local",
+    "function_index": 4,
+    "member_node_offset": 5700,
+    "member_sha256": "16d0f26e29f2150d300fa8f5ba16946ca9305892c4f728c688690af30a1430b0",
+    "mode": "object",
+    "nodes_offset": 5604,
+    "pc": 24,
+    "segment_kind": "functions",
+    "selector": "c",
+    "service": "gs",
+    "slot": 807,
+    "snippet": [
+      {
+        "node": [
+          12,
+          0,
+          64
+        ],
+        "pc": 22
+      },
+      {
+        "node": [
+          0,
+          0,
+          61
+        ],
+        "pc": 23
+      },
+      {
+        "node": [
+          807,
+          -125,
+          23
+        ],
+        "pc": 24
+      },
+      {
+        "node": [
+          21,
+          0,
+          64
+        ],
+        "pc": 25
+      },
+      {
+        "node": [
+          30,
+          0,
+          64
+        ],
+        "pc": 26
+      }
+    ],
+    "source": "gs/pack_data/lib_gs32.pak/daemons/logd.o"
+  },
+  {
+    "bound_count": 1,
+    "efun_numeric_name": "destruct_object",
+    "flags": 193,
+    "function": "logout",
+    "function_index": 2030,
+    "member_node_offset": 9299,
+    "member_sha256": "4a9f77736fb29d04ff31a0238df65675c7ad482e611c0e02218770eb14fe5630",
+    "mode": "object",
+    "nodes_offset": 9091,
+    "pc": 52,
+    "segment_kind": "functions",
+    "selector": "K",
+    "service": "gs",
+    "slot": 361,
+    "snippet": [
+      {
+        "node": [
+          0,
+          0,
+          51
+        ],
+        "pc": 50
+      },
+      {
+        "node": [
+          0,
+          0,
+          65
+        ],
+        "pc": 51
+      },
+      {
+        "node": [
+          361,
+          -63,
+          23
+        ],
+        "pc": 52
+      },
+      {
+        "node": [
+          974,
+          0,
+          7
+        ],
+        "pc": 53
+      },
+      {
+        "node": [
+          47,
+          0,
+          64
+        ],
+        "pc": 54
+      }
+    ],
+    "source": "gs/pack_data/lib_gs32.pak/gs/clone/char/user.o"
+  },
+  {
+    "bound_count": 8,
+    "efun_numeric_name": "call_other",
+    "flags": 200,
+    "function": "main",
+    "function_index": 0,
+    "member_node_offset": 618,
+    "member_sha256": "9094b9cb08b91235bd536494dc931ba0700810bba90e88c90106636ccd6c9bc6",
+    "mode": "object",
+    "nodes_offset": 578,
+    "pc": 10,
+    "segment_kind": "functions",
+    "selector": "K",
+    "service": "gs",
+    "slot": 356,
+    "snippet": [
+      {
+        "node": [
+          1,
+          0,
+          64
+        ],
+        "pc": 8
+      },
+      {
+        "node": [
+          2,
+          0,
+          64
+        ],
+        "pc": 9
+      },
+      {
+        "node": [
+          356,
+          -56,
+          23
+        ],
+        "pc": 10
+      },
+      {
+        "node": [
+          0,
+          0,
+          64
+        ],
+        "pc": 11
+      },
+      {
+        "node": [
+          3,
+          0,
+          64
+        ],
+        "pc": 12
+      }
+    ],
+    "source": "gs/pack_data/lib_gs32.pak/gs/cmds/intersrv/msg_l_do_inquiry.o"
+  },
+  {
+    "bound_count": 2,
+    "efun_numeric_name": "create_thread",
+    "flags": 194,
+    "function": "create",
+    "function_index": 8,
+    "member_node_offset": 2796,
+    "member_sha256": "f1f0651e64948a71f3feb7efc0bcf666c553bc726955b31a4b19df9e3ea8cc37",
+    "mode": "object",
+    "nodes_offset": 2724,
+    "pc": 18,
+    "segment_kind": "functions",
+    "selector": "K",
+    "service": "gs",
+    "slot": 268,
+    "snippet": [
+      {
+        "node": [
+          5,
+          0,
+          23
+        ],
+        "pc": 16
+      },
+      {
+        "node": [
+          2,
+          0,
+          64
+        ],
+        "pc": 17
+      },
+      {
+        "node": [
+          268,
+          -62,
+          23
+        ],
+        "pc": 18
+      },
+      {
+        "node": [
+          617,
+          -127,
+          7
+        ],
+        "pc": 19
+      },
+      {
+        "node": [
+          0,
+          0,
+          51
+        ],
+        "pc": 20
+      }
+    ],
+    "source": "gs/pack_data/lib_gs32.pak/gs/daemons/ccs_clientd.o"
+  },
+  {
+    "bound_count": 0,
+    "efun_numeric_name": "std_life",
+    "flags": 192,
+    "function": "__init__",
+    "function_index": null,
+    "member_node_offset": 60066,
+    "member_sha256": "6b147d5f88404a9cb9cb4ff13748f19074231e508bcf46398df8dd50e457a3c9",
+    "mode": "object",
+    "nodes_offset": 59822,
+    "pc": 61,
+    "segment_kind": "init",
+    "selector": "K",
+    "service": "gs",
+    "slot": 547,
+    "snippet": [
+      {
+        "node": [
+          0,
+          0,
+          51
+        ],
+        "pc": 59
+      },
+      {
+        "node": [
+          0,
+          0,
+          63
+        ],
+        "pc": 60
+      },
+      {
+        "node": [
+          547,
+          -64,
+          23
+        ],
+        "pc": 61
+      },
+      {
+        "node": [
+          2,
+          0,
+          22
+        ],
+        "pc": 62
+      },
+      {
+        "node": [
+          220,
+          0,
+          64
+        ],
+        "pc": 63
+      }
+    ],
+    "source": "gs/pack_data/lib_gs32.pak/gs/daemons/change_lookd.o"
+  },
+  {
+    "bound_count": 0,
+    "efun_numeric_name": "std_mana",
+    "flags": 192,
+    "function": "__init__",
+    "function_index": null,
+    "member_node_offset": 60082,
+    "member_sha256": "6b147d5f88404a9cb9cb4ff13748f19074231e508bcf46398df8dd50e457a3c9",
+    "mode": "object",
+    "nodes_offset": 59822,
+    "pc": 65,
+    "segment_kind": "init",
+    "selector": "K",
+    "service": "gs",
+    "slot": 546,
+    "snippet": [
+      {
+        "node": [
+          220,
+          0,
+          64
+        ],
+        "pc": 63
+      },
+      {
+        "node": [
+          8,
+          0,
+          63
+        ],
+        "pc": 64
+      },
+      {
+        "node": [
+          546,
+          -64,
+          23
+        ],
+        "pc": 65
+      },
+      {
+        "node": [
+          2,
+          0,
+          22
+        ],
+        "pc": 66
+      },
+      {
+        "node": [
+          221,
+          0,
+          64
+        ],
+        "pc": 67
+      }
+    ],
+    "source": "gs/pack_data/lib_gs32.pak/gs/daemons/change_lookd.o"
+  },
+  {
+    "bound_count": 0,
+    "efun_numeric_name": "std_speed",
+    "flags": 192,
+    "function": "__init__",
+    "function_index": null,
+    "member_node_offset": 60098,
+    "member_sha256": "6b147d5f88404a9cb9cb4ff13748f19074231e508bcf46398df8dd50e457a3c9",
+    "mode": "object",
+    "nodes_offset": 59822,
+    "pc": 69,
+    "segment_kind": "init",
+    "selector": "K",
+    "service": "gs",
+    "slot": 548,
+    "snippet": [
+      {
+        "node": [
+          221,
+          0,
+          64
+        ],
+        "pc": 67
+      },
+      {
+        "node": [
+          2,
+          0,
+          59
+        ],
+        "pc": 68
+      },
+      {
+        "node": [
+          548,
+          -64,
+          23
+        ],
+        "pc": 69
+      },
+      {
+        "node": [
+          2,
+          0,
+          22
+        ],
+        "pc": 70
+      },
+      {
+        "node": [
+          222,
+          0,
+          64
+        ],
+        "pc": 71
+      }
+    ],
+    "source": "gs/pack_data/lib_gs32.pak/gs/daemons/change_lookd.o"
+  },
+  {
+    "bound_count": 0,
+    "efun_numeric_name": "std_defense",
+    "flags": 192,
+    "function": "__init__",
+    "function_index": null,
+    "member_node_offset": 60114,
+    "member_sha256": "6b147d5f88404a9cb9cb4ff13748f19074231e508bcf46398df8dd50e457a3c9",
+    "mode": "object",
+    "nodes_offset": 59822,
+    "pc": 73,
+    "segment_kind": "init",
+    "selector": "K",
+    "service": "gs",
+    "slot": 545,
+    "snippet": [
+      {
+        "node": [
+          222,
+          0,
+          64
+        ],
+        "pc": 71
+      },
+      {
+        "node": [
+          4,
+          0,
+          59
+        ],
+        "pc": 72
+      },
+      {
+        "node": [
+          545,
+          -64,
+          23
+        ],
+        "pc": 73
+      },
+      {
+        "node": [
+          2,
+          0,
+          22
+        ],
+        "pc": 74
+      },
+      {
+        "node": [
+          223,
+          0,
+          64
+        ],
+        "pc": 75
+      }
+    ],
+    "source": "gs/pack_data/lib_gs32.pak/gs/daemons/change_lookd.o"
+  },
+  {
+    "bound_count": 0,
+    "efun_numeric_name": "std_attack",
+    "flags": 192,
+    "function": "__init__",
+    "function_index": null,
+    "member_node_offset": 60130,
+    "member_sha256": "6b147d5f88404a9cb9cb4ff13748f19074231e508bcf46398df8dd50e457a3c9",
+    "mode": "object",
+    "nodes_offset": 59822,
+    "pc": 77,
+    "segment_kind": "init",
+    "selector": "K",
+    "service": "gs",
+    "slot": 544,
+    "snippet": [
+      {
+        "node": [
+          223,
+          0,
+          64
+        ],
+        "pc": 75
+      },
+      {
+        "node": [
+          1,
+          0,
+          59
+        ],
+        "pc": 76
+      },
+      {
+        "node": [
+          544,
+          -64,
+          23
+        ],
+        "pc": 77
+      },
+      {
+        "node": [
+          2,
+          0,
+          22
+        ],
+        "pc": 78
+      },
+      {
+        "node": [
+          195,
+          0,
+          64
+        ],
+        "pc": 79
+      }
+    ],
+    "source": "gs/pack_data/lib_gs32.pak/gs/daemons/change_lookd.o"
+  },
+  {
+    "bound_count": 0,
+    "efun_numeric_name": "atoi",
+    "flags": 192,
+    "function": "get_asktao_sound",
+    "function_index": 26,
+    "member_node_offset": 130756,
+    "member_sha256": "f8972835246cac5ca93f04d7fc17519536981e32bd7da81dfc3f8c6554b302b2",
+    "mode": "object",
+    "nodes_offset": 130480,
+    "pc": 69,
+    "segment_kind": "functions",
+    "selector": "K",
+    "service": "gs",
+    "slot": 5,
+    "snippet": [
+      {
+        "node": [
+          0,
+          0,
+          73
+        ],
+        "pc": 67
+      },
+      {
+        "node": [
+          0,
+          0,
+          46
+        ],
+        "pc": 68
+      },
+      {
+        "node": [
+          5,
+          -64,
+          23
+        ],
+        "pc": 69
+      },
+      {
+        "node": [
+          -3,
+          0,
+          55
+        ],
+        "pc": 70
+      },
+      {
+        "node": [
+          81,
+          2,
+          6
+        ],
+        "pc": 71
+      }
+    ],
+    "source": "gs/pack_data/lib_gs32.pak/gs/daemons/easyutild.o"
+  },
+  {
+    "bound_count": 7,
+    "efun_numeric_name": "call_other",
+    "flags": 199,
+    "function": "request_local_encrypt",
+    "function_index": 9,
+    "member_node_offset": 5430,
+    "member_sha256": "420778293b7c84e3396cff5dd48cc0f6553878116e4d382f54f63a2aca63ec93",
+    "mode": "object",
+    "nodes_offset": 4882,
+    "pc": 137,
+    "segment_kind": "functions",
+    "selector": "K",
+    "service": "gs",
+    "slot": 356,
+    "snippet": [
+      {
+        "node": [
+          55,
+          0,
+          64
+        ],
+        "pc": 135
+      },
+      {
+        "node": [
+          5,
+          0,
+          64
+        ],
+        "pc": 136
+      },
+      {
+        "node": [
+          356,
+          -57,
+          23
+        ],
+        "pc": 137
+      },
+      {
+        "node": [
+          56,
+          0,
+          64
+        ],
+        "pc": 138
+      },
+      {
+        "node": [
+          2,
+          0,
+          24
+        ],
+        "pc": 139
+      }
+    ],
+    "source": "gs/pack_data/lib_gs32.pak/gs/daemons/local_encryptd.o"
+  },
+  {
+    "bound_count": 0,
+    "efun_numeric_name": null,
+    "flags": 128,
+    "function": "query_objects",
+    "function_index": 5,
+    "member_node_offset": 13248,
+    "member_sha256": "bedbb3fb266910533917e57126568e59a52fff42421e0a53f46e9caf036eccfc",
+    "mode": "object",
+    "nodes_offset": 12916,
+    "pc": 83,
+    "segment_kind": "functions",
+    "selector": "c",
+    "service": "gs",
+    "slot": 1869,
+    "snippet": [
+      {
+        "node": [
+          0,
+          0,
+          3
+        ],
+        "pc": 81
+      },
+      {
+        "node": [
+          0,
+          0,
+          51
+        ],
+        "pc": 82
+      },
+      {
+        "node": [
+          1869,
+          -128,
+          23
+        ],
+        "pc": 83
+      },
+      {
+        "node": [
+          -4,
+          0,
+          55
+        ],
+        "pc": 84
+      },
+      {
+        "node": [
+          81,
+          2,
+          6
+        ],
+        "pc": 85
+      }
+    ],
+    "source": "gs/pack_data/lib_gs32.pak/gs/daemons/scand.o"
+  },
+  {
+    "bound_count": 0,
+    "efun_numeric_name": "get_object_by_id",
+    "flags": 192,
+    "function": "play_xlib_scenario",
+    "function_index": 9,
+    "member_node_offset": 11460,
+    "member_sha256": "a9e4cb8e8fdc83db3723d97c7e5fd29ffe443fbe4f638bf9f550218a85d0a27f",
+    "mode": "object",
+    "nodes_offset": 11280,
+    "pc": 45,
+    "segment_kind": "functions",
+    "selector": "K",
+    "service": "gs",
+    "slot": 494,
+    "snippet": [
+      {
+        "node": [
+          11,
+          0,
+          31
+        ],
+        "pc": 43
+      },
+      {
+        "node": [
+          0,
+          0,
+          46
+        ],
+        "pc": 44
+      },
+      {
+        "node": [
+          494,
+          -64,
+          23
+        ],
+        "pc": 45
+      },
+      {
+        "node": [
+          15,
+          0,
+          64
+        ],
+        "pc": 46
+      },
+      {
+        "node": [
+          0,
+          0,
+          55
+        ],
+        "pc": 47
+      }
+    ],
+    "source": "gs/pack_data/lib_gs32.pak/gs/daemons/scenariod.o"
+  },
+  {
+    "bound_count": 0,
+    "efun_numeric_name": "toupper",
+    "flags": 192,
+    "function": "append_init_code_filter",
+    "function_index": 19,
+    "member_node_offset": 22365,
+    "member_sha256": "bcbc0bb261c3ab4b922e7b9109036564d5e9cb5033f493ba5f80aaf21854306a",
+    "mode": "object",
+    "nodes_offset": 22357,
+    "pc": 2,
+    "segment_kind": "functions",
+    "selector": "K",
+    "service": "gs",
+    "slot": 138,
+    "snippet": [
+      {
+        "node": [
+          0,
+          0,
+          15
+        ],
+        "pc": 0
+      },
+      {
+        "node": [
+          0,
+          0,
+          27
+        ],
+        "pc": 1
+      },
+      {
+        "node": [
+          138,
+          -64,
+          23
+        ],
+        "pc": 2
+      },
+      {
+        "node": [
+          7,
+          0,
+          61
+        ],
+        "pc": 3
+      },
+      {
+        "node": [
+          78,
+          1,
+          6
+        ],
+        "pc": 4
+      }
+    ],
+    "source": "gs/pack_data/lib_gs32.pak/gs/daemons/taskcompilerd.o"
+  },
+  {
+    "bound_count": 3,
+    "efun_numeric_name": "call_other",
+    "flags": 195,
+    "function": "__init__",
+    "function_index": null,
+    "member_node_offset": 30836,
+    "member_sha256": "23d1cc2756f288fe885ddef837d9d4ff57116854dd06df8da9d3c00b73572b3c",
+    "mode": "object",
+    "nodes_offset": 30624,
+    "pc": 53,
+    "segment_kind": "init",
+    "selector": "K",
+    "service": "gs",
+    "slot": 356,
+    "snippet": [
+      {
+        "node": [
+          161,
+          0,
+          64
+        ],
+        "pc": 51
+      },
+      {
+        "node": [
+          77,
+          0,
+          64
+        ],
+        "pc": 52
+      },
+      {
+        "node": [
+          356,
+          -61,
+          23
+        ],
+        "pc": 53
+      },
+      {
+        "node": [
+          99,
+          0,
+          59
+        ],
+        "pc": 54
+      },
+      {
+        "node": [
+          1,
+          0,
+          59
+        ],
+        "pc": 55
+      }
+    ],
+    "source": "gs/pack_data/lib_gs32.pak/gs/daemons/tasks/guoguo_shilian.o"
+  },
+  {
+    "bound_count": 10,
+    "efun_numeric_name": "call_other",
+    "flags": 202,
+    "function": "_client_wanna_vendue_merch",
+    "function_index": 127,
+    "member_node_offset": 47635,
+    "member_sha256": "301f9d2420487de38a05eb515d180001fe918beb10941810126ce2d177e1eac8",
+    "mode": "object",
+    "nodes_offset": 47567,
+    "pc": 17,
+    "segment_kind": "functions",
+    "selector": "K",
+    "service": "gs",
+    "slot": 356,
+    "snippet": [
+      {
+        "node": [
+          458,
+          0,
+          64
+        ],
+        "pc": 15
+      },
+      {
+        "node": [
+          3,
+          0,
+          64
+        ],
+        "pc": 16
+      },
+      {
+        "node": [
+          356,
+          -54,
+          23
+        ],
+        "pc": 17
+      },
+      {
+        "node": [
+          109,
+          0,
+          64
+        ],
+        "pc": 18
+      },
+      {
+        "node": [
+          6,
+          0,
+          55
+        ],
+        "pc": 19
+      }
+    ],
+    "source": "gs/pack_data/lib_gs32.pak/gs/daemons/vendued.o"
+  },
+  {
+    "bound_count": 9,
+    "efun_numeric_name": "call_other",
+    "flags": 201,
+    "function": "offer_price_decision_confirmed",
+    "function_index": 107,
+    "member_node_offset": 48268,
+    "member_sha256": "301f9d2420487de38a05eb515d180001fe918beb10941810126ce2d177e1eac8",
+    "mode": "object",
+    "nodes_offset": 48224,
+    "pc": 11,
+    "segment_kind": "functions",
+    "selector": "K",
+    "service": "gs",
+    "slot": 356,
+    "snippet": [
+      {
+        "node": [
+          342,
+          0,
+          64
+        ],
+        "pc": 9
+      },
+      {
+        "node": [
+          3,
+          0,
+          64
+        ],
+        "pc": 10
+      },
+      {
+        "node": [
+          356,
+          -55,
+          23
+        ],
+        "pc": 11
+      },
+      {
+        "node": [
+          109,
+          0,
+          64
+        ],
+        "pc": 12
+      },
+      {
+        "node": [
+          5,
+          0,
+          55
+        ],
+        "pc": 13
+      }
+    ],
+    "source": "gs/pack_data/lib_gs32.pak/gs/daemons/vendued.o"
+  },
+  {
+    "bound_count": 1,
+    "efun_numeric_name": "calc_offset",
+    "flags": 193,
+    "function": "menu_force_team",
+    "function_index": 67,
+    "member_node_offset": 60717,
+    "member_sha256": "f2e8c51c7a47b8bd2007a2b18deccb3e7e6a253ed8aa5272d2c79575ff5f0f44",
+    "mode": "object",
+    "nodes_offset": 60593,
+    "pc": 31,
+    "segment_kind": "functions",
+    "selector": "K",
+    "service": "gs",
+    "slot": 480,
+    "snippet": [
+      {
+        "node": [
+          -10,
+          -8,
+          80
+        ],
+        "pc": 29
+      },
+      {
+        "node": [
+          0,
+          0,
+          55
+        ],
+        "pc": 30
+      },
+      {
+        "node": [
+          480,
+          -63,
+          23
+        ],
+        "pc": 31
+      },
+      {
+        "node": [
+          -1,
+          0,
+          55
+        ],
+        "pc": 32
+      },
+      {
+        "node": [
+          119,
+          2,
+          6
+        ],
+        "pc": 33
+      }
+    ],
+    "source": "gs/pack_data/lib_gs32.pak/gs/daemons/wizardd.o"
+  },
+  {
+    "bound_count": 1,
+    "efun_numeric_name": null,
+    "flags": 129,
+    "function": "cmd_internal_comm_closed",
+    "function_index": 974,
+    "member_node_offset": 796584,
+    "member_sha256": "2f3ce58bb54584d2ce7bb3d90852893b97fcd5fb55d455b8eccff856fc696174",
+    "mode": "global",
+    "nodes_offset": 796524,
+    "pc": 15,
+    "segment_kind": "functions",
+    "selector": "c",
+    "service": "gs",
+    "slot": 973,
+    "snippet": [
+      {
+        "node": [
+          0,
+          0,
+          46
+        ],
+        "pc": 13
+      },
+      {
+        "node": [
+          0,
+          0,
+          55
+        ],
+        "pc": 14
+      },
+      {
+        "node": [
+          973,
+          -127,
+          23
+        ],
+        "pc": 15
+      },
+      {
+        "node": [
+          717,
+          0,
+          64
+        ],
+        "pc": 16
+      },
+      {
+        "node": [
+          718,
+          0,
+          64
+        ],
+        "pc": 17
+      }
+    ],
+    "source": "gs/pack_data/lib_gs32.pak/gs/start_gs.o"
+  },
+  {
+    "bound_count": 2,
+    "efun_numeric_name": null,
+    "flags": 130,
+    "function": "cmd_new_connection",
+    "function_index": 1208,
+    "member_node_offset": 842503,
+    "member_sha256": "2f3ce58bb54584d2ce7bb3d90852893b97fcd5fb55d455b8eccff856fc696174",
+    "mode": "global",
+    "nodes_offset": 842471,
+    "pc": 8,
+    "segment_kind": "functions",
+    "selector": "c",
+    "service": "gs",
+    "slot": 1207,
+    "snippet": [
+      {
+        "node": [
+          0,
+          0,
+          67
+        ],
+        "pc": 6
+      },
+      {
+        "node": [
+          0,
+          0,
+          55
+        ],
+        "pc": 7
+      },
+      {
+        "node": [
+          1207,
+          -126,
+          23
+        ],
+        "pc": 8
+      },
+      {
+        "node": [
+          0,
+          0,
+          55
+        ],
+        "pc": 9
+      },
+      {
+        "node": [
+          1025,
+          0,
+          64
+        ],
+        "pc": 10
+      }
+    ],
+    "source": "gs/pack_data/lib_gs32.pak/gs/start_gs.o"
+  },
+  {
+    "bound_count": 3,
+    "efun_numeric_name": null,
+    "flags": 131,
+    "function": "read_content_to_ex",
+    "function_index": 758,
+    "member_node_offset": 861431,
+    "member_sha256": "2f3ce58bb54584d2ce7bb3d90852893b97fcd5fb55d455b8eccff856fc696174",
+    "mode": "global",
+    "nodes_offset": 861411,
+    "pc": 5,
+    "segment_kind": "functions",
+    "selector": "c",
+    "service": "gs",
+    "slot": 757,
+    "snippet": [
+      {
+        "node": [
+          0,
+          0,
+          55
+        ],
+        "pc": 3
+      },
+      {
+        "node": [
+          3,
+          0,
+          55
+        ],
+        "pc": 4
+      },
+      {
+        "node": [
+          757,
+          -125,
+          23
+        ],
+        "pc": 5
+      },
+      {
+        "node": [
+          2,
+          0,
+          55
+        ],
+        "pc": 6
+      },
+      {
+        "node": [
+          1,
+          0,
+          55
+        ],
+        "pc": 7
+      }
+    ],
+    "source": "gs/pack_data/lib_gs32.pak/gs/start_gs.o"
+  },
+  {
+    "bound_count": 2,
+    "efun_numeric_name": null,
+    "flags": 130,
+    "function": "write_content_to_ex",
+    "function_index": 762,
+    "member_node_offset": 1055573,
+    "member_sha256": "2f3ce58bb54584d2ce7bb3d90852893b97fcd5fb55d455b8eccff856fc696174",
+    "mode": "global",
+    "nodes_offset": 1055501,
+    "pc": 18,
+    "segment_kind": "functions",
+    "selector": "c",
+    "service": "gs",
+    "slot": 761,
+    "snippet": [
+      {
+        "node": [
+          4,
+          0,
+          55
+        ],
+        "pc": 16
+      },
+      {
+        "node": [
+          0,
+          0,
+          55
+        ],
+        "pc": 17
+      },
+      {
+        "node": [
+          761,
+          -126,
+          23
+        ],
+        "pc": 18
+      },
+      {
+        "node": [
+          -1,
+          0,
+          55
+        ],
+        "pc": 19
+      },
+      {
+        "node": [
+          2,
+          0,
+          55
+        ],
+        "pc": 20
+      }
+    ],
+    "source": "gs/pack_data/lib_gs32.pak/gs/start_gs.o"
+  },
+  {
+    "bound_count": 0,
+    "efun_numeric_name": "shutdown",
+    "flags": 192,
+    "function": "init_service_module",
+    "function_index": 1798,
+    "member_node_offset": 1339913,
+    "member_sha256": "2f3ce58bb54584d2ce7bb3d90852893b97fcd5fb55d455b8eccff856fc696174",
+    "mode": "global",
+    "nodes_offset": 1339601,
+    "pc": 78,
+    "segment_kind": "functions",
+    "selector": "K",
+    "service": "gs",
+    "slot": 115,
+    "snippet": [
+      {
+        "node": [
+          0,
+          0,
+          14
+        ],
+        "pc": 76
+      },
+      {
+        "node": [
+          0,
+          0,
+          51
+        ],
+        "pc": 77
+      },
+      {
+        "node": [
+          115,
+          -64,
+          23
+        ],
+        "pc": 78
+      },
+      {
+        "node": [
+          0,
+          0,
+          59
+        ],
+        "pc": 79
+      },
+      {
+        "node": [
+          5,
+          0,
+          59
+        ],
+        "pc": 80
+      }
+    ],
+    "source": "gs/pack_data/lib_gs32.pak/gs/start_gs.o"
+  },
+  {
+    "bound_count": 0,
+    "efun_numeric_name": null,
+    "flags": 128,
+    "function": "start_stat_cmds",
+    "function_index": 689,
+    "member_node_offset": 1469304,
+    "member_sha256": "2f3ce58bb54584d2ce7bb3d90852893b97fcd5fb55d455b8eccff856fc696174",
+    "mode": "global",
+    "nodes_offset": 1469160,
+    "pc": 36,
+    "segment_kind": "functions",
+    "selector": "c",
+    "service": "gs",
+    "slot": 688,
+    "snippet": [
+      {
+        "node": [
+          0,
+          0,
+          3
+        ],
+        "pc": 34
+      },
+      {
+        "node": [
+          0,
+          0,
+          51
+        ],
+        "pc": 35
+      },
+      {
+        "node": [
+          688,
+          -128,
+          23
+        ],
+        "pc": 36
+      },
+      {
+        "node": [
+          289,
+          0,
+          64
+        ],
+        "pc": 37
+      },
+      {
+        "node": [
+          0,
+          0,
+          55
+        ],
+        "pc": 38
+      }
+    ],
+    "source": "gs/pack_data/lib_gs32.pak/gs/start_gs.o"
+  },
+  {
+    "bound_count": 2,
+    "efun_numeric_name": null,
+    "flags": 130,
+    "function": "cmd_disconnected",
+    "function_index": 1158,
+    "member_node_offset": 1529201,
+    "member_sha256": "2f3ce58bb54584d2ce7bb3d90852893b97fcd5fb55d455b8eccff856fc696174",
+    "mode": "global",
+    "nodes_offset": 1529177,
+    "pc": 6,
+    "segment_kind": "functions",
+    "selector": "c",
+    "service": "gs",
+    "slot": 1157,
+    "snippet": [
+      {
+        "node": [
+          1,
+          0,
+          55
+        ],
+        "pc": 4
+      },
+      {
+        "node": [
+          0,
+          0,
+          55
+        ],
+        "pc": 5
+      },
+      {
+        "node": [
+          1157,
+          -126,
+          23
+        ],
+        "pc": 6
+      },
+      {
+        "node": [
+          0,
+          0,
+          55
+        ],
+        "pc": 7
+      },
+      {
+        "node": [
+          1025,
+          0,
+          64
+        ],
+        "pc": 8
+      }
+    ],
+    "source": "gs/pack_data/lib_gs32.pak/gs/start_gs.o"
+  },
+  {
+    "bound_count": 1,
+    "efun_numeric_name": null,
+    "flags": 129,
+    "function": "size_max",
+    "function_index": 673,
+    "member_node_offset": 1552620,
+    "member_sha256": "2f3ce58bb54584d2ce7bb3d90852893b97fcd5fb55d455b8eccff856fc696174",
+    "mode": "global",
+    "nodes_offset": 1552352,
+    "pc": 67,
+    "segment_kind": "functions",
+    "selector": "c",
+    "service": "gs",
+    "slot": 672,
+    "snippet": [
+      {
+        "node": [
+          -1,
+          0,
+          59
+        ],
+        "pc": 65
+      },
+      {
+        "node": [
+          -1,
+          0,
+          55
+        ],
+        "pc": 66
+      },
+      {
+        "node": [
+          672,
+          -127,
+          23
+        ],
+        "pc": 67
+      },
+      {
+        "node": [
+          -1,
+          0,
+          55
+        ],
+        "pc": 68
+      },
+      {
+        "node": [
+          78,
+          1,
+          6
+        ],
+        "pc": 69
+      }
+    ],
+    "source": "gs/pack_data/lib_gs32.pak/gs/start_gs.o"
+  },
+  {
+    "bound_count": 0,
+    "efun_numeric_name": null,
+    "flags": 128,
+    "function": "pp_start_profiling_ex",
+    "function_index": 982,
+    "member_node_offset": 1568705,
+    "member_sha256": "2f3ce58bb54584d2ce7bb3d90852893b97fcd5fb55d455b8eccff856fc696174",
+    "mode": "global",
+    "nodes_offset": 1568557,
+    "pc": 37,
+    "segment_kind": "functions",
+    "selector": "c",
+    "service": "gs",
+    "slot": 985,
+    "snippet": [
+      {
+        "node": [
+          0,
+          0,
+          73
+        ],
+        "pc": 35
+      },
+      {
+        "node": [
+          0,
+          0,
+          46
+        ],
+        "pc": 36
+      },
+      {
+        "node": [
+          985,
+          -128,
+          23
+        ],
+        "pc": 37
+      },
+      {
+        "node": [
+          752,
+          0,
+          64
+        ],
+        "pc": 38
+      },
+      {
+        "node": [
+          1,
+          0,
+          55
+        ],
+        "pc": 39
+      }
+    ],
+    "source": "gs/pack_data/lib_gs32.pak/gs/start_gs.o"
+  },
+  {
+    "bound_count": 1,
+    "efun_numeric_name": null,
+    "flags": 129,
+    "function": "telnet_new_client",
+    "function_index": 980,
+    "member_node_offset": 1615108,
+    "member_sha256": "2f3ce58bb54584d2ce7bb3d90852893b97fcd5fb55d455b8eccff856fc696174",
+    "mode": "global",
+    "nodes_offset": 1614980,
+    "pc": 32,
+    "segment_kind": "functions",
+    "selector": "c",
+    "service": "gs",
+    "slot": 979,
+    "snippet": [
+      {
+        "node": [
+          6,
+          2,
+          33
+        ],
+        "pc": 30
+      },
+      {
+        "node": [
+          0,
+          0,
+          55
+        ],
+        "pc": 31
+      },
+      {
+        "node": [
+          979,
+          -127,
+          23
+        ],
+        "pc": 32
+      },
+      {
+        "node": [
+          0,
+          0,
+          59
+        ],
+        "pc": 33
+      },
+      {
+        "node": [
+          268,
+          2,
+          6
+        ],
+        "pc": 34
+      }
+    ],
+    "source": "gs/pack_data/lib_gs32.pak/gs/start_gs.o"
+  },
+  {
+    "bound_count": 4,
+    "efun_numeric_name": null,
+    "flags": 132,
+    "function": "auto_recover_read_to",
+    "function_index": 978,
+    "member_node_offset": 1649501,
+    "member_sha256": "2f3ce58bb54584d2ce7bb3d90852893b97fcd5fb55d455b8eccff856fc696174",
+    "mode": "global",
+    "nodes_offset": 1649477,
+    "pc": 6,
+    "segment_kind": "functions",
+    "selector": "c",
+    "service": "gs",
+    "slot": 977,
+    "snippet": [
+      {
+        "node": [
+          1,
+          0,
+          55
+        ],
+        "pc": 4
+      },
+      {
+        "node": [
+          0,
+          0,
+          55
+        ],
+        "pc": 5
+      },
+      {
+        "node": [
+          977,
+          -124,
+          23
+        ],
+        "pc": 6
+      },
+      {
+        "node": [
+          2,
+          0,
+          55
+        ],
+        "pc": 7
+      },
+      {
+        "node": [
+          1,
+          0,
+          55
+        ],
+        "pc": 8
+      }
+    ],
+    "source": "gs/pack_data/lib_gs32.pak/gs/start_gs.o"
+  },
+  {
+    "bound_count": 1,
+    "efun_numeric_name": null,
+    "flags": 129,
+    "function": "size_objects",
+    "function_index": 675,
+    "member_node_offset": 1750391,
+    "member_sha256": "2f3ce58bb54584d2ce7bb3d90852893b97fcd5fb55d455b8eccff856fc696174",
+    "mode": "global",
+    "nodes_offset": 1750195,
+    "pc": 49,
+    "segment_kind": "functions",
+    "selector": "c",
+    "service": "gs",
+    "slot": 674,
+    "snippet": [
+      {
+        "node": [
+          -1,
+          0,
+          59
+        ],
+        "pc": 47
+      },
+      {
+        "node": [
+          -1,
+          0,
+          55
+        ],
+        "pc": 48
+      },
+      {
+        "node": [
+          674,
+          -127,
+          23
+        ],
+        "pc": 49
+      },
+      {
+        "node": [
+          -1,
+          0,
+          55
+        ],
+        "pc": 50
+      },
+      {
+        "node": [
+          78,
+          1,
+          6
+        ],
+        "pc": 51
+      }
+    ],
+    "source": "gs/pack_data/lib_gs32.pak/gs/start_gs.o"
+  }
+]

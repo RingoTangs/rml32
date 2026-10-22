@@ -1,5 +1,7 @@
 # magic_Linux32 Rust 重写实施路线图
 
+**当前阶段2AN：**Global／efun函数值定向取证与[两批实施规格](stage2an-evidence/function-runtime-design.md)完成；见[语义报告](vm-global-function-value-semantics.md)、[接入审计](stage2an-evidence/runtime-design-audit.md)和[验证记录](stage2an-validation.json)。确认Global/c保存代码与当前constitution的组合、Global/K经描述符编号再查表及独立creator owner；首批规格限制Global绑定变化，第二批显式同步宿主采用每次调用解析当前注册。独立复算5,012处全局创建位置、30个静态／设计案例；515项Rust测试debug/release、23项Python检查及fmt/clippy通过。运行时/API/依赖及75种限定支持/73种交集不变，Global／efun函数值尚未开放，G12/G18和阶段2未完成。下一步实施第一批标量捕获Global/c；非标量捕获、真实efun及服务仍排除。以下为历史快照。
+
 **当前阶段2AM：**按2AL规格实现普通函数Int/Bytes Mapping997及私有原生桶链，保留公开entries顺序与成员Cell身份，支持实时修改、输出Array3别名复用及现有调用/预算/清理契约。见[运行时说明](vm-mapping-runtime.md)、[能力增量](stage2am-evidence/matrix.md)及[验证记录](stage2am-validation.json)。515项Rust测试debug/release、19项Python检查及fmt/clippy通过；75种限定支持/73种交集不变。G05仅部分实现，删除后引用、其他键/属性、交叉别名与完整GC仍需后续证据；生命周期循环和真实efun未开放，阶段2未完成。以下为历史快照。
 
 **当前阶段2AL：**Int/Bytes Mapping桶链与遍历修改静态取证完成，见[语义报告](vm-mapping-iteration-semantics.md)、[下一批实施规格](stage2al-evidence/mapping-runtime-design.md)及[验证记录](stage2al-validation.json)。普通函数Mapping997仍未实现；下一批按原生哈希、空桶扩容预算、bucket/subindex/ordinal游标和三元数组别名语义接入。保留其他键/属性、删除后引用、交叉图与生命周期限制，G05仍未关闭。本轮运行时/API/依赖不变，28项Python检查、487项Rust测试debug/release及fmt/clippy通过，75种限定支持/73种交集不变。以下2AJ及更早条目保持历史快照；最新运行时为2AK受限Bytes `+=`。

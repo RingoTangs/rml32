@@ -1,5 +1,7 @@
 # rml32
 
+阶段2AN已完成Global／efun函数值定向静态取证及[两批Rust实施规格](docs/stage2an-evidence/function-runtime-design.md)，见[语义报告](docs/vm-global-function-value-semantics.md)、[方法与边界](docs/stage2an-evidence/method.md)及[验证记录](docs/stage2an-validation.json)。本轮会话3条完整dossier（其中1条为同ID刷新）、复用17条历史记录；独立复算5,012处Global创建位置，与2AF逐条一致，提供30个静态／设计案例。515项Rust测试debug/release、23项Python检查及fmt/clippy通过。运行时/API/依赖和75种限定支持/73种交集不变；Global／efun函数值尚未实现，非标量捕获与阶段2仍未完成。以下为历史快照。
+
 阶段2AM已实现普通函数受限Mapping997，包含Int/Bytes原生哈希桶链、实时遍历顺序与三元输出数组别名复用。见[运行时说明](docs/vm-mapping-runtime.md)、[能力增量](docs/stage2am-evidence/matrix.md)及[验证记录](docs/stage2am-validation.json)。515项Rust测试debug/release、19项Python模型/语料测试及fmt/clippy通过；公开API/依赖不变，75种限定支持/73种交集不变。其他键/属性、删除后引用、复杂交叉图、完整GC与生命周期循环仍排除，G05部分实现，阶段2未完成。以下为历史快照。
 
 阶段2AL已完成Int/Bytes Mapping哈希、桶链顺序及遍历修改的静态取证与[后续实施规格](docs/stage2al-evidence/mapping-runtime-design.md)，见[语义报告](docs/vm-mapping-iteration-semantics.md)和[验证记录](docs/stage2al-validation.json)。复用13条REA记录、本地LLVM补查21个函数，复算298,369处相关位置；28项Python检查及487项Rust测试debug/release通过，fmt/clippy通过。运行时/API/依赖不变，Mapping997仍未开放，75种限定支持/73种交集不变；G05与阶段2未完成。新REA会话被客户端审批策略拦截，证据来源与剩余别名/删除引用限制已明确记录。以下为历史快照。

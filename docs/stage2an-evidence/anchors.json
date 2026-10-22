@@ -1,0 +1,154 @@
+[
+  {
+    "address": "0x8091f34",
+    "bytes_hex": "55",
+    "evidence_id": "ev_4ae635941eda7abcc9024ccadd56fd4d6278ddcd6075acacda6b865390f65444",
+    "file_offset": 302900,
+    "instruction": "0x8091f34: PUSH EBP",
+    "name": "vm_createFunctionValue"
+  },
+  {
+    "address": "0x8091daa",
+    "bytes_hex": "8b5518",
+    "evidence_id": "ev_f739f81d73d7c07779ab3fb741800726145efbc40fd8dc6c58009ac2d703aa48",
+    "file_offset": 302506,
+    "instruction": "0x8091daa: MOV EDX, dword ptr [EBP + 0x18]",
+    "name": "vm_createFunctionValueEx"
+  },
+  {
+    "address": "0x8091dc4",
+    "bytes_hex": "89500c",
+    "evidence_id": "ev_f739f81d73d7c07779ab3fb741800726145efbc40fd8dc6c58009ac2d703aa48",
+    "file_offset": 302532,
+    "instruction": "0x8091dc4: MOV dword ptr [EAX + 0xc], EDX",
+    "name": "vm_createFunctionValueEx"
+  },
+  {
+    "address": "0x8091dde",
+    "bytes_hex": "8b04d0",
+    "evidence_id": "ev_f739f81d73d7c07779ab3fb741800726145efbc40fd8dc6c58009ac2d703aa48",
+    "file_offset": 302558,
+    "instruction": "0x8091dde: MOV EAX, dword ptr [EAX + EDX*0x8]",
+    "name": "vm_createFunctionValueEx"
+  },
+  {
+    "address": "0x8091de4",
+    "bytes_hex": "894114",
+    "evidence_id": "ev_f739f81d73d7c07779ab3fb741800726145efbc40fd8dc6c58009ac2d703aa48",
+    "file_offset": 302564,
+    "instruction": "0x8091de4: MOV dword ptr [ECX + 0x14], EAX",
+    "name": "vm_createFunctionValueEx"
+  },
+  {
+    "address": "0x80944d8",
+    "bytes_hex": "8b460c",
+    "evidence_id": "ev_a50406aa6a4cd4b2b95b079a7b126ba210a8ecaa6919839ac438372500c0159d",
+    "file_offset": 312536,
+    "instruction": "0x80944d8: MOV EAX, dword ptr [ESI + 0xc]",
+    "name": "vm_callFunPtr"
+  },
+  {
+    "address": "0x80944e3",
+    "bytes_hex": "0fb65605",
+    "evidence_id": "ev_a50406aa6a4cd4b2b95b079a7b126ba210a8ecaa6919839ac438372500c0159d",
+    "file_offset": 312547,
+    "instruction": "0x80944e3: MOVZX EDX, byte ptr [ESI + 0x5]",
+    "name": "vm_callFunPtr"
+  },
+  {
+    "address": "0x80944fb",
+    "bytes_hex": "8b5614",
+    "evidence_id": "ev_a50406aa6a4cd4b2b95b079a7b126ba210a8ecaa6919839ac438372500c0159d",
+    "file_offset": 312571,
+    "instruction": "0x80944fb: MOV EDX, dword ptr [ESI + 0x14]",
+    "name": "vm_callFunPtr"
+  },
+  {
+    "address": "0x80945d1",
+    "bytes_hex": "83bd74ffffff4b",
+    "evidence_id": "ev_a50406aa6a4cd4b2b95b079a7b126ba210a8ecaa6919839ac438372500c0159d",
+    "file_offset": 312785,
+    "instruction": "0x80945d1: CMP dword ptr [EBP + 0xffffff74], 0x4b",
+    "name": "vm_callFunPtr"
+  },
+  {
+    "address": "0x80946a3",
+    "bytes_hex": "e808f8ffff",
+    "evidence_id": "ev_a50406aa6a4cd4b2b95b079a7b126ba210a8ecaa6919839ac438372500c0159d",
+    "file_offset": 312995,
+    "instruction": "0x80946a3: CALL 0x08093eb0",
+    "name": "vm_callFunPtr"
+  },
+  {
+    "address": "0x80946b0",
+    "bytes_hex": "f6400d80",
+    "evidence_id": "ev_a50406aa6a4cd4b2b95b079a7b126ba210a8ecaa6919839ac438372500c0159d",
+    "file_offset": 313008,
+    "instruction": "0x80946b0: TEST byte ptr [EAX + 0xd], 0x80",
+    "name": "vm_callFunPtr"
+  },
+  {
+    "address": "0x809483a",
+    "bytes_hex": "0fbf421a",
+    "evidence_id": "ev_a50406aa6a4cd4b2b95b079a7b126ba210a8ecaa6919839ac438372500c0159d",
+    "file_offset": 313402,
+    "instruction": "0x809483a: MOVSX EAX, word ptr [EDX + 0x1a]",
+    "name": "vm_callFunPtr"
+  },
+  {
+    "address": "0x809483f",
+    "bytes_hex": "e854f5ffff",
+    "evidence_id": "ev_a50406aa6a4cd4b2b95b079a7b126ba210a8ecaa6919839ac438372500c0159d",
+    "file_offset": 313407,
+    "instruction": "0x809483f: CALL 0x08093d98",
+    "name": "vm_callFunPtr"
+  },
+  {
+    "address": "0x8093dd5",
+    "bytes_hex": "8b1cf0",
+    "evidence_id": "ev_f7a9dddeb7edb2f09a574fb30d22a4cf7af8ca2f93f06fb113081ac12811e04f",
+    "file_offset": 310741,
+    "instruction": "0x8093dd5: MOV EBX, dword ptr [EAX + ESI*0x8]",
+    "name": "vm_callInEfun"
+  },
+  {
+    "address": "0x8093e04",
+    "bytes_hex": "f3a5",
+    "evidence_id": "ev_f7a9dddeb7edb2f09a574fb30d22a4cf7af8ca2f93f06fb113081ac12811e04f",
+    "file_offset": 310788,
+    "instruction": "0x8093e04: MOVSD.REP ES:EDI, ESI",
+    "name": "vm_callInEfun"
+  },
+  {
+    "address": "0x8093e21",
+    "bytes_hex": "895a24",
+    "evidence_id": "ev_f7a9dddeb7edb2f09a574fb30d22a4cf7af8ca2f93f06fb113081ac12811e04f",
+    "file_offset": 310817,
+    "instruction": "0x8093e21: MOV dword ptr [EDX + 0x24], EBX",
+    "name": "vm_callInEfun"
+  },
+  {
+    "address": "0x8093e26",
+    "bytes_hex": "ff5314",
+    "evidence_id": "ev_f7a9dddeb7edb2f09a574fb30d22a4cf7af8ca2f93f06fb113081ac12811e04f",
+    "file_offset": 310822,
+    "instruction": "0x8093e26: CALL dword ptr [EBX + 0x14]",
+    "name": "vm_callInEfun"
+  },
+  {
+    "address": "0x8093f87",
+    "bytes_hex": "a1d0aa4708",
+    "evidence_id": "ev_ea9570e30440ab119beb30143a85def63e15e87ac0485860290ba47ca3a6ae7c",
+    "file_offset": 311175,
+    "instruction": "0x8093f87: MOV EAX, [0x0847aad0]",
+    "name": "vm_callInUserFunBody"
+  },
+  {
+    "address": "0x80957e9",
+    "bytes_hex": "8d14d0",
+    "evidence_id": "ev_7ad5b825f58978d24db93a52b2b74151085c158ff48f1957a00188e9292c6a2d",
+    "file_offset": 317417,
+    "instruction": "0x80957e9: LEA EDX, [EAX + EDX*0x8]",
+    "name": "vm_finalizeFun"
+  }
+]

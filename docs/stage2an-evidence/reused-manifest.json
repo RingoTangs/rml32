@@ -1,0 +1,138 @@
+[
+  {
+    "evidence_id": "ev_228d09be9663f9f70d03a59ebe1663960c6d34458f9a82d3d5e1e4cee42d44f9",
+    "name": "vm_freeFunctionValue",
+    "operation": "analyze_function",
+    "record_sha256": "65dd847a77ae3e33bc0ce6dfb29ee14dbd11fbcb299e9d7647c00e39a84c0e6e",
+    "source": "docs/stage2af-evidence/rea.json.gz",
+    "source_sha256": "3cd2cc630c9adc9cef66b6cd37993647e2414d28ab5053a593a6e91cf94ce205"
+  },
+  {
+    "evidence_id": "ev_4d6d17b9e1b09afb2790e5504711604e853f3e4e9740fbca01c397f299a00212",
+    "name": "vm_pushValue",
+    "operation": "analyze_function",
+    "record_sha256": "13c4c72c48891fec98353a1e47d8d527a977be5abd24eab07401d3a9766c8a93",
+    "source": "docs/stage2af-evidence/rea.json.gz",
+    "source_sha256": "3cd2cc630c9adc9cef66b6cd37993647e2414d28ab5053a593a6e91cf94ce205"
+  },
+  {
+    "evidence_id": "ev_69a23ae044935ae6f7450097987faa71f641c62091f885fc4b4b5f8d5b1929f4",
+    "name": "vm_copyValue",
+    "operation": "analyze_function",
+    "record_sha256": "d39552e941a288170ae0006502663c1aa4e5e396115900af46c570d2fe87ff96",
+    "source": "docs/stage2af-evidence/rea.json.gz",
+    "source_sha256": "3cd2cc630c9adc9cef66b6cd37993647e2414d28ab5053a593a6e91cf94ce205"
+  },
+  {
+    "evidence_id": "ev_a50406aa6a4cd4b2b95b079a7b126ba210a8ecaa6919839ac438372500c0159d",
+    "name": "vm_callFunPtr",
+    "operation": "analyze_function",
+    "record_sha256": "1d545ec0c8e697181a14d4837b9393cc8c2a1f493c9744b802fbf086ef6eb305",
+    "source": "docs/stage2af-evidence/rea.json.gz",
+    "source_sha256": "3cd2cc630c9adc9cef66b6cd37993647e2414d28ab5053a593a6e91cf94ce205"
+  },
+  {
+    "evidence_id": "ev_d5e0fa5ed30b20859a959e09027480b13f6d9acdd746527dd5c2dac47520cadc",
+    "name": "vm_cleanupValue",
+    "operation": "analyze_function",
+    "record_sha256": "0313d0b6261362365ca80c4055eeca8dc5d30a57a7444a3b66f9291952acbe40",
+    "source": "docs/stage2af-evidence/rea.json.gz",
+    "source_sha256": "3cd2cc630c9adc9cef66b6cd37993647e2414d28ab5053a593a6e91cf94ce205"
+  },
+  {
+    "evidence_id": "ev_f739f81d73d7c07779ab3fb741800726145efbc40fd8dc6c58009ac2d703aa48",
+    "name": "vm_createFunctionValueEx",
+    "operation": "analyze_function",
+    "record_sha256": "24df17a714b1446ec9f25a4886f64d9b4948965905b1ec4e9cc33e1e2db56966",
+    "source": "docs/stage2af-evidence/rea.json.gz",
+    "source_sha256": "3cd2cc630c9adc9cef66b6cd37993647e2414d28ab5053a593a6e91cf94ce205"
+  },
+  {
+    "evidence_id": "ev_1f8d2b76898bf43dd8b24a370fca52729a822af343d566f8bc3216ef0b05c88f",
+    "name": "vm_doActions",
+    "operation": "procedure_pseudo_code",
+    "record_sha256": "74967091813a5d02d74b6086b4b760ceedde0673f87b892d860d95ed14c014ff",
+    "source": "docs/stage2af-evidence/reused.json.gz",
+    "source_sha256": "6f43126e050f762d634a7d4d8a3bc176bd39869ae5c3a4d03d23290c7823e5e3"
+  },
+  {
+    "evidence_id": "ev_3aa06be9e85308cb2db022171ebc8b97169c4291640f5d39b9176041544f81e4",
+    "name": "vm_traceError",
+    "operation": "procedure_pseudo_code",
+    "record_sha256": "1d3b80f8b92f7760c406f0cd575ce29587b1253f28194a2f01e7a3795b2e0c3d",
+    "source": "docs/stage2af-evidence/reused.json.gz",
+    "source_sha256": "6f43126e050f762d634a7d4d8a3bc176bd39869ae5c3a4d03d23290c7823e5e3"
+  },
+  {
+    "evidence_id": "ev_4ae635941eda7abcc9024ccadd56fd4d6278ddcd6075acacda6b865390f65444",
+    "name": "vm_createFunctionValue",
+    "operation": "analyze_function",
+    "record_sha256": "e7f81124e97fb3a31e308bbc895d141a9d211ad36f105e1583f8ee15d833de2c",
+    "source": "docs/stage2af-evidence/reused.json.gz",
+    "source_sha256": "6f43126e050f762d634a7d4d8a3bc176bd39869ae5c3a4d03d23290c7823e5e3"
+  },
+  {
+    "evidence_id": "ev_d9b9b1bd2399a379282bc11cbe8575420d3f316770e17d5a6ea5138fdee1b7a1",
+    "name": "vm_errorQuit",
+    "operation": "procedure_pseudo_code",
+    "record_sha256": "f6a7fb3b2924151134a4622d2ededf7be941fe571808e12dfaf6090a5dd97fff",
+    "source": "docs/stage2af-evidence/reused.json.gz",
+    "source_sha256": "6f43126e050f762d634a7d4d8a3bc176bd39869ae5c3a4d03d23290c7823e5e3"
+  },
+  {
+    "evidence_id": "ev_e12a1e49fc37b28910632e7d22872a27b51e7c54f0c6478935e893b20f7c63fe",
+    "name": "vm_traceError",
+    "operation": "procedure_assembly",
+    "record_sha256": "5d88491900959fd39058a913b0c9e95cf9dd6af97ff76ad795c49343e5288d71",
+    "source": "docs/stage2af-evidence/reused.json.gz",
+    "source_sha256": "6f43126e050f762d634a7d4d8a3bc176bd39869ae5c3a4d03d23290c7823e5e3"
+  },
+  {
+    "evidence_id": "ev_e9492a960f163a9c44c46efb1fdcfca92689aa3ce02ea9f075ac00e305bd3dc2",
+    "name": "vm_returnFromFun",
+    "operation": "procedure_pseudo_code",
+    "record_sha256": "18740d72d78da353b25cdb51bc3adca865bef5541b4bd471e91469a68d035ee2",
+    "source": "docs/stage2af-evidence/reused.json.gz",
+    "source_sha256": "6f43126e050f762d634a7d4d8a3bc176bd39869ae5c3a4d03d23290c7823e5e3"
+  },
+  {
+    "evidence_id": "ev_f4c403eaac43efab5b199f80f74a1e7737969061e2977d9d6e1554147b8f7610",
+    "name": "vm_returnFromFun",
+    "operation": "procedure_assembly",
+    "record_sha256": "59ade9ef14d9eadf0226004bb32ad66e7e89a8979c782f96453a3c5a0c1bc365",
+    "source": "docs/stage2af-evidence/reused.json.gz",
+    "source_sha256": "6f43126e050f762d634a7d4d8a3bc176bd39869ae5c3a4d03d23290c7823e5e3"
+  },
+  {
+    "evidence_id": "ev_80271c109d8b170b4dac40d9836f89a9722c8d04023f8e58b881ce2adc69c17e",
+    "name": "vm_getArgument",
+    "operation": "analyze_function",
+    "record_sha256": "02760643fab1cdb7316c4226c66f59f4452cb9c152b5e09f1608387929393d69",
+    "source": "docs/stage2ad-evidence/rea.json.gz",
+    "source_sha256": "2539590bbe94c2cf5241bcde70a4d82362ec4d3726180939e1c2208a542b09f1"
+  },
+  {
+    "evidence_id": "ev_e86eb89e60b57e211e2efdce9ee32fdd5b9d630f548d18ca4e6b50e43675595c",
+    "name": "vm_returnFromEfun",
+    "operation": "analyze_function",
+    "record_sha256": "43e0ba9a9597596318731953719f757dd3c31e2552493ffc75a66359ab2a4022",
+    "source": "docs/stage2ad-evidence/rea.json.gz",
+    "source_sha256": "2539590bbe94c2cf5241bcde70a4d82362ec4d3726180939e1c2208a542b09f1"
+  },
+  {
+    "evidence_id": "ev_a83bf890b4b1b7b1e670ffd84e2caf433106c4b1521c658ee8c18bbdb826b9a1",
+    "name": "vm_addEfuns",
+    "operation": "analyze_function",
+    "record_sha256": "d66822ce674bd9fe0d76f964394f4a2c79b6a570cc8b619a56cde626ccfdc260",
+    "source": "docs/stage2ad-evidence/reused.json.gz",
+    "source_sha256": "5eadd882c870004afa9dbd9da2896abb898a88735dfbad7c1a638ab5f00cfd5e"
+  },
+  {
+    "evidence_id": "ev_a62e3110c8f80b68de1c768894f66d34b9dca9778fa69b0bb7f84f2504e73e0c",
+    "name": "vm_finalizeIdentifiersInProgram",
+    "operation": "analyze_function",
+    "record_sha256": "629c20a8a4e848585edeaf47c300ea227cb0f0ac5cfdd42e2e9ccac239aeb832",
+    "source": "docs/stage2aa-evidence/rea.json.gz",
+    "source_sha256": "eee682297b4cbc6f3fb9f1123d8523a173db66dcdfffa603f7362d0930bf3f30"
+  }
+]

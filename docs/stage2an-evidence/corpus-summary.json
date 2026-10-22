@@ -1,0 +1,21 @@
+{
+  "input_sha256": {
+    "docs/compatibility-evidence/compatibility-summary.json": "bb8e38b6b7e1d52e11f6468f74ec7fdd63773acb7b6ab01879ce796e0e2ddbbf",
+    "docs/compatibility-evidence/efuns.csv": "896cb552f0204efc58dfece811a5e230b3ce7780cf9064e346564e17980473eb",
+    "docs/compatibility-evidence/programs.json.gz": "46389cffa1c7a13692f57a2fac935f7603c723a363dee9dcc4c640ab68f48f31",
+    "docs/stage2af-evidence/corpus-occurrences.jsonl.gz": "359bb0912aaf90b15f4499e26d1f5cf4c803011cd3f54ce9e86701eb96b2269f",
+    "docs/stage2af-evidence/corpus-summary.json": "45c7b601f2eaebd333c003e80b8f80099749f4e51d567b27f616669a37ddeb77"
+  },
+  "limitation": "Static locations and numeric names only; no inferred runtime targets or reachability",
+  "occurrence_count": 5012,
+  "totals": {
+    "calls_05": 3089,
+    "creates_17": 32614,
+    "global_c": 110,
+    "global_k": 4902,
+    "hidden_functions": 0,
+    "instructions": 6474773,
+    "ordinary_functions": 101592,
+    "programs": 7159
+  }
+}

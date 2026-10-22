@@ -1,0 +1,156 @@
+[
+  {
+    "claim": "17: bit7 selects global table; bit6 selects K (1) versus c (0); low six bits count captures. Global slots are absolute; local slots add constitution base with 16-bit arithmetic.",
+    "evidence": [
+      "ev_4ae635941eda7abcc9024ccadd56fd4d6278ddcd6075acacda6b865390f65444"
+    ],
+    "id": "F01",
+    "kind": "observation",
+    "limits": "Non-global K is outside the selected future implementation; absence in corpus is not native rejection.",
+    "status": "answered"
+  },
+  {
+    "claim": "Creation saves pFunctions[funOffset].f and independently retains current thisObject when live, even for a global target. Global-created values can have a null owner.",
+    "evidence": [
+      "ev_f739f81d73d7c07779ab3fb741800726145efbc40fd8dc6c58009ac2d703aa48"
+    ],
+    "id": "F02",
+    "kind": "observation",
+    "limits": "No general validation of arbitrary malformed table entries is proven; owner reference is not the callee execution context.",
+    "status": "answered"
+  },
+  {
+    "claim": "05 rejects a saved deleted owner before K/c dispatch, including global targets. vm_copyValue can clean the source and produce Undefined; the owner-null case is not invalidated by this test.",
+    "evidence": [
+      "ev_a50406aa6a4cd4b2b95b079a7b126ba210a8ecaa6919839ac438372500c0159d",
+      "ev_69a23ae044935ae6f7450097987faa71f641c62091f885fc4b4b5f8d5b1929f4"
+    ],
+    "id": "F03",
+    "kind": "observation",
+    "limits": "Rust logical deletion still differs from native ref/execRef and deferred deletion. Raw call and prior ordinary copy must remain distinct.",
+    "status": "answered"
+  },
+  {
+    "claim": "c dispatch passes saved pFun, stored funOffset and isGlobal to vm_callInUserFunBody. A Global callee clears thisObject, uses current vm_pGlobalProgram constitution and saved pFun code segment.",
+    "evidence": [
+      "ev_a50406aa6a4cd4b2b95b079a7b126ba210a8ecaa6919839ac438372500c0159d",
+      "ev_ea9570e30440ab119beb30143a85def63e15e87ac0485860290ba47ca3a6ae7c"
+    ],
+    "id": "F04",
+    "kind": "observation",
+    "limits": "The combination of saved code and current global constitution does not prove arbitrary hot replacement is coherent.",
+    "status": "answered"
+  },
+  {
+    "claim": "K dispatch reads a signed slot at saved descriptor+0x1a, then vm_callInEfun fetches current global pFunctions[slot] and invokes its native entry. It does not directly invoke the saved pointer as a callback.",
+    "evidence": [
+      "ev_a50406aa6a4cd4b2b95b079a7b126ba210a8ecaa6919839ac438372500c0159d",
+      "ev_f7a9dddeb7edb2f09a574fb30d22a4cf7af8ca2f93f06fb113081ac12811e04f",
+      "ev_a83bf890b4b1b7b1e670ffd84e2caf433106c4b1521c658ee8c18bbdb826b9a1"
+    ],
+    "id": "F05",
+    "kind": "observation",
+    "limits": "Native efun descriptors are assumed alive by this path; no descriptor unload lifetime guarantee is established.",
+    "status": "answered"
+  },
+  {
+    "claim": "Efun activation copies 40 bytes of caller context, then replaces bp, argNum, flags and f. Its thisObject/code context is inherited from the invocation caller, not from the saved function owner.",
+    "evidence": [
+      "ev_f7a9dddeb7edb2f09a574fb30d22a4cf7af8ca2f93f06fb113081ac12811e04f"
+    ],
+    "id": "F06",
+    "kind": "observation",
+    "limits": "ctrlFlags, scheduler, reentry and next-action hooks remain outside a synchronous Rust subset.",
+    "status": "answered"
+  },
+  {
+    "claim": "Captured arguments precede new arguments for both K and c. Unique function heads move captures; shared heads copy through vm_pushValue/vm_copyValue. Scalar captures avoid the selected non-scalar normalization difference.",
+    "evidence": [
+      "ev_a50406aa6a4cd4b2b95b079a7b126ba210a8ecaa6919839ac438372500c0159d",
+      "ev_4d6d17b9e1b09afb2790e5504711604e853f3e4e9740fbca01c397f299a00212",
+      "ev_69a23ae044935ae6f7450097987faa71f641c62091f885fc4b4b5f8d5b1929f4"
+    ],
+    "id": "F07",
+    "kind": "static-inference",
+    "limits": "Not proof that arbitrary Object/Array/Mapping/Function captures are equivalent under Rc cloning.",
+    "status": "bounded"
+  },
+  {
+    "claim": "Efun return processing uses its own exact/Mixed/Void result contract; user-body entry is a different path. Final function-head cleanup releases captures and saved owner.",
+    "evidence": [
+      "ev_e86eb89e60b57e211e2efdce9ee32fdd5b9d630f548d18ca4e6b50e43675595c",
+      "ev_228d09be9663f9f70d03a59ebe1663960c6d34458f9a82d3d5e1e4cee42d44f9"
+    ],
+    "id": "F08",
+    "kind": "observation",
+    "limits": "Not a proof of all efun argument conventions or general exception recovery.",
+    "status": "answered"
+  },
+  {
+    "claim": "Global finalization installs pFun into the compiling program table and can retain hidden function definitions. This establishes table update sites, not complete lifetime safety for arbitrary saved entries after recompilation.",
+    "evidence": [
+      "ev_7ad5b825f58978d24db93a52b2b74151085c158ff48f1957a00188e9292c6a2d",
+      "ev_a62e3110c8f80b68de1c768894f66d34b9dca9778fa69b0bb7f84f2504e73e0c",
+      "ev_f739f81d73d7c07779ab3fb741800726145efbc40fd8dc6c58009ac2d703aa48"
+    ],
+    "id": "F09",
+    "kind": "static-inference",
+    "limits": "Compiler, hidden functions, unload and cross-generation constitution compatibility remain unresolved.",
+    "status": "bounded"
+  },
+  {
+    "claim": "First implementation: scalar-capturing Global user targets snapshot ProgramId/function at creation; new calls require that same Global program still be bound. Entered frames keep their saved code if binding later changes.",
+    "evidence": [
+      "ev_f739f81d73d7c07779ab3fb741800726145efbc40fd8dc6c58009ac2d703aa48",
+      "ev_ea9570e30440ab119beb30143a85def63e15e87ac0485860290ba47ca3a6ae7c"
+    ],
+    "id": "D01",
+    "kind": "design",
+    "limits": "Reject clear/rebind before entry with InvalidState rather than inventing native hot-reload semantics; direct 07 continues resolving the current binding.",
+    "status": "bounded"
+  },
+  {
+    "claim": "Second implementation: global K targets require an explicitly registered synchronous host slot at creation, save canonical slot identity, and resolve current callback/signature at each invocation. No real efun implementation is added.",
+    "evidence": [
+      "ev_a50406aa6a4cd4b2b95b079a7b126ba210a8ecaa6919839ac438372500c0159d",
+      "ev_f7a9dddeb7edb2f09a574fb30d22a4cf7af8ca2f93f06fb113081ac12811e04f"
+    ],
+    "id": "D02",
+    "kind": "design",
+    "limits": "Synthetic registry replacement is a bounded Rust policy analogous to late table lookup, not native registration/unload equivalence.",
+    "status": "bounded"
+  },
+  {
+    "claim": "Represent optional creator owner separately from Object/Global/Host target; make public owner/program access optional and expose a typed target descriptor. Preserve origin-token identity and pointer equality.",
+    "evidence": [
+      "ev_f739f81d73d7c07779ab3fb741800726145efbc40fd8dc6c58009ac2d703aa48",
+      "ev_69a23ae044935ae6f7450097987faa71f641c62091f885fc4b4b5f8d5b1929f4"
+    ],
+    "id": "D03",
+    "kind": "design",
+    "limits": "This requires a documented source-breaking accessor migration in the future implementation; this evidence-only stage changes no public API.",
+    "status": "bounded"
+  },
+  {
+    "claim": "General non-scalar captures, cyclic graph reclamation, all early copy cleanup sites and owner deferred deletion are not closed.",
+    "evidence": [
+      "ev_69a23ae044935ae6f7450097987faa71f641c62091f885fc4b4b5f8d5b1929f4",
+      "ev_228d09be9663f9f70d03a59ebe1663960c6d34458f9a82d3d5e1e4cee42d44f9"
+    ],
+    "id": "U01",
+    "kind": "unknown",
+    "limits": "G06/G07/G14 remain dependencies; all non-scalar captures stay rejected.",
+    "status": "unresolved"
+  },
+  {
+    "claim": "String/OS targets, non-global K, hidden/inherited targets, lifecycle/default-expression creation, general catch/hook and dynamic service execution are not part of the two implementation batches.",
+    "evidence": [
+      "ev_a50406aa6a4cd4b2b95b079a7b126ba210a8ecaa6919839ac438372500c0159d",
+      "ev_4ae635941eda7abcc9024ccadd56fd4d6278ddcd6075acacda6b865390f65444"
+    ],
+    "id": "U02",
+    "kind": "unknown",
+    "limits": "No static count or name match proves runtime reachability or service compatibility.",
+    "status": "unresolved"
+  }
+]

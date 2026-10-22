@@ -1,0 +1,41 @@
+{
+  "artifact_sha256": {
+    "README.md": "fcaeaaa268f8a3085a58053c8c78f9ebe6795537fea2a5615f7668e021cd6fab",
+    "docs/magic_Linux32-rust-rewrite-roadmap.md": "8b700bf2acdce016caa4c67c9381b2725d9eac8d46494aa2685d5af063549ec9",
+    "docs/stage2an-evidence/analyze_corpus.py": "2567df03d98351f0ab8118aa0a395b02fa6d6bb6415d88f7471f3ce952a3024d",
+    "docs/stage2an-evidence/anchors.json": "501e1178a77b72e88f850d284cffbb7259cba29fd6bb8436988acb49d3b81091",
+    "docs/stage2an-evidence/corpus-examples.json": "3824f251be21d22463e1a03924470670b2d5aa21725d249163d2cf2b4a7bc15c",
+    "docs/stage2an-evidence/corpus-occurrences.jsonl.gz": "8c19db3f6c20d1dd1827a60961e48ab5eee332219dd3923897e6eec8375c8a6c",
+    "docs/stage2an-evidence/corpus-summary.json": "a6af7dca3cf89c5e89f9e73729fcdbf31da545ffb9f5d99ad94cee34e06ecff6",
+    "docs/stage2an-evidence/expected-cases.json": "c1060ad75a627babf875062ad0e661e2b69ef6028b7488b98941e174a71f9034",
+    "docs/stage2an-evidence/findings.json": "a217855c7b68994b55ca48960fde7220afe31c2a1eaa6fef88c55b06763faee6",
+    "docs/stage2an-evidence/function-manifest.json": "f509e6b012a64b0f94ce60ce7fce42bf9cacaa1ab9df7f0a5e566e33901bb47f",
+    "docs/stage2an-evidence/function-runtime-design.md": "ff48e0afc5b74ea93a6f9a9d0b2869e6ca549d48190a1127c279a20a310e8dea",
+    "docs/stage2an-evidence/functions.md": "d9283cd41efc2cbfbfa0d729a0196549b07f64b21f9929927ec600289f234ca7",
+    "docs/stage2an-evidence/method.md": "8502795943cf7ebd6ed52c2238155e4f28cbf7b8b88185d81ee99d6e4c3d75a3",
+    "docs/stage2an-evidence/protected-inputs.json": "82294e581ecf5ea8015f6c5d37800326b3ff739c0ff56885c170cba72f3b9fba",
+    "docs/stage2an-evidence/rea.json.gz": "542cf15c048b312efae0ef75263cfb8e6f666a73bf9c834883432e7cca5d830b",
+    "docs/stage2an-evidence/reused-manifest.json": "59e1bf2f0084f087951c5a3ecdc580c6b6309ce6b77c750a3ec101fce191fd06",
+    "docs/stage2an-evidence/reused.json.gz": "ca7cdf8703e1164c6d6f1008155be7aa92b2bf43f8726d1acaee54f7bcdd3ea8",
+    "docs/stage2an-evidence/runtime-design-audit.md": "7d1e41b5f99bd89c49e31a05b72b5841659cc1d2af4dca16bad7907f35f4a101",
+    "docs/stage2an-evidence/target-inventory.json": "e2b07fb1a7db3d2eb0c62d16f7171260c07b3842a3783a8557c584b8078755d3",
+    "docs/stage2an-evidence/test_analyze_corpus.py": "ae1691217b5b460923615709af444c8733af3dac78e05e635906fa4abbb41030",
+    "docs/stage2an-evidence/test_verify_evidence.py": "33c0671f20fa29b438cd7ab3ce1509ec9fec60aae156fd5ea932c5a56792a423",
+    "docs/stage2an-evidence/validation-logs.json.gz": "c5dc120b874deb1720ae2973cbc3f00dea4b897faf9e9a38ac9febc9f61e648e",
+    "docs/stage2an-evidence/verify_evidence.py": "d17da444fdd391647d8459498a1f9302120413b1dec269c3ee33288fe3079709",
+    "docs/stage2an-evidence/verify_validation.py": "972ba8e0c5470f35aed8a5d4413ba39d188467c74c2034dd8ab810a3dd1f8a2b",
+    "docs/vm-global-function-value-semantics.md": "95949e7ca405f1eabd12346248e748e9b2b8b3c2190b6fe2e1e19cba9a3dc637"
+  },
+  "corpus_intersection": 73,
+  "limitations": [
+    "Static evidence and synthetic tests only; no target or business bytecode execution.",
+    "Global/c and Host/K designs are not implemented; G12/G18 and stage 2 remain open.",
+    "Native arbitrary recompilation, unload, non-scalar captures and deferred deletion remain unproven."
+  ],
+  "logs_sha256": "c5dc120b874deb1720ae2973cbc3f00dea4b897faf9e9a38ac9febc9f61e648e",
+  "python_tests": 23,
+  "runtime_changed": false,
+  "rust_tests": 515,
+  "stage": "2AN",
+  "supported_opcodes": 75
+}
