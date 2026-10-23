@@ -1,5 +1,7 @@
 # magic_Linux32 Rust 重写实施路线图
 
+**阶段2AQ当前审计：**以2AP为基线重核75行opcode、24项缺口及13类门槛；558项Rust测试与运行时/API/依赖不变，阶段2未完成。见[完成度报告](stage2-completion-assessment-2aq.md)及[当前矩阵](stage2aq-evidence/matrix.md)。下一批优先进行[2AR复制源规范化与非标量捕获所有权取证](stage2aq-evidence/next-batch.md)，其次为继承布局/能力组合、一般异常/主动删除。以下保留历史快照。
+
 **当前阶段2AP：**已实现2AN第二批受限同步Host/K函数值，组合入口同时开启直接06、对象/Global字节码函数值、Global/c和Host/K。函数值保存槽号，每次调用读取当前Host注册与签名；调用上下文来自05调用者，回调仅执行一次，验证成功后才提交VM栈和PC。见[Host/K运行时说明](vm-host-function-value-runtime.md)、[能力增量](stage2ap-evidence/matrix.md)及[验证记录](stage2ap-validation.json)。75种限定支持/73种交集不变。真实efun、异步/重入、非标量捕获、热编译／卸载及完整生命周期组合仍排除；G12/G18与阶段2未完成。以下为历史快照。
 
 **当前阶段2AN：**Global／efun函数值定向取证与[两批实施规格](stage2an-evidence/function-runtime-design.md)完成；见[语义报告](vm-global-function-value-semantics.md)、[接入审计](stage2an-evidence/runtime-design-audit.md)和[验证记录](stage2an-validation.json)。确认Global/c保存代码与当前constitution的组合、Global/K经描述符编号再查表及独立creator owner；首批规格限制Global绑定变化，第二批显式同步宿主采用每次调用解析当前注册。独立复算5,012处全局创建位置、30个静态／设计案例；515项Rust测试debug/release、23项Python检查及fmt/clippy通过。运行时/API/依赖及75种限定支持/73种交集不变，Global／efun函数值尚未开放，G12/G18和阶段2未完成。下一步实施第一批标量捕获Global/c；非标量捕获、真实efun及服务仍排除。以下为历史快照。

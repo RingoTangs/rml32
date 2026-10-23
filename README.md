@@ -1,5 +1,7 @@
 # rml32
 
+阶段2AQ已按2AP基线更新全量能力审计，Rust/API/依赖与558项Rust测试、75种限定操作码/73种主语料交集保持不变。见[当前完成度](docs/stage2-completion-assessment-2aq.md)、[当前矩阵](docs/stage2aq-evidence/matrix.md)与[验证记录](docs/stage2aq-validation.json)。24项稳定缺口及13类能力门槛已重核，阶段2仍未完成；下一批为[2AR复制源规范化与非标量捕获所有权取证](docs/stage2aq-evidence/next-batch.md)，不直接开放非标量捕获。以下为历史快照。
+
 阶段2AP已实现受限同步Host/K函数值。组合准备入口同时启用普通Host调用、对象/Global函数值、Global/c和Host/K；函数值只保存Host槽号，每次05调用读取当前注册与签名。回调调用者上下文、单次调用及提交边界均有合成回归。见[Host/K运行时说明](docs/vm-host-function-value-runtime.md)、[能力增量](docs/stage2ap-evidence/matrix.md)及[验证记录](docs/stage2ap-validation.json)。**FunctionValue::owner()/program()现返回Option，属于源代码不兼容迁移**。真实efun、异步/重入、非标量捕获、完整生命周期与阶段2仍未完成。以下为历史快照。
 
 阶段2AN已完成Global／efun函数值定向静态取证及[两批Rust实施规格](docs/stage2an-evidence/function-runtime-design.md)，见[语义报告](docs/vm-global-function-value-semantics.md)、[方法与边界](docs/stage2an-evidence/method.md)及[验证记录](docs/stage2an-validation.json)。本轮会话3条完整dossier（其中1条为同ID刷新）、复用17条历史记录；独立复算5,012处Global创建位置，与2AF逐条一致，提供30个静态／设计案例。515项Rust测试debug/release、23项Python检查及fmt/clippy通过。运行时/API/依赖和75种限定支持/73种交集不变；Global／efun函数值尚未实现，非标量捕获与阶段2仍未完成。以下为历史快照。

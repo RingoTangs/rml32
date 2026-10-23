@@ -1,0 +1,27 @@
+{
+  "checked": {
+    "inheritance": 9933,
+    "members": 9527,
+    "packages": 12,
+    "programs": 7159
+  },
+  "default_action_fields_checked": 358411,
+  "known_errors": [
+    "dba/pack_data/etc.pak/etc"
+  ],
+  "originals_unchanged": 36,
+  "scope": "static structure; not execution equivalence",
+  "status": "pass",
+  "summary": {
+    "decoded_files": 8921,
+    "errors": 1,
+    "files": 8922,
+    "functions": 101592,
+    "inheritance_matches": 9933,
+    "instructions": 6474773,
+    "members": 9527,
+    "packages": 12,
+    "programs": 7159
+  },
+  "target_execution": "none"
+}
