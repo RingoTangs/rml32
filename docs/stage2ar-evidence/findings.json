@@ -1,0 +1,392 @@
+[
+  {
+    "id": "F01",
+    "kind": "observation",
+    "status": "answered",
+    "claim": "17 helper explicitly scans captures for tag8 Reference before allocating; this is not a scalar-only native whitelist.",
+    "limits": "Absence of other tag checks here does not legalize malformed values or all hidden tag shapes.",
+    "evidence": [
+      "ev_f739f81d73d7c07779ab3fb741800726145efbc40fd8dc6c58009ac2d703aa48"
+    ],
+    "anchors": [
+      "A001",
+      "A002"
+    ]
+  },
+  {
+    "id": "F02",
+    "kind": "observation",
+    "status": "bounded",
+    "claim": "Create allocates header then capture storage and establishes creator/target before moving captures. Second allocation failure frees the header before vm_error.",
+    "limits": "Zero-size allocator policy and final result-stack failure are separate; native creation is not wholly failure-atomic.",
+    "evidence": [
+      "ev_f739f81d73d7c07779ab3fb741800726145efbc40fd8dc6c58009ac2d703aa48"
+    ],
+    "anchors": [
+      "A003",
+      "A004",
+      "A005",
+      "A006"
+    ]
+  },
+  {
+    "id": "F03",
+    "kind": "observation",
+    "status": "answered",
+    "claim": "Capture establishment initializes each 24-byte slot then moves raw type/attrib/payload and clears source type/attrib; no vm_copyValue call occurs in this transfer loop.",
+    "limits": "Source means the already-evaluated raw stack value; preceding expression reads can already have normalized it.",
+    "evidence": [
+      "ev_f739f81d73d7c07779ab3fb741800726145efbc40fd8dc6c58009ac2d703aa48"
+    ],
+    "anchors": [
+      "A007",
+      "A008",
+      "A009",
+      "A010",
+      "A011"
+    ]
+  },
+  {
+    "id": "F04",
+    "kind": "observation",
+    "status": "answered",
+    "claim": "05 moves its raw target to a C-local value and consumes the stack slot before target/owner validation.",
+    "limits": "Current Rust preflight/operand preservation is a bounded policy, not this native transaction order.",
+    "evidence": [
+      "ev_a50406aa6a4cd4b2b95b079a7b126ba210a8ecaa6919839ac438372500c0159d"
+    ],
+    "anchors": [
+      "A012",
+      "A013",
+      "A014",
+      "A015"
+    ]
+  },
+  {
+    "id": "F05",
+    "kind": "observation",
+    "status": "answered",
+    "claim": "Native function head ref==1 selects reverse-index raw capture moves; clears moved slots, frees head, then dispatches saved target metadata.",
+    "limits": "Test precondition is native semantic ref, not physical Rc::strong_count or diagnostic snapshots.",
+    "evidence": [
+      "ev_a50406aa6a4cd4b2b95b079a7b126ba210a8ecaa6919839ac438372500c0159d"
+    ],
+    "anchors": [
+      "A016",
+      "A017",
+      "A018",
+      "A019",
+      "A020"
+    ]
+  },
+  {
+    "id": "F06",
+    "kind": "observation",
+    "status": "answered",
+    "claim": "Shared-head branch destructs the temporary call target first, then reverse-index vm_pushValue copies captures while another holder keeps the head alive.",
+    "limits": "Does not deep-copy nested containers; not a generic restartable callback protocol.",
+    "evidence": [
+      "ev_a50406aa6a4cd4b2b95b079a7b126ba210a8ecaa6919839ac438372500c0159d",
+      "ev_4d6d17b9e1b09afb2790e5504711604e853f3e4e9740fbca01c397f299a00212"
+    ],
+    "anchors": [
+      "A021",
+      "A022",
+      "A023"
+    ]
+  },
+  {
+    "id": "F07",
+    "kind": "observation",
+    "status": "answered",
+    "claim": "vm_copyValue shallow-copies Array/Mapping headers and increments their reference; nested members are not recursively normalized.",
+    "limits": "Header sharing does not prove cyclic reclamation or permit all graph rewiring.",
+    "evidence": [
+      "ev_69a23ae044935ae6f7450097987faa71f641c62091f885fc4b4b5f8d5b1929f4"
+    ],
+    "anchors": [
+      "A024",
+      "A025"
+    ]
+  },
+  {
+    "id": "F08",
+    "kind": "observation",
+    "status": "answered",
+    "claim": "Copy of deleted Object or Function with a nonnull deleted creator cleans the SOURCE, rereads its type, and writes Undefined; cleanup clears source attrib too.",
+    "limits": "Raw truth/equality, raw moves and owner-null Function are distinct. Physical lifetime is governed by native ref/execRef.",
+    "evidence": [
+      "ev_69a23ae044935ae6f7450097987faa71f641c62091f885fc4b4b5f8d5b1929f4",
+      "ev_d5e0fa5ed30b20859a959e09027480b13f6d9acdd746527dd5c2dac47520cadc"
+    ],
+    "anchors": [
+      "A026",
+      "A027",
+      "A028",
+      "A029",
+      "A030",
+      "A031",
+      "A032"
+    ]
+  },
+  {
+    "id": "F09",
+    "kind": "static-inference",
+    "status": "bounded",
+    "claim": "Shared 05 expansion can persistently normalize a dead Object/Function capture to Undefined in a still-live function head. Unique expansion has no copy-based normalization at that point.",
+    "limits": "Describes immediate expansion before callee 0f; later argument/use rules can reject or normalize independently.",
+    "evidence": [
+      "ev_a50406aa6a4cd4b2b95b079a7b126ba210a8ecaa6919839ac438372500c0159d",
+      "ev_69a23ae044935ae6f7450097987faa71f641c62091f885fc4b4b5f8d5b1929f4"
+    ],
+    "anchors": [
+      "A016",
+      "A018",
+      "A022",
+      "A027"
+    ]
+  },
+  {
+    "id": "F10",
+    "kind": "observation",
+    "status": "answered",
+    "claim": "vm_pushValue checks available stack space before making the destination and copying; overflow precedes source cleanup from copy.",
+    "limits": "Rust Cell allocation/fault injection is separate; shallow native copy does not introduce one allocator call per capture.",
+    "evidence": [
+      "ev_4d6d17b9e1b09afb2790e5504711604e853f3e4e9740fbca01c397f299a00212"
+    ],
+    "anchors": [
+      "A033",
+      "A034",
+      "A023"
+    ]
+  },
+  {
+    "id": "F11",
+    "kind": "observation",
+    "status": "answered",
+    "claim": "Function final release cleans each capture payload and unlinks slots, then unrefs creator, frees capture allocation and head. Moved-out Undefined slots do not release transferred payload again.",
+    "limits": "Capture-slot survival cannot be inferred from ordinary external member Ref rules; function storage is freed.",
+    "evidence": [
+      "ev_228d09be9663f9f70d03a59ebe1663960c6d34458f9a82d3d5e1e4cee42d44f9"
+    ],
+    "anchors": [
+      "A035",
+      "A036",
+      "A037",
+      "A038",
+      "A039"
+    ]
+  },
+  {
+    "id": "F12",
+    "kind": "observation",
+    "status": "answered",
+    "claim": "Explicit dereference copies the referenced value before unrefing the original target slot.",
+    "limits": "Not arbitrary Reference escape; source normalization can be visible through another alias.",
+    "evidence": [
+      "ev_9d3740c765c17665b432d16e97139a12b824b1e31238f5fb1f421a36d5f5e956"
+    ],
+    "anchors": [
+      "A040",
+      "A041",
+      "A042"
+    ]
+  },
+  {
+    "id": "F13",
+    "kind": "observation",
+    "status": "answered",
+    "claim": "Member query copies selected Array/Mapping member before unrefing consumed container header; result attrib is subsequently governed by query path.",
+    "limits": "Missing Mapping lookup is not insertion; copying a header and reading a member are different normalization points.",
+    "evidence": [
+      "ev_ec2e63f30a5e17be4bc7568c971fc949e924bd051c8f8f5049d7793945b7c459"
+    ],
+    "anchors": [
+      "A043",
+      "A044",
+      "A045",
+      "A046"
+    ]
+  },
+  {
+    "id": "F14",
+    "kind": "observation",
+    "status": "answered",
+    "claim": "Array final-header release unrefs element slots; unrefValue cleans/frees a slot only when its ref becomes exactly zero. External element references can retain payload.",
+    "limits": "No blanket final-header clearing rule for all container kinds.",
+    "evidence": [
+      "ev_8000dac56416a0239afddc630d10d5c425e7d9797f623755e77dcda7e5516c26",
+      "ev_18fea6ebc3680cd0ea4726c67901206fe1299bda13ef18741e124aa8a6eb77de"
+    ],
+    "anchors": [
+      "A047",
+      "A048",
+      "A049",
+      "A050"
+    ]
+  },
+  {
+    "id": "F15",
+    "kind": "observation",
+    "status": "answered",
+    "claim": "Mapping final-header release traverses buckets/freeNode; freeNode immediately clears key/value even when referenced slots defer physical node reclamation.",
+    "limits": "Deletion execution API, arbitrary mutation and delayed-node collection schedule remain outside this bounded implementation.",
+    "evidence": [
+      "ev_2aae5aa932757dd2dad4354599e352e3310dbf9d1f7637b49903392349474966",
+      "ev_ef0f48684b838cbc45dc532f24fa5985365542fc69b10337e082b6df80283dae"
+    ],
+    "anchors": [
+      "A051",
+      "A052",
+      "A053",
+      "A054",
+      "A055",
+      "A056"
+    ]
+  },
+  {
+    "id": "F16",
+    "kind": "observation",
+    "status": "bounded",
+    "claim": "Ordinary nonconst mixed/already-matching return uses takeOffValueFromStack: cleans removed frame values then raw-moves retained result; no blanket copy on that path.",
+    "limits": "Other return conversion, const and callback/hook paths are separate; do not universally normalize returned dead handles.",
+    "evidence": [
+      "ev_6a8948bf446a008fa48fc2ecc8711a14fc41635f9cd05e4cfcdacf8bec7a6215",
+      "ev_b8168f2c625c87c5cab8326205b0560cd7db940a32c06abbbda3dcdb7a839535"
+    ],
+    "anchors": [
+      "A057",
+      "A058",
+      "A059",
+      "A060"
+    ]
+  },
+  {
+    "id": "F17",
+    "kind": "observation",
+    "status": "bounded",
+    "claim": "GC marker recurses through Array, Mapping, Function captures and selected Loop state after setting slot active; no general tag8 recursion branch is established.",
+    "limits": "Root hooks, all Reference graphs, reentrant timing and cycle release order remain unproven; Rc is not full native GC.",
+    "evidence": [
+      "ev_d6bd8847412c335d9425d53073743ca82d6469ed6c69a789f996bbc7c2f39471"
+    ],
+    "anchors": [
+      "A061",
+      "A062",
+      "A063",
+      "A064",
+      "A065",
+      "A066"
+    ]
+  },
+  {
+    "id": "F18",
+    "kind": "observation",
+    "status": "bounded",
+    "claim": "05 expansion precedes callee installation; callInUserFunBody installs bp/argNum/ip, while 0f checks count/type and can convert earlier arguments before a later error.",
+    "limits": "This differs from current Rust all-argument preflight; general default expressions and const rules remain excluded.",
+    "evidence": [
+      "ev_ea9570e30440ab119beb30143a85def63e15e87ac0485860290ba47ca3a6ae7c",
+      "ev_aaa80e13c3c88b9a455d4ba6569e69518889b1fcc26a966c8e433f5f746c7126"
+    ],
+    "anchors": [
+      "A067",
+      "A068",
+      "A069",
+      "A070",
+      "A071",
+      "A072"
+    ]
+  },
+  {
+    "id": "F19",
+    "kind": "static-inference",
+    "status": "bounded",
+    "claim": "For ordinary interpreter threadType1 and valid script catch, vm_errorQuit/traceError unwind exiting frame values and doActions pops back to saved catch sp; moved captures are released from stack.",
+    "limits": "Catch is stack recovery, not rollback of consumed Function target, source normalization, prior conversions or external writes. Callback catch and other thread types differ.",
+    "evidence": [
+      "ev_f1c4dde0e0ce2a55aa3838ae691f272691496d87fcbc3d91ec17f09ea6eeaea1",
+      "ev_bfa094c0c50a60bb231088da09294746c5850d3124a018787a398173fdb3a0c2",
+      "ev_e12a1e49fc37b28910632e7d22872a27b51e7c54f0c6478935e893b20f7c63fe",
+      "ev_543af7cfb6d454bc19165fe254e84721ac87776215bd08299342ec2ab9a32d9e"
+    ],
+    "anchors": [
+      "A073",
+      "A074",
+      "A075",
+      "A076",
+      "A077",
+      "A078"
+    ]
+  },
+  {
+    "id": "F20",
+    "kind": "unknown",
+    "status": "partial",
+    "claim": "Uncaught final PCB/task teardown, non-interpreter thread cleanup, JIT recovery and create-result overflow with C-local unpublished head are not closed by this evidence.",
+    "limits": "Do not promise leak-free rollback or restore operands in these branches; follow main-loop/PCB destruction and allocation publication roots before claiming equivalence.",
+    "evidence": [
+      "ev_bfa094c0c50a60bb231088da09294746c5850d3124a018787a398173fdb3a0c2",
+      "ev_543af7cfb6d454bc19165fe254e84721ac87776215bd08299342ec2ab9a32d9e",
+      "ev_f739f81d73d7c07779ab3fb741800726145efbc40fd8dc6c58009ac2d703aa48"
+    ],
+    "anchors": [
+      "A079",
+      "A075",
+      "A078"
+    ]
+  },
+  {
+    "id": "F21",
+    "kind": "design",
+    "status": "bounded",
+    "claim": "Rust origin, allocation limits and success-only publication remain explicit policies. Native head uniqueness needs a semantic ownership model; physical Rc counts include host snapshots/temporary clones.",
+    "limits": "No runtime change in 2AR. Non-scalar implementation is blocked until ownership accounting and source-mutating copy transactions have an audited design.",
+    "evidence": [
+      "ev_a50406aa6a4cd4b2b95b079a7b126ba210a8ecaa6919839ac438372500c0159d",
+      "ev_69a23ae044935ae6f7450097987faa71f641c62091f885fc4b4b5f8d5b1929f4"
+    ],
+    "anchors": [
+      "A016",
+      "A027"
+    ]
+  },
+  {
+    "id": "F22",
+    "kind": "observation",
+    "status": "bounded",
+    "claim": "Global slot read calls vm_copyValue on the actual shared global Cell; Object and local reads also have explicit source-copy paths.",
+    "limits": "Inheritance layout and all default/lifecycle combinations remain separate; this is not proof of service execution.",
+    "evidence": [
+      "ev_f5d36761261bd90bb2139ae2bcd05e79af64a90eaffe2b978b3c0353a3ffe4a2",
+      "ev_9a9cde77fb2df1b8214e667458663471ea6da5fbeea24bfb3878fcb8f7548808",
+      "ev_9693ba97f8eddd0327c10164c589acb0a343f4181335c1476bc606e322e04ee5"
+    ],
+    "anchors": [
+      "A080",
+      "A081"
+    ]
+  },
+  {
+    "id": "F23",
+    "kind": "unknown",
+    "status": "partial",
+    "claim": "Function-held creator ref, captured Object payload ref and active-frame execRef are separate; native delayed deletion cannot be replaced by Rust immediate logical remove.",
+    "limits": "Direct Object/Function captures remain a later batch until owner invalidation, normalization and final release interactions close.",
+    "evidence": [
+      "ev_a50406aa6a4cd4b2b95b079a7b126ba210a8ecaa6919839ac438372500c0159d",
+      "ev_228d09be9663f9f70d03a59ebe1663960c6d34458f9a82d3d5e1e4cee42d44f9",
+      "ev_c852e7916c2cdc0cda41b7ecfb7e817b8345955915dab87bdbdcc65f2ff5278f",
+      "ev_87303180daaae04da5ace6f0b3bb43f14f6414ed173f8c4b9b57a90db34f587e"
+    ],
+    "anchors": [
+      "A039",
+      "A015",
+      "A082",
+      "A083",
+      "A084",
+      "A085"
+    ]
+  }
+]

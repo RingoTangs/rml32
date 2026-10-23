@@ -1,5 +1,7 @@
 # magic_Linux32 Rust 重写实施路线图
 
+**阶段2AR当前进展：**复制源规范化与捕获所有权静态取证完成，见[语义报告](vm-capture-ownership-semantics.md)、[问题状态](stage2ar-evidence/questions.md)、[后续Rust规格](stage2ar-evidence/runtime-design.md)及[验证记录](stage2ar-validation.json)。确认17 raw move、05唯一/共享分支、copy源清理与Array/Mapping最后header差异；无catch/其他线程/未发布头及完整GC仍有未知。下一批2AS先闭合所有权/源复制/捕获图设计，暂不放宽非标量捕获；558项Rust测试及运行时/API/依赖不变，阶段2未完成。以下保留历史快照。
+
 **阶段2AQ当前审计：**以2AP为基线重核75行opcode、24项缺口及13类门槛；558项Rust测试与运行时/API/依赖不变，阶段2未完成。见[完成度报告](stage2-completion-assessment-2aq.md)及[当前矩阵](stage2aq-evidence/matrix.md)。下一批优先进行[2AR复制源规范化与非标量捕获所有权取证](stage2aq-evidence/next-batch.md)，其次为继承布局/能力组合、一般异常/主动删除。以下保留历史快照。
 
 **当前阶段2AP：**已实现2AN第二批受限同步Host/K函数值，组合入口同时开启直接06、对象/Global字节码函数值、Global/c和Host/K。函数值保存槽号，每次调用读取当前Host注册与签名；调用上下文来自05调用者，回调仅执行一次，验证成功后才提交VM栈和PC。见[Host/K运行时说明](vm-host-function-value-runtime.md)、[能力增量](stage2ap-evidence/matrix.md)及[验证记录](stage2ap-validation.json)。75种限定支持/73种交集不变。真实efun、异步/重入、非标量捕获、热编译／卸载及完整生命周期组合仍排除；G12/G18与阶段2未完成。以下为历史快照。

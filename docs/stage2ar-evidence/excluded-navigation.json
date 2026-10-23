@@ -1,0 +1,14 @@
+[
+  {
+    "name": "vm_f_bind_parameters",
+    "evidence_id": "ev_2367fe505024260c84916a2784345d572dd09ee9effe6fad39c28a1eb75cb9e0",
+    "source": "docs/stage2af-evidence/rea.json.gz",
+    "reason": "Database mysql_bind_parameters wrapper; not Function capture binding."
+  },
+  {
+    "name": "vm_f_bind_parameters_arr",
+    "evidence_id": "ev_6e22aee1d5df3133900f522d36c3f2841a4834926e5c9e99b05ade923bd15982",
+    "source": "docs/stage2af-evidence/rea.json.gz",
+    "reason": "Database mysql_bind_parameters wrapper; not Function capture binding."
+  }
+]

@@ -1,0 +1,84 @@
+[
+  {
+    "id": "Q01",
+    "question": "17捕获建立、类型与局部失败顺序",
+    "status": "partial",
+    "findings": [
+      "F01",
+      "F02",
+      "F03",
+      "F20"
+    ],
+    "remaining": "最终结果栈溢出时未发布C局部函数头的恢复根/最终释放未闭合；任意畸形tag未证明合法。",
+    "next_action": "先保留Rust成功发布前预检政策；如需原生失败等价，沿vm_errorQuit后的线程销毁和未发布分配跟踪补证据。"
+  },
+  {
+    "id": "Q02",
+    "question": "05唯一/共享head展开及持久源变化",
+    "status": "answered",
+    "findings": [
+      "F04",
+      "F05",
+      "F06",
+      "F07",
+      "F08",
+      "F09",
+      "F10"
+    ],
+    "remaining": "结论限展开接点，后续参数/使用的行为由其各自规则决定，不推及整个调用成功。",
+    "next_action": "后续实现先设计语义持有者模型；禁止使用物理Rc计数或统一clone替代两条分支。"
+  },
+  {
+    "id": "Q03",
+    "question": "普通槽、引用、成员与返回接点",
+    "status": "answered",
+    "findings": [
+      "F07",
+      "F08",
+      "F12",
+      "F13",
+      "F16",
+      "F22"
+    ],
+    "remaining": "限已选普通读取与非const、无需转换/hook返回；完整attrib/default及其它返回分支仍排除。",
+    "next_action": "建立源可改写的复制计划；明确raw-move返回不追加copy规范化。"
+  },
+  {
+    "id": "Q04",
+    "question": "最后所有者、成员Ref与creator释放",
+    "status": "partial",
+    "findings": [
+      "F11",
+      "F14",
+      "F15",
+      "F23"
+    ],
+    "remaining": "原生ref/execRef延迟删除、全部节点回收时机及捕获槽外部引用未闭合。",
+    "next_action": "保留Array/Mapping不同最后header策略；直接Object/Function捕获暂缓，补齐生命周期契约。"
+  },
+  {
+    "id": "Q05",
+    "question": "捕获展开后失败与解栈",
+    "status": "partial",
+    "findings": [
+      "F18",
+      "F19",
+      "F20"
+    ],
+    "remaining": "普通线程有效script catch已有限闭合；uncaught最终PCB销毁、其他线程、JIT/callback及未发布head仍未知。",
+    "next_action": "逐退出域单独取证；不得因已有脚本catch清理就扩展当前Rust可捕获错误来源。"
+  },
+  {
+    "id": "Q06",
+    "question": "图约束、循环与Rust实施边界",
+    "status": "partial",
+    "findings": [
+      "F17",
+      "F20",
+      "F21",
+      "F23"
+    ],
+    "remaining": "任意Reference图、外部mark根、循环释放顺序及语义所有权表示/API影响尚未闭合。",
+    "next_action": "先完成源复制/持有者设计，随后仅考虑受限无环Array/Mapping；循环和直接Object/Function捕获继续排除。"
+  }
+]

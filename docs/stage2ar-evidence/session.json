@@ -1,0 +1,116 @@
+{
+  "stage": "2AR",
+  "target": "magic_Linux32",
+  "before": {
+    "open": false,
+    "package": {
+      "name": "rea-agents",
+      "version": "6.4.0",
+      "root_path": "/Users/ringo/.npm/_npx/dea9475797100b20/node_modules/rea-agents",
+      "build_commit": null
+    },
+    "ghidra": {
+      "status": "available",
+      "code": null,
+      "reason": null,
+      "diagnostics": {
+        "install_dir": "/opt/homebrew/opt/ghidra/libexec",
+        "analyze_headless_path": "/opt/homebrew/opt/ghidra/libexec/support/analyzeHeadless",
+        "native_decompiler_path": "/opt/homebrew/opt/ghidra/libexec/Ghidra/Features/Decompiler/os/mac_arm_64/decompile",
+        "application_properties_path": "/opt/homebrew/opt/ghidra/libexec/Ghidra/application.properties",
+        "provider_version": "12.1.4",
+        "java_command": "/Users/ringo/.sdkman/candidates/java/21.0.10-tem/bin/java",
+        "java_home": "/Users/ringo/.sdkman/candidates/java/21.0.10-tem",
+        "java_version": "21.0.10",
+        "platform": "darwin",
+        "architecture": "arm64",
+        "checks": [
+          {
+            "name": "configuration",
+            "ok": true,
+            "code": null,
+            "detail": "/opt/homebrew/opt/ghidra/libexec"
+          },
+          {
+            "name": "platform",
+            "ok": true,
+            "code": null,
+            "detail": "darwin"
+          },
+          {
+            "name": "architecture",
+            "ok": true,
+            "code": null,
+            "detail": "arm64"
+          },
+          {
+            "name": "installation",
+            "ok": true,
+            "code": null,
+            "detail": "/opt/homebrew/opt/ghidra/libexec/Ghidra/application.properties"
+          },
+          {
+            "name": "version",
+            "ok": true,
+            "code": null,
+            "detail": "12.1.4"
+          },
+          {
+            "name": "headless",
+            "ok": true,
+            "code": null,
+            "detail": "/opt/homebrew/opt/ghidra/libexec/support/analyzeHeadless"
+          },
+          {
+            "name": "native_decompiler",
+            "ok": true,
+            "code": null,
+            "detail": "/opt/homebrew/opt/ghidra/libexec/Ghidra/Features/Decompiler/os/mac_arm_64/decompile reports mach-o arm64, which matches darwin/arm64"
+          },
+          {
+            "name": "java",
+            "ok": true,
+            "code": null,
+            "detail": "21.0.10; 64-bit; JDK; /Users/ringo/.sdkman/candidates/java/21.0.10-tem; accepted a 64-bit full JDK 21 or newer"
+          }
+        ]
+      }
+    }
+  },
+  "after": {
+    "open": false
+  },
+  "transport_notice": [
+    {
+      "error": {
+        "code": "resource_constraint",
+        "category": "resource_constraint",
+        "message": "The operation completed, but its complete MCP response exceeds the stdio response budget. The analysis result was not truncated. Export retained evidence to consume the complete analysis, or use complete CLI JSON output.",
+        "retryable": false,
+        "remediation": {
+          "action": "Discover retained records with get_evidence_bundle and detail: summary, then inspect compatible records through inspect_analysis_view using an exact Evidence reference. Export complete retained session evidence through export_evidence_bundle to a caller-selected path, or use complete CLI JSON output. The connection remains usable."
+        },
+        "details": {
+          "operation": "analyze_function",
+          "resource": "transport",
+          "reason": "The operation completed, but its complete MCP response exceeds the stdio response budget. The analysis result was not truncated. Export retained evidence to consume the complete analysis, or use complete CLI JSON output.",
+          "reported_limits": {
+            "boundary": "mcp-response",
+            "default_receive_buffer_bytes": 10485760,
+            "result_budget_bytes": 10484736,
+            "max_string_code_units": 536869864,
+            "response_bytes_at_least": 10505632,
+            "response_code_units_at_least": 10505632,
+            "constraint": "receive-buffer",
+            "evidence_id": "ev_f1c4dde0e0ce2a55aa3838ae691f272691496d87fcbc3d91ec17f09ea6eeaea1",
+            "evidence_reference": {
+              "kind": "retained-evidence",
+              "evidence_id": "ev_f1c4dde0e0ce2a55aa3838ae691f272691496d87fcbc3d91ec17f09ea6eeaea1"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "handling": "Read complete retained export at target/stage2ar-new-rea.json; compressed exact full JSON into rea.json.gz; no producer retry."
+}

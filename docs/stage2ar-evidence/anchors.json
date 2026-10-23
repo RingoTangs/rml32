@@ -1,0 +1,767 @@
+[
+  {
+    "id": "A001",
+    "evidence_id": "ev_f739f81d73d7c07779ab3fb741800726145efbc40fd8dc6c58009ac2d703aa48",
+    "name": "vm_createFunctionValueEx",
+    "address": "0x8091cf9",
+    "instruction": "0x8091cf9: MOV EAX, EBX",
+    "file_offset": 302329,
+    "bytes_hex": "89d8"
+  },
+  {
+    "id": "A002",
+    "evidence_id": "ev_f739f81d73d7c07779ab3fb741800726145efbc40fd8dc6c58009ac2d703aa48",
+    "name": "vm_createFunctionValueEx",
+    "address": "0x8091d28",
+    "instruction": "0x8091d28: JNZ 0x08091cf9",
+    "file_offset": 302376,
+    "bytes_hex": "75cf"
+  },
+  {
+    "id": "A003",
+    "evidence_id": "ev_f739f81d73d7c07779ab3fb741800726145efbc40fd8dc6c58009ac2d703aa48",
+    "name": "vm_createFunctionValueEx",
+    "address": "0x8091d3d",
+    "instruction": "0x8091d3d: CALL 0x080ce784",
+    "file_offset": 302397,
+    "bytes_hex": "e842ca0300"
+  },
+  {
+    "id": "A004",
+    "evidence_id": "ev_f739f81d73d7c07779ab3fb741800726145efbc40fd8dc6c58009ac2d703aa48",
+    "name": "vm_createFunctionValueEx",
+    "address": "0x8091d6a",
+    "instruction": "0x8091d6a: CALL 0x080ce784",
+    "file_offset": 302442,
+    "bytes_hex": "e815ca0300"
+  },
+  {
+    "id": "A005",
+    "evidence_id": "ev_f739f81d73d7c07779ab3fb741800726145efbc40fd8dc6c58009ac2d703aa48",
+    "name": "vm_createFunctionValueEx",
+    "address": "0x8091ef3",
+    "instruction": "0x8091ef3: PUSH 0x360",
+    "file_offset": 302835,
+    "bytes_hex": "6860030000"
+  },
+  {
+    "id": "A006",
+    "evidence_id": "ev_f739f81d73d7c07779ab3fb741800726145efbc40fd8dc6c58009ac2d703aa48",
+    "name": "vm_createFunctionValueEx",
+    "address": "0x8091daa",
+    "instruction": "0x8091daa: MOV EDX, dword ptr [EBP + 0x18]",
+    "file_offset": 302506,
+    "bytes_hex": "8b5518"
+  },
+  {
+    "id": "A007",
+    "evidence_id": "ev_f739f81d73d7c07779ab3fb741800726145efbc40fd8dc6c58009ac2d703aa48",
+    "name": "vm_createFunctionValueEx",
+    "address": "0x8091e40",
+    "instruction": "0x8091e40: CALL 0x08089f10",
+    "file_offset": 302656,
+    "bytes_hex": "e8cb80ffff"
+  },
+  {
+    "id": "A008",
+    "evidence_id": "ev_f739f81d73d7c07779ab3fb741800726145efbc40fd8dc6c58009ac2d703aa48",
+    "name": "vm_createFunctionValueEx",
+    "address": "0x8091e53",
+    "instruction": "0x8091e53: MOV AL, byte ptr [EDX + EAX*0x8 + 0x4]",
+    "file_offset": 302675,
+    "bytes_hex": "8a44c204"
+  },
+  {
+    "id": "A009",
+    "evidence_id": "ev_f739f81d73d7c07779ab3fb741800726145efbc40fd8dc6c58009ac2d703aa48",
+    "name": "vm_createFunctionValueEx",
+    "address": "0x8091e82",
+    "instruction": "0x8091e82: MOV byte ptr [EAX + ECX*0x1 + 0x4], 0x0",
+    "file_offset": 302722,
+    "bytes_hex": "c644080400"
+  },
+  {
+    "id": "A010",
+    "evidence_id": "ev_f739f81d73d7c07779ab3fb741800726145efbc40fd8dc6c58009ac2d703aa48",
+    "name": "vm_createFunctionValueEx",
+    "address": "0x8091e90",
+    "instruction": "0x8091e90: MOV dword ptr [EBX + EDI*0x1 + 0x8], EDX",
+    "file_offset": 302736,
+    "bytes_hex": "89543b08"
+  },
+  {
+    "id": "A011",
+    "evidence_id": "ev_f739f81d73d7c07779ab3fb741800726145efbc40fd8dc6c58009ac2d703aa48",
+    "name": "vm_createFunctionValueEx",
+    "address": "0x8091e9d",
+    "instruction": "0x8091e9d: MOV byte ptr [EDX + EAX*0x8 + 0x5], 0x0",
+    "file_offset": 302749,
+    "bytes_hex": "c644c20500"
+  },
+  {
+    "id": "A012",
+    "evidence_id": "ev_a50406aa6a4cd4b2b95b079a7b126ba210a8ecaa6919839ac438372500c0159d",
+    "name": "vm_callFunPtr",
+    "address": "0x8094450",
+    "instruction": "0x8094450: MOV DL, byte ptr [EAX + ECX*0x1 + 0x4]",
+    "file_offset": 312400,
+    "bytes_hex": "8a540804"
+  },
+  {
+    "id": "A013",
+    "evidence_id": "ev_a50406aa6a4cd4b2b95b079a7b126ba210a8ecaa6919839ac438372500c0159d",
+    "name": "vm_callFunPtr",
+    "address": "0x8094491",
+    "instruction": "0x8094491: MOV dword ptr [0x086619cc], EDX",
+    "file_offset": 312465,
+    "bytes_hex": "8915cc196608"
+  },
+  {
+    "id": "A014",
+    "evidence_id": "ev_a50406aa6a4cd4b2b95b079a7b126ba210a8ecaa6919839ac438372500c0159d",
+    "name": "vm_callFunPtr",
+    "address": "0x80944cc",
+    "instruction": "0x80944cc: MOVSX EAX, word ptr [ESI + 0x6]",
+    "file_offset": 312524,
+    "bytes_hex": "0fbf4606"
+  },
+  {
+    "id": "A015",
+    "evidence_id": "ev_a50406aa6a4cd4b2b95b079a7b126ba210a8ecaa6919839ac438372500c0159d",
+    "name": "vm_callFunPtr",
+    "address": "0x80944d8",
+    "instruction": "0x80944d8: MOV EAX, dword ptr [ESI + 0xc]",
+    "file_offset": 312536,
+    "bytes_hex": "8b460c"
+  },
+  {
+    "id": "A016",
+    "evidence_id": "ev_a50406aa6a4cd4b2b95b079a7b126ba210a8ecaa6919839ac438372500c0159d",
+    "name": "vm_callFunPtr",
+    "address": "0x809452c",
+    "instruction": "0x809452c: CMP dword ptr [ESI], 0x1",
+    "file_offset": 312620,
+    "bytes_hex": "833e01"
+  },
+  {
+    "id": "A017",
+    "evidence_id": "ev_a50406aa6a4cd4b2b95b079a7b126ba210a8ecaa6919839ac438372500c0159d",
+    "name": "vm_callFunPtr",
+    "address": "0x8094556",
+    "instruction": "0x8094556: MOV CL, byte ptr [EBX + EDX*0x1 + 0x4]",
+    "file_offset": 312662,
+    "bytes_hex": "8a4c1304"
+  },
+  {
+    "id": "A018",
+    "evidence_id": "ev_a50406aa6a4cd4b2b95b079a7b126ba210a8ecaa6919839ac438372500c0159d",
+    "name": "vm_callFunPtr",
+    "address": "0x809459c",
+    "instruction": "0x809459c: MOV byte ptr [EBX + EAX*0x1 + 0x4], 0x0",
+    "file_offset": 312732,
+    "bytes_hex": "c644030400"
+  },
+  {
+    "id": "A019",
+    "evidence_id": "ev_a50406aa6a4cd4b2b95b079a7b126ba210a8ecaa6919839ac438372500c0159d",
+    "name": "vm_callFunPtr",
+    "address": "0x80945a5",
+    "instruction": "0x80945a5: MOV byte ptr [EBX + EAX*0x1 + 0x5], 0x0",
+    "file_offset": 312741,
+    "bytes_hex": "c644030500"
+  },
+  {
+    "id": "A020",
+    "evidence_id": "ev_a50406aa6a4cd4b2b95b079a7b126ba210a8ecaa6919839ac438372500c0159d",
+    "name": "vm_callFunPtr",
+    "address": "0x80945b6",
+    "instruction": "0x80945b6: CALL 0x0808c114",
+    "file_offset": 312758,
+    "bytes_hex": "e8597bffff"
+  },
+  {
+    "id": "A021",
+    "evidence_id": "ev_a50406aa6a4cd4b2b95b079a7b126ba210a8ecaa6919839ac438372500c0159d",
+    "name": "vm_callFunPtr",
+    "address": "0x8094710",
+    "instruction": "0x8094710: CALL 0x0808c0b8",
+    "file_offset": 313104,
+    "bytes_hex": "e8a379ffff"
+  },
+  {
+    "id": "A022",
+    "evidence_id": "ev_a50406aa6a4cd4b2b95b079a7b126ba210a8ecaa6919839ac438372500c0159d",
+    "name": "vm_callFunPtr",
+    "address": "0x8094736",
+    "instruction": "0x8094736: CALL 0x08091074",
+    "file_offset": 313142,
+    "bytes_hex": "e839c9ffff"
+  },
+  {
+    "id": "A023",
+    "evidence_id": "ev_4d6d17b9e1b09afb2790e5504711604e853f3e4e9740fbca01c397f299a00212",
+    "name": "vm_pushValue",
+    "address": "0x80910af",
+    "instruction": "0x80910af: CALL 0x0808be24",
+    "file_offset": 299183,
+    "bytes_hex": "e870adffff"
+  },
+  {
+    "id": "A024",
+    "evidence_id": "ev_69a23ae044935ae6f7450097987faa71f641c62091f885fc4b4b5f8d5b1929f4",
+    "name": "vm_copyValue",
+    "address": "0x808bede",
+    "instruction": "0x808bede: MOV EAX, dword ptr [EBX + 0x8]",
+    "file_offset": 278238,
+    "bytes_hex": "8b4308"
+  },
+  {
+    "id": "A025",
+    "evidence_id": "ev_69a23ae044935ae6f7450097987faa71f641c62091f885fc4b4b5f8d5b1929f4",
+    "name": "vm_copyValue",
+    "address": "0x808bec6",
+    "instruction": "0x808bec6: INC dword ptr [EAX]",
+    "file_offset": 278214,
+    "bytes_hex": "ff00"
+  },
+  {
+    "id": "A026",
+    "evidence_id": "ev_69a23ae044935ae6f7450097987faa71f641c62091f885fc4b4b5f8d5b1929f4",
+    "name": "vm_copyValue",
+    "address": "0x808be87",
+    "instruction": "0x808be87: MOV EAX, dword ptr [EBX + 0x8]",
+    "file_offset": 278151,
+    "bytes_hex": "8b4308"
+  },
+  {
+    "id": "A027",
+    "evidence_id": "ev_69a23ae044935ae6f7450097987faa71f641c62091f885fc4b4b5f8d5b1929f4",
+    "name": "vm_copyValue",
+    "address": "0x808be9e",
+    "instruction": "0x808be9e: CALL 0x0808ad98",
+    "file_offset": 278174,
+    "bytes_hex": "e8f5eeffff"
+  },
+  {
+    "id": "A028",
+    "evidence_id": "ev_69a23ae044935ae6f7450097987faa71f641c62091f885fc4b4b5f8d5b1929f4",
+    "name": "vm_copyValue",
+    "address": "0x808bea3",
+    "instruction": "0x808bea3: MOVZX ECX, byte ptr [EBX + 0x4]",
+    "file_offset": 278179,
+    "bytes_hex": "0fb64b04"
+  },
+  {
+    "id": "A029",
+    "evidence_id": "ev_69a23ae044935ae6f7450097987faa71f641c62091f885fc4b4b5f8d5b1929f4",
+    "name": "vm_copyValue",
+    "address": "0x808beb3",
+    "instruction": "0x808beb3: MOV EAX, dword ptr [EBX + 0x8]",
+    "file_offset": 278195,
+    "bytes_hex": "8b4308"
+  },
+  {
+    "id": "A030",
+    "evidence_id": "ev_69a23ae044935ae6f7450097987faa71f641c62091f885fc4b4b5f8d5b1929f4",
+    "name": "vm_copyValue",
+    "address": "0x808bebb",
+    "instruction": "0x808bebb: JZ 0x0808bec3",
+    "file_offset": 278203,
+    "bytes_hex": "7406"
+  },
+  {
+    "id": "A031",
+    "evidence_id": "ev_d5e0fa5ed30b20859a959e09027480b13f6d9acdd746527dd5c2dac47520cadc",
+    "name": "vm_cleanupValue",
+    "address": "0x808adc2",
+    "instruction": "0x808adc2: MOV byte ptr [EDI + 0x4], 0x0",
+    "file_offset": 273858,
+    "bytes_hex": "c6470400"
+  },
+  {
+    "id": "A032",
+    "evidence_id": "ev_d5e0fa5ed30b20859a959e09027480b13f6d9acdd746527dd5c2dac47520cadc",
+    "name": "vm_cleanupValue",
+    "address": "0x808adc6",
+    "instruction": "0x808adc6: MOV byte ptr [EDI + 0x5], 0x0",
+    "file_offset": 273862,
+    "bytes_hex": "c6470500"
+  },
+  {
+    "id": "A033",
+    "evidence_id": "ev_4d6d17b9e1b09afb2790e5504711604e853f3e4e9740fbca01c397f299a00212",
+    "name": "vm_pushValue",
+    "address": "0x809107f",
+    "instruction": "0x809107f: TEST EAX, EAX",
+    "file_offset": 299135,
+    "bytes_hex": "85c0"
+  },
+  {
+    "id": "A034",
+    "evidence_id": "ev_4d6d17b9e1b09afb2790e5504711604e853f3e4e9740fbca01c397f299a00212",
+    "name": "vm_pushValue",
+    "address": "0x8091083",
+    "instruction": "0x8091083: DEC EAX",
+    "file_offset": 299139,
+    "bytes_hex": "48"
+  },
+  {
+    "id": "A035",
+    "evidence_id": "ev_228d09be9663f9f70d03a59ebe1663960c6d34458f9a82d3d5e1e4cee42d44f9",
+    "name": "vm_freeFunctionValue",
+    "address": "0x808c164",
+    "instruction": "0x808c164: DEC dword ptr [EBX]",
+    "file_offset": 278884,
+    "bytes_hex": "ff0b"
+  },
+  {
+    "id": "A036",
+    "evidence_id": "ev_228d09be9663f9f70d03a59ebe1663960c6d34458f9a82d3d5e1e4cee42d44f9",
+    "name": "vm_freeFunctionValue",
+    "address": "0x808c167",
+    "instruction": "0x808c167: CALL 0x0808ad98",
+    "file_offset": 278887,
+    "bytes_hex": "e82cecffff"
+  },
+  {
+    "id": "A037",
+    "evidence_id": "ev_228d09be9663f9f70d03a59ebe1663960c6d34458f9a82d3d5e1e4cee42d44f9",
+    "name": "vm_freeFunctionValue",
+    "address": "0x808c1c7",
+    "instruction": "0x808c1c7: CALL 0x080ceb94",
+    "file_offset": 278983,
+    "bytes_hex": "e8c8290400"
+  },
+  {
+    "id": "A038",
+    "evidence_id": "ev_228d09be9663f9f70d03a59ebe1663960c6d34458f9a82d3d5e1e4cee42d44f9",
+    "name": "vm_freeFunctionValue",
+    "address": "0x808c1de",
+    "instruction": "0x808c1de: CALL 0x080ceb94",
+    "file_offset": 279006,
+    "bytes_hex": "e8b1290400"
+  },
+  {
+    "id": "A039",
+    "evidence_id": "ev_228d09be9663f9f70d03a59ebe1663960c6d34458f9a82d3d5e1e4cee42d44f9",
+    "name": "vm_freeFunctionValue",
+    "address": "0x808c1ef",
+    "instruction": "0x808c1ef: CALL 0x080b1618",
+    "file_offset": 279023,
+    "bytes_hex": "e824540200"
+  },
+  {
+    "id": "A040",
+    "evidence_id": "ev_9d3740c765c17665b432d16e97139a12b824b1e31238f5fb1f421a36d5f5e956",
+    "name": "vm_convertToValue",
+    "address": "0x808c045",
+    "instruction": "0x808c045: CALL 0x0808be24",
+    "file_offset": 278597,
+    "bytes_hex": "e8dafdffff"
+  },
+  {
+    "id": "A041",
+    "evidence_id": "ev_9d3740c765c17665b432d16e97139a12b824b1e31238f5fb1f421a36d5f5e956",
+    "name": "vm_convertToValue",
+    "address": "0x808c04a",
+    "instruction": "0x808c04a: MOV EAX, dword ptr [EBX]",
+    "file_offset": 278602,
+    "bytes_hex": "8b03"
+  },
+  {
+    "id": "A042",
+    "evidence_id": "ev_9d3740c765c17665b432d16e97139a12b824b1e31238f5fb1f421a36d5f5e956",
+    "name": "vm_convertToValue",
+    "address": "0x808c05e",
+    "instruction": "0x808c05e: CALL 0x0808ad98",
+    "file_offset": 278622,
+    "bytes_hex": "e835edffff"
+  },
+  {
+    "id": "A043",
+    "evidence_id": "ev_ec2e63f30a5e17be4bc7568c971fc949e924bd051c8f8f5049d7793945b7c459",
+    "name": "vm_queryMember",
+    "address": "0x808fc3f",
+    "instruction": "0x808fc3f: CALL 0x0808be24",
+    "file_offset": 293951,
+    "bytes_hex": "e8e0c1ffff"
+  },
+  {
+    "id": "A044",
+    "evidence_id": "ev_ec2e63f30a5e17be4bc7568c971fc949e924bd051c8f8f5049d7793945b7c459",
+    "name": "vm_queryMember",
+    "address": "0x808fc47",
+    "instruction": "0x808fc47: CALL 0x0809b350",
+    "file_offset": 293959,
+    "bytes_hex": "e804b70000"
+  },
+  {
+    "id": "A045",
+    "evidence_id": "ev_ec2e63f30a5e17be4bc7568c971fc949e924bd051c8f8f5049d7793945b7c459",
+    "name": "vm_queryMember",
+    "address": "0x808fca3",
+    "instruction": "0x808fca3: CALL 0x0808be24",
+    "file_offset": 294051,
+    "bytes_hex": "e87cc1ffff"
+  },
+  {
+    "id": "A046",
+    "evidence_id": "ev_ec2e63f30a5e17be4bc7568c971fc949e924bd051c8f8f5049d7793945b7c459",
+    "name": "vm_queryMember",
+    "address": "0x808fcab",
+    "instruction": "0x808fcab: CALL 0x0809c488",
+    "file_offset": 294059,
+    "bytes_hex": "e8d8c70000"
+  },
+  {
+    "id": "A047",
+    "evidence_id": "ev_8000dac56416a0239afddc630d10d5c425e7d9797f623755e77dcda7e5516c26",
+    "name": "vm_unrefArray",
+    "address": "0x809b393",
+    "instruction": "0x809b393: CALL 0x0808bfb4",
+    "file_offset": 340883,
+    "bytes_hex": "e81c0cffff"
+  },
+  {
+    "id": "A048",
+    "evidence_id": "ev_18fea6ebc3680cd0ea4726c67901206fe1299bda13ef18741e124aa8a6eb77de",
+    "name": "vm_unrefValue",
+    "address": "0x808bfbe",
+    "instruction": "0x808bfbe: DEC EAX",
+    "file_offset": 278462,
+    "bytes_hex": "48"
+  },
+  {
+    "id": "A049",
+    "evidence_id": "ev_18fea6ebc3680cd0ea4726c67901206fe1299bda13ef18741e124aa8a6eb77de",
+    "name": "vm_unrefValue",
+    "address": "0x808bfc3",
+    "instruction": "0x808bfc3: JNZ 0x0808c008",
+    "file_offset": 278467,
+    "bytes_hex": "7543"
+  },
+  {
+    "id": "A050",
+    "evidence_id": "ev_18fea6ebc3680cd0ea4726c67901206fe1299bda13ef18741e124aa8a6eb77de",
+    "name": "vm_unrefValue",
+    "address": "0x808bfcd",
+    "instruction": "0x808bfcd: CALL 0x0808ad98",
+    "file_offset": 278477,
+    "bytes_hex": "e8c6edffff"
+  },
+  {
+    "id": "A051",
+    "evidence_id": "ev_2aae5aa932757dd2dad4354599e352e3310dbf9d1f7637b49903392349474966",
+    "name": "vm_unrefMapping",
+    "address": "0x809c49b",
+    "instruction": "0x809c49b: JLE 0x0809c4a5",
+    "file_offset": 345243,
+    "bytes_hex": "7e08"
+  },
+  {
+    "id": "A052",
+    "evidence_id": "ev_2aae5aa932757dd2dad4354599e352e3310dbf9d1f7637b49903392349474966",
+    "name": "vm_unrefMapping",
+    "address": "0x809c4de",
+    "instruction": "0x809c4de: CALL 0x0809c33c",
+    "file_offset": 345310,
+    "bytes_hex": "e859feffff"
+  },
+  {
+    "id": "A053",
+    "evidence_id": "ev_ef0f48684b838cbc45dc532f24fa5985365542fc69b10337e082b6df80283dae",
+    "name": "vm_freeNode",
+    "address": "0x809c350",
+    "instruction": "0x809c350: CALL 0x0808ad98",
+    "file_offset": 344912,
+    "bytes_hex": "e843eafeff"
+  },
+  {
+    "id": "A054",
+    "evidence_id": "ev_ef0f48684b838cbc45dc532f24fa5985365542fc69b10337e082b6df80283dae",
+    "name": "vm_freeNode",
+    "address": "0x809c35b",
+    "instruction": "0x809c35b: CALL 0x0808ad98",
+    "file_offset": 344923,
+    "bytes_hex": "e838eafeff"
+  },
+  {
+    "id": "A055",
+    "evidence_id": "ev_ef0f48684b838cbc45dc532f24fa5985365542fc69b10337e082b6df80283dae",
+    "name": "vm_freeNode",
+    "address": "0x809c381",
+    "instruction": "0x809c381: CALL 0x0808c0b8",
+    "file_offset": 344961,
+    "bytes_hex": "e832fdfeff"
+  },
+  {
+    "id": "A056",
+    "evidence_id": "ev_ef0f48684b838cbc45dc532f24fa5985365542fc69b10337e082b6df80283dae",
+    "name": "vm_freeNode",
+    "address": "0x809c38c",
+    "instruction": "0x809c38c: CALL 0x0808c0b8",
+    "file_offset": 344972,
+    "bytes_hex": "e827fdfeff"
+  },
+  {
+    "id": "A057",
+    "evidence_id": "ev_6a8948bf446a008fa48fc2ecc8711a14fc41635f9cd05e4cfcdacf8bec7a6215",
+    "name": "vm_returnFromFun",
+    "address": "0x8094c50",
+    "instruction": "0x8094c50: CALL 0x08092008",
+    "file_offset": 314448,
+    "bytes_hex": "e8b3d3ffff"
+  },
+  {
+    "id": "A058",
+    "evidence_id": "ev_b8168f2c625c87c5cab8326205b0560cd7db940a32c06abbbda3dcdb7a839535",
+    "name": "vm_takeOffValueFromStack",
+    "address": "0x809205d",
+    "instruction": "0x809205d: CALL 0x0808ad98",
+    "file_offset": 303197,
+    "bytes_hex": "e8368dffff"
+  },
+  {
+    "id": "A059",
+    "evidence_id": "ev_b8168f2c625c87c5cab8326205b0560cd7db940a32c06abbbda3dcdb7a839535",
+    "name": "vm_takeOffValueFromStack",
+    "address": "0x8092090",
+    "instruction": "0x8092090: MOV EDX, dword ptr [0x08661964]",
+    "file_offset": 303248,
+    "bytes_hex": "8b1564196608"
+  },
+  {
+    "id": "A060",
+    "evidence_id": "ev_b8168f2c625c87c5cab8326205b0560cd7db940a32c06abbbda3dcdb7a839535",
+    "name": "vm_takeOffValueFromStack",
+    "address": "0x80920c6",
+    "instruction": "0x80920c6: MOV byte ptr [ECX + EAX*0x1 + 0x5], 0x0",
+    "file_offset": 303302,
+    "bytes_hex": "c644010500"
+  },
+  {
+    "id": "A061",
+    "evidence_id": "ev_d6bd8847412c335d9425d53073743ca82d6469ed6c69a789f996bbc7c2f39471",
+    "name": "vm_markActiveFromValue",
+    "address": "0x808d99d",
+    "instruction": "0x808d99d: CMP word ptr [EDX + 0x6], 0x0",
+    "file_offset": 285085,
+    "bytes_hex": "66837a0600"
+  },
+  {
+    "id": "A062",
+    "evidence_id": "ev_d6bd8847412c335d9425d53073743ca82d6469ed6c69a789f996bbc7c2f39471",
+    "name": "vm_markActiveFromValue",
+    "address": "0x808d9a8",
+    "instruction": "0x808d9a8: CMP EAX, 0x7",
+    "file_offset": 285096,
+    "bytes_hex": "83f807"
+  },
+  {
+    "id": "A063",
+    "evidence_id": "ev_d6bd8847412c335d9425d53073743ca82d6469ed6c69a789f996bbc7c2f39471",
+    "name": "vm_markActiveFromValue",
+    "address": "0x808d9b9",
+    "instruction": "0x808d9b9: CMP EAX, 0x6",
+    "file_offset": 285113,
+    "bytes_hex": "83f806"
+  },
+  {
+    "id": "A064",
+    "evidence_id": "ev_d6bd8847412c335d9425d53073743ca82d6469ed6c69a789f996bbc7c2f39471",
+    "name": "vm_markActiveFromValue",
+    "address": "0x808d9e9",
+    "instruction": "0x808d9e9: CMP EAX, 0x9",
+    "file_offset": 285161,
+    "bytes_hex": "83f809"
+  },
+  {
+    "id": "A065",
+    "evidence_id": "ev_d6bd8847412c335d9425d53073743ca82d6469ed6c69a789f996bbc7c2f39471",
+    "name": "vm_markActiveFromValue",
+    "address": "0x808d9f2",
+    "instruction": "0x808d9f2: CMP EAX, 0x14",
+    "file_offset": 285170,
+    "bytes_hex": "83f814"
+  },
+  {
+    "id": "A066",
+    "evidence_id": "ev_d6bd8847412c335d9425d53073743ca82d6469ed6c69a789f996bbc7c2f39471",
+    "name": "vm_markActiveFromValue",
+    "address": "0x808daa5",
+    "instruction": "0x808daa5: CALL 0x0808d994",
+    "file_offset": 285349,
+    "bytes_hex": "e8eafeffff"
+  },
+  {
+    "id": "A067",
+    "evidence_id": "ev_ea9570e30440ab119beb30143a85def63e15e87ac0485860290ba47ca3a6ae7c",
+    "name": "vm_callInUserFunBody",
+    "address": "0x8093f43",
+    "instruction": "0x8093f43: MOV dword ptr [EDX], EAX",
+    "file_offset": 311107,
+    "bytes_hex": "8902"
+  },
+  {
+    "id": "A068",
+    "evidence_id": "ev_ea9570e30440ab119beb30143a85def63e15e87ac0485860290ba47ca3a6ae7c",
+    "name": "vm_callInUserFunBody",
+    "address": "0x8093f4f",
+    "instruction": "0x8093f4f: MOV dword ptr [EDX + 0x4], EAX",
+    "file_offset": 311119,
+    "bytes_hex": "894204"
+  },
+  {
+    "id": "A069",
+    "evidence_id": "ev_ea9570e30440ab119beb30143a85def63e15e87ac0485860290ba47ca3a6ae7c",
+    "name": "vm_callInUserFunBody",
+    "address": "0x8093f9e",
+    "instruction": "0x8093f9e: MOV dword ptr [EBX + 0xc], 0x0",
+    "file_offset": 311198,
+    "bytes_hex": "c7430c00000000"
+  },
+  {
+    "id": "A070",
+    "evidence_id": "ev_aaa80e13c3c88b9a455d4ba6569e69518889b1fcc26a966c8e433f5f746c7126",
+    "name": "vm_checkArgNum",
+    "address": "0x8095429",
+    "instruction": "0x8095429: CVTSI2SS XMM0, dword ptr [EDI + 0x8]",
+    "file_offset": 316457,
+    "bytes_hex": "f30f2a4708"
+  },
+  {
+    "id": "A071",
+    "evidence_id": "ev_aaa80e13c3c88b9a455d4ba6569e69518889b1fcc26a966c8e433f5f746c7126",
+    "name": "vm_checkArgNum",
+    "address": "0x809547f",
+    "instruction": "0x809547f: CVTTSS2SI EAX, dword ptr [EDI + 0x8]",
+    "file_offset": 316543,
+    "bytes_hex": "f30f2c4708"
+  },
+  {
+    "id": "A072",
+    "evidence_id": "ev_aaa80e13c3c88b9a455d4ba6569e69518889b1fcc26a966c8e433f5f746c7126",
+    "name": "vm_checkArgNum",
+    "address": "0x8095449",
+    "instruction": "0x8095449: CALL 0x08097b24",
+    "file_offset": 316489,
+    "bytes_hex": "e8d6260000"
+  },
+  {
+    "id": "A073",
+    "evidence_id": "ev_f1c4dde0e0ce2a55aa3838ae691f272691496d87fcbc3d91ec17f09ea6eeaea1",
+    "name": "vm_error",
+    "address": "0x8097b24",
+    "instruction": "0x8097b24: PUSH EBP",
+    "file_offset": 326436,
+    "bytes_hex": "55"
+  },
+  {
+    "id": "A074",
+    "evidence_id": "ev_bfa094c0c50a60bb231088da09294746c5850d3124a018787a398173fdb3a0c2",
+    "name": "vm_errorQuit",
+    "address": "0x80ab16c",
+    "instruction": "0x80ab16c: CALL 0x08093520",
+    "file_offset": 405868,
+    "bytes_hex": "e8af83feff"
+  },
+  {
+    "id": "A075",
+    "evidence_id": "ev_bfa094c0c50a60bb231088da09294746c5850d3124a018787a398173fdb3a0c2",
+    "name": "vm_errorQuit",
+    "address": "0x80ab144",
+    "instruction": "0x80ab144: CALL 0x0804b574",
+    "file_offset": 405828,
+    "bytes_hex": "e82b04faff8d7600"
+  },
+  {
+    "id": "A076",
+    "evidence_id": "ev_e12a1e49fc37b28910632e7d22872a27b51e7c54f0c6478935e893b20f7c63fe",
+    "name": "vm_traceError",
+    "address": "0x8093ad0",
+    "instruction": "0x8093ad0: CALL 0x08091ab0",
+    "file_offset": 309968,
+    "bytes_hex": "e8dbdfffff"
+  },
+  {
+    "id": "A077",
+    "evidence_id": "ev_e12a1e49fc37b28910632e7d22872a27b51e7c54f0c6478935e893b20f7c63fe",
+    "name": "vm_traceError",
+    "address": "0x8093c22",
+    "instruction": "0x8093c22: CALL 0x080b1804",
+    "file_offset": 310306,
+    "bytes_hex": "e8dddb0100"
+  },
+  {
+    "id": "A078",
+    "evidence_id": "ev_543af7cfb6d454bc19165fe254e84721ac87776215bd08299342ec2ab9a32d9e",
+    "name": "vm_doActions",
+    "address": "0x80971f6",
+    "instruction": "0x80971f6: CALL 0x08091ab0",
+    "file_offset": 324086,
+    "bytes_hex": "e8b5a8ffff"
+  },
+  {
+    "id": "A079",
+    "evidence_id": "ev_f739f81d73d7c07779ab3fb741800726145efbc40fd8dc6c58009ac2d703aa48",
+    "name": "vm_createFunctionValueEx",
+    "address": "0x8091df4",
+    "instruction": "0x8091df4: TEST EAX, EAX",
+    "file_offset": 302580,
+    "bytes_hex": "85c0"
+  },
+  {
+    "id": "A080",
+    "evidence_id": "ev_f5d36761261bd90bb2139ae2bcd05e79af64a90eaffe2b978b3c0353a3ffe4a2",
+    "name": "vm_pushGlobalVar",
+    "address": "0x8091183",
+    "instruction": "0x8091183: CALL 0x0808be24",
+    "file_offset": 299395,
+    "bytes_hex": "e89cacffff"
+  },
+  {
+    "id": "A081",
+    "evidence_id": "ev_9a9cde77fb2df1b8214e667458663471ea6da5fbeea24bfb3878fcb8f7548808",
+    "name": "vm_pushObjVar",
+    "address": "0x8091278",
+    "instruction": "0x8091278: CALL 0x0808be24",
+    "file_offset": 299640,
+    "bytes_hex": "e8a7abffff"
+  },
+  {
+    "id": "A082",
+    "evidence_id": "ev_c852e7916c2cdc0cda41b7ecfb7e817b8345955915dab87bdbdcc65f2ff5278f",
+    "name": "vm_unExecRefObject",
+    "address": "0x80b180f",
+    "instruction": "0x80b180f: DEC EAX",
+    "file_offset": 432143,
+    "bytes_hex": "48"
+  },
+  {
+    "id": "A083",
+    "evidence_id": "ev_c852e7916c2cdc0cda41b7ecfb7e817b8345955915dab87bdbdcc65f2ff5278f",
+    "name": "vm_unExecRefObject",
+    "address": "0x80b181c",
+    "instruction": "0x80b181c: TEST byte ptr [EBX + 0xd], 0x40",
+    "file_offset": 432156,
+    "bytes_hex": "f6430d40"
+  },
+  {
+    "id": "A084",
+    "evidence_id": "ev_c852e7916c2cdc0cda41b7ecfb7e817b8345955915dab87bdbdcc65f2ff5278f",
+    "name": "vm_unExecRefObject",
+    "address": "0x80b1833",
+    "instruction": "0x80b1833: OR dword ptr [EBX + 0xc], 0x8000",
+    "file_offset": 432179,
+    "bytes_hex": "814b0c00800000"
+  },
+  {
+    "id": "A085",
+    "evidence_id": "ev_c852e7916c2cdc0cda41b7ecfb7e817b8345955915dab87bdbdcc65f2ff5278f",
+    "name": "vm_unExecRefObject",
+    "address": "0x80b1840",
+    "instruction": "0x80b1840: INC dword ptr [EBX]",
+    "file_offset": 432192,
+    "bytes_hex": "ff03"
+  }
+]

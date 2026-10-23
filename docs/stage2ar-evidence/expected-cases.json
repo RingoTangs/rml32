@@ -1,0 +1,663 @@
+[
+  {
+    "id": "C01",
+    "group": "capture-create",
+    "basis": "static-inference",
+    "input": "17 receives already-evaluated raw stack Undefined; creator is valid; resources available.",
+    "expected": "Move type/attrib/payload into initialized capture slot, clear source type/attrib; retain raw payload identity.",
+    "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+    "findings": [
+      "F01",
+      "F03"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C02",
+    "group": "capture-create",
+    "basis": "static-inference",
+    "input": "17 receives already-evaluated raw stack Void; creator is valid; resources available.",
+    "expected": "Move type/attrib/payload into initialized capture slot, clear source type/attrib; retain raw payload identity.",
+    "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+    "findings": [
+      "F01",
+      "F03"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C03",
+    "group": "capture-create",
+    "basis": "static-inference",
+    "input": "17 receives already-evaluated raw stack Int; creator is valid; resources available.",
+    "expected": "Move type/attrib/payload into initialized capture slot, clear source type/attrib; retain raw payload identity.",
+    "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+    "findings": [
+      "F01",
+      "F03"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C04",
+    "group": "capture-create",
+    "basis": "static-inference",
+    "input": "17 receives already-evaluated raw stack Real bits; creator is valid; resources available.",
+    "expected": "Move type/attrib/payload into initialized capture slot, clear source type/attrib; retain raw payload identity.",
+    "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+    "findings": [
+      "F01",
+      "F03"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C05",
+    "group": "capture-create",
+    "basis": "static-inference",
+    "input": "17 receives already-evaluated raw stack Bytes; creator is valid; resources available.",
+    "expected": "Move type/attrib/payload into initialized capture slot, clear source type/attrib; retain raw payload identity.",
+    "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+    "findings": [
+      "F01",
+      "F03"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C06",
+    "group": "capture-create",
+    "basis": "static-inference",
+    "input": "17 receives already-evaluated raw stack Array; creator is valid; resources available.",
+    "expected": "Move type/attrib/payload into initialized capture slot, clear source type/attrib; retain raw payload identity.",
+    "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+    "findings": [
+      "F01",
+      "F03"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C07",
+    "group": "capture-create",
+    "basis": "static-inference",
+    "input": "17 receives already-evaluated raw stack Mapping; creator is valid; resources available.",
+    "expected": "Move type/attrib/payload into initialized capture slot, clear source type/attrib; retain raw payload identity.",
+    "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+    "findings": [
+      "F01",
+      "F03"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C08",
+    "group": "capture-create",
+    "basis": "static-inference",
+    "input": "17 receives already-evaluated raw stack live Object; creator is valid; resources available.",
+    "expected": "Move type/attrib/payload into initialized capture slot, clear source type/attrib; retain raw payload identity.",
+    "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+    "findings": [
+      "F01",
+      "F03"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C09",
+    "group": "capture-create",
+    "basis": "static-inference",
+    "input": "17 receives already-evaluated raw stack Function with live or null creator; creator is valid; resources available.",
+    "expected": "Move type/attrib/payload into initialized capture slot, clear source type/attrib; retain raw payload identity.",
+    "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+    "findings": [
+      "F01",
+      "F03"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C10",
+    "group": "capture-create",
+    "basis": "static-inference",
+    "input": "17 receives raw deleted Object payload already on stack.",
+    "expected": "Transfer itself does not invoke copy-based source normalization; no claim about how preceding expression produced raw value.",
+    "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+    "findings": [
+      "F03",
+      "F08"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C11",
+    "group": "capture-create",
+    "basis": "static-inference",
+    "input": "17 receives raw Function whose creator is deleted, creator of outer Function valid.",
+    "expected": "Raw captured Function payload is transferred at this point; outer creator validation is a separate identity.",
+    "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+    "findings": [
+      "F03",
+      "F23"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C12",
+    "group": "capture-create",
+    "basis": "static-inference",
+    "input": "17 capture operand is tag8 Reference.",
+    "expected": "Native helper raises argument error during reference scan before capture allocations/transfers.",
+    "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+    "findings": [
+      "F01",
+      "F02"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C13",
+    "group": "capture-create",
+    "basis": "design",
+    "input": "17 capture operand is hidden Loop tag0x14.",
+    "expected": "No legal capture guarantee follows from this helper; Rust continues explicit rejection.",
+    "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+    "findings": [
+      "F01",
+      "F21"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C14",
+    "group": "capture-create",
+    "basis": "static-inference",
+    "input": "17 header allocation succeeds; capture storage allocation fails.",
+    "expected": "Header freed then vm_error, before capture transfer; final uncaught cleanup outside this local ordering remains separate.",
+    "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+    "findings": [
+      "F02",
+      "F20"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C15",
+    "group": "capture-create",
+    "basis": "unresolved",
+    "input": "17 has moved captures but final result stack has no space.",
+    "expected": "Creation is not proven failure-atomic; C-local unpublished head ownership/rooting and final cleanup remain unresolved.",
+    "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+    "findings": [
+      "F02",
+      "F20"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C16",
+    "group": "head-expansion",
+    "basis": "static-inference",
+    "input": "Native head ref is 1; raw bound Array; enough stack.",
+    "expected": "Reverse-index raw move, clear bound source slots, free unique Function head. Container children are not recursively normalized.",
+    "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+    "findings": [
+      "F05",
+      "F07"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C17",
+    "group": "head-expansion",
+    "basis": "static-inference",
+    "input": "Native head ref is 2; raw bound Array; enough stack.",
+    "expected": "Release local call-target holder, push/copy bound header; surviving Function capture and argument share container. Container children are not recursively normalized.",
+    "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+    "findings": [
+      "F06",
+      "F07"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C18",
+    "group": "head-expansion",
+    "basis": "static-inference",
+    "input": "Native head ref is 1; raw bound Mapping; enough stack.",
+    "expected": "Reverse-index raw move, clear bound source slots, free unique Function head. Container children are not recursively normalized.",
+    "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+    "findings": [
+      "F05",
+      "F07"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C19",
+    "group": "head-expansion",
+    "basis": "static-inference",
+    "input": "Native head ref is 2; raw bound Mapping; enough stack.",
+    "expected": "Release local call-target holder, push/copy bound header; surviving Function capture and argument share container. Container children are not recursively normalized.",
+    "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+    "findings": [
+      "F06",
+      "F07"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C20",
+    "group": "head-expansion",
+    "basis": "static-inference",
+    "input": "Native head ref==1, bound Object deleted after capture; inspect immediately after expansion, before callee 0f.",
+    "expected": "Raw payload moves to argument stack without copy-based normalization; Function head/capture storage released; callee checks may subsequently reject.",
+    "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+    "findings": [
+      "F05",
+      "F09",
+      "F18"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C21",
+    "group": "head-expansion",
+    "basis": "static-inference",
+    "input": "Native head ref>1, bound Object deleted after capture; inspect expansion and surviving head.",
+    "expected": "copy cleans bound SOURCE to Undefined/attrib0 and pushes Undefined. Surviving head retains normalized capture for later calls.",
+    "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+    "findings": [
+      "F06",
+      "F08",
+      "F09"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C22",
+    "group": "head-expansion",
+    "basis": "static-inference",
+    "input": "Native head ref==1, bound Function whose nonnull creator was deleted after capture; inspect immediately after expansion, before callee 0f.",
+    "expected": "Raw payload moves to argument stack without copy-based normalization; Function head/capture storage released; callee checks may subsequently reject.",
+    "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+    "findings": [
+      "F05",
+      "F09",
+      "F18"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C23",
+    "group": "head-expansion",
+    "basis": "static-inference",
+    "input": "Native head ref>1, bound Function whose nonnull creator was deleted after capture; inspect expansion and surviving head.",
+    "expected": "copy cleans bound SOURCE to Undefined/attrib0 and pushes Undefined. Surviving head retains normalized capture for later calls.",
+    "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+    "findings": [
+      "F06",
+      "F08",
+      "F09"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C24",
+    "group": "head-expansion",
+    "basis": "static-inference",
+    "input": "Shared head captures Function whose creator is null.",
+    "expected": "copy does not classify it dead merely because creator is null; nested Function head identity is shared.",
+    "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+    "findings": [
+      "F08",
+      "F06"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C25",
+    "group": "head-expansion",
+    "basis": "static-inference",
+    "input": "Shared outer head captures another live Function; later drop last outer holder.",
+    "expected": "Normal copy shares nested head; final outer cleanup releases its bound payload before creator/pArgs/head.",
+    "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+    "findings": [
+      "F06",
+      "F11"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C26",
+    "group": "head-expansion",
+    "basis": "design",
+    "input": "VM diagnostic snapshot or host Rc clone changes physical strong_count without a bytecode store.",
+    "expected": "Do not select native unique/shared path using that physical count; semantic ownership model is a prerequisite.",
+    "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+    "findings": [
+      "F21"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C27",
+    "group": "head-expansion",
+    "basis": "static-inference",
+    "input": "Bound [b0,b1], new arguments [n0,n1], successful 05.",
+    "expected": "Expansion visits bound indices in reverse to preserve logical bound-before-new order; no scalar conversion in raw transfer.",
+    "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+    "findings": [
+      "F05",
+      "F06"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C28",
+    "group": "copy-sites",
+    "basis": "static-inference",
+    "input": "Array header contains raw deleted Object member; copy header only.",
+    "expected": "Header is shared; member raw payload remains until an operation actually copies that member.",
+    "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+    "findings": [
+      "F07",
+      "F08"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C29",
+    "group": "copy-sites",
+    "basis": "static-inference",
+    "input": "Shared global slot contains deleted Object or Function with deleted nonnull creator.",
+    "expected": "vm_pushGlobalVar copies actual slot: source and result become Undefined at that copy point.",
+    "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+    "findings": [
+      "F08",
+      "F22"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C30",
+    "group": "copy-sites",
+    "basis": "static-inference",
+    "input": "Object variable contains dead handle; ordinary Object variable read.",
+    "expected": "Source-copy normalization acts on the actual relocated object slot; not a blanket return normalization.",
+    "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+    "findings": [
+      "F08",
+      "F22"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C31",
+    "group": "copy-sites",
+    "basis": "static-inference",
+    "input": "Two References alias slot containing dead handle; convert one Reference to ordinary value.",
+    "expected": "copy normalizes underlying source to Undefined, then consumed Reference unrefs slot; other alias can observe Undefined.",
+    "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+    "findings": [
+      "F08",
+      "F12"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C32",
+    "group": "copy-sites",
+    "basis": "static-inference",
+    "input": "Query existing Array member containing deleted Object, container still shared.",
+    "expected": "Copy selected member and normalize its source before consuming query container header; preserve query-specific result attribute policy.",
+    "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+    "findings": [
+      "F08",
+      "F13"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C33",
+    "group": "copy-sites",
+    "basis": "static-inference",
+    "input": "Query existing Mapping member containing deleted Object, container still shared.",
+    "expected": "Copy selected member and normalize its source before consuming query container header; preserve query-specific result attribute policy.",
+    "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+    "findings": [
+      "F08",
+      "F13"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C34",
+    "group": "copy-sites",
+    "basis": "static-inference",
+    "input": "Mapping lookup misses a key.",
+    "expected": "Query returns Undefined and consumes lookup values without inserting a missing node.",
+    "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+    "findings": [
+      "F13"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C35",
+    "group": "release",
+    "basis": "static-inference",
+    "input": "Last Array header released while an external element Ref remains.",
+    "expected": "Header ownership unrefs slot; surviving slot reference prevents ref==0 cleanup and may retain payload.",
+    "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+    "findings": [
+      "F14"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C36",
+    "group": "release",
+    "basis": "static-inference",
+    "input": "Last Mapping header released while an external value Ref remains.",
+    "expected": "freeNode clears key/value payload immediately; physical node reclamation can be deferred, so surviving Ref sees cleared value.",
+    "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+    "findings": [
+      "F15"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C37",
+    "group": "release",
+    "basis": "static-inference",
+    "input": "Last Function head dropped with nonempty captures and nonnull creator.",
+    "expected": "Clean capture payloads/unlink capture slots, unref creator, free pArgs then head; external capture-slot lifetime not inferred.",
+    "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+    "findings": [
+      "F11"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C38",
+    "group": "release",
+    "basis": "static-inference",
+    "input": "Unique head raw-moves captures then frees head.",
+    "expected": "Moved capture slots are Undefined, so head cleanup does not double-release transferred payload; argument stack later owns release.",
+    "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+    "findings": [
+      "F05",
+      "F11"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C39",
+    "group": "return",
+    "basis": "static-inference",
+    "input": "Raw dead handle is already the result of ordinary nonconst mixed return; no conversion/hook required.",
+    "expected": "takeOffValueFromStack cleans removed frame slots and raw-moves result; transfer itself does not invoke copy normalization.",
+    "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+    "findings": [
+      "F16"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C40",
+    "group": "return",
+    "basis": "unresolved",
+    "input": "Const return, conversion or return hook path.",
+    "expected": "Simple return-move rule is insufficient; recover that specific branch before implementation.",
+    "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+    "findings": [
+      "F16",
+      "F20"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C41",
+    "group": "failure",
+    "basis": "static-inference",
+    "input": "Shared capture copy normalized source, then callee later argument fails under interpreter threadType1 with valid script catch.",
+    "expected": "Exiting argument/temporary stack is cleaned and saved catch sp restored; still-live head capture remains Undefined, not rolled back.",
+    "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+    "findings": [
+      "F09",
+      "F18",
+      "F19"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C42",
+    "group": "failure",
+    "basis": "static-inference",
+    "input": "Unique capture expansion completed; callee parameter count fails under same valid script catch conditions.",
+    "expected": "Head is not recreated. Moved payloads are released from callee/unwound stack through cleanup; consumed target is not restored.",
+    "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+    "findings": [
+      "F05",
+      "F18",
+      "F19"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C43",
+    "group": "failure",
+    "basis": "static-inference",
+    "input": "Captures expanded but call depth or missing code body fails before installing callee frame; valid ordinary script catch.",
+    "expected": "Catch saved-sp cleanup removes expanded calculation values even without a new callee frame; no target restoration.",
+    "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+    "findings": [
+      "F18",
+      "F19"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C44",
+    "group": "failure",
+    "basis": "static-inference",
+    "input": "Earlier parameter Int converts to Real, later parameter type fails.",
+    "expected": "Native 0f can mutate earlier argument before failure; current Rust all-argument preflight is separate policy.",
+    "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+    "findings": [
+      "F18",
+      "F19"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C45",
+    "group": "failure",
+    "basis": "static-inference",
+    "input": "Native vm_pushValue has no free destination stack position.",
+    "expected": "Stack check raises before vm_copyValue, so this push does not perform source cleanup first.",
+    "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+    "findings": [
+      "F10"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C46",
+    "group": "failure",
+    "basis": "unresolved",
+    "input": "No script catch, non-interpreter thread, JIT, callback-catch or reentrant deletion cleanup.",
+    "expected": "Do not extend ordinary valid-script-catch cleanup proof; precise final lifecycle remains unresolved.",
+    "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+    "findings": [
+      "F19",
+      "F20",
+      "F23"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C47",
+    "group": "graph",
+    "basis": "design",
+    "input": "Function captures a shared acyclic Array/Mapping; child graph contains shared ordinary subcontainers.",
+    "expected": "Native copy remains shallow and marker follows captures/children. Future Rust implementation must preserve sharing and bounded graph validation.",
+    "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+    "findings": [
+      "F07",
+      "F17",
+      "F21"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C48",
+    "group": "graph",
+    "basis": "unresolved",
+    "input": "Function/container cycle or arbitrary Reference graph; force garbage collection.",
+    "expected": "Marker observations alone do not prove complete root coverage, release order or recoverability; cycles remain excluded from first implementation.",
+    "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+    "findings": [
+      "F17",
+      "F20"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C49",
+    "group": "policy",
+    "basis": "design",
+    "input": "Foreign-origin Function passed as capture or call target to another Rust ObjectStore.",
+    "expected": "Preserve explicit Rust store isolation; no native origin-token equivalent is established.",
+    "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+    "findings": [
+      "F21"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C50",
+    "group": "policy",
+    "basis": "design",
+    "input": "Zero Rust instruction budget before 05/17.",
+    "expected": "Future extension keeps current inert behavior: no source edits, allocations, semantic owner change or callback. This is a Rust acceptance requirement.",
+    "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+    "findings": [
+      "F21"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C51",
+    "group": "policy",
+    "basis": "design",
+    "input": "One-step Rust budget around 17 publication and 05 callee entry or synchronous Host completion.",
+    "expected": "Future extension preserves current single-instruction boundaries and precommit failure policy; never exposes a partial capture transfer.",
+    "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+    "findings": [
+      "F21"
+    ],
+    "runtime_executed": false
+  }
+]
