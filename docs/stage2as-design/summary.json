@@ -1,0 +1,43 @@
+{
+  "api_boundaries": 16,
+  "complete_for_declared_profiles": true,
+  "coverage": {
+    "modeled": 20,
+    "native-boundary": 9,
+    "partial-model": 18,
+    "unresolved": 4
+  },
+  "decisions": 15,
+  "dependencies_changed": false,
+  "enumeration_accepted": 61365,
+  "enumeration_states": 21837,
+  "full_state_space_proof": false,
+  "mapped_cases": 51,
+  "new_native_analysis": false,
+  "non_scalar_ready": false,
+  "public_api_changed": false,
+  "runtime_changed": false,
+  "selected_next": "2AT-host-boundary",
+  "source_sha256": {
+    "docs/stage2as-design/api-contract.md": "93fb37468c93b18817ca1dec99110d1e9bf6e9aa3fdc4a8854bb2ff111f12c0a",
+    "docs/stage2as-design/api-migration.json": "af27ca433f132a2773126cd52932d0ae0d02eb650d259631c91363f85f3eca54",
+    "docs/stage2as-design/baseline-inputs.json": "5d347ffa6458e7804f5953e9e775c6392055fdee63bbf61f8f2b27fa07c3787f",
+    "docs/stage2as-design/case-map.json": "904f8b65aeeb3cdb81b3762d956f9c90095cf4d549da2d9e49351e48eb09c1e2",
+    "docs/stage2as-design/decisions.json": "8a896c8f07532b6daeb0d2e1a2a38e8fb3bafbe4c27c104db4e929fa57f2081a",
+    "docs/stage2as-design/design.md": "8f5c76622cd42a9510d22e533406e87f5f0f579614cb577031e841ec094e8e99",
+    "docs/stage2as-design/enumeration.json": "0aef866366050dac76d9784d077caa68f5d1712c9db4dc7d5a4a5af122aa7028",
+    "docs/stage2as-design/explore.py": "19d3df002acc5236761e11b00f6b76d3c4ce5eea97fe75fb53e289bc7903b914",
+    "docs/stage2as-design/implementation-plan.json": "0f904873fc0d2bf0a6d0d065282c3f17a2fb03665f2a94b9cee94cd741b8a4b8",
+    "docs/stage2as-design/method.md": "b8c0af834c5bbe2e9ce698e90da689c751a2bd7b70b07fef5cba4b2b2b0a310f",
+    "docs/stage2as-design/model.py": "0d8b2fe0a6e20618314eb431dccb7b7e168ff9a544fac9f7cf398920b5182de3",
+    "docs/stage2as-design/test_explore.py": "faa4c9ac26567a533b1286debbb11669862af99f2ff139cb05a8328a79c0cf95",
+    "docs/stage2as-design/test_model.py": "e7eb92a23622ba953aa88d1ed1882de1fbb4652c9fad6ce4dfba1d3fe741825a",
+    "docs/stage2as-design/test_verify_design.py": "64fec21755d89c2232e8725a24c8ae608a711352561d35daf6f856ad701608ac",
+    "docs/stage2as-design/test_verify_validation.py": "3b700a0f59519861615babd88ad69e60f01f777c1b9500dc84cb62ea072b71c9",
+    "docs/stage2as-design/verify_design.py": "f6ce3064b381e6c29729b425acce3f1cd30148abafb8c53630ea93fc75c9e639",
+    "docs/stage2as-design/verify_validation.py": "132369ee1e6dfa18d5c97d7f948c04ab12c9d6393918f896b006c79e92c0d8f3"
+  },
+  "stage": "2AS",
+  "stage2_complete": false,
+  "target_execution": "none"
+}

@@ -1,0 +1,231 @@
+{
+  "stage": "2AS",
+  "public_api_changed": false,
+  "proposed_api_migration": true,
+  "items": [
+    {
+      "id": "API01",
+      "current": "Vm::stack",
+      "role": "observation",
+      "future": "Result<Vec<StackSnapshot<ValueSnapshot>>, VmError>",
+      "owner_effect": "none",
+      "source": {
+        "path": "src/vm.rs",
+        "line": 693,
+        "excerpt": "pub fn stack(&self) -> Result<Vec<StackSnapshot>, VmError> {"
+      },
+      "migration": "T01",
+      "notes": "Snapshot无Value/HostValue；保留Reference元数据，不输出捕获。"
+    },
+    {
+      "id": "API02",
+      "current": "Object::variables",
+      "role": "observation",
+      "future": "store.snapshot_variables(ObjectId) -> Vec<ValueSnapshot>",
+      "owner_effect": "none",
+      "source": {
+        "path": "src/object.rs",
+        "line": 40,
+        "excerpt": "pub fn variables(&self) -> Result<Vec<Value>, VmError> {"
+      },
+      "migration": "T01",
+      "notes": "删除旧可执行Value快照返回。"
+    },
+    {
+      "id": "API03",
+      "current": "ObjectStore::global_values",
+      "role": "observation",
+      "future": "snapshot_globals() -> Vec<ValueSnapshot>",
+      "owner_effect": "none",
+      "source": {
+        "path": "src/object.rs",
+        "line": 148,
+        "excerpt": "pub fn global_values(&self) -> Result<Vec<Value>, VmError> {"
+      },
+      "migration": "T01",
+      "notes": "共享身份表现为ID，不保活header。"
+    },
+    {
+      "id": "API04",
+      "current": "ArrayValue::elements",
+      "role": "observation",
+      "future": "store.snapshot_elements(&HostValue) -> Vec<ValueSnapshot>",
+      "owner_effect": "none",
+      "source": {
+        "path": "src/container.rs",
+        "line": 25,
+        "excerpt": "pub fn elements(&self) -> Result<Vec<Value>, VmError> {"
+      },
+      "migration": "T01",
+      "notes": "需要取出可执行成员改用显式export_member，产生HostValue root。"
+    },
+    {
+      "id": "API05",
+      "current": "MappingValue::entries",
+      "role": "observation",
+      "future": "store.snapshot_entries(&HostValue) -> Vec<(KeySnapshot, ValueSnapshot)>",
+      "owner_effect": "none",
+      "source": {
+        "path": "src/container.rs",
+        "line": 160,
+        "excerpt": "pub fn entries(&self) -> Result<Vec<(Value, Value)>, VmError> {"
+      },
+      "migration": "T01",
+      "notes": "顺序与原公开entries保持；快照深拷贝观察数据、别名用ID引用。"
+    },
+    {
+      "id": "API06",
+      "current": "MappingValue::get",
+      "role": "observation",
+      "future": "store.snapshot_get(&HostValue, KeyInput) -> Option<ValueSnapshot>",
+      "owner_effect": "none",
+      "source": {
+        "path": "src/container.rs",
+        "line": 167,
+        "excerpt": "pub fn get(&self, key: &Value) -> Result<Option<Value>, VmError> {"
+      },
+      "migration": "T01",
+      "notes": "显式export_member/get_owned方可回传VM，不静默把查询变成持有者。"
+    },
+    {
+      "id": "API07",
+      "current": "Value/FunctionValue::clone",
+      "role": "host-ownership",
+      "future": "HostValue不实现Clone；store.retain(&HostValue) -> Result<HostValue>",
+      "owner_effect": "new-host-root",
+      "source": {
+        "path": "src/value.rs",
+        "line": 38,
+        "excerpt": "pub enum Value {"
+      },
+      "migration": "T01",
+      "notes": "标量ValueInput可Copy；内部VmValue不得经公共Clone越过root登记。"
+    },
+    {
+      "id": "API08",
+      "current": "FunctionValue访问器/Debug",
+      "role": "observation",
+      "future": "FunctionSnapshot metadata / HostValue.function_info()",
+      "owner_effect": "none",
+      "source": {
+        "path": "src/value.rs",
+        "line": 89,
+        "excerpt": "pub struct FunctionValue(pub(crate) Rc<FunctionData>);"
+      },
+      "migration": "T01",
+      "notes": "owner/target/function/bound_count和身份不含捕获；HostValue debug不新增root。"
+    },
+    {
+      "id": "API09",
+      "current": "Completion::Returned/RunOutcome",
+      "role": "observation",
+      "future": "CompletionMeta + take_returned() -> Result<HostValue>",
+      "owner_effect": "explicit-transfer-only",
+      "source": {
+        "path": "src/vm.rs",
+        "line": 14,
+        "excerpt": "pub enum Completion {"
+      },
+      "migration": "T01",
+      "notes": "run重复完成观察不复制持有者，take_returned一次性转移。"
+    },
+    {
+      "id": "API10",
+      "current": "Vm::start",
+      "role": "vm-input",
+      "future": "start(object, function, &[ValueInput])",
+      "owner_effect": "new-vm-slots-after-preflight",
+      "source": {
+        "path": "src/vm.rs",
+        "line": 880,
+        "excerpt": "pub fn start("
+      },
+      "migration": "T01",
+      "notes": "标量或借用HostValue；导入临时载荷后entry COPY，不改外部HostValue root。"
+    },
+    {
+      "id": "API11",
+      "current": "Value::array",
+      "role": "host-construction",
+      "future": "ObjectStore::array(&[ValueInput]) -> Result<HostValue>",
+      "owner_effect": "new-host-root",
+      "source": {
+        "path": "src/value.rs",
+        "line": 51,
+        "excerpt": "pub fn array(elements: Vec<Value>) -> Result<Self, crate::VmError> {"
+      },
+      "migration": "T01",
+      "notes": "构造纳入origin/图校验，raw构造不递归规范化成员。"
+    },
+    {
+      "id": "API12",
+      "current": "Value::mapping",
+      "role": "host-construction",
+      "future": "ObjectStore::mapping(&[(KeyInput, ValueInput)]) -> Result<HostValue>",
+      "owner_effect": "new-host-root",
+      "source": {
+        "path": "src/value.rs",
+        "line": 56,
+        "excerpt": "pub fn mapping(entries: Vec<(Value, Value)>) -> Result<Self, crate::VmError> {"
+      },
+      "migration": "T01",
+      "notes": "键仍限Int/Bytes；不支持Function键。"
+    },
+    {
+      "id": "API13",
+      "current": "HostCallback",
+      "role": "borrowed-call",
+      "future": "Fn(&HostCallContext, &HostScope, &[BorrowedValue]) -> Result<HostResult, HostError>",
+      "owner_effect": "explicit-retain-only",
+      "source": {
+        "path": "src/host.rs",
+        "line": 101,
+        "excerpt": "pub type HostCallback = Rc<dyn Fn(&HostCallContext, &[Value]) -> Result<Option<Value>, HostError>>;"
+      },
+      "migration": "T01",
+      "notes": "BorrowedValue生命周期限单次回调；HostResult::Borrowed/Owned/Void，Any/Mixed opaque语义保留。"
+    },
+    {
+      "id": "API14",
+      "current": "ObjectStore::create",
+      "role": "vm-input",
+      "future": "create(program, &[ValueInput])",
+      "owner_effect": "new-variable-slots-after-preflight",
+      "source": {
+        "path": "src/object.rs",
+        "line": 195,
+        "excerpt": "pub fn create("
+      },
+      "migration": "T01",
+      "notes": "原始初始化值导入，不虚构普通读取COPY；生命周期能力不扩展。"
+    },
+    {
+      "id": "API15",
+      "current": "ObjectStore::register_globals",
+      "role": "vm-input",
+      "future": "register_globals(&[ValueInput])",
+      "owner_effect": "new-global-slots-after-preflight",
+      "source": {
+        "path": "src/object.rs",
+        "line": 108,
+        "excerpt": "pub fn register_globals(&mut self, values: Vec<Value>) -> Result<(), VmError> {"
+      },
+      "migration": "T01",
+      "notes": "保留原bank替换/旧引用语义。"
+    },
+    {
+      "id": "API16",
+      "current": "Vm::into_objects",
+      "role": "lifecycle-transfer",
+      "future": "保留入口并转移同一ObjectStore/root registry",
+      "owner_effect": "transfer-no-duplicate",
+      "source": {
+        "path": "src/vm.rs",
+        "line": 360,
+        "excerpt": "pub fn into_objects(mut self) -> ObjectStore {"
+      },
+      "migration": "T01",
+      "notes": "HostValue按origin仍属同一store；关闭store后拒绝导入/retain，Drop仍可释放结构性root。"
+    }
+  ]
+}

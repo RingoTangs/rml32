@@ -1,0 +1,111 @@
+{
+  "complete_for_declared_profiles": true,
+  "full_state_space_proof": false,
+  "input_sha256": {
+    "explore.py": "19d3df002acc5236761e11b00f6b76d3c4ce5eea97fe75fb53e289bc7903b914",
+    "model.py": "0d8b2fe0a6e20618314eb431dccb7b7e168ff9a544fac9f7cf398920b5182de3"
+  },
+  "kind": "independent-design-model",
+  "native_execution": false,
+  "profiles": [
+    {
+      "accepted_transitions": 15720,
+      "bounds": {
+        "depth": 3,
+        "max_depth": 4,
+        "max_headers": 2,
+        "max_host_roots": 2,
+        "max_items": 4,
+        "max_nodes": 16,
+        "max_roots": 4,
+        "max_slots": 6,
+        "max_states": 20000,
+        "max_transitions": 200000
+      },
+      "completed_within_profile": true,
+      "cutoff": false,
+      "limitations": [
+        "Live-ID alpha-renaming quotient; observation IDs are not executable handles.",
+        "Finite declared grammar/seeds/depth only; excluded transitions are not native rejections.",
+        "Publication atomicity is a model construction, not proof of future Rust implementation."
+      ],
+      "outside_profile": 0,
+      "profile": "ownership",
+      "reached_depth": 3,
+      "rejected_transitions": {
+        "InvalidState": 682,
+        "UnsupportedShape": 747,
+        "UnsupportedType": 36
+      },
+      "state_set_sha256": "956c4bbda8d6893e72c184de71c63a0e19c4750893cc4600fce33ecf18f0babc",
+      "states": 5338
+    },
+    {
+      "accepted_transitions": 8605,
+      "bounds": {
+        "depth": 3,
+        "max_depth": 4,
+        "max_headers": 2,
+        "max_host_roots": 2,
+        "max_items": 4,
+        "max_nodes": 16,
+        "max_roots": 4,
+        "max_slots": 6,
+        "max_states": 20000,
+        "max_transitions": 200000
+      },
+      "completed_within_profile": true,
+      "cutoff": false,
+      "limitations": [
+        "Live-ID alpha-renaming quotient; observation IDs are not executable handles.",
+        "Finite declared grammar/seeds/depth only; excluded transitions are not native rejections.",
+        "Publication atomicity is a model construction, not proof of future Rust implementation."
+      ],
+      "outside_profile": 0,
+      "profile": "graph",
+      "reached_depth": 3,
+      "rejected_transitions": {
+        "Cycle": 394,
+        "InvalidState": 692,
+        "UnsupportedShape": 748,
+        "UnsupportedType": 126
+      },
+      "state_set_sha256": "f5c7356cbf66b49c50de50b603635afe823f10c4f9aec63c671ea319213ea8f9",
+      "states": 2035
+    },
+    {
+      "accepted_transitions": 37040,
+      "bounds": {
+        "depth": 3,
+        "max_depth": 4,
+        "max_headers": 2,
+        "max_host_roots": 2,
+        "max_items": 4,
+        "max_nodes": 16,
+        "max_roots": 4,
+        "max_slots": 6,
+        "max_states": 20000,
+        "max_transitions": 200000
+      },
+      "completed_within_profile": true,
+      "cutoff": false,
+      "limitations": [
+        "Live-ID alpha-renaming quotient; observation IDs are not executable handles.",
+        "Finite declared grammar/seeds/depth only; excluded transitions are not native rejections.",
+        "Publication atomicity is a model construction, not proof of future Rust implementation."
+      ],
+      "outside_profile": 0,
+      "profile": "source-copy",
+      "reached_depth": 3,
+      "rejected_transitions": {
+        "InvalidState": 1510,
+        "UnsupportedShape": 648,
+        "UnsupportedType": 32
+      },
+      "state_set_sha256": "e8fb5f4ac3f9fdfcc5853893b22d09e2f015020ce3c558e2539a6ddadaa3e729",
+      "states": 14464
+    }
+  ],
+  "rust_execution": false,
+  "stage": "2AS"
+}

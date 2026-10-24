@@ -1,0 +1,350 @@
+{
+  "stage": "2AS",
+  "decisions": [
+    {
+      "id": "D01",
+      "title": "按实际持有槽计数",
+      "status": "adopted-design",
+      "authority": "Rust design policy; not new native evidence",
+      "decision": "一个活槽载荷对Function头贡献一份所有权；槽引用别名只增加该槽refs。Array/Mapping共享header不重复计算同一成员槽。",
+      "ar_findings": [
+        "F05",
+        "F06",
+        "F07"
+      ],
+      "sources": [
+        {
+          "path": "src/cell.rs",
+          "line": 72,
+          "excerpt": "pub(crate) fn read(&self) -> Result<Value, VmError> {"
+        },
+        {
+          "path": "src/value.rs",
+          "line": 90,
+          "excerpt": "pub(crate) struct FunctionData {"
+        }
+      ],
+      "limits": "原生任意ref/execRef状态机未由此恢复；Object物理保活排除。"
+    },
+    {
+      "id": "D02",
+      "title": "观察与宿主持有分型",
+      "status": "adopted-design",
+      "authority": "Rust design policy; not new native evidence",
+      "decision": "ValueSnapshot不可调用/导入且不持有语义根；HostValue是opaque、不可隐式Clone的store root，retain显式创建新root，Drop释放。",
+      "ar_findings": [
+        "F21"
+      ],
+      "sources": [
+        {
+          "path": "src/vm.rs",
+          "line": 693,
+          "excerpt": "pub fn stack(&self) -> Result<Vec<StackSnapshot>, VmError> {"
+        },
+        {
+          "path": "src/value.rs",
+          "line": 38,
+          "excerpt": "pub enum Value {"
+        }
+      ],
+      "limits": "旧可回传Value快照不能静默改义，后续统一迁移，不保留会绕开计数的适配器。"
+    },
+    {
+      "id": "D03",
+      "title": "调用目标移动到激活持有者",
+      "status": "adopted-design",
+      "authority": "Rust design policy; not new native evidence",
+      "decision": "05目标从计算槽raw move到临时激活槽，所有权净值不变；别名源看到Undefined。依据此时语义头计数选择唯一/共享。",
+      "ar_findings": [
+        "F04",
+        "F05",
+        "F06"
+      ],
+      "sources": [
+        {
+          "path": "src/value.rs",
+          "line": 90,
+          "excerpt": "pub(crate) struct FunctionData {"
+        },
+        {
+          "path": "src/cell.rs",
+          "line": 72,
+          "excerpt": "pub(crate) fn read(&self) -> Result<Value, VmError> {"
+        }
+      ],
+      "limits": "Rust仍在全部可报告预检后发布提交；不复刻原生失败时已消费操作数。"
+    },
+    {
+      "id": "D04",
+      "title": "私有稳定捕获槽",
+      "status": "adopted-design",
+      "authority": "Rust design policy; not new native evidence",
+      "decision": "FunctionData使用稳定私有捕获Cell和固定bound_count；共享COPY可规范化源，唯一move先清空捕获再释放头。",
+      "ar_findings": [
+        "F03",
+        "F09",
+        "F11"
+      ],
+      "sources": [
+        {
+          "path": "src/value.rs",
+          "line": 90,
+          "excerpt": "pub(crate) struct FunctionData {"
+        }
+      ],
+      "limits": "捕获槽不提供Reference逃逸或公开可变访问。"
+    },
+    {
+      "id": "D05",
+      "title": "源可改写复制计划",
+      "status": "adopted-design",
+      "authority": "Rust design policy; not new native evidence",
+      "decision": "计划包含源Cell规范化及目标发布；同Cell同值合并，不同值冲突拒绝；先预留、检查全部借用及投影图，再批量提交和释放旧载荷。",
+      "ar_findings": [
+        "F08",
+        "F12",
+        "F13"
+      ],
+      "sources": [
+        {
+          "path": "src/cell.rs",
+          "line": 112,
+          "excerpt": "pub(crate) fn replace_payload_batch("
+        },
+        {
+          "path": "src/cell.rs",
+          "line": 72,
+          "excerpt": "pub(crate) fn read(&self) -> Result<Value, VmError> {"
+        }
+      ],
+      "limits": "模型以候选世界发布实现原子性，不能据此证明Rust借用/分配实现正确。"
+    },
+    {
+      "id": "D06",
+      "title": "COPY与raw move显式区分",
+      "status": "adopted-design",
+      "authority": "Rust design policy; not new native evidence",
+      "decision": "局部/Object/Global普通读取、deref、成员及共享展开使用COPY；17、唯一展开和选定非const普通返回raw move不追加规范化。",
+      "ar_findings": [
+        "F03",
+        "F05",
+        "F08",
+        "F16",
+        "F22"
+      ],
+      "sources": [
+        {
+          "path": "src/value.rs",
+          "line": 90,
+          "excerpt": "pub(crate) struct FunctionData {"
+        },
+        {
+          "path": "src/cell.rs",
+          "line": 72,
+          "excerpt": "pub(crate) fn read(&self) -> Result<Value, VmError> {"
+        }
+      ],
+      "limits": "const、转换、返回hook和一般默认表达式不纳入。"
+    },
+    {
+      "id": "D07",
+      "title": "Function边进入投影图",
+      "status": "adopted-design",
+      "authority": "Rust design policy; not new native evidence",
+      "decision": "所有构造/写入/Host结果/循环输出在最终拟提交图上遍历Function捕获边；灰节点回边拒绝，黑节点共享允许。",
+      "ar_findings": [
+        "F17",
+        "F21"
+      ],
+      "sources": [
+        {
+          "path": "src/container.rs",
+          "line": 236,
+          "excerpt": "fn depth(value: &Value, memo: &mut BTreeMap<(u8, usize), usize>) -> Result<usize, VmError> {"
+        },
+        {
+          "path": "src/vm.rs",
+          "line": 780,
+          "excerpt": "fn writable(&self, r: &Reference, value: &Value) -> Result<Rc<Cell>, VmError> {"
+        }
+      ],
+      "limits": "不实现循环GC。一般Array/Mapping成员重接继续拒绝，即使图无环。"
+    },
+    {
+      "id": "D08",
+      "title": "释放规则保持容器差异",
+      "status": "adopted-design",
+      "authority": "Rust design policy; not new native evidence",
+      "decision": "Array最终header只unref槽；Mapping先清节点载荷再解除header边，外部Ref可保留空槽。最终Function释放捕获再放creator/头。",
+      "ar_findings": [
+        "F11",
+        "F14",
+        "F15",
+        "F23"
+      ],
+      "sources": [
+        {
+          "path": "src/cell.rs",
+          "line": 72,
+          "excerpt": "pub(crate) fn read(&self) -> Result<Value, VmError> {"
+        },
+        {
+          "path": "src/value.rs",
+          "line": 90,
+          "excerpt": "pub(crate) struct FunctionData {"
+        }
+      ],
+      "limits": "模型省略物理Map节点链和原生creator对象ref/execRef，不宣称完整生命周期等价。"
+    },
+    {
+      "id": "D09",
+      "title": "资源与预算",
+      "status": "adopted-design",
+      "authority": "Rust design policy; not new native evidence",
+      "decision": "保留65536项/64层；扩展图预算262144个不同header/槽节点，每次投影检查计数；宿主root默认上限65536，均为Rust政策。纯标量Function叶深度0，包含header捕获的Function计一层。",
+      "ar_findings": [
+        "F21"
+      ],
+      "sources": [
+        {
+          "path": "src/container.rs",
+          "line": 236,
+          "excerpt": "fn depth(value: &Value, memo: &mut BTreeMap<(u8, usize), usize>) -> Result<usize, VmError> {"
+        }
+      ],
+      "limits": "生产图预算按受影响图而非全store；有限模型对整个小世界计数更保守。旧container depth诊断保留原度量。"
+    },
+    {
+      "id": "D10",
+      "title": "Host borrowed与retained",
+      "status": "adopted-design",
+      "authority": "Rust design policy; not new native evidence",
+      "decision": "回调仅借用不可逃逸BorrowedValue；保存到回调外必须经HostScope.retain。仅该能力能登记root，不能重入VM或变更绑定。",
+      "ar_findings": [
+        "F21"
+      ],
+      "sources": [
+        {
+          "path": "src/host.rs",
+          "line": 101,
+          "excerpt": "pub type HostCallback = Rc<dyn Fn(&HostCallContext, &[Value]) -> Result<Option<Value>, HostError>>;"
+        }
+      ],
+      "limits": "回调外部副作用仍不回滚/不重放；仅合成同步Host。"
+    },
+    {
+      "id": "D11",
+      "title": "导入与entry COPY分离",
+      "status": "adopted-design",
+      "authority": "Rust design policy; not new native evidence",
+      "decision": "export/import/retain是opaque原始载荷所有权传输，不自行规范化；Vm.start先导入临时槽再按entry COPY规则规范化该槽，外部HostValue root不被当作同一源Cell。",
+      "ar_findings": [
+        "F08",
+        "F21"
+      ],
+      "sources": [
+        {
+          "path": "src/host.rs",
+          "line": 101,
+          "excerpt": "pub type HostCallback = Rc<dyn Fn(&HostCallContext, &[Value]) -> Result<Option<Value>, HostError>>;"
+        },
+        {
+          "path": "src/cell.rs",
+          "line": 72,
+          "excerpt": "pub(crate) fn read(&self) -> Result<Value, VmError> {"
+        }
+      ],
+      "limits": "这是宿主边界政策，不是原生external root ABI；真实efun排除。"
+    },
+    {
+      "id": "D12",
+      "title": "完成观察不隐式导出",
+      "status": "adopted-design",
+      "authority": "Rust design policy; not new native evidence",
+      "decision": "run完成后重复返回CompletionMeta；take_returned只一次将完成槽移动成HostValue，重复取值明确失败；需要副本时显式retain。",
+      "ar_findings": [
+        "F16",
+        "F21"
+      ],
+      "sources": [
+        {
+          "path": "src/vm.rs",
+          "line": 693,
+          "excerpt": "pub fn stack(&self) -> Result<Vec<StackSnapshot>, VmError> {"
+        },
+        {
+          "path": "src/value.rs",
+          "line": 38,
+          "excerpt": "pub enum Value {"
+        }
+      ],
+      "limits": "这是后续源码不兼容迁移，本批不改真实API。"
+    },
+    {
+      "id": "D13",
+      "title": "后续分批落地",
+      "status": "adopted-design",
+      "authority": "Rust design policy; not new native evidence",
+      "decision": "T01宿主/观察边界与计数；T02稳定捕获槽和复制事务；T03图验证；T04新入口受限容器捕获；T05直接Object/Function捕获保持阻塞。",
+      "ar_findings": [
+        "F20",
+        "F21",
+        "F23"
+      ],
+      "sources": [
+        {
+          "path": "src/value.rs",
+          "line": 90,
+          "excerpt": "pub(crate) struct FunctionData {"
+        },
+        {
+          "path": "src/vm.rs",
+          "line": 780,
+          "excerpt": "fn writable(&self, r: &Reference, value: &Value) -> Result<Rc<Cell>, VmError> {"
+        }
+      ],
+      "limits": "2AS只设计/模型；不可因模型通过直接开启非标量捕获。"
+    },
+    {
+      "id": "D14",
+      "title": "旧入口不扩大",
+      "status": "adopted-design",
+      "authority": "Rust design policy; not new native evidence",
+      "decision": "未来新增prepare_program_with_container_captures及Global twin，以GlobalBankSchema签名组合既有callable能力；旧入口仍只标量捕获，间接调用按实际capture_profile守卫。",
+      "ar_findings": [
+        "F21"
+      ],
+      "sources": [
+        {
+          "path": "src/value.rs",
+          "line": 90,
+          "excerpt": "pub(crate) struct FunctionData {"
+        }
+      ],
+      "limits": "T04前置T01—T03及真实Rust失败/释放/Host回归；继承/任务/default仍排除。"
+    },
+    {
+      "id": "D15",
+      "title": "无失败Drop与借用epoch",
+      "status": "adopted-design",
+      "authority": "Rust design policy; not new native evidence",
+      "decision": "HostValue::Drop只置预分配lease状态retired标志；有内部借用时保留待释放registry root，外层epoch结束后排空。在排空前禁止新的VM/retain/import操作；不在Drop分配或返回错误。",
+      "ar_findings": [
+        "F21"
+      ],
+      "sources": [
+        {
+          "path": "src/cell.rs",
+          "line": 112,
+          "excerpt": "pub(crate) fn replace_payload_batch("
+        },
+        {
+          "path": "src/host.rs",
+          "line": 101,
+          "excerpt": "pub type HostCallback = Rc<dyn Fn(&HostCallContext, &[Value]) -> Result<Option<Value>, HostError>>;"
+        }
+      ],
+      "limits": "模型retire不注入资源失败，Python进程OOM不在保证内；这是Rust设计要求，非原生调度证明。"
+    }
+  ]
+}

@@ -1,0 +1,600 @@
+{
+  "stage": "2AS",
+  "native_execution": false,
+  "rust_execution": false,
+  "items": [
+    {
+      "case_id": "C01",
+      "source": "docs/stage2ar-evidence/expected-cases.json",
+      "source_sha256": "ab127b04ff7e5dbfdfab93122735d28281ad0778b15e10b8e3c25b63c234ea38",
+      "case_sha256": "8ef4117ba04194703592c23a0a4f19678cc857d77463ca01e826e04d134c87cb",
+      "ar_basis": "static-inference",
+      "coverage": "modeled",
+      "tests": [
+        "test_scalar_capture_bits_and_bytes_are_preserved"
+      ],
+      "note": "模型只检查raw载荷转移，不模拟原生分配/指令执行。"
+    },
+    {
+      "case_id": "C02",
+      "source": "docs/stage2ar-evidence/expected-cases.json",
+      "source_sha256": "ab127b04ff7e5dbfdfab93122735d28281ad0778b15e10b8e3c25b63c234ea38",
+      "case_sha256": "709ed163d4707e25ee57d28686f9c8ac80278bfff19a916c507866e0a2b07446",
+      "ar_basis": "static-inference",
+      "coverage": "modeled",
+      "tests": [
+        "test_scalar_capture_bits_and_bytes_are_preserved"
+      ],
+      "note": "模型只检查raw载荷转移，不模拟原生分配/指令执行。"
+    },
+    {
+      "case_id": "C03",
+      "source": "docs/stage2ar-evidence/expected-cases.json",
+      "source_sha256": "ab127b04ff7e5dbfdfab93122735d28281ad0778b15e10b8e3c25b63c234ea38",
+      "case_sha256": "ced1eec8546861bf634c57cdc3c4e0bc07f7038a8dbd47da2cf38798036b96b7",
+      "ar_basis": "static-inference",
+      "coverage": "modeled",
+      "tests": [
+        "test_scalar_capture_bits_and_bytes_are_preserved"
+      ],
+      "note": "模型只检查raw载荷转移，不模拟原生分配/指令执行。"
+    },
+    {
+      "case_id": "C04",
+      "source": "docs/stage2ar-evidence/expected-cases.json",
+      "source_sha256": "ab127b04ff7e5dbfdfab93122735d28281ad0778b15e10b8e3c25b63c234ea38",
+      "case_sha256": "6f053aac6336a1c80a39674625f42d382b54931f83c033a1743b884fcd642a52",
+      "ar_basis": "static-inference",
+      "coverage": "modeled",
+      "tests": [
+        "test_scalar_capture_bits_and_bytes_are_preserved"
+      ],
+      "note": "模型只检查raw载荷转移，不模拟原生分配/指令执行。"
+    },
+    {
+      "case_id": "C05",
+      "source": "docs/stage2ar-evidence/expected-cases.json",
+      "source_sha256": "ab127b04ff7e5dbfdfab93122735d28281ad0778b15e10b8e3c25b63c234ea38",
+      "case_sha256": "8739f218066ee85fe87a89b07c191b8ba36ccd40ad5a1705c512688f75962c0d",
+      "ar_basis": "static-inference",
+      "coverage": "modeled",
+      "tests": [
+        "test_scalar_capture_bits_and_bytes_are_preserved"
+      ],
+      "note": "模型只检查raw载荷转移，不模拟原生分配/指令执行。"
+    },
+    {
+      "case_id": "C06",
+      "source": "docs/stage2ar-evidence/expected-cases.json",
+      "source_sha256": "ab127b04ff7e5dbfdfab93122735d28281ad0778b15e10b8e3c25b63c234ea38",
+      "case_sha256": "95727767d6de883f19f15742ccdd35581aa4dfe057004860a863ec170bbc93d8",
+      "ar_basis": "static-inference",
+      "coverage": "modeled",
+      "tests": [
+        "test_mapping_capture_is_shallow_and_both_container_cycles_are_checked"
+      ],
+      "note": "受限浅header共享与唯一展开；不代表真实VM捕获已开放。"
+    },
+    {
+      "case_id": "C07",
+      "source": "docs/stage2ar-evidence/expected-cases.json",
+      "source_sha256": "ab127b04ff7e5dbfdfab93122735d28281ad0778b15e10b8e3c25b63c234ea38",
+      "case_sha256": "ad7f3c1d2a1955bd75e01e74c55c38cff76804f17a4976adebb6b79d537a2a6d",
+      "ar_basis": "static-inference",
+      "coverage": "modeled",
+      "tests": [
+        "test_mapping_capture_is_shallow_and_both_container_cycles_are_checked"
+      ],
+      "note": "受限浅header共享与唯一展开；不代表真实VM捕获已开放。"
+    },
+    {
+      "case_id": "C08",
+      "source": "docs/stage2ar-evidence/expected-cases.json",
+      "source_sha256": "ab127b04ff7e5dbfdfab93122735d28281ad0778b15e10b8e3c25b63c234ea38",
+      "case_sha256": "79a88dce91ae18d59dd8f40b1ee729ffee879775ee680d278fb12d9927481b9a",
+      "ar_basis": "static-inference",
+      "coverage": "partial-model",
+      "tests": [
+        "test_raw_create_preserves_already_dead_object_or_function_payload"
+      ],
+      "note": "只表示raw载荷及creator标记，不模拟Object物理ref/execRef。"
+    },
+    {
+      "case_id": "C09",
+      "source": "docs/stage2ar-evidence/expected-cases.json",
+      "source_sha256": "ab127b04ff7e5dbfdfab93122735d28281ad0778b15e10b8e3c25b63c234ea38",
+      "case_sha256": "69f44b8638a99ed5809d429ca6439d64836bcb8efacb9e24060f5f6df7f260a4",
+      "ar_basis": "static-inference",
+      "coverage": "partial-model",
+      "tests": [
+        "test_raw_create_preserves_already_dead_object_or_function_payload"
+      ],
+      "note": "只表示raw载荷及creator标记，不模拟Object物理ref/execRef。"
+    },
+    {
+      "case_id": "C10",
+      "source": "docs/stage2ar-evidence/expected-cases.json",
+      "source_sha256": "ab127b04ff7e5dbfdfab93122735d28281ad0778b15e10b8e3c25b63c234ea38",
+      "case_sha256": "224442e42d6a1b6aa382601a74563ffe038d52dd3ac3c9cfd2d4b259ad7ad8c0",
+      "ar_basis": "static-inference",
+      "coverage": "partial-model",
+      "tests": [
+        "test_raw_create_preserves_already_dead_object_or_function_payload"
+      ],
+      "note": "只表示raw载荷及creator标记，不模拟Object物理ref/execRef。"
+    },
+    {
+      "case_id": "C11",
+      "source": "docs/stage2ar-evidence/expected-cases.json",
+      "source_sha256": "ab127b04ff7e5dbfdfab93122735d28281ad0778b15e10b8e3c25b63c234ea38",
+      "case_sha256": "ca4c288a1b494198ac54ee3ca53e8a597e44c187e58bc743262860dea2da5e98",
+      "ar_basis": "static-inference",
+      "coverage": "partial-model",
+      "tests": [
+        "test_raw_create_preserves_already_dead_object_or_function_payload"
+      ],
+      "note": "只表示raw载荷及creator标记，不模拟Object物理ref/execRef。"
+    },
+    {
+      "case_id": "C12",
+      "source": "docs/stage2ar-evidence/expected-cases.json",
+      "source_sha256": "ab127b04ff7e5dbfdfab93122735d28281ad0778b15e10b8e3c25b63c234ea38",
+      "case_sha256": "a7b9a3330ac06d6b317bd4437b78bbb4484ccac897444fd0e65850685b04263b",
+      "ar_basis": "static-inference",
+      "coverage": "modeled",
+      "tests": [
+        "test_function_capture_cannot_accept_reference_operand"
+      ],
+      "note": "Reference形态边界；无任意引用逃逸。"
+    },
+    {
+      "case_id": "C13",
+      "source": "docs/stage2ar-evidence/expected-cases.json",
+      "source_sha256": "ab127b04ff7e5dbfdfab93122735d28281ad0778b15e10b8e3c25b63c234ea38",
+      "case_sha256": "63ff9730111743e243fc2afa9f9099e17d162f15fd796c18fc53e286df36e4bf",
+      "ar_basis": "design",
+      "coverage": "native-boundary",
+      "tests": [],
+      "note": "模型没有隐藏Loop载荷；后续运行时继续拒绝，不猜测其捕获合法性。"
+    },
+    {
+      "case_id": "C14",
+      "source": "docs/stage2ar-evidence/expected-cases.json",
+      "source_sha256": "ab127b04ff7e5dbfdfab93122735d28281ad0778b15e10b8e3c25b63c234ea38",
+      "case_sha256": "0723392b4225a47c97d3496b448bf6286817305c5c36280417834d472dc58a67",
+      "ar_basis": "static-inference",
+      "coverage": "partial-model",
+      "tests": [
+        "test_every_create_checkpoint_preserves_state_on_failure"
+      ],
+      "note": "只检查Rust候选发布政策；非原生allocator顺序证明。"
+    },
+    {
+      "case_id": "C15",
+      "source": "docs/stage2ar-evidence/expected-cases.json",
+      "source_sha256": "ab127b04ff7e5dbfdfab93122735d28281ad0778b15e10b8e3c25b63c234ea38",
+      "case_sha256": "540dc2869532a7ffec71ebf0f958e36a662c0c81dade75c9df4f2184cae77dec",
+      "ar_basis": "unresolved",
+      "coverage": "unresolved",
+      "tests": [],
+      "note": "保留2AR原生未知；模型失败原子性或拒环不替代该证据。"
+    },
+    {
+      "case_id": "C16",
+      "source": "docs/stage2ar-evidence/expected-cases.json",
+      "source_sha256": "ab127b04ff7e5dbfdfab93122735d28281ad0778b15e10b8e3c25b63c234ea38",
+      "case_sha256": "841e5d861a5add45cda9bc29dd8a43b01a95aeb6d0477b31c42b45c7903d0539",
+      "ar_basis": "static-inference",
+      "coverage": "modeled",
+      "tests": [
+        "test_mapping_capture_is_shallow_and_both_container_cycles_are_checked"
+      ],
+      "note": "受限浅header共享与唯一展开；不代表真实VM捕获已开放。"
+    },
+    {
+      "case_id": "C17",
+      "source": "docs/stage2ar-evidence/expected-cases.json",
+      "source_sha256": "ab127b04ff7e5dbfdfab93122735d28281ad0778b15e10b8e3c25b63c234ea38",
+      "case_sha256": "ac457fb6d3da275c6d3aa99ae4c438aa4ecce6ef2288b7aaa4eb93968c90ef6c",
+      "ar_basis": "static-inference",
+      "coverage": "partial-model",
+      "tests": [
+        "test_array_capture_shares_header_and_retains_member_identity",
+        "test_mapping_capture_is_shallow_and_both_container_cycles_are_checked"
+      ],
+      "note": "共享Array已有专门断言；Mapping覆盖浅identity/unique，未穷尽所有shared Map场景。"
+    },
+    {
+      "case_id": "C18",
+      "source": "docs/stage2ar-evidence/expected-cases.json",
+      "source_sha256": "ab127b04ff7e5dbfdfab93122735d28281ad0778b15e10b8e3c25b63c234ea38",
+      "case_sha256": "3610f1e837dc5b09098850cea1dd13a720ea9819c30093d10115aabc078524f9",
+      "ar_basis": "static-inference",
+      "coverage": "modeled",
+      "tests": [
+        "test_mapping_capture_is_shallow_and_both_container_cycles_are_checked"
+      ],
+      "note": "受限浅header共享与唯一展开；不代表真实VM捕获已开放。"
+    },
+    {
+      "case_id": "C19",
+      "source": "docs/stage2ar-evidence/expected-cases.json",
+      "source_sha256": "ab127b04ff7e5dbfdfab93122735d28281ad0778b15e10b8e3c25b63c234ea38",
+      "case_sha256": "5cb04d07a2c53e19f24f03ce35c474378b9d9010ebcabf461ca3154e1e8b9699",
+      "ar_basis": "static-inference",
+      "coverage": "partial-model",
+      "tests": [
+        "test_array_capture_shares_header_and_retains_member_identity",
+        "test_mapping_capture_is_shallow_and_both_container_cycles_are_checked"
+      ],
+      "note": "共享Array已有专门断言；Mapping覆盖浅identity/unique，未穷尽所有shared Map场景。"
+    },
+    {
+      "case_id": "C20",
+      "source": "docs/stage2ar-evidence/expected-cases.json",
+      "source_sha256": "ab127b04ff7e5dbfdfab93122735d28281ad0778b15e10b8e3c25b63c234ea38",
+      "case_sha256": "877615c66482665f646d0237b8da09bd74551ef7fc03e361c62c4ae7acf44715",
+      "ar_basis": "static-inference",
+      "coverage": "partial-model",
+      "tests": [
+        "test_unique_move_does_not_normalize_dead_object_capture"
+      ],
+      "note": "展开点raw区别已建模，Object最终生命周期未建模。"
+    },
+    {
+      "case_id": "C21",
+      "source": "docs/stage2ar-evidence/expected-cases.json",
+      "source_sha256": "ab127b04ff7e5dbfdfab93122735d28281ad0778b15e10b8e3c25b63c234ea38",
+      "case_sha256": "e945bdf40c195422a923007a44cea0e43b1763a97693fc3fa82a4af54d8ebe8c",
+      "ar_basis": "static-inference",
+      "coverage": "partial-model",
+      "tests": [
+        "test_shared_copy_normalizes_actual_dead_object_capture"
+      ],
+      "note": "存活共享捕获源规范化；无原生Object释放计数。"
+    },
+    {
+      "case_id": "C22",
+      "source": "docs/stage2ar-evidence/expected-cases.json",
+      "source_sha256": "ab127b04ff7e5dbfdfab93122735d28281ad0778b15e10b8e3c25b63c234ea38",
+      "case_sha256": "463b3dce51cb2d8997ba911a28c1e4ee2fe5339cd728d3b685ecb2756ae61aee",
+      "ar_basis": "static-inference",
+      "coverage": "partial-model",
+      "tests": [
+        "test_raw_create_preserves_already_dead_object_or_function_payload"
+      ],
+      "note": "只表示raw载荷及creator标记，不模拟Object物理ref/execRef。"
+    },
+    {
+      "case_id": "C23",
+      "source": "docs/stage2ar-evidence/expected-cases.json",
+      "source_sha256": "ab127b04ff7e5dbfdfab93122735d28281ad0778b15e10b8e3c25b63c234ea38",
+      "case_sha256": "5bafdae110af4d987bebaeb1bf36e1090456043deba7c34fee81869e444a8000",
+      "ar_basis": "static-inference",
+      "coverage": "partial-model",
+      "tests": [
+        "test_function_dead_creator_normalization_is_distinct_from_outer_creator"
+      ],
+      "note": "creator删除标记与COPY；不覆盖完整删除重入。"
+    },
+    {
+      "case_id": "C24",
+      "source": "docs/stage2ar-evidence/expected-cases.json",
+      "source_sha256": "ab127b04ff7e5dbfdfab93122735d28281ad0778b15e10b8e3c25b63c234ea38",
+      "case_sha256": "0a95bdc8d2e26b519f80691157173d49722274fce4063f934f541221ffe6079b",
+      "ar_basis": "static-inference",
+      "coverage": "partial-model",
+      "tests": [
+        "test_ownerless_function_is_not_dead",
+        "test_final_function_release_cascades_capture_cleanup_once"
+      ],
+      "note": "头身份/释放模型；直接Function捕获仍不准实施。"
+    },
+    {
+      "case_id": "C25",
+      "source": "docs/stage2ar-evidence/expected-cases.json",
+      "source_sha256": "ab127b04ff7e5dbfdfab93122735d28281ad0778b15e10b8e3c25b63c234ea38",
+      "case_sha256": "dd3557819ae568828135c31ebff60528ead8a245f1ccb74e5b006c32644db70f",
+      "ar_basis": "static-inference",
+      "coverage": "partial-model",
+      "tests": [
+        "test_ownerless_function_is_not_dead",
+        "test_final_function_release_cascades_capture_cleanup_once"
+      ],
+      "note": "头身份/释放模型；直接Function捕获仍不准实施。"
+    },
+    {
+      "case_id": "C26",
+      "source": "docs/stage2ar-evidence/expected-cases.json",
+      "source_sha256": "ab127b04ff7e5dbfdfab93122735d28281ad0778b15e10b8e3c25b63c234ea38",
+      "case_sha256": "4abdb6912c1e7d03d7dba5d95eec5b0e851f36ad5c8b105173a2e98cdafb799c",
+      "ar_basis": "design",
+      "coverage": "modeled",
+      "tests": [
+        "test_observe_and_python_deepcopy_do_not_change_semantic_branch"
+      ],
+      "note": "纯观察不增根；明确retain则是有意所有权变化。"
+    },
+    {
+      "case_id": "C27",
+      "source": "docs/stage2ar-evidence/expected-cases.json",
+      "source_sha256": "ab127b04ff7e5dbfdfab93122735d28281ad0778b15e10b8e3c25b63c234ea38",
+      "case_sha256": "383e2fb411f5fb7964ec48e24879f7c152e7375b7bc47d4018165f22676e1bea",
+      "ar_basis": "static-inference",
+      "coverage": "partial-model",
+      "tests": [
+        "test_shared_call_copies_and_preserves_capture_order",
+        "test_bound_arguments_precede_new_arguments_and_count_is_checked"
+      ],
+      "note": "逻辑bound-before-new已覆盖，不模拟native向下栈地址布局或所有原型。"
+    },
+    {
+      "case_id": "C28",
+      "source": "docs/stage2ar-evidence/expected-cases.json",
+      "source_sha256": "ab127b04ff7e5dbfdfab93122735d28281ad0778b15e10b8e3c25b63c234ea38",
+      "case_sha256": "54159cd94ef8fbf8d390bd5e6fe37339372f1feadae9e4ff3ba5424f26d2d624",
+      "ar_basis": "static-inference",
+      "coverage": "modeled",
+      "tests": [
+        "test_shallow_container_copy_does_not_normalize_member"
+      ],
+      "note": "header COPY不递归清理子值。"
+    },
+    {
+      "case_id": "C29",
+      "source": "docs/stage2ar-evidence/expected-cases.json",
+      "source_sha256": "ab127b04ff7e5dbfdfab93122735d28281ad0778b15e10b8e3c25b63c234ea38",
+      "case_sha256": "358e7b22af683acfdc0aa4ec2dc5023b0c846a3bcf0dbf317a8d3f7e4b8dd9eb",
+      "ar_basis": "static-inference",
+      "coverage": "partial-model",
+      "tests": [
+        "test_shared_copy_normalizes_actual_dead_object_capture"
+      ],
+      "note": "统一槽复制计划，不模拟具体Global bank/继承Object定位。"
+    },
+    {
+      "case_id": "C30",
+      "source": "docs/stage2ar-evidence/expected-cases.json",
+      "source_sha256": "ab127b04ff7e5dbfdfab93122735d28281ad0778b15e10b8e3c25b63c234ea38",
+      "case_sha256": "4a6906342eceb4620a8c5363536762fde97612f5294416af7acf57be97a94ddb",
+      "ar_basis": "static-inference",
+      "coverage": "partial-model",
+      "tests": [
+        "test_shared_copy_normalizes_actual_dead_object_capture"
+      ],
+      "note": "统一槽复制计划，不模拟具体Global bank/继承Object定位。"
+    },
+    {
+      "case_id": "C31",
+      "source": "docs/stage2ar-evidence/expected-cases.json",
+      "source_sha256": "ab127b04ff7e5dbfdfab93122735d28281ad0778b15e10b8e3c25b63c234ea38",
+      "case_sha256": "a3a29dce0d7176d61f11bd5680b85a769824def8168477495580b13aaf00b847",
+      "ar_basis": "static-inference",
+      "coverage": "modeled",
+      "tests": [
+        "test_dereference_normalizes_source_visible_through_other_alias"
+      ],
+      "note": "源清理后释放被消费Ref root；别名仍见Undefined。"
+    },
+    {
+      "case_id": "C32",
+      "source": "docs/stage2ar-evidence/expected-cases.json",
+      "source_sha256": "ab127b04ff7e5dbfdfab93122735d28281ad0778b15e10b8e3c25b63c234ea38",
+      "case_sha256": "52ed8fc7abb513e760563bb9f58d6557dd64300c59e5824beeb4dd5a331f1135",
+      "ar_basis": "static-inference",
+      "coverage": "modeled",
+      "tests": [
+        "test_selected_member_copy_normalizes_both_container_kinds"
+      ],
+      "note": "仅现存选定成员，未模拟查询最终attrib。"
+    },
+    {
+      "case_id": "C33",
+      "source": "docs/stage2ar-evidence/expected-cases.json",
+      "source_sha256": "ab127b04ff7e5dbfdfab93122735d28281ad0778b15e10b8e3c25b63c234ea38",
+      "case_sha256": "357bdb7a1edf236cde7830c540869a25024ed83f022c8f6b3ad67afc0debb626",
+      "ar_basis": "static-inference",
+      "coverage": "modeled",
+      "tests": [
+        "test_selected_member_copy_normalizes_both_container_kinds"
+      ],
+      "note": "仅现存选定成员，未模拟查询最终attrib。"
+    },
+    {
+      "case_id": "C34",
+      "source": "docs/stage2ar-evidence/expected-cases.json",
+      "source_sha256": "ab127b04ff7e5dbfdfab93122735d28281ad0778b15e10b8e3c25b63c234ea38",
+      "case_sha256": "fb448674191b848e1324782569d33908a9626513f719914460d6dba009ff3cb1",
+      "ar_basis": "static-inference",
+      "coverage": "native-boundary",
+      "tests": [],
+      "note": "模型用成员索引而非Mapping键查找，不能验证missing-key不插入。"
+    },
+    {
+      "case_id": "C35",
+      "source": "docs/stage2ar-evidence/expected-cases.json",
+      "source_sha256": "ab127b04ff7e5dbfdfab93122735d28281ad0778b15e10b8e3c25b63c234ea38",
+      "case_sha256": "9604c8ebfacd0a2cedd7ca819742231e6d9babc6d1e6156cc95e4b67ddfff2b8",
+      "ar_basis": "static-inference",
+      "coverage": "modeled",
+      "tests": [
+        "test_array_final_header_preserves_referenced_element_payload"
+      ],
+      "note": "外部Ref保留槽和payload。"
+    },
+    {
+      "case_id": "C36",
+      "source": "docs/stage2ar-evidence/expected-cases.json",
+      "source_sha256": "ab127b04ff7e5dbfdfab93122735d28281ad0778b15e10b8e3c25b63c234ea38",
+      "case_sha256": "81a99cef6dcfd0f772812f8a8820150e072a2dfb87a63aca5bc1e68e8fba4418",
+      "ar_basis": "static-inference",
+      "coverage": "partial-model",
+      "tests": [
+        "test_mapping_final_header_clears_referenced_value"
+      ],
+      "note": "保留空槽但不模拟原生节点延迟链。"
+    },
+    {
+      "case_id": "C37",
+      "source": "docs/stage2ar-evidence/expected-cases.json",
+      "source_sha256": "ab127b04ff7e5dbfdfab93122735d28281ad0778b15e10b8e3c25b63c234ea38",
+      "case_sha256": "63005d1c3b3bc74932b775f01629691899a665b13217ddd22ab997bdf011ac95",
+      "ar_basis": "static-inference",
+      "coverage": "partial-model",
+      "tests": [
+        "test_final_function_release_cascades_capture_cleanup_once"
+      ],
+      "note": "模型捕获/头释放一次；不证明非null creator物理unref。"
+    },
+    {
+      "case_id": "C38",
+      "source": "docs/stage2ar-evidence/expected-cases.json",
+      "source_sha256": "ab127b04ff7e5dbfdfab93122735d28281ad0778b15e10b8e3c25b63c234ea38",
+      "case_sha256": "8a9bfa7fdde8da94814c8936c4f0add1a51845a9180761d3542382e2573c9414",
+      "ar_basis": "static-inference",
+      "coverage": "modeled",
+      "tests": [
+        "test_final_function_release_cascades_capture_cleanup_once",
+        "test_reference_alias_owns_cell_not_another_function_payload"
+      ],
+      "note": "raw move清空captured slots，头释放不双重释放payload。"
+    },
+    {
+      "case_id": "C39",
+      "source": "docs/stage2ar-evidence/expected-cases.json",
+      "source_sha256": "ab127b04ff7e5dbfdfab93122735d28281ad0778b15e10b8e3c25b63c234ea38",
+      "case_sha256": "0d8527021478b3d1dc343dc9b3db071eae3d06d4aa32af663af61a6cf0ec82c3",
+      "ar_basis": "static-inference",
+      "coverage": "modeled",
+      "tests": [
+        "test_return_move_does_not_insert_copy_normalization"
+      ],
+      "note": "只建模已在结果槽中的简单raw move。"
+    },
+    {
+      "case_id": "C40",
+      "source": "docs/stage2ar-evidence/expected-cases.json",
+      "source_sha256": "ab127b04ff7e5dbfdfab93122735d28281ad0778b15e10b8e3c25b63c234ea38",
+      "case_sha256": "b3b764abfc7081ec8e837785c1b872cdfbdf416862d88aba87e20e6b50e2d826",
+      "ar_basis": "unresolved",
+      "coverage": "unresolved",
+      "tests": [],
+      "note": "保留2AR原生未知；模型失败原子性或拒环不替代该证据。"
+    },
+    {
+      "case_id": "C41",
+      "source": "docs/stage2ar-evidence/expected-cases.json",
+      "source_sha256": "ab127b04ff7e5dbfdfab93122735d28281ad0778b15e10b8e3c25b63c234ea38",
+      "case_sha256": "69d306137f8df0a44b3da0f9d4c252001c81ba6374036344ae372f9a0fc35dda",
+      "ar_basis": "static-inference",
+      "coverage": "native-boundary",
+      "tests": [],
+      "note": "原生callee/catch/逐参转换/栈溢出顺序保留2AR证据；独立模型不模拟执行帧或扩大catch。"
+    },
+    {
+      "case_id": "C42",
+      "source": "docs/stage2ar-evidence/expected-cases.json",
+      "source_sha256": "ab127b04ff7e5dbfdfab93122735d28281ad0778b15e10b8e3c25b63c234ea38",
+      "case_sha256": "782fd151fcf4281a7e5298886de32c3a90ded69e5211eda4b85ee5d06a9e7ca8",
+      "ar_basis": "static-inference",
+      "coverage": "native-boundary",
+      "tests": [],
+      "note": "原生callee/catch/逐参转换/栈溢出顺序保留2AR证据；独立模型不模拟执行帧或扩大catch。"
+    },
+    {
+      "case_id": "C43",
+      "source": "docs/stage2ar-evidence/expected-cases.json",
+      "source_sha256": "ab127b04ff7e5dbfdfab93122735d28281ad0778b15e10b8e3c25b63c234ea38",
+      "case_sha256": "ff1af92c0b3656c8caefb38782e5a3c237e25892c3dd6ccc97285e9500ff505f",
+      "ar_basis": "static-inference",
+      "coverage": "native-boundary",
+      "tests": [],
+      "note": "原生callee/catch/逐参转换/栈溢出顺序保留2AR证据；独立模型不模拟执行帧或扩大catch。"
+    },
+    {
+      "case_id": "C44",
+      "source": "docs/stage2ar-evidence/expected-cases.json",
+      "source_sha256": "ab127b04ff7e5dbfdfab93122735d28281ad0778b15e10b8e3c25b63c234ea38",
+      "case_sha256": "d8417360ee84c3ac55f29d45e4807fc3a6e05ea2cda98736273ede81b85a2b45",
+      "ar_basis": "static-inference",
+      "coverage": "native-boundary",
+      "tests": [],
+      "note": "原生callee/catch/逐参转换/栈溢出顺序保留2AR证据；独立模型不模拟执行帧或扩大catch。"
+    },
+    {
+      "case_id": "C45",
+      "source": "docs/stage2ar-evidence/expected-cases.json",
+      "source_sha256": "ab127b04ff7e5dbfdfab93122735d28281ad0778b15e10b8e3c25b63c234ea38",
+      "case_sha256": "9c8af73a691a29b59b11045b9a3846c01acd493b98367b5a92c7380c3a4a0acd",
+      "ar_basis": "static-inference",
+      "coverage": "native-boundary",
+      "tests": [],
+      "note": "原生callee/catch/逐参转换/栈溢出顺序保留2AR证据；独立模型不模拟执行帧或扩大catch。"
+    },
+    {
+      "case_id": "C46",
+      "source": "docs/stage2ar-evidence/expected-cases.json",
+      "source_sha256": "ab127b04ff7e5dbfdfab93122735d28281ad0778b15e10b8e3c25b63c234ea38",
+      "case_sha256": "7f237db502e8e0c031e016899d7bff0cdd7f6a5991534118fcb1eebc55719f84",
+      "ar_basis": "unresolved",
+      "coverage": "unresolved",
+      "tests": [],
+      "note": "保留2AR原生未知；模型失败原子性或拒环不替代该证据。"
+    },
+    {
+      "case_id": "C47",
+      "source": "docs/stage2ar-evidence/expected-cases.json",
+      "source_sha256": "ab127b04ff7e5dbfdfab93122735d28281ad0778b15e10b8e3c25b63c234ea38",
+      "case_sha256": "d71fc1dcb5b53ebbabc52807a47496e748a05da160ec10a502789f16204a64b4",
+      "ar_basis": "design",
+      "coverage": "modeled",
+      "tests": [
+        "test_shared_dag_is_accepted_not_misclassified_as_cycle",
+        "test_mapping_capture_is_shallow_and_both_container_cycles_are_checked"
+      ],
+      "note": "无环共享与Function边检查；图内header身份不深复制。"
+    },
+    {
+      "case_id": "C48",
+      "source": "docs/stage2ar-evidence/expected-cases.json",
+      "source_sha256": "ab127b04ff7e5dbfdfab93122735d28281ad0778b15e10b8e3c25b63c234ea38",
+      "case_sha256": "eacf2aafc2c1fb90c739c0cee4ed0480040527a693af540306534708d69850d6",
+      "ar_basis": "unresolved",
+      "coverage": "unresolved",
+      "tests": [],
+      "note": "保留2AR原生未知；模型失败原子性或拒环不替代该证据。"
+    },
+    {
+      "case_id": "C49",
+      "source": "docs/stage2ar-evidence/expected-cases.json",
+      "source_sha256": "ab127b04ff7e5dbfdfab93122735d28281ad0778b15e10b8e3c25b63c234ea38",
+      "case_sha256": "2497b8c2a38d6283b55258cf57ad36f66c17090ead712f773d6d88e383165d3d",
+      "ar_basis": "design",
+      "coverage": "modeled",
+      "tests": [
+        "test_foreign_origin_is_rejected_before_publication"
+      ],
+      "note": "Rust origin政策，不是原生ABI事实。"
+    },
+    {
+      "case_id": "C50",
+      "source": "docs/stage2ar-evidence/expected-cases.json",
+      "source_sha256": "ab127b04ff7e5dbfdfab93122735d28281ad0778b15e10b8e3c25b63c234ea38",
+      "case_sha256": "2570781c5d9c7755a2b4b360c8f102979269f4413a5ff659790f65983cf8909f",
+      "ar_basis": "design",
+      "coverage": "native-boundary",
+      "tests": [],
+      "note": "模型无真实指令预算/Host回调；零预算和单步边界由未来Rust验收保留。"
+    },
+    {
+      "case_id": "C51",
+      "source": "docs/stage2ar-evidence/expected-cases.json",
+      "source_sha256": "ab127b04ff7e5dbfdfab93122735d28281ad0778b15e10b8e3c25b63c234ea38",
+      "case_sha256": "9e1bafad3a0ad096ab6807932ac1288f4db2bc560f010eef9f13dd0b28463860",
+      "ar_basis": "design",
+      "coverage": "native-boundary",
+      "tests": [],
+      "note": "模型无真实指令预算/Host回调；零预算和单步边界由未来Rust验收保留。"
+    }
+  ]
+}
