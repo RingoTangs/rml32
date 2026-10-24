@@ -1,0 +1,413 @@
+{
+  "stage": "2AV",
+  "scope": "Syntactic review inventory; not an AST or native equivalence proof.",
+  "items": [
+    {
+      "id": "PUB01",
+      "after": {
+        "path": "src/cell.rs",
+        "line": 27,
+        "excerpt": "let _restore = Restore(FAIL_AFTER.replace(Some(after)));"
+      },
+      "classification": "test-only",
+      "review": "Fault injection flag, no runtime payload.",
+      "test": "conflicts_are_controlled_errors_and_failed_replace_preserves_value"
+    },
+    {
+      "id": "PUB02",
+      "after": {
+        "path": "src/cell.rs",
+        "line": 155,
+        "excerpt": "std::mem::replace(&mut *guard, value)"
+      },
+      "classification": "checked",
+      "review": "Final Projection checked before guards/swaps; cached header updated, old owners dropped after guards.",
+      "test": "conflicts_are_controlled_errors_and_failed_replace_preserves_value"
+    },
+    {
+      "id": "PUB03",
+      "after": {
+        "path": "src/cell.rs",
+        "line": 171,
+        "excerpt": "std::mem::replace(&mut *guard, payload)"
+      },
+      "classification": "test-only",
+      "review": "cfg(test) fixture injection of invalid prior state; original assertions retained.",
+      "test": "conflicts_are_controlled_errors_and_failed_replace_preserves_value"
+    },
+    {
+      "id": "PUB04",
+      "after": {
+        "path": "src/cell.rs",
+        "line": 221,
+        "excerpt": "old.push(std::mem::replace(&mut **guard, value));"
+      },
+      "classification": "checked",
+      "review": "Final Projection checked before guards/swaps; cached header updated, old owners dropped after guards.",
+      "test": "conflicts_are_controlled_errors_and_failed_replace_preserves_value"
+    },
+    {
+      "id": "PUB05",
+      "after": {
+        "path": "src/cell.rs",
+        "line": 249,
+        "excerpt": "std::mem::replace("
+      },
+      "classification": "transport",
+      "review": "Existing checked payload ownership transferred; committed cached header cleared.",
+      "test": "conflicts_are_controlled_errors_and_failed_replace_preserves_value"
+    },
+    {
+      "id": "PUB06",
+      "after": {
+        "path": "src/cell.rs",
+        "line": 362,
+        "excerpt": "let payload = std::mem::replace("
+      },
+      "classification": "checked",
+      "review": "Final Projection checked before guards/swaps; cached header updated, old owners dropped after guards.",
+      "test": "conflicts_are_controlled_errors_and_failed_replace_preserves_value"
+    },
+    {
+      "id": "PUB07",
+      "after": {
+        "path": "src/cell.rs",
+        "line": 371,
+        "excerpt": "old.push(std::mem::replace(&mut *guards[index(&dst)], payload));"
+      },
+      "classification": "checked",
+      "review": "Final Projection checked before guards/swaps; cached header updated, old owners dropped after guards.",
+      "test": "conflicts_are_controlled_errors_and_failed_replace_preserves_value"
+    },
+    {
+      "id": "PUB08",
+      "after": {
+        "path": "src/cell.rs",
+        "line": 375,
+        "excerpt": "old.push(std::mem::replace(&mut *guards[i], payload));"
+      },
+      "classification": "checked",
+      "review": "Final Projection checked before guards/swaps; cached header updated, old owners dropped after guards.",
+      "test": "conflicts_are_controlled_errors_and_failed_replace_preserves_value"
+    },
+    {
+      "id": "PUB09",
+      "after": {
+        "path": "src/cell.rs",
+        "line": 385,
+        "excerpt": "let old = self.value.replace(OwnedPayload {"
+      },
+      "classification": "retirement",
+      "review": "Last Owner cleanup removes edges without fallible validation.",
+      "test": "conflicts_are_controlled_errors_and_failed_replace_preserves_value"
+    },
+    {
+      "id": "PUB10",
+      "after": {
+        "path": "src/container.rs",
+        "line": 216,
+        "excerpt": "let cell = Cell::new(Value::Undefined)?;"
+      },
+      "classification": "checked",
+      "review": "Constructors check staged headers; member insertion projects new stable key/value slots before insertion.",
+      "test": "t03_missing_mapping_member_is_not_inserted_when_runtime_item_limit_fails"
+    },
+    {
+      "id": "PUB11",
+      "after": {
+        "path": "src/container.rs",
+        "line": 332,
+        "excerpt": ".map(Cell::new)"
+      },
+      "classification": "checked",
+      "review": "Constructors check staged headers; member insertion projects new stable key/value slots before insertion.",
+      "test": "t03_missing_mapping_member_is_not_inserted_when_runtime_item_limit_fails"
+    },
+    {
+      "id": "PUB12",
+      "after": {
+        "path": "src/container.rs",
+        "line": 375,
+        "excerpt": "let cell = Cell::new(value)?;"
+      },
+      "classification": "checked",
+      "review": "Constructors check staged headers; member insertion projects new stable key/value slots before insertion.",
+      "test": "t03_missing_mapping_member_is_not_inserted_when_runtime_item_limit_fails"
+    },
+    {
+      "id": "PUB13",
+      "after": {
+        "path": "src/copy_plan.rs",
+        "line": 15,
+        "excerpt": "let _restore = Restore(FAIL_WORKSPACE.replace(Some(after)));"
+      },
+      "classification": "test-only",
+      "review": "Fault injection metadata only.",
+      "test": "t02_every_capture_and_activation_allocation_failure_keeps_slots_and_pc"
+    },
+    {
+      "id": "PUB14",
+      "after": {
+        "path": "src/copy_plan.rs",
+        "line": 84,
+        "excerpt": "let cell = Cell::new(value)?;"
+      },
+      "classification": "checked",
+      "review": "Output stages private slots; commit validates final writes, raw moves, output roots and temporary retirement together.",
+      "test": "t02_every_capture_and_activation_allocation_failure_keeps_slots_and_pc"
+    },
+    {
+      "id": "PUB15",
+      "after": {
+        "path": "src/copy_plan.rs",
+        "line": 130,
+        "excerpt": "Cell::replace_payload_batch_with_roots(hidden, self.outputs)"
+      },
+      "classification": "checked",
+      "review": "Output stages private slots; commit validates final writes, raw moves, output roots and temporary retirement together.",
+      "test": "t02_every_capture_and_activation_allocation_failure_keeps_slots_and_pc"
+    },
+    {
+      "id": "PUB16",
+      "after": {
+        "path": "src/copy_plan.rs",
+        "line": 133,
+        "excerpt": "Cell::transfer_batch("
+      },
+      "classification": "checked",
+      "review": "Output stages private slots; commit validates final writes, raw moves, output roots and temporary retirement together.",
+      "test": "t02_every_capture_and_activation_allocation_failure_keeps_slots_and_pc"
+    },
+    {
+      "id": "PUB17",
+      "after": {
+        "path": "src/vm.rs",
+        "line": 30,
+        "excerpt": "Completion::Returned(v) => Some(Cell::new(v.clone())?),"
+      },
+      "classification": "transport",
+      "review": "Completion owner wrapper; returned runtime values use CopyPlan final output roots in return_value. Other variants have no payload.",
+      "test": "t03_numeric_graph_failure_preserves_operands_and_is_not_a_numeric_catch_fault"
+    },
+    {
+      "id": "PUB18",
+      "after": {
+        "path": "src/vm.rs",
+        "line": 669,
+        "excerpt": ".map(|v| Cell::new(v).map(StackEntry::Value))"
+      },
+      "classification": "checked",
+      "review": "Private result/argument/local staging reaches graph::cells, CopyPlan commit or checked Cell replacement before stack/frame publication; member insertion is checked in Mapping.member. Reference pushes alias existing slots.",
+      "test": "t03_numeric_graph_failure_preserves_operands_and_is_not_a_numeric_catch_fault"
+    },
+    {
+      "id": "PUB19",
+      "after": {
+        "path": "src/vm.rs",
+        "line": 832,
+        "excerpt": "StackEntry::Value(c) => c.replace(value),"
+      },
+      "classification": "checked",
+      "review": "Private result/argument/local staging reaches graph::cells, CopyPlan commit or checked Cell replacement before stack/frame publication; member insertion is checked in Mapping.member. Reference pushes alias existing slots.",
+      "test": "t03_numeric_graph_failure_preserves_operands_and_is_not_a_numeric_catch_fault"
+    },
+    {
+      "id": "PUB20",
+      "after": {
+        "path": "src/vm.rs",
+        "line": 834,
+        "excerpt": "let cell = Cell::new(value)?;"
+      },
+      "classification": "checked",
+      "review": "Private result/argument/local staging reaches graph::cells, CopyPlan commit or checked Cell replacement before stack/frame publication; member insertion is checked in Mapping.member. Reference pushes alias existing slots.",
+      "test": "t03_numeric_graph_failure_preserves_operands_and_is_not_a_numeric_catch_fault"
+    },
+    {
+      "id": "PUB21",
+      "after": {
+        "path": "src/vm.rs",
+        "line": 855,
+        "excerpt": "let cell = Cell::new(v)?;"
+      },
+      "classification": "checked",
+      "review": "Private result/argument/local staging reaches graph::cells, CopyPlan commit or checked Cell replacement before stack/frame publication; member insertion is checked in Mapping.member. Reference pushes alias existing slots.",
+      "test": "t03_numeric_graph_failure_preserves_operands_and_is_not_a_numeric_catch_fault"
+    },
+    {
+      "id": "PUB22",
+      "after": {
+        "path": "src/vm.rs",
+        "line": 1040,
+        "excerpt": ".map(Cell::new)"
+      },
+      "classification": "checked",
+      "review": "Private result/argument/local staging reaches graph::cells, CopyPlan commit or checked Cell replacement before stack/frame publication; member insertion is checked in Mapping.member. Reference pushes alias existing slots.",
+      "test": "t03_numeric_graph_failure_preserves_operands_and_is_not_a_numeric_catch_fault"
+    },
+    {
+      "id": "PUB23",
+      "after": {
+        "path": "src/vm.rs",
+        "line": 1408,
+        "excerpt": "let result = StackEntry::Value(Cell::new(Value::Void)?);"
+      },
+      "classification": "checked",
+      "review": "Private result/argument/local staging reaches graph::cells, CopyPlan commit or checked Cell replacement before stack/frame publication; member insertion is checked in Mapping.member. Reference pushes alias existing slots.",
+      "test": "t03_numeric_graph_failure_preserves_operands_and_is_not_a_numeric_catch_fault"
+    },
+    {
+      "id": "PUB24",
+      "after": {
+        "path": "src/vm.rs",
+        "line": 2132,
+        "excerpt": "let cell = Cell::new(Value::Void)?;"
+      },
+      "classification": "checked",
+      "review": "Private result/argument/local staging reaches graph::cells, CopyPlan commit or checked Cell replacement before stack/frame publication; member insertion is checked in Mapping.member. Reference pushes alias existing slots.",
+      "test": "t03_numeric_graph_failure_preserves_operands_and_is_not_a_numeric_catch_fault"
+    },
+    {
+      "id": "PUB25",
+      "after": {
+        "path": "src/vm.rs",
+        "line": 2451,
+        "excerpt": "Cell::replace_payload_batch(vec![("
+      },
+      "classification": "checked",
+      "review": "Private result/argument/local staging reaches graph::cells, CopyPlan commit or checked Cell replacement before stack/frame publication; member insertion is checked in Mapping.member. Reference pushes alias existing slots.",
+      "test": "t03_numeric_graph_failure_preserves_operands_and_is_not_a_numeric_catch_fault"
+    },
+    {
+      "id": "PUB26",
+      "after": {
+        "path": "src/vm.rs",
+        "line": 3063,
+        "excerpt": "let cell = Cell::new(value)?;"
+      },
+      "classification": "checked",
+      "review": "Private result/argument/local staging reaches graph::cells, CopyPlan commit or checked Cell replacement before stack/frame publication; member insertion is checked in Mapping.member. Reference pushes alias existing slots.",
+      "test": "t03_numeric_graph_failure_preserves_operands_and_is_not_a_numeric_catch_fault"
+    },
+    {
+      "id": "PUB27",
+      "after": {
+        "path": "src/vm.rs",
+        "line": 3102,
+        "excerpt": "let c = mapping.member(&key)?;"
+      },
+      "classification": "checked",
+      "review": "Private result/argument/local staging reaches graph::cells, CopyPlan commit or checked Cell replacement before stack/frame publication; member insertion is checked in Mapping.member. Reference pushes alias existing slots.",
+      "test": "t03_numeric_graph_failure_preserves_operands_and_is_not_a_numeric_catch_fault"
+    },
+    {
+      "id": "PUB28",
+      "after": {
+        "path": "src/vm.rs",
+        "line": 3105,
+        "excerpt": "(mapping.member(&key)?, ReferenceKind::MappingMember)"
+      },
+      "classification": "checked",
+      "review": "Private result/argument/local staging reaches graph::cells, CopyPlan commit or checked Cell replacement before stack/frame publication; member insertion is checked in Mapping.member. Reference pushes alias existing slots.",
+      "test": "t03_numeric_graph_failure_preserves_operands_and_is_not_a_numeric_catch_fault"
+    },
+    {
+      "id": "PUB29",
+      "after": {
+        "path": "src/vm.rs",
+        "line": 3156,
+        "excerpt": "let cell = Cell::new(value)?;"
+      },
+      "classification": "checked",
+      "review": "Private result/argument/local staging reaches graph::cells, CopyPlan commit or checked Cell replacement before stack/frame publication; member insertion is checked in Mapping.member. Reference pushes alias existing slots.",
+      "test": "t03_numeric_graph_failure_preserves_operands_and_is_not_a_numeric_catch_fault"
+    },
+    {
+      "id": "PUB30",
+      "after": {
+        "path": "src/vm.rs",
+        "line": 3301,
+        "excerpt": "let cell = Cell::new(Value::Undefined)?;"
+      },
+      "classification": "checked",
+      "review": "Private result/argument/local staging reaches graph::cells, CopyPlan commit or checked Cell replacement before stack/frame publication; member insertion is checked in Mapping.member. Reference pushes alias existing slots.",
+      "test": "t03_numeric_graph_failure_preserves_operands_and_is_not_a_numeric_catch_fault"
+    },
+    {
+      "id": "PUB31",
+      "after": {
+        "path": "src/vm.rs",
+        "line": 3528,
+        "excerpt": ".map(|_| Cell::new(Value::Undefined).map(StackEntry::Value))"
+      },
+      "classification": "checked",
+      "review": "Private result/argument/local staging reaches graph::cells, CopyPlan commit or checked Cell replacement before stack/frame publication; member insertion is checked in Mapping.member. Reference pushes alias existing slots.",
+      "test": "t03_numeric_graph_failure_preserves_operands_and_is_not_a_numeric_catch_fault"
+    },
+    {
+      "id": "PUB32",
+      "after": {
+        "path": "src/object.rs",
+        "line": 138,
+        "excerpt": ".map(crate::cell::Cell::new)"
+      },
+      "classification": "checked",
+      "review": "Immutable store policy scope; staged variable/global slots checked before installation.",
+      "test": "t03_vm_construction_obeys_store_policy_after_into_objects_transfer"
+    },
+    {
+      "id": "PUB33",
+      "after": {
+        "path": "src/object.rs",
+        "line": 221,
+        "excerpt": ".map(crate::cell::Cell::new)"
+      },
+      "classification": "checked",
+      "review": "Immutable store policy scope; staged variable/global slots checked before installation.",
+      "test": "t03_vm_construction_obeys_store_policy_after_into_objects_transfer"
+    },
+    {
+      "id": "PUB34",
+      "after": {
+        "path": "src/boundary.rs",
+        "line": 231,
+        "excerpt": "let retired = Rc::new(Cell::new(false));"
+      },
+      "classification": "metadata",
+      "review": "std::cell::Cell lease/registry bookkeeping, not runtime stable payload. Registry.publish/publish_cell separately validate structural graph before lease publication.",
+      "test": "t03_function_snapshot_does_not_borrow_or_retain_hidden_capture_slots"
+    },
+    {
+      "id": "PUB35",
+      "after": {
+        "path": "src/boundary.rs",
+        "line": 265,
+        "excerpt": "let retired = Rc::new(Cell::new(false));"
+      },
+      "classification": "metadata",
+      "review": "std::cell::Cell lease/registry bookkeeping, not runtime stable payload. Registry.publish/publish_cell separately validate structural graph before lease publication.",
+      "test": "t03_function_snapshot_does_not_borrow_or_retain_hidden_capture_slots"
+    },
+    {
+      "id": "PUB36",
+      "after": {
+        "path": "src/boundary.rs",
+        "line": 522,
+        "excerpt": "alive: Cell::new(true),"
+      },
+      "classification": "metadata",
+      "review": "std::cell::Cell lease/registry bookkeeping, not runtime stable payload. Registry.publish/publish_cell separately validate structural graph before lease publication.",
+      "test": "t03_function_snapshot_does_not_borrow_or_retain_hidden_capture_slots"
+    },
+    {
+      "id": "PUB37",
+      "after": {
+        "path": "src/boundary.rs",
+        "line": 523,
+        "excerpt": "next: Cell::new(1),"
+      },
+      "classification": "metadata",
+      "review": "std::cell::Cell lease/registry bookkeeping, not runtime stable payload. Registry.publish/publish_cell separately validate structural graph before lease publication.",
+      "test": "t03_function_snapshot_does_not_borrow_or_retain_hidden_capture_slots"
+    }
+  ]
+}

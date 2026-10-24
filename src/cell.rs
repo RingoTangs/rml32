@@ -1,7 +1,7 @@
 //! Private stable slots. Borrow guards never leave this module.
 use crate::{Value, VmError, VmErrorKind};
 use std::{
-    cell::RefCell,
+    cell::{Cell as HeaderCell, RefCell},
     rc::Rc,
     sync::atomic::{AtomicU64, Ordering},
 };
@@ -33,6 +33,13 @@ struct OwnedPayload {
     payload: SlotPayload,
 }
 impl OwnedPayload {
+    fn header(&self) -> Option<u64> {
+        match &self.payload {
+            SlotPayload::Value(v) => v.counter(),
+            SlotPayload::Loop(c) => c.counter(),
+        }
+        .map(|c| c.id)
+    }
     fn new(payload: SlotPayload) -> Result<Self, VmError> {
         let counter = match &payload {
             SlotPayload::Value(v) => v.counter(),
@@ -47,6 +54,7 @@ impl OwnedPayload {
 #[derive(Debug)]
 pub(crate) struct Cell {
     id: u64,
+    header: HeaderCell<Option<u64>>,
     value: RefCell<OwnedPayload>,
 }
 impl Cell {
@@ -68,10 +76,17 @@ impl Cell {
         let id = NEXT_ID
             .try_update(Ordering::Relaxed, Ordering::Relaxed, |n| n.checked_add(1))
             .map_err(|_| VmError::new(VmErrorKind::Limit, "cell ID space exhausted"))?;
-        Ok(Rc::new(Self {
+        let header = value.counter().map(|c| c.id);
+        let cell = Rc::new(Self {
             id,
+            header: HeaderCell::new(header),
             value: RefCell::new(OwnedPayload::new(SlotPayload::Value(value))?),
-        }))
+        });
+        crate::graph::register_cell(&cell, &cell.read()?)?;
+        Ok(cell)
+    }
+    pub(crate) fn graph_header(&self) -> Option<u64> {
+        self.header.get()
     }
     pub(crate) fn id(&self) -> u64 {
         self.id
@@ -85,6 +100,16 @@ impl Cell {
     pub(crate) fn with_write_borrow_for_test<T>(&self, f: impl FnOnce() -> T) -> T {
         let _guard = self.value.borrow_mut();
         f()
+    }
+    pub(crate) fn graph_value(&self) -> Result<Value, VmError> {
+        let guard = self
+            .value
+            .try_borrow()
+            .map_err(|_| VmError::new(VmErrorKind::InvalidState, "graph slot is borrowed"))?;
+        Ok(match &guard.payload {
+            SlotPayload::Value(v) => v.clone(),
+            SlotPayload::Loop(c) => c.graph_owner().unwrap_or(Value::Undefined),
+        })
     }
     pub(crate) fn read(&self) -> Result<Value, VmError> {
         self.value
@@ -115,13 +140,35 @@ impl Cell {
         }
     }
     pub(crate) fn replace(&self, value: Value) -> Result<(), VmError> {
+        crate::graph::register(&value)?;
+        if let Some(cell) = crate::graph::cell(self.id) {
+            crate::graph::replace(cell, value.clone())?;
+        }
+        crate::graph::bind(self.id, &value);
         let value = OwnedPayload::new(SlotPayload::Value(value))?;
         let old = {
             let mut guard = self
                 .value
                 .try_borrow_mut()
                 .map_err(|_| VmError::new(VmErrorKind::InvalidState, "value slot is borrowed"))?;
+            self.header.set(value.header());
             std::mem::replace(&mut *guard, value)
+        };
+        drop(old);
+        Ok(())
+    }
+    #[cfg(test)]
+    pub(crate) fn replace_unchecked_for_test(&self, value: Value) -> Result<(), VmError> {
+        crate::graph::register(&value)?;
+        crate::graph::bind(self.id, &value);
+        let payload = OwnedPayload::new(SlotPayload::Value(value))?;
+        let old = {
+            let mut guard = self
+                .value
+                .try_borrow_mut()
+                .map_err(|_| VmError::new(VmErrorKind::InvalidState, "value slot is borrowed"))?;
+            self.header.set(payload.header());
+            std::mem::replace(&mut *guard, payload)
         };
         drop(old);
         Ok(())
@@ -130,6 +177,28 @@ impl Cell {
     pub(crate) fn replace_payload_batch(
         updates: Vec<(Rc<Cell>, SlotPayload)>,
     ) -> Result<(), VmError> {
+        Self::replace_payload_batch_with_roots(updates, vec![])
+    }
+    pub(crate) fn replace_payload_batch_with_roots(
+        updates: Vec<(Rc<Cell>, SlotPayload)>,
+        roots: Vec<Rc<Cell>>,
+    ) -> Result<(), VmError> {
+        let mut projection = crate::graph::Projection::default();
+        for cell in roots {
+            projection.root_cell(cell);
+        }
+        for (cell, payload) in &updates {
+            projection.payload(cell.clone(), payload)?;
+        }
+        projection.check()?;
+        for (cell, payload) in &updates {
+            let value = match payload {
+                SlotPayload::Value(v) => v.clone(),
+                SlotPayload::Loop(c) => c.graph_owner().unwrap_or(Value::Undefined),
+            };
+            crate::graph::register(&value)?;
+            crate::graph::bind(cell.id(), &value);
+        }
         let (cells, values): (Vec<_>, Vec<_>) = updates.into_iter().unzip();
         let values = values
             .into_iter()
@@ -147,7 +216,8 @@ impl Cell {
                 })
             })
             .collect::<Result<Vec<_>, _>>()?;
-        for (guard, value) in guards.iter_mut().zip(values) {
+        for ((guard, value), cell) in guards.iter_mut().zip(values).zip(&cells) {
+            cell.header.set(value.header());
             old.push(std::mem::replace(&mut **guard, value));
         }
         drop(guards);
@@ -175,6 +245,7 @@ impl Cell {
                     "hidden loop cannot be transferred",
                 ));
             }
+            self.header.set(None);
             std::mem::replace(
                 &mut *guard,
                 OwnedPayload {
@@ -196,7 +267,31 @@ impl Cell {
     pub(crate) fn transfer_batch(
         updates: Vec<(Rc<Cell>, Value)>,
         moves: Vec<(Rc<Cell>, Rc<Cell>)>,
+        retiring: Vec<Rc<Cell>>,
+        outputs: Vec<Rc<Cell>>,
     ) -> Result<(), VmError> {
+        let mut projection = crate::graph::Projection::default();
+        for cell in outputs {
+            projection.root_cell(cell);
+        }
+        for (cell, value) in &updates {
+            projection.write(cell.clone(), value.clone())?;
+        }
+        for (src, dst) in &moves {
+            projection.transfer(src.clone(), dst.clone())?;
+        }
+        for cell in &retiring {
+            projection.retire(cell);
+        }
+        projection.check()?;
+        for (cell, value) in &updates {
+            crate::graph::register(value)?;
+            crate::graph::bind(cell.id(), value);
+        }
+        for (src, dst) in &moves {
+            crate::graph::bind(dst.id(), &src.read()?);
+        }
+
         let mut cells = Vec::new();
         crate::copy_plan::reserve(&mut cells, updates.len() + moves.len() * 2)?;
         for (c, _) in &updates {
@@ -271,9 +366,12 @@ impl Cell {
                     payload: SlotPayload::Value(Value::Undefined),
                 },
             );
+            src.header.set(None);
+            dst.header.set(payload.header());
             old.push(std::mem::replace(&mut *guards[index(&dst)], payload));
         }
         for (i, payload) in prepared {
+            cells[i].header.set(payload.header());
             old.push(std::mem::replace(&mut *guards[i], payload));
         }
         drop(guards);
@@ -283,6 +381,7 @@ impl Cell {
     // Only called by a final header destructor. All guards are private and are
     // released before any old Value is dropped, including in replace above.
     pub(crate) fn clear_on_owner_drop(&self) {
+        self.header.set(None);
         let old = self.value.replace(OwnedPayload {
             _owner: None,
             payload: SlotPayload::Value(Value::Undefined),

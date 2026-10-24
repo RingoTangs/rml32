@@ -1,5 +1,8 @@
 # rml32
 
+阶段2AV已完成[T03拟提交图验证](docs/stage2av-evidence/overview.md)：遍历Function捕获边，按最终边拒环并校验共享DAG、存活祖先和资源限额；公共API、版本及依赖不变。保留原606项场景与全部原断言，Host失败原子性及快照契约不变。验证见[2AV收据](docs/stage2av-validation.json)。非标量捕获仍关闭，阶段2未完成；下一批为T04显式受限容器捕获入口。以下为历史快照。
+
+
 阶段2AU已完成[T02稳定捕获槽与COPY事务](docs/stage2au-evidence/overview.md)：真实源槽规范化、语义Owner唯一/共享展开、raw返回与完成槽转移；公共API、版本及依赖不变。原577项场景保留，仅按冻结证据调整两处预期。Host回调失败仍保持操作数与PC，副作用不回滚、不重放。验证见[新收据](docs/stage2au-validation.json)。非标量捕获仍关闭，阶段2未完成；下一批为T03投影图验证。以下为历史快照。
 
 

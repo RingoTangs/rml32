@@ -657,3 +657,199 @@ fn t02_stable_capture_slots_do_not_expand_the_public_capture_whitelist() {
         assert_eq!(info(&done(&mut vm)).bound_count, 1);
     }
 }
+
+#[test]
+fn t03_vm_construction_obeys_store_policy_after_into_objects_transfer() {
+    let mut store = ObjectStore::with_limits(ValueLimits {
+        max_graph_nodes: 1,
+        ..Default::default()
+    })
+    .unwrap();
+    let p = store
+        .register_program(
+            prepare_program_with_callable_values(
+                image(
+                    &[fun(0, 0, 0, 9, &[(1, 0, 0x17)]), fun(1, 0, 0, 1, &[])],
+                    0,
+                    &[],
+                ),
+                GlobalBankSchema { slots: 0 },
+            )
+            .unwrap(),
+        )
+        .unwrap();
+    let object = store.create(p, &[]).unwrap();
+    let mut vm = Vm::new(store);
+    vm.start(object, 0, &[]).unwrap();
+    vm.run(2).unwrap();
+    assert!(vm.stack().unwrap().is_empty());
+    let error = vm.run(1).unwrap_err();
+    assert_eq!(error.kind, VmErrorKind::Limit);
+    assert_eq!(error.pc, Some(2));
+    assert!(vm.stack().unwrap().is_empty());
+    let store = vm.into_objects();
+    let mut vm = Vm::new(store);
+    vm.start(object, 0, &[]).unwrap();
+    assert_eq!(vm.run(100).unwrap_err().kind, VmErrorKind::Limit);
+}
+#[test]
+fn t03_missing_mapping_member_is_not_inserted_when_runtime_item_limit_fails() {
+    let mut store = ObjectStore::with_limits(ValueLimits {
+        max_items: 1,
+        ..Default::default()
+    })
+    .unwrap();
+    let p = store
+        .register_program(
+            prepare_program(image(
+                &[fun(
+                    0,
+                    1,
+                    0,
+                    255,
+                    &[(0, 0, 0x39), (1, 0, 0x3b), (0, 0, 0x44)],
+                )],
+                0,
+                &[],
+            ))
+            .unwrap(),
+        )
+        .unwrap();
+    let object = store.create(p, &[]).unwrap();
+    let map = store
+        .mapping(&[(ValueInput::Int(0), ValueInput::Int(7))])
+        .unwrap();
+    let mut vm = Vm::new(store);
+    vm.start(object, 0, &[ValueInput::Handle(&map)]).unwrap();
+    let error = vm.run(100).unwrap_err();
+    assert_eq!(error.kind, VmErrorKind::Limit);
+    assert_eq!(error.pc, Some(4));
+    assert_eq!(map.get(ValueInput::Int(1)).unwrap(), None);
+    assert_eq!(
+        map.entries().unwrap(),
+        vec![(ValueSnapshot::Int(0), ValueSnapshot::Int(7))]
+    );
+}
+#[test]
+fn t03_mapping_output_checks_aliased_ancestors_and_preserves_failed_output() {
+    let mut store = ObjectStore::with_limits(ValueLimits {
+        max_depth: 2,
+        ..Default::default()
+    })
+    .unwrap();
+    let f = fun(
+        0,
+        2,
+        2,
+        255,
+        &[
+            (1, 0, 0x37),
+            (-1, 0, 0x4d),
+            (0, 0, 0x33),
+            (-1, 0, 0x39),
+            (0, 0, 0x37),
+            (997, 0, 0x3b),
+            (-2, 0, 0x23),
+            (1, -2, 0x12),
+            (-1, -2, 0x50),
+            (-1, 0, 0x37),
+        ],
+    );
+    let p = store
+        .register_program(prepare_program(image(&[f], 0, &[])).unwrap())
+        .unwrap();
+    let object = store.create(p, &[]).unwrap();
+    let binding = store.array(&[ValueInput::Int(9); 3]).unwrap();
+    let keeper = store.array(&[ValueInput::Handle(&binding)]).unwrap();
+    let nested = store.array(&[ValueInput::Int(7)]).unwrap();
+    let source = store
+        .mapping(&[(ValueInput::Int(0), ValueInput::Handle(&nested))])
+        .unwrap();
+    let before = keeper.snapshot().unwrap();
+    let mut vm = Vm::new(store);
+    vm.start(
+        object,
+        0,
+        &[ValueInput::Handle(&source), ValueInput::Handle(&binding)],
+    )
+    .unwrap();
+    vm.run(9).unwrap();
+    let stack = vm.stack().unwrap();
+    let error = vm.run(1).unwrap_err();
+    assert_eq!(error.kind, VmErrorKind::Limit);
+    assert_eq!(error.pc, Some(9));
+    assert_eq!(vm.stack().unwrap(), stack);
+    assert_eq!(keeper.snapshot().unwrap(), before);
+    assert_eq!(binding.elements().unwrap(), vec![ValueSnapshot::Int(9); 3]);
+    drop(keeper);
+    vm.start(
+        object,
+        0,
+        &[ValueInput::Handle(&source), ValueInput::Handle(&binding)],
+    )
+    .unwrap();
+    let returned = done(&mut vm);
+    let output = returned.elements().unwrap();
+    assert_eq!(output[0], ValueSnapshot::Int(0));
+    assert!(matches!(output[1], ValueSnapshot::Array { .. }));
+    assert_eq!(output[2], ValueSnapshot::Int(0));
+}
+#[test]
+fn t03_post_callback_graph_rejection_preserves_pc_and_saved_roots_without_replay() {
+    let mut store = ObjectStore::with_limits(ValueLimits {
+        max_graph_nodes: 3,
+        ..Default::default()
+    })
+    .unwrap();
+    let p = store
+        .register_program(
+            prepare_program_with_host_calls(
+                image(&[fun(0, 0, 0, 255, &[(0, 0, 6)])], 0, &[]),
+                None,
+            )
+            .unwrap(),
+        )
+        .unwrap();
+    let object = store.create(p, &[]).unwrap();
+    let saved = Rc::new(RefCell::new(None));
+    let calls = Rc::new(Cell::new(0));
+    let (inside, count) = (saved.clone(), calls.clone());
+    store
+        .register_host_function(
+            0,
+            HostFunction {
+                name: "t03-limit".into(),
+                signature: HostSignature {
+                    required: vec![],
+                    optional: vec![],
+                    rest: None,
+                    returns: HostReturn::Mixed,
+                },
+                callback: Rc::new(move |_, scope, _| {
+                    count.set(count.get() + 1);
+                    *inside.borrow_mut() = Some(scope.value(ValueInput::Int(7)).unwrap());
+                    Ok(HostResult::Owned(
+                        scope
+                            .array(&[ValueInput::Int(1), ValueInput::Int(2)])
+                            .unwrap(),
+                    ))
+                }),
+            },
+        )
+        .unwrap();
+    let mut vm = Vm::new(store);
+    vm.start(object, 0, &[]).unwrap();
+    vm.run(2).unwrap();
+    let before = vm.stack().unwrap();
+    let error = vm.run(1).unwrap_err();
+    assert_eq!(error.kind, VmErrorKind::Limit);
+    assert_eq!(error.pc, Some(2));
+    assert_eq!(vm.stack().unwrap(), before);
+    assert_eq!(calls.get(), 1);
+    assert_eq!(
+        saved.borrow().as_ref().unwrap().snapshot().unwrap(),
+        ValueSnapshot::Int(7)
+    );
+    assert_eq!(vm.run(100).unwrap_err(), error);
+    assert_eq!(calls.get(), 1);
+}

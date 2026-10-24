@@ -47,6 +47,7 @@ pub(crate) struct CopyPlan {
     source_indices: BTreeMap<u64, usize>,
     // Each edge transfers the existing payload AND Owner, without a retain/drop pair.
     pub semantic_owner_effects: Vec<(Rc<Cell>, Rc<Cell>)>,
+    retiring: Vec<Rc<Cell>>,
 }
 impl CopyPlan {
     pub fn copy(
@@ -90,6 +91,9 @@ impl CopyPlan {
         self.semantic_owner_effects.push((source, target.clone()));
         Ok(target)
     }
+    pub fn retire(&mut self, cell: &Rc<Cell>) {
+        self.retiring.push(cell.clone());
+    }
     pub fn commit_payloads(
         mut self,
         payloads: Vec<(Rc<Cell>, crate::cell::SlotPayload)>,
@@ -123,10 +127,15 @@ impl CopyPlan {
                 .into_iter()
                 .map(|(cell, value)| (cell, crate::cell::SlotPayload::Value(value))),
         );
-        Cell::replace_payload_batch(hidden)
+        Cell::replace_payload_batch_with_roots(hidden, self.outputs)
     }
     pub fn commit(self) -> Result<(), VmError> {
-        Cell::transfer_batch(self.source_updates, self.semantic_owner_effects)
+        Cell::transfer_batch(
+            self.source_updates,
+            self.semantic_owner_effects,
+            self.retiring,
+            self.outputs,
+        )
     }
 }
 

@@ -6,6 +6,7 @@ mod cell;
 mod container;
 mod copy_plan;
 pub mod error;
+mod graph;
 mod host;
 pub mod inheritance;
 pub mod lzss;

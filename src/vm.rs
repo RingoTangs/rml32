@@ -108,6 +108,19 @@ pub(crate) struct LoopControl {
     state: LoopState,
 }
 impl LoopControl {
+    pub(crate) fn graph_bound(&self) -> Option<Rc<Cell>> {
+        match &self.bound.target {
+            Target::Global { cell } | Target::Owned { cell, .. } => Some(cell.clone()),
+            Target::Local { cell, .. } | Target::Object { cell, .. } => cell.upgrade(),
+        }
+    }
+    pub(crate) fn graph_owner(&self) -> Option<Value> {
+        match &self.state {
+            LoopState::Array { owner, .. } => Some(Value::Array(owner.clone())),
+            LoopState::Mapping { owner, .. } => Some(Value::Mapping(owner.clone())),
+            _ => None,
+        }
+    }
     pub(crate) fn counter(&self) -> Option<Rc<crate::ownership::Counter>> {
         match &self.state {
             LoopState::Array { owner, .. } => Some(owner.counter()),
@@ -412,6 +425,7 @@ impl Vm {
     }
     /// Allocate a new object and start only its bounded initialization segments.
     pub fn begin_initialize(&mut self, program: ProgramId) -> Result<ObjectId, VmError> {
+        let _graph_scope = crate::graph::Scope::new(*self.objects.value_limits);
         if self.initialization.is_some()
             || self.construction.is_some()
             || (!self.frames.is_empty() && self.completion.is_none() && self.failure.is_none())
@@ -547,6 +561,10 @@ impl Vm {
                 "construction parameter must be a mapping",
             ));
         }
+        let _graph_scope = crate::graph::Scope::new(*self.objects.value_limits);
+        if let Some(value) = &parameter {
+            crate::graph::values(std::slice::from_ref(value))?;
+        }
         let parameter = parameter
             .map(crate::ownership::OwnedValue::new)
             .transpose()?;
@@ -650,6 +668,15 @@ impl Vm {
             .into_iter()
             .map(|v| Cell::new(v).map(StackEntry::Value))
             .collect::<Result<Vec<_>, _>>()?;
+        crate::graph::cells(
+            &arguments
+                .iter()
+                .filter_map(|s| match s {
+                    StackEntry::Value(c) => Some(c.clone()),
+                    _ => None,
+                })
+                .collect::<Vec<_>>(),
+        )?;
         let id = self.frame_id()?;
         let task = self.construction.as_ref().unwrap();
         self.frames = vec![Frame {
@@ -804,7 +831,9 @@ impl Vm {
         match &self.stack[pos] {
             StackEntry::Value(c) => c.replace(value),
             StackEntry::Reference(_) => {
-                self.stack[pos] = StackEntry::Value(Cell::new(value)?);
+                let cell = Cell::new(value)?;
+                crate::graph::cells(std::slice::from_ref(&cell))?;
+                self.stack[pos] = StackEntry::Value(cell);
                 Ok(())
             }
         }
@@ -817,7 +846,16 @@ impl Vm {
         Ok(())
     }
     fn push(&mut self, v: Value) -> Result<(), VmError> {
-        self.push_entry(StackEntry::Value(Cell::new(v)?))
+        if self.stack.len() >= self.limits.max_stack {
+            return Err(err(VmErrorKind::Limit, "value stack limit exceeded"));
+        }
+        self.stack
+            .try_reserve(1)
+            .map_err(|_| err(VmErrorKind::Limit, "value stack allocation failed"))?;
+        let cell = Cell::new(v)?;
+        crate::graph::cells(std::slice::from_ref(&cell))?;
+        self.stack.push(StackEntry::Value(cell));
+        Ok(())
     }
     fn reference(&self, pos: usize) -> Result<Reference, VmError> {
         match &self.stack[pos] {
@@ -949,6 +987,7 @@ impl Vm {
         function_index: i16,
         arguments: Vec<Value>,
     ) -> Result<(), VmError> {
+        let _graph_scope = crate::graph::Scope::new(*self.objects.value_limits);
         if !self.frames.is_empty() && self.completion.is_none() && self.failure.is_none() {
             return Err(err(
                 VmErrorKind::InvalidState,
@@ -1030,6 +1069,7 @@ impl Vm {
         Ok(())
     }
     pub fn run(&mut self, instruction_budget: usize) -> Result<RunOutcome, VmError> {
+        let _graph_scope = crate::graph::Scope::new(*self.objects.value_limits);
         if let Some(e) = &self.failure {
             return Err(e.clone());
         }
@@ -1366,6 +1406,9 @@ impl Vm {
             (slot, 1, argc + 1)
         } else if flags & 4 != 0 {
             let result = StackEntry::Value(Cell::new(Value::Void)?);
+            if let StackEntry::Value(cell) = &result {
+                crate::graph::cells(std::slice::from_ref(cell))?;
+            }
             self.stack.truncate(n - argc - 2);
             return self.push_entry(result);
         } else {
@@ -1795,6 +1838,7 @@ impl Vm {
         let unique = function.0.counter.owners() == 1;
         let mut plan = CopyPlan::default();
         let activation_cell = plan.transfer(self.value_cell(n - 1)?)?;
+        plan.retire(&activation_cell);
         let mut cells = Vec::new();
         cells
             .try_reserve(argc)
@@ -2031,11 +2075,13 @@ impl Vm {
             let unique = function.0.counter.owners() == 1;
             vm.commit_host_call_with(&activation, arguments, n - argn, |vm, plan| {
                 let activation = plan.transfer(vm.value_cell(n - 1)?)?;
-                // The plan owns activation until its commit completes.
+                // Activation is a temporary owner, absent from the published graph.
+                plan.retire(&activation);
                 drop(activation);
                 for source in &function.0.bound {
                     if unique {
                         let moved = plan.transfer(source.clone())?;
+                        plan.retire(&moved);
                         drop(moved);
                     } else {
                         vm.copy_cell(plan, source.clone())?;
@@ -2084,6 +2130,8 @@ impl Vm {
             return Err(err(VmErrorKind::Limit, "host result exceeds stack limit"));
         }
         let cell = Cell::new(Value::Void)?;
+        // The minimum output-slot budget is known before invoking host code.
+        crate::graph::cells(std::slice::from_ref(&cell))?;
         self.stack
             .try_reserve(result_len.saturating_sub(n))
             .map_err(|_| err(VmErrorKind::Limit, "host result allocation failed"))?;
@@ -2296,14 +2344,15 @@ impl Vm {
                 })?
             }
         };
-        // All computation and result allocation precede the commit. A failure
-        // leaves both the target and operand stack intact (IP still advances).
+        // Result and target form one checked publication.
+        let mut plan = CopyPlan::default();
         let entry = if opcode == 0x2f {
-            Some(StackEntry::Value(Cell::new(result.clone())?))
+            Some(StackEntry::Value(plan.output(result.clone())?))
         } else {
             None
         };
-        self.writable(&reference, &result)?.replace(result)?;
+        plan.write(self.writable(&reference, &result)?, result)?;
+        plan.commit()?;
         self.stack.truncate(n - count);
         if let Some(entry) = entry {
             self.push_entry(entry)?;
@@ -2739,15 +2788,49 @@ impl Vm {
             let opcode = code.instructions.get(frame.pc)?.opcode;
             matches!(
                 opcode,
-                0x03 | 0x04
+                0x01 | 0x02
+                    | 0x03
+                    | 0x04
                     | 0x05
                     | 0x06
                     | 0x07
                     | 0x08
+                    | 0x0e
                     | 0x0f
+                    | 0x10
                     | 0x12
+                    | 0x13
                     | 0x14
                     | 0x15
+                    | 0x16
+                    | 0x18
+                    | 0x19
+                    | 0x1b
+                    | 0x1c
+                    | 0x1e
+                    | 0x20
+                    | 0x22
+                    | 0x23
+                    | 0x25
+                    | 0x26
+                    | 0x27
+                    | 0x28
+                    | 0x29
+                    | 0x2a
+                    | 0x2b
+                    | 0x2f
+                    | 0x30
+                    | 0x34
+                    | 0x3b
+                    | 0x3c
+                    | 0x3f
+                    | 0x40
+                    | 0x41
+                    | 0x42
+                    | 0x44
+                    | 0x4b
+                    | 0x51
+                    | 0x55
                     | 0x17
                     | 0x21
                     | 0x24
@@ -2978,6 +3061,7 @@ impl Vm {
                 }
                 self.reserve_reference(None)?;
                 let cell = Cell::new(value)?;
+                crate::graph::cells(std::slice::from_ref(&cell))?;
                 let r = self.owned_reference(cell, ReferenceKind::Temporary)?;
                 self.stack[n - 1] = StackEntry::Reference(r);
                 Ok(())
@@ -3066,8 +3150,14 @@ impl Vm {
                             .collect(),
                     )?
                 };
+                self.stack
+                    .try_reserve(1)
+                    .map_err(|_| err(VmErrorKind::Limit, "container result allocation failed"))?;
+                let cell = Cell::new(value)?;
+                crate::graph::cells(std::slice::from_ref(&cell))?;
                 self.stack.truncate(n - count);
-                self.push(value)
+                self.stack.push(StackEntry::Value(cell));
+                Ok(())
             }
             0x43 => {
                 self.need(2, &frame, f.local_count)?;
@@ -3113,8 +3203,9 @@ impl Vm {
                 let result = crate::numeric::binary(opcode, &left, &right).inspect_err(|_| {
                     *fault_site = RuntimeFaultSite::binary(opcode, &left, &right);
                 })?;
+                self.set(n - 2, result)?;
                 self.stack.pop();
-                self.set(n - 2, result)
+                Ok(())
             }
             0x2b => {
                 self.need(1, &frame, f.local_count)?;
@@ -3207,7 +3298,9 @@ impl Vm {
                         }
                     }
                 } else {
-                    StackEntry::Value(Cell::new(Value::Undefined)?)
+                    let cell = Cell::new(Value::Undefined)?;
+                    crate::graph::cells(std::slice::from_ref(&cell))?;
+                    StackEntry::Value(cell)
                 };
                 self.push_entry(entry)
             }
@@ -3434,6 +3527,18 @@ impl Vm {
                 let locals = (0..f.local_count)
                     .map(|_| Cell::new(Value::Undefined).map(StackEntry::Value))
                     .collect::<Result<Vec<_>, _>>()?;
+                crate::graph::cells(
+                    &locals
+                        .iter()
+                        .filter_map(|s| match s {
+                            StackEntry::Value(c) => Some(c.clone()),
+                            _ => None,
+                        })
+                        .collect::<Vec<_>>(),
+                )?;
+                self.stack
+                    .try_reserve(f.local_count)
+                    .map_err(|_| err(VmErrorKind::Limit, "locals stack allocation failed"))?;
                 self.stack.extend(locals);
                 self.frames.last_mut().unwrap().entered = true;
                 self.frames.last_mut().unwrap().phase = EntryPhase::Body;
@@ -3835,7 +3940,11 @@ mod range_tests {
             deep = Value::array(vec![deep]).unwrap();
         }
         // Corrupted internal graph, bypassing the ordinary reference write depth checks.
-        array.cell(1).unwrap().replace(deep).unwrap();
+        array
+            .cell(1)
+            .unwrap()
+            .replace_unchecked_for_test(deep)
+            .unwrap();
         assert_eq!(
             vm.query_range(&frame, 0, 0).unwrap_err().kind,
             VmErrorKind::Limit
@@ -4898,9 +5007,15 @@ mod host_tests {
         let Value::Array(outer) = Value::array(vec![Value::Undefined]).unwrap() else {
             panic!()
         };
-        outer.cell(0).unwrap().replace(nested).unwrap();
+        outer
+            .cell(0)
+            .unwrap()
+            .replace_unchecked_for_test(nested)
+            .unwrap();
         let (mut vm, calls) = fixture(0, 1, true);
-        vm.push(Value::Array(outer.clone())).unwrap();
+        vm.stack.push(StackEntry::Value(
+            Cell::new(Value::Array(outer.clone())).unwrap(),
+        ));
         fail_step(&mut vm, VmErrorKind::Limit);
         assert_eq!(calls.get(), 0);
         assert_eq!(outer.header_refs(), 2);
@@ -5880,6 +5995,26 @@ mod function_value_tests {
         assert_eq!(vm.frames[0].pc, 0);
         assert_eq!(source.read().unwrap(), Value::Object(ObjectId(999)));
         assert_eq!(target.read().unwrap(), Value::Int(7));
+    }
+    #[test]
+    fn t03_numeric_graph_failure_preserves_operands_and_is_not_a_numeric_catch_fault() {
+        let mut vm = fixture(1, [0, 0], 0);
+        vm.push(Value::Int(2)).unwrap();
+        vm.push(Value::Int(3)).unwrap();
+        let before = vm.stack().unwrap();
+        {
+            let _scope = crate::graph::Scope::new(crate::ValueLimits {
+                max_graph_nodes: 0,
+                ..Default::default()
+            });
+            let fault = vm.step().unwrap_err();
+            assert_eq!(fault.diagnostic.kind, VmErrorKind::Limit);
+            assert!(fault.site.is_none());
+            assert_eq!(vm.frames[0].pc, 0);
+            assert_eq!(vm.stack().unwrap(), before);
+        }
+        vm.run(1).unwrap();
+        assert_eq!(vm.value(0).unwrap(), Value::Int(5));
     }
 }
 

@@ -4,12 +4,12 @@ use std::{cell::RefCell, collections::BTreeMap, rc::Rc};
 const MAX_ITEMS: usize = 65536;
 const MAX_DEPTH: usize = 64;
 #[derive(Debug)]
-struct ArrayData {
+pub(crate) struct ArrayData {
     counter: Rc<crate::ownership::Counter>,
-    elements: Vec<Rc<Cell>>,
+    pub(crate) elements: Vec<Rc<Cell>>,
 }
 #[derive(Debug, Clone)]
-pub struct ArrayValue(Rc<ArrayData>);
+pub struct ArrayValue(pub(crate) Rc<ArrayData>);
 impl PartialEq for ArrayValue {
     fn eq(&self, other: &Self) -> bool {
         Rc::ptr_eq(&self.0, &other.0)
@@ -44,16 +44,13 @@ impl ArrayValue {
     }
 }
 #[derive(Debug)]
-struct MappingData {
+pub(crate) struct MappingData {
     entries: Vec<(Value, Rc<Cell>)>,
     index: BTreeMap<Key, usize>,
     // Stable entry indices; public entries() order is independent of these chains.
     heads: Vec<Option<usize>>,
     next: Vec<Option<usize>>,
     unfilled: usize,
-    // Container member writes remain scalar-only. This conservative bit can stay
-    // true after an overwrite, but never misses a newly introduced container.
-    may_have_containers: bool,
 }
 fn allocation_error() -> VmError {
     VmError::new(VmErrorKind::Limit, "mapping allocation failed")
@@ -76,7 +73,6 @@ impl MappingData {
             heads,
             next: Vec::new(),
             unfilled: capacity * 80 / 100,
-            may_have_containers: false,
         })
     }
     fn reserve_insert(&mut self, hash: u32) -> Result<(), VmError> {
@@ -149,7 +145,10 @@ impl Drop for MappingData {
     }
 }
 #[derive(Debug, Clone)]
-pub struct MappingValue(Rc<RefCell<MappingData>>, Rc<crate::ownership::Counter>);
+pub struct MappingValue(
+    pub(crate) Rc<RefCell<MappingData>>,
+    pub(crate) Rc<crate::ownership::Counter>,
+);
 impl PartialEq for MappingValue {
     fn eq(&self, other: &Self) -> bool {
         Rc::ptr_eq(&self.0, &other.0)
@@ -163,6 +162,14 @@ impl MappingValue {
     #[cfg(test)]
     pub(crate) fn header_refs(&self) -> usize {
         Rc::strong_count(&self.0)
+    }
+    pub(crate) fn graph_entries(&self) -> Result<Vec<(Value, Rc<Cell>)>, VmError> {
+        Ok(self
+            .0
+            .try_borrow()
+            .map_err(|_| borrow_error())?
+            .entries
+            .clone())
     }
     pub fn entries(&self) -> Result<Vec<(Value, Value)>, VmError> {
         let data = self.0.try_borrow().map_err(|_| borrow_error())?;
@@ -207,6 +214,11 @@ impl MappingValue {
         self.insertion_needed(key)?;
         let k = Key::new(key)?;
         let cell = Cell::new(Value::Undefined)?;
+        let header = Value::Mapping(self.clone());
+        let mut projection = crate::graph::Projection::default();
+        projection.extra(&header, cell.clone());
+        projection.check()?;
+        crate::graph::link(&header, &cell)?;
         let mut data = self.0.try_borrow_mut().map_err(|_| borrow_error())?;
         let hash = native_hash(key);
         data.reserve_insert(hash)?;
@@ -286,39 +298,6 @@ fn validate_values<'a>(
     }
     Ok(())
 }
-fn identity(value: &Value) -> Option<(u8, usize)> {
-    match value {
-        Value::Array(a) => Some((6, Rc::as_ptr(&a.0) as usize)),
-        Value::Mapping(m) => Some((7, Rc::as_ptr(&m.0) as usize)),
-        _ => None,
-    }
-}
-fn reaches(
-    value: &Value,
-    target: (u8, usize),
-    seen: &mut std::collections::BTreeSet<(u8, usize)>,
-) -> Result<bool, VmError> {
-    let Some(id) = identity(value) else {
-        return Ok(false);
-    };
-    if id == target {
-        return Ok(true);
-    }
-    if !seen.insert(id) {
-        return Ok(false);
-    }
-    let values = match value {
-        Value::Array(a) => a.elements()?,
-        Value::Mapping(m) => m.entries()?.into_iter().map(|(_, v)| v).collect(),
-        _ => unreachable!(),
-    };
-    for value in values {
-        if reaches(&value, target, seen)? {
-            return Ok(true);
-        }
-    }
-    Ok(false)
-}
 pub(crate) fn mapping_output(
     owner: &MappingValue,
     binding: Value,
@@ -330,13 +309,7 @@ pub(crate) fn mapping_output(
     {
         let source = Value::Mapping(owner.clone());
         let output = Value::Array(array.clone());
-        let nested_source = owner
-            .0
-            .try_borrow()
-            .map_err(|_| borrow_error())?
-            .may_have_containers;
-        if (nested_source && reaches(&source, identity(&output).unwrap(), &mut Default::default())?)
-            || reaches(&output, identity(&source).unwrap(), &mut Default::default())?
+        if crate::graph::reachable(&source, &output)? || crate::graph::reachable(&output, &source)?
         {
             return Err(VmError::new(
                 VmErrorKind::UnsupportedFeature,
@@ -352,13 +325,16 @@ pub(crate) fn mapping_output(
 }
 pub(crate) fn array(elements: Vec<Value>) -> Result<Value, VmError> {
     validate_values(elements.len(), elements.iter())?;
-    Ok(Value::Array(ArrayValue(Rc::new(ArrayData {
+    let value = Value::Array(ArrayValue(Rc::new(ArrayData {
         counter: crate::ownership::Counter::new()?,
         elements: elements
             .into_iter()
             .map(Cell::new)
             .collect::<Result<_, _>>()?,
-    }))))
+    })));
+    crate::graph::register(&value)?;
+    crate::graph::values(std::slice::from_ref(&value))?;
+    Ok(value)
 }
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
 enum Key {
@@ -396,15 +372,17 @@ pub(crate) fn mapping(entries: Vec<(Value, Value)>) -> Result<Value, VmError> {
     for (key, value) in unique {
         let k = Key::new(&key)?;
         let hash = native_hash(&key);
-        data.may_have_containers |= matches!(value, Value::Array(_) | Value::Mapping(_));
         let cell = Cell::new(value)?;
         data.reserve_insert(hash)?;
         data.insert(key, k, cell, hash);
     }
-    Ok(Value::Mapping(MappingValue(
+    let value = Value::Mapping(MappingValue(
         Rc::new(RefCell::new(data)),
         crate::ownership::Counter::new()?,
-    )))
+    ));
+    crate::graph::register(&value)?;
+    crate::graph::values(std::slice::from_ref(&value))?;
+    Ok(value)
 }
 
 // vm_whashstr table at ELF VA 0x083cc3e0; 2AL F02 and retained machine bytes.

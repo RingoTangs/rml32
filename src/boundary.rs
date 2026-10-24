@@ -116,7 +116,7 @@ struct Registry {
     alive: Cell<bool>,
     next: Cell<u64>,
     entries: RefCell<Vec<Entry>>,
-    limits: ValueLimits,
+    limits: Rc<ValueLimits>,
 }
 impl Registry {
     fn program(&self, slot: value::ProgramId) -> ProgramId {
@@ -208,7 +208,10 @@ impl Registry {
         inputs.iter().map(|&v| self.input(v)).collect()
     }
     fn publish(self: &Rc<Self>, value: value::Value) -> Result<HostValue, VmError> {
+        let _scope = crate::graph::Scope::new(*self.limits);
         self.check()?;
+        crate::graph::register(&value)?;
+        crate::graph::values(std::slice::from_ref(&value))?;
         // Validate before publishing. Snapshots do not normalize source values.
         self.snapshot(&value)?;
         let id = self.next.get();
@@ -240,7 +243,9 @@ impl Registry {
         })
     }
     fn publish_cell(self: &Rc<Self>, cell: Rc<crate::cell::Cell>) -> Result<HostValue, VmError> {
+        let _scope = crate::graph::Scope::new(*self.limits);
         self.check()?;
+        crate::graph::values(&[cell.read()?])?;
         // Validate before publishing. Snapshots do not normalize source values.
         self.snapshot(&cell.read()?)?;
         let id = self.next.get();
@@ -392,12 +397,14 @@ impl Registry {
         })
     }
     fn array(self: &Rc<Self>, inputs: &[ValueInput<'_>]) -> Result<HostValue, VmError> {
+        let _scope = crate::graph::Scope::new(*self.limits);
         self.publish(value::Value::array(self.inputs(inputs)?)?)
     }
     fn mapping(
         self: &Rc<Self>,
         inputs: &[(ValueInput<'_>, ValueInput<'_>)],
     ) -> Result<HostValue, VmError> {
+        let _scope = crate::graph::Scope::new(*self.limits);
         if inputs.len() > self.limits.max_items {
             return Err(limit("mapping item limit exceeded"));
         }
@@ -506,7 +513,9 @@ impl ObjectStore {
         Self::with_limits(ValueLimits::default())
     }
     pub fn with_limits(limits: ValueLimits) -> Result<Self, VmError> {
-        let inner = object::ObjectStore::new();
+        let limits = Rc::new(limits);
+        let mut inner = object::ObjectStore::new();
+        inner.value_limits = limits.clone();
         let registry = Rc::new(Registry {
             identity: Counter::new()?,
             function_origin: inner.function_origin.clone(),
@@ -1116,5 +1125,30 @@ mod tests {
         assert_eq!(counter.owners(), 1);
         drop(slot);
         assert_eq!(counter.owners(), 0);
+    }
+    #[test]
+    fn t03_function_snapshot_does_not_borrow_or_retain_hidden_capture_slots() {
+        let store = ObjectStore::new().unwrap();
+        let value = function(&store);
+        let value::Value::Function(mut f) = value else {
+            unreachable!()
+        };
+        let data = Rc::get_mut(&mut f.0).unwrap();
+        data.bound_count = 1;
+        data.bound = vec![crate::cell::Cell::new(value::Value::Int(7)).unwrap()];
+        let root = store
+            .registry
+            .publish(value::Value::Function(f.clone()))
+            .unwrap();
+        let owners = f.0.counter.owners();
+        f.0.bound[0].with_write_borrow_for_test(|| {
+            assert!(matches!(
+                root.snapshot().unwrap(),
+                ValueSnapshot::Function(_)
+            ));
+            assert_eq!(f.0.counter.owners(), owners);
+            assert_eq!(root.retain().unwrap_err().kind, VmErrorKind::InvalidState);
+        });
+        assert_eq!(f.0.counter.owners(), owners);
     }
 }

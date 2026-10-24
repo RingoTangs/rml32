@@ -125,6 +125,7 @@ pub(crate) struct HostActivation {
 }
 
 pub(crate) fn validate_value(value: &Value) -> Result<(), VmError> {
+    crate::graph::values(std::slice::from_ref(value))?;
     match value {
         Value::Array(a) => {
             a.depth()?;

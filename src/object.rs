@@ -44,6 +44,7 @@ impl Object {
 #[derive(Debug, Default)]
 pub struct ObjectStore {
     pub(crate) function_origin: Rc<()>,
+    pub(crate) value_limits: Rc<crate::ValueLimits>,
     host_functions: BTreeMap<u16, crate::host::HostFunction>,
     programs: BTreeMap<ProgramId, Rc<PreparedProgram>>,
     objects: BTreeMap<ObjectId, Object>,
@@ -106,6 +107,7 @@ impl ObjectStore {
     }
     /// Install writable synthetic slots atomically; no script code is executed.
     pub fn register_globals(&mut self, values: Vec<Value>) -> Result<(), VmError> {
+        let _graph_scope = crate::graph::Scope::new(*self.value_limits);
         if self.globals.is_some() {
             return Err(VmError::new(
                 VmErrorKind::InvalidState,
@@ -118,6 +120,7 @@ impl ObjectStore {
                 "global bank exceeds 32768 slots",
             ));
         }
+        crate::graph::values(&values)?;
         // Validate each value independently: the bank is not an Array nesting level.
         for value in &values {
             match value {
@@ -130,10 +133,11 @@ impl ObjectStore {
                 _ => {}
             }
         }
-        let cells = values
+        let cells: Vec<_> = values
             .into_iter()
             .map(crate::cell::Cell::new)
             .collect::<Result<_, _>>()?;
+        crate::graph::cells(&cells)?;
         self.globals = Some(cells);
         Ok(())
     }
@@ -197,6 +201,7 @@ impl ObjectStore {
         program: ProgramId,
         initial_values: Vec<Value>,
     ) -> Result<ObjectId, VmError> {
+        let _graph_scope = crate::graph::Scope::new(*self.value_limits);
         let p = self.program(program)?;
         if p.kind == crate::prepared::ProgramKind::Global {
             return Err(VmError::new(
@@ -210,6 +215,12 @@ impl ObjectStore {
                 "explicit initial object values do not match variable capacity",
             ));
         }
+        crate::graph::values(&initial_values)?;
+        let variables = initial_values
+            .into_iter()
+            .map(crate::cell::Cell::new)
+            .collect::<Result<Vec<_>, _>>()?;
+        crate::graph::cells(&variables)?;
         let id = ObjectId(self.next_object);
         self.next_object = self
             .next_object
@@ -221,10 +232,7 @@ impl ObjectStore {
                 program,
                 initialization: InitializationState::Manual,
                 lifecycle: LifecycleState::Unmanaged,
-                variables: initial_values
-                    .into_iter()
-                    .map(crate::cell::Cell::new)
-                    .collect::<Result<_, _>>()?,
+                variables,
             },
         );
         Ok(id)
