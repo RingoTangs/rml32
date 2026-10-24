@@ -28,9 +28,26 @@ pub(crate) fn with_allocation_failure<T>(after: usize, action: impl FnOnce() -> 
     action()
 }
 #[derive(Debug)]
+struct OwnedPayload {
+    _owner: Option<crate::ownership::Owner>,
+    payload: SlotPayload,
+}
+impl OwnedPayload {
+    fn new(payload: SlotPayload) -> Result<Self, VmError> {
+        let counter = match &payload {
+            SlotPayload::Value(v) => v.counter(),
+            SlotPayload::Loop(c) => c.counter(),
+        };
+        Ok(Self {
+            _owner: crate::ownership::Owner::new(counter)?,
+            payload,
+        })
+    }
+}
+#[derive(Debug)]
 pub(crate) struct Cell {
     id: u64,
-    value: RefCell<SlotPayload>,
+    value: RefCell<OwnedPayload>,
 }
 impl Cell {
     pub(crate) fn new(value: Value) -> Result<Rc<Self>, VmError> {
@@ -53,7 +70,7 @@ impl Cell {
             .map_err(|_| VmError::new(VmErrorKind::Limit, "cell ID space exhausted"))?;
         Ok(Rc::new(Self {
             id,
-            value: RefCell::new(SlotPayload::Value(value)),
+            value: RefCell::new(OwnedPayload::new(SlotPayload::Value(value))?),
         }))
     }
     pub(crate) fn id(&self) -> u64 {
@@ -72,7 +89,7 @@ impl Cell {
     pub(crate) fn read(&self) -> Result<Value, VmError> {
         self.value
             .try_borrow()
-            .map(|v| match &*v {
+            .map(|v| match &v.payload {
                 SlotPayload::Value(v) => v.clone(),
                 SlotPayload::Loop(_) => Value::Undefined,
             })
@@ -81,7 +98,7 @@ impl Cell {
     pub(crate) fn is_loop(&self) -> Result<bool, VmError> {
         self.value
             .try_borrow()
-            .map(|v| matches!(*v, SlotPayload::Loop(_)))
+            .map(|v| matches!(v.payload, SlotPayload::Loop(_)))
             .map_err(|_| VmError::new(VmErrorKind::InvalidState, "value slot is borrowed"))
     }
     pub(crate) fn loop_control(&self) -> Result<crate::vm::LoopControl, VmError> {
@@ -89,7 +106,7 @@ impl Cell {
             .value
             .try_borrow()
             .map_err(|_| VmError::new(VmErrorKind::InvalidState, "value slot is borrowed"))?;
-        match &*guard {
+        match &guard.payload {
             SlotPayload::Loop(c) => Ok((**c).clone()),
             _ => Err(VmError::new(
                 VmErrorKind::InvalidState,
@@ -98,12 +115,13 @@ impl Cell {
         }
     }
     pub(crate) fn replace(&self, value: Value) -> Result<(), VmError> {
+        let value = OwnedPayload::new(SlotPayload::Value(value))?;
         let old = {
             let mut guard = self
                 .value
                 .try_borrow_mut()
                 .map_err(|_| VmError::new(VmErrorKind::InvalidState, "value slot is borrowed"))?;
-            std::mem::replace(&mut *guard, SlotPayload::Value(value))
+            std::mem::replace(&mut *guard, value)
         };
         drop(old);
         Ok(())
@@ -113,6 +131,10 @@ impl Cell {
         updates: Vec<(Rc<Cell>, SlotPayload)>,
     ) -> Result<(), VmError> {
         let (cells, values): (Vec<_>, Vec<_>) = updates.into_iter().unzip();
+        let values = values
+            .into_iter()
+            .map(OwnedPayload::new)
+            .collect::<Result<Vec<_>, _>>()?;
         let mut old = Vec::with_capacity(cells.len());
         let mut guards = cells
             .iter()
@@ -143,7 +165,10 @@ impl Cell {
     // Only called by a final header destructor. All guards are private and are
     // released before any old Value is dropped, including in replace above.
     pub(crate) fn clear_on_owner_drop(&self) {
-        let old = self.value.replace(SlotPayload::Value(Value::Undefined));
+        let old = self.value.replace(OwnedPayload {
+            _owner: None,
+            payload: SlotPayload::Value(Value::Undefined),
+        });
         drop(old);
     }
 }

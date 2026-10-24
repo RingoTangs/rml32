@@ -44,7 +44,7 @@ impl Object {
 #[derive(Debug, Default)]
 pub struct ObjectStore {
     pub(crate) function_origin: Rc<()>,
-    host_functions: BTreeMap<u16, crate::HostFunction>,
+    host_functions: BTreeMap<u16, crate::host::HostFunction>,
     programs: BTreeMap<ProgramId, Rc<PreparedProgram>>,
     objects: BTreeMap<ObjectId, Object>,
     globals: Option<Vec<Rc<crate::cell::Cell>>>,
@@ -57,7 +57,7 @@ impl ObjectStore {
     pub fn register_host_function(
         &mut self,
         slot: u16,
-        function: crate::HostFunction,
+        function: crate::host::HostFunction,
     ) -> Result<(), VmError> {
         if slot >= 559 {
             return Err(VmError::new(
@@ -93,7 +93,7 @@ impl ObjectStore {
             .map(|_| ())
             .ok_or_else(|| VmError::new(VmErrorKind::InvalidState, "host slot is not registered"))
     }
-    pub(crate) fn host_function(&self, slot: u16) -> Result<crate::HostFunction, VmError> {
+    pub(crate) fn host_function(&self, slot: u16) -> Result<crate::host::HostFunction, VmError> {
         self.host_functions.get(&slot).cloned().ok_or_else(|| {
             VmError::new(
                 VmErrorKind::UnsupportedFeature,

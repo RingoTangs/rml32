@@ -5,6 +5,7 @@ const MAX_ITEMS: usize = 65536;
 const MAX_DEPTH: usize = 64;
 #[derive(Debug)]
 struct ArrayData {
+    counter: Rc<crate::ownership::Counter>,
     elements: Vec<Rc<Cell>>,
 }
 #[derive(Debug, Clone)]
@@ -16,6 +17,9 @@ impl PartialEq for ArrayValue {
 }
 impl Eq for ArrayValue {}
 impl ArrayValue {
+    pub(crate) fn counter(&self) -> Rc<crate::ownership::Counter> {
+        self.0.counter.clone()
+    }
     #[cfg(test)]
     pub(crate) fn header_refs(&self) -> usize {
         Rc::strong_count(&self.0)
@@ -145,7 +149,7 @@ impl Drop for MappingData {
     }
 }
 #[derive(Debug, Clone)]
-pub struct MappingValue(Rc<RefCell<MappingData>>);
+pub struct MappingValue(Rc<RefCell<MappingData>>, Rc<crate::ownership::Counter>);
 impl PartialEq for MappingValue {
     fn eq(&self, other: &Self) -> bool {
         Rc::ptr_eq(&self.0, &other.0)
@@ -153,6 +157,9 @@ impl PartialEq for MappingValue {
 }
 impl Eq for MappingValue {}
 impl MappingValue {
+    pub(crate) fn counter(&self) -> Rc<crate::ownership::Counter> {
+        self.1.clone()
+    }
     #[cfg(test)]
     pub(crate) fn header_refs(&self) -> usize {
         Rc::strong_count(&self.0)
@@ -346,6 +353,7 @@ pub(crate) fn mapping_output(
 pub(crate) fn array(elements: Vec<Value>) -> Result<Value, VmError> {
     validate_values(elements.len(), elements.iter())?;
     Ok(Value::Array(ArrayValue(Rc::new(ArrayData {
+        counter: crate::ownership::Counter::new()?,
         elements: elements
             .into_iter()
             .map(Cell::new)
@@ -393,7 +401,10 @@ pub(crate) fn mapping(entries: Vec<(Value, Value)>) -> Result<Value, VmError> {
         data.reserve_insert(hash)?;
         data.insert(key, k, cell, hash);
     }
-    Ok(Value::Mapping(MappingValue(Rc::new(RefCell::new(data)))))
+    Ok(Value::Mapping(MappingValue(
+        Rc::new(RefCell::new(data)),
+        crate::ownership::Counter::new()?,
+    )))
 }
 
 // vm_whashstr table at ELF VA 0x083cc3e0; 2AL F02 and retained machine bytes.
@@ -454,9 +465,12 @@ mod mapping_tests {
         let fixture: serde_json::Value =
             serde_json::from_str(include_str!("../tests/fixtures/mapping-order-2al.json")).unwrap();
         for case in fixture["cases"].as_array().unwrap() {
-            let m = MappingValue(Rc::new(RefCell::new(
-                MappingData::new(case["hint"].as_u64().unwrap() as usize).unwrap(),
-            )));
+            let m = MappingValue(
+                Rc::new(RefCell::new(
+                    MappingData::new(case["hint"].as_u64().unwrap() as usize).unwrap(),
+                )),
+                crate::ownership::Counter::new().unwrap(),
+            );
             for key in case["keys"].as_array().unwrap() {
                 m.member(&decode(key)).unwrap();
             }
@@ -490,7 +504,10 @@ mod mapping_tests {
                 hash,
             );
         }
-        MappingValue(Rc::new(RefCell::new(data)))
+        MappingValue(
+            Rc::new(RefCell::new(data)),
+            crate::ownership::Counter::new().unwrap(),
+        )
     }
     fn order(m: &MappingValue) -> Vec<Value> {
         let (mut bucket, mut position) = (0, 0);

@@ -1,5 +1,8 @@
 # magic_Linux32 Rust 重写实施路线图
 
+阶段2AT已完成[宿主/观察边界与语义所有者迁移](stage2at-evidence/overview.md)：公共 API 源码不兼容，改用 ValueInput、不可 Clone 的 HostValue、冻结快照与借用回调。原558项断言保留，新增19项普通测试与2项文档编译负例；577项普通测试及2项doctest通过。版本和依赖不变，非标量捕获仍关闭，阶段2未完成。下一批为2AS T02稳定捕获槽与源COPY计划。验证见[2AT收据](stage2at-validation.json)。以下为历史快照。
+
+
 **阶段2AS当前交付：**[所有权/源复制设计与独立模型](stage2as-design/overview.md)已完成；锁定Snapshot/HostValue、稳定捕获槽、COPY事务及Function捕获图契约，见[API迁移](stage2as-design/api-contract.md)与[实施任务](stage2as-design/implementation-plan.md)。下一批2AT先实施公共边界和语义持有者迁移，T02/T03后才考虑受限容器捕获；直接Object/Function及完整GC/生命周期仍阻塞。Rust/API/依赖及558项Rust测试保持不变，阶段2未完成。见[验证记录](stage2as-validation.json)。以下保留历史快照。
 
 **阶段2AR当前进展：**复制源规范化与捕获所有权静态取证完成，见[语义报告](vm-capture-ownership-semantics.md)、[问题状态](stage2ar-evidence/questions.md)、[后续Rust规格](stage2ar-evidence/runtime-design.md)及[验证记录](stage2ar-validation.json)。确认17 raw move、05唯一/共享分支、copy源清理与Array/Mapping最后header差异；无catch/其他线程/未发布头及完整GC仍有未知。下一批2AS先闭合所有权/源复制/捕获图设计，暂不放宽非标量捕获；558项Rust测试及运行时/API/依赖不变，阶段2未完成。以下保留历史快照。

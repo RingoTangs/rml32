@@ -1,0 +1,183 @@
+{
+  "stage": "2AT",
+  "public_api_changed": true,
+  "source_compatible": false,
+  "items": [
+    {
+      "id": "API01",
+      "previous": "Vm::stack",
+      "source": {
+        "path": "src/boundary.rs",
+        "line": 884,
+        "excerpt": "pub fn stack(&self) -> Result<Vec<StackSnapshot>, VmError> {"
+      },
+      "public_integration_test": "variables_globals_and_stack_observe_slots_without_new_roots",
+      "status": "implemented"
+    },
+    {
+      "id": "API02",
+      "previous": "Object::variables",
+      "source": {
+        "path": "src/boundary.rs",
+        "line": 526,
+        "excerpt": "pub fn variables(&self) -> Result<Vec<ValueSnapshot>, VmError> {"
+      },
+      "public_integration_test": "variables_globals_and_stack_observe_slots_without_new_roots",
+      "status": "implemented"
+    },
+    {
+      "id": "API03",
+      "previous": "ObjectStore::global_values",
+      "source": {
+        "path": "src/boundary.rs",
+        "line": 546,
+        "excerpt": "pub fn global_values(&self) -> Result<Vec<ValueSnapshot>, VmError> {"
+      },
+      "public_integration_test": "variables_globals_and_stack_observe_slots_without_new_roots",
+      "status": "implemented"
+    },
+    {
+      "id": "API04",
+      "previous": "ArrayValue::elements",
+      "source": {
+        "path": "src/boundary.rs",
+        "line": 412,
+        "excerpt": "pub fn elements(&self) -> Result<Vec<ValueSnapshot>, VmError> {"
+      },
+      "public_integration_test": "containers_observe_without_owners_and_export_independent_roots",
+      "status": "implemented"
+    },
+    {
+      "id": "API05",
+      "previous": "MappingValue::entries",
+      "source": {
+        "path": "src/boundary.rs",
+        "line": 418,
+        "excerpt": "pub fn entries(&self) -> Result<Vec<(ValueSnapshot, ValueSnapshot)>, VmError> {"
+      },
+      "public_integration_test": "containers_observe_without_owners_and_export_independent_roots",
+      "status": "implemented"
+    },
+    {
+      "id": "API06",
+      "previous": "MappingValue::get",
+      "source": {
+        "path": "src/boundary.rs",
+        "line": 433,
+        "excerpt": "pub fn get(&self, key: ValueInput<'_>) -> Result<Option<ValueSnapshot>, VmError> {"
+      },
+      "public_integration_test": "containers_observe_without_owners_and_export_independent_roots",
+      "status": "implemented"
+    },
+    {
+      "id": "API07",
+      "previous": "Value/FunctionValue::clone",
+      "source": {
+        "path": "src/boundary.rs",
+        "line": 406,
+        "excerpt": "pub fn retain(&self) -> Result<Self, VmError> {"
+      },
+      "public_integration_test": "completion_observation_take_and_retain_have_explicit_owner_effects",
+      "status": "implemented"
+    },
+    {
+      "id": "API08",
+      "previous": "FunctionValue\u8bbf\u95ee\u5668/Debug",
+      "source": {
+        "path": "src/boundary.rs",
+        "line": 48,
+        "excerpt": "pub struct FunctionSnapshot {"
+      },
+      "public_integration_test": "completion_observation_take_and_retain_have_explicit_owner_effects",
+      "status": "implemented"
+    },
+    {
+      "id": "API09",
+      "previous": "Completion::Returned/RunOutcome",
+      "source": {
+        "path": "src/boundary.rs",
+        "line": 868,
+        "excerpt": "pub fn take_returned(&mut self) -> Result<HostValue, VmError> {"
+      },
+      "public_integration_test": "completion_observation_take_and_retain_have_explicit_owner_effects",
+      "status": "implemented"
+    },
+    {
+      "id": "API10",
+      "previous": "Vm::start",
+      "source": {
+        "path": "src/boundary.rs",
+        "line": 808,
+        "excerpt": "pub fn start("
+      },
+      "public_integration_test": "foreign_store_inputs_ids_and_leases_fail_before_mutation",
+      "status": "implemented"
+    },
+    {
+      "id": "API11",
+      "previous": "Value::array",
+      "source": {
+        "path": "src/boundary.rs",
+        "line": 561,
+        "excerpt": "pub fn array(&self, inputs: &[ValueInput<'_>]) -> Result<HostValue, VmError> {"
+      },
+      "public_integration_test": "containers_observe_without_owners_and_export_independent_roots",
+      "status": "implemented"
+    },
+    {
+      "id": "API12",
+      "previous": "Value::mapping",
+      "source": {
+        "path": "src/boundary.rs",
+        "line": 564,
+        "excerpt": "pub fn mapping("
+      },
+      "public_integration_test": "containers_observe_without_owners_and_export_independent_roots",
+      "status": "implemented"
+    },
+    {
+      "id": "API13",
+      "previous": "HostCallback",
+      "source": {
+        "path": "src/boundary.rs",
+        "line": 967,
+        "excerpt": "pub type HostCallback = Rc<"
+      },
+      "public_integration_test": "callback_can_retain_borrowed_function_without_reentry_authority",
+      "status": "implemented"
+    },
+    {
+      "id": "API14",
+      "previous": "ObjectStore::create",
+      "source": {
+        "path": "src/boundary.rs",
+        "line": 588,
+        "excerpt": "pub fn create("
+      },
+      "public_integration_test": "variables_globals_and_stack_observe_slots_without_new_roots",
+      "status": "implemented"
+    },
+    {
+      "id": "API15",
+      "previous": "ObjectStore::register_globals",
+      "source": {
+        "path": "src/boundary.rs",
+        "line": 603,
+        "excerpt": "pub fn register_globals(&mut self, values: &[ValueInput<'_>]) -> Result<(), VmError> {"
+      },
+      "public_integration_test": "variables_globals_and_stack_observe_slots_without_new_roots",
+      "status": "implemented"
+    },
+    {
+      "id": "API16",
+      "previous": "Vm::into_objects",
+      "source": {
+        "path": "src/boundary.rs",
+        "line": 802,
+        "excerpt": "pub fn into_objects(mut self) -> ObjectStore {"
+      },
+      "public_integration_test": "into_objects_preserves_origin_and_store_close_invalidates_roots",
+      "status": "implemented"
+    }
+  ]
+}

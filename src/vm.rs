@@ -18,6 +18,23 @@ pub enum Completion {
     Initialized(ObjectId),
     Constructed(ObjectId),
 }
+#[derive(Debug)]
+struct StoredCompletion {
+    _owner: Option<crate::ownership::Owner>,
+    value: Completion,
+}
+impl StoredCompletion {
+    fn new(value: Completion) -> Result<Self, VmError> {
+        let counter = match &value {
+            Completion::Returned(v) => v.counter(),
+            _ => None,
+        };
+        Ok(Self {
+            _owner: crate::ownership::Owner::new(counter)?,
+            value,
+        })
+    }
+}
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum RunOutcome {
     Finished(Completion),
@@ -89,8 +106,15 @@ pub(crate) struct LoopControl {
     bound: Reference,
     state: LoopState,
 }
-#[cfg(test)]
 impl LoopControl {
+    pub(crate) fn counter(&self) -> Option<Rc<crate::ownership::Counter>> {
+        match &self.state {
+            LoopState::Array { owner, .. } => Some(owner.counter()),
+            LoopState::Mapping { owner, .. } => Some(owner.counter()),
+            _ => None,
+        }
+    }
+    #[cfg(test)]
     pub(crate) fn for_test(owner: crate::container::ArrayValue) -> Self {
         Self {
             bound: Reference {
@@ -224,7 +248,7 @@ struct ConstructionTask {
     phase: LifecyclePhase,
     position: usize,
     constitution: usize,
-    parameter: Option<Value>,
+    parameter: Option<crate::ownership::OwnedValue>,
     primary: Option<VmError>,
 }
 #[derive(Debug, Clone, Copy)]
@@ -318,7 +342,7 @@ pub struct Vm {
     limits: VmLimits,
     next_frame: u64,
     reference_cells: BTreeMap<u64, Weak<()>>,
-    completion: Option<Completion>,
+    completion: Option<StoredCompletion>,
     failure: Option<VmError>,
     initialization: Option<InitializationTask>,
     construction: Option<ConstructionTask>,
@@ -348,6 +372,22 @@ impl Vm {
         Self {
             limits,
             ..Self::new(objects)
+        }
+    }
+    pub(crate) fn returned(&self) -> Result<Value, VmError> {
+        match &self.completion {
+            Some(StoredCompletion {
+                value: Completion::Returned(v),
+                ..
+            }) => Ok(v.clone()),
+            _ => Err(err(VmErrorKind::InvalidState, "no unclaimed return value")),
+        }
+    }
+    pub(crate) fn claim_returned(&mut self) {
+        // Keep completion observable after the one executable result is claimed.
+        if let Some(c) = &mut self.completion {
+            c._owner = None;
+            c.value = Completion::Returned(Value::Undefined);
         }
     }
     pub fn objects(&self) -> &ObjectStore {
@@ -476,7 +516,9 @@ impl Vm {
                 task.position = 0;
                 self.advance_construction();
             } else {
-                self.completion = Some(Completion::Initialized(frame.object()?));
+                self.completion = Some(StoredCompletion::new(Completion::Initialized(
+                    frame.object()?,
+                ))?);
             }
         }
         Ok(())
@@ -507,6 +549,9 @@ impl Vm {
                 "construction parameter must be a mapping",
             ));
         }
+        let parameter = parameter
+            .map(crate::ownership::OwnedValue::new)
+            .transpose()?;
         let object = self.begin_initialize(program)?;
         self.objects
             .set_lifecycle(object, LifecycleState::Constructing)?;
@@ -652,7 +697,10 @@ impl Vm {
                     .set_lifecycle(object, LifecycleState::Constructed)
                     .expect("task object is present");
                 self.construction = None;
-                self.completion = Some(Completion::Constructed(object));
+                self.completion = Some(StoredCompletion {
+                    _owner: None,
+                    value: Completion::Constructed(object),
+                });
                 return;
             }
             if phase == LifecyclePhase::RollbackDestruct && position == 0 {
@@ -674,7 +722,10 @@ impl Vm {
             };
             let binding = p.lifecycles.as_ref().unwrap()[constitution];
             let (slot, parameter) = if phase == LifecyclePhase::Create {
-                (binding.create, task.parameter.clone())
+                (
+                    binding.create,
+                    task.parameter.as_ref().map(|v| v.value.clone()),
+                )
             } else {
                 (binding.destruct, None)
             };
@@ -959,7 +1010,7 @@ impl Vm {
             return Err(e.clone());
         }
         if let Some(c) = &self.completion {
-            return Ok(RunOutcome::Finished(c.clone()));
+            return Ok(RunOutcome::Finished(c.value.clone()));
         }
         if self.frames.is_empty() {
             return Err(err(
@@ -1011,7 +1062,7 @@ impl Vm {
                 return Err(e.clone());
             }
             if let Some(c) = &self.completion {
-                return Ok(RunOutcome::Finished(c.clone()));
+                return Ok(RunOutcome::Finished(c.value.clone()));
             }
         }
         Ok(RunOutcome::BudgetExhausted)
@@ -1572,7 +1623,7 @@ impl Vm {
             }
             // Creation checks presence, but captures neither callback nor signature.
             self.objects.host_function(slot as u16)?;
-            crate::FunctionTarget::Host { slot: slot as u16 }
+            crate::value::FunctionTarget::Host { slot: slot as u16 }
         } else if global {
             let id = self.objects.global_program()?;
             let target_program = self.objects.program(id)?;
@@ -1583,12 +1634,12 @@ impl Vm {
                 ));
             }
             Self::function_target(&target_program, slot)?;
-            crate::FunctionTarget::Global {
+            crate::value::FunctionTarget::Global {
                 program: id,
                 function: slot as i16,
             }
         } else {
-            crate::FunctionTarget::Object {
+            crate::value::FunctionTarget::Object {
                 program: frame.program(),
                 function: slot as i16,
             }
@@ -1607,6 +1658,7 @@ impl Vm {
             owner,
             target,
             bound,
+            counter: crate::ownership::Counter::new()?,
         }));
         cell.replace(Value::Function(function))?;
         self.stack.truncate(n - count);
@@ -1648,7 +1700,7 @@ impl Vm {
             self.objects.get(owner)?;
         }
         let (id, slot, execution, active_object, kind) = match function.target() {
-            crate::FunctionTarget::Object {
+            crate::value::FunctionTarget::Object {
                 program,
                 function: slot,
             } => {
@@ -1669,7 +1721,7 @@ impl Vm {
                     ProgramKind::Object,
                 )
             }
-            crate::FunctionTarget::Global {
+            crate::value::FunctionTarget::Global {
                 program: id,
                 function: slot,
             } => {
@@ -1695,7 +1747,7 @@ impl Vm {
                     ProgramKind::Global,
                 )
             }
-            crate::FunctionTarget::Host { .. } => {
+            crate::value::FunctionTarget::Host { .. } => {
                 return self.call_indirect_host(frame, program, code, &function, argn);
             }
         };
@@ -1887,7 +1939,7 @@ impl Vm {
                 "Host function targets require explicit preparation",
             ));
         }
-        let crate::FunctionTarget::Host { slot } = function.target() else {
+        let crate::value::FunctionTarget::Host { slot } = function.target() else {
             return Err(err(
                 VmErrorKind::InvalidState,
                 "indirect host requires a Host target",
@@ -1974,10 +2026,12 @@ impl Vm {
             .map_err(|_| err(VmErrorKind::Limit, "host result allocation failed"))?;
         let result = (activation.function.callback)(&activation.context, &arguments)
             .map_err(|e| err(e.kind, e.message))?;
-        let value = match (activation.function.signature.returns, result) {
+        let value = match (activation.function.signature.returns, result.as_ref()) {
             (HostReturn::Void, None) | (HostReturn::Mixed, None) => Value::Void,
-            (HostReturn::Mixed, Some(value)) => value,
-            (HostReturn::Exact(expected), Some(value)) if expected.accepts(&value) => value,
+            (HostReturn::Mixed, Some(value)) => value.value.clone(),
+            (HostReturn::Exact(expected), Some(value)) if expected.accepts(&value.value) => {
+                value.value.clone()
+            }
             (expected, _) => {
                 return Err(err(
                     VmErrorKind::UnsupportedType,
@@ -2061,6 +2115,11 @@ impl Vm {
         } else {
             None
         };
+        let completion_entry = if self.frames.len() == 1 && self.construction.is_none() {
+            Some(StoredCompletion::new(Completion::Returned(result))?)
+        } else {
+            None
+        };
         self.stack.truncate(floor);
         self.frames.pop();
         if let Some(entry) = result_entry {
@@ -2069,7 +2128,7 @@ impl Vm {
             self.reference_cells.clear();
             self.advance_construction();
         } else {
-            self.completion = Some(Completion::Returned(result));
+            self.completion = completion_entry;
         }
         Ok(())
     }
@@ -3241,7 +3300,7 @@ impl Vm {
                         "finishAction cannot complete an initialization task",
                     ));
                 }
-                self.completion = Some(Completion::ActionFinished);
+                self.completion = Some(StoredCompletion::new(Completion::ActionFinished)?);
                 self.catches.clear();
                 Ok(())
             }
@@ -4509,7 +4568,8 @@ mod global_tests {
 #[cfg(test)]
 mod host_tests {
     use super::*;
-    use crate::{HostError, HostFunction, HostReturn, HostSignature, HostType};
+    use crate::host::HostFunction;
+    use crate::{HostError, HostReturn, HostSignature, HostType};
     use std::cell::Cell as Counter;
 
     fn fixture(slot: i32, argc: i32, allow: bool) -> (Vm, Rc<Counter<usize>>) {
@@ -4561,10 +4621,10 @@ mod host_tests {
                         rest: Some(HostType::Any),
                         returns: HostReturn::Mixed,
                     },
-                    callback: Rc::new(move |_, a| {
+                    callback: crate::host::owned_callback(Rc::new(move |_, a| {
                         counter.set(counter.get() + 1);
                         Ok(a.first().cloned())
-                    }),
+                    })),
                 },
             )
             .unwrap();
@@ -4709,10 +4769,10 @@ mod host_tests {
                         rest: None,
                         returns: HostReturn::Mixed,
                     },
-                    callback: Rc::new(move |_, _| {
+                    callback: crate::host::owned_callback(Rc::new(move |_, _| {
                         counter.set(counter.get() + 1);
                         Ok(Some(Value::Array(retained.clone())))
-                    }),
+                    })),
                 },
             )
             .unwrap();
@@ -4737,13 +4797,13 @@ mod host_tests {
                         rest: None,
                         returns: HostReturn::Mixed,
                     },
-                    callback: Rc::new(move |_, _| {
+                    callback: crate::host::owned_callback(Rc::new(move |_, _| {
                         counter.set(counter.get() + 1);
                         Err(HostError {
                             kind: VmErrorKind::Arithmetic,
                             message: "failure".into(),
                         })
-                    }),
+                    })),
                 },
             )
             .unwrap();
@@ -4837,11 +4897,12 @@ mod function_value_tests {
         crate::FunctionValue(Rc::new(crate::value::FunctionData {
             origin: vm.objects.function_origin.clone(),
             owner: vm.frames[0].active_object,
-            target: crate::FunctionTarget::Object {
+            target: crate::value::FunctionTarget::Object {
                 program: vm.frames[0].program(),
                 function: 1,
             },
             bound,
+            counter: crate::ownership::Counter::new().unwrap(),
         }))
     }
     fn global_fixture(opcode: u8, operands: [i32; 2], argc: usize) -> Vm {
@@ -4877,7 +4938,7 @@ mod function_value_tests {
     }
     fn global_value(vm: &Vm, bound: Vec<Value>) -> crate::FunctionValue {
         let mut f = value(vm, bound);
-        Rc::get_mut(&mut f.0).unwrap().target = crate::FunctionTarget::Global {
+        Rc::get_mut(&mut f.0).unwrap().target = crate::value::FunctionTarget::Global {
             program: vm.objects.global_program().unwrap(),
             function: 600,
         };
@@ -5010,12 +5071,12 @@ mod function_value_tests {
             let mut vm = fixture(5, [0, 1], 0);
             let mut f = value(&vm, vec![]);
             if bad == 0 {
-                Rc::get_mut(&mut f.0).unwrap().target = crate::FunctionTarget::Object {
+                Rc::get_mut(&mut f.0).unwrap().target = crate::value::FunctionTarget::Object {
                     program: ProgramId(999),
                     function: 1,
                 };
             } else if bad == 1 {
-                Rc::get_mut(&mut f.0).unwrap().target = crate::FunctionTarget::Object {
+                Rc::get_mut(&mut f.0).unwrap().target = crate::value::FunctionTarget::Object {
                     program: vm.frames[0].program(),
                     function: 2,
                 };

@@ -47,6 +47,14 @@ pub enum Value {
     Function(FunctionValue),
 }
 impl Value {
+    pub(crate) fn counter(&self) -> Option<Rc<crate::ownership::Counter>> {
+        match self {
+            Self::Function(f) => Some(f.0.counter.clone()),
+            Self::Array(a) => Some(a.counter()),
+            Self::Mapping(m) => Some(m.counter()),
+            _ => None,
+        }
+    }
     /// Construct a shared array in element order. Clones share identity.
     pub fn array(elements: Vec<Value>) -> Result<Self, crate::VmError> {
         crate::container::array(elements)
@@ -92,6 +100,7 @@ pub(crate) struct FunctionData {
     pub(crate) owner: Option<ObjectId>,
     pub(crate) target: FunctionTarget,
     pub(crate) bound: Vec<Value>,
+    pub(crate) counter: Rc<crate::ownership::Counter>,
 }
 impl FunctionValue {
     /// Object active at creation, independent of the target; absent in Global context.

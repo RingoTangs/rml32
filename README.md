@@ -1,5 +1,8 @@
 # rml32
 
+阶段2AT已完成[宿主/观察边界与语义所有者迁移](docs/stage2at-evidence/overview.md)：公共 API 源码不兼容，改用 ValueInput、不可 Clone 的 HostValue、冻结快照与借用回调。原558项断言保留，新增19项普通测试与2项文档编译负例；577项普通测试及2项doctest通过。版本和依赖不变，非标量捕获仍关闭，阶段2未完成。下一批为2AS T02稳定捕获槽与源COPY计划。验证见[2AT收据](docs/stage2at-validation.json)。以下为历史快照。
+
+
 阶段2AS已完成[所有权与源复制设计及独立模型](docs/stage2as-design/overview.md)：15项决策、16项API迁移、51个2AR案例映射；三个有界枚举域合计21,837个域内去重状态、61,365次成功转换。模型不构成原生或未来Rust实现的等价证明。运行时/API/依赖与558项Rust测试不变，非标量捕获仍关闭；下一批为[2AT宿主/观察边界与语义计数迁移](docs/stage2as-design/implementation-plan.md)，验证见[收据](docs/stage2as-validation.json)。以下为历史快照。
 
 阶段2AR已完成复制源规范化与非标量捕获所有权定向取证，见[语义报告](docs/vm-capture-ownership-semantics.md)、[结论与机器码锚点](docs/stage2ar-evidence/findings.md)、[后续Rust规格](docs/stage2ar-evidence/runtime-design.md)及[验证记录](docs/stage2ar-validation.json)。新增3条、复用50条原生记录，形成51个静态/设计案例；Rust/API/依赖与558项测试不变，非标量捕获仍关闭。下一批2AS先闭合源复制、语义持有者及Function捕获边图验证设计；阶段2仍未完成。以下为历史快照。

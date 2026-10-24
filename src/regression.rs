@@ -1,4 +1,5 @@
 //! All programs below are synthesized in memory. No reference package is executed.
+use crate::regression_api as rml32;
 use rml32::{
     ByteString, Completion, ObjectStore, ProgramImage, ProgramMode, RunOutcome, Value, Vm,
     VmErrorKind, VmLimits, parse_program, prepare_program,
@@ -10169,7 +10170,7 @@ fn host_binding(
             rest: None,
             returns,
         },
-        callback: HostRc::new(callback),
+        callback: crate::host::owned_callback(HostRc::new(callback)),
     }
 }
 fn host_machine(p: ProgramImage, binding: HostFunction) -> (Vm, rml32::ObjectId) {

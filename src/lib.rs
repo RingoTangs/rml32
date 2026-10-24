@@ -1,28 +1,29 @@
 //! Read-only parsers plus a bounded Magic559 core interpreter.
 //! Reference artifacts are only parsed; execution tests use synthetic programs.
+mod boundary;
 mod bytes;
 mod cell;
-pub mod container;
+mod container;
 pub mod error;
-pub mod host;
+mod host;
 pub mod inheritance;
 pub mod lzss;
 mod numeric;
-pub mod object;
+mod object;
+mod ownership;
 pub mod pak;
 pub mod prepared;
 pub mod program;
 mod reader;
-pub mod value;
-pub mod vm;
+mod value;
+mod vm;
 pub mod vm_error;
 
+pub use boundary::*;
 pub use error::{ErrorKind, ParseError};
-pub use host::{
-    HostCallContext, HostCallback, HostError, HostFunction, HostReturn, HostSignature, HostType,
-};
+pub use host::{HostError, HostReturn, HostSignature, HostType};
 pub use inheritance::{ProgramDescriptor, ValidationReport, validate_inheritance};
-pub use object::{InitializationState, LifecycleState, ObjectStore};
+pub use object::{InitializationState, LifecycleState};
 pub use pak::PakArchive;
 pub use prepared::{
     GlobalBankSchema, LifecycleBinding, LinkLimits, MethodBinding, PreparedProgram, ProgramCatalog,
@@ -35,8 +36,9 @@ pub use prepared::{
     prepare_program_with_host_calls,
 };
 pub use program::{AbiProfile, ProgramImage, ProgramMode, parse_program};
-pub use value::{FunctionTarget, FunctionValue, ObjectId, ProgramId, RealBits, Value};
-pub use vm::{Completion, ReferenceKind, RunOutcome, StackSnapshot, Vm, VmLimits};
+pub use value::RealBits;
+pub(crate) use value::{FunctionValue, Value};
+pub use vm::{ReferenceKind, VmLimits};
 pub use vm_error::{LifecycleContext, LifecyclePhase, VmError, VmErrorKind};
 
 pub fn hex(bytes: &[u8]) -> String {
@@ -73,3 +75,14 @@ impl ByteString {
         self.bytes.split(|b| *b == 0).next().unwrap_or_default()
     }
 }
+
+#[cfg(test)]
+mod regression_api {
+    pub(crate) use crate::host::{HostCallContext, HostFunction};
+    pub(crate) use crate::object::ObjectStore;
+    pub(crate) use crate::value::{FunctionTarget, FunctionValue, ObjectId, ProgramId, Value};
+    pub(crate) use crate::vm::{Completion, RunOutcome, StackSnapshot, Vm};
+    pub(crate) use crate::*;
+}
+#[cfg(test)]
+mod regression;
