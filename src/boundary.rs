@@ -239,6 +239,38 @@ impl Registry {
             retired,
         })
     }
+    fn publish_cell(self: &Rc<Self>, cell: Rc<crate::cell::Cell>) -> Result<HostValue, VmError> {
+        self.check()?;
+        // Validate before publishing. Snapshots do not normalize source values.
+        self.snapshot(&cell.read()?)?;
+        let id = self.next.get();
+        let next = id
+            .checked_add(1)
+            .ok_or_else(|| limit("lease ID space exhausted"))?;
+        let mut entries = self
+            .entries
+            .try_borrow_mut()
+            .map_err(|_| invalid("root registry is borrowed"))?;
+        if entries.len() >= self.limits.max_host_roots {
+            return Err(limit("host root limit exceeded"));
+        }
+        entries
+            .try_reserve(1)
+            .map_err(|_| limit("host root allocation failed"))?;
+        let retired = Rc::new(Cell::new(false));
+        let payload = cell.take_owned()?;
+        entries.push(Entry {
+            id,
+            retired: retired.clone(),
+            payload,
+        });
+        self.next.set(next);
+        Ok(HostValue {
+            registry: self.clone(),
+            id,
+            retired,
+        })
+    }
     fn snapshot(&self, value: &value::Value) -> Result<ValueSnapshot, VmError> {
         self.check()?;
         self.walk(value, 0, &mut 0, &mut BTreeSet::new())
@@ -869,8 +901,8 @@ impl Vm {
         if self.claimed {
             return Err(invalid("return value already claimed"));
         }
-        let value = self.inner.as_ref().unwrap().returned()?;
-        let root = self.registry.publish(value)?;
+        let cell = self.inner.as_ref().unwrap().returned_cell()?;
+        let root = self.registry.publish_cell(cell)?;
         self.inner.as_mut().unwrap().claim_returned();
         self.claimed = true;
         Ok(root)
@@ -995,6 +1027,7 @@ mod tests {
             owner: None,
             target: value::FunctionTarget::Host { slot: 0 },
             bound: vec![],
+            bound_count: 0,
             counter: Counter::new().unwrap(),
         })))
     }

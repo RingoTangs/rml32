@@ -154,6 +154,7 @@ impl Cell {
         drop(old);
         Ok(())
     }
+    #[cfg(test)]
     pub(crate) fn replace_batch(updates: &[(Rc<Cell>, Value)]) -> Result<(), VmError> {
         Self::replace_payload_batch(
             updates
@@ -161,6 +162,123 @@ impl Cell {
                 .map(|(c, v)| (c.clone(), SlotPayload::Value(v.clone())))
                 .collect(),
         )
+    }
+    pub(crate) fn take_owned(&self) -> Result<crate::ownership::OwnedValue, VmError> {
+        let old = {
+            let mut guard = self
+                .value
+                .try_borrow_mut()
+                .map_err(|_| VmError::new(VmErrorKind::InvalidState, "value slot is borrowed"))?;
+            if !matches!(guard.payload, SlotPayload::Value(_)) {
+                return Err(VmError::new(
+                    VmErrorKind::UnsupportedFeature,
+                    "hidden loop cannot be transferred",
+                ));
+            }
+            std::mem::replace(
+                &mut *guard,
+                OwnedPayload {
+                    _owner: None,
+                    payload: SlotPayload::Value(Value::Undefined),
+                },
+            )
+        };
+        let SlotPayload::Value(value) = old.payload else {
+            unreachable!()
+        };
+        Ok(crate::ownership::OwnedValue {
+            _owner: old._owner,
+            value,
+        })
+    }
+    /// Prepare every owner and guard before moving any actual payload. Old
+    /// values are destroyed only after all guards have been released.
+    pub(crate) fn transfer_batch(
+        updates: Vec<(Rc<Cell>, Value)>,
+        moves: Vec<(Rc<Cell>, Rc<Cell>)>,
+    ) -> Result<(), VmError> {
+        let mut cells = Vec::new();
+        crate::copy_plan::reserve(&mut cells, updates.len() + moves.len() * 2)?;
+        for (c, _) in &updates {
+            cells.push(c.clone());
+        }
+        for (src, dst) in &moves {
+            cells.push(src.clone());
+            cells.push(dst.clone());
+        }
+        cells.sort_by_key(|c| c.id());
+        cells.dedup_by_key(|c| c.id());
+        let index = |c: &Rc<Cell>| {
+            cells
+                .binary_search_by_key(&c.id(), |c| c.id())
+                .expect("transaction cell indexed")
+        };
+        let mut sources = std::collections::BTreeSet::new();
+        let mut targets = std::collections::BTreeSet::new();
+        for (src, dst) in &moves {
+            if src.id() == dst.id() || !sources.insert(src.id()) || !targets.insert(dst.id()) {
+                return Err(VmError::new(
+                    VmErrorKind::InvalidState,
+                    "conflicting payload transfers",
+                ));
+            }
+        }
+        if sources.iter().any(|id| targets.contains(id))
+            || updates.iter().any(|(c, _)| sources.contains(&c.id()))
+        {
+            return Err(VmError::new(
+                VmErrorKind::InvalidState,
+                "transfer source aliases another write",
+            ));
+        }
+        let mut prepared = Vec::new();
+        crate::copy_plan::reserve(&mut prepared, updates.len())?;
+        for (c, v) in updates {
+            prepared.push((index(&c), OwnedPayload::new(SlotPayload::Value(v))?));
+        }
+        let mut old = Vec::new();
+        crate::copy_plan::reserve(&mut old, prepared.len() + moves.len())?;
+        let mut guards = Vec::new();
+        crate::copy_plan::reserve(&mut guards, cells.len())?;
+        for c in &cells {
+            guards.push(c.value.try_borrow_mut().map_err(|_| {
+                VmError::new(VmErrorKind::InvalidState, "transaction cell is borrowed")
+            })?);
+        }
+        for (src, dst) in &moves {
+            if !matches!(guards[index(src)].payload, SlotPayload::Value(_)) {
+                return Err(VmError::new(
+                    VmErrorKind::UnsupportedFeature,
+                    "hidden loop cannot be moved as a value",
+                ));
+            }
+            if !matches!(
+                guards[index(dst)].payload,
+                SlotPayload::Value(Value::Undefined)
+            ) {
+                return Err(VmError::new(
+                    VmErrorKind::InvalidState,
+                    "transfer destination must be unpublished and empty",
+                ));
+            }
+        }
+        // From here to guard release there are no fallible operations or callbacks.
+        for (src, dst) in moves {
+            let payload = std::mem::replace(
+                &mut *guards[index(&src)],
+                OwnedPayload {
+                    _owner: None,
+                    payload: SlotPayload::Value(Value::Undefined),
+                },
+            );
+            old.push(std::mem::replace(&mut *guards[index(&dst)], payload));
+        }
+        for (i, payload) in prepared {
+            old.push(std::mem::replace(&mut *guards[i], payload));
+        }
+        drop(guards);
+        drop(old);
+        Ok(())
     }
     // Only called by a final header destructor. All guards are private and are
     // released before any old Value is dropped, including in replace above.

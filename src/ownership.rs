@@ -57,7 +57,7 @@ impl Drop for Owner {
 /// Owner drops before the physical value (field order is intentional).
 #[derive(Debug)]
 pub(crate) struct OwnedValue {
-    _owner: Option<Owner>,
+    pub(crate) _owner: Option<Owner>,
     pub value: crate::Value,
 }
 impl OwnedValue {
@@ -87,5 +87,22 @@ mod tests {
             VmErrorKind::Limit
         );
         assert_eq!(c.owners(), usize::MAX);
+    }
+    #[test]
+    fn raw_slot_and_completion_transports_do_not_reserve_another_owner() {
+        let value = crate::Value::array(vec![]).unwrap();
+        let counter = value.counter().unwrap();
+        let source = crate::cell::Cell::new(value).unwrap();
+        counter.owners.set(usize::MAX);
+        let mut plan = crate::copy_plan::CopyPlan::default();
+        let target = plan.transfer(source.clone()).unwrap();
+        plan.commit().unwrap();
+        assert_eq!(counter.owners(), usize::MAX);
+        assert_eq!(source.read().unwrap(), crate::Value::Undefined);
+        let owned = target.take_owned().unwrap();
+        assert_eq!(counter.owners(), usize::MAX);
+        counter.owners.set(1);
+        drop(owned);
+        assert_eq!(counter.owners(), 0);
     }
 }

@@ -1,6 +1,7 @@
 //! Bounded Magic559 interpreter; reference artifacts are never executed by tests.
 use crate::{
     cell::{Cell, SlotPayload},
+    copy_plan::CopyPlan,
     object::{InitializationState, LifecycleState, ObjectStore},
     prepared::{EntryLayout, Instruction, PreparedFunction, PreparedProgram, ProgramKind},
     value::{ObjectId, ProgramId, Value},
@@ -20,17 +21,17 @@ pub enum Completion {
 }
 #[derive(Debug)]
 struct StoredCompletion {
-    _owner: Option<crate::ownership::Owner>,
+    _owner: Option<Rc<Cell>>,
     value: Completion,
 }
 impl StoredCompletion {
     fn new(value: Completion) -> Result<Self, VmError> {
-        let counter = match &value {
-            Completion::Returned(v) => v.counter(),
+        let owner = match &value {
+            Completion::Returned(v) => Some(Cell::new(v.clone())?),
             _ => None,
         };
         Ok(Self {
-            _owner: crate::ownership::Owner::new(counter)?,
+            _owner: owner,
             value,
         })
     }
@@ -374,14 +375,11 @@ impl Vm {
             ..Self::new(objects)
         }
     }
-    pub(crate) fn returned(&self) -> Result<Value, VmError> {
-        match &self.completion {
-            Some(StoredCompletion {
-                value: Completion::Returned(v),
-                ..
-            }) => Ok(v.clone()),
-            _ => Err(err(VmErrorKind::InvalidState, "no unclaimed return value")),
-        }
+    pub(crate) fn returned_cell(&self) -> Result<Rc<Cell>, VmError> {
+        self.completion
+            .as_ref()
+            .and_then(|c| c._owner.clone())
+            .ok_or_else(|| err(VmErrorKind::InvalidState, "no unclaimed return value"))
     }
     pub(crate) fn claim_returned(&mut self) {
         // Keep completion observable after the one executable result is claimed.
@@ -761,8 +759,8 @@ impl Vm {
             .ok_or_else(|| err(VmErrorKind::Limit, "frame ID space exhausted"))?;
         Ok(id)
     }
-    fn copy_value(&self, value: &Value) -> Value {
-        match value {
+    fn copy_preview(&self, value: &Value) -> Result<Value, VmError> {
+        Ok(match value {
             Value::Object(id) if self.objects.get(*id).is_err() => Value::Undefined,
             Value::Function(f)
                 if Rc::ptr_eq(&f.0.origin, &self.objects.function_origin)
@@ -772,7 +770,26 @@ impl Vm {
                 Value::Undefined
             }
             _ => value.clone(),
+        })
+    }
+    #[cfg(test)]
+    fn copy_value(&self, value: &Value) -> Value {
+        self.copy_preview(value).unwrap()
+    }
+    fn copy_cell(&self, plan: &mut CopyPlan, cell: Rc<Cell>) -> Result<Value, VmError> {
+        plan.copy(cell, |v| self.copy_preview(v))
+    }
+    fn value_cell(&self, pos: usize) -> Result<Rc<Cell>, VmError> {
+        match &self.stack[pos] {
+            StackEntry::Value(c) => Ok(c.clone()),
+            _ => Err(err(
+                VmErrorKind::UnsupportedFeature,
+                "reference requires explicit dereference",
+            )),
         }
+    }
+    fn copy_stack(&self, plan: &mut CopyPlan, pos: usize) -> Result<Value, VmError> {
+        self.copy_cell(plan, self.value_cell(pos)?)
     }
     fn value(&self, pos: usize) -> Result<Value, VmError> {
         match &self.stack[pos] {
@@ -884,12 +901,10 @@ impl Vm {
     // Allocate the result before normalizing a dead Object in its source Cell.
     fn read_reference(&self, r: &Reference) -> Result<StackEntry, VmError> {
         let cell = self.resolve(r)?;
-        let original = cell.read()?;
-        let value = self.copy_value(&original);
-        let entry = StackEntry::Value(Cell::new(value.clone())?);
-        if value != original {
-            cell.replace(value)?;
-        }
+        let mut plan = CopyPlan::default();
+        let value = self.copy_cell(&mut plan, cell)?;
+        let entry = StackEntry::Value(plan.output(value)?);
+        plan.commit()?;
         Ok(entry)
     }
     fn reserve_reference(&mut self, id: Option<u64>) -> Result<(), VmError> {
@@ -980,12 +995,21 @@ impl Vm {
         if self.limits.max_frames == 0 || arguments.len() > self.limits.max_stack {
             return Err(err(VmErrorKind::Limit, "entry exceeds VM limits"));
         }
-        let arguments = arguments
-            .iter()
-            .rev()
-            .map(|v| Cell::new(self.copy_value(v)).map(StackEntry::Value))
+        let mut plan = CopyPlan::default();
+        let imported = arguments
+            .into_iter()
+            .map(Cell::new)
             .collect::<Result<Vec<_>, _>>()?;
+        let mut arguments = Vec::new();
+        arguments
+            .try_reserve(imported.len())
+            .map_err(|_| err(VmErrorKind::Limit, "entry arguments allocation failed"))?;
+        for cell in imported.into_iter().rev() {
+            let value = self.copy_cell(&mut plan, cell)?;
+            arguments.push(StackEntry::Value(plan.output(value)?));
+        }
         let id = self.frame_id()?;
+        plan.commit()?;
         self.stack = arguments;
         self.catches.clear();
         self.frames = vec![Frame {
@@ -1190,34 +1214,27 @@ impl Vm {
                 "argument array result exceeds stack limit",
             ));
         }
-        let mut values = Vec::with_capacity(frame.argc);
-        let mut updates = BTreeMap::new();
+        self.stack
+            .try_reserve(1)
+            .map_err(|_| err(VmErrorKind::Limit, "argument array stack allocation failed"))?;
+        let mut plan = CopyPlan::default();
+        let mut values = Vec::new();
+        values
+            .try_reserve(frame.argc)
+            .map_err(|_| err(VmErrorKind::Limit, "argument array allocation failed"))?;
         for i in 0..frame.argc {
-            let pos = frame.bp - 1 - i;
-            let value = match &self.stack[pos] {
-                StackEntry::Value(cell) => self.copy_value(&cell.read()?),
-                StackEntry::Reference(r) => {
-                    let cell = self.resolve(r)?;
-                    let original = cell.read()?;
-                    let value = self.copy_value(&original);
-                    if value != original {
-                        updates.insert(cell.id(), (cell, value.clone()));
-                    }
-                    value
-                }
+            let cell = match &self.stack[frame.bp - 1 - i] {
+                StackEntry::Value(c) => c.clone(),
+                StackEntry::Reference(r) => self.resolve(r)?,
             };
-            values.push(value);
+            values.push(self.copy_cell(&mut plan, cell)?);
         }
-        let result = StackEntry::Value(Cell::new(Value::array(values)?)?);
-        Cell::replace_batch(&updates.into_values().collect::<Vec<_>>())?;
+        let result = StackEntry::Value(plan.output(Value::array(values)?)?);
+        plan.commit()?;
         self.stack.push(result);
         Ok(())
     }
-    fn argument_updates(
-        &self,
-        frame: &Frame,
-        f: &PreparedFunction,
-    ) -> Result<BTreeMap<u64, (Rc<Cell>, Value)>, VmError> {
+    fn argument_updates(&self, frame: &Frame, f: &PreparedFunction) -> Result<CopyPlan, VmError> {
         if f.args.len() != f.max_args || frame.bp < frame.argc || self.stack.len() < frame.bp {
             return Err(err(
                 VmErrorKind::InvalidProgram,
@@ -1225,7 +1242,7 @@ impl Vm {
             ));
         }
         Self::argument_plan(f, frame.argc)?;
-        let mut updates = BTreeMap::new();
+        let mut updates = CopyPlan::default();
         for (i, arg) in f.args.iter().enumerate().take(frame.argc) {
             let pos = frame.bp - 1 - i;
             let (cell, value) = if arg.flag == 1 {
@@ -1234,7 +1251,7 @@ impl Vm {
                 if arg.r#type == 255 {
                     continue;
                 }
-                let value = self.copy_value(&cell.read()?);
+                let value = self.copy_cell(&mut updates, cell.clone())?;
                 (cell, value)
             } else {
                 let StackEntry::Value(cell) = &self.stack[pos] else {
@@ -1245,7 +1262,7 @@ impl Vm {
                 };
                 (
                     cell.clone(),
-                    crate::numeric::coerce(self.copy_value(&cell.read()?), arg.r#type),
+                    crate::numeric::coerce(self.copy_cell(&mut updates, cell.clone())?, arg.r#type),
                 )
             };
             if arg.r#type != 255
@@ -1257,13 +1274,13 @@ impl Vm {
                     format!("argument {i} type does not match prototype"),
                 ));
             }
-            updates.insert(cell.id(), (cell, value));
+            updates.write(cell, value)?;
         }
         Ok(updates)
     }
     fn check_args(&mut self, frame: &Frame, f: &PreparedFunction) -> Result<(), VmError> {
         let updates = self.argument_updates(frame, f)?;
-        Cell::replace_batch(&updates.into_values().collect::<Vec<_>>())
+        updates.commit()
     }
     fn call_other(
         &mut self,
@@ -1597,6 +1614,7 @@ impl Vm {
                     "function value result exceeds stack limit",
                 )
             })?;
+        let mut plan = CopyPlan::default();
         let mut bound = Vec::new();
         bound
             .try_reserve(count)
@@ -1612,7 +1630,7 @@ impl Vm {
                     "only scalar function captures are supported",
                 ));
             }
-            bound.push(value);
+            bound.push(plan.transfer(self.value_cell(pos)?)?);
         }
         let target = if host {
             if !(0..559).contains(&slot) {
@@ -1652,15 +1670,16 @@ impl Vm {
                     "function value result allocation failed",
                 )
             })?;
-        let cell = Cell::new(Value::Undefined)?;
         let function = crate::FunctionValue(Rc::new(crate::value::FunctionData {
             origin: self.objects.function_origin.clone(),
             owner,
             target,
             bound,
+            bound_count: count,
             counter: crate::ownership::Counter::new()?,
         }));
-        cell.replace(Value::Function(function))?;
+        let cell = plan.output(Value::Function(function))?;
+        plan.commit()?;
         self.stack.truncate(n - count);
         self.stack.push(StackEntry::Value(cell));
         self.frames.last_mut().unwrap().pc += 1;
@@ -1773,17 +1792,26 @@ impl Vm {
         let bp = prefix
             .checked_add(argc)
             .ok_or_else(|| err(VmErrorKind::Limit, "indirect argument stack overflow"))?;
-        let mut arguments = Vec::new();
-        arguments
+        let unique = function.0.counter.owners() == 1;
+        let mut plan = CopyPlan::default();
+        let activation_cell = plan.transfer(self.value_cell(n - 1)?)?;
+        let mut cells = Vec::new();
+        cells
             .try_reserve(argc)
-            .map_err(|_| err(VmErrorKind::Limit, "indirect argument allocation failed"))?;
+            .map_err(|_| err(VmErrorKind::Limit, "indirect cell allocation failed"))?;
         for i in 0..argc {
-            let raw = if i < function.bound_count() {
+            let capture = i < function.bound_count();
+            let source = if capture {
                 function.0.bound[i].clone()
             } else {
-                self.ordinary_value(n - 2 - (i - function.bound_count()))?
+                self.value_cell(n - 2 - (i - function.bound_count()))?
             };
-            let mut value = self.copy_value(&raw);
+            let raw = source.read()?;
+            let mut value = if capture && unique {
+                raw.clone()
+            } else {
+                self.copy_cell(&mut plan, source.clone())?
+            };
             if let Some(arg) = target.args.get(i) {
                 value = crate::numeric::coerce(value, arg.r#type);
                 if arg.r#type != 255
@@ -1797,7 +1825,17 @@ impl Vm {
                 }
             }
             crate::host::validate_value(&value)?;
-            arguments.push(value);
+            let cell = if capture && unique {
+                if value == raw {
+                    plan.transfer(source)?
+                } else {
+                    plan.write(source, Value::Undefined)?;
+                    plan.output(value)?
+                }
+            } else {
+                plan.output(value)?
+            };
+            cells.push(StackEntry::Value(cell));
         }
         if bp
             .checked_add(defaults)
@@ -1814,13 +1852,6 @@ impl Vm {
             .next_frame
             .checked_add(1)
             .ok_or_else(|| err(VmErrorKind::Limit, "frame ID space exhausted"))?;
-        let mut cells = Vec::new();
-        cells
-            .try_reserve(argc)
-            .map_err(|_| err(VmErrorKind::Limit, "indirect cell allocation failed"))?;
-        for value in arguments {
-            cells.push(StackEntry::Value(Cell::new(value)?));
-        }
         self.stack
             .try_reserve(bp.saturating_sub(n))
             .map_err(|_| err(VmErrorKind::Limit, "indirect stack allocation failed"))?;
@@ -1838,7 +1869,12 @@ impl Vm {
             entered: false,
             phase: EntryPhase::Unchecked,
         };
-        // Commit only after every fallible check/allocation. Argument zero is nearest bp.
+        // Net ownership of the target is unchanged by its move to activation.
+        // Branch selection above used semantic owners before provisional output reservations.
+        plan.commit()?;
+        drop(activation_cell);
+        drop(function);
+        // No fallible work follows publication. Argument zero is nearest bp.
         self.next_frame = next_id;
         self.stack.truncate(prefix);
         self.stack.extend(cells.into_iter().rev());
@@ -1981,14 +2017,32 @@ impl Vm {
                 .map_err(|_| err(VmErrorKind::Limit, "host argument allocation failed"))?;
             for i in 0..argc {
                 let value = if i < function.bound_count() {
-                    function.0.bound[i].clone()
+                    if function.0.counter.owners() == 1 {
+                        function.0.bound[i].read()?
+                    } else {
+                        vm.copy_preview(&function.0.bound[i].read()?)?
+                    }
                 } else {
                     vm.ordinary_value(n - 2 - (i - function.bound_count()))?
                 };
                 Self::check_host_argument(&activation, i, &value)?;
                 arguments.push(value);
             }
-            vm.commit_host_call(&activation, arguments, n - argn)
+            let unique = function.0.counter.owners() == 1;
+            vm.commit_host_call_with(&activation, arguments, n - argn, |vm, plan| {
+                let activation = plan.transfer(vm.value_cell(n - 1)?)?;
+                // The plan owns activation until its commit completes.
+                drop(activation);
+                for source in &function.0.bound {
+                    if unique {
+                        let moved = plan.transfer(source.clone())?;
+                        drop(moved);
+                    } else {
+                        vm.copy_cell(plan, source.clone())?;
+                    }
+                }
+                Ok(())
+            })
         };
         invoke(self).map_err(|e| Self::host_call_error(&activation, e))
     }
@@ -2011,6 +2065,15 @@ impl Vm {
         activation: &crate::host::HostActivation,
         arguments: Vec<Value>,
         prefix: usize,
+    ) -> Result<(), VmError> {
+        self.commit_host_call_with(activation, arguments, prefix, |_, _| Ok(()))
+    }
+    fn commit_host_call_with(
+        &mut self,
+        activation: &crate::host::HostActivation,
+        arguments: Vec<Value>,
+        prefix: usize,
+        finish: impl FnOnce(&Self, &mut CopyPlan) -> Result<(), VmError>,
     ) -> Result<(), VmError> {
         use crate::host::{HostReturn, validate_value};
         let n = self.stack.len();
@@ -2040,7 +2103,10 @@ impl Vm {
             }
         };
         validate_value(&value)?;
-        cell.replace(value)?;
+        let mut plan = CopyPlan::default();
+        finish(self, &mut plan)?;
+        plan.write(cell.clone(), value)?;
+        plan.commit()?;
         drop(arguments);
         self.stack.truncate(prefix);
         self.stack.push(StackEntry::Value(cell));
@@ -2082,7 +2148,14 @@ impl Vm {
                     "void function returned a value",
                 ));
             }
-            (_, 1) => self.copy_value(&self.value(self.stack.len() - 1)?),
+            (_, 1) => {
+                let raw = self.value(self.stack.len() - 1)?;
+                if f.return_type == 255 || raw.tag() == f.return_type {
+                    raw
+                } else {
+                    self.copy_preview(&raw)?
+                }
+            }
             (_, 0) => {
                 return Err(err(
                     VmErrorKind::InvalidProgram,
@@ -2107,19 +2180,38 @@ impl Vm {
             ));
         }
         let floor = frame.bp - frame.argc;
-        let result_entry = if self.frames.len() > 1 {
-            if floor >= self.limits.max_stack {
-                return Err(err(VmErrorKind::Limit, "return result exceeds stack limit"));
+        if self.frames.len() > 1 && floor >= self.limits.max_stack {
+            return Err(err(VmErrorKind::Limit, "return result exceeds stack limit"));
+        }
+        let mut plan = CopyPlan::default();
+        let raw_source = if count == 1 {
+            Some(self.value_cell(self.stack.len() - 1)?)
+        } else {
+            None
+        };
+        let returned = if let Some(source) = raw_source {
+            if !source.is_loop()? && source.read()? == result {
+                plan.transfer(source)?
+            } else {
+                plan.output(result.clone())?
             }
-            Some(StackEntry::Value(Cell::new(result.clone())?))
+        } else {
+            plan.output(result.clone())?
+        };
+        let result_entry = if self.frames.len() > 1 {
+            Some(StackEntry::Value(returned.clone()))
         } else {
             None
         };
         let completion_entry = if self.frames.len() == 1 && self.construction.is_none() {
-            Some(StoredCompletion::new(Completion::Returned(result))?)
+            Some(StoredCompletion {
+                _owner: Some(returned),
+                value: Completion::Returned(result),
+            })
         } else {
             None
         };
+        plan.commit()?;
         self.stack.truncate(floor);
         self.frames.pop();
         if let Some(entry) = result_entry {
@@ -2317,7 +2409,7 @@ impl Vm {
         let mut control = cell.loop_control()?;
         self.validate_binding(&control.bound)?;
         let mut output = None;
-        let mut source_update = None;
+        let mut plan = CopyPlan::default();
         let mut member_updates = Vec::new();
         let valid = match &mut control.state {
             LoopState::Numeric {
@@ -2345,11 +2437,7 @@ impl Vm {
                 *index = index.wrapping_add(1);
                 if (i as usize) < owner.len() {
                     let source = owner.cell(i as usize)?;
-                    let original = source.read()?;
-                    let value = self.copy_value(&original);
-                    if original != value {
-                        source_update = Some((source, SlotPayload::Value(value.clone())));
-                    }
+                    let value = self.copy_cell(&mut plan, source)?;
                     output = Some(value);
                     true
                 } else {
@@ -2365,12 +2453,8 @@ impl Vm {
                 let number = *ordinal;
                 *ordinal = ordinal.wrapping_add(1);
                 if let Some((key, source)) = owner.scan(bucket, subindex)? {
-                    let original = source.read()?;
-                    let value = self.copy_value(&original);
-                    if original != value {
-                        source_update = Some((source, SlotPayload::Value(value.clone())));
-                    }
-                    let values = [self.copy_value(&key), value, Value::Int(number as i32)];
+                    let value = self.copy_cell(&mut plan, source)?;
+                    let values = [key.clone(), value, Value::Int(number as i32)];
                     let binding = self.resolve(&control.bound)?.read()?;
                     let array = crate::container::mapping_output(owner, binding, &values)?;
                     for (i, value) in values.into_iter().enumerate() {
@@ -2398,9 +2482,6 @@ impl Vm {
         if let Some(value) = output {
             updates.push((target, SlotPayload::Value(value)));
         }
-        if let Some(update) = source_update {
-            updates.push(update);
-        }
         updates.extend(member_updates);
         let mut ids = std::collections::BTreeSet::new();
         if updates.iter().any(|(cell, _)| !ids.insert(cell.id())) {
@@ -2409,7 +2490,7 @@ impl Vm {
                 "loop output aliases a pending write",
             ));
         }
-        Cell::replace_payload_batch(updates)?;
+        plan.commit_payloads(updates)?;
         self.frames.last_mut().unwrap().pc = pc as usize;
         Ok(())
     }
@@ -2481,7 +2562,7 @@ impl Vm {
         let source = self.value(n - 3)?;
         let begin = self.value(n - 2)?;
         let end = self.value(n - 1)?;
-        let mut updates = std::collections::BTreeMap::new();
+        let mut plan = CopyPlan::default();
         let result = match source {
             Value::Bytes(bytes) => {
                 let range = Self::range_bounds(bytes.len(), &begin, &end, mode)?;
@@ -2503,11 +2584,7 @@ impl Vm {
                 let mut values = Vec::with_capacity(range.len());
                 for index in range {
                     let cell = array.cell(index)?;
-                    let original = cell.read()?;
-                    let copied = self.copy_value(&original);
-                    if copied != original {
-                        updates.insert(cell.id(), (cell, copied.clone()));
-                    }
+                    let copied = self.copy_cell(&mut plan, cell)?;
                     values.push(copied);
                 }
                 Value::array(values)?
@@ -2522,10 +2599,10 @@ impl Vm {
         let StackEntry::Value(cell) = &self.stack[n - 3] else {
             unreachable!()
         };
-        updates.insert(cell.id(), (cell.clone(), result));
+        plan.write(cell.clone(), result)?;
         // All fallible reads/allocations precede the atomic commit. Source dead-object
         // normalization is visible through aliases, as in native vm_copyValue.
-        Cell::replace_batch(&updates.into_values().collect::<Vec<_>>())?;
+        plan.commit()?;
         self.stack.truncate(n - 2);
         Ok(())
     }
@@ -2656,11 +2733,49 @@ impl Vm {
     fn step(&mut self) -> Result<(), StepFault> {
         // Provenance lives only for this instruction, never in sticky VM state.
         let mut site = None;
-        self.step_instruction(&mut site)
-            .map_err(|diagnostic| StepFault {
-                diagnostic: Box::new(diagnostic),
-                site,
-            })
+        let original = self.frames.last().and_then(|frame| {
+            let program = self.objects.program(frame.program()).ok()?;
+            let code = CodeView::get(&program, frame.body).ok()?;
+            let opcode = code.instructions.get(frame.pc)?.opcode;
+            matches!(
+                opcode,
+                0x03 | 0x04
+                    | 0x05
+                    | 0x06
+                    | 0x07
+                    | 0x08
+                    | 0x0f
+                    | 0x12
+                    | 0x14
+                    | 0x15
+                    | 0x17
+                    | 0x21
+                    | 0x24
+                    | 0x2d
+                    | 0x35
+                    | 0x37
+                    | 0x3d
+                    | 0x43
+                    | 0x45
+                    | 0x49
+                    | 0x4a
+                    | 0x4d
+                    | 0x4e
+                    | 0x50
+            )
+            .then_some((frame.id, frame.pc))
+        });
+        let result = self.step_instruction(&mut site);
+        if result.is_err()
+            && let Some((id, pc)) = original
+            && let Some(frame) = self.frames.iter_mut().find(|f| f.id == id)
+        {
+            frame.pc = pc;
+        }
+        result.map_err(|diagnostic| StepFault {
+            diagnostic: Box::new(diagnostic),
+            site,
+        })
     }
     fn step_instruction(
         &mut self,
@@ -2800,11 +2915,12 @@ impl Vm {
                     (n - 2, n - 1)
                 };
                 let reference = self.reference(target)?;
-                let value = self.copy_value(&self.value(source)?);
+                let mut plan = CopyPlan::default();
+                let value = self.copy_stack(&mut plan, source)?;
                 let cell = self.writable(&reference, &value)?;
-                // Allocate the result before committing the write.
-                let result = StackEntry::Value(Cell::new(value.clone())?);
-                cell.replace(value)?;
+                let result = StackEntry::Value(plan.output(value.clone())?);
+                plan.write(cell, value)?;
+                plan.commit()?;
                 self.stack.truncate(n - 2);
                 self.push_entry(result)
             }
@@ -2957,10 +3073,8 @@ impl Vm {
                 self.need(2, &frame, f.local_count)?;
                 let key = self.value(n - 1)?;
                 let selected = match self.value(n - 2)? {
-                    Value::Array(array) => {
-                        array.cell(Self::array_index(&array, &key, a)?)?.read()?
-                    }
-                    Value::Mapping(mapping) => mapping.get(&key)?.unwrap_or(Value::Undefined),
+                    Value::Array(array) => Some(array.cell(Self::array_index(&array, &key, a)?)?),
+                    Value::Mapping(mapping) => mapping.lookup(&key)?,
                     _ => {
                         return Err(err(
                             VmErrorKind::UnsupportedType,
@@ -2968,9 +3082,16 @@ impl Vm {
                         ));
                     }
                 };
-                let selected = self.copy_value(&selected);
+                let mut plan = CopyPlan::default();
+                let value = if let Some(cell) = selected {
+                    self.copy_cell(&mut plan, cell)?
+                } else {
+                    Value::Undefined
+                };
+                plan.write(self.value_cell(n - 2)?, value)?;
+                plan.commit()?;
                 self.stack.pop();
-                self.set(n - 2, selected)
+                Ok(())
             }
             0x4f => {
                 self.need(1, &frame, f.local_count)?;
@@ -3025,7 +3146,7 @@ impl Vm {
                 let value = if opcode == 0x2d && matches!(raw, Value::Function(_)) {
                     raw
                 } else {
-                    self.copy_value(&raw)
+                    self.copy_preview(&raw)?
                 };
                 let result = match opcode {
                     0x24 => i32::from(i32::from(value.tag()) == a),
@@ -3063,6 +3184,9 @@ impl Vm {
                 if n >= self.limits.max_stack {
                     return Err(err(VmErrorKind::Limit, "value stack limit exceeded"));
                 }
+                self.stack
+                    .try_reserve(1)
+                    .map_err(|_| err(VmErrorKind::Limit, "local read stack allocation failed"))?;
                 let entry = if let Some(pos) = self.slot(a, &frame) {
                     match &self.stack[pos] {
                         StackEntry::Reference(r) => {
@@ -3075,7 +3199,11 @@ impl Vm {
                             self.read_reference(r)?
                         }
                         StackEntry::Value(c) => {
-                            StackEntry::Value(Cell::new(self.copy_value(&c.read()?))?)
+                            let mut plan = CopyPlan::default();
+                            let value = self.copy_cell(&mut plan, c.clone())?;
+                            let cell = plan.output(value)?;
+                            plan.commit()?;
+                            StackEntry::Value(cell)
                         }
                     }
                 } else {
@@ -3088,8 +3216,9 @@ impl Vm {
                 let pos = self
                     .slot(a, &frame)
                     .ok_or_else(|| err(VmErrorKind::Bounds, "no such local/argument slot"))?;
-                let value = self.copy_value(&self.value(n - 1)?);
-                match &self.stack[pos] {
+                let mut plan = CopyPlan::default();
+                let value = self.copy_stack(&mut plan, n - 1)?;
+                let target = match &self.stack[pos] {
                     StackEntry::Reference(r) => {
                         if pos >= frame.bp {
                             return Err(err(
@@ -3097,10 +3226,12 @@ impl Vm {
                                 "only reference parameters may be assigned through local slots",
                             ));
                         }
-                        self.writable(r, &value)?.replace(value)
+                        self.writable(r, &value)?
                     }
-                    StackEntry::Value(c) => c.replace(value),
-                }
+                    StackEntry::Value(c) => c.clone(),
+                };
+                plan.write(target, value)?;
+                plan.commit()
             }
             0x35 | 0x36 => {
                 if self.initialization.is_some()
@@ -3118,6 +3249,9 @@ impl Vm {
                         format!("global slot {a}: value stack limit exceeded"),
                     ));
                 }
+                self.stack
+                    .try_reserve(1)
+                    .map_err(|_| err(VmErrorKind::Limit, "global read stack allocation failed"))?;
                 let schema = p.global_schema.ok_or_else(|| {
                     err(
                         VmErrorKind::UnsupportedFeature,
@@ -3159,14 +3293,26 @@ impl Vm {
                 Ok(())
             }
             0x3d => {
-                let value = self.copy_value(&self.object_cell(&frame, a)?.read()?);
-                self.push(value)
+                if n >= self.limits.max_stack {
+                    return Err(err(VmErrorKind::Limit, "value stack limit exceeded"));
+                }
+                self.stack
+                    .try_reserve(1)
+                    .map_err(|_| err(VmErrorKind::Limit, "object read stack allocation failed"))?;
+                let mut plan = CopyPlan::default();
+                let value = self.copy_cell(&mut plan, self.object_cell(&frame, a)?)?;
+                let result = plan.output(value)?;
+                plan.commit()?;
+                self.stack.push(StackEntry::Value(result));
+                Ok(())
             }
             0x4e => {
                 self.need(1, &frame, f.local_count)?;
                 let cell = self.object_cell(&frame, a)?;
-                let value = self.copy_value(&self.value(n - 1)?);
-                cell.replace(value)
+                let mut plan = CopyPlan::default();
+                let value = self.copy_stack(&mut plan, n - 1)?;
+                plan.write(cell, value)?;
+                plan.commit()
             }
             0x1f => self.jump(a, f.instructions.len()),
             0x21 => {
@@ -3175,9 +3321,13 @@ impl Vm {
                 let value = if matches!(raw, Value::Function(_)) {
                     raw
                 } else {
-                    self.copy_value(&raw)
+                    self.copy_preview(&raw)?
                 };
                 let zero = crate::numeric::zero(&value);
+                let next_pc = self.frames.last().unwrap().pc as i64 + i64::from(a);
+                if zero != (b & 1 != 0) && (next_pc < 0 || next_pc >= f.instructions.len() as i64) {
+                    return Err(err(VmErrorKind::Bounds, "jump outside code"));
+                }
                 self.set(n - 1, value)?;
                 if zero != (b & 1 != 0) {
                     self.jump(a, f.instructions.len())?;
@@ -4901,7 +5051,8 @@ mod function_value_tests {
                 program: vm.frames[0].program(),
                 function: 1,
             },
-            bound,
+            bound_count: bound.len(),
+            bound: bound.into_iter().map(|v| Cell::new(v).unwrap()).collect(),
             counter: crate::ownership::Counter::new().unwrap(),
         }))
     }
@@ -5365,6 +5516,371 @@ mod function_value_tests {
             ExecutionSource::GlobalProgram(_)
         ));
     }
+    // These private fixtures bypass the public scalar gate ONLY to expose the
+    // COPY/raw distinction before callee entry. They do not enable new captures.
+    #[test]
+    fn t02_unique_and_shared_expansion_use_semantic_owners_for_object_and_global() {
+        for global in [false, true] {
+            for shared in [false, true] {
+                let mut vm = if global {
+                    global_fixture(5, [0, 1], 1)
+                } else {
+                    fixture(5, [0, 1], 1)
+                };
+                let dead = vm.objects.create(vm.frames[0].program(), vec![]).unwrap();
+                vm.objects.remove(dead).unwrap();
+                let f = if global {
+                    global_value(&vm, vec![Value::Object(dead)])
+                } else {
+                    value(&vm, vec![Value::Object(dead)])
+                };
+                let capture = f.0.bound[0].clone();
+                let counter = f.0.counter.clone();
+                let holder = shared.then(|| Cell::new(Value::Function(f.clone())).unwrap());
+                // A physical view and diagnostic observations are deliberately retained.
+                vm.push(Value::Function(f.clone())).unwrap();
+                let target = vm.value_cell(0).unwrap();
+                let view = vm.stack().unwrap();
+                let _debug = format!("{f:?}");
+                assert_eq!(counter.owners(), if shared { 2 } else { 1 });
+                vm.run(0).unwrap();
+                assert_eq!(capture.read().unwrap(), Value::Object(dead));
+                vm.run(1).unwrap();
+                assert_eq!(target.read().unwrap(), Value::Undefined);
+                assert_eq!(capture.read().unwrap(), Value::Undefined);
+                assert_eq!(f.bound_count(), 1);
+                assert_eq!(
+                    vm.value(0).unwrap(),
+                    if shared {
+                        Value::Undefined
+                    } else {
+                        Value::Object(dead)
+                    }
+                );
+                assert_eq!(counter.owners(), usize::from(shared));
+                drop((view, holder));
+            }
+        }
+    }
+    #[test]
+    fn t02_every_capture_and_activation_allocation_failure_keeps_slots_and_pc() {
+        for shared in [false, true] {
+            for after in 0..3 {
+                let mut vm = fixture(5, [0, 1], 2);
+                let f = value(&vm, vec![Value::Int(7), Value::Int(8)]);
+                let captures = f.0.bound.clone();
+                let holder = shared.then(|| Cell::new(Value::Function(f.clone())).unwrap());
+                vm.push(Value::Function(f.clone())).unwrap();
+                let before = vm.stack().unwrap();
+                let owners = f.0.counter.owners();
+                let frame_id = vm.next_frame;
+                with_allocation_failure(after, || assert_atomic(&mut vm, VmErrorKind::Limit));
+                assert_eq!(vm.stack().unwrap(), before);
+                assert_eq!(vm.next_frame, frame_id);
+                assert_eq!(vm.frames[0].pc, 0);
+                assert_eq!(f.0.counter.owners(), owners);
+                assert_eq!(captures[0].read().unwrap(), Value::Int(7));
+                assert_eq!(captures[1].read().unwrap(), Value::Int(8));
+                drop(holder);
+            }
+        }
+    }
+    #[test]
+    fn t02_borrowed_capture_and_target_fail_before_publishing_an_activation() {
+        for shared in [false, true] {
+            for borrow_target in [false, true] {
+                let mut vm = fixture(5, [0, 1], 1);
+                let f = value(&vm, vec![Value::Int(7)]);
+                let holder = shared.then(|| Cell::new(Value::Function(f.clone())).unwrap());
+                vm.push(Value::Function(f.clone())).unwrap();
+                let source = if borrow_target {
+                    vm.value_cell(0).unwrap()
+                } else {
+                    f.0.bound[0].clone()
+                };
+                if borrow_target {
+                    source.with_read_borrow_for_test(|| {
+                        assert_atomic(&mut vm, VmErrorKind::InvalidState)
+                    });
+                } else {
+                    source.with_write_borrow_for_test(|| {
+                        assert_atomic(&mut vm, VmErrorKind::InvalidState)
+                    });
+                }
+                assert_eq!(f.0.bound[0].read().unwrap(), Value::Int(7));
+                assert_eq!(f.0.counter.owners(), if shared { 2 } else { 1 });
+                drop(holder);
+            }
+        }
+    }
+    #[test]
+    fn t02_frame_id_exhaustion_and_stack_limit_keep_shared_normalization_pending() {
+        for id_exhausted in [false, true] {
+            let mut vm = fixture(5, [0, 1], 1);
+            let f = value(&vm, vec![Value::Object(ObjectId(999))]);
+            let holder = Cell::new(Value::Function(f.clone())).unwrap();
+            vm.push(Value::Function(f.clone())).unwrap();
+            if id_exhausted {
+                vm.next_frame = u64::MAX;
+            } else {
+                vm.limits.max_frames = 1;
+            }
+            assert_atomic(&mut vm, VmErrorKind::Limit);
+            assert_eq!(f.0.bound[0].read().unwrap(), Value::Object(ObjectId(999)));
+            drop(holder);
+        }
+    }
+    #[test]
+    fn t02_capture_creation_raw_move_clears_an_aliased_evaluation_cell() {
+        let mut vm = fixture(0x17, [1, 1], 1);
+        vm.push(Value::bytes(b"raw")).unwrap();
+        let source = vm.value_cell(0).unwrap();
+        vm.run(1).unwrap();
+        assert_eq!(source.read().unwrap(), Value::Undefined);
+        let Value::Function(f) = vm.value(0).unwrap() else {
+            unreachable!()
+        };
+        assert_eq!(f.bound_count(), 1);
+        assert_eq!(f.0.bound[0].read().unwrap(), Value::bytes(b"raw"));
+    }
+    #[test]
+    fn t02_return_raw_move_keeps_dead_identity_and_transfers_the_existing_owner() {
+        let mut vm = fixture(0x49, [0, 0], 0);
+        let f = value(&vm, vec![]);
+        let counter = f.0.counter.clone();
+        vm.push(Value::Function(f.clone())).unwrap();
+        let source = vm.value_cell(0).unwrap();
+        // The returned Function's creator differs from the still-live executing object.
+        let live = vm.objects.create(vm.frames[0].program(), vec![]).unwrap();
+        vm.frames[0].active_object = Some(live);
+        vm.objects.remove(f.owner().unwrap()).unwrap();
+        assert_eq!(counter.owners(), 1);
+        vm.run(1).unwrap();
+        assert_eq!(source.read().unwrap(), Value::Undefined);
+        assert_eq!(counter.owners(), 1);
+        assert_eq!(
+            vm.returned_cell().unwrap().read().unwrap(),
+            Value::Function(f)
+        );
+    }
+    fn t02_host_fixture(
+        shared: bool,
+        valid: bool,
+    ) -> (
+        Vm,
+        crate::FunctionValue,
+        Option<Rc<Cell>>,
+        Rc<std::cell::Cell<usize>>,
+    ) {
+        let mut vm = fixture(5, [0, 1], 0);
+        let old = vm.objects.program(vm.frames[0].program()).unwrap();
+        let program = PreparedProgram {
+            source: "t02-host-transaction".into(),
+            global_schema: None,
+            allow_host_calls: true,
+            allow_function_values: true,
+            allow_global_function_values: false,
+            allow_host_function_values: true,
+            kind: ProgramKind::Object,
+            function_capacity: 2,
+            variable_count: 0,
+            strings: vec![],
+            functions: old.functions.clone(),
+            unimplemented: Default::default(),
+            initializations: None,
+            init_order: vec![],
+            lifecycles: None,
+            methods: None,
+        };
+        let id = vm.objects.register_program(program).unwrap();
+        let object = vm.objects.create(id, vec![]).unwrap();
+        vm.frames[0].execution = ExecutionSource::ObjectProgram(id);
+        vm.frames[0].active_object = Some(object);
+        let mut f = value(&vm, vec![Value::Object(ObjectId(999))]);
+        Rc::get_mut(&mut f.0).unwrap().target = crate::value::FunctionTarget::Host { slot: 0 };
+        let holder = shared.then(|| Cell::new(Value::Function(f.clone())).unwrap());
+        let calls = Rc::new(std::cell::Cell::new(0));
+        let count = calls.clone();
+        vm.objects
+            .register_host_function(
+                0,
+                crate::host::HostFunction {
+                    name: "t02".into(),
+                    signature: crate::HostSignature {
+                        required: vec![crate::HostType::Any],
+                        optional: vec![],
+                        rest: None,
+                        returns: if valid {
+                            crate::HostReturn::Mixed
+                        } else {
+                            crate::HostReturn::Exact(crate::HostType::Int)
+                        },
+                    },
+                    callback: crate::host::owned_callback(Rc::new(move |_, args| {
+                        count.set(count.get() + 1);
+                        assert_eq!(
+                            args[0],
+                            if shared {
+                                Value::Undefined
+                            } else {
+                                Value::Object(ObjectId(999))
+                            }
+                        );
+                        Ok(Some(args[0].clone()))
+                    })),
+                },
+            )
+            .unwrap();
+        vm.push(Value::Function(f.clone())).unwrap();
+        (vm, f, holder, calls)
+    }
+    #[test]
+    fn t02_host_success_commits_the_frozen_branch_and_clears_target_aliases() {
+        for shared in [false, true] {
+            let (mut vm, f, holder, calls) = t02_host_fixture(shared, true);
+            let target = vm.value_cell(0).unwrap();
+            vm.run(1).unwrap();
+            assert_eq!(calls.get(), 1);
+            assert_eq!(target.read().unwrap(), Value::Undefined);
+            assert_eq!(f.0.bound[0].read().unwrap(), Value::Undefined);
+            assert_eq!(f.bound_count(), 1);
+            assert_eq!(
+                vm.value(0).unwrap(),
+                if shared {
+                    Value::Undefined
+                } else {
+                    Value::Object(ObjectId(999))
+                }
+            );
+            drop(holder);
+        }
+    }
+    #[test]
+    fn t02_host_bad_return_keeps_captures_operands_and_pc_without_replaying() {
+        for shared in [false, true] {
+            let (mut vm, f, holder, calls) = t02_host_fixture(shared, false);
+            let before = vm.stack().unwrap();
+            assert_eq!(vm.run(1).unwrap_err().kind, VmErrorKind::UnsupportedType);
+            assert_eq!(calls.get(), 1);
+            assert_eq!(vm.frames[0].pc, 0);
+            assert_eq!(vm.stack().unwrap(), before);
+            assert_eq!(f.0.bound[0].read().unwrap(), Value::Object(ObjectId(999)));
+            assert!(vm.run(1).is_err());
+            assert_eq!(calls.get(), 1);
+            drop(holder);
+        }
+    }
+    #[test]
+    fn t02_host_post_callback_allocation_or_borrow_failure_does_not_publish_a_plan() {
+        for borrow in [false, true] {
+            let (mut vm, f, holder, calls) = t02_host_fixture(true, true);
+            let before = vm.stack().unwrap();
+            if borrow {
+                f.0.bound[0].with_read_borrow_for_test(|| {
+                    assert_eq!(vm.run(1).unwrap_err().kind, VmErrorKind::InvalidState)
+                });
+            } else {
+                // Result Cell reservation succeeds; activation allocation fails after callback.
+                with_allocation_failure(1, || {
+                    assert_eq!(vm.run(1).unwrap_err().kind, VmErrorKind::Limit)
+                });
+            }
+            assert_eq!(calls.get(), 1);
+            assert_eq!(vm.frames[0].pc, 0);
+            assert_eq!(vm.stack().unwrap(), before);
+            assert_eq!(f.0.bound[0].read().unwrap(), Value::Object(ObjectId(999)));
+            assert!(vm.run(1).is_err());
+            assert_eq!(calls.get(), 1);
+            drop(holder);
+        }
+    }
+    #[test]
+    fn t02_shared_copy_cleans_a_dead_function_capture_but_preserves_ownerless_functions() {
+        for dead in [false, true] {
+            let mut vm = global_fixture(5, [0, 1], 1);
+            let mut inner = global_value(&vm, vec![]);
+            let creator = vm.objects.create(vm.frames[0].program(), vec![]).unwrap();
+            Rc::get_mut(&mut inner.0).unwrap().owner = dead.then_some(creator);
+            vm.objects.remove(creator).unwrap();
+            let parent = value(&vm, vec![Value::Function(inner.clone())]);
+            let capture = parent.0.bound[0].clone();
+            let holder = Cell::new(Value::Function(parent.clone())).unwrap();
+            vm.push(Value::Function(parent)).unwrap();
+            assert_eq!(inner.0.counter.owners(), 1);
+            vm.run(1).unwrap();
+            let expected = if dead {
+                Value::Undefined
+            } else {
+                Value::Function(inner.clone())
+            };
+            assert_eq!(capture.read().unwrap(), expected);
+            assert_eq!(vm.value(0).unwrap(), expected);
+            assert_eq!(inner.0.counter.owners(), if dead { 0 } else { 2 });
+            drop(holder);
+        }
+    }
+    #[test]
+    fn t02_array_mapping_capture_expansion_is_shallow_and_aliases_do_not_duplicate_members() {
+        for mapping in [false, true] {
+            for shared in [false, true] {
+                let mut vm = fixture(5, [0, 1], 1);
+                let dead = Value::Object(ObjectId(999));
+                let container = if mapping {
+                    Value::mapping(vec![(Value::Int(0), dead.clone())]).unwrap()
+                } else {
+                    Value::array(vec![dead.clone()]).unwrap()
+                };
+                let counter = container.counter().unwrap();
+                let parent = value(&vm, vec![container.clone()]);
+                let holder = shared.then(|| Cell::new(Value::Function(parent.clone())).unwrap());
+                vm.push(Value::Function(parent.clone())).unwrap();
+                assert_eq!(counter.owners(), 1);
+                vm.run(1).unwrap();
+                assert_eq!(counter.owners(), if shared { 2 } else { 1 });
+                let member = match vm.value(0).unwrap() {
+                    Value::Array(a) => a.cell(0).unwrap().read().unwrap(),
+                    Value::Mapping(m) => m.get(&Value::Int(0)).unwrap().unwrap(),
+                    _ => unreachable!(),
+                };
+                assert_eq!(member, dead);
+                assert_eq!(parent.bound_count(), 1);
+                drop(holder);
+            }
+        }
+    }
+    #[test]
+    fn t02_final_function_cleanup_runs_after_capture_guards_and_cleans_retained_private_cells() {
+        let vm = fixture(5, [0, 1], 1);
+        let f = value(&vm, vec![Value::bytes(b"release")]);
+        let capture = f.0.bound[0].clone();
+        let weak = Rc::downgrade(&f.0);
+        let root = Cell::new(Value::Function(f)).unwrap();
+        let mut plan = CopyPlan::default();
+        plan.write(root, Value::Undefined).unwrap();
+        plan.write(capture.clone(), Value::Int(1)).unwrap();
+        plan.commit().unwrap();
+        assert!(weak.upgrade().is_none());
+        assert_eq!(capture.read().unwrap(), Value::Undefined);
+    }
+    #[test]
+    fn t02_readonly_assignment_rejects_before_normalizing_its_source() {
+        let mut vm = fixture(3, [0, 0], 0);
+        vm.push(Value::Object(ObjectId(999))).unwrap();
+        let source = vm.value_cell(0).unwrap();
+        let target = Cell::new(Value::Int(7)).unwrap();
+        vm.stack.push(StackEntry::Reference(Reference {
+            id: target.id(),
+            target: Target::Global {
+                cell: target.clone(),
+            },
+            readonly: true,
+            _lease: None,
+        }));
+        assert_atomic(&mut vm, VmErrorKind::UnsupportedFeature);
+        assert_eq!(vm.frames[0].pc, 0);
+        assert_eq!(source.read().unwrap(), Value::Object(ObjectId(999)));
+        assert_eq!(target.read().unwrap(), Value::Int(7));
+    }
 }
 
 #[cfg(test)]
@@ -5594,5 +6110,23 @@ mod mapping_loop_tests {
         assert_eq!(owner.header_refs(), 2);
         drop(control);
         assert_eq!(owner.header_refs(), 1);
+    }
+    #[test]
+    fn t02_mapping_workspace_failure_keeps_source_binding_and_cursor_unchanged() {
+        for after in 0..6 {
+            let (mut vm, owner, target, control) = fixture(
+                vec![(Value::Int(0), Value::Object(ObjectId(999)))],
+                Value::Int(7),
+            );
+            let result = crate::copy_plan::with_workspace_failure(after, || advance(&mut vm, 0));
+            // One source normalization, four value writes and payload workspace.
+            assert_eq!(result.unwrap_err().kind, VmErrorKind::Limit);
+            assert_eq!(counts(&control), (0, 0, 0));
+            assert_eq!(target.read().unwrap(), Value::Int(7));
+            assert_eq!(
+                owner.get(&Value::Int(0)).unwrap(),
+                Some(Value::Object(ObjectId(999)))
+            );
+        }
     }
 }

@@ -1820,7 +1820,7 @@ fn reassigning_object_variable_preserves_shared_container_and_object_isolation()
     assert_eq!(a.elements().unwrap(), &[Value::Int(7)]);
 }
 #[test]
-fn member_copy_normalizes_destroyed_object_without_mutating_container() {
+fn member_copy_normalizes_destroyed_object_in_source_cell() {
     let p = prepare_program(image(
         &[fun(
             0,
@@ -1845,7 +1845,7 @@ fn member_copy_normalizes_destroyed_object_without_mutating_container() {
     let Value::Array(a) = original else {
         unreachable!()
     };
-    assert_eq!(a.elements().unwrap(), &[Value::Object(dead)]);
+    assert_eq!(a.elements().unwrap(), &[Value::Undefined]);
 }
 
 #[test]
@@ -11671,7 +11671,8 @@ fn function_values_host_any_mixed_transfers_opaque_identity_and_exact_rejects() 
         vm.stack().unwrap().last(),
         Some(&rml32::StackSnapshot::Value(Value::Function(f.clone())))
     );
-    returns(&mut vm, Value::Undefined); // Ordinary return is a later VM copy boundary.
+    // 2AR F16: nonconst mixed/already-matching return transfers the raw result.
+    returns(&mut vm, Value::Function(f.clone()));
     for policy in [
         HostReturn::Exact(HostType::Int),
         HostReturn::Exact(HostType::Object),

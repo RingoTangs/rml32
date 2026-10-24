@@ -445,3 +445,215 @@ fn callback_failure_keeps_explicit_saved_root_and_can_restart() {
     saved.borrow_mut().take();
     assert_eq!(info(&f).owners, 1);
 }
+
+#[test]
+fn t02_object_global_and_member_copy_clean_actual_slots_but_keep_host_roots_raw() {
+    let mut store = ObjectStore::new().unwrap();
+    let p = store
+        .register_program(
+            prepare_program_with_callable_values(
+                image(
+                    &[
+                        fun(0, 0, 0, 9, &[(1, 0, 0x17)]),
+                        fun(1, 0, 0, 2, &[(17, 0, 0x3b)]),
+                        fun(2, 0, 0, 255, &[(0, 0, 0x3d)]),
+                        fun(3, 0, 0, 255, &[(0, 0, 0x35)]),
+                        fun(4, 1, 0, 255, &[(0, 0, 0x37), (0, 0, 0x3b), (0, 0, 0x43)]),
+                        fun(5, 1, 0, 255, &[(0, 0, 0x37)]),
+                    ],
+                    1,
+                    &[],
+                ),
+                GlobalBankSchema { slots: 1 },
+            )
+            .unwrap(),
+        )
+        .unwrap();
+    let owner = store.create(p, &[ValueInput::Undefined]).unwrap();
+    let mut vm = Vm::new(store);
+    vm.start(owner, 0, &[]).unwrap();
+    let function = done(&mut vm);
+    let observer = vm
+        .objects_mut()
+        .create(p, &[ValueInput::Handle(&function)])
+        .unwrap();
+    vm.objects_mut()
+        .register_globals(&[ValueInput::Handle(&function)])
+        .unwrap();
+    let array = vm
+        .objects()
+        .array(&[ValueInput::Handle(&function)])
+        .unwrap();
+    let alias = array.retain().unwrap();
+    let map = vm
+        .objects()
+        .mapping(&[(ValueInput::Int(0), ValueInput::Handle(&function))])
+        .unwrap();
+    vm.objects_mut().remove(owner).unwrap();
+    let before = info(&function).owners;
+    vm.start(observer, 2, &[]).unwrap();
+    assert_eq!(done(&mut vm).snapshot().unwrap(), ValueSnapshot::Undefined);
+    assert_eq!(
+        vm.objects().get(observer).unwrap().variables().unwrap(),
+        vec![ValueSnapshot::Undefined]
+    );
+    assert_eq!(info(&function).owners, before - 1);
+    vm.start(observer, 3, &[]).unwrap();
+    assert_eq!(done(&mut vm).snapshot().unwrap(), ValueSnapshot::Undefined);
+    assert_eq!(
+        vm.objects().global_values().unwrap(),
+        vec![ValueSnapshot::Undefined]
+    );
+    vm.start(observer, 4, &[ValueInput::Handle(&array)])
+        .unwrap();
+    assert_eq!(done(&mut vm).snapshot().unwrap(), ValueSnapshot::Undefined);
+    assert_eq!(alias.elements().unwrap(), vec![ValueSnapshot::Undefined]);
+    vm.start(observer, 4, &[ValueInput::Handle(&map)]).unwrap();
+    assert_eq!(done(&mut vm).snapshot().unwrap(), ValueSnapshot::Undefined);
+    assert_eq!(
+        map.get(ValueInput::Int(0)).unwrap(),
+        Some(ValueSnapshot::Undefined)
+    );
+    vm.start(observer, 5, &[ValueInput::Handle(&function)])
+        .unwrap();
+    assert_eq!(done(&mut vm).snapshot().unwrap(), ValueSnapshot::Undefined);
+    assert_eq!(info(&function).owners, 1);
+    assert!(matches!(
+        function.snapshot().unwrap(),
+        ValueSnapshot::Function(_)
+    ));
+}
+#[test]
+fn t02_shallow_copy_keeps_nested_dead_members_until_a_direct_member_read() {
+    let (mut vm, owner) = machine(&functions(), 0);
+    vm.start(owner, 0, &[]).unwrap();
+    let function = done(&mut vm);
+    let p = vm
+        .objects_mut()
+        .register_program(
+            prepare_program(image(
+                &[fun(
+                    0,
+                    1,
+                    0,
+                    255,
+                    &[(0, 0, 0x37), (0, 0, 0x3b), (0, 0, 0x43)],
+                )],
+                0,
+                &[],
+            ))
+            .unwrap(),
+        )
+        .unwrap();
+    let observer = vm.objects_mut().create(p, &[]).unwrap();
+    let inner = vm
+        .objects()
+        .array(&[ValueInput::Handle(&function)])
+        .unwrap();
+    let outer = vm.objects().array(&[ValueInput::Handle(&inner)]).unwrap();
+    vm.objects_mut().remove(owner).unwrap();
+    vm.start(observer, 0, &[ValueInput::Handle(&outer)])
+        .unwrap();
+    let selected = done(&mut vm);
+    assert!(matches!(
+        selected.elements().unwrap()[0],
+        ValueSnapshot::Function(_)
+    ));
+    vm.start(observer, 0, &[ValueInput::Handle(&selected)])
+        .unwrap();
+    assert_eq!(done(&mut vm).snapshot().unwrap(), ValueSnapshot::Undefined);
+    assert_eq!(inner.elements().unwrap(), vec![ValueSnapshot::Undefined]);
+}
+#[test]
+fn t02_mixed_and_matching_host_returns_move_dead_function_without_copy() {
+    for returns in [255, 9] {
+        let (mut vm, creator) = machine(&functions(), 0);
+        vm.start(creator, 0, &[]).unwrap();
+        let function = done(&mut vm);
+        let identity = info(&function).id;
+        let p = vm
+            .objects_mut()
+            .register_program(
+                prepare_program_with_callable_values(
+                    image(&[fun(0, 0, 0, returns, &[(0, 0, 6)])], 0, &[]),
+                    GlobalBankSchema { slots: 0 },
+                )
+                .unwrap(),
+            )
+            .unwrap();
+        let observer = vm.objects_mut().create(p, &[]).unwrap();
+        let retained = function.retain().unwrap();
+        vm.objects_mut()
+            .register_host_function(
+                0,
+                HostFunction {
+                    name: "raw-dead-return".into(),
+                    signature: HostSignature {
+                        required: vec![],
+                        optional: vec![],
+                        rest: None,
+                        returns: HostReturn::Mixed,
+                    },
+                    callback: Rc::new(move |_, _, _| {
+                        Ok(HostResult::Owned(retained.retain().unwrap()))
+                    }),
+                },
+            )
+            .unwrap();
+        vm.objects_mut().remove(creator).unwrap();
+        vm.start(observer, 0, &[]).unwrap();
+        let returned = done(&mut vm);
+        assert_eq!(info(&returned).id, identity);
+        assert_eq!(info(&function).id, identity);
+        assert_eq!(
+            vm.run(0).unwrap(),
+            RunOutcome::Finished(CompletionMeta::Returned)
+        );
+        assert!(vm.take_returned().is_err());
+    }
+}
+#[test]
+fn t02_stable_capture_slots_do_not_expand_the_public_capture_whitelist() {
+    let (mut vm, owner) = machine(&functions(), 0);
+    vm.start(owner, 0, &[]).unwrap();
+    let function = done(&mut vm);
+    let array = vm.objects().array(&[]).unwrap();
+    let mapping = vm.objects().mapping(&[]).unwrap();
+    let p = vm
+        .objects_mut()
+        .register_program(
+            prepare_program_with_callable_values(
+                image(
+                    &[
+                        fun(0, 1, 0, 9, &[(0, 0, 0x37), (1, 1, 0x17)]),
+                        fun(1, 1, 0, 255, &[(0, 0, 0x37)]),
+                    ],
+                    0,
+                    &[],
+                ),
+                GlobalBankSchema { slots: 0 },
+            )
+            .unwrap(),
+        )
+        .unwrap();
+    let caller = vm.objects_mut().create(p, &[]).unwrap();
+    for value in [
+        ValueInput::Handle(&function),
+        ValueInput::Handle(&array),
+        ValueInput::Handle(&mapping),
+        ValueInput::Object(owner),
+    ] {
+        vm.start(caller, 0, &[value]).unwrap();
+        assert_eq!(vm.run(100).unwrap_err().kind, VmErrorKind::UnsupportedType);
+    }
+    for value in [
+        ValueInput::Undefined,
+        ValueInput::Void,
+        ValueInput::Int(7),
+        ValueInput::Real(RealBits::from_bits(0x80000000)),
+        ValueInput::Bytes(b"scalar"),
+    ] {
+        vm.start(caller, 0, &[value]).unwrap();
+        assert_eq!(info(&done(&mut vm)).bound_count, 1);
+    }
+}

@@ -99,8 +99,16 @@ pub(crate) struct FunctionData {
     pub(crate) origin: Rc<()>,
     pub(crate) owner: Option<ObjectId>,
     pub(crate) target: FunctionTarget,
-    pub(crate) bound: Vec<Value>,
+    pub(crate) bound: Vec<Rc<crate::cell::Cell>>,
+    pub(crate) bound_count: usize,
     pub(crate) counter: Rc<crate::ownership::Counter>,
+}
+impl Drop for FunctionData {
+    fn drop(&mut self) {
+        for cell in &self.bound {
+            cell.clear_on_owner_drop();
+        }
+    }
 }
 impl FunctionValue {
     /// Object active at creation, independent of the target; absent in Global context.
@@ -129,7 +137,7 @@ impl FunctionValue {
         }
     }
     pub fn bound_count(&self) -> usize {
-        self.0.bound.len()
+        self.0.bound_count
     }
 }
 impl PartialEq for FunctionValue {

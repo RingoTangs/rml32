@@ -4,6 +4,7 @@ mod boundary;
 mod bytes;
 mod cell;
 mod container;
+mod copy_plan;
 pub mod error;
 mod host;
 pub mod inheritance;

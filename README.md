@@ -1,5 +1,8 @@
 # rml32
 
+阶段2AU已完成[T02稳定捕获槽与COPY事务](docs/stage2au-evidence/overview.md)：真实源槽规范化、语义Owner唯一/共享展开、raw返回与完成槽转移；公共API、版本及依赖不变。原577项场景保留，仅按冻结证据调整两处预期。Host回调失败仍保持操作数与PC，副作用不回滚、不重放。验证见[新收据](docs/stage2au-validation.json)。非标量捕获仍关闭，阶段2未完成；下一批为T03投影图验证。以下为历史快照。
+
+
 阶段2AT已完成[宿主/观察边界与语义所有者迁移](docs/stage2at-evidence/overview.md)：公共 API 源码不兼容，改用 ValueInput、不可 Clone 的 HostValue、冻结快照与借用回调。原558项断言保留，新增19项普通测试与2项文档编译负例；577项普通测试及2项doctest通过。版本和依赖不变，非标量捕获仍关闭，阶段2未完成。下一批为2AS T02稳定捕获槽与源COPY计划。验证见[2AT收据](docs/stage2at-validation.json)。以下为历史快照。
 
 

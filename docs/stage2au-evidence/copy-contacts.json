@@ -1,0 +1,350 @@
+{
+  "stage": "2AU",
+  "original_copy_sites": 20,
+  "items": [
+    {
+      "id": "COPY01",
+      "before": {
+        "path": "src/vm.rs",
+        "line": 888,
+        "excerpt": "let value = self.copy_value(&original);"
+      },
+      "after": {
+        "path": "src/vm.rs",
+        "line": 902,
+        "excerpt": "fn read_reference(&self, r: &Reference) -> Result<StackEntry, VmError> {"
+      },
+      "kind": "COPY",
+      "test": "reference_reads_normalize_dead_source_cells_after_successful_read"
+    },
+    {
+      "id": "COPY02",
+      "before": {
+        "path": "src/vm.rs",
+        "line": 986,
+        "excerpt": ".map(|v| Cell::new(self.copy_value(v)).map(StackEntry::Value))"
+      },
+      "after": {
+        "path": "src/vm.rs",
+        "line": 946,
+        "excerpt": "pub fn start("
+      },
+      "kind": "import-then-COPY",
+      "test": "t02_object_global_and_member_copy_clean_actual_slots_but_keep_host_roots_raw"
+    },
+    {
+      "id": "COPY03",
+      "before": {
+        "path": "src/vm.rs",
+        "line": 1198,
+        "excerpt": "StackEntry::Value(cell) => self.copy_value(&cell.read()?),"
+      },
+      "after": {
+        "path": "src/vm.rs",
+        "line": 1210,
+        "excerpt": "fn argument_array(&mut self, frame: &Frame) -> Result<(), VmError> {"
+      },
+      "kind": "COPY",
+      "test": "argument_array_success_normalizes_reference_targets_and_dereferences_them"
+    },
+    {
+      "id": "COPY04",
+      "before": {
+        "path": "src/vm.rs",
+        "line": 1202,
+        "excerpt": "let value = self.copy_value(&original);"
+      },
+      "after": {
+        "path": "src/vm.rs",
+        "line": 1210,
+        "excerpt": "fn argument_array(&mut self, frame: &Frame) -> Result<(), VmError> {"
+      },
+      "kind": "COPY",
+      "test": "argument_array_failure_does_not_normalize_reference_targets"
+    },
+    {
+      "id": "COPY05",
+      "before": {
+        "path": "src/vm.rs",
+        "line": 1237,
+        "excerpt": "let value = self.copy_value(&cell.read()?);"
+      },
+      "after": {
+        "path": "src/vm.rs",
+        "line": 1237,
+        "excerpt": "fn argument_updates(&self, frame: &Frame, f: &PreparedFunction) -> Result<CopyPlan, VmError> {"
+      },
+      "kind": "COPY",
+      "test": "typed_reference_dead_object_normalization_is_nullable_and_batch_atomic"
+    },
+    {
+      "id": "COPY06",
+      "before": {
+        "path": "src/vm.rs",
+        "line": 1248,
+        "excerpt": "crate::numeric::coerce(self.copy_value(&cell.read()?), arg.r#type),"
+      },
+      "after": {
+        "path": "src/vm.rs",
+        "line": 1237,
+        "excerpt": "fn argument_updates(&self, frame: &Frame, f: &PreparedFunction) -> Result<CopyPlan, VmError> {"
+      },
+      "kind": "COPY",
+      "test": "aliased_nullable_parameters_normalize_one_dead_cell_once"
+    },
+    {
+      "id": "COPY07",
+      "before": {
+        "path": "src/vm.rs",
+        "line": 1786,
+        "excerpt": "let mut value = self.copy_value(&raw);"
+      },
+      "after": {
+        "path": "src/vm.rs",
+        "line": 1688,
+        "excerpt": "fn call_function_value("
+      },
+      "kind": "unique-raw/shared-COPY",
+      "test": "t02_unique_and_shared_expansion_use_semantic_owners_for_object_and_global"
+    },
+    {
+      "id": "COPY08",
+      "before": {
+        "path": "src/vm.rs",
+        "line": 2085,
+        "excerpt": "(_, 1) => self.copy_value(&self.value(self.stack.len() - 1)?),"
+      },
+      "after": {
+        "path": "src/vm.rs",
+        "line": 2124,
+        "excerpt": "fn return_function(&mut self, frame: &Frame, f: &PreparedFunction) -> Result<(), VmError> {"
+      },
+      "kind": "matching-raw/conversion-legacy",
+      "test": "t02_mixed_and_matching_host_returns_move_dead_function_without_copy"
+    },
+    {
+      "id": "COPY09",
+      "before": {
+        "path": "src/vm.rs",
+        "line": 2349,
+        "excerpt": "let value = self.copy_value(&original);"
+      },
+      "after": {
+        "path": "src/vm.rs",
+        "line": 2336,
+        "excerpt": "fn loop_instruction("
+      },
+      "kind": "COPY",
+      "test": "loops_array_copy_normalizes_dead_object_source_atomically"
+    },
+    {
+      "id": "COPY10",
+      "before": {
+        "path": "src/vm.rs",
+        "line": 2369,
+        "excerpt": "let value = self.copy_value(&original);"
+      },
+      "after": {
+        "path": "src/vm.rs",
+        "line": 2336,
+        "excerpt": "fn loop_instruction("
+      },
+      "kind": "COPY",
+      "test": "mapping_loops_normalize_dead_objects_and_allow_nested_container_values"
+    },
+    {
+      "id": "COPY11",
+      "before": {
+        "path": "src/vm.rs",
+        "line": 2373,
+        "excerpt": "let values = [self.copy_value(&key), value, Value::Int(number as i32)];"
+      },
+      "after": {
+        "path": "src/vm.rs",
+        "line": 2336,
+        "excerpt": "fn loop_instruction("
+      },
+      "kind": "immutable-key",
+      "test": "mapping_loops_normalize_dead_objects_and_allow_nested_container_values"
+    },
+    {
+      "id": "COPY12",
+      "before": {
+        "path": "src/vm.rs",
+        "line": 2507,
+        "excerpt": "let copied = self.copy_value(&original);"
+      },
+      "after": {
+        "path": "src/vm.rs",
+        "line": 2553,
+        "excerpt": "fn query_range(&mut self, frame: &Frame, locals: usize, mode: i32) -> Result<(), VmError> {"
+      },
+      "kind": "COPY",
+      "test": "ranges_array_normalization_updates_only_selected_direct_dead_objects"
+    },
+    {
+      "id": "COPY13",
+      "before": {
+        "path": "src/vm.rs",
+        "line": 2803,
+        "excerpt": "let value = self.copy_value(&self.value(source)?);"
+      },
+      "after": {
+        "path": "src/vm.rs",
+        "line": 2780,
+        "excerpt": "fn step_instruction("
+      },
+      "kind": "COPY-assignment",
+      "test": "t02_readonly_assignment_rejects_before_normalizing_its_source"
+    },
+    {
+      "id": "COPY14",
+      "before": {
+        "path": "src/vm.rs",
+        "line": 2971,
+        "excerpt": "let selected = self.copy_value(&selected);"
+      },
+      "after": {
+        "path": "src/vm.rs",
+        "line": 2780,
+        "excerpt": "fn step_instruction("
+      },
+      "kind": "COPY-member",
+      "test": "t02_object_global_and_member_copy_clean_actual_slots_but_keep_host_roots_raw"
+    },
+    {
+      "id": "COPY15",
+      "before": {
+        "path": "src/vm.rs",
+        "line": 3028,
+        "excerpt": "self.copy_value(&raw)"
+      },
+      "after": {
+        "path": "src/vm.rs",
+        "line": 2780,
+        "excerpt": "fn step_instruction("
+      },
+      "kind": "single-cell-transform",
+      "test": "function_values_deleted_owner_raw_truth_and_equality_do_not_normalize"
+    },
+    {
+      "id": "COPY16",
+      "before": {
+        "path": "src/vm.rs",
+        "line": 3078,
+        "excerpt": "StackEntry::Value(Cell::new(self.copy_value(&c.read()?))?)"
+      },
+      "after": {
+        "path": "src/vm.rs",
+        "line": 2780,
+        "excerpt": "fn step_instruction("
+      },
+      "kind": "COPY-local",
+      "test": "reference_reads_normalize_dead_source_cells_after_successful_read"
+    },
+    {
+      "id": "COPY17",
+      "before": {
+        "path": "src/vm.rs",
+        "line": 3091,
+        "excerpt": "let value = self.copy_value(&self.value(n - 1)?);"
+      },
+      "after": {
+        "path": "src/vm.rs",
+        "line": 2780,
+        "excerpt": "fn step_instruction("
+      },
+      "kind": "COPY-local-write",
+      "test": "reference_assignments_preserve_result_and_update_stable_local_slots"
+    },
+    {
+      "id": "COPY18",
+      "before": {
+        "path": "src/vm.rs",
+        "line": 3162,
+        "excerpt": "let value = self.copy_value(&self.object_cell(&frame, a)?.read()?);"
+      },
+      "after": {
+        "path": "src/vm.rs",
+        "line": 2780,
+        "excerpt": "fn step_instruction("
+      },
+      "kind": "COPY-object",
+      "test": "t02_object_global_and_member_copy_clean_actual_slots_but_keep_host_roots_raw"
+    },
+    {
+      "id": "COPY19",
+      "before": {
+        "path": "src/vm.rs",
+        "line": 3168,
+        "excerpt": "let value = self.copy_value(&self.value(n - 1)?);"
+      },
+      "after": {
+        "path": "src/vm.rs",
+        "line": 2780,
+        "excerpt": "fn step_instruction("
+      },
+      "kind": "COPY-object-write",
+      "test": "function_values_store_in_object_global_local_and_container_member_slots"
+    },
+    {
+      "id": "COPY20",
+      "before": {
+        "path": "src/vm.rs",
+        "line": 3178,
+        "excerpt": "self.copy_value(&raw)"
+      },
+      "after": {
+        "path": "src/vm.rs",
+        "line": 2780,
+        "excerpt": "fn step_instruction("
+      },
+      "kind": "single-cell-transform",
+      "test": "function_values_deleted_owner_raw_truth_and_equality_do_not_normalize"
+    },
+    {
+      "id": "RAW01",
+      "before": null,
+      "after": {
+        "path": "src/vm.rs",
+        "line": 1560,
+        "excerpt": "fn create_function_value("
+      },
+      "kind": "raw-17",
+      "test": "t02_capture_creation_raw_move_clears_an_aliased_evaluation_cell"
+    },
+    {
+      "id": "RAW02",
+      "before": null,
+      "after": {
+        "path": "src/vm.rs",
+        "line": 1963,
+        "excerpt": "fn call_indirect_host("
+      },
+      "kind": "frozen-preview/post-callback-commit",
+      "test": "t02_host_success_commits_the_frozen_branch_and_clears_target_aliases"
+    },
+    {
+      "id": "RAW03",
+      "before": null,
+      "after": {
+        "path": "src/vm.rs",
+        "line": 1885,
+        "excerpt": "fn call_host("
+      },
+      "kind": "raw-06",
+      "test": "host_deleted_object_arguments_and_results_are_not_normalized"
+    },
+    {
+      "id": "RAW04",
+      "before": null,
+      "after": {
+        "path": "src/vm.rs",
+        "line": 378,
+        "excerpt": "pub(crate) fn returned_cell(&self) -> Result<Rc<Cell>, VmError> {"
+      },
+      "kind": "raw-completion",
+      "test": "raw_slot_and_completion_transports_do_not_reserve_another_owner"
+    }
+  ]
+}

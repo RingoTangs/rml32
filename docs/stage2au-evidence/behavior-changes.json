@@ -1,0 +1,52 @@
+{
+  "stage": "2AU",
+  "items": [
+    {
+      "id": "B01",
+      "evidence": [
+        "2AR F08",
+        "2AR F13",
+        "2AS D05"
+      ],
+      "test_before": "regression::member_copy_normalizes_destroyed_object_without_mutating_container",
+      "test_after": "regression::member_copy_normalizes_destroyed_object_in_source_cell",
+      "before": "Array member retains raw deleted Object after successful member COPY.",
+      "after": "Selected actual member Cell becomes Undefined; result is Undefined; other members are unchanged."
+    },
+    {
+      "id": "B02",
+      "evidence": [
+        "2AR F16",
+        "2AS D06"
+      ],
+      "test_before": "regression::function_values_host_any_mixed_transfers_opaque_identity_and_exact_rejects",
+      "test_after": "regression::function_values_host_any_mixed_transfers_opaque_identity_and_exact_rejects",
+      "before": "Ordinary mixed return COPY-normalizes an opaque dead Function returned by Host.",
+      "after": "Nonconst mixed/already-matching return raw-moves the dead Function; later real COPY still normalizes its own source."
+    },
+    {
+      "id": "B03",
+      "evidence": [
+        "2AS D05"
+      ],
+      "test_before": null,
+      "test_after": "copy_plan::tests::equal_alias_updates_merge_and_conflicting_updates_publish_nothing",
+      "before": "Some ad hoc BTreeMap batches could silently overwrite a previous pending update.",
+      "after": "Same Cell/same value merges; different proposed values reject with InvalidState before publication."
+    },
+    {
+      "id": "B04",
+      "evidence": [
+        "2AS D05",
+        "2AR F04",
+        "2AR F10",
+        "2AR F18",
+        "user-confirmed-host-failure-policy"
+      ],
+      "test_before": null,
+      "test_after": "vm::function_value_tests::t02_host_post_callback_allocation_or_borrow_failure_does_not_publish_a_plan",
+      "before": "Most legacy instructions pre-incremented their execution PC even on preflight failure.",
+      "after": "COPY/raw-transfer dispatch preserves failed-instruction PC; Host 05 freezes its branch before callback and commits only after valid return. Callback effects/retained roots persist; no callback replay."
+    }
+  ]
+}

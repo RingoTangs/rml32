@@ -185,7 +185,7 @@ impl MappingValue {
             .entries
             .len())
     }
-    fn lookup(&self, key: &Value) -> Result<Option<Rc<Cell>>, VmError> {
+    pub(crate) fn lookup(&self, key: &Value) -> Result<Option<Rc<Cell>>, VmError> {
         let key = Key::new(key)?;
         let data = self.0.try_borrow().map_err(|_| borrow_error())?;
         Ok(data.index.get(&key).map(|&i| data.entries[i].1.clone()))
