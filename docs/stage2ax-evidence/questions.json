@@ -1,0 +1,262 @@
+[
+  {
+    "id": "Q01",
+    "question": "17捕获建立、类型与局部失败顺序",
+    "status": "partial",
+    "findings": [
+      "F01",
+      "F02",
+      "F03",
+      "F20",
+      "F28",
+      "F29",
+      "F30"
+    ],
+    "remaining": "历史创建与局部失败结论保留；合法非空捕获不能触发末尾sp==0。零捕获/初始sp=0的未发布头恢复根及最终释放仍未闭合；畸形tag/负捕获数不合法化。",
+    "next_action": "保留Rust发布前预检；下一批仅追未发布头分配/注册/回收链，不以分配统计代替根。",
+    "subquestions": [
+      {
+        "id": "Q01.reachability",
+        "question": "合法非空捕获的结果栈失败前提",
+        "status": "answered",
+        "findings": [
+          "F28"
+        ],
+        "remaining": "限合法栈、非负计数且无中途状态修改，不是动态可达证明。",
+        "next_action": "保留历史C15并用C59/C61明确拆分可达域。"
+      },
+      {
+        "id": "Q01.zero-allocation",
+        "question": "零长度捕获存储分配的条件成功",
+        "status": "answered",
+        "findings": [
+          "F29"
+        ],
+        "remaining": "初始化和资源可用是前提；不保证每次分配成功。",
+        "next_action": "采用条件成功结论，避免继续借malloc(0)作为未知理由。"
+      },
+      {
+        "id": "Q01.unpublished",
+        "question": "零捕获未发布函数头的恢复根",
+        "status": "unresolved",
+        "findings": [
+          "F30"
+        ],
+        "remaining": "分配计数、PCB栈清理与已知值链不能证明该C局部头可回收。",
+        "next_action": "定向追头注册、长跳转恢复和最终释放；证据前T05相关实现保持阻塞。"
+      }
+    ]
+  },
+  {
+    "id": "Q02",
+    "question": "05唯一/共享head展开及持久源变化",
+    "status": "answered",
+    "findings": [
+      "F04",
+      "F05",
+      "F06",
+      "F07",
+      "F08",
+      "F09",
+      "F10"
+    ],
+    "remaining": "结论限展开接点，后续参数/使用的行为由其各自规则决定，不推及整个调用成功。",
+    "next_action": "后续实现先设计语义持有者模型；禁止使用物理Rc计数或统一clone替代两条分支。"
+  },
+  {
+    "id": "Q03",
+    "question": "普通槽、引用、成员与返回接点",
+    "status": "answered",
+    "findings": [
+      "F07",
+      "F08",
+      "F12",
+      "F13",
+      "F16",
+      "F22"
+    ],
+    "remaining": "限已选普通读取与非const、无需转换/hook返回；完整attrib/default及其它返回分支仍排除。",
+    "next_action": "建立源可改写的复制计划；明确raw-move返回不追加copy规范化。"
+  },
+  {
+    "id": "Q04",
+    "question": "最后所有者、成员Ref与creator释放",
+    "status": "partial",
+    "findings": [
+      "F11",
+      "F14",
+      "F15",
+      "F23",
+      "F24",
+      "F25",
+      "F26",
+      "F27",
+      "F35",
+      "F36",
+      "F37"
+    ],
+    "remaining": "普通ref/creator/execRef及局部延迟删除链已定向补齐；最终PCB释放后新增待删对象的下一保证安全点、任意外部捕获槽Ref及完整生命周期仍未闭合。",
+    "next_action": "保持三类持有与队列引用独立；明确捕获槽不公开，再补下一保证drain与外部持有退出域。",
+    "subquestions": [
+      {
+        "id": "Q04.holders",
+        "question": "creator、捕获载荷与execRef分离",
+        "status": "answered",
+        "findings": [
+          "F24",
+          "F25",
+          "F27"
+        ],
+        "remaining": "限所列创建、COPY、最终释放接点，不推断物理Rc语义。",
+        "next_action": "冻结三类持有和0x4000/0x8000区分为T05设计前提。"
+      },
+      {
+        "id": "Q04.deferred-local",
+        "question": "局部待删到队列清理状态链",
+        "status": "answered",
+        "findings": [
+          "F26"
+        ],
+        "remaining": "不保证每条退出域都到达drain。",
+        "next_action": "将请求删除、最后execRef、入队、队列ref和最终壳释放分开建约束。"
+      },
+      {
+        "id": "Q04.later-drain",
+        "question": "PCB最终清理新增队列的下一安全点",
+        "status": "unresolved",
+        "findings": [
+          "F36"
+        ],
+        "remaining": "backend drain先于deleteProcess，不得宣称本轮已二次排空。",
+        "next_action": "追后续安全点及scheduler停止分支，证据未闭合前保持门控。"
+      },
+      {
+        "id": "Q04.capture-ref",
+        "question": "捕获槽外部Reference寿命",
+        "status": "unresolved",
+        "findings": [
+          "F37"
+        ],
+        "remaining": "最后Function释放不会等待该槽ref归零。",
+        "next_action": "T05继续禁止捕获槽Reference逃逸；任意原生外部引用安全另取证。"
+      }
+    ]
+  },
+  {
+    "id": "Q05",
+    "question": "捕获展开后失败与解栈",
+    "status": "partial",
+    "findings": [
+      "F18",
+      "F19",
+      "F20",
+      "F30",
+      "F31",
+      "F32",
+      "F33",
+      "F34",
+      "F35",
+      "F36",
+      "F39"
+    ],
+    "remaining": "普通解释线程无catch、有效backend及hook不干预路径已有限补齐；最终清理取决于PCB最后ref。未发布头、其他线程/JIT/callback、任意hook/重入及删除后下一drain仍未闭合。",
+    "next_action": "逐退出域保持独立门槛；不扩大Rust catch来源，后续先补未发布头和删除后保证安全点。",
+    "subquestions": [
+      {
+        "id": "Q05.ordinary-uncaught",
+        "question": "普通解释线程无catch到逻辑PCB删除",
+        "status": "answered",
+        "findings": [
+          "F31",
+          "F32"
+        ],
+        "remaining": "须有有效backend环境、threadType1、无hook干预；不等于最终物理释放。",
+        "next_action": "保留带条件调用链和原始锚点，不外推其他线程/JIT。"
+      },
+      {
+        "id": "Q05.final-pcb",
+        "question": "PCB最终ref清理与延后释放",
+        "status": "answered",
+        "findings": [
+          "F34",
+          "F35"
+        ],
+        "remaining": "hook须正常返回；外部持有者最终释放本身不是已证明进展性。",
+        "next_action": "冻结deletionFunc→栈→剩余帧execRef顺序及ref>0延后分支。"
+      },
+      {
+        "id": "Q05.hooks",
+        "question": "删除hook接点与最终完成",
+        "status": "partial",
+        "findings": [
+          "F33",
+          "F39"
+        ],
+        "remaining": "已知先于PCB减ref，未知间接目标、保留、异常与重入。",
+        "next_action": "把hook影响退出域列为后续单独取证门槛。"
+      },
+      {
+        "id": "Q05.unpublished",
+        "question": "无catch未发布头与后续安全点",
+        "status": "unresolved",
+        "findings": [
+          "F30",
+          "F36"
+        ],
+        "remaining": "已知PCB清理不能自行证明未发布头回收及下一drain。",
+        "next_action": "分别追未发布头根和scheduler后继安全点，避免合并为已有catch结论。"
+      }
+    ]
+  },
+  {
+    "id": "Q06",
+    "question": "图约束、循环与Rust实施边界",
+    "status": "partial",
+    "findings": [
+      "F17",
+      "F20",
+      "F21",
+      "F23",
+      "F37",
+      "F38",
+      "F39",
+      "F40"
+    ],
+    "remaining": "已知Function捕获递归和根枚举维持局部证据；任意Reference、间接外部mark根、Object变量/creator生命周期边、循环释放顺序及完整GC仍未闭合。",
+    "next_action": "保留既有受限无环图和捕获槽不逃逸政策；T05只交付证据门控规格，直接Object/Function仍关闭。",
+    "subquestions": [
+      {
+        "id": "Q06.known-roots",
+        "question": "已见根和Function捕获递归",
+        "status": "answered",
+        "findings": [
+          "F38"
+        ],
+        "remaining": "已见根不是完整根集合，分配链不是活根。",
+        "next_action": "使用限定枚举与原始证据，不宣称完整GC等价。"
+      },
+      {
+        "id": "Q06.complete-graph",
+        "question": "外部根、任意Reference及循环完整性",
+        "status": "unresolved",
+        "findings": [
+          "F37",
+          "F38",
+          "F39"
+        ],
+        "remaining": "间接mark目标和循环回收顺序未穷尽。",
+        "next_action": "维持循环/捕获槽Ref逃逸排除，独立补证后才重新评估门槛。"
+      },
+      {
+        "id": "Q06.rust-gate",
+        "question": "当前Rust能力与后续T05门控政策",
+        "status": "answered",
+        "findings": [
+          "F40"
+        ],
+        "remaining": "本子问题只确认设计范围，不确认原生未知已解决或运行时已实现。",
+        "next_action": "交付T05门槛、接口约束和验收规格，能力标志继续false。"
+      }
+    ]
+  }
+]

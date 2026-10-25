@@ -1,0 +1,713 @@
+{
+  "stage": "2AX",
+  "source_stage": "2AR",
+  "source_cases": 51,
+  "historical_snapshot": "Original C01-C51, F01-F23 and A001-A085 remain verbatim; current conclusions and dispositions are separate additions.",
+  "items": [
+    {
+      "source_case_id": "C01",
+      "source_basis": "static-inference",
+      "source_findings": [
+        "F01",
+        "F03"
+      ],
+      "case_ids": [
+        "C01"
+      ],
+      "status": "unchanged-boundary",
+      "limitations": "原2AR案例及依据原文保留；新增案例仅补所述限定子域，未执行原程序，不把Rust政策或局部静态观察升级为全生命周期等价。"
+    },
+    {
+      "source_case_id": "C02",
+      "source_basis": "static-inference",
+      "source_findings": [
+        "F01",
+        "F03"
+      ],
+      "case_ids": [
+        "C02"
+      ],
+      "status": "unchanged-boundary",
+      "limitations": "原2AR案例及依据原文保留；新增案例仅补所述限定子域，未执行原程序，不把Rust政策或局部静态观察升级为全生命周期等价。"
+    },
+    {
+      "source_case_id": "C03",
+      "source_basis": "static-inference",
+      "source_findings": [
+        "F01",
+        "F03"
+      ],
+      "case_ids": [
+        "C03"
+      ],
+      "status": "unchanged-boundary",
+      "limitations": "原2AR案例及依据原文保留；新增案例仅补所述限定子域，未执行原程序，不把Rust政策或局部静态观察升级为全生命周期等价。"
+    },
+    {
+      "source_case_id": "C04",
+      "source_basis": "static-inference",
+      "source_findings": [
+        "F01",
+        "F03"
+      ],
+      "case_ids": [
+        "C04"
+      ],
+      "status": "unchanged-boundary",
+      "limitations": "原2AR案例及依据原文保留；新增案例仅补所述限定子域，未执行原程序，不把Rust政策或局部静态观察升级为全生命周期等价。"
+    },
+    {
+      "source_case_id": "C05",
+      "source_basis": "static-inference",
+      "source_findings": [
+        "F01",
+        "F03"
+      ],
+      "case_ids": [
+        "C05"
+      ],
+      "status": "unchanged-boundary",
+      "limitations": "原2AR案例及依据原文保留；新增案例仅补所述限定子域，未执行原程序，不把Rust政策或局部静态观察升级为全生命周期等价。"
+    },
+    {
+      "source_case_id": "C06",
+      "source_basis": "static-inference",
+      "source_findings": [
+        "F01",
+        "F03"
+      ],
+      "case_ids": [
+        "C06"
+      ],
+      "status": "unchanged-boundary",
+      "limitations": "原2AR案例及依据原文保留；新增案例仅补所述限定子域，未执行原程序，不把Rust政策或局部静态观察升级为全生命周期等价。"
+    },
+    {
+      "source_case_id": "C07",
+      "source_basis": "static-inference",
+      "source_findings": [
+        "F01",
+        "F03"
+      ],
+      "case_ids": [
+        "C07"
+      ],
+      "status": "unchanged-boundary",
+      "limitations": "原2AR案例及依据原文保留；新增案例仅补所述限定子域，未执行原程序，不把Rust政策或局部静态观察升级为全生命周期等价。"
+    },
+    {
+      "source_case_id": "C08",
+      "source_basis": "static-inference",
+      "source_findings": [
+        "F01",
+        "F03"
+      ],
+      "case_ids": [
+        "C08",
+        "C52",
+        "C53",
+        "C54"
+      ],
+      "status": "reassessed",
+      "limitations": "原2AR案例及依据原文保留；新增案例仅补所述限定子域，未执行原程序，不把Rust政策或局部静态观察升级为全生命周期等价。"
+    },
+    {
+      "source_case_id": "C09",
+      "source_basis": "static-inference",
+      "source_findings": [
+        "F01",
+        "F03"
+      ],
+      "case_ids": [
+        "C09",
+        "C57",
+        "C71"
+      ],
+      "status": "reassessed",
+      "limitations": "原2AR案例及依据原文保留；新增案例仅补所述限定子域，未执行原程序，不把Rust政策或局部静态观察升级为全生命周期等价。"
+    },
+    {
+      "source_case_id": "C10",
+      "source_basis": "static-inference",
+      "source_findings": [
+        "F03",
+        "F08"
+      ],
+      "case_ids": [
+        "C10",
+        "C56"
+      ],
+      "status": "reassessed",
+      "limitations": "原2AR案例及依据原文保留；新增案例仅补所述限定子域，未执行原程序，不把Rust政策或局部静态观察升级为全生命周期等价。"
+    },
+    {
+      "source_case_id": "C11",
+      "source_basis": "static-inference",
+      "source_findings": [
+        "F03",
+        "F23"
+      ],
+      "case_ids": [
+        "C11",
+        "C52",
+        "C56"
+      ],
+      "status": "reassessed",
+      "limitations": "原2AR案例及依据原文保留；新增案例仅补所述限定子域，未执行原程序，不把Rust政策或局部静态观察升级为全生命周期等价。"
+    },
+    {
+      "source_case_id": "C12",
+      "source_basis": "static-inference",
+      "source_findings": [
+        "F01",
+        "F02"
+      ],
+      "case_ids": [
+        "C12"
+      ],
+      "status": "unchanged-boundary",
+      "limitations": "原2AR案例及依据原文保留；新增案例仅补所述限定子域，未执行原程序，不把Rust政策或局部静态观察升级为全生命周期等价。"
+    },
+    {
+      "source_case_id": "C13",
+      "source_basis": "design",
+      "source_findings": [
+        "F01",
+        "F21"
+      ],
+      "case_ids": [
+        "C13"
+      ],
+      "status": "unchanged-boundary",
+      "limitations": "原2AR案例及依据原文保留；新增案例仅补所述限定子域，未执行原程序，不把Rust政策或局部静态观察升级为全生命周期等价。"
+    },
+    {
+      "source_case_id": "C14",
+      "source_basis": "static-inference",
+      "source_findings": [
+        "F02",
+        "F20"
+      ],
+      "case_ids": [
+        "C14",
+        "C62",
+        "C65"
+      ],
+      "status": "reassessed",
+      "limitations": "原2AR案例及依据原文保留；新增案例仅补所述限定子域，未执行原程序，不把Rust政策或局部静态观察升级为全生命周期等价。"
+    },
+    {
+      "source_case_id": "C15",
+      "source_basis": "unresolved",
+      "source_findings": [
+        "F02",
+        "F20"
+      ],
+      "case_ids": [
+        "C15",
+        "C59",
+        "C60",
+        "C61"
+      ],
+      "status": "reassessed",
+      "limitations": "历史案例按2AR原文保留；C15的非空捕获失败前提由C59/C61拆分，不再作为合法非空输入的可达断言。"
+    },
+    {
+      "source_case_id": "C16",
+      "source_basis": "static-inference",
+      "source_findings": [
+        "F05",
+        "F07"
+      ],
+      "case_ids": [
+        "C16"
+      ],
+      "status": "unchanged-boundary",
+      "limitations": "原2AR案例及依据原文保留；新增案例仅补所述限定子域，未执行原程序，不把Rust政策或局部静态观察升级为全生命周期等价。"
+    },
+    {
+      "source_case_id": "C17",
+      "source_basis": "static-inference",
+      "source_findings": [
+        "F06",
+        "F07"
+      ],
+      "case_ids": [
+        "C17"
+      ],
+      "status": "unchanged-boundary",
+      "limitations": "原2AR案例及依据原文保留；新增案例仅补所述限定子域，未执行原程序，不把Rust政策或局部静态观察升级为全生命周期等价。"
+    },
+    {
+      "source_case_id": "C18",
+      "source_basis": "static-inference",
+      "source_findings": [
+        "F05",
+        "F07"
+      ],
+      "case_ids": [
+        "C18"
+      ],
+      "status": "unchanged-boundary",
+      "limitations": "原2AR案例及依据原文保留；新增案例仅补所述限定子域，未执行原程序，不把Rust政策或局部静态观察升级为全生命周期等价。"
+    },
+    {
+      "source_case_id": "C19",
+      "source_basis": "static-inference",
+      "source_findings": [
+        "F06",
+        "F07"
+      ],
+      "case_ids": [
+        "C19"
+      ],
+      "status": "unchanged-boundary",
+      "limitations": "原2AR案例及依据原文保留；新增案例仅补所述限定子域，未执行原程序，不把Rust政策或局部静态观察升级为全生命周期等价。"
+    },
+    {
+      "source_case_id": "C20",
+      "source_basis": "static-inference",
+      "source_findings": [
+        "F05",
+        "F09",
+        "F18"
+      ],
+      "case_ids": [
+        "C20",
+        "C56",
+        "C62"
+      ],
+      "status": "reassessed",
+      "limitations": "原2AR案例及依据原文保留；新增案例仅补所述限定子域，未执行原程序，不把Rust政策或局部静态观察升级为全生命周期等价。"
+    },
+    {
+      "source_case_id": "C21",
+      "source_basis": "static-inference",
+      "source_findings": [
+        "F06",
+        "F08",
+        "F09"
+      ],
+      "case_ids": [
+        "C21",
+        "C56"
+      ],
+      "status": "reassessed",
+      "limitations": "原2AR案例及依据原文保留；新增案例仅补所述限定子域，未执行原程序，不把Rust政策或局部静态观察升级为全生命周期等价。"
+    },
+    {
+      "source_case_id": "C22",
+      "source_basis": "static-inference",
+      "source_findings": [
+        "F05",
+        "F09",
+        "F18"
+      ],
+      "case_ids": [
+        "C22",
+        "C56"
+      ],
+      "status": "reassessed",
+      "limitations": "原2AR案例及依据原文保留；新增案例仅补所述限定子域，未执行原程序，不把Rust政策或局部静态观察升级为全生命周期等价。"
+    },
+    {
+      "source_case_id": "C23",
+      "source_basis": "static-inference",
+      "source_findings": [
+        "F06",
+        "F08",
+        "F09"
+      ],
+      "case_ids": [
+        "C23",
+        "C56"
+      ],
+      "status": "reassessed",
+      "limitations": "原2AR案例及依据原文保留；新增案例仅补所述限定子域，未执行原程序，不把Rust政策或局部静态观察升级为全生命周期等价。"
+    },
+    {
+      "source_case_id": "C24",
+      "source_basis": "static-inference",
+      "source_findings": [
+        "F08",
+        "F06"
+      ],
+      "case_ids": [
+        "C24"
+      ],
+      "status": "unchanged-boundary",
+      "limitations": "原2AR案例及依据原文保留；新增案例仅补所述限定子域，未执行原程序，不把Rust政策或局部静态观察升级为全生命周期等价。"
+    },
+    {
+      "source_case_id": "C25",
+      "source_basis": "static-inference",
+      "source_findings": [
+        "F06",
+        "F11"
+      ],
+      "case_ids": [
+        "C25",
+        "C57"
+      ],
+      "status": "reassessed",
+      "limitations": "原2AR案例及依据原文保留；新增案例仅补所述限定子域，未执行原程序，不把Rust政策或局部静态观察升级为全生命周期等价。"
+    },
+    {
+      "source_case_id": "C26",
+      "source_basis": "design",
+      "source_findings": [
+        "F21"
+      ],
+      "case_ids": [
+        "C26"
+      ],
+      "status": "unchanged-boundary",
+      "limitations": "原2AR案例及依据原文保留；新增案例仅补所述限定子域，未执行原程序，不把Rust政策或局部静态观察升级为全生命周期等价。"
+    },
+    {
+      "source_case_id": "C27",
+      "source_basis": "static-inference",
+      "source_findings": [
+        "F05",
+        "F06"
+      ],
+      "case_ids": [
+        "C27"
+      ],
+      "status": "unchanged-boundary",
+      "limitations": "原2AR案例及依据原文保留；新增案例仅补所述限定子域，未执行原程序，不把Rust政策或局部静态观察升级为全生命周期等价。"
+    },
+    {
+      "source_case_id": "C28",
+      "source_basis": "static-inference",
+      "source_findings": [
+        "F07",
+        "F08"
+      ],
+      "case_ids": [
+        "C28"
+      ],
+      "status": "unchanged-boundary",
+      "limitations": "原2AR案例及依据原文保留；新增案例仅补所述限定子域，未执行原程序，不把Rust政策或局部静态观察升级为全生命周期等价。"
+    },
+    {
+      "source_case_id": "C29",
+      "source_basis": "static-inference",
+      "source_findings": [
+        "F08",
+        "F22"
+      ],
+      "case_ids": [
+        "C29"
+      ],
+      "status": "unchanged-boundary",
+      "limitations": "原2AR案例及依据原文保留；新增案例仅补所述限定子域，未执行原程序，不把Rust政策或局部静态观察升级为全生命周期等价。"
+    },
+    {
+      "source_case_id": "C30",
+      "source_basis": "static-inference",
+      "source_findings": [
+        "F08",
+        "F22"
+      ],
+      "case_ids": [
+        "C30"
+      ],
+      "status": "unchanged-boundary",
+      "limitations": "原2AR案例及依据原文保留；新增案例仅补所述限定子域，未执行原程序，不把Rust政策或局部静态观察升级为全生命周期等价。"
+    },
+    {
+      "source_case_id": "C31",
+      "source_basis": "static-inference",
+      "source_findings": [
+        "F08",
+        "F12"
+      ],
+      "case_ids": [
+        "C31"
+      ],
+      "status": "unchanged-boundary",
+      "limitations": "原2AR案例及依据原文保留；新增案例仅补所述限定子域，未执行原程序，不把Rust政策或局部静态观察升级为全生命周期等价。"
+    },
+    {
+      "source_case_id": "C32",
+      "source_basis": "static-inference",
+      "source_findings": [
+        "F08",
+        "F13"
+      ],
+      "case_ids": [
+        "C32"
+      ],
+      "status": "unchanged-boundary",
+      "limitations": "原2AR案例及依据原文保留；新增案例仅补所述限定子域，未执行原程序，不把Rust政策或局部静态观察升级为全生命周期等价。"
+    },
+    {
+      "source_case_id": "C33",
+      "source_basis": "static-inference",
+      "source_findings": [
+        "F08",
+        "F13"
+      ],
+      "case_ids": [
+        "C33"
+      ],
+      "status": "unchanged-boundary",
+      "limitations": "原2AR案例及依据原文保留；新增案例仅补所述限定子域，未执行原程序，不把Rust政策或局部静态观察升级为全生命周期等价。"
+    },
+    {
+      "source_case_id": "C34",
+      "source_basis": "static-inference",
+      "source_findings": [
+        "F13"
+      ],
+      "case_ids": [
+        "C34"
+      ],
+      "status": "unchanged-boundary",
+      "limitations": "原2AR案例及依据原文保留；新增案例仅补所述限定子域，未执行原程序，不把Rust政策或局部静态观察升级为全生命周期等价。"
+    },
+    {
+      "source_case_id": "C35",
+      "source_basis": "static-inference",
+      "source_findings": [
+        "F14"
+      ],
+      "case_ids": [
+        "C35"
+      ],
+      "status": "unchanged-boundary",
+      "limitations": "原2AR案例及依据原文保留；新增案例仅补所述限定子域，未执行原程序，不把Rust政策或局部静态观察升级为全生命周期等价。"
+    },
+    {
+      "source_case_id": "C36",
+      "source_basis": "static-inference",
+      "source_findings": [
+        "F15"
+      ],
+      "case_ids": [
+        "C36"
+      ],
+      "status": "unchanged-boundary",
+      "limitations": "原2AR案例及依据原文保留；新增案例仅补所述限定子域，未执行原程序，不把Rust政策或局部静态观察升级为全生命周期等价。"
+    },
+    {
+      "source_case_id": "C37",
+      "source_basis": "static-inference",
+      "source_findings": [
+        "F11"
+      ],
+      "case_ids": [
+        "C37",
+        "C57",
+        "C58"
+      ],
+      "status": "reassessed",
+      "limitations": "原2AR案例及依据原文保留；新增案例仅补所述限定子域，未执行原程序，不把Rust政策或局部静态观察升级为全生命周期等价。"
+    },
+    {
+      "source_case_id": "C38",
+      "source_basis": "static-inference",
+      "source_findings": [
+        "F05",
+        "F11"
+      ],
+      "case_ids": [
+        "C38",
+        "C57",
+        "C65"
+      ],
+      "status": "reassessed",
+      "limitations": "原2AR案例及依据原文保留；新增案例仅补所述限定子域，未执行原程序，不把Rust政策或局部静态观察升级为全生命周期等价。"
+    },
+    {
+      "source_case_id": "C39",
+      "source_basis": "static-inference",
+      "source_findings": [
+        "F16"
+      ],
+      "case_ids": [
+        "C39"
+      ],
+      "status": "unchanged-boundary",
+      "limitations": "原2AR案例及依据原文保留；新增案例仅补所述限定子域，未执行原程序，不把Rust政策或局部静态观察升级为全生命周期等价。"
+    },
+    {
+      "source_case_id": "C40",
+      "source_basis": "unresolved",
+      "source_findings": [
+        "F16",
+        "F20"
+      ],
+      "case_ids": [
+        "C40",
+        "C69"
+      ],
+      "status": "reassessed",
+      "limitations": "原2AR案例及依据原文保留；新增案例仅补所述限定子域，未执行原程序，不把Rust政策或局部静态观察升级为全生命周期等价。"
+    },
+    {
+      "source_case_id": "C41",
+      "source_basis": "static-inference",
+      "source_findings": [
+        "F09",
+        "F18",
+        "F19"
+      ],
+      "case_ids": [
+        "C41",
+        "C62",
+        "C65"
+      ],
+      "status": "reassessed",
+      "limitations": "原2AR案例及依据原文保留；新增案例仅补所述限定子域，未执行原程序，不把Rust政策或局部静态观察升级为全生命周期等价。"
+    },
+    {
+      "source_case_id": "C42",
+      "source_basis": "static-inference",
+      "source_findings": [
+        "F05",
+        "F18",
+        "F19"
+      ],
+      "case_ids": [
+        "C42",
+        "C62",
+        "C65"
+      ],
+      "status": "reassessed",
+      "limitations": "原2AR案例及依据原文保留；新增案例仅补所述限定子域，未执行原程序，不把Rust政策或局部静态观察升级为全生命周期等价。"
+    },
+    {
+      "source_case_id": "C43",
+      "source_basis": "static-inference",
+      "source_findings": [
+        "F18",
+        "F19"
+      ],
+      "case_ids": [
+        "C43",
+        "C62",
+        "C63"
+      ],
+      "status": "reassessed",
+      "limitations": "原2AR案例及依据原文保留；新增案例仅补所述限定子域，未执行原程序，不把Rust政策或局部静态观察升级为全生命周期等价。"
+    },
+    {
+      "source_case_id": "C44",
+      "source_basis": "static-inference",
+      "source_findings": [
+        "F18",
+        "F19"
+      ],
+      "case_ids": [
+        "C44"
+      ],
+      "status": "unchanged-boundary",
+      "limitations": "原2AR案例及依据原文保留；新增案例仅补所述限定子域，未执行原程序，不把Rust政策或局部静态观察升级为全生命周期等价。"
+    },
+    {
+      "source_case_id": "C45",
+      "source_basis": "static-inference",
+      "source_findings": [
+        "F10"
+      ],
+      "case_ids": [
+        "C45"
+      ],
+      "status": "unchanged-boundary",
+      "limitations": "原2AR案例及依据原文保留；新增案例仅补所述限定子域，未执行原程序，不把Rust政策或局部静态观察升级为全生命周期等价。"
+    },
+    {
+      "source_case_id": "C46",
+      "source_basis": "unresolved",
+      "source_findings": [
+        "F19",
+        "F20",
+        "F23"
+      ],
+      "case_ids": [
+        "C46",
+        "C62",
+        "C63",
+        "C64",
+        "C65",
+        "C66",
+        "C67",
+        "C69"
+      ],
+      "status": "reassessed",
+      "limitations": "原2AR案例及依据原文保留；新增案例仅补所述限定子域，未执行原程序，不把Rust政策或局部静态观察升级为全生命周期等价。"
+    },
+    {
+      "source_case_id": "C47",
+      "source_basis": "design",
+      "source_findings": [
+        "F07",
+        "F17",
+        "F21"
+      ],
+      "case_ids": [
+        "C47",
+        "C68",
+        "C71"
+      ],
+      "status": "reassessed",
+      "limitations": "原2AR案例及依据原文保留；新增案例仅补所述限定子域，未执行原程序，不把Rust政策或局部静态观察升级为全生命周期等价。"
+    },
+    {
+      "source_case_id": "C48",
+      "source_basis": "unresolved",
+      "source_findings": [
+        "F17",
+        "F20"
+      ],
+      "case_ids": [
+        "C48",
+        "C68",
+        "C71"
+      ],
+      "status": "reassessed",
+      "limitations": "原2AR案例及依据原文保留；新增案例仅补所述限定子域，未执行原程序，不把Rust政策或局部静态观察升级为全生命周期等价。"
+    },
+    {
+      "source_case_id": "C49",
+      "source_basis": "design",
+      "source_findings": [
+        "F21"
+      ],
+      "case_ids": [
+        "C49",
+        "C70"
+      ],
+      "status": "reassessed",
+      "limitations": "原2AR案例及依据原文保留；新增案例仅补所述限定子域，未执行原程序，不把Rust政策或局部静态观察升级为全生命周期等价。"
+    },
+    {
+      "source_case_id": "C50",
+      "source_basis": "design",
+      "source_findings": [
+        "F21"
+      ],
+      "case_ids": [
+        "C50",
+        "C70"
+      ],
+      "status": "reassessed",
+      "limitations": "原2AR案例及依据原文保留；新增案例仅补所述限定子域，未执行原程序，不把Rust政策或局部静态观察升级为全生命周期等价。"
+    },
+    {
+      "source_case_id": "C51",
+      "source_basis": "design",
+      "source_findings": [
+        "F21"
+      ],
+      "case_ids": [
+        "C51",
+        "C70"
+      ],
+      "status": "reassessed",
+      "limitations": "原2AR案例及依据原文保留；新增案例仅补所述限定子域，未执行原程序，不把Rust政策或局部静态观察升级为全生命周期等价。"
+    }
+  ]
+}

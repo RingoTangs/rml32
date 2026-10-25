@@ -17,9 +17,7 @@ def commands_fixture():
             commands.append(deepcopy(found))
         elif argv[-1].endswith('/verify_evidence.py'):
             commands.append(dict(argv=argv, returncode=0, stderr='',
-                                 stdout=json.dumps(dict(stage='2AX', target_execution='none',
-                                                        new_records=1, reused_records=1,
-                                                        unique_records=2, case_mappings=51))))
+                                 stdout=json.dumps(verifier.load(verifier.HERE / 'summary.json'))))
         else:
             commands.append(dict(argv=argv, returncode=0, stdout='', stderr='Ran 1 test in 0.001s\n\nOK\n'))
     return commands
@@ -139,6 +137,24 @@ class ReceiptTests(unittest.TestCase):
         with patch.object(verifier, 'build_record', return_value=expected):
             with self.assertRaisesRegex(AssertionError, 'delivery hashes'):
                 verifier.validate_record(record, commands, raw)
+
+    def test_current_evidence_summary_cannot_be_replaced(self):
+        commands = commands_fixture()
+        evidence = json.loads(commands[0]['stdout'])
+        evidence['anchors'] += 1
+        commands[0]['stdout'] = json.dumps(evidence)
+        with self.assertRaisesRegex(AssertionError, 'evidence log differs from current delivery'):
+            verifier.build_record(commands)
+
+    def test_actual_record_preserves_closed_gates_and_corpus_authority(self):
+        record = verifier.build_record(commands_fixture())
+        self.assertTrue(record['container_capture_ready'])
+        for key in ('runtime_changed', 'public_api_changed', 'dependencies_changed',
+                    'direct_owner_capture_ready', 'non_scalar_ready', 'stage2_complete'):
+            self.assertIs(record[key], False)
+        self.assertFalse(record['reused_corpus']['rerun'])
+        self.assertEqual(record['target_execution'], 'none')
+        self.assertEqual(record['selected_next'], 'T05-lifecycle-contract-evidence')
 
 
 if __name__ == '__main__':

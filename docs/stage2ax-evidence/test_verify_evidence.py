@@ -4,6 +4,7 @@ import gzip
 import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 import verify_evidence as v
 
@@ -214,6 +215,112 @@ class EvidenceTests(unittest.TestCase):
         session['analysis_requests'][0]['procedure'] = 'not_the_function'
         with self.assertRaisesRegex(ValueError, 'procedure differs'):
             v.validate_session(session, [self.record])
+
+
+class CurrentDeliveryTests(unittest.TestCase):
+    """Exercise the actual 2AX delivery, independently of the frozen rule fixtures."""
+
+    def altered_load(self, name, change):
+        original = v.load
+        def read(root, relative):
+            value = original(root, relative)
+            if relative == v.DIRECTORY + name:
+                return change(copy.deepcopy(value))
+            return value
+        return patch.object(v, 'load', side_effect=read)
+
+    def test_actual_2ax_delivery_passes(self):
+        result = v.verify()
+        self.assertEqual((result['new_records'], result['reused_records'], result['case_mappings']),
+                         (8, 57, 51))
+        self.assertEqual(result['target_execution'], 'none')
+        for name in ('Q01', 'Q04', 'Q05', 'Q06'):
+            self.assertEqual(result['question_status'][name], 'partial')
+
+    def test_missing_current_ledger_never_falls_back_to_2ar(self):
+        original = v.load
+        for name in ('anchors.json', 'findings.json', 'expected-cases.json',
+                     'questions.json', 'case-map.json'):
+            def missing(root, relative):
+                if relative == v.DIRECTORY + name:
+                    raise FileNotFoundError(relative)
+                return original(root, relative)
+            with self.subTest(name=name), patch.object(v, 'load', side_effect=missing):
+                with self.assertRaises(FileNotFoundError):
+                    v.verify()
+
+    def test_actual_finding_cannot_cite_missing_evidence(self):
+        def changed(rows):
+            rows[-1]['evidence'] = ['absent']
+            return rows
+        with self.altered_load('findings.json', changed):
+            with self.assertRaisesRegex(ValueError, 'dangling finding evidence'):
+                v.verify()
+
+    def test_actual_case_map_cannot_drop_historical_case(self):
+        def changed(data):
+            data['items'].pop()
+            return data
+        with self.altered_load('case-map.json', changed):
+            with self.assertRaisesRegex(ValueError, 'case inventory'):
+                v.verify()
+
+    def test_actual_historical_case_cannot_be_rewritten(self):
+        def changed(rows):
+            rows[0]['input'] += ' changed'
+            return rows
+        with self.altered_load('expected-cases.json', changed):
+            with self.assertRaisesRegex(ValueError, 'historical ledger changed'):
+                v.verify()
+
+    def test_actual_unknown_subquestion_cannot_be_answered(self):
+        def changed(rows):
+            unknown = next(f['id'] for f in v.load(v.ROOT, v.DIRECTORY + 'findings.json')
+                           if f['kind'] == 'unknown')
+            rows[0]['subquestions'] = [dict(id='Q01.invalid-closure', status='answered',
+                                          findings=[unknown], remaining='Unresolved.',
+                                          next_action='Obtain evidence.')]
+            return rows
+        with self.altered_load('questions.json', changed):
+            with self.assertRaisesRegex(ValueError, 'unresolved subquestion'):
+                v.verify()
+
+    def test_actual_parent_exit_question_cannot_be_closed(self):
+        def changed(rows):
+            rows[4]['status'] = 'answered'
+            rows[4]['findings'] = ['F01']
+            rows[4]['subquestions'] = []
+            return rows
+        with self.altered_load('questions.json', changed):
+            with self.assertRaisesRegex(ValueError, 'excluded exit/GC domains'):
+                v.verify()
+
+    def test_actual_anchor_machine_bytes_cannot_be_replaced(self):
+        def changed(rows):
+            raw = bytearray.fromhex(rows[-1]['bytes_hex'])
+            raw[0] ^= 1
+            rows[-1]['bytes_hex'] = raw.hex()
+            return rows
+        with self.altered_load('anchors.json', changed):
+            with self.assertRaisesRegex(ValueError, 'anchor bytes differ'):
+                v.verify()
+
+    def test_actual_generated_view_cannot_be_stale(self):
+        original = Path.read_text
+        def changed(path, *args, **kwargs):
+            value = original(path, *args, **kwargs)
+            return value + 'stale' if path == v.ROOT / v.DIRECTORY / 'findings.md' else value
+        with patch.object(Path, 'read_text', changed):
+            with self.assertRaisesRegex(ValueError, 'stale or missing generated view'):
+                v.verify()
+
+    def test_actual_generated_view_cannot_be_missing(self):
+        original = Path.is_file
+        def missing(path):
+            return False if path == v.ROOT / v.DIRECTORY / 'questions.md' else original(path)
+        with patch.object(Path, 'is_file', missing):
+            with self.assertRaisesRegex(ValueError, 'stale or missing generated view'):
+                v.verify()
 
 
 if __name__ == '__main__':

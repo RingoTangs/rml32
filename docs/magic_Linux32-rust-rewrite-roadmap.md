@@ -1,3 +1,7 @@
+# 最新进度：阶段2AX
+
+阶段2AX已补齐既有8条新增、57条复用原生静态记录的[证据总账](stage2ax-evidence/findings.md)、51项历史案例映射与[T05门控规格](stage2ax-evidence/runtime-design.md)。Rust运行时、公共API、版本及依赖保持2AW基线；原644项普通测试与2项doctest保持，验证见[2AX收据](stage2ax-validation.json)。直接Object/Function捕获仍阻塞，阶段2未完成；下一批为[T05-lifecycle-contract-evidence](stage2ax-evidence/next-batch.md)，先补未发布头与最终PCB清理后的安全点等生命周期证据。没有执行参考程序或业务字节码，未新增独立状态模型；语料结果复用冻结2AW记录。以下完整原文保留为历史快照。
+
 # magic_Linux32 Rust 重写实施路线图
 
 阶段2AW已完成 T04 显式受限容器捕获：新增 Object/Global 准备入口，支持无环 Array/Mapping 捕获及私有实际类型 profile 守卫；旧入口仍只接受标量捕获。原626项场景与断言保留，API 仅增补入口，版本与依赖不变。受限容器能力就绪，直接 Object/Function 捕获仍阻塞，阶段2未完成。见[实现说明](../docs/stage2aw-evidence/overview.md)与[验证收据](../docs/stage2aw-validation.json)。下一批为 T05 前置原生契约取证。以下为历史快照。

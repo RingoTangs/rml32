@@ -188,9 +188,18 @@ def delivery():
     return {path: digest((ROOT / path).read_bytes()) for path in sorted(paths)}
 
 
+def current_evidence():
+    spec = importlib.util.spec_from_file_location('_2ax_current_evidence', HERE / 'verify_evidence.py')
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module.verify()
+
+
 def build_record(commands):
     base = baseline()
     validation = validate_commands(commands)
+    require(validation['evidence_summary'] == current_evidence(),
+            'evidence log differs from current delivery')
     counts = validation['python_test_counts']
     return dict(stage='2AX', status='pass', baseline_stage='2AW',
                 baseline_verification=frozen_aw(), protected_previous_files=len(base['files']),
@@ -198,7 +207,7 @@ def build_record(commands):
                 public_api_changed=False, dependencies_changed=False, source_compatible=True,
                 container_capture_ready=True, direct_owner_capture_ready=False,
                 non_scalar_ready=False, stage2_complete=False, new_native_analysis=True,
-                target_execution='none', selected_next='T05-evidence-gated-design',
+                target_execution='none', selected_next='T05-lifecycle-contract-evidence',
                 rust_tests_debug=644, rust_tests_release=644, doctests_each_profile=2,
                 model_tests=56, evidence_tests=counts['docs/stage2ax-evidence/test_verify_evidence.py'],
                 receipt_tests=counts['docs/stage2ax-evidence/test_verify_validation.py'],

@@ -1,0 +1,36 @@
+{
+  "anchors": 180,
+  "case_mappings": 51,
+  "expected_cases": 71,
+  "findings": 40,
+  "functions": 49,
+  "new_records": 8,
+  "question_status": {
+    "Q01": "partial",
+    "Q02": "answered",
+    "Q03": "answered",
+    "Q04": "partial",
+    "Q05": "partial",
+    "Q06": "partial"
+  },
+  "reused_records": 57,
+  "stage": "2AX",
+  "subquestion_status": {
+    "Q01.reachability": "answered",
+    "Q01.unpublished": "unresolved",
+    "Q01.zero-allocation": "answered",
+    "Q04.capture-ref": "unresolved",
+    "Q04.deferred-local": "answered",
+    "Q04.holders": "answered",
+    "Q04.later-drain": "unresolved",
+    "Q05.final-pcb": "answered",
+    "Q05.hooks": "partial",
+    "Q05.ordinary-uncaught": "answered",
+    "Q05.unpublished": "unresolved",
+    "Q06.complete-graph": "unresolved",
+    "Q06.known-roots": "answered",
+    "Q06.rust-gate": "answered"
+  },
+  "target_execution": "none",
+  "unique_records": 65
+}
