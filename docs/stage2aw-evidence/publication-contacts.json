@@ -1,0 +1,512 @@
+{
+  "stage": "2AW",
+  "scope": "Reproducible syntactic publication inventory plus opt-in/profile anchors, not native equivalence proof.",
+  "items": [
+    {
+      "id": "PUB01",
+      "after": {
+        "path": "src/cell.rs",
+        "line": 27,
+        "excerpt": "let _restore = Restore(FAIL_AFTER.replace(Some(after)));"
+      },
+      "classification": "test-only",
+      "review": "Existing cfg(test) allocation injection metadata, no runtime publication.",
+      "test": "t04_every_expansion_failure_and_capture_borrow_preserves_owner_branch"
+    },
+    {
+      "id": "PUB02",
+      "after": {
+        "path": "src/cell.rs",
+        "line": 155,
+        "excerpt": "std::mem::replace(&mut *guard, value)"
+      },
+      "classification": "checked-publication",
+      "review": "Unchanged 2AV raw publication/retirement site; complete source hash remains frozen. Existing graph validation and cleanup semantics apply.",
+      "test": "t04_every_expansion_failure_and_capture_borrow_preserves_owner_branch"
+    },
+    {
+      "id": "PUB03",
+      "after": {
+        "path": "src/cell.rs",
+        "line": 171,
+        "excerpt": "std::mem::replace(&mut *guard, payload)"
+      },
+      "classification": "checked-publication",
+      "review": "Unchanged 2AV raw publication/retirement site; complete source hash remains frozen. Existing graph validation and cleanup semantics apply.",
+      "test": "t04_every_expansion_failure_and_capture_borrow_preserves_owner_branch"
+    },
+    {
+      "id": "PUB04",
+      "after": {
+        "path": "src/cell.rs",
+        "line": 221,
+        "excerpt": "old.push(std::mem::replace(&mut **guard, value));"
+      },
+      "classification": "checked-publication",
+      "review": "Unchanged 2AV raw publication/retirement site; complete source hash remains frozen. Existing graph validation and cleanup semantics apply.",
+      "test": "t04_every_expansion_failure_and_capture_borrow_preserves_owner_branch"
+    },
+    {
+      "id": "PUB05",
+      "after": {
+        "path": "src/cell.rs",
+        "line": 249,
+        "excerpt": "std::mem::replace("
+      },
+      "classification": "checked-publication",
+      "review": "Unchanged 2AV raw publication/retirement site; complete source hash remains frozen. Existing graph validation and cleanup semantics apply.",
+      "test": "t04_every_expansion_failure_and_capture_borrow_preserves_owner_branch"
+    },
+    {
+      "id": "PUB06",
+      "after": {
+        "path": "src/cell.rs",
+        "line": 362,
+        "excerpt": "let payload = std::mem::replace("
+      },
+      "classification": "checked-publication",
+      "review": "Unchanged 2AV raw publication/retirement site; complete source hash remains frozen. Existing graph validation and cleanup semantics apply.",
+      "test": "t04_every_expansion_failure_and_capture_borrow_preserves_owner_branch"
+    },
+    {
+      "id": "PUB07",
+      "after": {
+        "path": "src/cell.rs",
+        "line": 371,
+        "excerpt": "old.push(std::mem::replace(&mut *guards[index(&dst)], payload));"
+      },
+      "classification": "checked-publication",
+      "review": "Unchanged 2AV raw publication/retirement site; complete source hash remains frozen. Existing graph validation and cleanup semantics apply.",
+      "test": "t04_every_expansion_failure_and_capture_borrow_preserves_owner_branch"
+    },
+    {
+      "id": "PUB08",
+      "after": {
+        "path": "src/cell.rs",
+        "line": 375,
+        "excerpt": "old.push(std::mem::replace(&mut *guards[i], payload));"
+      },
+      "classification": "checked-publication",
+      "review": "Unchanged 2AV raw publication/retirement site; complete source hash remains frozen. Existing graph validation and cleanup semantics apply.",
+      "test": "t04_every_expansion_failure_and_capture_borrow_preserves_owner_branch"
+    },
+    {
+      "id": "PUB09",
+      "after": {
+        "path": "src/cell.rs",
+        "line": 385,
+        "excerpt": "let old = self.value.replace(OwnedPayload {"
+      },
+      "classification": "checked-publication",
+      "review": "Unchanged 2AV raw publication/retirement site; complete source hash remains frozen. Existing graph validation and cleanup semantics apply.",
+      "test": "t04_every_expansion_failure_and_capture_borrow_preserves_owner_branch"
+    },
+    {
+      "id": "PUB10",
+      "after": {
+        "path": "src/container.rs",
+        "line": 216,
+        "excerpt": "let cell = Cell::new(Value::Undefined)?;"
+      },
+      "classification": "checked-publication",
+      "review": "Unchanged 2AV raw publication/retirement site; complete source hash remains frozen. Existing graph validation and cleanup semantics apply.",
+      "test": "t04_every_expansion_failure_and_capture_borrow_preserves_owner_branch"
+    },
+    {
+      "id": "PUB11",
+      "after": {
+        "path": "src/container.rs",
+        "line": 332,
+        "excerpt": ".map(Cell::new)"
+      },
+      "classification": "checked-publication",
+      "review": "Unchanged 2AV raw publication/retirement site; complete source hash remains frozen. Existing graph validation and cleanup semantics apply.",
+      "test": "t04_every_expansion_failure_and_capture_borrow_preserves_owner_branch"
+    },
+    {
+      "id": "PUB12",
+      "after": {
+        "path": "src/container.rs",
+        "line": 375,
+        "excerpt": "let cell = Cell::new(value)?;"
+      },
+      "classification": "checked-publication",
+      "review": "Unchanged 2AV raw publication/retirement site; complete source hash remains frozen. Existing graph validation and cleanup semantics apply.",
+      "test": "t04_every_expansion_failure_and_capture_borrow_preserves_owner_branch"
+    },
+    {
+      "id": "PUB13",
+      "after": {
+        "path": "src/copy_plan.rs",
+        "line": 15,
+        "excerpt": "let _restore = Restore(FAIL_WORKSPACE.replace(Some(after)));"
+      },
+      "classification": "test-only",
+      "review": "Existing cfg(test) allocation injection metadata, no runtime publication.",
+      "test": "t04_every_expansion_failure_and_capture_borrow_preserves_owner_branch"
+    },
+    {
+      "id": "PUB14",
+      "after": {
+        "path": "src/copy_plan.rs",
+        "line": 84,
+        "excerpt": "let cell = Cell::new(value)?;"
+      },
+      "classification": "checked-publication",
+      "review": "Unchanged 2AV raw publication/retirement site; complete source hash remains frozen. Existing graph validation and cleanup semantics apply.",
+      "test": "t04_every_expansion_failure_and_capture_borrow_preserves_owner_branch"
+    },
+    {
+      "id": "PUB15",
+      "after": {
+        "path": "src/copy_plan.rs",
+        "line": 130,
+        "excerpt": "Cell::replace_payload_batch_with_roots(hidden, self.outputs)"
+      },
+      "classification": "checked-publication",
+      "review": "Unchanged 2AV raw publication/retirement site; complete source hash remains frozen. Existing graph validation and cleanup semantics apply.",
+      "test": "t04_every_expansion_failure_and_capture_borrow_preserves_owner_branch"
+    },
+    {
+      "id": "PUB16",
+      "after": {
+        "path": "src/copy_plan.rs",
+        "line": 133,
+        "excerpt": "Cell::transfer_batch("
+      },
+      "classification": "checked-publication",
+      "review": "Unchanged 2AV raw publication/retirement site; complete source hash remains frozen. Existing graph validation and cleanup semantics apply.",
+      "test": "t04_every_expansion_failure_and_capture_borrow_preserves_owner_branch"
+    },
+    {
+      "id": "PUB17",
+      "after": {
+        "path": "src/vm.rs",
+        "line": 30,
+        "excerpt": "Completion::Returned(v) => Some(Cell::new(v.clone())?),"
+      },
+      "classification": "checked-publication",
+      "review": "Existing final Projection gates remain in place; private staging passes through checked consumer before publication.",
+      "test": "t04_every_expansion_failure_and_capture_borrow_preserves_owner_branch"
+    },
+    {
+      "id": "PUB18",
+      "after": {
+        "path": "src/vm.rs",
+        "line": 669,
+        "excerpt": ".map(|v| Cell::new(v).map(StackEntry::Value))"
+      },
+      "classification": "checked-publication",
+      "review": "Existing final Projection gates remain in place; private staging passes through checked consumer before publication.",
+      "test": "t04_every_expansion_failure_and_capture_borrow_preserves_owner_branch"
+    },
+    {
+      "id": "PUB19",
+      "after": {
+        "path": "src/vm.rs",
+        "line": 832,
+        "excerpt": "StackEntry::Value(c) => c.replace(value),"
+      },
+      "classification": "checked-publication",
+      "review": "Existing final Projection gates remain in place; private staging passes through checked consumer before publication.",
+      "test": "t04_every_expansion_failure_and_capture_borrow_preserves_owner_branch"
+    },
+    {
+      "id": "PUB20",
+      "after": {
+        "path": "src/vm.rs",
+        "line": 834,
+        "excerpt": "let cell = Cell::new(value)?;"
+      },
+      "classification": "checked-publication",
+      "review": "Existing final Projection gates remain in place; private staging passes through checked consumer before publication.",
+      "test": "t04_every_expansion_failure_and_capture_borrow_preserves_owner_branch"
+    },
+    {
+      "id": "PUB21",
+      "after": {
+        "path": "src/vm.rs",
+        "line": 855,
+        "excerpt": "let cell = Cell::new(v)?;"
+      },
+      "classification": "checked-publication",
+      "review": "Existing final Projection gates remain in place; private staging passes through checked consumer before publication.",
+      "test": "t04_every_expansion_failure_and_capture_borrow_preserves_owner_branch"
+    },
+    {
+      "id": "PUB22",
+      "after": {
+        "path": "src/vm.rs",
+        "line": 1040,
+        "excerpt": ".map(Cell::new)"
+      },
+      "classification": "checked-publication",
+      "review": "Existing final Projection gates remain in place; private staging passes through checked consumer before publication.",
+      "test": "t04_every_expansion_failure_and_capture_borrow_preserves_owner_branch"
+    },
+    {
+      "id": "PUB23",
+      "after": {
+        "path": "src/vm.rs",
+        "line": 1408,
+        "excerpt": "let result = StackEntry::Value(Cell::new(Value::Void)?);"
+      },
+      "classification": "checked-publication",
+      "review": "Existing final Projection gates remain in place; private staging passes through checked consumer before publication.",
+      "test": "t04_every_expansion_failure_and_capture_borrow_preserves_owner_branch"
+    },
+    {
+      "id": "PUB24",
+      "after": {
+        "path": "src/vm.rs",
+        "line": 2148,
+        "excerpt": "let cell = Cell::new(Value::Void)?;"
+      },
+      "classification": "checked-publication",
+      "review": "Existing final Projection gates remain in place; private staging passes through checked consumer before publication.",
+      "test": "t04_every_expansion_failure_and_capture_borrow_preserves_owner_branch"
+    },
+    {
+      "id": "PUB25",
+      "after": {
+        "path": "src/vm.rs",
+        "line": 2467,
+        "excerpt": "Cell::replace_payload_batch(vec![("
+      },
+      "classification": "checked-publication",
+      "review": "Existing final Projection gates remain in place; private staging passes through checked consumer before publication.",
+      "test": "t04_every_expansion_failure_and_capture_borrow_preserves_owner_branch"
+    },
+    {
+      "id": "PUB26",
+      "after": {
+        "path": "src/vm.rs",
+        "line": 3079,
+        "excerpt": "let cell = Cell::new(value)?;"
+      },
+      "classification": "checked-publication",
+      "review": "Existing final Projection gates remain in place; private staging passes through checked consumer before publication.",
+      "test": "t04_every_expansion_failure_and_capture_borrow_preserves_owner_branch"
+    },
+    {
+      "id": "PUB27",
+      "after": {
+        "path": "src/vm.rs",
+        "line": 3118,
+        "excerpt": "let c = mapping.member(&key)?;"
+      },
+      "classification": "checked-publication",
+      "review": "Existing final Projection gates remain in place; private staging passes through checked consumer before publication.",
+      "test": "t04_every_expansion_failure_and_capture_borrow_preserves_owner_branch"
+    },
+    {
+      "id": "PUB28",
+      "after": {
+        "path": "src/vm.rs",
+        "line": 3121,
+        "excerpt": "(mapping.member(&key)?, ReferenceKind::MappingMember)"
+      },
+      "classification": "checked-publication",
+      "review": "Existing final Projection gates remain in place; private staging passes through checked consumer before publication.",
+      "test": "t04_every_expansion_failure_and_capture_borrow_preserves_owner_branch"
+    },
+    {
+      "id": "PUB29",
+      "after": {
+        "path": "src/vm.rs",
+        "line": 3172,
+        "excerpt": "let cell = Cell::new(value)?;"
+      },
+      "classification": "checked-publication",
+      "review": "Existing final Projection gates remain in place; private staging passes through checked consumer before publication.",
+      "test": "t04_every_expansion_failure_and_capture_borrow_preserves_owner_branch"
+    },
+    {
+      "id": "PUB30",
+      "after": {
+        "path": "src/vm.rs",
+        "line": 3317,
+        "excerpt": "let cell = Cell::new(Value::Undefined)?;"
+      },
+      "classification": "checked-publication",
+      "review": "Existing final Projection gates remain in place; private staging passes through checked consumer before publication.",
+      "test": "t04_every_expansion_failure_and_capture_borrow_preserves_owner_branch"
+    },
+    {
+      "id": "PUB31",
+      "after": {
+        "path": "src/vm.rs",
+        "line": 3544,
+        "excerpt": ".map(|_| Cell::new(Value::Undefined).map(StackEntry::Value))"
+      },
+      "classification": "checked-publication",
+      "review": "Existing final Projection gates remain in place; private staging passes through checked consumer before publication.",
+      "test": "t04_every_expansion_failure_and_capture_borrow_preserves_owner_branch"
+    },
+    {
+      "id": "PUB32",
+      "after": {
+        "path": "src/object.rs",
+        "line": 138,
+        "excerpt": ".map(crate::cell::Cell::new)"
+      },
+      "classification": "checked-publication",
+      "review": "Unchanged 2AV raw publication/retirement site; complete source hash remains frozen. Existing graph validation and cleanup semantics apply.",
+      "test": "t04_every_expansion_failure_and_capture_borrow_preserves_owner_branch"
+    },
+    {
+      "id": "PUB33",
+      "after": {
+        "path": "src/object.rs",
+        "line": 221,
+        "excerpt": ".map(crate::cell::Cell::new)"
+      },
+      "classification": "checked-publication",
+      "review": "Unchanged 2AV raw publication/retirement site; complete source hash remains frozen. Existing graph validation and cleanup semantics apply.",
+      "test": "t04_every_expansion_failure_and_capture_borrow_preserves_owner_branch"
+    },
+    {
+      "id": "PUB34",
+      "after": {
+        "path": "src/boundary.rs",
+        "line": 231,
+        "excerpt": "let retired = Rc::new(Cell::new(false));"
+      },
+      "classification": "registry-metadata",
+      "review": "std::cell::Cell lease state, not executable value payload; checked Registry publication remains unchanged.",
+      "test": "t04_every_expansion_failure_and_capture_borrow_preserves_owner_branch"
+    },
+    {
+      "id": "PUB35",
+      "after": {
+        "path": "src/boundary.rs",
+        "line": 265,
+        "excerpt": "let retired = Rc::new(Cell::new(false));"
+      },
+      "classification": "registry-metadata",
+      "review": "std::cell::Cell lease state, not executable value payload; checked Registry publication remains unchanged.",
+      "test": "t04_every_expansion_failure_and_capture_borrow_preserves_owner_branch"
+    },
+    {
+      "id": "PUB36",
+      "after": {
+        "path": "src/boundary.rs",
+        "line": 522,
+        "excerpt": "alive: Cell::new(true),"
+      },
+      "classification": "registry-metadata",
+      "review": "std::cell::Cell lease state, not executable value payload; checked Registry publication remains unchanged.",
+      "test": "t04_every_expansion_failure_and_capture_borrow_preserves_owner_branch"
+    },
+    {
+      "id": "PUB37",
+      "after": {
+        "path": "src/boundary.rs",
+        "line": 523,
+        "excerpt": "next: Cell::new(1),"
+      },
+      "classification": "registry-metadata",
+      "review": "std::cell::Cell lease state, not executable value payload; checked Registry publication remains unchanged.",
+      "test": "t04_every_expansion_failure_and_capture_borrow_preserves_owner_branch"
+    },
+    {
+      "id": "PUB38",
+      "after": {
+        "path": "src/prepared.rs",
+        "line": 732,
+        "excerpt": "pub fn prepare_program_with_container_captures("
+      },
+      "classification": "opt-in",
+      "review": "Only the two new preparation entrypoints set container capture permission; existing callable/default/catalog paths retain false.",
+      "test": "t04_public_object_global_and_host_capture_matrix_keeps_header_identity"
+    },
+    {
+      "id": "PUB39",
+      "after": {
+        "path": "src/prepared.rs",
+        "line": 740,
+        "excerpt": "pub fn prepare_global_program_with_container_captures("
+      },
+      "classification": "opt-in",
+      "review": "Only the two new preparation entrypoints set container capture permission; existing callable/default/catalog paths retain false.",
+      "test": "t04_public_object_global_and_host_capture_matrix_keeps_header_identity"
+    },
+    {
+      "id": "PUB40",
+      "after": {
+        "path": "src/prepared.rs",
+        "line": 761,
+        "excerpt": "container_captures: true,"
+      },
+      "classification": "opt-in",
+      "review": "Only the two new preparation entrypoints set container capture permission; existing callable/default/catalog paths retain false.",
+      "test": "t04_public_object_global_and_host_capture_matrix_keeps_header_identity"
+    },
+    {
+      "id": "PUB41",
+      "after": {
+        "path": "src/prepared.rs",
+        "line": 862,
+        "excerpt": "allow_container_captures: container_captures,"
+      },
+      "classification": "opt-in",
+      "review": "Only the two new preparation entrypoints set container capture permission; existing callable/default/catalog paths retain false.",
+      "test": "t04_public_object_global_and_host_capture_matrix_keeps_header_identity"
+    },
+    {
+      "id": "PUB42",
+      "after": {
+        "path": "src/value.rs",
+        "line": 99,
+        "excerpt": "pub(crate) enum CaptureProfile {"
+      },
+      "classification": "private-profile",
+      "review": "Private immutable capture profile stored with Function identity; no new snapshot fields or capture access.",
+      "test": "t04_raw_create_profiles_actual_types_and_moves_stable_sources"
+    },
+    {
+      "id": "PUB43",
+      "after": {
+        "path": "src/value.rs",
+        "line": 104,
+        "excerpt": "pub(crate) capture_profile: CaptureProfile,"
+      },
+      "classification": "profile-guard",
+      "review": "Creation classifies actual direct slots; old caller rejection occurs after existing origin/owner checks and before dispatch, normalization or Host callback.",
+      "test": "t04_old_caller_rejects_container_profile_but_accepts_new_scalar_and_zero_capture"
+    },
+    {
+      "id": "PUB44",
+      "after": {
+        "path": "src/vm.rs",
+        "line": 1665,
+        "excerpt": "let mut capture_profile = crate::value::CaptureProfile::Scalar;"
+      },
+      "classification": "profile-guard",
+      "review": "Creation classifies actual direct slots; old caller rejection occurs after existing origin/owner checks and before dispatch, normalization or Host callback.",
+      "test": "t04_old_caller_rejects_container_profile_but_accepts_new_scalar_and_zero_capture"
+    },
+    {
+      "id": "PUB45",
+      "after": {
+        "path": "src/vm.rs",
+        "line": 1672,
+        "excerpt": "if program.allow_container_captures"
+      },
+      "classification": "profile-guard",
+      "review": "Creation classifies actual direct slots; old caller rejection occurs after existing origin/owner checks and before dispatch, normalization or Host callback.",
+      "test": "t04_old_caller_rejects_container_profile_but_accepts_new_scalar_and_zero_capture"
+    },
+    {
+      "id": "PUB46",
+      "after": {
+        "path": "src/vm.rs",
+        "line": 1772,
+        "excerpt": "if function.0.capture_profile == crate::value::CaptureProfile::Container"
+      },
+      "classification": "profile-guard",
+      "review": "Creation classifies actual direct slots; old caller rejection occurs after existing origin/owner checks and before dispatch, normalization or Host callback.",
+      "test": "t04_old_caller_rejects_container_profile_but_accepts_new_scalar_and_zero_capture"
+    }
+  ]
+}

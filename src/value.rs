@@ -91,11 +91,17 @@ pub enum FunctionTarget {
     Host { slot: u16 },
 }
 
-/// Opaque callable with scalar bound parameters.
+/// Opaque callable with private, bounded captures.
 /// Clones share identity; independent creations compare unequal.
 #[derive(Clone)]
 pub struct FunctionValue(pub(crate) Rc<FunctionData>);
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub(crate) enum CaptureProfile {
+    Scalar,
+    Container,
+}
 pub(crate) struct FunctionData {
+    pub(crate) capture_profile: CaptureProfile,
     pub(crate) origin: Rc<()>,
     pub(crate) owner: Option<ObjectId>,
     pub(crate) target: FunctionTarget,

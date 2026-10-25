@@ -1032,6 +1032,7 @@ mod tests {
     use super::*;
     fn function(store: &ObjectStore) -> value::Value {
         value::Value::Function(value::FunctionValue(Rc::new(value::FunctionData {
+            capture_profile: crate::value::CaptureProfile::Scalar,
             origin: store.registry.function_origin.clone(),
             owner: None,
             target: value::FunctionTarget::Host { slot: 0 },

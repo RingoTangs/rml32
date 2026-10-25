@@ -1,5 +1,8 @@
 # magic_Linux32 Rust 重写实施路线图
 
+阶段2AW已完成 T04 显式受限容器捕获：新增 Object/Global 准备入口，支持无环 Array/Mapping 捕获及私有实际类型 profile 守卫；旧入口仍只接受标量捕获。原626项场景与断言保留，API 仅增补入口，版本与依赖不变。受限容器能力就绪，直接 Object/Function 捕获仍阻塞，阶段2未完成。见[实现说明](../docs/stage2aw-evidence/overview.md)与[验证收据](../docs/stage2aw-validation.json)。下一批为 T05 前置原生契约取证。以下为历史快照。
+
+
 阶段2AV已完成[T03拟提交图验证](stage2av-evidence/overview.md)：遍历Function捕获边，按最终边拒环并校验共享DAG、存活祖先和资源限额；公共API、版本及依赖不变。保留原606项场景与全部原断言，Host失败原子性及快照契约不变。验证见[2AV收据](stage2av-validation.json)。非标量捕获仍关闭，阶段2未完成；下一批为T04显式受限容器捕获入口。以下为历史快照。
 
 

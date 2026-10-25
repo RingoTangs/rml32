@@ -1662,16 +1662,23 @@ impl Vm {
         bound
             .try_reserve(count)
             .map_err(|_| err(VmErrorKind::Limit, "capture allocation failed"))?;
+        let mut capture_profile = crate::value::CaptureProfile::Scalar;
         for pos in (n - count..n).rev() {
             let value = self.ordinary_value(pos)?;
             if !matches!(
                 value,
                 Value::Undefined | Value::Void | Value::Int(_) | Value::Real(_) | Value::Bytes(_)
             ) {
-                return Err(err(
-                    VmErrorKind::UnsupportedType,
-                    "only scalar function captures are supported",
-                ));
+                if program.allow_container_captures
+                    && matches!(value, Value::Array(_) | Value::Mapping(_))
+                {
+                    capture_profile = crate::value::CaptureProfile::Container;
+                } else {
+                    return Err(err(
+                        VmErrorKind::UnsupportedType,
+                        "capture type requires an explicitly supported preparation profile",
+                    ));
+                }
             }
             bound.push(plan.transfer(self.value_cell(pos)?)?);
         }
@@ -1714,6 +1721,7 @@ impl Vm {
                 )
             })?;
         let function = crate::FunctionValue(Rc::new(crate::value::FunctionData {
+            capture_profile,
             origin: self.objects.function_origin.clone(),
             owner,
             target,
@@ -1760,6 +1768,14 @@ impl Vm {
         }
         if let Some(owner) = function.owner() {
             self.objects.get(owner)?;
+        }
+        if function.0.capture_profile == crate::value::CaptureProfile::Container
+            && !program.allow_container_captures
+        {
+            return Err(err(
+                VmErrorKind::UnsupportedFeature,
+                "container-capturing function requires explicit caller preparation",
+            ));
         }
         let (id, slot, execution, active_object, kind) = match function.target() {
             crate::value::FunctionTarget::Object {
@@ -3800,6 +3816,7 @@ mod tests {
             allow_function_values: false,
             allow_global_function_values: false,
             allow_host_function_values: false,
+            allow_container_captures: false,
             kind: ProgramKind::Object,
             function_capacity: 0,
             source: "synthetic-loop".into(),
@@ -4158,6 +4175,7 @@ mod catch_tests {
             allow_function_values: false,
             allow_global_function_values: false,
             allow_host_function_values: false,
+            allow_container_captures: false,
             kind: ProgramKind::Object,
             function_capacity: 0,
             source: "synthetic-catch".into(),
@@ -4650,6 +4668,7 @@ mod global_tests {
             allow_function_values: false,
             allow_global_function_values: false,
             allow_host_function_values: false,
+            allow_container_captures: false,
             kind: ProgramKind::Object,
             function_capacity: 0,
             variable_count: 0,
@@ -4852,6 +4871,7 @@ mod host_tests {
             allow_function_values: false,
             allow_global_function_values: false,
             allow_host_function_values: false,
+            allow_container_captures: false,
             kind: ProgramKind::Object,
             function_capacity: 1,
             variable_count: 0,
@@ -5141,6 +5161,7 @@ mod function_value_tests {
             allow_function_values: true,
             allow_global_function_values: global_targets,
             allow_host_function_values: false,
+            allow_container_captures: false,
             kind: ProgramKind::Object,
             function_capacity: 2,
             variable_count: 0,
@@ -5160,6 +5181,7 @@ mod function_value_tests {
     }
     fn value(vm: &Vm, bound: Vec<Value>) -> crate::FunctionValue {
         crate::FunctionValue(Rc::new(crate::value::FunctionData {
+            capture_profile: crate::value::CaptureProfile::Scalar,
             origin: vm.objects.function_origin.clone(),
             owner: vm.frames[0].active_object,
             target: crate::value::FunctionTarget::Object {
@@ -5187,6 +5209,7 @@ mod function_value_tests {
             allow_function_values: true,
             allow_global_function_values: true,
             allow_host_function_values: false,
+            allow_container_captures: false,
             kind: ProgramKind::Global,
             function_capacity: 601,
             variable_count: 0,
@@ -5796,6 +5819,7 @@ mod function_value_tests {
             allow_function_values: true,
             allow_global_function_values: false,
             allow_host_function_values: true,
+            allow_container_captures: false,
             kind: ProgramKind::Object,
             function_capacity: 2,
             variable_count: 0,
@@ -5996,6 +6020,300 @@ mod function_value_tests {
         assert_eq!(source.read().unwrap(), Value::Object(ObjectId(999)));
         assert_eq!(target.read().unwrap(), Value::Int(7));
     }
+    #[test]
+    fn t04_reference_loop_and_lifecycle_guards_remain_closed() {
+        for (op, operands) in [(0x17, [1, 1]), (5, [0, 1]), (5, [0, 2])] {
+            let mut vm = t04_fixture(op, operands, 0);
+            let Value::Array(owner) = Value::array(vec![]).unwrap() else {
+                unreachable!()
+            };
+            let c = Cell::new(Value::Undefined).unwrap();
+            Cell::replace_payload_batch(vec![(
+                c.clone(),
+                SlotPayload::Loop(Box::new(LoopControl::for_test(owner))),
+            )])
+            .unwrap();
+            vm.stack.push(StackEntry::Value(c.clone()));
+            if operands[1] == 2 {
+                let f = value(&vm, vec![]);
+                vm.push(Value::Function(f)).unwrap();
+            }
+            assert_atomic(&mut vm, VmErrorKind::UnsupportedFeature);
+            assert!(c.is_loop().unwrap());
+        }
+        let mut vm = t04_fixture(0x17, [1, 1], 1);
+        let cell = Cell::new(Value::Int(7)).unwrap();
+        let reference = vm.owned_reference(cell, ReferenceKind::Temporary).unwrap();
+        vm.stack.push(StackEntry::Reference(reference));
+        assert_atomic(&mut vm, VmErrorKind::UnsupportedFeature);
+        for op in [5, 0x17] {
+            let mut vm = t04_fixture(op, [-1, -1], 0);
+            let frame = vm.frames[0].clone();
+            let program = vm.objects.program(frame.program()).unwrap();
+            let code = CodeView::get(&program, frame.body).unwrap();
+            for phase in [
+                LifecyclePhase::Initialize,
+                LifecyclePhase::Create,
+                LifecyclePhase::RollbackDestruct,
+            ] {
+                vm.construction = Some(ConstructionTask {
+                    object: frame.object().unwrap(),
+                    program: frame.program(),
+                    phase,
+                    position: 0,
+                    constitution: 0,
+                    parameter: None,
+                    primary: None,
+                });
+                let result = if op == 5 {
+                    vm.call_function_value(&frame, &program, &code, -1, -1)
+                } else {
+                    vm.create_function_value(&frame, &program, &code, -1, -1)
+                };
+                assert_eq!(result.unwrap_err().kind, VmErrorKind::UnsupportedFeature);
+                assert_eq!(vm.frames[0].pc, 0);
+                assert!(vm.stack.is_empty());
+            }
+        }
+    }
+    fn t04_fixture(opcode: u8, operands: [i32; 2], argc: usize) -> Vm {
+        let mut vm = fixture(opcode, operands, argc);
+        let old = vm.objects.program(vm.frames[0].program()).unwrap();
+        let program = PreparedProgram {
+            source: "t04-container-captures".into(),
+            global_schema: None,
+            allow_host_calls: false,
+            allow_function_values: true,
+            allow_global_function_values: false,
+            allow_host_function_values: false,
+            allow_container_captures: true,
+            kind: ProgramKind::Object,
+            function_capacity: old.function_capacity,
+            variable_count: 0,
+            strings: vec![],
+            functions: old.functions.clone(),
+            unimplemented: Default::default(),
+            initializations: None,
+            init_order: vec![],
+            lifecycles: None,
+            methods: None,
+        };
+        let p = vm.objects.register_program(program).unwrap();
+        let o = vm.objects.create(p, vec![]).unwrap();
+        vm.frames[0].execution = ExecutionSource::ObjectProgram(p);
+        vm.frames[0].active_object = Some(o);
+        vm
+    }
+    fn t04_container(mapping: bool) -> Value {
+        if mapping {
+            Value::mapping(vec![(Value::Int(0), Value::Object(ObjectId(999)))]).unwrap()
+        } else {
+            Value::array(vec![Value::Object(ObjectId(999))]).unwrap()
+        }
+    }
+    fn t04_function(vm: &Vm, bound: Vec<Value>) -> crate::FunctionValue {
+        let mut f = value(vm, bound);
+        Rc::get_mut(&mut f.0).unwrap().capture_profile = crate::value::CaptureProfile::Container;
+        f
+    }
+    #[test]
+    fn t04_raw_create_profiles_actual_types_and_moves_stable_sources() {
+        let mut vm = t04_fixture(0x17, [1, 2], 2);
+        let a = t04_container(false);
+        let m = t04_container(true);
+        vm.push(a.clone()).unwrap();
+        vm.push(m.clone()).unwrap();
+        let sources = [vm.value_cell(0).unwrap(), vm.value_cell(1).unwrap()];
+        let before = vm.stack().unwrap();
+        vm.run(0).unwrap();
+        assert_eq!(vm.stack().unwrap(), before);
+        vm.run(1).unwrap();
+        let Value::Function(f) = vm.value(0).unwrap() else {
+            panic!()
+        };
+        assert_eq!(f.0.capture_profile, crate::value::CaptureProfile::Container);
+        assert_eq!(f.bound_count(), 2);
+        assert_eq!(f.0.bound[0].read().unwrap(), m);
+        assert_eq!(f.0.bound[1].read().unwrap(), a);
+        for source in sources {
+            assert_eq!(source.read().unwrap(), Value::Undefined);
+        }
+    }
+    #[test]
+    fn t04_every_creation_cell_and_workspace_failure_preserves_sources_and_pc() {
+        for workspace in [false, true] {
+            let mut failures = 0;
+            for after in 0..128 {
+                let mut vm = t04_fixture(0x17, [1, 2], 2);
+                let a = t04_container(false);
+                let m = t04_container(true);
+                vm.push(a.clone()).unwrap();
+                vm.push(m.clone()).unwrap();
+                let before = vm.stack().unwrap();
+                let owners = [a.counter().unwrap().owners(), m.counter().unwrap().owners()];
+                let result = if workspace {
+                    crate::copy_plan::with_workspace_failure(after, || vm.run(1))
+                } else {
+                    with_allocation_failure(after, || vm.run(1))
+                };
+                if result.is_ok() {
+                    break;
+                }
+                failures += 1;
+                assert_eq!(result.unwrap_err().kind, VmErrorKind::Limit);
+                assert_eq!(vm.frames[0].pc, 0);
+                assert_eq!(vm.stack().unwrap(), before);
+                assert_eq!(
+                    [a.counter().unwrap().owners(), m.counter().unwrap().owners()],
+                    owners
+                );
+            }
+            assert!(failures >= 3);
+            assert!(failures < 128);
+        }
+    }
+    #[test]
+    fn t04_unique_shared_expansion_is_shallow_and_selected_member_copy_updates_alias() {
+        for mapping in [false, true] {
+            for shared in [false, true] {
+                let mut vm = t04_fixture(5, [0, 1], 1);
+                let container = t04_container(mapping);
+                let counter = container.counter().unwrap();
+                let f = t04_function(&vm, vec![container.clone()]);
+                let holder = shared.then(|| Cell::new(Value::Function(f.clone())).unwrap());
+                let capture = f.0.bound[0].clone();
+                vm.push(Value::Function(f.clone())).unwrap();
+                assert_eq!(counter.owners(), 1);
+                vm.run(1).unwrap();
+                assert_eq!(counter.owners(), if shared { 2 } else { 1 });
+                assert_eq!(vm.value(0).unwrap(), container);
+                assert_eq!(
+                    capture.read().unwrap(),
+                    if shared {
+                        container.clone()
+                    } else {
+                        Value::Undefined
+                    }
+                );
+                let member = match &container {
+                    Value::Array(a) => a.cell(0).unwrap(),
+                    Value::Mapping(m) => m.member(&Value::Int(0)).unwrap(),
+                    _ => unreachable!(),
+                };
+                assert_eq!(member.read().unwrap(), Value::Object(ObjectId(999)));
+                let mut plan = CopyPlan::default();
+                assert_eq!(
+                    vm.copy_cell(&mut plan, member.clone()).unwrap(),
+                    Value::Undefined
+                );
+                plan.commit().unwrap();
+                assert_eq!(member.read().unwrap(), Value::Undefined);
+                drop(holder);
+            }
+        }
+    }
+    #[test]
+    fn t04_every_expansion_failure_and_capture_borrow_preserves_owner_branch() {
+        for shared in [false, true] {
+            for workspace in [false, true] {
+                let mut failures = 0;
+                for after in 0..128 {
+                    let mut vm = t04_fixture(5, [0, 1], 2);
+                    let a = t04_container(false);
+                    let m = t04_container(true);
+                    let f = t04_function(&vm, vec![a.clone(), m.clone()]);
+                    let holder = shared.then(|| Cell::new(Value::Function(f.clone())).unwrap());
+                    vm.push(Value::Function(f.clone())).unwrap();
+                    let before = vm.stack().unwrap();
+                    let id = vm.next_frame;
+                    let owners = f.0.counter.owners();
+                    let result = if workspace {
+                        crate::copy_plan::with_workspace_failure(after, || vm.run(1))
+                    } else {
+                        with_allocation_failure(after, || vm.run(1))
+                    };
+                    if result.is_ok() {
+                        break;
+                    }
+                    failures += 1;
+                    assert_eq!(result.unwrap_err().kind, VmErrorKind::Limit);
+                    assert_eq!(vm.stack().unwrap(), before);
+                    assert_eq!(vm.frames[0].pc, 0);
+                    assert_eq!(vm.next_frame, id);
+                    assert_eq!(f.0.bound[0].read().unwrap(), a);
+                    assert_eq!(f.0.bound[1].read().unwrap(), m);
+                    assert_eq!(f.0.counter.owners(), owners);
+                    drop(holder);
+                }
+                assert!(failures >= 3);
+                assert!(failures < 128);
+            }
+        }
+        let mut vm = t04_fixture(5, [0, 1], 1);
+        let f = t04_function(&vm, vec![t04_container(false)]);
+        vm.push(Value::Function(f.clone())).unwrap();
+        f.0.bound[0]
+            .with_write_borrow_for_test(|| assert_atomic(&mut vm, VmErrorKind::InvalidState));
+    }
+    #[test]
+    fn t04_graph_and_frame_limits_fail_before_capture_publication() {
+        for mode in 0..4 {
+            let mut vm = t04_fixture(0x17, [1, 1], 1);
+            let a = t04_container(false);
+            vm.push(a.clone()).unwrap();
+            let before = vm.stack().unwrap();
+            let mut limits = crate::ValueLimits::default();
+            match mode {
+                0 => limits.max_items = 0,
+                1 => limits.max_depth = 1,
+                2 => limits.max_graph_nodes = 1,
+                _ => vm.limits.max_stack = 0,
+            };
+            vm.objects.value_limits = Rc::new(limits);
+            assert_eq!(vm.run(1).unwrap_err().kind, VmErrorKind::Limit);
+            assert_eq!(vm.frames[0].pc, 0);
+            assert_eq!(vm.stack().unwrap(), before);
+            assert_eq!(a.counter().unwrap().owners(), 1);
+        }
+        for stack in [false, true] {
+            let mut vm = t04_fixture(5, [0, 1], 1);
+            let f = t04_function(&vm, vec![t04_container(false)]);
+            vm.push(Value::Function(f.clone())).unwrap();
+            if stack {
+                vm.limits.max_stack = 0;
+            } else {
+                vm.limits.max_frames = 1;
+            }
+            assert_atomic(&mut vm, VmErrorKind::Limit);
+            assert!(matches!(f.0.bound[0].read().unwrap(), Value::Array(_)));
+        }
+    }
+    #[test]
+    fn t04_final_release_clears_capture_without_duplicating_container_member_owners() {
+        for mapping in [false, true] {
+            let vm = t04_fixture(5, [0, 1], 1);
+            let inner = value(&vm, vec![]);
+            let weak = Rc::downgrade(&inner.0);
+            let container = if mapping {
+                Value::mapping(vec![(Value::Int(0), Value::Function(inner.clone()))]).unwrap()
+            } else {
+                Value::array(vec![Value::Function(inner.clone())]).unwrap()
+            };
+            let parent = t04_function(&vm, vec![container]);
+            let capture = parent.0.bound[0].clone();
+            let a = Cell::new(Value::Function(parent.clone())).unwrap();
+            assert_eq!(parent.bound_count(), 1);
+            let b = Cell::new(Value::Function(parent)).unwrap();
+            assert_eq!(inner.0.counter.owners(), 1);
+            drop(inner);
+            drop(a);
+            assert!(weak.upgrade().is_some());
+            drop(b);
+            assert_eq!(capture.read().unwrap(), Value::Undefined);
+            assert!(weak.upgrade().is_none());
+        }
+    }
+
     #[test]
     fn t03_numeric_graph_failure_preserves_operands_and_is_not_a_numeric_catch_fault() {
         let mut vm = fixture(1, [0, 0], 0);

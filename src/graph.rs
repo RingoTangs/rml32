@@ -495,6 +495,7 @@ mod tests {
     fn function(values: Vec<Value>) -> Value {
         let value = Value::Function(crate::value::FunctionValue(Rc::new(
             crate::value::FunctionData {
+                capture_profile: crate::value::CaptureProfile::Scalar,
                 origin: Rc::new(()),
                 owner: None,
                 target: crate::value::FunctionTarget::Host { slot: 0 },

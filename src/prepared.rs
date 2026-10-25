@@ -107,6 +107,7 @@ pub struct PreparedProgram {
     pub(crate) allow_function_values: bool,
     pub(crate) allow_global_function_values: bool,
     pub(crate) allow_host_function_values: bool,
+    pub(crate) allow_container_captures: bool,
     pub(crate) kind: ProgramKind,
     pub(crate) function_capacity: usize,
     pub(crate) variable_count: usize,
@@ -199,6 +200,7 @@ struct PreparationOptions {
     function_values: bool,
     global_function_values: bool,
     host_function_values: bool,
+    container_captures: bool,
 }
 fn instructions(
     segment: &CodeSegment,
@@ -214,6 +216,7 @@ fn instructions(
         function_values,
         global_function_values,
         host_function_values,
+        ..
     } = options;
     let metadata = bytes(&segment.metadata_hex)?;
     let mut result = Vec::new();
@@ -719,6 +722,43 @@ pub fn prepare_global_program_with_callable_values(
             function_values: true,
             global_function_values: true,
             host_function_values: true,
+            ..PreparationOptions::default()
+        },
+    )
+}
+
+/// Prepare ordinary Object code with callable values and acyclic Array/Mapping captures.
+/// Existing preparation entrypoints remain scalar-only.
+pub fn prepare_program_with_container_captures(
+    image: ProgramImage,
+    globals: GlobalBankSchema,
+) -> Result<PreparedProgram, VmError> {
+    prepare_container_capture_program(image, globals, false)
+}
+
+/// Prepare ordinary Global code with callable values and acyclic Array/Mapping captures.
+pub fn prepare_global_program_with_container_captures(
+    image: ProgramImage,
+    globals: GlobalBankSchema,
+) -> Result<PreparedProgram, VmError> {
+    prepare_container_capture_program(image, globals, true)
+}
+
+fn prepare_container_capture_program(
+    image: ProgramImage,
+    globals: GlobalBankSchema,
+    global_code: bool,
+) -> Result<PreparedProgram, VmError> {
+    prepare_code_program(
+        image,
+        PreparationOptions {
+            globals: Some(globals),
+            global_code,
+            host_calls: true,
+            function_values: true,
+            global_function_values: true,
+            host_function_values: true,
+            container_captures: true,
         },
     )
 }
@@ -734,6 +774,7 @@ fn prepare_code_program(
         function_values,
         global_function_values,
         host_function_values,
+        container_captures,
     } = options;
     let source = format!("sha256:{}", image.sha256);
     let build = || {
@@ -818,6 +859,7 @@ fn prepare_code_program(
             allow_function_values: function_values,
             allow_global_function_values: global_function_values,
             allow_host_function_values: host_function_values,
+            allow_container_captures: container_captures,
             kind: if global_code {
                 ProgramKind::Global
             } else {
@@ -1346,6 +1388,7 @@ fn prepare_catalog(
             allow_function_values: false,
             allow_global_function_values: false,
             allow_host_function_values: false,
+            allow_container_captures: false,
             kind: ProgramKind::Object,
             function_capacity: 0,
             variable_count: catalog.programs[root].max_vars as usize,

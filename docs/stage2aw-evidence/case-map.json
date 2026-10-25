@@ -1,0 +1,509 @@
+{
+  "stage": "2AW",
+  "items": [
+    {
+      "id": "C01",
+      "basis": "static-inference",
+      "status": "rust-covered",
+      "tests": [
+        "t04_old_caller_rejects_container_profile_but_accepts_new_scalar_and_zero_capture"
+      ],
+      "limitations": "Synthetic Rust runtime/policy check for this bounded point; no reference execution or whole-program equivalence claim.",
+      "native_execution": false
+    },
+    {
+      "id": "C02",
+      "basis": "static-inference",
+      "status": "rust-covered",
+      "tests": [
+        "t04_old_caller_rejects_container_profile_but_accepts_new_scalar_and_zero_capture"
+      ],
+      "limitations": "Synthetic Rust runtime/policy check for this bounded point; no reference execution or whole-program equivalence claim.",
+      "native_execution": false
+    },
+    {
+      "id": "C03",
+      "basis": "static-inference",
+      "status": "rust-covered",
+      "tests": [
+        "t04_old_caller_rejects_container_profile_but_accepts_new_scalar_and_zero_capture"
+      ],
+      "limitations": "Synthetic Rust runtime/policy check for this bounded point; no reference execution or whole-program equivalence claim.",
+      "native_execution": false
+    },
+    {
+      "id": "C04",
+      "basis": "static-inference",
+      "status": "rust-covered",
+      "tests": [
+        "t04_old_caller_rejects_container_profile_but_accepts_new_scalar_and_zero_capture"
+      ],
+      "limitations": "Synthetic Rust runtime/policy check for this bounded point; no reference execution or whole-program equivalence claim.",
+      "native_execution": false
+    },
+    {
+      "id": "C05",
+      "basis": "static-inference",
+      "status": "rust-covered",
+      "tests": [
+        "t04_old_caller_rejects_container_profile_but_accepts_new_scalar_and_zero_capture"
+      ],
+      "limitations": "Synthetic Rust runtime/policy check for this bounded point; no reference execution or whole-program equivalence claim.",
+      "native_execution": false
+    },
+    {
+      "id": "C06",
+      "basis": "static-inference",
+      "status": "rust-covered",
+      "tests": [
+        "t04_raw_create_profiles_actual_types_and_moves_stable_sources"
+      ],
+      "limitations": "Synthetic Rust runtime/policy check for this bounded point; no reference execution or whole-program equivalence claim.",
+      "native_execution": false
+    },
+    {
+      "id": "C07",
+      "basis": "static-inference",
+      "status": "rust-covered",
+      "tests": [
+        "t04_raw_create_profiles_actual_types_and_moves_stable_sources"
+      ],
+      "limitations": "Synthetic Rust runtime/policy check for this bounded point; no reference execution or whole-program equivalence claim.",
+      "native_execution": false
+    },
+    {
+      "id": "C08",
+      "basis": "static-inference",
+      "status": "excluded-direct-capture",
+      "tests": [
+        "t04_new_entry_still_rejects_direct_object_function_and_foreign_roots"
+      ],
+      "limitations": "Direct Object/Function capture remains blocked for T05; Rust test verifies rejection only, not native transfer semantics.",
+      "native_execution": false
+    },
+    {
+      "id": "C09",
+      "basis": "static-inference",
+      "status": "excluded-direct-capture",
+      "tests": [
+        "t04_new_entry_still_rejects_direct_object_function_and_foreign_roots"
+      ],
+      "limitations": "Direct Object/Function capture remains blocked for T05; Rust test verifies rejection only, not native transfer semantics.",
+      "native_execution": false
+    },
+    {
+      "id": "C10",
+      "basis": "static-inference",
+      "status": "excluded-direct-capture",
+      "tests": [
+        "t04_new_entry_still_rejects_direct_object_function_and_foreign_roots"
+      ],
+      "limitations": "Direct Object/Function capture remains blocked for T05; Rust test verifies rejection only, not native transfer semantics.",
+      "native_execution": false
+    },
+    {
+      "id": "C11",
+      "basis": "static-inference",
+      "status": "excluded-direct-capture",
+      "tests": [
+        "t04_new_entry_still_rejects_direct_object_function_and_foreign_roots"
+      ],
+      "limitations": "Direct Object/Function capture remains blocked for T05; Rust test verifies rejection only, not native transfer semantics.",
+      "native_execution": false
+    },
+    {
+      "id": "C12",
+      "basis": "static-inference",
+      "status": "rust-policy-partial",
+      "tests": [
+        "t04_reference_loop_and_lifecycle_guards_remain_closed"
+      ],
+      "limitations": "Rust counterpart/transaction policy only; native allocator ordering, saved-sp cleanup, physical creator ref/execRef, attrib or wider lifetime claims remain outside this test.",
+      "native_execution": false
+    },
+    {
+      "id": "C13",
+      "basis": "design",
+      "status": "rust-covered",
+      "tests": [
+        "t04_reference_loop_and_lifecycle_guards_remain_closed"
+      ],
+      "limitations": "Synthetic Rust runtime/policy check for this bounded point; no reference execution or whole-program equivalence claim.",
+      "native_execution": false
+    },
+    {
+      "id": "C14",
+      "basis": "static-inference",
+      "status": "rust-policy-partial",
+      "tests": [
+        "t04_every_creation_cell_and_workspace_failure_preserves_sources_and_pc"
+      ],
+      "limitations": "Rust counterpart/transaction policy only; native allocator ordering, saved-sp cleanup, physical creator ref/execRef, attrib or wider lifetime claims remain outside this test.",
+      "native_execution": false
+    },
+    {
+      "id": "C15",
+      "basis": "unresolved",
+      "status": "native-unresolved",
+      "tests": [],
+      "limitations": "Original 2AR unknown preserved; T04 does not close native unpublished-head, return branch, final lifetime or marker/root coverage contracts.",
+      "native_execution": false
+    },
+    {
+      "id": "C16",
+      "basis": "static-inference",
+      "status": "rust-covered",
+      "tests": [
+        "t04_unique_shared_expansion_is_shallow_and_selected_member_copy_updates_alias"
+      ],
+      "limitations": "Synthetic Rust runtime/policy check for this bounded point; no reference execution or whole-program equivalence claim.",
+      "native_execution": false
+    },
+    {
+      "id": "C17",
+      "basis": "static-inference",
+      "status": "rust-covered",
+      "tests": [
+        "t04_unique_shared_expansion_is_shallow_and_selected_member_copy_updates_alias"
+      ],
+      "limitations": "Synthetic Rust runtime/policy check for this bounded point; no reference execution or whole-program equivalence claim.",
+      "native_execution": false
+    },
+    {
+      "id": "C18",
+      "basis": "static-inference",
+      "status": "rust-covered",
+      "tests": [
+        "t04_unique_shared_expansion_is_shallow_and_selected_member_copy_updates_alias"
+      ],
+      "limitations": "Synthetic Rust runtime/policy check for this bounded point; no reference execution or whole-program equivalence claim.",
+      "native_execution": false
+    },
+    {
+      "id": "C19",
+      "basis": "static-inference",
+      "status": "rust-covered",
+      "tests": [
+        "t04_unique_shared_expansion_is_shallow_and_selected_member_copy_updates_alias"
+      ],
+      "limitations": "Synthetic Rust runtime/policy check for this bounded point; no reference execution or whole-program equivalence claim.",
+      "native_execution": false
+    },
+    {
+      "id": "C20",
+      "basis": "static-inference",
+      "status": "excluded-direct-capture",
+      "tests": [
+        "t04_new_entry_still_rejects_direct_object_function_and_foreign_roots"
+      ],
+      "limitations": "Direct Object/Function capture remains blocked for T05; Rust test verifies rejection only, not native transfer semantics.",
+      "native_execution": false
+    },
+    {
+      "id": "C21",
+      "basis": "static-inference",
+      "status": "excluded-direct-capture",
+      "tests": [
+        "t04_new_entry_still_rejects_direct_object_function_and_foreign_roots"
+      ],
+      "limitations": "Direct Object/Function capture remains blocked for T05; Rust test verifies rejection only, not native transfer semantics.",
+      "native_execution": false
+    },
+    {
+      "id": "C22",
+      "basis": "static-inference",
+      "status": "excluded-direct-capture",
+      "tests": [
+        "t04_new_entry_still_rejects_direct_object_function_and_foreign_roots"
+      ],
+      "limitations": "Direct Object/Function capture remains blocked for T05; Rust test verifies rejection only, not native transfer semantics.",
+      "native_execution": false
+    },
+    {
+      "id": "C23",
+      "basis": "static-inference",
+      "status": "excluded-direct-capture",
+      "tests": [
+        "t04_new_entry_still_rejects_direct_object_function_and_foreign_roots"
+      ],
+      "limitations": "Direct Object/Function capture remains blocked for T05; Rust test verifies rejection only, not native transfer semantics.",
+      "native_execution": false
+    },
+    {
+      "id": "C24",
+      "basis": "static-inference",
+      "status": "excluded-direct-capture",
+      "tests": [
+        "t04_new_entry_still_rejects_direct_object_function_and_foreign_roots"
+      ],
+      "limitations": "Direct Object/Function capture remains blocked for T05; Rust test verifies rejection only, not native transfer semantics.",
+      "native_execution": false
+    },
+    {
+      "id": "C25",
+      "basis": "static-inference",
+      "status": "excluded-direct-capture",
+      "tests": [
+        "t04_new_entry_still_rejects_direct_object_function_and_foreign_roots"
+      ],
+      "limitations": "Direct Object/Function capture remains blocked for T05; Rust test verifies rejection only, not native transfer semantics.",
+      "native_execution": false
+    },
+    {
+      "id": "C26",
+      "basis": "design",
+      "status": "rust-covered",
+      "tests": [
+        "semantic_slots_not_physical_views_or_reference_aliases_own_headers"
+      ],
+      "limitations": "Synthetic Rust runtime/policy check for this bounded point; no reference execution or whole-program equivalence claim.",
+      "native_execution": false
+    },
+    {
+      "id": "C27",
+      "basis": "static-inference",
+      "status": "rust-policy-partial",
+      "tests": [
+        "t04_container_bound_arguments_precede_new_arguments_and_keep_scalar_bits"
+      ],
+      "limitations": "Rust counterpart/transaction policy only; native allocator ordering, saved-sp cleanup, physical creator ref/execRef, attrib or wider lifetime claims remain outside this test.",
+      "native_execution": false
+    },
+    {
+      "id": "C28",
+      "basis": "static-inference",
+      "status": "rust-covered",
+      "tests": [
+        "t04_unique_shared_expansion_is_shallow_and_selected_member_copy_updates_alias"
+      ],
+      "limitations": "Synthetic Rust runtime/policy check for this bounded point; no reference execution or whole-program equivalence claim.",
+      "native_execution": false
+    },
+    {
+      "id": "C29",
+      "basis": "static-inference",
+      "status": "rust-covered",
+      "tests": [
+        "t02_object_global_and_member_copy_clean_actual_slots_but_keep_host_roots_raw"
+      ],
+      "limitations": "Synthetic Rust runtime/policy check for this bounded point; no reference execution or whole-program equivalence claim.",
+      "native_execution": false
+    },
+    {
+      "id": "C30",
+      "basis": "static-inference",
+      "status": "rust-covered",
+      "tests": [
+        "t02_object_global_and_member_copy_clean_actual_slots_but_keep_host_roots_raw"
+      ],
+      "limitations": "Synthetic Rust runtime/policy check for this bounded point; no reference execution or whole-program equivalence claim.",
+      "native_execution": false
+    },
+    {
+      "id": "C31",
+      "basis": "static-inference",
+      "status": "rust-covered",
+      "tests": [
+        "reference_reads_normalize_dead_source_cells_after_successful_read"
+      ],
+      "limitations": "Synthetic Rust runtime/policy check for this bounded point; no reference execution or whole-program equivalence claim.",
+      "native_execution": false
+    },
+    {
+      "id": "C32",
+      "basis": "static-inference",
+      "status": "rust-covered",
+      "tests": [
+        "t04_unique_shared_expansion_is_shallow_and_selected_member_copy_updates_alias"
+      ],
+      "limitations": "Synthetic Rust runtime/policy check for this bounded point; no reference execution or whole-program equivalence claim.",
+      "native_execution": false
+    },
+    {
+      "id": "C33",
+      "basis": "static-inference",
+      "status": "rust-covered",
+      "tests": [
+        "t04_unique_shared_expansion_is_shallow_and_selected_member_copy_updates_alias"
+      ],
+      "limitations": "Synthetic Rust runtime/policy check for this bounded point; no reference execution or whole-program equivalence claim.",
+      "native_execution": false
+    },
+    {
+      "id": "C34",
+      "basis": "static-inference",
+      "status": "rust-policy-partial",
+      "tests": [
+        "t04_missing_mapping_query_does_not_insert_or_change_capture"
+      ],
+      "limitations": "Public captured Mapping query returns Undefined without insertion; native attrib behavior is not claimed.",
+      "native_execution": false
+    },
+    {
+      "id": "C35",
+      "basis": "static-inference",
+      "status": "rust-covered",
+      "tests": [
+        "old_array_release_preserves_a_retained_member_slot"
+      ],
+      "limitations": "Synthetic Rust runtime/policy check for this bounded point; no reference execution or whole-program equivalence claim.",
+      "native_execution": false
+    },
+    {
+      "id": "C36",
+      "basis": "static-inference",
+      "status": "rust-covered",
+      "tests": [
+        "old_mapping_is_destroyed_after_all_member_guards_are_released"
+      ],
+      "limitations": "Synthetic Rust runtime/policy check for this bounded point; no reference execution or whole-program equivalence claim.",
+      "native_execution": false
+    },
+    {
+      "id": "C37",
+      "basis": "static-inference",
+      "status": "rust-policy-partial",
+      "tests": [
+        "t04_final_release_clears_capture_without_duplicating_container_member_owners"
+      ],
+      "limitations": "Structural Function/container cleanup only; physical creator ref/execRef and native release ordering remain unmodeled.",
+      "native_execution": false
+    },
+    {
+      "id": "C38",
+      "basis": "static-inference",
+      "status": "rust-covered",
+      "tests": [
+        "t04_unique_shared_expansion_is_shallow_and_selected_member_copy_updates_alias"
+      ],
+      "limitations": "Synthetic Rust runtime/policy check for this bounded point; no reference execution or whole-program equivalence claim.",
+      "native_execution": false
+    },
+    {
+      "id": "C39",
+      "basis": "static-inference",
+      "status": "rust-policy-partial",
+      "tests": [
+        "t02_return_raw_move_keeps_dead_identity_and_transfers_the_existing_owner"
+      ],
+      "limitations": "Rust counterpart/transaction policy only; native allocator ordering, saved-sp cleanup, physical creator ref/execRef, attrib or wider lifetime claims remain outside this test.",
+      "native_execution": false
+    },
+    {
+      "id": "C40",
+      "basis": "unresolved",
+      "status": "native-unresolved",
+      "tests": [],
+      "limitations": "Original 2AR unknown preserved; T04 does not close native unpublished-head, return branch, final lifetime or marker/root coverage contracts.",
+      "native_execution": false
+    },
+    {
+      "id": "C41",
+      "basis": "static-inference",
+      "status": "rust-policy-partial",
+      "tests": [
+        "function_values_catch_unwinds_indirect_callee_numeric_fault"
+      ],
+      "limitations": "Rust counterpart/transaction policy only; native allocator ordering, saved-sp cleanup, physical creator ref/execRef, attrib or wider lifetime claims remain outside this test.",
+      "native_execution": false
+    },
+    {
+      "id": "C42",
+      "basis": "static-inference",
+      "status": "rust-policy-partial",
+      "tests": [
+        "function_values_catch_unwinds_indirect_callee_numeric_fault"
+      ],
+      "limitations": "Rust counterpart/transaction policy only; native allocator ordering, saved-sp cleanup, physical creator ref/execRef, attrib or wider lifetime claims remain outside this test.",
+      "native_execution": false
+    },
+    {
+      "id": "C43",
+      "basis": "static-inference",
+      "status": "rust-policy-partial",
+      "tests": [
+        "t04_host_post_callback_failure_keeps_saved_root_and_never_replays"
+      ],
+      "limitations": "Rust counterpart/transaction policy only; native allocator ordering, saved-sp cleanup, physical creator ref/execRef, attrib or wider lifetime claims remain outside this test.",
+      "native_execution": false
+    },
+    {
+      "id": "C44",
+      "basis": "static-inference",
+      "status": "rust-policy-partial",
+      "tests": [
+        "t04_every_expansion_failure_and_capture_borrow_preserves_owner_branch"
+      ],
+      "limitations": "Rust counterpart/transaction policy only; native allocator ordering, saved-sp cleanup, physical creator ref/execRef, attrib or wider lifetime claims remain outside this test.",
+      "native_execution": false
+    },
+    {
+      "id": "C45",
+      "basis": "static-inference",
+      "status": "rust-policy-partial",
+      "tests": [
+        "reference_read_stack_limit_does_not_normalize_dead_source"
+      ],
+      "limitations": "Rust counterpart/transaction policy only; native allocator ordering, saved-sp cleanup, physical creator ref/execRef, attrib or wider lifetime claims remain outside this test.",
+      "native_execution": false
+    },
+    {
+      "id": "C46",
+      "basis": "unresolved",
+      "status": "native-unresolved",
+      "tests": [],
+      "limitations": "Original 2AR unknown preserved; T04 does not close native unpublished-head, return branch, final lifetime or marker/root coverage contracts.",
+      "native_execution": false
+    },
+    {
+      "id": "C47",
+      "basis": "design",
+      "status": "rust-covered",
+      "tests": [
+        "t04_member_write_cannot_close_function_container_cycle",
+        "t04_nested_members_and_shared_dag_remain_shallow"
+      ],
+      "limitations": "Synthetic Rust runtime/policy check for this bounded point; no reference execution or whole-program equivalence claim.",
+      "native_execution": false
+    },
+    {
+      "id": "C48",
+      "basis": "unresolved",
+      "status": "native-unresolved",
+      "tests": [],
+      "limitations": "Original 2AR unknown preserved; T04 does not close native unpublished-head, return branch, final lifetime or marker/root coverage contracts.",
+      "native_execution": false
+    },
+    {
+      "id": "C49",
+      "basis": "design",
+      "status": "rust-covered",
+      "tests": [
+        "t04_new_entry_still_rejects_direct_object_function_and_foreign_roots"
+      ],
+      "limitations": "Synthetic Rust runtime/policy check for this bounded point; no reference execution or whole-program equivalence claim.",
+      "native_execution": false
+    },
+    {
+      "id": "C50",
+      "basis": "design",
+      "status": "rust-covered",
+      "tests": [
+        "t04_raw_create_profiles_actual_types_and_moves_stable_sources"
+      ],
+      "limitations": "Synthetic Rust runtime/policy check for this bounded point; no reference execution or whole-program equivalence claim.",
+      "native_execution": false
+    },
+    {
+      "id": "C51",
+      "basis": "design",
+      "status": "rust-covered",
+      "tests": [
+        "t04_every_creation_cell_and_workspace_failure_preserves_sources_and_pc",
+        "t04_every_expansion_failure_and_capture_borrow_preserves_owner_branch"
+      ],
+      "limitations": "Synthetic Rust runtime/policy check for this bounded point; no reference execution or whole-program equivalence claim.",
+      "native_execution": false
+    }
+  ]
+}
