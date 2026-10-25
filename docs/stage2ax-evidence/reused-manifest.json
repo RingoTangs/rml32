@@ -1,0 +1,458 @@
+[
+  {
+    "evidence_id": "ev_18fea6ebc3680cd0ea4726c67901206fe1299bda13ef18741e124aa8a6eb77de",
+    "name": "vm_unrefValue",
+    "operation": "analyze_function",
+    "record_sha256": "613e153d24f8a68cb22dee6c7098332951cb4c65c19b6db90c70f41150b64aca",
+    "source": "docs/stage2ar-evidence/rea.json.gz",
+    "source_sha256": "739006371e4ceecc98f7d2f6210cb517d5f0b199e8aa04c01eb14324e07f7b22"
+  },
+  {
+    "evidence_id": "ev_2aae5aa932757dd2dad4354599e352e3310dbf9d1f7637b49903392349474966",
+    "name": "vm_unrefMapping",
+    "operation": "analyze_function",
+    "record_sha256": "e03d34efd0cba91143401a31d036e09efb266e20b2e63a9c1fb3dccd9a17b1cf",
+    "source": "docs/stage2ar-evidence/rea.json.gz",
+    "source_sha256": "739006371e4ceecc98f7d2f6210cb517d5f0b199e8aa04c01eb14324e07f7b22"
+  },
+  {
+    "evidence_id": "ev_f1c4dde0e0ce2a55aa3838ae691f272691496d87fcbc3d91ec17f09ea6eeaea1",
+    "name": "vm_error",
+    "operation": "analyze_function",
+    "record_sha256": "512c25a8f8bf3f2f1391bb0474ac226fe964e2ece3ea7b8377754e32b3ba86f0",
+    "source": "docs/stage2ar-evidence/rea.json.gz",
+    "source_sha256": "739006371e4ceecc98f7d2f6210cb517d5f0b199e8aa04c01eb14324e07f7b22"
+  },
+  {
+    "evidence_id": "ev_fd0c36e7c899550aed3734401ee4c11b3d606fd07bb637b33985c741a0822dcd",
+    "name": "vm_assignValue",
+    "operation": "procedure_assembly",
+    "record_sha256": "b416cf2522db85ccda416d11508145b57fe8432534ec17a8f2714ffcd4bb4dbb",
+    "source": "docs/stage2ar-evidence/reused.json.gz",
+    "source_sha256": "2fb439a836dea17a69cc1b9f17e60fa5a1182032fedec0a6ffc1a55ee1e9498f"
+  },
+  {
+    "evidence_id": "ev_16636c23591e5a4b1f66e2d639b1da8c96fca5404ca5dc6a73b1eb3f8974a1c1",
+    "name": "vm_assignValue",
+    "operation": "procedure_pseudo_code",
+    "record_sha256": "a5885807f8192e3eec6064ae8fac9c63cfac81261d2e1a1557a56e6bd8d17ff7",
+    "source": "docs/stage2ar-evidence/reused.json.gz",
+    "source_sha256": "2fb439a836dea17a69cc1b9f17e60fa5a1182032fedec0a6ffc1a55ee1e9498f"
+  },
+  {
+    "evidence_id": "ev_b5106f08b96c169b0aeaaf83650f4673c60f685fe9f1195bc3f5c867f90d0289",
+    "name": "vm_assignValueReverse",
+    "operation": "procedure_assembly",
+    "record_sha256": "4c218232725772b97d5eb412366a88b2cd1bd4c58ef1414df3351fcd2537bab4",
+    "source": "docs/stage2ar-evidence/reused.json.gz",
+    "source_sha256": "2fb439a836dea17a69cc1b9f17e60fa5a1182032fedec0a6ffc1a55ee1e9498f"
+  },
+  {
+    "evidence_id": "ev_5c9e1932bde415d90274f091f4ad7eb199e7e274a93bce3e2234d0a63fad447a",
+    "name": "vm_assignValueReverse",
+    "operation": "procedure_pseudo_code",
+    "record_sha256": "fc6d09cced7b9f5408891f910ea5dbb35c726b9088fb32268335164c5887bbf4",
+    "source": "docs/stage2ar-evidence/reused.json.gz",
+    "source_sha256": "2fb439a836dea17a69cc1b9f17e60fa5a1182032fedec0a6ffc1a55ee1e9498f"
+  },
+  {
+    "evidence_id": "ev_a50406aa6a4cd4b2b95b079a7b126ba210a8ecaa6919839ac438372500c0159d",
+    "name": "vm_callFunPtr",
+    "operation": "analyze_function",
+    "record_sha256": "1d545ec0c8e697181a14d4837b9393cc8c2a1f493c9744b802fbf086ef6eb305",
+    "source": "docs/stage2ar-evidence/reused.json.gz",
+    "source_sha256": "2fb439a836dea17a69cc1b9f17e60fa5a1182032fedec0a6ffc1a55ee1e9498f"
+  },
+  {
+    "evidence_id": "ev_ea9570e30440ab119beb30143a85def63e15e87ac0485860290ba47ca3a6ae7c",
+    "name": "vm_callInUserFunBody",
+    "operation": "analyze_function",
+    "record_sha256": "2d4616bc1cb05b9579b96844cfdc521196fd09dc0a2d69c6ac8f2365524f5962",
+    "source": "docs/stage2ar-evidence/reused.json.gz",
+    "source_sha256": "2fb439a836dea17a69cc1b9f17e60fa5a1182032fedec0a6ffc1a55ee1e9498f"
+  },
+  {
+    "evidence_id": "ev_aaa80e13c3c88b9a455d4ba6569e69518889b1fcc26a966c8e433f5f746c7126",
+    "name": "vm_checkArgNum",
+    "operation": "analyze_function",
+    "record_sha256": "a71794b1b9361ccdf1e0cb8bc09b55df37a733f814b4c1605fc89aaeef76183d",
+    "source": "docs/stage2ar-evidence/reused.json.gz",
+    "source_sha256": "2fb439a836dea17a69cc1b9f17e60fa5a1182032fedec0a6ffc1a55ee1e9498f"
+  },
+  {
+    "evidence_id": "ev_d5e0fa5ed30b20859a959e09027480b13f6d9acdd746527dd5c2dac47520cadc",
+    "name": "vm_cleanupValue",
+    "operation": "analyze_function",
+    "record_sha256": "0313d0b6261362365ca80c4055eeca8dc5d30a57a7444a3b66f9291952acbe40",
+    "source": "docs/stage2ar-evidence/reused.json.gz",
+    "source_sha256": "2fb439a836dea17a69cc1b9f17e60fa5a1182032fedec0a6ffc1a55ee1e9498f"
+  },
+  {
+    "evidence_id": "ev_9d3740c765c17665b432d16e97139a12b824b1e31238f5fb1f421a36d5f5e956",
+    "name": "vm_convertToValue",
+    "operation": "procedure_assembly",
+    "record_sha256": "5de48eceb4b309bcdeb81a448eb543273369bb3630692d9c0ee20e92549e4436",
+    "source": "docs/stage2ar-evidence/reused.json.gz",
+    "source_sha256": "2fb439a836dea17a69cc1b9f17e60fa5a1182032fedec0a6ffc1a55ee1e9498f"
+  },
+  {
+    "evidence_id": "ev_8a351c14040cefb54204c1d1879ec273798f7579844be1503f87df0f5a5783dc",
+    "name": "vm_convertToValue",
+    "operation": "procedure_pseudo_code",
+    "record_sha256": "2557ba33cedb62d8300d9206ad817b5e3162201e919ee78bff900ee2c8812778",
+    "source": "docs/stage2ar-evidence/reused.json.gz",
+    "source_sha256": "2fb439a836dea17a69cc1b9f17e60fa5a1182032fedec0a6ffc1a55ee1e9498f"
+  },
+  {
+    "evidence_id": "ev_69a23ae044935ae6f7450097987faa71f641c62091f885fc4b4b5f8d5b1929f4",
+    "name": "vm_copyValue",
+    "operation": "analyze_function",
+    "record_sha256": "d39552e941a288170ae0006502663c1aa4e5e396115900af46c570d2fe87ff96",
+    "source": "docs/stage2ar-evidence/reused.json.gz",
+    "source_sha256": "2fb439a836dea17a69cc1b9f17e60fa5a1182032fedec0a6ffc1a55ee1e9498f"
+  },
+  {
+    "evidence_id": "ev_4ae635941eda7abcc9024ccadd56fd4d6278ddcd6075acacda6b865390f65444",
+    "name": "vm_createFunctionValue",
+    "operation": "analyze_function",
+    "record_sha256": "e7f81124e97fb3a31e308bbc895d141a9d211ad36f105e1583f8ee15d833de2c",
+    "source": "docs/stage2ar-evidence/reused.json.gz",
+    "source_sha256": "2fb439a836dea17a69cc1b9f17e60fa5a1182032fedec0a6ffc1a55ee1e9498f"
+  },
+  {
+    "evidence_id": "ev_f739f81d73d7c07779ab3fb741800726145efbc40fd8dc6c58009ac2d703aa48",
+    "name": "vm_createFunctionValueEx",
+    "operation": "analyze_function",
+    "record_sha256": "24df17a714b1446ec9f25a4886f64d9b4948965905b1ec4e9cc33e1e2db56966",
+    "source": "docs/stage2ar-evidence/reused.json.gz",
+    "source_sha256": "2fb439a836dea17a69cc1b9f17e60fa5a1182032fedec0a6ffc1a55ee1e9498f"
+  },
+  {
+    "evidence_id": "ev_d50f92fab09f479b0532c35c9c57bb161f0484bdebcf5d1545ecb10b7ace15be",
+    "name": "vm_destructObjectValues",
+    "operation": "procedure_assembly",
+    "record_sha256": "2919e027c63d794be8c9bd8faaa80e26cba9bd46a3e9bc83f2da723cdc4d0587",
+    "source": "docs/stage2ar-evidence/reused.json.gz",
+    "source_sha256": "2fb439a836dea17a69cc1b9f17e60fa5a1182032fedec0a6ffc1a55ee1e9498f"
+  },
+  {
+    "evidence_id": "ev_d8173d61d8d105723534cddea8b9f99fadfed21f978546de6160508e896cd5ec",
+    "name": "vm_destructObjectValues",
+    "operation": "procedure_pseudo_code",
+    "record_sha256": "f890fa8d6560a087a23c7f0f6f0f6f876ae21a71705babccb71979e8c2b90733",
+    "source": "docs/stage2ar-evidence/reused.json.gz",
+    "source_sha256": "2fb439a836dea17a69cc1b9f17e60fa5a1182032fedec0a6ffc1a55ee1e9498f"
+  },
+  {
+    "evidence_id": "ev_b7275ea0d205e76bd66e12eb46ee8132bb75cd0db3113213fdd60970242bb1c2",
+    "name": "vm_destructStaticValue",
+    "operation": "procedure_pseudo_code",
+    "record_sha256": "6ab09314caf69fae7741ef94b236e019dbab8afe3940a5c1c4b9b3c36896a50d",
+    "source": "docs/stage2ar-evidence/reused.json.gz",
+    "source_sha256": "2fb439a836dea17a69cc1b9f17e60fa5a1182032fedec0a6ffc1a55ee1e9498f"
+  },
+  {
+    "evidence_id": "ev_543af7cfb6d454bc19165fe254e84721ac87776215bd08299342ec2ab9a32d9e",
+    "name": "vm_doActions",
+    "operation": "analyze_function",
+    "record_sha256": "29a228e9ca8c0dc7c960fbbec8a65b8e222718915ffb121c2cf4234c6d3f2f77",
+    "source": "docs/stage2ar-evidence/reused.json.gz",
+    "source_sha256": "2fb439a836dea17a69cc1b9f17e60fa5a1182032fedec0a6ffc1a55ee1e9498f"
+  },
+  {
+    "evidence_id": "ev_bfa094c0c50a60bb231088da09294746c5850d3124a018787a398173fdb3a0c2",
+    "name": "vm_errorQuit",
+    "operation": "procedure_assembly",
+    "record_sha256": "c9db78348eac65fb0e1c741c1d4e6880de0e436119bc1d6036495ac59c48f624",
+    "source": "docs/stage2ar-evidence/reused.json.gz",
+    "source_sha256": "2fb439a836dea17a69cc1b9f17e60fa5a1182032fedec0a6ffc1a55ee1e9498f"
+  },
+  {
+    "evidence_id": "ev_d9b9b1bd2399a379282bc11cbe8575420d3f316770e17d5a6ea5138fdee1b7a1",
+    "name": "vm_errorQuit",
+    "operation": "procedure_pseudo_code",
+    "record_sha256": "f6a7fb3b2924151134a4622d2ededf7be941fe571808e12dfaf6090a5dd97fff",
+    "source": "docs/stage2ar-evidence/reused.json.gz",
+    "source_sha256": "2fb439a836dea17a69cc1b9f17e60fa5a1182032fedec0a6ffc1a55ee1e9498f"
+  },
+  {
+    "evidence_id": "ev_8fecedeb1f644246e085db4dbc5c875cfb14fd6368045b63417b2183eab987ab",
+    "name": "vm_f_garbage_collect",
+    "operation": "procedure_pseudo_code",
+    "record_sha256": "b3be714f804ac690ba409d59e24032b83ad0b166efcc7e6bbe4e18e540766201",
+    "source": "docs/stage2ar-evidence/reused.json.gz",
+    "source_sha256": "2fb439a836dea17a69cc1b9f17e60fa5a1182032fedec0a6ffc1a55ee1e9498f"
+  },
+  {
+    "evidence_id": "ev_228d09be9663f9f70d03a59ebe1663960c6d34458f9a82d3d5e1e4cee42d44f9",
+    "name": "vm_freeFunctionValue",
+    "operation": "analyze_function",
+    "record_sha256": "65dd847a77ae3e33bc0ce6dfb29ee14dbd11fbcb299e9d7647c00e39a84c0e6e",
+    "source": "docs/stage2ar-evidence/reused.json.gz",
+    "source_sha256": "2fb439a836dea17a69cc1b9f17e60fa5a1182032fedec0a6ffc1a55ee1e9498f"
+  },
+  {
+    "evidence_id": "ev_ef0f48684b838cbc45dc532f24fa5985365542fc69b10337e082b6df80283dae",
+    "name": "vm_freeNode",
+    "operation": "procedure_assembly",
+    "record_sha256": "96ea4601416b02ae8d30d0a2d2793b9f9d129391a81958e2a3d9b14a1af6140d",
+    "source": "docs/stage2ar-evidence/reused.json.gz",
+    "source_sha256": "2fb439a836dea17a69cc1b9f17e60fa5a1182032fedec0a6ffc1a55ee1e9498f"
+  },
+  {
+    "evidence_id": "ev_921c6ee51c237f77c7b33c2b6e0fc80b3f2e7370fc5984d34f346c4c71cb18f3",
+    "name": "vm_freeNode",
+    "operation": "procedure_pseudo_code",
+    "record_sha256": "97d39da00ccecec47d12b805ad693afc1e8f1dc0626f2b855a08d0324025caf2",
+    "source": "docs/stage2ar-evidence/reused.json.gz",
+    "source_sha256": "2fb439a836dea17a69cc1b9f17e60fa5a1182032fedec0a6ffc1a55ee1e9498f"
+  },
+  {
+    "evidence_id": "ev_aede162e24387c626fea56b29104aeb7418eda0d05ab642ae9369e131d7bd0eb",
+    "name": "vm_freeObsoletedMapNodes",
+    "operation": "procedure_pseudo_code",
+    "record_sha256": "bacc4f94f2421f7125499d520a3c175952bd87aeab7ff0c2c8f90682f5c65d38",
+    "source": "docs/stage2ar-evidence/reused.json.gz",
+    "source_sha256": "2fb439a836dea17a69cc1b9f17e60fa5a1182032fedec0a6ffc1a55ee1e9498f"
+  },
+  {
+    "evidence_id": "ev_80271c109d8b170b4dac40d9836f89a9722c8d04023f8e58b881ce2adc69c17e",
+    "name": "vm_getArgument",
+    "operation": "analyze_function",
+    "record_sha256": "02760643fab1cdb7316c4226c66f59f4452cb9c152b5e09f1608387929393d69",
+    "source": "docs/stage2ar-evidence/reused.json.gz",
+    "source_sha256": "2fb439a836dea17a69cc1b9f17e60fa5a1182032fedec0a6ffc1a55ee1e9498f"
+  },
+  {
+    "evidence_id": "ev_6921332b80a7a8467156e8214b2cf335f37f0c97324f7e7737d1d6c56b44b54d",
+    "name": "vm_initValue",
+    "operation": "procedure_pseudo_code",
+    "record_sha256": "67eec2cb132fdb698d082f59e94cf1986036978d623f6411a5dd4618165b54ca",
+    "source": "docs/stage2ar-evidence/reused.json.gz",
+    "source_sha256": "2fb439a836dea17a69cc1b9f17e60fa5a1182032fedec0a6ffc1a55ee1e9498f"
+  },
+  {
+    "evidence_id": "ev_d6bd8847412c335d9425d53073743ca82d6469ed6c69a789f996bbc7c2f39471",
+    "name": "vm_markActiveFromValue",
+    "operation": "procedure_assembly",
+    "record_sha256": "2b1ad5605bf3a7534c917fe784826314af3421c9dd01fec7e164823ee8346b7f",
+    "source": "docs/stage2ar-evidence/reused.json.gz",
+    "source_sha256": "2fb439a836dea17a69cc1b9f17e60fa5a1182032fedec0a6ffc1a55ee1e9498f"
+  },
+  {
+    "evidence_id": "ev_dc9d455696d05ef4b444be9dc273ee408ac79c93d4c11138399d240e3b7a82a5",
+    "name": "vm_markActiveFromValue",
+    "operation": "procedure_pseudo_code",
+    "record_sha256": "de8a16244d94dc60823febbb2c7cf625a9534bee5d67b6e4d1092ca999f3e2b4",
+    "source": "docs/stage2ar-evidence/reused.json.gz",
+    "source_sha256": "2fb439a836dea17a69cc1b9f17e60fa5a1182032fedec0a6ffc1a55ee1e9498f"
+  },
+  {
+    "evidence_id": "ev_e1d24b79fb397b943d57fc71f60c961852e9a969ae6f32b18bc0203f254b6ed4",
+    "name": "vm_popNStack",
+    "operation": "analyze_function",
+    "record_sha256": "e7c4bdaf99b59e5dd67e93a4242a141246f5464d47f6134e8801d6cadf789e2d",
+    "source": "docs/stage2ar-evidence/reused.json.gz",
+    "source_sha256": "2fb439a836dea17a69cc1b9f17e60fa5a1182032fedec0a6ffc1a55ee1e9498f"
+  },
+  {
+    "evidence_id": "ev_f5d36761261bd90bb2139ae2bcd05e79af64a90eaffe2b978b3c0353a3ffe4a2",
+    "name": "vm_pushGlobalVar",
+    "operation": "analyze_function",
+    "record_sha256": "3ad69c80d669aff6c43458cfdc45ddc0f28df896e640349b911f60aac27efc4f",
+    "source": "docs/stage2ar-evidence/reused.json.gz",
+    "source_sha256": "2fb439a836dea17a69cc1b9f17e60fa5a1182032fedec0a6ffc1a55ee1e9498f"
+  },
+  {
+    "evidence_id": "ev_9693ba97f8eddd0327c10164c589acb0a343f4181335c1476bc606e322e04ee5",
+    "name": "vm_pushLocalVar",
+    "operation": "procedure_pseudo_code",
+    "record_sha256": "a0670ee7808366c6c7b7e59f82ff39526bcf89840427c329372e13e4ad766423",
+    "source": "docs/stage2ar-evidence/reused.json.gz",
+    "source_sha256": "2fb439a836dea17a69cc1b9f17e60fa5a1182032fedec0a6ffc1a55ee1e9498f"
+  },
+  {
+    "evidence_id": "ev_9a9cde77fb2df1b8214e667458663471ea6da5fbeea24bfb3878fcb8f7548808",
+    "name": "vm_pushObjVar",
+    "operation": "procedure_assembly",
+    "record_sha256": "90506e01bf760700c19e1838fe3dea74ae166ea31c7572653008770941ce45d5",
+    "source": "docs/stage2ar-evidence/reused.json.gz",
+    "source_sha256": "2fb439a836dea17a69cc1b9f17e60fa5a1182032fedec0a6ffc1a55ee1e9498f"
+  },
+  {
+    "evidence_id": "ev_03adb0f3a115b83f2497d37852e6c64ffd233cbe06b82b9e57624900a2a01c09",
+    "name": "vm_pushObjVar",
+    "operation": "procedure_pseudo_code",
+    "record_sha256": "69982e2bf243ff54ab8adc5b6c8e3e43ac81d63771458a16ff53bfaf06f20ac7",
+    "source": "docs/stage2ar-evidence/reused.json.gz",
+    "source_sha256": "2fb439a836dea17a69cc1b9f17e60fa5a1182032fedec0a6ffc1a55ee1e9498f"
+  },
+  {
+    "evidence_id": "ev_4d6d17b9e1b09afb2790e5504711604e853f3e4e9740fbca01c397f299a00212",
+    "name": "vm_pushValue",
+    "operation": "analyze_function",
+    "record_sha256": "13c4c72c48891fec98353a1e47d8d527a977be5abd24eab07401d3a9766c8a93",
+    "source": "docs/stage2ar-evidence/reused.json.gz",
+    "source_sha256": "2fb439a836dea17a69cc1b9f17e60fa5a1182032fedec0a6ffc1a55ee1e9498f"
+  },
+  {
+    "evidence_id": "ev_ec2e63f30a5e17be4bc7568c971fc949e924bd051c8f8f5049d7793945b7c459",
+    "name": "vm_queryMember",
+    "operation": "procedure_assembly",
+    "record_sha256": "d6f1c45d6043c2d3aaaf937746e1854ee3104b766ad3630e867cab42316784d2",
+    "source": "docs/stage2ar-evidence/reused.json.gz",
+    "source_sha256": "2fb439a836dea17a69cc1b9f17e60fa5a1182032fedec0a6ffc1a55ee1e9498f"
+  },
+  {
+    "evidence_id": "ev_2aead7613b91a786e731943745c0a2606d930e5db98d60ad0bd59ae2453e87b4",
+    "name": "vm_queryMember",
+    "operation": "procedure_pseudo_code",
+    "record_sha256": "3e43aa1959e5f56b18d8111dbbca60e28a968c35e5cb6c37f48e64d5cb4eb912",
+    "source": "docs/stage2ar-evidence/reused.json.gz",
+    "source_sha256": "2fb439a836dea17a69cc1b9f17e60fa5a1182032fedec0a6ffc1a55ee1e9498f"
+  },
+  {
+    "evidence_id": "ev_eda665f39ff600270e7c381c4fcb9ee162e674d26a060d8afb345e0a012dc7b4",
+    "name": "vm_queryMemberPtr",
+    "operation": "procedure_assembly",
+    "record_sha256": "32b463c4a61c95b9b7c914c0158ad080b03f822a7ebde39054df96dbe3111a13",
+    "source": "docs/stage2ar-evidence/reused.json.gz",
+    "source_sha256": "2fb439a836dea17a69cc1b9f17e60fa5a1182032fedec0a6ffc1a55ee1e9498f"
+  },
+  {
+    "evidence_id": "ev_39ba42f6244debda18e95f0fa40350e37543e9ee85177f3d546be50234c8f76a",
+    "name": "vm_queryMemberPtr",
+    "operation": "procedure_pseudo_code",
+    "record_sha256": "bdce7a360faed6388b75655dfd9ac3240274e9963f8f1b363df59c9284f0e72a",
+    "source": "docs/stage2ar-evidence/reused.json.gz",
+    "source_sha256": "2fb439a836dea17a69cc1b9f17e60fa5a1182032fedec0a6ffc1a55ee1e9498f"
+  },
+  {
+    "evidence_id": "ev_11d1d264620ab7f5452f093971acc5d836f0364c7d522a7234d1af509587c5fd",
+    "name": "vm_refreshAllValuesActive",
+    "operation": "procedure_pseudo_code",
+    "record_sha256": "011beb366ae73f2a0150de0ced96e9ffa8a70a73fbadcb2854e0e68f18fe20f7",
+    "source": "docs/stage2ar-evidence/reused.json.gz",
+    "source_sha256": "2fb439a836dea17a69cc1b9f17e60fa5a1182032fedec0a6ffc1a55ee1e9498f"
+  },
+  {
+    "evidence_id": "ev_e86eb89e60b57e211e2efdce9ee32fdd5b9d630f548d18ca4e6b50e43675595c",
+    "name": "vm_returnFromEfun",
+    "operation": "analyze_function",
+    "record_sha256": "43e0ba9a9597596318731953719f757dd3c31e2552493ffc75a66359ab2a4022",
+    "source": "docs/stage2ar-evidence/reused.json.gz",
+    "source_sha256": "2fb439a836dea17a69cc1b9f17e60fa5a1182032fedec0a6ffc1a55ee1e9498f"
+  },
+  {
+    "evidence_id": "ev_6a8948bf446a008fa48fc2ecc8711a14fc41635f9cd05e4cfcdacf8bec7a6215",
+    "name": "vm_returnFromFun",
+    "operation": "analyze_function",
+    "record_sha256": "3377770f382dfa99d5f2b410ff97314d381ac03e823912fe666fc7f4a4da1610",
+    "source": "docs/stage2ar-evidence/reused.json.gz",
+    "source_sha256": "2fb439a836dea17a69cc1b9f17e60fa5a1182032fedec0a6ffc1a55ee1e9498f"
+  },
+  {
+    "evidence_id": "ev_fc0b85e738fdd420e13765dad0b8b0351ca9b42d06c1a76d4f41bdc1c23297dc",
+    "name": "vm_setLocalVar",
+    "operation": "procedure_pseudo_code",
+    "record_sha256": "a94ca4f1c916adbce0c339840fb95c173f1e1053193973f74efbe8f77491b5f9",
+    "source": "docs/stage2ar-evidence/reused.json.gz",
+    "source_sha256": "2fb439a836dea17a69cc1b9f17e60fa5a1182032fedec0a6ffc1a55ee1e9498f"
+  },
+  {
+    "evidence_id": "ev_b8168f2c625c87c5cab8326205b0560cd7db940a32c06abbbda3dcdb7a839535",
+    "name": "vm_takeOffValueFromStack",
+    "operation": "analyze_function",
+    "record_sha256": "27a8e4ec7208b398a84076efaf45326637e7b19d32db006ae6025451c75aaa11",
+    "source": "docs/stage2ar-evidence/reused.json.gz",
+    "source_sha256": "2fb439a836dea17a69cc1b9f17e60fa5a1182032fedec0a6ffc1a55ee1e9498f"
+  },
+  {
+    "evidence_id": "ev_e12a1e49fc37b28910632e7d22872a27b51e7c54f0c6478935e893b20f7c63fe",
+    "name": "vm_traceError",
+    "operation": "procedure_assembly",
+    "record_sha256": "5d88491900959fd39058a913b0c9e95cf9dd6af97ff76ad795c49343e5288d71",
+    "source": "docs/stage2ar-evidence/reused.json.gz",
+    "source_sha256": "2fb439a836dea17a69cc1b9f17e60fa5a1182032fedec0a6ffc1a55ee1e9498f"
+  },
+  {
+    "evidence_id": "ev_3aa06be9e85308cb2db022171ebc8b97169c4291640f5d39b9176041544f81e4",
+    "name": "vm_traceError",
+    "operation": "procedure_pseudo_code",
+    "record_sha256": "1d3b80f8b92f7760c406f0cd575ce29587b1253f28194a2f01e7a3795b2e0c3d",
+    "source": "docs/stage2ar-evidence/reused.json.gz",
+    "source_sha256": "2fb439a836dea17a69cc1b9f17e60fa5a1182032fedec0a6ffc1a55ee1e9498f"
+  },
+  {
+    "evidence_id": "ev_c852e7916c2cdc0cda41b7ecfb7e817b8345955915dab87bdbdcc65f2ff5278f",
+    "name": "vm_unExecRefObject",
+    "operation": "procedure_assembly",
+    "record_sha256": "d7d3bb3f945044008195ede70e76335cb96d52094704c92a6efb116cb29160f3",
+    "source": "docs/stage2ar-evidence/reused.json.gz",
+    "source_sha256": "2fb439a836dea17a69cc1b9f17e60fa5a1182032fedec0a6ffc1a55ee1e9498f"
+  },
+  {
+    "evidence_id": "ev_a208cbdd90503fb624273316e1f15e2eee556bf230a0dee842e864b4ecb72437",
+    "name": "vm_unExecRefObject",
+    "operation": "procedure_pseudo_code",
+    "record_sha256": "f35f11c41f86c862bcd2b27e94d5f9a29f167bc796e6d8494776788ad7888f77",
+    "source": "docs/stage2ar-evidence/reused.json.gz",
+    "source_sha256": "2fb439a836dea17a69cc1b9f17e60fa5a1182032fedec0a6ffc1a55ee1e9498f"
+  },
+  {
+    "evidence_id": "ev_8000dac56416a0239afddc630d10d5c425e7d9797f623755e77dcda7e5516c26",
+    "name": "vm_unrefArray",
+    "operation": "procedure_assembly",
+    "record_sha256": "fe773f8a089b8785ae0095bf06e70036430f622a4003b46324cf93def3131c66",
+    "source": "docs/stage2ar-evidence/reused.json.gz",
+    "source_sha256": "2fb439a836dea17a69cc1b9f17e60fa5a1182032fedec0a6ffc1a55ee1e9498f"
+  },
+  {
+    "evidence_id": "ev_3a18d97f17b48e830607f072dd18b5dcc20f00748883431276baba280c0ab592",
+    "name": "vm_unrefArray",
+    "operation": "procedure_pseudo_code",
+    "record_sha256": "c880ae445c399eea83a5cc288b772c7e665f4873c98a73ba201658a3df1867b4",
+    "source": "docs/stage2ar-evidence/reused.json.gz",
+    "source_sha256": "2fb439a836dea17a69cc1b9f17e60fa5a1182032fedec0a6ffc1a55ee1e9498f"
+  },
+  {
+    "evidence_id": "ev_87303180daaae04da5ace6f0b3bb43f14f6414ed173f8c4b9b57a90db34f587e",
+    "name": "vm_unrefObject",
+    "operation": "procedure_pseudo_code",
+    "record_sha256": "4a6998a45341f44ba804deaa5d2e3b2901cd5f1f57136ad6704539a1695e99db",
+    "source": "docs/stage2ar-evidence/reused.json.gz",
+    "source_sha256": "2fb439a836dea17a69cc1b9f17e60fa5a1182032fedec0a6ffc1a55ee1e9498f"
+  },
+  {
+    "evidence_id": "ev_1e97d9b23b4f5b64595672ccc759645ed729cbbdc52e7ea0cdf0edbdf42d3c63",
+    "name": "vm_freeObjectsInDestructingList",
+    "operation": "procedure_assembly",
+    "record_sha256": "d9f5afd8359dd54da3dd09c94dc60298942ea7dee7affaca03b2601a7aca2417",
+    "source": "docs/vm-object-lifecycle-evidence/rea.json.gz",
+    "source_sha256": "b40cfdf0c59672628b24cf6682691746e155e71d54d8a0bd891eecc384ab2a4c"
+  },
+  {
+    "evidence_id": "ev_4afb7ed3129068ae579d0107c615b2790e0c898b1d1322b7349f0b98f5f7f90b",
+    "name": "vm_destructObject",
+    "operation": "procedure_assembly",
+    "record_sha256": "8ca203c76f93a430c52b0cb74234a38ec63f04b5f6b9206084b25bd7be34b4a5",
+    "source": "docs/vm-object-lifecycle-evidence/rea.json.gz",
+    "source_sha256": "b40cfdf0c59672628b24cf6682691746e155e71d54d8a0bd891eecc384ab2a4c"
+  },
+  {
+    "evidence_id": "ev_58e41fc7fd79b8820fddd5d3bb13ce115b1663a228e53fd381f6b10c45480218",
+    "name": "vm_freeObjectsInDestructingList",
+    "operation": "procedure_pseudo_code",
+    "record_sha256": "e505ddfe879bd993037fb157360c8be36025f064dbe9a33256ff6ecfb58e791a",
+    "source": "docs/vm-object-lifecycle-evidence/rea.json.gz",
+    "source_sha256": "b40cfdf0c59672628b24cf6682691746e155e71d54d8a0bd891eecc384ab2a4c"
+  },
+  {
+    "evidence_id": "ev_196547cb37731a3632d63fbc4a62d83a57ac5f788fa57a3ed95657b8a8346c69",
+    "name": "vm_destructObject",
+    "operation": "procedure_pseudo_code",
+    "record_sha256": "f180ec36f4cf458502b59eecc9db9ff30b43ff04db2a7c329ee9f6b4bdd95ce1",
+    "source": "docs/vm-object-lifecycle-evidence/reused.json.gz",
+    "source_sha256": "c3bfa1f07982f4f6cc60882e1d5b057e2679ad3ea97116f72b2d009d4ea6663d"
+  }
+]

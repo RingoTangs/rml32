@@ -1,0 +1,63 @@
+{
+  "before": {
+    "open": false,
+    "source": "Plan-turn binary_session read-only observation; Ghidra 12.1.4 available"
+  },
+  "after": {
+    "open": false,
+    "source": "close_binary then binary_session"
+  },
+  "target_execution": "none",
+  "target_sha256": "5d4ebac58d8c415d9cf95bbcdd50f78afac91adf4f7e667ea3afc6f5336a6f34",
+  "analysis_requests": [
+    {
+      "procedure": "vm_unrefToPCB",
+      "status": "complete",
+      "evidence_id": "ev_06ea52a7afd2f826495b7a135f97a5909a8c9086ddb7d557e6dacb5dc28c5748"
+    },
+    {
+      "procedure": "vm_unrefFunctionValue",
+      "status": "complete",
+      "evidence_id": "ev_0934ff13603a2c84b549e5d8f003a103db71c86b87fcc5692099ac2ab81650d4"
+    },
+    {
+      "procedure": "vm_traceError",
+      "status": "complete",
+      "evidence_id": "ev_2ca52477b7ba7dcc40e48827fff306b892f626641777eace6893b1f5acc15ba1"
+    },
+    {
+      "procedure": "vm_scheduleProcess",
+      "status": "complete",
+      "evidence_id": "ev_742151cf0a21b4697cbd895f9c6e4ae778ca4bb7c9c6a3a782fe4e7c77385d9c"
+    },
+    {
+      "procedure": "vm_scheduleProcessInternal",
+      "status": "complete",
+      "evidence_id": "ev_8afa124f5ab414820201215e5832365dfc1e5fd8f99de938704714514f785fe3"
+    },
+    {
+      "procedure": "pdb_allocateMemory",
+      "status": "complete",
+      "evidence_id": "ev_f11621ec8278f50d7b95cd012344996567569c2ad1f327a38f5d037ee8cc232c"
+    },
+    {
+      "procedure": "vm_endForBackend",
+      "status": "complete",
+      "evidence_id": "ev_f8aa49f1e43d8d933ec0710848b2cbbf20effdaafc21a17e2adb1ee0cd0cb73a"
+    },
+    {
+      "procedure": "vm_deleteProcess",
+      "status": "complete",
+      "evidence_id": "ev_fd6ebcdf65115a69b9a379778148a4308b1418aee68693aba154a7ce9474feab"
+    }
+  ],
+  "export": {
+    "records": 8,
+    "bytes": 7724465,
+    "sha256": "443308bc9b4039812e0c2eadcd8fbcc567648b279b299d2717fb1dc0e74d867a"
+  },
+  "limitations": [
+    "No target execution. Native value-flow truncation and provider limitations retained in each full record.",
+    "Summary stdout was inspected during acquisition; retained complete export is canonical."
+  ]
+}
