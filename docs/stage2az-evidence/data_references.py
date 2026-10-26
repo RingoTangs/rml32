@@ -72,6 +72,8 @@ def typed_references(record, source, target):
     normalized = record['normalized_result']
     return [r for key in ('outgoing_references', 'incoming_references') for r in normalized[key]
             if r.get('source_address') is not None and r.get('target_address') is not None
+            and re.fullmatch(r'0x[0-9a-fA-F]+', r['source_address'])
+            and re.fullmatch(r'0x[0-9a-fA-F]+', r['target_address'])
             and address(r['source_address']) == source and address(r['target_address']) == target]
 
 

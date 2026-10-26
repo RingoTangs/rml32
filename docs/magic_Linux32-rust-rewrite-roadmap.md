@@ -1,3 +1,7 @@
+# 最新进度：阶段2AZ
+
+阶段2AZ完成[H/A保存与处置追踪](stage2az-evidence/r01-paths.md)、[外部引用接点分类](stage2az-evidence/r02-classification.md)及[数据引用核验](stage2az-evidence/data-references.json)。新增9条函数dossier和5条xref，复用76条函数记录；保留273A/54F/94C前缀，当前351A/66F/115C及94项历史映射。物理页free与语义清理、provider CALL kind与实际CALL/JMP、表注册与条件调用分别验收。运行时、公共API、版本、依赖和状态模型不变；没有原程序或业务字节码执行。直接捕获与阶段2仍未完成，详见[门槛](stage2az-evidence/gate-review.md)、[收据](stage2az-validation.json)及[下一步](stage2az-evidence/next-batch.md)。以下完整原文保留为历史快照。
+
 # 最新进度：阶段2AY
 
 阶段2AY完成E01/E02定向静态取证与[门槛重评](stage2ay-evidence/gate-review.md)：8条新增、67条复用记录，保留原180A/40F/71C，当前273A/54F/94C及71项历史映射。有限静态路径支持零捕获满栈失败候选，clear/shutdown各有扫描后条件化排空接点；未发布头最终释放与完整退出进展仍未闭合。运行时、公共API、版本、依赖及原644项普通测试/2项doctest保持，没有原程序或业务字节码执行、新状态模型或捕获能力开放。见[本批说明](stage2ay-evidence/overview.md)、[2AY收据](stage2ay-validation.json)与[后续定向任务](stage2ay-evidence/next-batch.md)。以下完整原文保留为历史快照。

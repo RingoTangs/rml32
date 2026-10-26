@@ -141,7 +141,8 @@ def validate_evidence_summary(evidence):
             '2AZ evidence scope differs')
     require(type(evidence.get('new_records')) is int and evidence['new_records'] > 0
             and type(evidence.get('reused_records')) is int and evidence['reused_records'] > 0
-            and evidence.get('unique_records') == evidence['new_records'] + evidence['reused_records']
+            and type(evidence.get('reference_records')) is int and evidence['reference_records'] >= 0
+            and evidence.get('unique_records') == evidence['new_records'] + evidence['reused_records'] + evidence['reference_records']
             and evidence.get('case_mappings') == 94, '2AZ evidence inventory differs')
 
 

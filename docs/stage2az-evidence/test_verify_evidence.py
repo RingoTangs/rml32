@@ -13,6 +13,7 @@ class EvidenceTests(unittest.TestCase):
     def setUpClass(cls):
         cls.new = v.load(v.ROOT, v.DIRECTORY + 'rea.json.gz')['records']
         cls.reused = v.load(v.ROOT, v.DIRECTORY + 'reused.json.gz')['records']
+        cls.references = v.load(v.ROOT, v.DIRECTORY + 'references.json.gz')['records']
         cls.manifest = v.load(v.ROOT, v.DIRECTORY + 'function-manifest.json')
         cls.anchors = v.load(v.ROOT, v.DIRECTORY + 'anchors.json')
         cls.findings = v.load(v.ROOT, v.DIRECTORY + 'findings.json')
@@ -22,7 +23,7 @@ class EvidenceTests(unittest.TestCase):
         cls.original = v.load(v.ROOT, v.PREVIOUS + 'expected-cases.json')
         cls.origins = v.load(v.ROOT, v.DIRECTORY + 'reused-manifest.json')
         cls.baseline = v.load(v.ROOT, v.DIRECTORY + 'baseline-inputs.json')
-        cls.byid = {r['evidence_id']: r for r in cls.new + cls.reused}
+        cls.byid = {r['evidence_id']: r for r in cls.new + cls.reused + cls.references}
         cls.elf = v.Elf((v.ROOT / 'magic_Linux32').read_bytes())
 
     def catalog(self, findings=None, cases=None, questions=None):
@@ -192,8 +193,9 @@ class EvidenceTests(unittest.TestCase):
         session = v.load(v.ROOT, v.DIRECTORY + 'session.json')
         altered = deepcopy(session)
         altered['analysis_requests'] = []
+        altered['reference_requests'] = []
         with self.assertRaisesRegex(ValueError, 'request ledger'):
-            v.validate_session(altered, self.new)
+            v.validate_session(altered, self.new, self.references)
         for key, value, message in [('target_execution', 'native', 'execution'),
                                     ('target_sha256', '0' * 64, 'target differs'),
                                     ('after', {'open': True}, 'lifecycle')]:
@@ -201,6 +203,138 @@ class EvidenceTests(unittest.TestCase):
             altered[key] = value
             with self.subTest(key=key), self.assertRaisesRegex(ValueError, message):
                 v.validate_session(altered, self.new)
+
+
+class DataEvidenceTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.helper = v.module_at('_2az_test_data', v.HERE / 'data_references.py')
+        cls.references = v.load(v.ROOT, v.DIRECTORY + 'references.json.gz')['records']
+        cls.data = v.load(v.ROOT, v.DIRECTORY + 'data-references.json')
+        cls.disposition = v.load(v.ROOT, v.DIRECTORY + 'allocation-disposition.json')
+        records = v.load(v.ROOT, v.DIRECTORY + 'rea.json.gz')['records']
+        records += v.load(v.ROOT, v.DIRECTORY + 'reused.json.gz')['records']
+        cls.byid = {r['evidence_id']: r for r in records + cls.references}
+        cls.findings = v.load(v.ROOT, v.DIRECTORY + 'findings.json')
+        cls.anchors = v.load(v.ROOT, v.DIRECTORY + 'anchors.json')
+        cls.elf = v.Elf((v.ROOT / 'magic_Linux32').read_bytes())
+
+    def check_data(self, data=None):
+        self.helper.validate_data_references(v.ROOT, self.elf, self.references,
+            self.data if data is None else data, self.byid, self.findings, self.anchors)
+
+    def test_real_objects_references_and_indexed_registration_pass(self):
+        self.check_data()
+        self.assertEqual(len(self.data['queries']), len(self.references))
+        self.assertEqual(len(self.data['accesses']), 6)
+        v.validate_disposition(self.disposition, self.byid, self.anchors, self.findings)
+
+    def test_bss_cannot_claim_a_file_offset_or_bytes(self):
+        for field, value in [('file_offset', 0), ('bytes_hex', '00000000')]:
+            data = deepcopy(self.data)
+            next(o for o in data['objects'] if o['section_type'] == 8)[field] = value
+            with self.subTest(field=field), self.assertRaisesRegex(ValueError, 'BSS object cannot claim'):
+                self.check_data(data)
+
+    def test_wrong_data_object_address_is_rejected(self):
+        data = deepcopy(self.data)
+        data['objects'][0]['address'] = '0x860d028'
+        with self.assertRaisesRegex(ValueError, 'data-object identity'):
+            self.check_data(data)
+
+    def test_file_backed_table_bytes_cannot_be_replaced(self):
+        data = deepcopy(self.data)
+        table = next(o for o in data['objects'] if o['name'] == '_vmInits')
+        raw = bytearray.fromhex(table['bytes_hex']); raw[0] ^= 1
+        table['bytes_hex'] = raw.hex()
+        with self.assertRaisesRegex(ValueError, 'data-object bytes differ'):
+            self.check_data(data)
+
+    def test_query_inventory_cannot_drop_an_empty_result(self):
+        data = deepcopy(self.data)
+        index = next(i for i, q in enumerate(data['queries']) if not q['source_addresses'])
+        data['queries'].pop(index)
+        with self.assertRaisesRegex(ValueError, 'one-to-one data use'):
+            self.check_data(data)
+
+    def test_exact_query_cannot_invent_a_computed_slot_reference(self):
+        data = deepcopy(self.data)
+        next(q for q in data['queries'] if not q['source_addresses'])['source_addresses'] = ['0x80b5cb4']
+        with self.assertRaisesRegex(ValueError, 'dropped or changed source addresses'):
+            self.check_data(data)
+
+    def test_query_coverage_limits_cannot_disappear(self):
+        data = deepcopy(self.data)
+        data['queries'][0]['limitations'] = []
+        with self.assertRaisesRegex(ValueError, 'purpose or retained coverage limits'):
+            self.check_data(data)
+
+    def test_reference_kind_must_come_from_the_function_dossier(self):
+        data = deepcopy(self.data)
+        data['accesses'][0]['reference_kind']['type'] = 'WRITE'
+        with self.assertRaisesRegex(ValueError, 'kind is not supplied'):
+            self.check_data(data)
+
+    def test_access_instruction_bytes_are_bound_to_elf(self):
+        data = deepcopy(self.data)
+        raw = bytearray.fromhex(data['accesses'][0]['bytes_hex']); raw[0] ^= 1
+        data['accesses'][0]['bytes_hex'] = raw.hex()
+        with self.assertRaisesRegex(ValueError, 'data-access bytes differ'):
+            self.check_data(data)
+
+    def test_access_inventory_cannot_omit_a_returned_source(self):
+        data = deepcopy(self.data)
+        data['accesses'].pop(0)
+        with self.assertRaisesRegex(ValueError, 'does not cover exact query results'):
+            self.check_data(data)
+
+    def test_scheduler_slot_pointer_bytes_are_independently_checked(self):
+        data = deepcopy(self.data)
+        data['registrations'][0]['bytes_hex'] = '00000000'
+        with self.assertRaisesRegex(ValueError, 'registration pointer bytes differ'):
+            self.check_data(data)
+
+    def test_registration_cannot_lose_its_execution_conditions(self):
+        data = deepcopy(self.data)
+        data['registrations'][0]['guard'] = ''
+        with self.assertRaisesRegex(ValueError, 'conditional execution boundary'):
+            self.check_data(data)
+
+    def test_reference_target_and_raw_projection_are_checked(self):
+        records = deepcopy(self.references)
+        records[0]['subject']['digest']['sha256'] = '0' * 64
+        with self.assertRaisesRegex(ValueError, 'wrong reference target'):
+            self.helper.validate_reference_records(records)
+        records = deepcopy(self.references)
+        records[0]['raw_result'] = None
+        with self.assertRaisesRegex(ValueError, 'changed reference projection'):
+            self.helper.validate_reference_records(records)
+
+    def test_timeout_cannot_be_relabelled_a_completed_query(self):
+        session = deepcopy(v.load(v.ROOT, v.DIRECTORY + 'session.json'))
+        next(q for q in session['reference_requests'] if q['status'] == 'failed')['status'] = 'complete'
+        new = v.load(v.ROOT, v.DIRECTORY + 'rea.json.gz')['records']
+        with self.assertRaisesRegex(ValueError, 'reference request evidence missing'):
+            v.validate_session(session, new, self.references)
+
+    def test_disposition_must_cover_fallback_separately(self):
+        data = deepcopy(self.disposition)
+        data['items'] = [r for r in data['items'] if not
+                         (r['entity'] == 'H' and r['allocation_branch'] == 'fallback')]
+        with self.assertRaisesRegex(ValueError, 'disposition coverage incomplete'):
+            v.validate_disposition(data, self.byid, self.anchors, self.findings)
+
+    def test_creator_absence_is_an_explicit_distinct_case(self):
+        data = deepcopy(self.disposition)
+        next(r for r in data['items'] if r.get('creator_state') == 'absent')['creator_state'] = 'present'
+        with self.assertRaisesRegex(ValueError, 'disposition coverage incomplete'):
+            v.validate_disposition(data, self.byid, self.anchors, self.findings)
+
+    def test_physical_disposition_cannot_close_unknown_semantic_release(self):
+        data = deepcopy(self.disposition)
+        next(r for r in data['items'] if r.get('creator_state') == 'present')['status'] = 'answered'
+        with self.assertRaisesRegex(ValueError, 'unresolved disposition claimed answered'):
+            v.validate_disposition(data, self.byid, self.anchors, self.findings)
 
 
 if __name__ == '__main__':

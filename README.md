@@ -1,3 +1,7 @@
+# rml32 · 当前阶段 2AZ
+
+阶段2AZ完成未发布H/A追踪与外部引用分类：新增9条完整函数记录和5条数据引用记录，复用76条函数记录，形成351个锚点、66条结论、115个案例及94项历史映射。已核实C栈保存、catch元数据、allocator扩展页物理释放，并区分3条CALL、4条尾JMP及模块表条件化分派。见[本批说明](docs/stage2az-evidence/overview.md)、[逐分配处置](docs/stage2az-evidence/allocation-disposition.json)、[门槛重评](docs/stage2az-evidence/gate-review.md)和[验证收据](docs/stage2az-validation.json)。运行时、API、版本、依赖和状态模型保持；没有运行原程序或业务字节码。语义恢复、creator释放和完整退出进展仍未闭合，直接Object/Function捕获继续关闭，阶段2未完成。[下一步](docs/stage2az-evidence/next-batch.md)按精确剩余前沿或明确兼容边界规划，不重复泛化unknown。以下完整原文保留为历史快照。
+
 # rml32 · 当前阶段 2AY
 
 阶段2AY完成E01/E02定向静态取证与[生命周期门槛重评](docs/stage2ay-evidence/gate-review.md)：新增8条、复用67条完整记录，补齐零捕获满栈候选的有限静态路径，以及clear/shutdown扫描后的条件化排空接点。原180个锚点、40条结论、71个案例完整保留，当前为273个锚点、54条结论、94个案例。见[本批说明](docs/stage2ay-evidence/overview.md)、[方法](docs/stage2ay-evidence/method.md)及[验证收据](docs/stage2ay-validation.json)。Rust/API/依赖和原644项普通测试及2项doctest保持；没有运行参考程序、业务字节码或新增模型。未发布头最终释放、外部持有与完整退出域仍未闭合，直接Object/Function捕获继续关闭，阶段2未完成。[下一批](docs/stage2ay-evidence/next-batch.md)继续补具体生命周期契约。以下完整原文保留为历史快照。
