@@ -1,0 +1,1319 @@
+{
+  "stage": "2AZ",
+  "source_stage": "2AY",
+  "source_cases": 94,
+  "historical_snapshot": "A001-A273, F01-F54 and C01-C94 preserve the entire 2AY prefix verbatim; reassessments use new records/cases without rewriting historical evidence.",
+  "items": [
+    {
+      "source_case_id": "C01",
+      "source_basis": "static-inference",
+      "source_findings": [
+        "F01",
+        "F03"
+      ],
+      "case_ids": [
+        "C01"
+      ],
+      "status": "unchanged-boundary",
+      "limitations": "2AY案例、basis/source_findings原文保留；新增项只反映限定保存/存储/引用分类，不是执行观察、模型、完整恢复或生命周期设计证明。"
+    },
+    {
+      "source_case_id": "C02",
+      "source_basis": "static-inference",
+      "source_findings": [
+        "F01",
+        "F03"
+      ],
+      "case_ids": [
+        "C02"
+      ],
+      "status": "unchanged-boundary",
+      "limitations": "2AY案例、basis/source_findings原文保留；新增项只反映限定保存/存储/引用分类，不是执行观察、模型、完整恢复或生命周期设计证明。"
+    },
+    {
+      "source_case_id": "C03",
+      "source_basis": "static-inference",
+      "source_findings": [
+        "F01",
+        "F03"
+      ],
+      "case_ids": [
+        "C03"
+      ],
+      "status": "unchanged-boundary",
+      "limitations": "2AY案例、basis/source_findings原文保留；新增项只反映限定保存/存储/引用分类，不是执行观察、模型、完整恢复或生命周期设计证明。"
+    },
+    {
+      "source_case_id": "C04",
+      "source_basis": "static-inference",
+      "source_findings": [
+        "F01",
+        "F03"
+      ],
+      "case_ids": [
+        "C04"
+      ],
+      "status": "unchanged-boundary",
+      "limitations": "2AY案例、basis/source_findings原文保留；新增项只反映限定保存/存储/引用分类，不是执行观察、模型、完整恢复或生命周期设计证明。"
+    },
+    {
+      "source_case_id": "C05",
+      "source_basis": "static-inference",
+      "source_findings": [
+        "F01",
+        "F03"
+      ],
+      "case_ids": [
+        "C05"
+      ],
+      "status": "unchanged-boundary",
+      "limitations": "2AY案例、basis/source_findings原文保留；新增项只反映限定保存/存储/引用分类，不是执行观察、模型、完整恢复或生命周期设计证明。"
+    },
+    {
+      "source_case_id": "C06",
+      "source_basis": "static-inference",
+      "source_findings": [
+        "F01",
+        "F03"
+      ],
+      "case_ids": [
+        "C06"
+      ],
+      "status": "unchanged-boundary",
+      "limitations": "2AY案例、basis/source_findings原文保留；新增项只反映限定保存/存储/引用分类，不是执行观察、模型、完整恢复或生命周期设计证明。"
+    },
+    {
+      "source_case_id": "C07",
+      "source_basis": "static-inference",
+      "source_findings": [
+        "F01",
+        "F03"
+      ],
+      "case_ids": [
+        "C07"
+      ],
+      "status": "unchanged-boundary",
+      "limitations": "2AY案例、basis/source_findings原文保留；新增项只反映限定保存/存储/引用分类，不是执行观察、模型、完整恢复或生命周期设计证明。"
+    },
+    {
+      "source_case_id": "C08",
+      "source_basis": "static-inference",
+      "source_findings": [
+        "F01",
+        "F03"
+      ],
+      "case_ids": [
+        "C08"
+      ],
+      "status": "unchanged-boundary",
+      "limitations": "2AY案例、basis/source_findings原文保留；新增项只反映限定保存/存储/引用分类，不是执行观察、模型、完整恢复或生命周期设计证明。"
+    },
+    {
+      "source_case_id": "C09",
+      "source_basis": "static-inference",
+      "source_findings": [
+        "F01",
+        "F03"
+      ],
+      "case_ids": [
+        "C09"
+      ],
+      "status": "unchanged-boundary",
+      "limitations": "2AY案例、basis/source_findings原文保留；新增项只反映限定保存/存储/引用分类，不是执行观察、模型、完整恢复或生命周期设计证明。"
+    },
+    {
+      "source_case_id": "C10",
+      "source_basis": "static-inference",
+      "source_findings": [
+        "F03",
+        "F08"
+      ],
+      "case_ids": [
+        "C10"
+      ],
+      "status": "unchanged-boundary",
+      "limitations": "2AY案例、basis/source_findings原文保留；新增项只反映限定保存/存储/引用分类，不是执行观察、模型、完整恢复或生命周期设计证明。"
+    },
+    {
+      "source_case_id": "C11",
+      "source_basis": "static-inference",
+      "source_findings": [
+        "F03",
+        "F23"
+      ],
+      "case_ids": [
+        "C11"
+      ],
+      "status": "unchanged-boundary",
+      "limitations": "2AY案例、basis/source_findings原文保留；新增项只反映限定保存/存储/引用分类，不是执行观察、模型、完整恢复或生命周期设计证明。"
+    },
+    {
+      "source_case_id": "C12",
+      "source_basis": "static-inference",
+      "source_findings": [
+        "F01",
+        "F02"
+      ],
+      "case_ids": [
+        "C12"
+      ],
+      "status": "unchanged-boundary",
+      "limitations": "2AY案例、basis/source_findings原文保留；新增项只反映限定保存/存储/引用分类，不是执行观察、模型、完整恢复或生命周期设计证明。"
+    },
+    {
+      "source_case_id": "C13",
+      "source_basis": "design",
+      "source_findings": [
+        "F01",
+        "F21"
+      ],
+      "case_ids": [
+        "C13"
+      ],
+      "status": "unchanged-boundary",
+      "limitations": "2AY案例、basis/source_findings原文保留；新增项只反映限定保存/存储/引用分类，不是执行观察、模型、完整恢复或生命周期设计证明。"
+    },
+    {
+      "source_case_id": "C14",
+      "source_basis": "static-inference",
+      "source_findings": [
+        "F02",
+        "F20"
+      ],
+      "case_ids": [
+        "C14"
+      ],
+      "status": "unchanged-boundary",
+      "limitations": "2AY案例、basis/source_findings原文保留；新增项只反映限定保存/存储/引用分类，不是执行观察、模型、完整恢复或生命周期设计证明。"
+    },
+    {
+      "source_case_id": "C15",
+      "source_basis": "unresolved",
+      "source_findings": [
+        "F02",
+        "F20"
+      ],
+      "case_ids": [
+        "C15",
+        "C95",
+        "C96",
+        "C97",
+        "C98",
+        "C99",
+        "C100",
+        "C101",
+        "C102",
+        "C103",
+        "C104",
+        "C105"
+      ],
+      "status": "reassessed",
+      "limitations": "2AY历史案例及其来源原文保留；C15非空捕获失败前提不重开；本批只增零捕获保存/恢复边界，最终语义释放仍未闭合。"
+    },
+    {
+      "source_case_id": "C16",
+      "source_basis": "static-inference",
+      "source_findings": [
+        "F05",
+        "F07"
+      ],
+      "case_ids": [
+        "C16"
+      ],
+      "status": "unchanged-boundary",
+      "limitations": "2AY案例、basis/source_findings原文保留；新增项只反映限定保存/存储/引用分类，不是执行观察、模型、完整恢复或生命周期设计证明。"
+    },
+    {
+      "source_case_id": "C17",
+      "source_basis": "static-inference",
+      "source_findings": [
+        "F06",
+        "F07"
+      ],
+      "case_ids": [
+        "C17"
+      ],
+      "status": "unchanged-boundary",
+      "limitations": "2AY案例、basis/source_findings原文保留；新增项只反映限定保存/存储/引用分类，不是执行观察、模型、完整恢复或生命周期设计证明。"
+    },
+    {
+      "source_case_id": "C18",
+      "source_basis": "static-inference",
+      "source_findings": [
+        "F05",
+        "F07"
+      ],
+      "case_ids": [
+        "C18"
+      ],
+      "status": "unchanged-boundary",
+      "limitations": "2AY案例、basis/source_findings原文保留；新增项只反映限定保存/存储/引用分类，不是执行观察、模型、完整恢复或生命周期设计证明。"
+    },
+    {
+      "source_case_id": "C19",
+      "source_basis": "static-inference",
+      "source_findings": [
+        "F06",
+        "F07"
+      ],
+      "case_ids": [
+        "C19"
+      ],
+      "status": "unchanged-boundary",
+      "limitations": "2AY案例、basis/source_findings原文保留；新增项只反映限定保存/存储/引用分类，不是执行观察、模型、完整恢复或生命周期设计证明。"
+    },
+    {
+      "source_case_id": "C20",
+      "source_basis": "static-inference",
+      "source_findings": [
+        "F05",
+        "F09",
+        "F18"
+      ],
+      "case_ids": [
+        "C20"
+      ],
+      "status": "unchanged-boundary",
+      "limitations": "2AY案例、basis/source_findings原文保留；新增项只反映限定保存/存储/引用分类，不是执行观察、模型、完整恢复或生命周期设计证明。"
+    },
+    {
+      "source_case_id": "C21",
+      "source_basis": "static-inference",
+      "source_findings": [
+        "F06",
+        "F08",
+        "F09"
+      ],
+      "case_ids": [
+        "C21"
+      ],
+      "status": "unchanged-boundary",
+      "limitations": "2AY案例、basis/source_findings原文保留；新增项只反映限定保存/存储/引用分类，不是执行观察、模型、完整恢复或生命周期设计证明。"
+    },
+    {
+      "source_case_id": "C22",
+      "source_basis": "static-inference",
+      "source_findings": [
+        "F05",
+        "F09",
+        "F18"
+      ],
+      "case_ids": [
+        "C22"
+      ],
+      "status": "unchanged-boundary",
+      "limitations": "2AY案例、basis/source_findings原文保留；新增项只反映限定保存/存储/引用分类，不是执行观察、模型、完整恢复或生命周期设计证明。"
+    },
+    {
+      "source_case_id": "C23",
+      "source_basis": "static-inference",
+      "source_findings": [
+        "F06",
+        "F08",
+        "F09"
+      ],
+      "case_ids": [
+        "C23"
+      ],
+      "status": "unchanged-boundary",
+      "limitations": "2AY案例、basis/source_findings原文保留；新增项只反映限定保存/存储/引用分类，不是执行观察、模型、完整恢复或生命周期设计证明。"
+    },
+    {
+      "source_case_id": "C24",
+      "source_basis": "static-inference",
+      "source_findings": [
+        "F08",
+        "F06"
+      ],
+      "case_ids": [
+        "C24"
+      ],
+      "status": "unchanged-boundary",
+      "limitations": "2AY案例、basis/source_findings原文保留；新增项只反映限定保存/存储/引用分类，不是执行观察、模型、完整恢复或生命周期设计证明。"
+    },
+    {
+      "source_case_id": "C25",
+      "source_basis": "static-inference",
+      "source_findings": [
+        "F06",
+        "F11"
+      ],
+      "case_ids": [
+        "C25"
+      ],
+      "status": "unchanged-boundary",
+      "limitations": "2AY案例、basis/source_findings原文保留；新增项只反映限定保存/存储/引用分类，不是执行观察、模型、完整恢复或生命周期设计证明。"
+    },
+    {
+      "source_case_id": "C26",
+      "source_basis": "design",
+      "source_findings": [
+        "F21"
+      ],
+      "case_ids": [
+        "C26"
+      ],
+      "status": "unchanged-boundary",
+      "limitations": "2AY案例、basis/source_findings原文保留；新增项只反映限定保存/存储/引用分类，不是执行观察、模型、完整恢复或生命周期设计证明。"
+    },
+    {
+      "source_case_id": "C27",
+      "source_basis": "static-inference",
+      "source_findings": [
+        "F05",
+        "F06"
+      ],
+      "case_ids": [
+        "C27"
+      ],
+      "status": "unchanged-boundary",
+      "limitations": "2AY案例、basis/source_findings原文保留；新增项只反映限定保存/存储/引用分类，不是执行观察、模型、完整恢复或生命周期设计证明。"
+    },
+    {
+      "source_case_id": "C28",
+      "source_basis": "static-inference",
+      "source_findings": [
+        "F07",
+        "F08"
+      ],
+      "case_ids": [
+        "C28"
+      ],
+      "status": "unchanged-boundary",
+      "limitations": "2AY案例、basis/source_findings原文保留；新增项只反映限定保存/存储/引用分类，不是执行观察、模型、完整恢复或生命周期设计证明。"
+    },
+    {
+      "source_case_id": "C29",
+      "source_basis": "static-inference",
+      "source_findings": [
+        "F08",
+        "F22"
+      ],
+      "case_ids": [
+        "C29"
+      ],
+      "status": "unchanged-boundary",
+      "limitations": "2AY案例、basis/source_findings原文保留；新增项只反映限定保存/存储/引用分类，不是执行观察、模型、完整恢复或生命周期设计证明。"
+    },
+    {
+      "source_case_id": "C30",
+      "source_basis": "static-inference",
+      "source_findings": [
+        "F08",
+        "F22"
+      ],
+      "case_ids": [
+        "C30"
+      ],
+      "status": "unchanged-boundary",
+      "limitations": "2AY案例、basis/source_findings原文保留；新增项只反映限定保存/存储/引用分类，不是执行观察、模型、完整恢复或生命周期设计证明。"
+    },
+    {
+      "source_case_id": "C31",
+      "source_basis": "static-inference",
+      "source_findings": [
+        "F08",
+        "F12"
+      ],
+      "case_ids": [
+        "C31"
+      ],
+      "status": "unchanged-boundary",
+      "limitations": "2AY案例、basis/source_findings原文保留；新增项只反映限定保存/存储/引用分类，不是执行观察、模型、完整恢复或生命周期设计证明。"
+    },
+    {
+      "source_case_id": "C32",
+      "source_basis": "static-inference",
+      "source_findings": [
+        "F08",
+        "F13"
+      ],
+      "case_ids": [
+        "C32"
+      ],
+      "status": "unchanged-boundary",
+      "limitations": "2AY案例、basis/source_findings原文保留；新增项只反映限定保存/存储/引用分类，不是执行观察、模型、完整恢复或生命周期设计证明。"
+    },
+    {
+      "source_case_id": "C33",
+      "source_basis": "static-inference",
+      "source_findings": [
+        "F08",
+        "F13"
+      ],
+      "case_ids": [
+        "C33"
+      ],
+      "status": "unchanged-boundary",
+      "limitations": "2AY案例、basis/source_findings原文保留；新增项只反映限定保存/存储/引用分类，不是执行观察、模型、完整恢复或生命周期设计证明。"
+    },
+    {
+      "source_case_id": "C34",
+      "source_basis": "static-inference",
+      "source_findings": [
+        "F13"
+      ],
+      "case_ids": [
+        "C34"
+      ],
+      "status": "unchanged-boundary",
+      "limitations": "2AY案例、basis/source_findings原文保留；新增项只反映限定保存/存储/引用分类，不是执行观察、模型、完整恢复或生命周期设计证明。"
+    },
+    {
+      "source_case_id": "C35",
+      "source_basis": "static-inference",
+      "source_findings": [
+        "F14"
+      ],
+      "case_ids": [
+        "C35"
+      ],
+      "status": "unchanged-boundary",
+      "limitations": "2AY案例、basis/source_findings原文保留；新增项只反映限定保存/存储/引用分类，不是执行观察、模型、完整恢复或生命周期设计证明。"
+    },
+    {
+      "source_case_id": "C36",
+      "source_basis": "static-inference",
+      "source_findings": [
+        "F15"
+      ],
+      "case_ids": [
+        "C36"
+      ],
+      "status": "unchanged-boundary",
+      "limitations": "2AY案例、basis/source_findings原文保留；新增项只反映限定保存/存储/引用分类，不是执行观察、模型、完整恢复或生命周期设计证明。"
+    },
+    {
+      "source_case_id": "C37",
+      "source_basis": "static-inference",
+      "source_findings": [
+        "F11"
+      ],
+      "case_ids": [
+        "C37",
+        "C103"
+      ],
+      "status": "reassessed",
+      "limitations": "2AY案例、basis/source_findings原文保留；新增项只反映限定保存/存储/引用分类，不是执行观察、模型、完整恢复或生命周期设计证明。"
+    },
+    {
+      "source_case_id": "C38",
+      "source_basis": "static-inference",
+      "source_findings": [
+        "F05",
+        "F11"
+      ],
+      "case_ids": [
+        "C38"
+      ],
+      "status": "unchanged-boundary",
+      "limitations": "2AY案例、basis/source_findings原文保留；新增项只反映限定保存/存储/引用分类，不是执行观察、模型、完整恢复或生命周期设计证明。"
+    },
+    {
+      "source_case_id": "C39",
+      "source_basis": "static-inference",
+      "source_findings": [
+        "F16"
+      ],
+      "case_ids": [
+        "C39"
+      ],
+      "status": "unchanged-boundary",
+      "limitations": "2AY案例、basis/source_findings原文保留；新增项只反映限定保存/存储/引用分类，不是执行观察、模型、完整恢复或生命周期设计证明。"
+    },
+    {
+      "source_case_id": "C40",
+      "source_basis": "unresolved",
+      "source_findings": [
+        "F16",
+        "F20"
+      ],
+      "case_ids": [
+        "C40"
+      ],
+      "status": "unchanged-boundary",
+      "limitations": "2AY案例、basis/source_findings原文保留；新增项只反映限定保存/存储/引用分类，不是执行观察、模型、完整恢复或生命周期设计证明。"
+    },
+    {
+      "source_case_id": "C41",
+      "source_basis": "static-inference",
+      "source_findings": [
+        "F09",
+        "F18",
+        "F19"
+      ],
+      "case_ids": [
+        "C41"
+      ],
+      "status": "unchanged-boundary",
+      "limitations": "2AY案例、basis/source_findings原文保留；新增项只反映限定保存/存储/引用分类，不是执行观察、模型、完整恢复或生命周期设计证明。"
+    },
+    {
+      "source_case_id": "C42",
+      "source_basis": "static-inference",
+      "source_findings": [
+        "F05",
+        "F18",
+        "F19"
+      ],
+      "case_ids": [
+        "C42"
+      ],
+      "status": "unchanged-boundary",
+      "limitations": "2AY案例、basis/source_findings原文保留；新增项只反映限定保存/存储/引用分类，不是执行观察、模型、完整恢复或生命周期设计证明。"
+    },
+    {
+      "source_case_id": "C43",
+      "source_basis": "static-inference",
+      "source_findings": [
+        "F18",
+        "F19"
+      ],
+      "case_ids": [
+        "C43"
+      ],
+      "status": "unchanged-boundary",
+      "limitations": "2AY案例、basis/source_findings原文保留；新增项只反映限定保存/存储/引用分类，不是执行观察、模型、完整恢复或生命周期设计证明。"
+    },
+    {
+      "source_case_id": "C44",
+      "source_basis": "static-inference",
+      "source_findings": [
+        "F18",
+        "F19"
+      ],
+      "case_ids": [
+        "C44"
+      ],
+      "status": "unchanged-boundary",
+      "limitations": "2AY案例、basis/source_findings原文保留；新增项只反映限定保存/存储/引用分类，不是执行观察、模型、完整恢复或生命周期设计证明。"
+    },
+    {
+      "source_case_id": "C45",
+      "source_basis": "static-inference",
+      "source_findings": [
+        "F10"
+      ],
+      "case_ids": [
+        "C45"
+      ],
+      "status": "unchanged-boundary",
+      "limitations": "2AY案例、basis/source_findings原文保留；新增项只反映限定保存/存储/引用分类，不是执行观察、模型、完整恢复或生命周期设计证明。"
+    },
+    {
+      "source_case_id": "C46",
+      "source_basis": "unresolved",
+      "source_findings": [
+        "F19",
+        "F20",
+        "F23"
+      ],
+      "case_ids": [
+        "C46",
+        "C106",
+        "C112",
+        "C115"
+      ],
+      "status": "reassessed",
+      "limitations": "2AY案例、basis/source_findings原文保留；新增项只反映限定保存/存储/引用分类，不是执行观察、模型、完整恢复或生命周期设计证明。"
+    },
+    {
+      "source_case_id": "C47",
+      "source_basis": "design",
+      "source_findings": [
+        "F07",
+        "F17",
+        "F21"
+      ],
+      "case_ids": [
+        "C47"
+      ],
+      "status": "unchanged-boundary",
+      "limitations": "2AY案例、basis/source_findings原文保留；新增项只反映限定保存/存储/引用分类，不是执行观察、模型、完整恢复或生命周期设计证明。"
+    },
+    {
+      "source_case_id": "C48",
+      "source_basis": "unresolved",
+      "source_findings": [
+        "F17",
+        "F20"
+      ],
+      "case_ids": [
+        "C48",
+        "C100",
+        "C105"
+      ],
+      "status": "reassessed",
+      "limitations": "2AY案例、basis/source_findings原文保留；新增项只反映限定保存/存储/引用分类，不是执行观察、模型、完整恢复或生命周期设计证明。"
+    },
+    {
+      "source_case_id": "C49",
+      "source_basis": "design",
+      "source_findings": [
+        "F21"
+      ],
+      "case_ids": [
+        "C49"
+      ],
+      "status": "unchanged-boundary",
+      "limitations": "2AY案例、basis/source_findings原文保留；新增项只反映限定保存/存储/引用分类，不是执行观察、模型、完整恢复或生命周期设计证明。"
+    },
+    {
+      "source_case_id": "C50",
+      "source_basis": "design",
+      "source_findings": [
+        "F21"
+      ],
+      "case_ids": [
+        "C50"
+      ],
+      "status": "unchanged-boundary",
+      "limitations": "2AY案例、basis/source_findings原文保留；新增项只反映限定保存/存储/引用分类，不是执行观察、模型、完整恢复或生命周期设计证明。"
+    },
+    {
+      "source_case_id": "C51",
+      "source_basis": "design",
+      "source_findings": [
+        "F21"
+      ],
+      "case_ids": [
+        "C51"
+      ],
+      "status": "unchanged-boundary",
+      "limitations": "2AY案例、basis/source_findings原文保留；新增项只反映限定保存/存储/引用分类，不是执行观察、模型、完整恢复或生命周期设计证明。"
+    },
+    {
+      "source_case_id": "C52",
+      "source_basis": "static-inference",
+      "source_findings": [
+        "F24"
+      ],
+      "case_ids": [
+        "C52",
+        "C97",
+        "C103",
+        "C104"
+      ],
+      "status": "reassessed",
+      "limitations": "2AY案例、basis/source_findings原文保留；新增项只反映限定保存/存储/引用分类，不是执行观察、模型、完整恢复或生命周期设计证明。"
+    },
+    {
+      "source_case_id": "C53",
+      "source_basis": "static-inference",
+      "source_findings": [
+        "F26",
+        "F27"
+      ],
+      "case_ids": [
+        "C53"
+      ],
+      "status": "unchanged-boundary",
+      "limitations": "2AY案例、basis/source_findings原文保留；新增项只反映限定保存/存储/引用分类，不是执行观察、模型、完整恢复或生命周期设计证明。"
+    },
+    {
+      "source_case_id": "C54",
+      "source_basis": "static-inference",
+      "source_findings": [
+        "F26"
+      ],
+      "case_ids": [
+        "C54"
+      ],
+      "status": "unchanged-boundary",
+      "limitations": "2AY案例、basis/source_findings原文保留；新增项只反映限定保存/存储/引用分类，不是执行观察、模型、完整恢复或生命周期设计证明。"
+    },
+    {
+      "source_case_id": "C55",
+      "source_basis": "static-inference",
+      "source_findings": [
+        "F26"
+      ],
+      "case_ids": [
+        "C55"
+      ],
+      "status": "unchanged-boundary",
+      "limitations": "2AY案例、basis/source_findings原文保留；新增项只反映限定保存/存储/引用分类，不是执行观察、模型、完整恢复或生命周期设计证明。"
+    },
+    {
+      "source_case_id": "C56",
+      "source_basis": "static-inference",
+      "source_findings": [
+        "F27"
+      ],
+      "case_ids": [
+        "C56"
+      ],
+      "status": "unchanged-boundary",
+      "limitations": "2AY案例、basis/source_findings原文保留；新增项只反映限定保存/存储/引用分类，不是执行观察、模型、完整恢复或生命周期设计证明。"
+    },
+    {
+      "source_case_id": "C57",
+      "source_basis": "static-inference",
+      "source_findings": [
+        "F25"
+      ],
+      "case_ids": [
+        "C57"
+      ],
+      "status": "unchanged-boundary",
+      "limitations": "2AY案例、basis/source_findings原文保留；新增项只反映限定保存/存储/引用分类，不是执行观察、模型、完整恢复或生命周期设计证明。"
+    },
+    {
+      "source_case_id": "C58",
+      "source_basis": "unresolved",
+      "source_findings": [
+        "F25",
+        "F37"
+      ],
+      "case_ids": [
+        "C58"
+      ],
+      "status": "unchanged-boundary",
+      "limitations": "2AY案例、basis/source_findings原文保留；新增项只反映限定保存/存储/引用分类，不是执行观察、模型、完整恢复或生命周期设计证明。"
+    },
+    {
+      "source_case_id": "C59",
+      "source_basis": "static-inference",
+      "source_findings": [
+        "F28"
+      ],
+      "case_ids": [
+        "C59"
+      ],
+      "status": "unchanged-boundary",
+      "limitations": "2AY案例、basis/source_findings原文保留；新增项只反映限定保存/存储/引用分类，不是执行观察、模型、完整恢复或生命周期设计证明。"
+    },
+    {
+      "source_case_id": "C60",
+      "source_basis": "static-inference",
+      "source_findings": [
+        "F29"
+      ],
+      "case_ids": [
+        "C60"
+      ],
+      "status": "unchanged-boundary",
+      "limitations": "2AY案例、basis/source_findings原文保留；新增项只反映限定保存/存储/引用分类，不是执行观察、模型、完整恢复或生命周期设计证明。"
+    },
+    {
+      "source_case_id": "C61",
+      "source_basis": "unresolved",
+      "source_findings": [
+        "F28",
+        "F29",
+        "F30"
+      ],
+      "case_ids": [
+        "C61",
+        "C95",
+        "C96",
+        "C97",
+        "C98",
+        "C99",
+        "C100",
+        "C101",
+        "C102",
+        "C103",
+        "C104",
+        "C105"
+      ],
+      "status": "reassessed",
+      "limitations": "2AY案例、basis/source_findings原文保留；新增项只反映限定保存/存储/引用分类，不是执行观察、模型、完整恢复或生命周期设计证明。"
+    },
+    {
+      "source_case_id": "C62",
+      "source_basis": "static-inference",
+      "source_findings": [
+        "F31"
+      ],
+      "case_ids": [
+        "C62"
+      ],
+      "status": "unchanged-boundary",
+      "limitations": "2AY案例、basis/source_findings原文保留；新增项只反映限定保存/存储/引用分类，不是执行观察、模型、完整恢复或生命周期设计证明。"
+    },
+    {
+      "source_case_id": "C63",
+      "source_basis": "static-inference",
+      "source_findings": [
+        "F31",
+        "F32"
+      ],
+      "case_ids": [
+        "C63"
+      ],
+      "status": "unchanged-boundary",
+      "limitations": "2AY案例、basis/source_findings原文保留；新增项只反映限定保存/存储/引用分类，不是执行观察、模型、完整恢复或生命周期设计证明。"
+    },
+    {
+      "source_case_id": "C64",
+      "source_basis": "static-inference",
+      "source_findings": [
+        "F33"
+      ],
+      "case_ids": [
+        "C64"
+      ],
+      "status": "unchanged-boundary",
+      "limitations": "2AY案例、basis/source_findings原文保留；新增项只反映限定保存/存储/引用分类，不是执行观察、模型、完整恢复或生命周期设计证明。"
+    },
+    {
+      "source_case_id": "C65",
+      "source_basis": "static-inference",
+      "source_findings": [
+        "F34"
+      ],
+      "case_ids": [
+        "C65"
+      ],
+      "status": "unchanged-boundary",
+      "limitations": "2AY案例、basis/source_findings原文保留；新增项只反映限定保存/存储/引用分类，不是执行观察、模型、完整恢复或生命周期设计证明。"
+    },
+    {
+      "source_case_id": "C66",
+      "source_basis": "static-inference",
+      "source_findings": [
+        "F35"
+      ],
+      "case_ids": [
+        "C66",
+        "C107",
+        "C108",
+        "C109",
+        "C110",
+        "C111",
+        "C112",
+        "C115"
+      ],
+      "status": "reassessed",
+      "limitations": "2AY案例、basis/source_findings原文保留；新增项只反映限定保存/存储/引用分类，不是执行观察、模型、完整恢复或生命周期设计证明。"
+    },
+    {
+      "source_case_id": "C67",
+      "source_basis": "unresolved",
+      "source_findings": [
+        "F26",
+        "F32",
+        "F36"
+      ],
+      "case_ids": [
+        "C67",
+        "C106",
+        "C112",
+        "C115"
+      ],
+      "status": "reassessed",
+      "limitations": "2AY案例、basis/source_findings原文保留；新增项只反映限定保存/存储/引用分类，不是执行观察、模型、完整恢复或生命周期设计证明。"
+    },
+    {
+      "source_case_id": "C68",
+      "source_basis": "unresolved",
+      "source_findings": [
+        "F30",
+        "F38",
+        "F39"
+      ],
+      "case_ids": [
+        "C68",
+        "C100",
+        "C101",
+        "C102",
+        "C103",
+        "C105"
+      ],
+      "status": "reassessed",
+      "limitations": "2AY案例、basis/source_findings原文保留；新增项只反映限定保存/存储/引用分类，不是执行观察、模型、完整恢复或生命周期设计证明。"
+    },
+    {
+      "source_case_id": "C69",
+      "source_basis": "unresolved",
+      "source_findings": [
+        "F39"
+      ],
+      "case_ids": [
+        "C69",
+        "C115"
+      ],
+      "status": "reassessed",
+      "limitations": "2AY案例、basis/source_findings原文保留；新增项只反映限定保存/存储/引用分类，不是执行观察、模型、完整恢复或生命周期设计证明。"
+    },
+    {
+      "source_case_id": "C70",
+      "source_basis": "design",
+      "source_findings": [
+        "F40"
+      ],
+      "case_ids": [
+        "C70",
+        "C105",
+        "C115"
+      ],
+      "status": "reassessed",
+      "limitations": "2AY案例、basis/source_findings原文保留；新增项只反映限定保存/存储/引用分类，不是执行观察、模型、完整恢复或生命周期设计证明。"
+    },
+    {
+      "source_case_id": "C71",
+      "source_basis": "design",
+      "source_findings": [
+        "F24",
+        "F25",
+        "F37",
+        "F38",
+        "F40"
+      ],
+      "case_ids": [
+        "C71"
+      ],
+      "status": "unchanged-boundary",
+      "limitations": "2AY案例、basis/source_findings原文保留；新增项只反映限定保存/存储/引用分类，不是执行观察、模型、完整恢复或生命周期设计证明。"
+    },
+    {
+      "source_case_id": "C72",
+      "source_basis": "static-inference",
+      "source_findings": [
+        "F41"
+      ],
+      "case_ids": [
+        "C72"
+      ],
+      "status": "unchanged-boundary",
+      "limitations": "2AY案例、basis/source_findings原文保留；新增项只反映限定保存/存储/引用分类，不是执行观察、模型、完整恢复或生命周期设计证明。"
+    },
+    {
+      "source_case_id": "C73",
+      "source_basis": "static-inference",
+      "source_findings": [
+        "F41"
+      ],
+      "case_ids": [
+        "C73"
+      ],
+      "status": "unchanged-boundary",
+      "limitations": "2AY案例、basis/source_findings原文保留；新增项只反映限定保存/存储/引用分类，不是执行观察、模型、完整恢复或生命周期设计证明。"
+    },
+    {
+      "source_case_id": "C74",
+      "source_basis": "static-inference",
+      "source_findings": [
+        "F42"
+      ],
+      "case_ids": [
+        "C74"
+      ],
+      "status": "unchanged-boundary",
+      "limitations": "2AY案例、basis/source_findings原文保留；新增项只反映限定保存/存储/引用分类，不是执行观察、模型、完整恢复或生命周期设计证明。"
+    },
+    {
+      "source_case_id": "C75",
+      "source_basis": "static-inference",
+      "source_findings": [
+        "F42"
+      ],
+      "case_ids": [
+        "C75"
+      ],
+      "status": "unchanged-boundary",
+      "limitations": "2AY案例、basis/source_findings原文保留；新增项只反映限定保存/存储/引用分类，不是执行观察、模型、完整恢复或生命周期设计证明。"
+    },
+    {
+      "source_case_id": "C76",
+      "source_basis": "static-inference",
+      "source_findings": [
+        "F41",
+        "F42",
+        "F43"
+      ],
+      "case_ids": [
+        "C76",
+        "C95",
+        "C96",
+        "C98",
+        "C99",
+        "C100",
+        "C101",
+        "C102",
+        "C103",
+        "C104",
+        "C105"
+      ],
+      "status": "reassessed",
+      "limitations": "2AY案例、basis/source_findings原文保留；新增项只反映限定保存/存储/引用分类，不是执行观察、模型、完整恢复或生命周期设计证明。"
+    },
+    {
+      "source_case_id": "C77",
+      "source_basis": "static-inference",
+      "source_findings": [
+        "F44"
+      ],
+      "case_ids": [
+        "C77",
+        "C95",
+        "C96",
+        "C97"
+      ],
+      "status": "reassessed",
+      "limitations": "2AY案例、basis/source_findings原文保留；新增项只反映限定保存/存储/引用分类，不是执行观察、模型、完整恢复或生命周期设计证明。"
+    },
+    {
+      "source_case_id": "C78",
+      "source_basis": "static-inference",
+      "source_findings": [
+        "F44"
+      ],
+      "case_ids": [
+        "C78",
+        "C98",
+        "C99",
+        "C100"
+      ],
+      "status": "reassessed",
+      "limitations": "2AY案例、basis/source_findings原文保留；新增项只反映限定保存/存储/引用分类，不是执行观察、模型、完整恢复或生命周期设计证明。"
+    },
+    {
+      "source_case_id": "C79",
+      "source_basis": "static-inference",
+      "source_findings": [
+        "F45"
+      ],
+      "case_ids": [
+        "C79",
+        "C100",
+        "C101",
+        "C102"
+      ],
+      "status": "reassessed",
+      "limitations": "2AY案例、basis/source_findings原文保留；新增项只反映限定保存/存储/引用分类，不是执行观察、模型、完整恢复或生命周期设计证明。"
+    },
+    {
+      "source_case_id": "C80",
+      "source_basis": "static-inference",
+      "source_findings": [
+        "F46"
+      ],
+      "case_ids": [
+        "C80",
+        "C101",
+        "C102",
+        "C103"
+      ],
+      "status": "reassessed",
+      "limitations": "2AY案例、basis/source_findings原文保留；新增项只反映限定保存/存储/引用分类，不是执行观察、模型、完整恢复或生命周期设计证明。"
+    },
+    {
+      "source_case_id": "C81",
+      "source_basis": "unresolved",
+      "source_findings": [
+        "F44",
+        "F47"
+      ],
+      "case_ids": [
+        "C81",
+        "C95",
+        "C96",
+        "C98",
+        "C99",
+        "C105"
+      ],
+      "status": "reassessed",
+      "limitations": "2AY案例、basis/source_findings原文保留；新增项只反映限定保存/存储/引用分类，不是执行观察、模型、完整恢复或生命周期设计证明。"
+    },
+    {
+      "source_case_id": "C82",
+      "source_basis": "unresolved",
+      "source_findings": [
+        "F45",
+        "F46",
+        "F47"
+      ],
+      "case_ids": [
+        "C82",
+        "C100",
+        "C101",
+        "C102",
+        "C103",
+        "C105"
+      ],
+      "status": "reassessed",
+      "limitations": "2AY案例、basis/source_findings原文保留；新增项只反映限定保存/存储/引用分类，不是执行观察、模型、完整恢复或生命周期设计证明。"
+    },
+    {
+      "source_case_id": "C83",
+      "source_basis": "static-inference",
+      "source_findings": [
+        "F48"
+      ],
+      "case_ids": [
+        "C83",
+        "C114",
+        "C115"
+      ],
+      "status": "reassessed",
+      "limitations": "2AY案例、basis/source_findings原文保留；新增项只反映限定保存/存储/引用分类，不是执行观察、模型、完整恢复或生命周期设计证明。"
+    },
+    {
+      "source_case_id": "C84",
+      "source_basis": "unresolved",
+      "source_findings": [
+        "F48",
+        "F54"
+      ],
+      "case_ids": [
+        "C84",
+        "C115"
+      ],
+      "status": "reassessed",
+      "limitations": "2AY案例、basis/source_findings原文保留；新增项只反映限定保存/存储/引用分类，不是执行观察、模型、完整恢复或生命周期设计证明。"
+    },
+    {
+      "source_case_id": "C85",
+      "source_basis": "static-inference",
+      "source_findings": [
+        "F50"
+      ],
+      "case_ids": [
+        "C85",
+        "C114"
+      ],
+      "status": "reassessed",
+      "limitations": "2AY案例、basis/source_findings原文保留；新增项只反映限定保存/存储/引用分类，不是执行观察、模型、完整恢复或生命周期设计证明。"
+    },
+    {
+      "source_case_id": "C86",
+      "source_basis": "static-inference",
+      "source_findings": [
+        "F50"
+      ],
+      "case_ids": [
+        "C86",
+        "C113",
+        "C114",
+        "C115"
+      ],
+      "status": "reassessed",
+      "limitations": "2AY案例、basis/source_findings原文保留；新增项只反映限定保存/存储/引用分类，不是执行观察、模型、完整恢复或生命周期设计证明。"
+    },
+    {
+      "source_case_id": "C87",
+      "source_basis": "static-inference",
+      "source_findings": [
+        "F50",
+        "F54"
+      ],
+      "case_ids": [
+        "C87",
+        "C113",
+        "C114",
+        "C115"
+      ],
+      "status": "reassessed",
+      "limitations": "2AY案例、basis/source_findings原文保留；新增项只反映限定保存/存储/引用分类，不是执行观察、模型、完整恢复或生命周期设计证明。"
+    },
+    {
+      "source_case_id": "C88",
+      "source_basis": "static-inference",
+      "source_findings": [
+        "F49"
+      ],
+      "case_ids": [
+        "C88"
+      ],
+      "status": "unchanged-boundary",
+      "limitations": "2AY案例、basis/source_findings原文保留；新增项只反映限定保存/存储/引用分类，不是执行观察、模型、完整恢复或生命周期设计证明。"
+    },
+    {
+      "source_case_id": "C89",
+      "source_basis": "unresolved",
+      "source_findings": [
+        "F49",
+        "F54"
+      ],
+      "case_ids": [
+        "C89",
+        "C107",
+        "C109",
+        "C110",
+        "C112",
+        "C115"
+      ],
+      "status": "reassessed",
+      "limitations": "2AY案例、basis/source_findings原文保留；新增项只反映限定保存/存储/引用分类，不是执行观察、模型、完整恢复或生命周期设计证明。"
+    },
+    {
+      "source_case_id": "C90",
+      "source_basis": "static-inference",
+      "source_findings": [
+        "F51"
+      ],
+      "case_ids": [
+        "C90",
+        "C115"
+      ],
+      "status": "reassessed",
+      "limitations": "2AY案例、basis/source_findings原文保留；新增项只反映限定保存/存储/引用分类，不是执行观察、模型、完整恢复或生命周期设计证明。"
+    },
+    {
+      "source_case_id": "C91",
+      "source_basis": "unresolved",
+      "source_findings": [
+        "F35",
+        "F51",
+        "F54"
+      ],
+      "case_ids": [
+        "C91",
+        "C107",
+        "C109",
+        "C110",
+        "C112",
+        "C115"
+      ],
+      "status": "reassessed",
+      "limitations": "2AY案例、basis/source_findings原文保留；新增项只反映限定保存/存储/引用分类，不是执行观察、模型、完整恢复或生命周期设计证明。"
+    },
+    {
+      "source_case_id": "C92",
+      "source_basis": "static-inference",
+      "source_findings": [
+        "F52"
+      ],
+      "case_ids": [
+        "C92",
+        "C113",
+        "C115"
+      ],
+      "status": "reassessed",
+      "limitations": "2AY案例、basis/source_findings原文保留；新增项只反映限定保存/存储/引用分类，不是执行观察、模型、完整恢复或生命周期设计证明。"
+    },
+    {
+      "source_case_id": "C93",
+      "source_basis": "static-inference",
+      "source_findings": [
+        "F53"
+      ],
+      "case_ids": [
+        "C93"
+      ],
+      "status": "unchanged-boundary",
+      "limitations": "2AY案例、basis/source_findings原文保留；新增项只反映限定保存/存储/引用分类，不是执行观察、模型、完整恢复或生命周期设计证明。"
+    },
+    {
+      "source_case_id": "C94",
+      "source_basis": "unresolved",
+      "source_findings": [
+        "F35",
+        "F54"
+      ],
+      "case_ids": [
+        "C94",
+        "C106",
+        "C107",
+        "C109",
+        "C110",
+        "C112",
+        "C115"
+      ],
+      "status": "reassessed",
+      "limitations": "2AY案例、basis/source_findings原文保留；新增项只反映限定保存/存储/引用分类，不是执行观察、模型、完整恢复或生命周期设计证明。"
+    }
+  ]
+}

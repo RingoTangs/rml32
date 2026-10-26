@@ -1,0 +1,134 @@
+{
+  "before": {
+    "open": false,
+    "source": "binary_session before open_binary"
+  },
+  "after": {
+    "open": false,
+    "source": "close_binary followed by binary_session"
+  },
+  "target_sha256": "5d4ebac58d8c415d9cf95bbcdd50f78afac91adf4f7e667ea3afc6f5336a6f34",
+  "target_execution": "none",
+  "analysis_requests": [
+    {
+      "procedure": "vm_newCatch",
+      "status": "complete",
+      "evidence_id": "ev_68f399017c978bc9951a6157ba0277fd79f2bdfa6733016d6ed2c3567999f037"
+    },
+    {
+      "procedure": "_pdb_shutdownMemMgr",
+      "status": "complete",
+      "evidence_id": "ev_ac794b00be49819c561c00d6b382688b5a0eae190a4833c69d176f6c996d907d"
+    },
+    {
+      "procedure": "vm_serviceWakeupPCB",
+      "status": "complete",
+      "evidence_id": "ev_3c76db1101c3738b916aa8bca2093fcaff5ae5fb0e84d8f54f2621a9b2b1c4a7"
+    },
+    {
+      "procedure": "vm_transferControlToServiceThread",
+      "status": "complete",
+      "evidence_id": "ev_85d6d3b5e1f800e18995b3afde1fe88c65a8868d87e4fb48281f59b6facdb666"
+    },
+    {
+      "procedure": "vm_f_delete_thread",
+      "status": "complete",
+      "evidence_id": "ev_9918c7aad7104577421adf33640eebf8cbb67c3e9352ee05f6fdea9b1523ef5c"
+    },
+    {
+      "procedure": "vm_f_delete_thread_ok",
+      "status": "complete",
+      "evidence_id": "ev_19750a0d8529d3bd1addcc87e6f3f0ddd172e6f174a81d4b8bad28ba8bed5e1b"
+    },
+    {
+      "procedure": "vm_f_delete_thread_failed",
+      "status": "complete",
+      "evidence_id": "ev_a2c19154025b85d7b2098a80d34d3340cc92eb154e90f6b52bc4422758865d3e"
+    },
+    {
+      "procedure": "vm_f_delete_thread_crash",
+      "status": "complete",
+      "evidence_id": "ev_2ee1efa9ea258bea8d0c461a36ef60686f0fd60451ffe5f8bfa951a71b6462ca"
+    },
+    {
+      "procedure": "vm_shutdown",
+      "status": "complete",
+      "evidence_id": "ev_170b57b39470172db518b7e0e8be6da6506c6e2795f171254705da6e8ab9b56b"
+    }
+  ],
+  "reference_requests": [
+    {
+      "operation": "xrefs",
+      "parameters": {
+        "address": "0x0860d024"
+      },
+      "status": "failed",
+      "reason": "provider_timeout after 330000 ms; no evidence was returned, not a negative reference result."
+    },
+    {
+      "operation": "xrefs",
+      "parameters": {
+        "address": "0x0860d024"
+      },
+      "status": "complete",
+      "evidence_id": "ev_81d1554fd5d64a6256f880921e660f95ce735c39064a55299a7eed399f20a1d2"
+    },
+    {
+      "operation": "xrefs",
+      "parameters": {
+        "address": "0x083cf960"
+      },
+      "status": "complete",
+      "evidence_id": "ev_e7daa0df3127e0b187e08b5ba25e3b822e69a249cc294f8e45b43099a9496fd3"
+    },
+    {
+      "operation": "xrefs",
+      "parameters": {
+        "address": "0x083cf968"
+      },
+      "status": "complete",
+      "evidence_id": "ev_5fc1be0a000837c85f892f7498666591af9467a928b2d29f5ea01ccdc8be5d42"
+    },
+    {
+      "operation": "xrefs",
+      "parameters": {
+        "address": "0x083cfa98"
+      },
+      "status": "complete",
+      "evidence_id": "ev_c252cff7af95a80dcab8ef13f6457d7fd574d62fe224679d9ddfaf2a8334c6ce"
+    },
+    {
+      "operation": "xrefs",
+      "parameters": {
+        "address": "0x083cfae8"
+      },
+      "status": "complete",
+      "evidence_id": "ev_064400b9665c2d5ff9e9ba4d67a3d639b7881bff9fb535a8c746fefadc215e2a"
+    }
+  ],
+  "export": {
+    "bytes": 1922109,
+    "records": 14,
+    "unknowns": 0,
+    "partitioned": true,
+    "sha256": "e58c0f0ac750b213f1e76315ec3d2f2a3194d868a27e29fb064d5e1008fa8ed6",
+    "partition_note": "The complete original records and envelope metadata are retained in two operation-filtered bundles; original export SHA identifies the acquisition file, not either filtered partition.",
+    "partitions": {
+      "rea.json.gz": {
+        "bytes": 1907774,
+        "sha256": "19d6ea1859542fcb1c8fb3163d78a8e02f0bd6d6848f5cbff4b7ff7f1763b5bf",
+        "records": 9
+      },
+      "references.json.gz": {
+        "bytes": 14613,
+        "sha256": "841981d1c96fd66dd25e37c79422d6a327eef8a68d67ac005fb802bea4da00e6",
+        "records": 5
+      }
+    }
+  },
+  "limitations": [
+    "One initial xrefs request timed out at provider initialization and returned no evidence. After a successful vm_newCatch analysis, the same address query completed; failure is not an empty result.",
+    "xref normalized address lists project exact analyzed references without reference kinds or computed-index completeness; function dossiers supply separate kind metadata.",
+    "All retained records are static observations, not target execution, universal absence, or lifecycle progress guarantees."
+  ]
+}

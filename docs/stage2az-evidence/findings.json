@@ -1,0 +1,1399 @@
+[
+  {
+    "id": "F01",
+    "kind": "observation",
+    "status": "answered",
+    "claim": "17 helper explicitly scans captures for tag8 Reference before allocating; this is not a scalar-only native whitelist.",
+    "limits": "Absence of other tag checks here does not legalize malformed values or all hidden tag shapes.",
+    "evidence": [
+      "ev_f739f81d73d7c07779ab3fb741800726145efbc40fd8dc6c58009ac2d703aa48"
+    ],
+    "anchors": [
+      "A001",
+      "A002"
+    ]
+  },
+  {
+    "id": "F02",
+    "kind": "observation",
+    "status": "bounded",
+    "claim": "Create allocates header then capture storage and establishes creator/target before moving captures. Second allocation failure frees the header before vm_error.",
+    "limits": "Zero-size allocator policy and final result-stack failure are separate; native creation is not wholly failure-atomic.",
+    "evidence": [
+      "ev_f739f81d73d7c07779ab3fb741800726145efbc40fd8dc6c58009ac2d703aa48"
+    ],
+    "anchors": [
+      "A003",
+      "A004",
+      "A005",
+      "A006"
+    ]
+  },
+  {
+    "id": "F03",
+    "kind": "observation",
+    "status": "answered",
+    "claim": "Capture establishment initializes each 24-byte slot then moves raw type/attrib/payload and clears source type/attrib; no vm_copyValue call occurs in this transfer loop.",
+    "limits": "Source means the already-evaluated raw stack value; preceding expression reads can already have normalized it.",
+    "evidence": [
+      "ev_f739f81d73d7c07779ab3fb741800726145efbc40fd8dc6c58009ac2d703aa48"
+    ],
+    "anchors": [
+      "A007",
+      "A008",
+      "A009",
+      "A010",
+      "A011"
+    ]
+  },
+  {
+    "id": "F04",
+    "kind": "observation",
+    "status": "answered",
+    "claim": "05 moves its raw target to a C-local value and consumes the stack slot before target/owner validation.",
+    "limits": "Current Rust preflight/operand preservation is a bounded policy, not this native transaction order.",
+    "evidence": [
+      "ev_a50406aa6a4cd4b2b95b079a7b126ba210a8ecaa6919839ac438372500c0159d"
+    ],
+    "anchors": [
+      "A012",
+      "A013",
+      "A014",
+      "A015"
+    ]
+  },
+  {
+    "id": "F05",
+    "kind": "observation",
+    "status": "answered",
+    "claim": "Native function head ref==1 selects reverse-index raw capture moves; clears moved slots, frees head, then dispatches saved target metadata.",
+    "limits": "Test precondition is native semantic ref, not physical Rc::strong_count or diagnostic snapshots.",
+    "evidence": [
+      "ev_a50406aa6a4cd4b2b95b079a7b126ba210a8ecaa6919839ac438372500c0159d"
+    ],
+    "anchors": [
+      "A016",
+      "A017",
+      "A018",
+      "A019",
+      "A020"
+    ]
+  },
+  {
+    "id": "F06",
+    "kind": "observation",
+    "status": "answered",
+    "claim": "Shared-head branch destructs the temporary call target first, then reverse-index vm_pushValue copies captures while another holder keeps the head alive.",
+    "limits": "Does not deep-copy nested containers; not a generic restartable callback protocol.",
+    "evidence": [
+      "ev_a50406aa6a4cd4b2b95b079a7b126ba210a8ecaa6919839ac438372500c0159d",
+      "ev_4d6d17b9e1b09afb2790e5504711604e853f3e4e9740fbca01c397f299a00212"
+    ],
+    "anchors": [
+      "A021",
+      "A022",
+      "A023"
+    ]
+  },
+  {
+    "id": "F07",
+    "kind": "observation",
+    "status": "answered",
+    "claim": "vm_copyValue shallow-copies Array/Mapping headers and increments their reference; nested members are not recursively normalized.",
+    "limits": "Header sharing does not prove cyclic reclamation or permit all graph rewiring.",
+    "evidence": [
+      "ev_69a23ae044935ae6f7450097987faa71f641c62091f885fc4b4b5f8d5b1929f4"
+    ],
+    "anchors": [
+      "A024",
+      "A025"
+    ]
+  },
+  {
+    "id": "F08",
+    "kind": "observation",
+    "status": "answered",
+    "claim": "Copy of deleted Object or Function with a nonnull deleted creator cleans the SOURCE, rereads its type, and writes Undefined; cleanup clears source attrib too.",
+    "limits": "Raw truth/equality, raw moves and owner-null Function are distinct. Physical lifetime is governed by native ref/execRef.",
+    "evidence": [
+      "ev_69a23ae044935ae6f7450097987faa71f641c62091f885fc4b4b5f8d5b1929f4",
+      "ev_d5e0fa5ed30b20859a959e09027480b13f6d9acdd746527dd5c2dac47520cadc"
+    ],
+    "anchors": [
+      "A026",
+      "A027",
+      "A028",
+      "A029",
+      "A030",
+      "A031",
+      "A032"
+    ]
+  },
+  {
+    "id": "F09",
+    "kind": "static-inference",
+    "status": "bounded",
+    "claim": "Shared 05 expansion can persistently normalize a dead Object/Function capture to Undefined in a still-live function head. Unique expansion has no copy-based normalization at that point.",
+    "limits": "Describes immediate expansion before callee 0f; later argument/use rules can reject or normalize independently.",
+    "evidence": [
+      "ev_a50406aa6a4cd4b2b95b079a7b126ba210a8ecaa6919839ac438372500c0159d",
+      "ev_69a23ae044935ae6f7450097987faa71f641c62091f885fc4b4b5f8d5b1929f4"
+    ],
+    "anchors": [
+      "A016",
+      "A018",
+      "A022",
+      "A027"
+    ]
+  },
+  {
+    "id": "F10",
+    "kind": "observation",
+    "status": "answered",
+    "claim": "vm_pushValue checks available stack space before making the destination and copying; overflow precedes source cleanup from copy.",
+    "limits": "Rust Cell allocation/fault injection is separate; shallow native copy does not introduce one allocator call per capture.",
+    "evidence": [
+      "ev_4d6d17b9e1b09afb2790e5504711604e853f3e4e9740fbca01c397f299a00212"
+    ],
+    "anchors": [
+      "A033",
+      "A034",
+      "A023"
+    ]
+  },
+  {
+    "id": "F11",
+    "kind": "observation",
+    "status": "answered",
+    "claim": "Function final release cleans each capture payload and unlinks slots, then unrefs creator, frees capture allocation and head. Moved-out Undefined slots do not release transferred payload again.",
+    "limits": "Capture-slot survival cannot be inferred from ordinary external member Ref rules; function storage is freed.",
+    "evidence": [
+      "ev_228d09be9663f9f70d03a59ebe1663960c6d34458f9a82d3d5e1e4cee42d44f9"
+    ],
+    "anchors": [
+      "A035",
+      "A036",
+      "A037",
+      "A038",
+      "A039"
+    ]
+  },
+  {
+    "id": "F12",
+    "kind": "observation",
+    "status": "answered",
+    "claim": "Explicit dereference copies the referenced value before unrefing the original target slot.",
+    "limits": "Not arbitrary Reference escape; source normalization can be visible through another alias.",
+    "evidence": [
+      "ev_9d3740c765c17665b432d16e97139a12b824b1e31238f5fb1f421a36d5f5e956"
+    ],
+    "anchors": [
+      "A040",
+      "A041",
+      "A042"
+    ]
+  },
+  {
+    "id": "F13",
+    "kind": "observation",
+    "status": "answered",
+    "claim": "Member query copies selected Array/Mapping member before unrefing consumed container header; result attrib is subsequently governed by query path.",
+    "limits": "Missing Mapping lookup is not insertion; copying a header and reading a member are different normalization points.",
+    "evidence": [
+      "ev_ec2e63f30a5e17be4bc7568c971fc949e924bd051c8f8f5049d7793945b7c459"
+    ],
+    "anchors": [
+      "A043",
+      "A044",
+      "A045",
+      "A046"
+    ]
+  },
+  {
+    "id": "F14",
+    "kind": "observation",
+    "status": "answered",
+    "claim": "Array final-header release unrefs element slots; unrefValue cleans/frees a slot only when its ref becomes exactly zero. External element references can retain payload.",
+    "limits": "No blanket final-header clearing rule for all container kinds.",
+    "evidence": [
+      "ev_8000dac56416a0239afddc630d10d5c425e7d9797f623755e77dcda7e5516c26",
+      "ev_18fea6ebc3680cd0ea4726c67901206fe1299bda13ef18741e124aa8a6eb77de"
+    ],
+    "anchors": [
+      "A047",
+      "A048",
+      "A049",
+      "A050"
+    ]
+  },
+  {
+    "id": "F15",
+    "kind": "observation",
+    "status": "answered",
+    "claim": "Mapping final-header release traverses buckets/freeNode; freeNode immediately clears key/value even when referenced slots defer physical node reclamation.",
+    "limits": "Deletion execution API, arbitrary mutation and delayed-node collection schedule remain outside this bounded implementation.",
+    "evidence": [
+      "ev_2aae5aa932757dd2dad4354599e352e3310dbf9d1f7637b49903392349474966",
+      "ev_ef0f48684b838cbc45dc532f24fa5985365542fc69b10337e082b6df80283dae"
+    ],
+    "anchors": [
+      "A051",
+      "A052",
+      "A053",
+      "A054",
+      "A055",
+      "A056"
+    ]
+  },
+  {
+    "id": "F16",
+    "kind": "observation",
+    "status": "bounded",
+    "claim": "Ordinary nonconst mixed/already-matching return uses takeOffValueFromStack: cleans removed frame values then raw-moves retained result; no blanket copy on that path.",
+    "limits": "Other return conversion, const and callback/hook paths are separate; do not universally normalize returned dead handles.",
+    "evidence": [
+      "ev_6a8948bf446a008fa48fc2ecc8711a14fc41635f9cd05e4cfcdacf8bec7a6215",
+      "ev_b8168f2c625c87c5cab8326205b0560cd7db940a32c06abbbda3dcdb7a839535"
+    ],
+    "anchors": [
+      "A057",
+      "A058",
+      "A059",
+      "A060"
+    ]
+  },
+  {
+    "id": "F17",
+    "kind": "observation",
+    "status": "bounded",
+    "claim": "GC marker recurses through Array, Mapping, Function captures and selected Loop state after setting slot active; no general tag8 recursion branch is established.",
+    "limits": "Root hooks, all Reference graphs, reentrant timing and cycle release order remain unproven; Rc is not full native GC.",
+    "evidence": [
+      "ev_d6bd8847412c335d9425d53073743ca82d6469ed6c69a789f996bbc7c2f39471"
+    ],
+    "anchors": [
+      "A061",
+      "A062",
+      "A063",
+      "A064",
+      "A065",
+      "A066"
+    ]
+  },
+  {
+    "id": "F18",
+    "kind": "observation",
+    "status": "bounded",
+    "claim": "05 expansion precedes callee installation; callInUserFunBody installs bp/argNum/ip, while 0f checks count/type and can convert earlier arguments before a later error.",
+    "limits": "This differs from current Rust all-argument preflight; general default expressions and const rules remain excluded.",
+    "evidence": [
+      "ev_ea9570e30440ab119beb30143a85def63e15e87ac0485860290ba47ca3a6ae7c",
+      "ev_aaa80e13c3c88b9a455d4ba6569e69518889b1fcc26a966c8e433f5f746c7126"
+    ],
+    "anchors": [
+      "A067",
+      "A068",
+      "A069",
+      "A070",
+      "A071",
+      "A072"
+    ]
+  },
+  {
+    "id": "F19",
+    "kind": "static-inference",
+    "status": "bounded",
+    "claim": "For ordinary interpreter threadType1 and valid script catch, vm_errorQuit/traceError unwind exiting frame values and doActions pops back to saved catch sp; moved captures are released from stack.",
+    "limits": "Catch is stack recovery, not rollback of consumed Function target, source normalization, prior conversions or external writes. Callback catch and other thread types differ.",
+    "evidence": [
+      "ev_f1c4dde0e0ce2a55aa3838ae691f272691496d87fcbc3d91ec17f09ea6eeaea1",
+      "ev_bfa094c0c50a60bb231088da09294746c5850d3124a018787a398173fdb3a0c2",
+      "ev_e12a1e49fc37b28910632e7d22872a27b51e7c54f0c6478935e893b20f7c63fe",
+      "ev_543af7cfb6d454bc19165fe254e84721ac87776215bd08299342ec2ab9a32d9e"
+    ],
+    "anchors": [
+      "A073",
+      "A074",
+      "A075",
+      "A076",
+      "A077",
+      "A078"
+    ]
+  },
+  {
+    "id": "F20",
+    "kind": "unknown",
+    "status": "partial",
+    "claim": "Uncaught final PCB/task teardown, non-interpreter thread cleanup, JIT recovery and create-result overflow with C-local unpublished head are not closed by this evidence.",
+    "limits": "Do not promise leak-free rollback or restore operands in these branches; follow main-loop/PCB destruction and allocation publication roots before claiming equivalence.",
+    "evidence": [
+      "ev_bfa094c0c50a60bb231088da09294746c5850d3124a018787a398173fdb3a0c2",
+      "ev_543af7cfb6d454bc19165fe254e84721ac87776215bd08299342ec2ab9a32d9e",
+      "ev_f739f81d73d7c07779ab3fb741800726145efbc40fd8dc6c58009ac2d703aa48"
+    ],
+    "anchors": [
+      "A079",
+      "A075",
+      "A078"
+    ]
+  },
+  {
+    "id": "F21",
+    "kind": "design",
+    "status": "bounded",
+    "claim": "Rust origin, allocation limits and success-only publication remain explicit policies. Native head uniqueness needs a semantic ownership model; physical Rc counts include host snapshots/temporary clones.",
+    "limits": "No runtime change in 2AR. Non-scalar implementation is blocked until ownership accounting and source-mutating copy transactions have an audited design.",
+    "evidence": [
+      "ev_a50406aa6a4cd4b2b95b079a7b126ba210a8ecaa6919839ac438372500c0159d",
+      "ev_69a23ae044935ae6f7450097987faa71f641c62091f885fc4b4b5f8d5b1929f4"
+    ],
+    "anchors": [
+      "A016",
+      "A027"
+    ]
+  },
+  {
+    "id": "F22",
+    "kind": "observation",
+    "status": "bounded",
+    "claim": "Global slot read calls vm_copyValue on the actual shared global Cell; Object and local reads also have explicit source-copy paths.",
+    "limits": "Inheritance layout and all default/lifecycle combinations remain separate; this is not proof of service execution.",
+    "evidence": [
+      "ev_f5d36761261bd90bb2139ae2bcd05e79af64a90eaffe2b978b3c0353a3ffe4a2",
+      "ev_9a9cde77fb2df1b8214e667458663471ea6da5fbeea24bfb3878fcb8f7548808",
+      "ev_9693ba97f8eddd0327c10164c589acb0a343f4181335c1476bc606e322e04ee5"
+    ],
+    "anchors": [
+      "A080",
+      "A081"
+    ]
+  },
+  {
+    "id": "F23",
+    "kind": "unknown",
+    "status": "partial",
+    "claim": "Function-held creator ref, captured Object payload ref and active-frame execRef are separate; native delayed deletion cannot be replaced by Rust immediate logical remove.",
+    "limits": "Direct Object/Function captures remain a later batch until owner invalidation, normalization and final release interactions close.",
+    "evidence": [
+      "ev_a50406aa6a4cd4b2b95b079a7b126ba210a8ecaa6919839ac438372500c0159d",
+      "ev_228d09be9663f9f70d03a59ebe1663960c6d34458f9a82d3d5e1e4cee42d44f9",
+      "ev_c852e7916c2cdc0cda41b7ecfb7e817b8345955915dab87bdbdcc65f2ff5278f",
+      "ev_87303180daaae04da5ace6f0b3bb43f14f6414ed173f8c4b9b57a90db34f587e"
+    ],
+    "anchors": [
+      "A039",
+      "A015",
+      "A082",
+      "A083",
+      "A084",
+      "A085"
+    ]
+  },
+  {
+    "id": "F24",
+    "kind": "observation",
+    "status": "bounded",
+    "claim": "A valid nonnull Function creator receives its own ordinary Object ref; capture establishment raw-moves each payload separately. Creator ref, captured Object payload ref, and active-frame execRef are distinct obligations even when identities coincide.",
+    "limits": "Local create/release/execRef contacts only; no assertion that an invalid null Object target is callable or that Rust Rc implements these native obligations.",
+    "evidence": [
+      "ev_f739f81d73d7c07779ab3fb741800726145efbc40fd8dc6c58009ac2d703aa48",
+      "ev_0934ff13603a2c84b549e5d8f003a103db71c86b87fcc5692099ac2ab81650d4",
+      "ev_c852e7916c2cdc0cda41b7ecfb7e817b8345955915dab87bdbdcc65f2ff5278f"
+    ],
+    "anchors": [
+      "A086",
+      "A087",
+      "A088",
+      "A009",
+      "A010",
+      "A089",
+      "A082"
+    ]
+  },
+  {
+    "id": "F25",
+    "kind": "observation",
+    "status": "answered",
+    "claim": "vm_unrefFunctionValue decrements head ref and returns while positive. At nonpositive head ref it decrements each capture-slot ref, unconditionally cleans that payload, unlinks the slots, unrefs creator, then frees capture storage and Function head.",
+    "limits": "This named final-release routine does not establish safe lifetime for external References to capture slots or whole-program reclaim timing.",
+    "evidence": [
+      "ev_0934ff13603a2c84b549e5d8f003a103db71c86b87fcc5692099ac2ab81650d4"
+    ],
+    "anchors": [
+      "A090",
+      "A091",
+      "A092",
+      "A093",
+      "A094",
+      "A095",
+      "A089",
+      "A096",
+      "A097"
+    ]
+  },
+  {
+    "id": "F26",
+    "kind": "observation",
+    "status": "bounded",
+    "claim": "Destruct with positive execRef sets pending bit 0x4000 and returns. Last execRef with pending bit isolates and queues the Object, sets invalid bit 0x8000 and adds a queue ordinary ref. Queue drain unlinks first, performs low-level deletion, then drops the queue ref; retained invalid shells are released by final ordinary unref.",
+    "limits": "Known local state chain, not proof that every exit reaches a drain. Ordinary ref reaching zero on a live Object does not itself invoke business destruction; final unref behavior uses the frozen vm_unrefObject pseudocode.",
+    "evidence": [
+      "ev_4afb7ed3129068ae579d0107c615b2790e0c898b1d1322b7349f0b98f5f7f90b",
+      "ev_c852e7916c2cdc0cda41b7ecfb7e817b8345955915dab87bdbdcc65f2ff5278f",
+      "ev_1e97d9b23b4f5b64595672ccc759645ed729cbbdc52e7ea0cdf0edbdf42d3c63",
+      "ev_87303180daaae04da5ace6f0b3bb43f14f6414ed173f8c4b9b57a90db34f587e"
+    ],
+    "anchors": [
+      "A098",
+      "A099",
+      "A100",
+      "A101",
+      "A102",
+      "A103",
+      "A104",
+      "A083",
+      "A105",
+      "A084",
+      "A106",
+      "A085",
+      "A107",
+      "A108",
+      "A109",
+      "A110"
+    ]
+  },
+  {
+    "id": "F27",
+    "kind": "observation",
+    "status": "answered",
+    "claim": "Object COPY and Function creator COPY test invalid bit 0x8000, not pending bit 0x4000. An invalid source is cleaned and its type reread; a merely pending live Object is not normalized solely because deletion was requested.",
+    "limits": "COPY contact only; pending Object may become invalid at a later last-execRef transition.",
+    "evidence": [
+      "ev_69a23ae044935ae6f7450097987faa71f641c62091f885fc4b4b5f8d5b1929f4"
+    ],
+    "anchors": [
+      "A111",
+      "A112",
+      "A027",
+      "A028",
+      "A113",
+      "A025"
+    ]
+  },
+  {
+    "id": "F28",
+    "kind": "static-inference",
+    "status": "bounded",
+    "claim": "For legal stack bounds, nonnegative capture count and no intervening state change, every moved capture increments sp. A nonempty capture therefore supplies the result position; the final sp==0 overflow candidate is zero captures with initial sp==0.",
+    "limits": "Refines the premise of historical C15; it does not prove that arbitrary malformed negative counts are legal or that the candidate is reached in an actual run.",
+    "evidence": [
+      "ev_f739f81d73d7c07779ab3fb741800726145efbc40fd8dc6c58009ac2d703aa48"
+    ],
+    "anchors": [
+      "A114",
+      "A079",
+      "A115",
+      "A116",
+      "A117",
+      "A118",
+      "A119"
+    ]
+  },
+  {
+    "id": "F29",
+    "kind": "observation",
+    "status": "bounded",
+    "claim": "pdb_allocateMemory has no zero-size rejection. With initialized allocator and available memory, size zero can use an eligible block group or the fallback positive-size malloc allocation with metadata; successful return is block+0xc.",
+    "limits": "Conditional static allocation path, not observed runtime success, fault determinism or a reclamation/root mechanism. Allocation counters do not establish roots.",
+    "evidence": [
+      "ev_f11621ec8278f50d7b95cd012344996567569c2ad1f327a38f5d037ee8cc232c"
+    ],
+    "anchors": [
+      "A120",
+      "A121",
+      "A122",
+      "A123",
+      "A124",
+      "A125",
+      "A126",
+      "A127"
+    ]
+  },
+  {
+    "id": "F30",
+    "kind": "unknown",
+    "status": "unresolved",
+    "claim": "The zero-capture, initial-sp-zero result-overflow path can retain an unpublished C-local Function head after allocations; the supplied records do not establish a recovery root or eventual release for that head.",
+    "limits": "Not a demonstrated leak and not a claim that nonempty legal captures hit this branch. PCB stack cleanup and allocator statistics do not independently recover an unpublished header.",
+    "evidence": [
+      "ev_f739f81d73d7c07779ab3fb741800726145efbc40fd8dc6c58009ac2d703aa48",
+      "ev_f11621ec8278f50d7b95cd012344996567569c2ad1f327a38f5d037ee8cc232c",
+      "ev_06ea52a7afd2f826495b7a135f97a5909a8c9086ddb7d557e6dacb5dc28c5748"
+    ],
+    "anchors": [
+      "A004",
+      "A115",
+      "A119",
+      "A126",
+      "A128"
+    ]
+  },
+  {
+    "id": "F31",
+    "kind": "static-inference",
+    "status": "bounded",
+    "claim": "For ordinary interpreter threadType1, valid backend recovery environment, no script catch, and no intervening hook/nonlocal failure, errorQuit traces/unwinds to the backend boundary and longjmps; doActions returns -3 and the scheduler reaches backend teardown and logical PCB deletion.",
+    "limits": "A selected static path, not a proof for other thread types, arbitrary processor/JIT targets, callbacks or all indirect hooks. Final physical PCB cleanup remains conditional on ordinary PCB ref reaching zero.",
+    "evidence": [
+      "ev_bfa094c0c50a60bb231088da09294746c5850d3124a018787a398173fdb3a0c2",
+      "ev_2ca52477b7ba7dcc40e48827fff306b892f626641777eace6893b1f5acc15ba1",
+      "ev_543af7cfb6d454bc19165fe254e84721ac87776215bd08299342ec2ab9a32d9e",
+      "ev_8afa124f5ab414820201215e5832365dfc1e5fd8f99de938704714514f785fe3"
+    ],
+    "anchors": [
+      "A129",
+      "A075",
+      "A074",
+      "A130",
+      "A131",
+      "A132",
+      "A133",
+      "A134",
+      "A135",
+      "A136",
+      "A137",
+      "A138",
+      "A139",
+      "A140",
+      "A141",
+      "A142",
+      "A143"
+    ]
+  },
+  {
+    "id": "F32",
+    "kind": "observation",
+    "status": "answered",
+    "claim": "The public scheduler wrapper sets scheduler-active state around its internal call. On the selected ordinary scheduler path, vm_endForBackend executes immediately after vm_doActions and before vm_deleteProcess. endForBackend drains destructing Objects, obsolete JIT code and obsolete Mapping nodes, then clears the backend timer.",
+    "limits": "This ordering does not promise a second drain after later PCB deletion or final unref in the same scheduler iteration.",
+    "evidence": [
+      "ev_742151cf0a21b4697cbd895f9c6e4ae778ca4bb7c9c6a3a782fe4e7c77385d9c",
+      "ev_8afa124f5ab414820201215e5832365dfc1e5fd8f99de938704714514f785fe3",
+      "ev_f8aa49f1e43d8d933ec0710848b2cbbf20effdaafc21a17e2adb1ee0cd0cb73a"
+    ],
+    "anchors": [
+      "A144",
+      "A145",
+      "A146",
+      "A147",
+      "A148",
+      "A139",
+      "A140",
+      "A143",
+      "A149",
+      "A150",
+      "A151",
+      "A152"
+    ]
+  },
+  {
+    "id": "F33",
+    "kind": "observation",
+    "status": "bounded",
+    "claim": "vm_deleteProcess marks logical deletion and detaches I/O/timer/pend resources; each held Object is detached before invoking its own release hook, then the loop reads the next held Object. Release hooks, crash-list end hooks and PCB endHook precede the PCB ordinary ref decrement. Each crash-list record is unlinked/freed before its endHook call.",
+    "limits": "The recorded indirect calls do not resolve every hook target, completion, retention, exception or reentrancy behavior. A logical-delete call alone does not prove final stack/frame cleanup.",
+    "evidence": [
+      "ev_fd6ebcdf65115a69b9a379778148a4308b1418aee68693aba154a7ce9474feab"
+    ],
+    "anchors": [
+      "A153",
+      "A154",
+      "A155",
+      "A156",
+      "A157",
+      "A158",
+      "A159",
+      "A160",
+      "A161"
+    ]
+  },
+  {
+    "id": "F34",
+    "kind": "observation",
+    "status": "answered",
+    "claim": "When deleteProcess final PCB ref becomes zero after prior hooks complete, cleanup releases deletionFunc, cleans stack from saved sp to stackSize, then removes remaining contexts. Each eligible nonnull Object context drops execRef; valid flag is cleared and nonzero-tid PCB enters the free list.",
+    "limits": "Conditional routine order only. Eligibility is (flags&1)==0 or (flags&0x10)!=0. Reference owners outside this PCB and any newly queued Object drain timing remain separate.",
+    "evidence": [
+      "ev_fd6ebcdf65115a69b9a379778148a4308b1418aee68693aba154a7ce9474feab"
+    ],
+    "anchors": [
+      "A160",
+      "A161",
+      "A162",
+      "A163",
+      "A164",
+      "A165",
+      "A166",
+      "A167",
+      "A168",
+      "A169",
+      "A170"
+    ]
+  },
+  {
+    "id": "F35",
+    "kind": "observation",
+    "status": "answered",
+    "claim": "deleteProcess with nonzero remaining PCB ref skips final deletionFunc/stack/frame cleanup. Later vm_unrefToPCB performs that cleanup only when its decrement reaches exactly zero, in the same deletionFunc-before-stack-before-context order.",
+    "limits": "Does not prove that every external PCB holder eventually releases its reference or determine wall-clock reclamation time.",
+    "evidence": [
+      "ev_fd6ebcdf65115a69b9a379778148a4308b1418aee68693aba154a7ce9474feab",
+      "ev_06ea52a7afd2f826495b7a135f97a5909a8c9086ddb7d557e6dacb5dc28c5748"
+    ],
+    "anchors": [
+      "A161",
+      "A171",
+      "A172",
+      "A173",
+      "A174",
+      "A128",
+      "A175",
+      "A176",
+      "A177",
+      "A178"
+    ]
+  },
+  {
+    "id": "F36",
+    "kind": "unknown",
+    "status": "unresolved",
+    "claim": "Objects queued by remaining-context execRef cleanup during deleteProcess or later vm_unrefToPCB are created after the selected endForBackend drain. The next guaranteed drain and final cleanup under all scheduler-stop paths are not established by these selected records.",
+    "limits": "Known local queue behavior remains valid; no claim that the objects necessarily leak or that the same iteration performs another drain.",
+    "evidence": [
+      "ev_8afa124f5ab414820201215e5832365dfc1e5fd8f99de938704714514f785fe3",
+      "ev_fd6ebcdf65115a69b9a379778148a4308b1418aee68693aba154a7ce9474feab",
+      "ev_06ea52a7afd2f826495b7a135f97a5909a8c9086ddb7d557e6dacb5dc28c5748",
+      "ev_c852e7916c2cdc0cda41b7ecfb7e817b8345955915dab87bdbdcc65f2ff5278f"
+    ],
+    "anchors": [
+      "A140",
+      "A143",
+      "A168",
+      "A176",
+      "A106"
+    ]
+  },
+  {
+    "id": "F37",
+    "kind": "unknown",
+    "status": "unresolved",
+    "claim": "Function final release cleans and frees capture storage without waiting for a positive external capture-slot ref. Arbitrary external capture-slot Reference survival or safe exposure is not established.",
+    "limits": "Future Rust scope must keep capture slots private and prohibit public Reference escape; ordinary Array element and Mapping node Reference rules are separate.",
+    "evidence": [
+      "ev_0934ff13603a2c84b549e5d8f003a103db71c86b87fcc5692099ac2ab81650d4"
+    ],
+    "anchors": [
+      "A092",
+      "A093",
+      "A096"
+    ]
+  },
+  {
+    "id": "F38",
+    "kind": "observation",
+    "status": "bounded",
+    "claim": "The selected marker follows Function capture slots and the root refresher marks object-hash variables, globals, PCB stacks, type-2 timers, selected pend queues and registered mark callbacks. The global allocated-value list is reset before marking; membership is not itself a live root.",
+    "limits": "Indirect mark callbacks are not exhausted by their registration list. Function header recovery, arbitrary Reference/Object graph edges, cyclic release order and complete GC equivalence remain unproved.",
+    "evidence": [
+      "ev_d6bd8847412c335d9425d53073743ca82d6469ed6c69a789f996bbc7c2f39471",
+      "ev_11d1d264620ab7f5452f093971acc5d836f0364c7d522a7234d1af509587c5fd",
+      "ev_6921332b80a7a8467156e8214b2cf335f37f0c97324f7e7737d1d6c56b44b54d",
+      "ev_8fecedeb1f644246e085db4dbc5c875cfb14fd6368045b63417b2183eab987ab"
+    ],
+    "anchors": [
+      "A179",
+      "A180"
+    ]
+  },
+  {
+    "id": "F39",
+    "kind": "unknown",
+    "status": "unresolved",
+    "claim": "Other native thread types, JIT recovery, callback-catch, arbitrary deletion hooks/reentrancy, full external roots and complete cyclic reclamation are outside the closed ordinary-thread subdomain.",
+    "limits": "The eight new dossiers and untruncated local value-flow do not resolve targetless indirect calls or establish whole-lifecycle equivalence.",
+    "evidence": [
+      "ev_bfa094c0c50a60bb231088da09294746c5850d3124a018787a398173fdb3a0c2",
+      "ev_fd6ebcdf65115a69b9a379778148a4308b1418aee68693aba154a7ce9474feab",
+      "ev_8afa124f5ab414820201215e5832365dfc1e5fd8f99de938704714514f785fe3"
+    ],
+    "anchors": [
+      "A129",
+      "A075",
+      "A155",
+      "A158",
+      "A159",
+      "A139"
+    ]
+  },
+  {
+    "id": "F40",
+    "kind": "design",
+    "status": "bounded",
+    "claim": "2AX is evidence closure and T05 gated specification only: keep runtime, public API, dependencies and existing capture permissions unchanged. Direct Object/Function capture readiness stays false until lifecycle/root/reclamation gates have evidence and an accepted bounded implementation contract.",
+    "limits": "No new state model or runtime implementation here. Existing stable captures, semantic owners, unique move/shared COPY, final-graph checks, success-only publication and Host single-effect rules remain Rust acceptance policies.",
+    "evidence": [
+      "ev_f739f81d73d7c07779ab3fb741800726145efbc40fd8dc6c58009ac2d703aa48",
+      "ev_0934ff13603a2c84b549e5d8f003a103db71c86b87fcc5692099ac2ab81650d4",
+      "ev_fd6ebcdf65115a69b9a379778148a4308b1418aee68693aba154a7ce9474feab",
+      "ev_f8aa49f1e43d8d933ec0710848b2cbbf20effdaafc21a17e2adb1ee0cd0cb73a"
+    ],
+    "anchors": [
+      "A115",
+      "A093",
+      "A161",
+      "A149"
+    ]
+  },
+  {
+    "id": "F41",
+    "kind": "observation",
+    "status": "bounded",
+    "claim": "Successful vm_initProcess sets sp=stackSize, funCp=0, PCB ref=1 and catchCp=0, initializes entry context with bp=stackSize/ip=0/flags=2, and clears its thisObject. Explicit nonnull attrib stack sizes are clamped to 256..65536.",
+    "limits": "The null-attrib branch copies defaults without the same local clamp. The selected witness uses explicit stackSize=256, valid entry/global context and successful initialization; no universal configuration validity or runtime execution is claimed.",
+    "evidence": [
+      "ev_6d29a100bf81351c9a23e7aafccf7e7b686400d183819f4c456e3c03a886c6ef"
+    ],
+    "anchors": [
+      "A181",
+      "A182",
+      "A183",
+      "A184",
+      "A185",
+      "A186",
+      "A187",
+      "A188",
+      "A189",
+      "A190",
+      "A191",
+      "A192",
+      "A193"
+    ]
+  },
+  {
+    "id": "F42",
+    "kind": "observation",
+    "status": "bounded",
+    "claim": "Ordinary no-nextActionHook dispatch indexes actionInfoTable and calls its entry without a generic sp-capacity check. Its two-parameter machine path pushes sign-extended par8 then par16; the one-parameter path pushes par16. Function-value wrapper extracts argn from low six bits, allowing Global zero-capture par8=0x80.",
+    "limits": "Frozen actions.csv rows 17 and 3b were checked against their ELF table bytes in e01-paths.md. This bounded native dispatch evidence is not exhausted by direct callers; decompiler pseudocode omits the second argument and is not the authoritative calling sequence.",
+    "evidence": [
+      "ev_be433ed21232d17e29f35f068109d8dd00bd74149a9fd91468d8680cabda6fe3",
+      "ev_4ae635941eda7abcc9024ccadd56fd4d6278ddcd6075acacda6b865390f65444",
+      "ev_435c34c38da3d259692fcf6ea5ca1336fb90f91e53e999c32ea0cb40d27d806a"
+    ],
+    "anchors": [
+      "A194",
+      "A195",
+      "A196",
+      "A197",
+      "A198",
+      "A199",
+      "A200",
+      "A201",
+      "A202",
+      "A203",
+      "A204",
+      "A205",
+      "A206",
+      "A207",
+      "A208",
+      "A209"
+    ]
+  },
+  {
+    "id": "F43",
+    "kind": "static-inference",
+    "status": "bounded",
+    "claim": "A finite conditional entry path initializes 256 stack slots, executes 256 legal 3b(0) pushes, then 17(g,0x80) for an existing encodable type-matching Global target. Pushes take sp from 256 to zero within valid slots; zero captures leave sp zero and reach the final create-result overflow branch if allocations and target lookup succeed.",
+    "limits": "Ordinary processor, valid entry/global environment, zero ctrlFlags, no hooks/JIT or intervening state changes are explicit premises. The 257 actions fit below its initial 0x800 timer-check interval. This is a static path witness, not main-corpus/compiler reachability, observed execution or a new model.",
+    "evidence": [
+      "ev_6d29a100bf81351c9a23e7aafccf7e7b686400d183819f4c456e3c03a886c6ef",
+      "ev_435c34c38da3d259692fcf6ea5ca1336fb90f91e53e999c32ea0cb40d27d806a",
+      "ev_be433ed21232d17e29f35f068109d8dd00bd74149a9fd91468d8680cabda6fe3",
+      "ev_4ae635941eda7abcc9024ccadd56fd4d6278ddcd6075acacda6b865390f65444",
+      "ev_f739f81d73d7c07779ab3fb741800726145efbc40fd8dc6c58009ac2d703aa48"
+    ],
+    "anchors": [
+      "A186",
+      "A191",
+      "A210",
+      "A211",
+      "A212",
+      "A213",
+      "A214",
+      "A215",
+      "A216",
+      "A217",
+      "A218",
+      "A206",
+      "A208",
+      "A114",
+      "A115",
+      "A119"
+    ]
+  },
+  {
+    "id": "F44",
+    "kind": "observation",
+    "status": "bounded",
+    "claim": "In the selected zero-capture creation path, header H and zero-length capture allocation A exist before the result error. H points to A and possibly holds its own valid creator ref; no capture vm_initValue iteration runs. Result Value publication occurs after the error edge, so H has not been installed in the result stack slot at that contact.",
+    "limits": "Tracks H, A and an optional creator ordinary ref separately. The finite Global entry witness permits null creator. Local publication stores and absent capture initialization do not exhaust every external recovery mechanism.",
+    "evidence": [
+      "ev_f739f81d73d7c07779ab3fb741800726145efbc40fd8dc6c58009ac2d703aa48",
+      "ev_6921332b80a7a8467156e8214b2cf335f37f0c97324f7e7737d1d6c56b44b54d"
+    ],
+    "anchors": [
+      "A219",
+      "A004",
+      "A220",
+      "A087",
+      "A114",
+      "A115",
+      "A221",
+      "A222",
+      "A007",
+      "A088",
+      "A119"
+    ]
+  },
+  {
+    "id": "F45",
+    "kind": "observation",
+    "status": "bounded",
+    "claim": "pdb_extendBlocksOfGroup records a whole extension allocation in _pdb_extendGrpList with block size/count, initializes per-block manager headers and chains free blocks. allocate consumes free blocks or uses fallback allocation and updates counters/allocated bits.",
+    "limits": "This is concrete allocator storage tracking, not just counters, but no Function/creator semantic recovery relation is established. Whole-page reachability or future bulk storage free is not VM payload destruction.",
+    "evidence": [
+      "ev_69e5d889c7b964db3c123bbbc5f6c7a4512b0633b9d910e1a3e131018281b99d",
+      "ev_f11621ec8278f50d7b95cd012344996567569c2ad1f327a38f5d037ee8cc232c"
+    ],
+    "anchors": [
+      "A223",
+      "A224",
+      "A225",
+      "A226",
+      "A227",
+      "A228",
+      "A229",
+      "A230",
+      "A231",
+      "A232",
+      "A126",
+      "A127"
+    ]
+  },
+  {
+    "id": "F46",
+    "kind": "observation",
+    "status": "bounded",
+    "claim": "Given an explicit valid payload pointer, pdb_freeMemory derives its manager header, validates allocation/tail metadata, clears the allocated bit and updates statistics, then returns storage to a group or calls pdb_l2FreeMemory. l2Free returns grouped storage or calls libc free; these normal paths do not dispatch VM Value cleanup or creator unref.",
+    "limits": "Selected normal allocator paths only, excluding fatal assertion behavior. Physical storage reclamation must remain separate from H/A semantic ownership and creator-ref release.",
+    "evidence": [
+      "ev_d7cd867b7d8979108b472049c77c2ed0272efc48c431ff4071039afb7b2e15ab",
+      "ev_d6e6b77318b57369520badc1b7a8bfebb3e43f1702000111099db0a94299e06a"
+    ],
+    "anchors": [
+      "A233",
+      "A234",
+      "A235",
+      "A236",
+      "A237",
+      "A238",
+      "A239",
+      "A240",
+      "A241",
+      "A242",
+      "A243",
+      "A244"
+    ]
+  },
+  {
+    "id": "F47",
+    "kind": "unknown",
+    "status": "unresolved",
+    "claim": "Despite the finite legal-stack branch witness and newly identified allocator page tracking, recovery of unpublished H/A and eventual H/A storage plus any creator ordinary-ref release after the result error remain unclosed.",
+    "limits": "The selected create/allocator/error/PCB paths do not establish the missing semantic recovery edge. Neither a global leak nor GC/allocator-shutdown recovery is claimed; actual corpus reachability is separate and not required for this bounded branch finding.",
+    "evidence": [
+      "ev_f739f81d73d7c07779ab3fb741800726145efbc40fd8dc6c58009ac2d703aa48",
+      "ev_69e5d889c7b964db3c123bbbc5f6c7a4512b0633b9d910e1a3e131018281b99d",
+      "ev_d7cd867b7d8979108b472049c77c2ed0272efc48c431ff4071039afb7b2e15ab",
+      "ev_06ea52a7afd2f826495b7a135f97a5909a8c9086ddb7d557e6dacb5dc28c5748"
+    ],
+    "anchors": [
+      "A115",
+      "A119",
+      "A227",
+      "A233",
+      "A128",
+      "A176"
+    ]
+  },
+  {
+    "id": "F48",
+    "kind": "static-inference",
+    "status": "bounded",
+    "claim": "An Object queued after one PCB final cleanup can be drained at a later ordinary backend only if a subsequent PCB actually enters and normally completes vm_doActions, followed by vm_endForBackend. The drain is after that backend action execution, not before the next PCB starts.",
+    "limits": "An active PCB pointer alone is not a progress guarantee: resume hooks, quota, stop state, callbacks or nonlocal exits can prevent the selected backend completion.",
+    "evidence": [
+      "ev_8afa124f5ab414820201215e5832365dfc1e5fd8f99de938704714514f785fe3",
+      "ev_f8aa49f1e43d8d933ec0710848b2cbbf20effdaafc21a17e2adb1ee0cd0cb73a"
+    ],
+    "anchors": [
+      "A139",
+      "A140",
+      "A143",
+      "A245",
+      "A246",
+      "A149"
+    ]
+  },
+  {
+    "id": "F49",
+    "kind": "observation",
+    "status": "bounded",
+    "claim": "vm_processAllRespondingInQueue returns through a direct visible tail when its queue peek returns 0. On its nonzero-peek branch it may call a node callback, then a destruction callback after acquiring the VM mutex.",
+    "limits": "The peek-return-zero visible tail has no extra drain, but the peek helper and arbitrary callbacks are not thereby proved effect-free. Nonempty response/callback progress and reentrancy remain outside the closed domain.",
+    "evidence": [
+      "ev_6e8d3bdf322cb3574f900949a394c797df34a67db5831a7a96393c9b30719a72"
+    ],
+    "anchors": [
+      "A247",
+      "A248",
+      "A249",
+      "A250",
+      "A251",
+      "A252",
+      "A253"
+    ]
+  },
+  {
+    "id": "F50",
+    "kind": "observation",
+    "status": "bounded",
+    "claim": "The single schedule wrapper only resets scheduler state after its internal call and returns. mainLoop has a nonnull-pPara return-zero tail and requestStop/internal-minus99 stop-signal return-one tails without an additional explicit Object drain in those visible tails.",
+    "limits": "Conditions include the actual preceding scan/helper results, not an incorrectly reused scheduler return variable. Tail observations do not exhaust intervening scanner, response or hook effects and do not imply that every caller later invokes shutdown.",
+    "evidence": [
+      "ev_742151cf0a21b4697cbd895f9c6e4ae778ca4bb7c9c6a3a782fe4e7c77385d9c",
+      "ev_daa1af7157f27407ab1c0f09a06c0a82e1245714d25bec4d5d7440c512ee7e6b"
+    ],
+    "anchors": [
+      "A146",
+      "A147",
+      "A148",
+      "A254",
+      "A255",
+      "A256",
+      "A257",
+      "A258",
+      "A259",
+      "A260"
+    ]
+  },
+  {
+    "id": "F51",
+    "kind": "observation",
+    "status": "bounded",
+    "claim": "On normal completion of preceding timer/invoke/pend helpers and deletion hooks, clearEnvironment scans eligible PCBs with deleteProcess and then explicitly drains destructing Objects before destructIdentifiers and destructAllObjects(0). Newly queued Objects from in-scan final PCB cleanup can reach this drain.",
+    "limits": "Conditional clearEnvironment contact only: PCB refs retained past its scan defer final values/frames, and later helper/object destruction effects or later external unrefs are not covered by this earlier drain.",
+    "evidence": [
+      "ev_c8ed1b0d33d59a3c3e7dd9afa1d7cdba9b5e21d7e042d4b49dcac0ae8fc24a29",
+      "ev_fd6ebcdf65115a69b9a379778148a4308b1418aee68693aba154a7ce9474feab",
+      "ev_1e97d9b23b4f5b64595672ccc759645ed729cbbdc52e7ea0cdf0edbdf42d3c63"
+    ],
+    "anchors": [
+      "A261",
+      "A262",
+      "A263",
+      "A264",
+      "A265",
+      "A161",
+      "A168",
+      "A108",
+      "A109"
+    ]
+  },
+  {
+    "id": "F52",
+    "kind": "observation",
+    "status": "bounded",
+    "claim": "Once shutdownScheduler reaches its cleanup phase after stop/wait, scheduling and helper paths complete, it scans eligible PCBs through deleteProcess and explicitly drains destructing Objects after the scan and before freeing PCB arrays/storage.",
+    "limits": "Other-task wait for alreadyStop is not proved to progress; mainLoop stop signaling does not automatically invoke shutdown. This drain covers the then-queued objects, not arbitrary retained external holders or later cleanup under all interleavings.",
+    "evidence": [
+      "ev_fa72d6497d785e96f2008f5e0c88d23b56be0c6334a7128afc2e2ee91b59b9d5",
+      "ev_fd6ebcdf65115a69b9a379778148a4308b1418aee68693aba154a7ce9474feab"
+    ],
+    "anchors": [
+      "A266",
+      "A267",
+      "A268",
+      "A269",
+      "A270",
+      "A271",
+      "A161",
+      "A168"
+    ]
+  },
+  {
+    "id": "F53",
+    "kind": "observation",
+    "status": "bounded",
+    "claim": "The shutdownScheduler stack-storage pass writes each slot type byte to zero before calling vm_destructStaticValue. cleanupValue dispatches on that now-zero tag, so this pass cannot be treated as another destructor pass over the original payload tags after the explicit Object drain.",
+    "limits": "Storage unlink/free and original payload semantic cleanup are distinct. This observation supplies no safe-lifetime guarantee for arbitrary external references retained across scheduler shutdown.",
+    "evidence": [
+      "ev_fa72d6497d785e96f2008f5e0c88d23b56be0c6334a7128afc2e2ee91b59b9d5",
+      "ev_d5e0fa5ed30b20859a959e09027480b13f6d9acdd746527dd5c2dac47520cadc",
+      "ev_b7275ea0d205e76bd66e12eb46ee8132bb75cd0db3113213fdd60970242bb1c2"
+    ],
+    "anchors": [
+      "A272",
+      "A271",
+      "A273"
+    ]
+  },
+  {
+    "id": "F54",
+    "kind": "unknown",
+    "status": "unresolved",
+    "claim": "E02 remains partial: some normal backend/clear/shutdown drain contacts are conditional, while next-drain guarantees for all stop paths, external retained-PCB progress, arbitrary callbacks/hooks/other threads/JIT, and complete external-root lifetime or GC are not established.",
+    "limits": "No unconditional eventual reclaim or global-leak assertion. A later unref is considered only while its PCB storage is still valid; no permission to dereference PCB pointers after scheduler storage shutdown is inferred.",
+    "evidence": [
+      "ev_8afa124f5ab414820201215e5832365dfc1e5fd8f99de938704714514f785fe3",
+      "ev_daa1af7157f27407ab1c0f09a06c0a82e1245714d25bec4d5d7440c512ee7e6b",
+      "ev_6e8d3bdf322cb3574f900949a394c797df34a67db5831a7a96393c9b30719a72",
+      "ev_c8ed1b0d33d59a3c3e7dd9afa1d7cdba9b5e21d7e042d4b49dcac0ae8fc24a29",
+      "ev_fa72d6497d785e96f2008f5e0c88d23b56be0c6334a7128afc2e2ee91b59b9d5",
+      "ev_06ea52a7afd2f826495b7a135f97a5909a8c9086ddb7d557e6dacb5dc28c5748"
+    ],
+    "anchors": [
+      "A246",
+      "A140",
+      "A258",
+      "A259",
+      "A251",
+      "A263",
+      "A265",
+      "A269",
+      "A272",
+      "A172",
+      "A176"
+    ]
+  },
+  {
+    "id": "F55",
+    "kind": "observation",
+    "status": "bounded",
+    "claim": "Before the zero-capture result error, H is genuinely saved in C-frame [EBP-0x14] and remains in ECX at the selected callsite; A is saved in EDI and H+0x10. A valid nonnull creator is separately stored in H+0xc with an ordinary-ref increment. Result tag/pointer publication occurs after the error edge; zero captures perform no capture-slot initValue registration.",
+    "limits": "Saved machine values are not automatically recovery roots. Register identities are asserted only immediately before the selected error call, not across arbitrary calls or longjmp. Null creator in the finite Global-entry witness has no creator-ref acquisition.",
+    "evidence": [
+      "ev_f739f81d73d7c07779ab3fb741800726145efbc40fd8dc6c58009ac2d703aa48"
+    ],
+    "anchors": [
+      "A219",
+      "A274",
+      "A220",
+      "A087",
+      "A275",
+      "A276",
+      "A277",
+      "A114",
+      "A115",
+      "A221",
+      "A222",
+      "A007",
+      "A088",
+      "A278",
+      "A279",
+      "A119"
+    ]
+  },
+  {
+    "id": "F56",
+    "kind": "observation",
+    "status": "bounded",
+    "claim": "vm_newCatch writes only the selected topEnv entry funCp and catchLevel, increments topCatch and returns the catch-buffer address. In the ordinary backend path this helper and setjmp execute before processor creation of H/A; the helper establishes no H/A allocation registry.",
+    "limits": "Machine offsets identify ThreadInfo topCatch at +0xa48, entry base +8 with stride0xa4, funCp store +0xa4 and catchLevel store +0xa8. This does not analyze every byte written by external setjmp/longjmp or prove that all external roots are absent.",
+    "evidence": [
+      "ev_68f399017c978bc9951a6157ba0277fd79f2bdfa6733016d6ed2c3567999f037",
+      "ev_543af7cfb6d454bc19165fe254e84721ac87776215bd08299342ec2ab9a32d9e",
+      "ev_bfa094c0c50a60bb231088da09294746c5850d3124a018787a398173fdb3a0c2"
+    ],
+    "anchors": [
+      "A280",
+      "A281",
+      "A282",
+      "A283",
+      "A284",
+      "A285",
+      "A135",
+      "A136",
+      "A286",
+      "A287",
+      "A075"
+    ]
+  },
+  {
+    "id": "F57",
+    "kind": "observation",
+    "status": "bounded",
+    "claim": "The exact Ghidra reference projection for _pdb_extendGrpList at0x0860d024 returns five source addresses: shutdownMemMgr READ/WRITE/READ at0x080ce40e/420/42f and extendBlocksOfGroup READ/WRITE at0x080ce67c/68f. Read/write kinds are corroborated by the containing dossiers, not supplied by the xrefs address list.",
+    "limits": "This is bounded exact-address analyzed-reference coverage; aliases or unresolved computed accesses are not globally excluded. The list cell is a four-byte BSS object, with no original file bytes or fabricated file offset.",
+    "evidence": [
+      "ev_ac794b00be49819c561c00d6b382688b5a0eae190a4833c69d176f6c996d907d",
+      "ev_69e5d889c7b964db3c123bbbc5f6c7a4512b0633b9d910e1a3e131018281b99d",
+      "ev_81d1554fd5d64a6256f880921e660f95ce735c39064a55299a7eed399f20a1d2"
+    ],
+    "anchors": [
+      "A288",
+      "A289",
+      "A290",
+      "A291",
+      "A227"
+    ]
+  },
+  {
+    "id": "F58",
+    "kind": "observation",
+    "status": "bounded",
+    "claim": "_pdb_shutdownMemMgr repeatedly advances the extension-page head through page+8 and calls libc free on each page. It then frees flat/waste storage and conditionally stable-heap storage, destroys the allocator critical section and clears initialization state; this selected routine has no Function/capture/creator semantic-cleanup dispatch.",
+    "limits": "Local normal shutdown behavior only; invocation/progress after a given error is not proved. Named bulk storage frees must not be relabeled as Function cleanup or creator unref.",
+    "evidence": [
+      "ev_ac794b00be49819c561c00d6b382688b5a0eae190a4833c69d176f6c996d907d"
+    ],
+    "anchors": [
+      "A288",
+      "A292",
+      "A289",
+      "A293",
+      "A290",
+      "A294",
+      "A295",
+      "A296",
+      "A297",
+      "A298",
+      "A299"
+    ]
+  },
+  {
+    "id": "F59",
+    "kind": "static-inference",
+    "status": "bounded",
+    "claim": "For H/A actually served from a still-linked extension page, normal allocator shutdown can physically free the encompassing page. Independently malloc-backed fallback H/A are a separate allocation branch: the reviewed shutdown page walk supplies no per-allocation discovery/free guarantee for all such blocks, and neither branch proves semantic creator release.",
+    "limits": "Conditional storage disposition, not eventual-reclaim progress. A fallback block may carry an eligible-group serial/flag but is not thereby part of an extension page; flat/waste/stable frees are not assumed to alias H/A without evidence.",
+    "evidence": [
+      "ev_f11621ec8278f50d7b95cd012344996567569c2ad1f327a38f5d037ee8cc232c",
+      "ev_69e5d889c7b964db3c123bbbc5f6c7a4512b0633b9d910e1a3e131018281b99d",
+      "ev_ac794b00be49819c561c00d6b382688b5a0eae190a4833c69d176f6c996d907d"
+    ],
+    "anchors": [
+      "A122",
+      "A231",
+      "A124",
+      "A300",
+      "A301",
+      "A127",
+      "A223",
+      "A227",
+      "A230",
+      "A292",
+      "A293",
+      "A295",
+      "A296",
+      "A297"
+    ]
+  },
+  {
+    "id": "F60",
+    "kind": "unknown",
+    "status": "unresolved",
+    "claim": "The remaining R01 frontier is a semantically usable discovery/read of unpublished H/A after the error, connected to the applicable H/A free and nonnull creator unref. Reviewed C-frame/register saves, catch metadata and allocator page roots do not supply that complete relation.",
+    "limits": "A bounded negative finding over the named create/catch/allocator/ordinary-error contacts, not a global no-root or leak proof. Pool storage-only shutdown is recorded separately; opaque imported recovery behavior, aliases or a concrete additional root/reader remain explicit frontiers.",
+    "evidence": [
+      "ev_f739f81d73d7c07779ab3fb741800726145efbc40fd8dc6c58009ac2d703aa48",
+      "ev_68f399017c978bc9951a6157ba0277fd79f2bdfa6733016d6ed2c3567999f037",
+      "ev_ac794b00be49819c561c00d6b382688b5a0eae190a4833c69d176f6c996d907d",
+      "ev_06ea52a7afd2f826495b7a135f97a5909a8c9086ddb7d557e6dacb5dc28c5748",
+      "ev_0934ff13603a2c84b549e5d8f003a103db71c86b87fcc5692099ac2ab81650d4",
+      "ev_81d1554fd5d64a6256f880921e660f95ce735c39064a55299a7eed399f20a1d2"
+    ],
+    "anchors": [
+      "A219",
+      "A115",
+      "A119",
+      "A282",
+      "A283",
+      "A285",
+      "A293",
+      "A128",
+      "A176",
+      "A093",
+      "A089"
+    ]
+  },
+  {
+    "id": "F61",
+    "kind": "observation",
+    "status": "bounded",
+    "claim": "The retained unrefToPCB incoming inventory has seven provider UNCONDITIONAL_CALL control-reference sites in six caller functions, but actual source mnemonics are three CALLs and four tail JMPs. The three CALLs are serviceWakeup, transferControl and delete_thread; ok has two tail JMPs, failed and crash one each. Two further sites store the unref function address as DATA, while debug_frame DATA is metadata.",
+    "limits": "Preserve provider kind and actual instruction as different observations. Seven sites are not six sites and not seven CALL instructions; direct transfers/address-taking do not establish callback execution or all lifetime domains.",
+    "evidence": [
+      "ev_3c76db1101c3738b916aa8bca2093fcaff5ae5fb0e84d8f54f2621a9b2b1c4a7",
+      "ev_85d6d3b5e1f800e18995b3afde1fe88c65a8868d87e4fb48281f59b6facdb666",
+      "ev_9918c7aad7104577421adf33640eebf8cbb67c3e9352ee05f6fdea9b1523ef5c",
+      "ev_19750a0d8529d3bd1addcc87e6f3f0ddd172e6f174a81d4b8bad28ba8bed5e1b",
+      "ev_a2c19154025b85d7b2098a80d34d3340cc92eb154e90f6b52bc4422758865d3e",
+      "ev_2ee1efa9ea258bea8d0c461a36ef60686f0fd60451ffe5f8bfa951a71b6462ca",
+      "ev_06ea52a7afd2f826495b7a135f97a5909a8c9086ddb7d557e6dacb5dc28c5748"
+    ],
+    "anchors": [
+      "A302",
+      "A303",
+      "A304",
+      "A305",
+      "A306",
+      "A307",
+      "A308",
+      "A309",
+      "A310"
+    ]
+  },
+  {
+    "id": "F62",
+    "kind": "observation",
+    "status": "bounded",
+    "claim": "Selected serviceWakeup and transferControl paths acquire a PCB ordinary ref, put unrefToPCB into a post-node function-pointer field and put the PCB in its cookie field. Local allocation/post failure rolls back via an explicit unref CALL. Wakeup service-flag and ordinary-post branches differ; transfer may later perform an indirect resume transfer.",
+    "limits": "These are local hold/registration/failure-adjacency classifications. A stored callback pointer is not invocation; queue/node destruction, execution/resume callbacks, storage validity and eventual progress are not closed here.",
+    "evidence": [
+      "ev_3c76db1101c3738b916aa8bca2093fcaff5ae5fb0e84d8f54f2621a9b2b1c4a7",
+      "ev_85d6d3b5e1f800e18995b3afde1fe88c65a8868d87e4fb48281f59b6facdb666"
+    ],
+    "anchors": [
+      "A311",
+      "A302",
+      "A312",
+      "A313",
+      "A314",
+      "A303",
+      "A315",
+      "A316",
+      "A304",
+      "A317",
+      "A318",
+      "A319",
+      "A305",
+      "A320",
+      "A321"
+    ]
+  },
+  {
+    "id": "F63",
+    "kind": "observation",
+    "status": "bounded",
+    "claim": "The delete_thread deletion-function branch separately retains target PCB and Function head, registers crash/failed/return callbacks, and has a same-call-depth path that clears hooks/catch then kills/pushes/unrefs. At their actual entries, ok/failed/crash helpers have distinct local cleanup prefixes ending in the observed unref tail transfers.",
+    "limits": "Only adjacency and dispatch classification, not a proof that registered callbacks run, every helper returns, unref is unique/final or all reentrant/error outcomes are safe. Target PCB refs and Function-head refs remain different obligations.",
+    "evidence": [
+      "ev_9918c7aad7104577421adf33640eebf8cbb67c3e9352ee05f6fdea9b1523ef5c",
+      "ev_19750a0d8529d3bd1addcc87e6f3f0ddd172e6f174a81d4b8bad28ba8bed5e1b",
+      "ev_a2c19154025b85d7b2098a80d34d3340cc92eb154e90f6b52bc4422758865d3e",
+      "ev_2ee1efa9ea258bea8d0c461a36ef60686f0fd60451ffe5f8bfa951a71b6462ca"
+    ],
+    "anchors": [
+      "A322",
+      "A323",
+      "A324",
+      "A325",
+      "A326",
+      "A327",
+      "A328",
+      "A329",
+      "A330",
+      "A331",
+      "A306",
+      "A332",
+      "A333",
+      "A334",
+      "A307",
+      "A308",
+      "A335",
+      "A336",
+      "A309",
+      "A310"
+    ]
+  },
+  {
+    "id": "F64",
+    "kind": "observation",
+    "status": "bounded",
+    "claim": "Original _vmInits data registers shutdownScheduler at record19 field+8, address0x083cfa98. vm_shutdown has an indexed reverse25-record consumer: ESI begins0x180, tests each record initFlag, calls [ESI+0x083cf968], clears the flag and steps by16. Exact xrefs at base/base+8/scheduler slot are empty, while the last shutdown-field query returns the consumer instruction; emptiness does not negate computed consumption.",
+    "limits": "Data registration, resolved reference kind and actual indexed CALL are distinct. Callback invocation remains conditional on runtime flags, retained slot contents, shutdown guards/mutex and earlier callbacks completing; initial file initFlag zero is not runtime state or a mainLoop-to-shutdown progress proof.",
+    "evidence": [
+      "ev_170b57b39470172db518b7e0e8be6da6506c6e2795f171254705da6e8ab9b56b",
+      "ev_fa72d6497d785e96f2008f5e0c88d23b56be0c6334a7128afc2e2ee91b59b9d5",
+      "ev_e7daa0df3127e0b187e08b5ba25e3b822e69a249cc294f8e45b43099a9496fd3",
+      "ev_5fc1be0a000837c85f892f7498666591af9467a928b2d29f5ea01ccdc8be5d42",
+      "ev_c252cff7af95a80dcab8ef13f6457d7fd574d62fe224679d9ddfaf2a8334c6ce",
+      "ev_064400b9665c2d5ff9e9ba4d67a3d639b7881bff9fb535a8c746fefadc215e2a"
+    ],
+    "anchors": [
+      "A337",
+      "A338",
+      "A339",
+      "A340",
+      "A341",
+      "A342",
+      "A343",
+      "A344",
+      "A345",
+      "A346",
+      "A347"
+    ]
+  },
+  {
+    "id": "F65",
+    "kind": "observation",
+    "status": "bounded",
+    "claim": "waitMainLoopDone returns when alreadyShutdown is nonzero; otherwise its visible body calls mainLoop(NULL) and returns without an additional shutdownScheduler invocation.",
+    "limits": "Local wrapper classification only. Its name and mainLoop completion do not establish that shutdown is later called, callbacks finish or all Objects/PCB roots are reclaimed.",
+    "evidence": [
+      "ev_218395b72ac924cabe14085ef72ce27a156221b92b9de2e1d95e1152b16cb37e"
+    ],
+    "anchors": [
+      "A348",
+      "A349",
+      "A350",
+      "A351"
+    ]
+  },
+  {
+    "id": "F66",
+    "kind": "unknown",
+    "status": "unresolved",
+    "claim": "R02 remains classification-only: actual queue/destructor/resume/delete-thread callback scheduling, external-holder progress, valid-PCB-storage lifetimes and guaranteed post-stop/final-unref cleanup across all domains remain unclosed.",
+    "limits": "New direct/tail/data/table classifications do not authorize broader lifecycle design or capture capability. Do not expand arbitrary callbacks or infer global reclamation/absence from exact-reference queries.",
+    "evidence": [
+      "ev_3c76db1101c3738b916aa8bca2093fcaff5ae5fb0e84d8f54f2621a9b2b1c4a7",
+      "ev_85d6d3b5e1f800e18995b3afde1fe88c65a8868d87e4fb48281f59b6facdb666",
+      "ev_9918c7aad7104577421adf33640eebf8cbb67c3e9352ee05f6fdea9b1523ef5c",
+      "ev_170b57b39470172db518b7e0e8be6da6506c6e2795f171254705da6e8ab9b56b",
+      "ev_218395b72ac924cabe14085ef72ce27a156221b92b9de2e1d95e1152b16cb37e"
+    ],
+    "anchors": [
+      "A302",
+      "A313",
+      "A304",
+      "A321",
+      "A323",
+      "A324",
+      "A327",
+      "A344",
+      "A351"
+    ]
+  }
+]
