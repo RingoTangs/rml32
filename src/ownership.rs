@@ -58,12 +58,16 @@ impl Drop for Owner {
 #[derive(Debug)]
 pub(crate) struct OwnedValue {
     pub(crate) _owner: Option<Owner>,
+    #[cfg(test)]
+    pub(crate) lifecycle: Option<crate::lifecycle_adapter::Lease>,
     pub value: crate::Value,
 }
 impl OwnedValue {
     pub fn new(value: crate::Value) -> Result<Self, VmError> {
         Ok(Self {
             _owner: Owner::new(value.counter())?,
+            #[cfg(test)]
+            lifecycle: None,
             value,
         })
     }

@@ -30,6 +30,8 @@ pub(crate) fn with_allocation_failure<T>(after: usize, action: impl FnOnce() -> 
 #[derive(Debug)]
 struct OwnedPayload {
     _owner: Option<crate::ownership::Owner>,
+    #[cfg(test)]
+    lifecycle: Option<crate::lifecycle_adapter::Lease>,
     payload: SlotPayload,
 }
 impl OwnedPayload {
@@ -47,6 +49,8 @@ impl OwnedPayload {
         };
         Ok(Self {
             _owner: crate::ownership::Owner::new(counter)?,
+            #[cfg(test)]
+            lifecycle: None,
             payload,
         })
     }
@@ -56,6 +60,8 @@ pub(crate) struct Cell {
     id: u64,
     header: HeaderCell<Option<u64>>,
     value: RefCell<OwnedPayload>,
+    #[cfg(test)]
+    adapter: RefCell<Option<std::rc::Weak<crate::lifecycle_adapter::AdapterContext>>>,
 }
 impl Cell {
     pub(crate) fn new(value: Value) -> Result<Rc<Self>, VmError> {
@@ -79,6 +85,8 @@ impl Cell {
         let header = value.counter().map(|c| c.id);
         let cell = Rc::new(Self {
             id,
+            #[cfg(test)]
+            adapter: RefCell::new(None),
             header: HeaderCell::new(header),
             value: RefCell::new(OwnedPayload::new(SlotPayload::Value(value))?),
         });
@@ -146,6 +154,10 @@ impl Cell {
         }
         crate::graph::bind(self.id, &value);
         let value = OwnedPayload::new(SlotPayload::Value(value))?;
+        #[cfg(test)]
+        let value = self.adapt_payload(value)?;
+        #[cfg(test)]
+        self.preflight_old()?;
         let old = {
             let mut guard = self
                 .value
@@ -204,6 +216,14 @@ impl Cell {
             .into_iter()
             .map(OwnedPayload::new)
             .collect::<Result<Vec<_>, _>>()?;
+        #[cfg(test)]
+        let values = values
+            .into_iter()
+            .zip(&cells)
+            .map(|(v, c)| c.adapt_payload(v))
+            .collect::<Result<Vec<_>, _>>()?;
+        #[cfg(test)]
+        Self::preflight_cells(&cells)?;
         let mut old = Vec::with_capacity(cells.len());
         let mut guards = cells
             .iter()
@@ -250,6 +270,8 @@ impl Cell {
                 &mut *guard,
                 OwnedPayload {
                     _owner: None,
+                    #[cfg(test)]
+                    lifecycle: None,
                     payload: SlotPayload::Value(Value::Undefined),
                 },
             )
@@ -259,6 +281,8 @@ impl Cell {
         };
         Ok(crate::ownership::OwnedValue {
             _owner: old._owner,
+            #[cfg(test)]
+            lifecycle: old.lifecycle,
             value,
         })
     }
@@ -326,11 +350,28 @@ impl Cell {
                 "transfer source aliases another write",
             ));
         }
+        #[cfg(test)]
+        {
+            for (src, dst) in &moves {
+                crate::lifecycle_adapter::check_cells(src, dst)?;
+            }
+        }
         let mut prepared = Vec::new();
         crate::copy_plan::reserve(&mut prepared, updates.len())?;
         for (c, v) in updates {
-            prepared.push((index(&c), OwnedPayload::new(SlotPayload::Value(v))?));
+            let payload = OwnedPayload::new(SlotPayload::Value(v))?;
+            #[cfg(test)]
+            let payload = c.adapt_payload(payload)?;
+            prepared.push((index(&c), payload));
         }
+        #[cfg(test)]
+        Self::preflight_cells_moved(
+            &prepared
+                .iter()
+                .map(|(i, _)| cells[*i].clone())
+                .collect::<Vec<_>>(),
+            &sources,
+        )?;
         let mut old = Vec::new();
         crate::copy_plan::reserve(&mut old, prepared.len() + moves.len())?;
         let mut guards = Vec::new();
@@ -363,6 +404,8 @@ impl Cell {
                 &mut *guards[index(&src)],
                 OwnedPayload {
                     _owner: None,
+                    #[cfg(test)]
+                    lifecycle: None,
                     payload: SlotPayload::Value(Value::Undefined),
                 },
             );
@@ -378,12 +421,103 @@ impl Cell {
         drop(old);
         Ok(())
     }
+    #[cfg(test)]
+    pub(crate) fn adapter_bound(&self) -> bool {
+        self.adapter.borrow().is_some()
+    }
+    #[cfg(test)]
+    pub(crate) fn adapter(&self) -> Option<std::rc::Rc<crate::lifecycle_adapter::AdapterContext>> {
+        self.adapter
+            .borrow()
+            .as_ref()
+            .and_then(std::rc::Weak::upgrade)
+    }
+    #[cfg(test)]
+    pub(crate) fn bind_adapter(
+        self: &Rc<Self>,
+        ctx: &Rc<crate::lifecycle_adapter::AdapterContext>,
+    ) -> Result<(), VmError> {
+        if self.adapter.borrow().is_some() {
+            return Err(VmError::new(
+                VmErrorKind::InvalidState,
+                "slot already bound",
+            ));
+        }
+        let mut guard = self
+            .value
+            .try_borrow_mut()
+            .map_err(|_| VmError::new(VmErrorKind::InvalidState, "slot borrowed"))?;
+        let SlotPayload::Value(value) = &guard.payload else {
+            return Err(VmError::new(
+                VmErrorKind::UnsupportedFeature,
+                "loop adapter excluded",
+            ));
+        };
+        let lease = ctx.acquire(value)?;
+        guard.lifecycle = lease;
+        *self.adapter.borrow_mut() = Some(Rc::downgrade(ctx));
+        ctx.register_cell(self);
+        Ok(())
+    }
+    #[cfg(test)]
+    fn adapt_payload(&self, mut payload: OwnedPayload) -> Result<OwnedPayload, VmError> {
+        if self.adapter.borrow().is_some() {
+            let ctx = self
+                .adapter()
+                .ok_or_else(|| VmError::new(VmErrorKind::InvalidState, "adapter closed"))?;
+            let SlotPayload::Value(value) = &payload.payload else {
+                return Err(VmError::new(
+                    VmErrorKind::UnsupportedFeature,
+                    "loop adapter excluded",
+                ));
+            };
+            payload.lifecycle = ctx.acquire(value)?;
+        }
+        Ok(payload)
+    }
+    #[cfg(test)]
+    pub(crate) fn adapter_release_view(
+        &self,
+    ) -> Result<Option<crate::lifecycle_adapter::LeaseView>, VmError> {
+        let guard = self
+            .value
+            .try_borrow_mut()
+            .map_err(|_| VmError::new(VmErrorKind::InvalidState, "final capture borrowed"))?;
+        Ok(guard.lifecycle.as_ref().map(|lease| lease.view()))
+    }
+    #[cfg(test)]
+    fn preflight_old(&self) -> Result<(), VmError> {
+        Self::preflight_cells(&[crate::graph::cell(self.id).expect("registered cell")])
+    }
+    #[cfg(test)]
+    fn preflight_cells(cells: &[Rc<Self>]) -> Result<(), VmError> {
+        Self::preflight_cells_moved(cells, &std::collections::BTreeSet::new())
+    }
+    #[cfg(test)]
+    fn preflight_cells_moved(
+        cells: &[Rc<Self>],
+        moved: &std::collections::BTreeSet<u64>,
+    ) -> Result<(), VmError> {
+        let mut leases = Vec::new();
+        for cell in cells {
+            let guard = cell
+                .value
+                .try_borrow()
+                .map_err(|_| VmError::new(VmErrorKind::InvalidState, "slot borrowed"))?;
+            if let Some(lease) = &guard.lifecycle {
+                leases.push(lease.view());
+            }
+        }
+        crate::lifecycle_adapter::preflight_release(&leases, moved)
+    }
     // Only called by a final header destructor. All guards are private and are
     // released before any old Value is dropped, including in replace above.
     pub(crate) fn clear_on_owner_drop(&self) {
         self.header.set(None);
         let old = self.value.replace(OwnedPayload {
             _owner: None,
+            #[cfg(test)]
+            lifecycle: None,
             payload: SlotPayload::Value(Value::Undefined),
         });
         drop(old);

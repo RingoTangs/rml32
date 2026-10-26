@@ -89,3 +89,6 @@ mod regression_api {
 }
 #[cfg(test)]
 mod regression;
+
+#[cfg(test)]
+mod lifecycle_adapter;

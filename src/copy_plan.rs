@@ -40,6 +40,8 @@ pub(crate) fn reserve<T>(values: &mut Vec<T>, additional: usize) -> Result<(), V
 
 #[derive(Debug, Default)]
 pub(crate) struct CopyPlan {
+    #[cfg(test)]
+    adapter: Option<Rc<crate::lifecycle_adapter::AdapterContext>>,
     pub outputs: Vec<Rc<Cell>>,
     pub source_updates: Vec<(Rc<Cell>, Value)>,
     // Range/argument batches can contain 65,536 sources. Index deduplication
@@ -50,11 +52,32 @@ pub(crate) struct CopyPlan {
     retiring: Vec<Rc<Cell>>,
 }
 impl CopyPlan {
+    #[cfg(test)]
+    pub(crate) fn with_adapter(ctx: &Rc<crate::lifecycle_adapter::AdapterContext>) -> Self {
+        Self {
+            adapter: Some(ctx.clone()),
+            ..Self::default()
+        }
+    }
+    #[cfg(test)]
+    fn check_adapter(&self, cell: &Rc<Cell>) -> Result<(), VmError> {
+        match (&self.adapter, cell.adapter()) {
+            (Some(a), Some(b)) if Rc::ptr_eq(a, &b) => Ok(()),
+            (None, None) if !cell.adapter_bound() => Ok(()),
+            _ => Err(VmError::new(
+                VmErrorKind::InvalidState,
+                "mixed slot origins",
+            )),
+        }
+    }
+
     pub fn copy(
         &mut self,
         source: Rc<Cell>,
         normalize: impl FnOnce(&Value) -> Result<Value, VmError>,
     ) -> Result<Value, VmError> {
+        #[cfg(test)]
+        self.check_adapter(&source)?;
         let raw = source.read()?;
         let value = normalize(&raw)?;
         if value != raw {
@@ -63,6 +86,8 @@ impl CopyPlan {
         Ok(value)
     }
     pub fn write(&mut self, cell: Rc<Cell>, value: Value) -> Result<(), VmError> {
+        #[cfg(test)]
+        self.check_adapter(&cell)?;
         if let Some(&index) = self.source_indices.get(&cell.id()) {
             let old = &self.source_updates[index].1;
             if *old != value {
@@ -82,10 +107,16 @@ impl CopyPlan {
     pub fn output(&mut self, value: Value) -> Result<Rc<Cell>, VmError> {
         reserve(&mut self.outputs, 1)?;
         let cell = Cell::new(value)?;
+        #[cfg(test)]
+        if let Some(ctx) = &self.adapter {
+            cell.bind_adapter(ctx)?;
+        }
         self.outputs.push(cell.clone());
         Ok(cell)
     }
     pub fn transfer(&mut self, source: Rc<Cell>) -> Result<Rc<Cell>, VmError> {
+        #[cfg(test)]
+        self.check_adapter(&source)?;
         reserve(&mut self.semantic_owner_effects, 1)?;
         let target = self.output(Value::Undefined)?;
         self.semantic_owner_effects.push((source, target.clone()));
