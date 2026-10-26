@@ -71,6 +71,23 @@ impl CopyPlan {
         }
     }
 
+    #[cfg(test)]
+    fn validate_adapter_plan(&self) -> Result<(), VmError> {
+        for cell in self
+            .outputs
+            .iter()
+            .chain(self.source_updates.iter().map(|(c, _)| c))
+            .chain(self.retiring.iter())
+        {
+            self.check_adapter(cell)?;
+        }
+        for (src, dst) in &self.semantic_owner_effects {
+            self.check_adapter(src)?;
+            self.check_adapter(dst)?;
+        }
+        Ok(())
+    }
+
     pub fn copy(
         &mut self,
         source: Rc<Cell>,
@@ -129,6 +146,8 @@ impl CopyPlan {
         mut self,
         payloads: Vec<(Rc<Cell>, crate::cell::SlotPayload)>,
     ) -> Result<(), VmError> {
+        #[cfg(test)]
+        self.validate_adapter_plan()?;
         let mut hidden = Vec::new();
         for (cell, payload) in payloads {
             match payload {
@@ -161,6 +180,8 @@ impl CopyPlan {
         Cell::replace_payload_batch_with_roots(hidden, self.outputs)
     }
     pub fn commit(self) -> Result<(), VmError> {
+        #[cfg(test)]
+        self.validate_adapter_plan()?;
         Cell::transfer_batch(
             self.source_updates,
             self.semantic_owner_effects,

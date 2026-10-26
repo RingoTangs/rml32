@@ -1,0 +1,15 @@
+# Validation method
+
+The approved baseline is 7a215303c8828cfb6dd5c868499ef8f24c5d9d3d (839 files). Current validation freezes 833 files byte-for-byte, permits test-only hooks in four source files, and permits README/roadmap prefixes while preserving each complete old suffix. Old models, Rust test bodies, evidence and receipts are not rewritten.
+
+Historical Python validation is intentionally separate from current-source validation. historical.py creates a local shared clone, checks out the exact baseline commit without network access, and runs the 267 original Python tests and the old read-only receipt verifier there. Eleven old CSV/text evidence files have frozen CRLF bytes although Git checkout normalizes them to LF. The temporary clone restores only those verified baseline bytes, requires normalized contents to match checkout, and records both hashes. Original files are never changed. The report does not claim historical tests passed against current modified source.
+
+adapter_diff.py imports the frozen 2AS and 2BA model files under separate module identities. Eighteen fixed traces cover 146 model steps, including two rejected transitions. 2AS supplies graph sharing, member lifetime and transaction expectations; 2BA supplies the selected creator/leaf ownership projections. Object ordinary refs for 2AS are independently derived from real model slots plus one creator per Function head. Rust compares root payload identities, root alias pairs, live header owners, live actual slot count, Object refs, acceptance and rejection atomicity.
+
+The shared projection does not compare real VM frames, queues, origin security for arbitrary raw values, public APIs, every native intermediate state or the whole model. BA creator construction retains its sources; AS build consumes its sources. Mapping trace keys are canonical Int indices. The trace manifest identifies the oracle and actions. Bounds are two objects, two Function heads, two container heads, six owning slots and depth three; no new exhaustive domain is claimed.
+
+The Rust adapter worker runs separately as an explicitly ignored unit test with temporary JSONL input. Each complete trace independently releases its real cells, FunctionData, Object metadata and Context, checked by Weak probes. Temporary traces are deleted; deterministic input hashes, source hashes and actual compressed worker output remain.
+
+reference_replay.py also reruns the unchanged 2BB kernel's 14948 attempted transitions on the current build. Its new outputs are saved under 2BC, leaving old 2BB reports untouched. This preserves that bounded proof independently of the real-type trace projection.
+
+Full receipt generation additionally runs current Rust debug/release tests, both ordinary production builds, formatting, strict clippy, current Python validators and source projection checks. All 679 baseline Rust scenario names and both doctest identities must remain; new adapter scenarios are additive. Both ignored workers are required to pass separately. The 2AW corpus result is reused by frozen hash with rerun=false. No reference executable or business bytecode is executed.

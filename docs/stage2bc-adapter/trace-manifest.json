@@ -1,0 +1,907 @@
+{
+  "bounds": {
+    "container_heads": 2,
+    "depth": 3,
+    "function_heads": 2,
+    "objects": 2,
+    "owning_slots": 6
+  },
+  "cases": [
+    {
+      "actions": [
+        {
+          "id": "0",
+          "op": "object"
+        },
+        {
+          "id": "1",
+          "op": "object"
+        },
+        {
+          "op": "put",
+          "root": "x",
+          "value": [
+            "object",
+            "0"
+          ]
+        },
+        {
+          "op": "copy",
+          "root": "y",
+          "source": "x"
+        },
+        {
+          "op": "alias",
+          "root": "r",
+          "source": "x"
+        },
+        {
+          "op": "move",
+          "root": "z",
+          "source": "y"
+        },
+        {
+          "op": "drop",
+          "root": "x"
+        },
+        {
+          "op": "drop",
+          "root": "r"
+        },
+        {
+          "op": "drop",
+          "root": "z"
+        }
+      ],
+      "id": "object-copy-alias-move",
+      "model": "2AS"
+    },
+    {
+      "actions": [
+        {
+          "id": "0",
+          "op": "object"
+        },
+        {
+          "id": "1",
+          "op": "object"
+        },
+        {
+          "op": "put",
+          "root": "x",
+          "value": [
+            "object",
+            "0"
+          ]
+        },
+        {
+          "kind": "array",
+          "op": "build",
+          "root": "a",
+          "sources": [
+            "x"
+          ]
+        },
+        {
+          "op": "copy",
+          "root": "b",
+          "source": "a"
+        },
+        {
+          "index": 0,
+          "op": "member-ref",
+          "root": "r",
+          "source": "a"
+        },
+        {
+          "op": "drop",
+          "root": "a"
+        },
+        {
+          "op": "drop",
+          "root": "b"
+        },
+        {
+          "op": "drop",
+          "root": "r"
+        }
+      ],
+      "id": "array-shallow-copy-retained-member",
+      "model": "2AS"
+    },
+    {
+      "actions": [
+        {
+          "id": "0",
+          "op": "object"
+        },
+        {
+          "id": "1",
+          "op": "object"
+        },
+        {
+          "op": "put",
+          "root": "x",
+          "value": [
+            "object",
+            "0"
+          ]
+        },
+        {
+          "kind": "mapping",
+          "op": "build",
+          "root": "a",
+          "sources": [
+            "x"
+          ]
+        },
+        {
+          "index": 0,
+          "op": "member-ref",
+          "root": "r",
+          "source": "a"
+        },
+        {
+          "op": "copy",
+          "root": "b",
+          "source": "a"
+        },
+        {
+          "op": "drop",
+          "root": "a"
+        },
+        {
+          "op": "drop",
+          "root": "b"
+        },
+        {
+          "op": "drop",
+          "root": "r"
+        }
+      ],
+      "id": "mapping-retained-member-clear",
+      "model": "2AS"
+    },
+    {
+      "actions": [
+        {
+          "id": "0",
+          "op": "object"
+        },
+        {
+          "id": "1",
+          "op": "object"
+        },
+        {
+          "op": "put",
+          "root": "x",
+          "value": [
+            "object",
+            "0"
+          ]
+        },
+        {
+          "kind": "array",
+          "op": "build",
+          "root": "a",
+          "sources": [
+            "x"
+          ]
+        },
+        {
+          "op": "copy",
+          "root": "b",
+          "source": "a"
+        },
+        {
+          "kind": "array",
+          "op": "build",
+          "root": "p",
+          "sources": [
+            "a",
+            "b"
+          ]
+        },
+        {
+          "op": "copy",
+          "root": "q",
+          "source": "p"
+        },
+        {
+          "op": "drop",
+          "root": "p"
+        },
+        {
+          "op": "drop",
+          "root": "q"
+        }
+      ],
+      "id": "shared-child-graph",
+      "model": "2AS"
+    },
+    {
+      "actions": [
+        {
+          "id": "0",
+          "op": "object"
+        },
+        {
+          "id": "1",
+          "op": "object"
+        },
+        {
+          "kind": "function",
+          "op": "build",
+          "root": "f",
+          "sources": []
+        },
+        {
+          "op": "copy",
+          "root": "g",
+          "source": "f"
+        },
+        {
+          "id": "0",
+          "op": "delete-object"
+        },
+        {
+          "op": "invoke",
+          "outputs": [],
+          "root": "f"
+        },
+        {
+          "op": "invoke",
+          "outputs": [],
+          "root": "g"
+        }
+      ],
+      "id": "ownerless-global-head",
+      "model": "2AS"
+    },
+    {
+      "actions": [
+        {
+          "id": "0",
+          "op": "object"
+        },
+        {
+          "id": "1",
+          "op": "object"
+        },
+        {
+          "op": "put",
+          "root": "x",
+          "value": [
+            "object",
+            "0"
+          ]
+        },
+        {
+          "creator": "0",
+          "kind": "function",
+          "op": "build",
+          "root": "f",
+          "sources": [
+            "x"
+          ]
+        },
+        {
+          "op": "copy",
+          "root": "g",
+          "source": "f"
+        },
+        {
+          "op": "drop",
+          "root": "f"
+        },
+        {
+          "op": "drop",
+          "root": "g"
+        }
+      ],
+      "id": "same-creator-capture",
+      "model": "2AS"
+    },
+    {
+      "actions": [
+        {
+          "id": "0",
+          "op": "object"
+        },
+        {
+          "id": "1",
+          "op": "object"
+        },
+        {
+          "op": "put",
+          "root": "x",
+          "value": [
+            "object",
+            "1"
+          ]
+        },
+        {
+          "creator": "0",
+          "kind": "function",
+          "op": "build",
+          "root": "f",
+          "sources": [
+            "x"
+          ]
+        },
+        {
+          "op": "copy",
+          "root": "g",
+          "source": "f"
+        },
+        {
+          "op": "drop",
+          "root": "g"
+        },
+        {
+          "op": "drop",
+          "root": "f"
+        }
+      ],
+      "id": "distinct-creator-capture",
+      "model": "2AS"
+    },
+    {
+      "actions": [
+        {
+          "id": "0",
+          "op": "object"
+        },
+        {
+          "id": "1",
+          "op": "object"
+        },
+        {
+          "op": "put",
+          "root": "x",
+          "value": [
+            "object",
+            "1"
+          ]
+        },
+        {
+          "creator": "0",
+          "kind": "function",
+          "op": "build",
+          "root": "f",
+          "sources": [
+            "x"
+          ]
+        },
+        {
+          "kind": "array",
+          "op": "build",
+          "root": "a",
+          "sources": [
+            "f"
+          ]
+        },
+        {
+          "creator": "1",
+          "kind": "function",
+          "op": "build",
+          "root": "g",
+          "sources": [
+            "a"
+          ]
+        },
+        {
+          "op": "drop",
+          "root": "g"
+        }
+      ],
+      "id": "nested-function-array",
+      "model": "2AS"
+    },
+    {
+      "actions": [
+        {
+          "id": "0",
+          "op": "object"
+        },
+        {
+          "id": "1",
+          "op": "object"
+        },
+        {
+          "op": "put",
+          "root": "x",
+          "value": [
+            "object",
+            "1"
+          ]
+        },
+        {
+          "creator": "0",
+          "kind": "function",
+          "op": "build",
+          "root": "f",
+          "sources": [
+            "x"
+          ]
+        },
+        {
+          "id": "1",
+          "op": "delete-object"
+        },
+        {
+          "op": "invoke",
+          "outputs": [
+            "out"
+          ],
+          "root": "f"
+        },
+        {
+          "op": "drop",
+          "root": "out"
+        }
+      ],
+      "id": "unique-invalid-capture",
+      "model": "2AS"
+    },
+    {
+      "actions": [
+        {
+          "id": "0",
+          "op": "object"
+        },
+        {
+          "id": "1",
+          "op": "object"
+        },
+        {
+          "op": "put",
+          "root": "x",
+          "value": [
+            "object",
+            "1"
+          ]
+        },
+        {
+          "creator": "0",
+          "kind": "function",
+          "op": "build",
+          "root": "f",
+          "sources": [
+            "x"
+          ]
+        },
+        {
+          "op": "copy",
+          "root": "g",
+          "source": "f"
+        },
+        {
+          "id": "1",
+          "op": "delete-object"
+        },
+        {
+          "op": "invoke",
+          "outputs": [
+            "out"
+          ],
+          "root": "f"
+        },
+        {
+          "op": "invoke",
+          "outputs": [
+            "out2"
+          ],
+          "root": "g"
+        },
+        {
+          "op": "drop",
+          "root": "out"
+        },
+        {
+          "op": "drop",
+          "root": "out2"
+        }
+      ],
+      "id": "shared-invalid-capture",
+      "model": "2AS"
+    },
+    {
+      "actions": [
+        {
+          "id": "0",
+          "op": "object"
+        },
+        {
+          "id": "1",
+          "op": "object"
+        },
+        {
+          "op": "put",
+          "root": "x",
+          "value": [
+            "object",
+            "1"
+          ]
+        },
+        {
+          "creator": "0",
+          "kind": "function",
+          "op": "build",
+          "root": "f",
+          "sources": [
+            "x"
+          ]
+        },
+        {
+          "id": "0",
+          "op": "delete-object"
+        },
+        {
+          "op": "copy",
+          "root": "out",
+          "source": "f"
+        },
+        {
+          "op": "drop",
+          "root": "f"
+        },
+        {
+          "op": "drop",
+          "root": "out"
+        }
+      ],
+      "id": "invalid-creator-normalization",
+      "model": "2AS"
+    },
+    {
+      "actions": [
+        {
+          "id": "0",
+          "op": "object"
+        },
+        {
+          "id": "1",
+          "op": "object"
+        },
+        {
+          "op": "put",
+          "root": "x",
+          "value": [
+            "object",
+            "0"
+          ]
+        },
+        {
+          "op": "alias",
+          "root": "r",
+          "source": "x"
+        },
+        {
+          "id": "0",
+          "op": "delete-object"
+        },
+        {
+          "op": "copy",
+          "root": "out",
+          "source": "x"
+        },
+        {
+          "op": "drop",
+          "root": "r"
+        },
+        {
+          "op": "drop",
+          "root": "x"
+        },
+        {
+          "op": "drop",
+          "root": "out"
+        }
+      ],
+      "id": "actual-source-alias-normalization",
+      "model": "2AS"
+    },
+    {
+      "actions": [
+        {
+          "id": "0",
+          "op": "object"
+        },
+        {
+          "id": "1",
+          "op": "object"
+        },
+        {
+          "op": "put",
+          "root": "x",
+          "value": [
+            "object",
+            "0"
+          ]
+        },
+        {
+          "kind": "array",
+          "op": "build",
+          "root": "a",
+          "sources": [
+            "x"
+          ]
+        },
+        {
+          "index": 0,
+          "op": "member-ref",
+          "root": "r",
+          "source": "a"
+        },
+        {
+          "op": "write",
+          "source": "a",
+          "target": "r"
+        },
+        {
+          "op": "drop",
+          "root": "r"
+        },
+        {
+          "op": "drop",
+          "root": "a"
+        }
+      ],
+      "id": "cycle-rejected",
+      "model": "2AS"
+    },
+    {
+      "actions": [
+        {
+          "id": "0",
+          "op": "object"
+        },
+        {
+          "id": "1",
+          "op": "object"
+        },
+        {
+          "op": "put",
+          "root": "x",
+          "value": [
+            "object",
+            "0"
+          ]
+        },
+        {
+          "op": "put",
+          "root": "y",
+          "value": [
+            "object",
+            "1"
+          ]
+        },
+        {
+          "op": "put",
+          "root": "z",
+          "value": [
+            "int",
+            7
+          ]
+        },
+        {
+          "op": "alias",
+          "root": "r",
+          "source": "z"
+        },
+        {
+          "op": "batch-copy",
+          "sources": [
+            "x",
+            "y"
+          ],
+          "targets": [
+            "z",
+            "r"
+          ]
+        },
+        {
+          "op": "drop",
+          "root": "x"
+        },
+        {
+          "op": "drop",
+          "root": "y"
+        },
+        {
+          "op": "drop",
+          "root": "z"
+        },
+        {
+          "op": "drop",
+          "root": "r"
+        }
+      ],
+      "id": "conflicting-alias-batch",
+      "model": "2AS"
+    },
+    {
+      "actions": [
+        {
+          "id": "0",
+          "op": "object"
+        },
+        {
+          "id": "1",
+          "op": "object"
+        },
+        {
+          "op": "put",
+          "root": "x",
+          "value": [
+            "object",
+            "0"
+          ]
+        },
+        {
+          "op": "put",
+          "root": "z",
+          "value": [
+            "int",
+            7
+          ]
+        },
+        {
+          "op": "alias",
+          "root": "r",
+          "source": "z"
+        },
+        {
+          "op": "batch-copy",
+          "sources": [
+            "x",
+            "x"
+          ],
+          "targets": [
+            "z",
+            "r"
+          ]
+        },
+        {
+          "op": "drop",
+          "root": "x"
+        },
+        {
+          "op": "drop",
+          "root": "z"
+        },
+        {
+          "op": "drop",
+          "root": "r"
+        }
+      ],
+      "id": "equal-alias-batch",
+      "model": "2AS"
+    },
+    {
+      "actions": [
+        [
+          "object",
+          "0"
+        ],
+        [
+          "object",
+          "1"
+        ],
+        [
+          "put",
+          "x",
+          [
+            "object",
+            "1"
+          ]
+        ],
+        [
+          "function",
+          "h",
+          "0",
+          [
+            "x"
+          ],
+          "f"
+        ],
+        [
+          "copy",
+          "f",
+          "g"
+        ],
+        [
+          "drop",
+          "f"
+        ],
+        [
+          "drop",
+          "g"
+        ],
+        [
+          "drop",
+          "x"
+        ]
+      ],
+      "id": "ba-creator-distinct",
+      "model": "2BA"
+    },
+    {
+      "actions": [
+        [
+          "object",
+          "0"
+        ],
+        [
+          "object",
+          "1"
+        ],
+        [
+          "put",
+          "x",
+          [
+            "object",
+            "0"
+          ]
+        ],
+        [
+          "function",
+          "h",
+          "0",
+          [
+            "x"
+          ],
+          "f"
+        ],
+        [
+          "copy",
+          "f",
+          "g"
+        ],
+        [
+          "drop",
+          "f"
+        ],
+        [
+          "drop",
+          "g"
+        ],
+        [
+          "drop",
+          "x"
+        ]
+      ],
+      "id": "ba-creator-same",
+      "model": "2BA"
+    },
+    {
+      "actions": [
+        [
+          "object",
+          "0"
+        ],
+        [
+          "function",
+          "h",
+          "0",
+          [],
+          "f"
+        ],
+        [
+          "delete",
+          "0"
+        ],
+        [
+          "copy",
+          "f",
+          "out"
+        ]
+      ],
+      "id": "ba-invalid-creator",
+      "model": "2BA"
+    }
+  ],
+  "full_state_space_proof": false,
+  "stage": "2BC"
+}

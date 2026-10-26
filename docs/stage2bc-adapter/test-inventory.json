@@ -1,0 +1,32 @@
+{
+  "ignored_driver": "lifecycle_adapter::tests::replay_adapter_traces",
+  "ordinary": [
+    "lifecycle_adapter::tests::actual_depth_and_node_limits_reject_before_publication",
+    "lifecycle_adapter::tests::actual_graph_limits_reject_unpublished_container",
+    "lifecycle_adapter::tests::actual_object_slots_copy_move_and_take_owned",
+    "lifecycle_adapter::tests::allocation_and_workspace_failure_preserve_actual_sources",
+    "lifecycle_adapter::tests::array_retained_member_keeps_payload_mapping_clears_it",
+    "lifecycle_adapter::tests::borrowed_destination_rejects_whole_copy_plan",
+    "lifecycle_adapter::tests::creator_once_per_head_not_per_function_slot",
+    "lifecycle_adapter::tests::direct_owned_value_is_a_real_lease",
+    "lifecycle_adapter::tests::duplicate_equal_writes_merge_conflicts_reject_atomically",
+    "lifecycle_adapter::tests::expired_context_cannot_be_silently_adopted_by_legacy_plan",
+    "lifecycle_adapter::tests::final_capture_borrow_rejects_before_retirement",
+    "lifecycle_adapter::tests::foreign_retirement_is_rejected_at_commit",
+    "lifecycle_adapter::tests::graph_cycle_is_rejected_before_payload_or_counts_change",
+    "lifecycle_adapter::tests::group_final_release_checks_all_actual_capture_borrows",
+    "lifecycle_adapter::tests::independent_audit_detects_unregistered_payload_and_creator_release_corruption",
+    "lifecycle_adapter::tests::mixed_origin_and_legacy_graphs_reject",
+    "lifecycle_adapter::tests::nested_function_container_graph_releases_in_order",
+    "lifecycle_adapter::tests::no_adapter_context_changes_default_legacy_ownership",
+    "lifecycle_adapter::tests::ownerless_global_head_never_acquires_a_creator_reference",
+    "lifecycle_adapter::tests::pending_is_copyable_invalid_normalizes_actual_source",
+    "lifecycle_adapter::tests::physical_head_view_does_not_extend_creator_or_allow_revival",
+    "lifecycle_adapter::tests::raw_move_of_nested_function_does_not_require_its_capture_write_guard",
+    "lifecycle_adapter::tests::shallow_container_copy_does_not_duplicate_member_object_lease",
+    "lifecycle_adapter::tests::shared_subcontainer_cells_are_counted_once",
+    "lifecycle_adapter::tests::unique_expansion_moves_shared_expansion_copies_invalid_capture",
+    "lifecycle_adapter::tests::weak_cells_and_context_are_physically_released"
+  ],
+  "source_sha256": "013a39ef33487ee21e9d4d11e4f3f34c9ae4d32683b721dc7c25b04267fd1d09"
+}

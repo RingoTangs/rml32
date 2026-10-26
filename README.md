@@ -1,3 +1,5 @@
+> 阶段 2BC：已交付真实值槽、Function 与受限容器图的测试适配；生产运行时/API 和捕获门禁不变。历史 Python 验收在固定基线副本运行。详见 [适配总览](docs/stage2bc-adapter/overview.md)。
+
 > 阶段 2BB：已交付隔离 Rust 生命周期内核及全转换差分回放；仅测试目标编译，现有运行时/API 与捕获门禁不变。详见 [内核总览](docs/stage2bb-kernel/overview.md)。
 
 > 阶段 2BA：已交付受限生命周期 D01 设计、独立模型与有界枚举；仅设计，Rust 运行时/API 与直接捕获门禁不变。原生未发布 H/A 最终清理仍未知。详见 [设计总览](docs/stage2ba-design/overview.md)。

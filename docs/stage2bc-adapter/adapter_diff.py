@@ -25,6 +25,7 @@ def cases():
     ('array-shallow-copy-retained-member',[put('x',0),build('a','array',['x']),copy('a','b'),ref('a','r'),drop('a'),drop('b'),drop('r')]),
     ('mapping-retained-member-clear',[put('x',0),build('a','mapping',['x']),ref('a','r'),copy('a','b'),drop('a'),drop('b'),drop('r')]),
     ('shared-child-graph',[put('x',0),build('a','array',['x']),copy('a','b'),build('p','array',['a','b']),copy('p','q'),drop('p'),drop('q')]),
+    ('ownerless-global-head',[build('f','function',[]),copy('f','g'),dict(op='delete-object',id='0'),dict(op='invoke',root='f',outputs=[]),dict(op='invoke',root='g',outputs=[])]),
     ('same-creator-capture',[put('x',0),build('f','function',['x'],0),copy('f','g'),drop('f'),drop('g')]),
     ('distinct-creator-capture',[put('x',1),build('f','function',['x'],0),copy('f','g'),drop('g'),drop('f')]),
     ('nested-function-array',[put('x',1),build('f','function',['x'],0),build('a','array',['f']),build('g','function',['a'],1),drop('g')]),

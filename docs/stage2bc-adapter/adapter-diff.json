@@ -1,24 +1,24 @@
 {
   "business_bytecode_execution": false,
   "full_model_equivalence": false,
-  "input_sha256": "0adbb3e9a388b9f861a2fdc9f3da54c0ee218210f3b14a78d3cf682928ac64f6",
-  "log_sha256": "daf71d96a9a0dfec27ff809b8a8808e20b1c165c817945078cf57f64694c87eb",
+  "input_sha256": "3c72a37f9ac0a152236f7be508c65b1e54c6ea01a10c6d65fd13abde7b515348",
+  "log_sha256": "f5970709ab133d64445634d20e13b732030cf28260867cd8d13a03a3a2b13963",
   "native_execution": false,
   "real_cell_execution": true,
   "replay": {
-    "physical_teardowns": 17,
+    "physical_teardowns": 18,
     "rejected": 2,
-    "steps": 139,
-    "traces": 17
+    "steps": 146,
+    "traces": 18
   },
   "source_sha256": {
     "docs/stage2as-design/model.py": "0d8b2fe0a6e20618314eb431dccb7b7e168ff9a544fac9f7cf398920b5182de3",
     "docs/stage2ba-design/model.py": "e2561fafc55a7ab1be6321d9d4dbd3fd11dff9aa462030e61160812b0de088fc",
-    "docs/stage2bc-adapter/adapter_diff.py": "233130a751dd1252ad969569d06ffa96445ac52209cda2714483ae44e9110cff",
+    "docs/stage2bc-adapter/adapter_diff.py": "5f3bba182b6d1546fc02ec71051fa69cb999b64804c89f0022cc988034e069d6",
     "src/cell.rs": "225561f826fb470eb6d7519f8c4eff839bb1ebbb347a0f8cb26a151444999f18",
-    "src/copy_plan.rs": "1cd4d479c75e8284232d6ded0ea4afdd5b03378b4c3f5b699bae096e249fcc36",
+    "src/copy_plan.rs": "74f6dfc4999c8ff364227ff38521a120bd5c96043c332e117740ceec2b3f279d",
     "src/lib.rs": "eb4783b3a4a0707fd6fafe421f0bb9327cbd16075a70c37702980f075a3c469e",
-    "src/lifecycle_adapter.rs": "3f2bd6eff2352f0ebd10bcb4fc11da864db8879792046505d387a83e34ae9503",
+    "src/lifecycle_adapter.rs": "013a39ef33487ee21e9d4d11e4f3f34c9ae4d32683b721dc7c25b04267fd1d09",
     "src/ownership.rs": "e9ac1bc37eb6b0692d7936f1f3a8f25e2d7526b49b72ffdef2ac81be6c94c41e"
   },
   "stage": "2BC",

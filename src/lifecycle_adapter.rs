@@ -304,9 +304,16 @@ impl AdapterContext {
             capture_profile: CaptureProfile::Container,
             origin: self.origin.clone(),
             owner: creator,
-            target: FunctionTarget::Object {
-                program: ProgramId(0),
-                function: 0,
+            target: if creator.is_some() {
+                FunctionTarget::Object {
+                    program: ProgramId(0),
+                    function: 0,
+                }
+            } else {
+                FunctionTarget::Global {
+                    program: ProgramId(0),
+                    function: 0,
+                }
             },
             bound,
             bound_count: values.len(),
@@ -397,16 +404,23 @@ impl AdapterContext {
             visit(&v.value);
         }
         for h in self.heads.borrow().values() {
-            if h.creator_lease.borrow().is_some() {
-                let f = h.function.upgrade().expect("creator without live header");
-                *object_refs.entry(f.owner.unwrap()).or_default() += 1;
-            }
             if let Some(f) = h.function.upgrade() {
-                assert_eq!(f.counter.owners(), h.leases.get());
+                let actual_owners = *header_refs.get(&f.counter.id).unwrap_or(&0);
+                assert_eq!(f.counter.owners(), actual_owners);
+                assert_eq!(h.leases.get(), actual_owners);
+                assert!(Rc::ptr_eq(&f.origin, &self.origin));
+                let expected_creator = actual_owners > 0 && f.owner.is_some();
                 assert_eq!(
-                    *header_refs.get(&f.counter.id).unwrap_or(&0),
-                    h.leases.get()
+                    h.creator_lease.borrow().is_some(),
+                    expected_creator,
+                    "creator presence must follow actual owning slots"
                 );
+                if expected_creator {
+                    *object_refs.entry(f.owner.unwrap()).or_default() += 1;
+                }
+            } else {
+                assert_eq!(h.leases.get(), 0);
+                assert!(h.creator_lease.borrow().is_none());
             }
         }
         for (id, e) in self.objects.borrow().iter() {
@@ -1086,6 +1100,85 @@ mod tests {
         drop(x);
         drop(y);
         assert_eq!(c.refs(0), 0);
+        c.audit();
+    }
+    #[test]
+    fn actual_depth_and_node_limits_reject_before_publication() {
+        let c = AdapterContext::new(ValueLimits {
+            max_depth: 1,
+            ..ValueLimits::default()
+        });
+        let a = c.object(0).unwrap();
+        let child = c.array(&[a]).unwrap();
+        let before = c.snapshot();
+        assert_eq!(
+            c.array(std::slice::from_ref(&child)).unwrap_err().kind,
+            VmErrorKind::Limit
+        );
+        assert_eq!(c.snapshot(), before);
+        c.audit();
+        let c = AdapterContext::new(ValueLimits {
+            max_graph_nodes: 0,
+            ..ValueLimits::default()
+        });
+        c.object(0).unwrap();
+        let before = c.snapshot();
+        assert_eq!(c.array(&[]).unwrap_err().kind, VmErrorKind::Limit);
+        assert_eq!(c.snapshot(), before);
+        c.audit();
+    }
+    #[test]
+    fn foreign_retirement_is_rejected_at_commit() {
+        let (c, a, _) = world();
+        let (d, _, _) = world();
+        let source = c.cell(&a).unwrap();
+        let mut p = CopyPlan::with_adapter(&d);
+        p.retire(&source);
+        assert!(p.commit().is_err());
+        assert_eq!(c.refs(0), 1);
+        c.audit();
+        d.audit();
+    }
+    #[test]
+    fn independent_audit_detects_unregistered_payload_and_creator_release_corruption() {
+        let (c, a, _) = world();
+        let extra = c.acquire(&a.value).unwrap();
+        assert!(std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| c.audit())).is_err());
+        drop(extra);
+        c.audit();
+        let f = c.function(Some(0), &[]).unwrap();
+        let root = c.cell(&f).unwrap();
+        let Value::Function(view) = &f.value else {
+            unreachable!()
+        };
+        let h = c.heads.borrow()[&view.0.counter.id].clone();
+        let creator = h.creator_lease.borrow_mut().take();
+        assert!(std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| c.audit())).is_err());
+        *h.creator_lease.borrow_mut() = creator;
+        c.audit();
+        drop(root);
+        *h.creator_lease.borrow_mut() =
+            Some(ObjectLease::new(h.creator.as_ref().unwrap()).unwrap());
+        assert!(std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| c.audit())).is_err());
+        drop(h.creator_lease.borrow_mut().take());
+        c.audit();
+    }
+    #[test]
+    fn ownerless_global_head_never_acquires_a_creator_reference() {
+        let (c, _, _) = world();
+        let f = c.function(None, &[]).unwrap();
+        let x = c.cell(&f).unwrap();
+        c.status(0, Status::Invalid);
+        let y = c.copy(&x).unwrap();
+        assert_eq!(c.refs(0), 0);
+        assert_eq!(c.refs(1), 0);
+        let Value::Function(view) = &f.value else {
+            unreachable!()
+        };
+        assert!(matches!(view.target(), FunctionTarget::Global { .. }));
+        c.audit();
+        drop(x);
+        drop(y);
         c.audit();
     }
     #[test]
