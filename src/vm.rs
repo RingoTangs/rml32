@@ -2965,7 +2965,9 @@ impl Vm {
             }
         }
         #[cfg(test)]
-        if self.objects.test_life.is_some() && matches!(opcode, 0x06 | 0x12 | 0x23 | 0x50) {
+        if self.objects.test_life.as_ref().is_some_and(|life| {
+            matches!(opcode, 0x12 | 0x23 | 0x50) || (opcode == 0x06 && !life.host_boundary)
+        }) {
             return Err(err(
                 VmErrorKind::UnsupportedFeature,
                 "instruction excluded from test lifecycle",
@@ -6728,6 +6730,18 @@ impl Vm {
         self.reference_cells.clear();
         self.completion = None;
         self.failure = None;
+    }
+    pub(crate) fn lifecycle_audit_host_for_test(&self, roots: &[&crate::ownership::OwnedValue]) {
+        let frames = self
+            .frames
+            .iter()
+            .filter_map(|f| f.active_object.map(|id| (f.id, id)))
+            .collect::<Vec<_>>();
+        self.objects
+            .test_life
+            .as_ref()
+            .unwrap()
+            .audit_host(&frames, &self.exec_leases, roots);
     }
     fn lifecycle_audit_for_test(&self) {
         if let Some(life) = &self.objects.test_life {

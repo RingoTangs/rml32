@@ -1,0 +1,22 @@
+{
+  "input_sha256": "b3ee3850bc7c25e72dbb43017cf71cf84630878dd09aacdead1c80567f1a7bf7",
+  "log_sha256": "9ea53b1f78a97e772602c9e61ddb9bd16dd206c8a18d13b1fbd0052e6c808d51",
+  "replay": {
+    "physical_teardowns": 12,
+    "steps": 75,
+    "traces": 12
+  },
+  "source_sha256": {
+    "docs/stage2ba-design/model.py": "e2561fafc55a7ab1be6321d9d4dbd3fd11dff9aa462030e61160812b0de088fc",
+    "docs/stage2be-host-test/host_diff.py": "b1cb4822ec0da68809603e3bec21f1d85e2919bbbd87242154459f89feb87e36",
+    "src/boundary.rs": "88abc5abdec60d11fd19ad618de79e00c165cf5691d783060b632e09a7b13de0",
+    "src/lifecycle_adapter.rs": "0f8f29177627d1404462dbcf6ed60ed8720f36b2f55475363c82ca6226938037",
+    "src/lifecycle_boundary_tests.rs": "2ff7a9e11d13780df3d460005889b91c92c2ebf58803c162c987ec3fa8cdbb35",
+    "src/lifecycle_runtime.rs": "4992ad378b144f6c27b76be3fe69501a8d829053ad048430312884da1fc4ab75",
+    "src/object.rs": "400a48baaea6d5ae0948500761189133a9b6612d9b81b5c0106285cc50ddab79",
+    "src/vm.rs": "ca915eb219da0cdc1be3be112cc129c80788e5f114d3077c7be1beaca7a44a84",
+    "tests/boundary_support.rs.inc": "3c914473bcf99d3642dc5e2920ff653b2b329068aec7f7ec3a5b2a69857139d5"
+  },
+  "stage": "2BE",
+  "status": "pass"
+}

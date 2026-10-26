@@ -194,7 +194,8 @@ impl ObjectStore {
     pub fn register_program(&mut self, program: PreparedProgram) -> Result<ProgramId, VmError> {
         #[cfg(test)]
         if self.test_life.is_some()
-            && (program.allow_host_calls || program.allow_host_function_values)
+            && (program.allow_host_function_values
+                || (program.allow_host_calls && !self.test_life.as_ref().unwrap().host_boundary))
         {
             return Err(VmError::new(
                 VmErrorKind::UnsupportedFeature,
@@ -339,6 +340,20 @@ impl ObjectStore {
             capacity,
         )?);
         Ok(store)
+    }
+    pub(crate) fn with_test_host_lifecycle(limits: crate::ValueLimits) -> Result<Self, VmError> {
+        let mut store = Self::new();
+        store.value_limits = Rc::new(limits);
+        store.test_life = Some(crate::lifecycle_adapter::runtime::StoreState::new_host(
+            store.function_origin.clone(),
+            limits,
+        )?);
+        Ok(store)
+    }
+    pub(crate) fn take_host_callbacks_for_test(
+        &mut self,
+    ) -> BTreeMap<u16, crate::host::HostFunction> {
+        std::mem::take(&mut self.host_functions)
     }
     pub(crate) fn test_cell(&self, value: Value) -> Result<Rc<crate::cell::Cell>, VmError> {
         match &self.test_life {

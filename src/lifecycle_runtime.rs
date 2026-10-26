@@ -121,9 +121,21 @@ pub(crate) struct StoreState {
     queue: Rc<Queue>,
     capacity: usize,
     closed: Flag<bool>,
+    pub(crate) host_boundary: bool,
 }
 impl StoreState {
     pub(crate) fn new(origin: Rc<()>, limits: ValueLimits, capacity: usize) -> Result<Rc<Self>> {
+        Self::new_mode(origin, limits, capacity, false)
+    }
+    pub(crate) fn new_host(origin: Rc<()>, limits: ValueLimits) -> Result<Rc<Self>> {
+        Self::new_mode(origin, limits, usize::MAX, true)
+    }
+    fn new_mode(
+        origin: Rc<()>,
+        limits: ValueLimits,
+        capacity: usize,
+        host_boundary: bool,
+    ) -> Result<Rc<Self>> {
         if capacity < 2 {
             return Err(VmError::new(
                 VmErrorKind::Limit,
@@ -137,6 +149,7 @@ impl StoreState {
             queue: Rc::new(Queue::default()),
             capacity,
             closed: Flag::new(false),
+            host_boundary,
         }))
     }
     pub(crate) fn register(&self, id: ObjectId) -> Result<()> {
@@ -268,6 +281,12 @@ impl StoreState {
         };
         self.ctx.cell(&self.ctx.bound(v))
     }
+    pub(crate) fn owned(&self, value: Value) -> Result<OwnedValue> {
+        self.ctx.validate(&value)?;
+        let mut result = OwnedValue::new(value)?;
+        result.lifecycle = self.ctx.acquire(&result.value)?;
+        Ok(result)
+    }
     pub(crate) fn plan(&self) -> CopyPlan {
         CopyPlan::with_adapter(&self.ctx)
     }
@@ -278,8 +297,16 @@ impl StoreState {
         self.ctx.runtime_mapping(values)
     }
     pub(crate) fn audit(&self, frames: &[(u64, ObjectId)], installed: &[(u64, ExecLease)]) {
+        self.audit_host(frames, installed, &[]);
+    }
+    pub(crate) fn audit_host(
+        &self,
+        frames: &[(u64, ObjectId)],
+        installed: &[(u64, ExecLease)],
+        roots: &[&OwnedValue],
+    ) {
         self.audit_reachable();
-        self.ctx.audit_extra(&self.queue.ids());
+        self.ctx.audit_roots(&self.queue.ids(), roots);
         let mut exec = BTreeMap::new();
         for (_, id) in frames {
             *exec.entry(*id).or_insert(0) += 1;

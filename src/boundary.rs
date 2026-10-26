@@ -117,6 +117,11 @@ struct Registry {
     next: Cell<u64>,
     entries: RefCell<Vec<Entry>>,
     limits: Rc<ValueLimits>,
+    #[cfg(test)]
+    test_life: Option<Rc<crate::lifecycle_adapter::runtime::StoreState>>,
+    // Entries precede the parked store so final Registry teardown releases roots first.
+    #[cfg(test)]
+    closed_store: RefCell<Option<object::ObjectStore>>,
 }
 impl Registry {
     fn program(&self, slot: value::ProgramId) -> ProgramId {
@@ -167,6 +172,15 @@ impl Registry {
             } else {
                 i += 1;
             }
+        }
+        #[cfg(test)]
+        let release_store = !self.alive.get() && entries.is_empty();
+        #[cfg(test)]
+        drop(entries);
+        #[cfg(test)]
+        if release_store {
+            let store = self.closed_store.borrow_mut().take();
+            drop(store);
         }
         true
     }
@@ -229,6 +243,9 @@ impl Registry {
             .try_reserve(1)
             .map_err(|_| limit("host root allocation failed"))?;
         let retired = Rc::new(Cell::new(false));
+        #[cfg(test)]
+        let payload = self.test_owned(value)?;
+        #[cfg(not(test))]
         let payload = OwnedValue::new(value)?;
         entries.push(Entry {
             id,
@@ -398,6 +415,10 @@ impl Registry {
     }
     fn array(self: &Rc<Self>, inputs: &[ValueInput<'_>]) -> Result<HostValue, VmError> {
         let _scope = crate::graph::Scope::new(*self.limits);
+        #[cfg(test)]
+        if let Some(life) = &self.test_life {
+            return self.publish(life.array(self.inputs(inputs)?)?);
+        }
         self.publish(value::Value::array(self.inputs(inputs)?)?)
     }
     fn mapping(
@@ -412,6 +433,10 @@ impl Registry {
             .iter()
             .map(|&(k, v)| Ok((self.input(k)?, self.input(v)?)))
             .collect::<Result<_, VmError>>()?;
+        #[cfg(test)]
+        if let Some(life) = &self.test_life {
+            return self.publish(life.mapping(values)?);
+        }
         self.publish(value::Value::mapping(values)?)
     }
 }
@@ -503,6 +528,13 @@ pub struct ObjectStore {
 }
 impl Drop for ObjectStore {
     fn drop(&mut self) {
+        #[cfg(test)]
+        if self.registry.test_life.is_some() {
+            if let Some(inner) = self.inner.take() {
+                self.registry.close_store_for_test(inner);
+            }
+            return;
+        }
         if self.inner.is_some() {
             self.registry.close();
         }
@@ -522,6 +554,10 @@ impl ObjectStore {
             alive: Cell::new(true),
             next: Cell::new(1),
             entries: RefCell::new(Vec::new()),
+            #[cfg(test)]
+            test_life: None,
+            #[cfg(test)]
+            closed_store: RefCell::new(None),
             limits,
         });
         Ok(Self {
@@ -712,11 +748,20 @@ impl StoreMut<'_> {
                                 ))
                             })?;
                             registry.snapshot(raw).map_err(host_error)?;
+                            #[cfg(test)]
+                            return registry
+                                .test_owned(raw.clone())
+                                .map(Some)
+                                .map_err(host_error);
+                            #[cfg(not(test))]
                             OwnedValue::new(raw.clone()).map(Some).map_err(host_error)
                         }
                         HostResult::Owned(value) => {
                             let raw = registry.raw(&value).map_err(host_error)?;
                             registry.snapshot(&raw).map_err(host_error)?;
+                            #[cfg(test)]
+                            return registry.test_owned(raw).map(Some).map_err(host_error);
+                            #[cfg(not(test))]
                             OwnedValue::new(raw).map(Some).map_err(host_error)
                         }
                     }
@@ -808,6 +853,13 @@ pub struct Vm {
 }
 impl Drop for Vm {
     fn drop(&mut self) {
+        #[cfg(test)]
+        if self.registry.test_life.is_some() {
+            if let Some(inner) = self.inner.take() {
+                self.registry.close_store_for_test(inner.into_objects());
+            }
+            return;
+        }
         if self.inner.is_some() {
             self.registry.close();
         }
@@ -1026,6 +1078,49 @@ impl fmt::Debug for HostFunction {
             .finish_non_exhaustive()
     }
 }
+
+#[cfg(test)]
+impl Registry {
+    fn test_owned(&self, value: value::Value) -> Result<OwnedValue, VmError> {
+        match &self.test_life {
+            Some(life) => life.owned(value),
+            None => OwnedValue::new(value),
+        }
+    }
+    fn close_store_for_test(&self, mut store: object::ObjectStore) {
+        self.alive.set(false);
+        self.test_life.as_ref().unwrap().begin_close();
+        // A user callback can capture a HostValue. Park the sole arena owner,
+        // then drop callback bindings outside every registry borrow to break that cycle.
+        let callbacks = store.take_host_callbacks_for_test();
+        *self.closed_store.borrow_mut() = Some(store);
+        drop(callbacks);
+        self.drain();
+    }
+}
+#[cfg(test)]
+impl ObjectStore {
+    pub(crate) fn with_test_host_lifecycle(limits: ValueLimits) -> Result<Self, VmError> {
+        let inner = object::ObjectStore::with_test_host_lifecycle(limits)?;
+        let registry = Rc::new(Registry {
+            identity: Counter::new()?,
+            function_origin: inner.function_origin.clone(),
+            alive: Cell::new(true),
+            next: Cell::new(1),
+            entries: RefCell::new(Vec::new()),
+            limits: inner.value_limits.clone(),
+            test_life: inner.test_life.clone(),
+            closed_store: RefCell::new(None),
+        });
+        Ok(Self {
+            inner: Some(inner),
+            registry,
+        })
+    }
+}
+#[cfg(test)]
+#[path = "lifecycle_boundary_tests.rs"]
+mod lifecycle_boundary_tests;
 
 #[cfg(test)]
 mod tests {

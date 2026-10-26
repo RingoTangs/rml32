@@ -421,6 +421,9 @@ impl AdapterContext {
         self.audit_extra(&[]);
     }
     fn audit_extra(&self, extra: &[ObjectId]) {
+        self.audit_roots(extra, &[]);
+    }
+    fn audit_roots(&self, extra: &[ObjectId], roots: &[&OwnedValue]) {
         let mut object_refs = BTreeMap::<ObjectId, usize>::new();
         let mut header_refs = BTreeMap::<u64, usize>::new();
         let mut seen = BTreeSet::new();
@@ -439,6 +442,9 @@ impl AdapterContext {
         }
         for v in self.owned.borrow().iter().filter_map(Weak::upgrade) {
             visit(&v.value);
+        }
+        for root in roots {
+            visit(&root.value);
         }
         for h in self.heads.borrow().values() {
             if let Some(f) = h.function.upgrade() {

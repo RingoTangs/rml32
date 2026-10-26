@@ -1,0 +1,2632 @@
+{
+  "host_groups": [
+    {
+      "group": "actual-roots",
+      "tests": [
+        "boundary::lifecycle_boundary_tests::borrowed_registry_defers_exactly_one_root_release",
+        "boundary::lifecycle_boundary_tests::missing_registry_root_is_detected_by_independent_audit",
+        "boundary::lifecycle_boundary_tests::root_capacity_and_id_exhaustion_do_not_publish_or_leak",
+        "boundary::lifecycle_boundary_tests::roots_retain_and_observation_have_exact_owner_effects"
+      ]
+    },
+    {
+      "group": "graphs-and-creators",
+      "tests": [
+        "boundary::lifecycle_boundary_tests::containers_bind_real_members_and_exports_own_independent_slots",
+        "boundary::lifecycle_boundary_tests::freed_ids_and_foreign_roots_cannot_be_imported",
+        "boundary::lifecycle_boundary_tests::function_copies_keep_one_creator_and_real_container_members",
+        "boundary::lifecycle_boundary_tests::unbound_container_graph_is_rejected_without_adoption"
+      ]
+    },
+    {
+      "group": "completion-transfer",
+      "tests": [
+        "boundary::lifecycle_boundary_tests::completion_borrow_failure_is_retryable",
+        "boundary::lifecycle_boundary_tests::completion_capacity_failure_is_retryable_without_consuming_value",
+        "boundary::lifecycle_boundary_tests::completion_transfer_uses_existing_lease_and_claims_once"
+      ]
+    },
+    {
+      "group": "close-retention",
+      "tests": [
+        "boundary::lifecycle_boundary_tests::close_while_registry_borrowed_preserves_retired_root_and_storage",
+        "boundary::lifecycle_boundary_tests::close_without_roots_releases_storage_immediately",
+        "boundary::lifecycle_boundary_tests::closing_store_detaches_callbacks_that_capture_host_roots",
+        "boundary::lifecycle_boundary_tests::final_registry_drop_releases_borrow_deferred_closed_storage",
+        "boundary::lifecycle_boundary_tests::store_close_retains_records_until_final_host_root",
+        "boundary::lifecycle_boundary_tests::vm_close_exits_pending_frames_then_retains_storage_for_root"
+      ]
+    },
+    {
+      "group": "transfer",
+      "tests": [
+        "boundary::lifecycle_boundary_tests::callback_bindings_survive_transfer_and_reexecute_only_after_explicit_restart",
+        "boundary::lifecycle_boundary_tests::transfer_and_rebuild_keep_origin_mode_queue_and_callbacks"
+      ]
+    },
+    {
+      "group": "raw-host-policy",
+      "tests": [
+        "boundary::lifecycle_boundary_tests::callback_raw_deleted_object_argument_and_result_are_not_normalized",
+        "boundary::lifecycle_boundary_tests::raw_retention_preserves_shell_until_script_copy"
+      ]
+    },
+    {
+      "group": "single-effects",
+      "tests": [
+        "boundary::lifecycle_boundary_tests::callback_borrowed_result_and_saved_root_have_exact_ownership",
+        "boundary::lifecycle_boundary_tests::callback_error_is_sticky_and_saved_roots_survive",
+        "boundary::lifecycle_boundary_tests::callback_foreign_owned_result_is_rejected_after_one_effect",
+        "boundary::lifecycle_boundary_tests::callback_owned_container_result_binds_members",
+        "boundary::lifecycle_boundary_tests::callback_post_effect_invalid_result_never_replays",
+        "boundary::lifecycle_boundary_tests::callback_post_effect_workspace_failure_rolls_back_and_never_replays",
+        "boundary::lifecycle_boundary_tests::callback_preflight_failure_has_zero_effects",
+        "boundary::lifecycle_boundary_tests::callback_void_result_is_valid_and_has_no_extra_object_owner"
+      ]
+    },
+    {
+      "group": "closed-gates",
+      "tests": [
+        "boundary::lifecycle_boundary_tests::host_function_values_and_managed_execution_stay_gated_in_host_mode",
+        "boundary::lifecycle_boundary_tests::host_retirement_does_not_drain_object_queue"
+      ]
+    }
+  ],
+  "native_unknowns": 20,
+  "native_unknowns_promoted": 0,
+  "prior_cases": [
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "static-inference",
+          "coverage": "not-promoted",
+          "findings": [
+            "F01",
+            "F03"
+          ],
+          "id": "C01",
+          "kernel_tests": [],
+          "native_equivalence_proven": false,
+          "prior_category": "excluded",
+          "source_case_sha256": "8ef4117ba04194703592c23a0a4f19678cc857d77463ca01e826e04d134c87cb"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": []
+    },
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "static-inference",
+          "coverage": "not-promoted",
+          "findings": [
+            "F01",
+            "F03"
+          ],
+          "id": "C02",
+          "kernel_tests": [],
+          "native_equivalence_proven": false,
+          "prior_category": "excluded",
+          "source_case_sha256": "709ed163d4707e25ee57d28686f9c8ac80278bfff19a916c507866e0a2b07446"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": []
+    },
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "static-inference",
+          "coverage": "not-promoted",
+          "findings": [
+            "F01",
+            "F03"
+          ],
+          "id": "C03",
+          "kernel_tests": [],
+          "native_equivalence_proven": false,
+          "prior_category": "excluded",
+          "source_case_sha256": "ced1eec8546861bf634c57cdc3c4e0bc07f7038a8dbd47da2cf38798036b96b7"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": []
+    },
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "static-inference",
+          "coverage": "not-promoted",
+          "findings": [
+            "F01",
+            "F03"
+          ],
+          "id": "C04",
+          "kernel_tests": [],
+          "native_equivalence_proven": false,
+          "prior_category": "excluded",
+          "source_case_sha256": "6f053aac6336a1c80a39674625f42d382b54931f83c033a1743b884fcd642a52"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": []
+    },
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "static-inference",
+          "coverage": "not-promoted",
+          "findings": [
+            "F01",
+            "F03"
+          ],
+          "id": "C05",
+          "kernel_tests": [],
+          "native_equivalence_proven": false,
+          "prior_category": "excluded",
+          "source_case_sha256": "8739f218066ee85fe87a89b07c191b8ba36ccd40ad5a1705c512688f75962c0d"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": []
+    },
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "static-inference",
+          "coverage": "not-promoted",
+          "findings": [
+            "F01",
+            "F03"
+          ],
+          "id": "C06",
+          "kernel_tests": [],
+          "native_equivalence_proven": false,
+          "prior_category": "excluded",
+          "source_case_sha256": "95727767d6de883f19f15742ccdd35581aa4dfe057004860a863ec170bbc93d8"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": []
+    },
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "static-inference",
+          "coverage": "not-promoted",
+          "findings": [
+            "F01",
+            "F03"
+          ],
+          "id": "C07",
+          "kernel_tests": [],
+          "native_equivalence_proven": false,
+          "prior_category": "excluded",
+          "source_case_sha256": "ad7f3c1d2a1955bd75e01e74c55c38cff76804f17a4976adebb6b79d537a2a6d"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": []
+    },
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "static-inference",
+          "coverage": "not-promoted",
+          "findings": [
+            "F01",
+            "F03"
+          ],
+          "id": "C08",
+          "kernel_tests": [],
+          "native_equivalence_proven": false,
+          "prior_category": "partial-model",
+          "source_case_sha256": "79a88dce91ae18d59dd8f40b1ee729ffee879775ee680d278fb12d9927481b9a"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": []
+    },
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "static-inference",
+          "coverage": "not-promoted",
+          "findings": [
+            "F01",
+            "F03"
+          ],
+          "id": "C09",
+          "kernel_tests": [],
+          "native_equivalence_proven": false,
+          "prior_category": "excluded",
+          "source_case_sha256": "69f44b8638a99ed5809d429ca6439d64836bcb8efacb9e24060f5f6df7f260a4"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": []
+    },
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "static-inference",
+          "coverage": "not-promoted",
+          "findings": [
+            "F03",
+            "F08"
+          ],
+          "id": "C10",
+          "kernel_tests": [],
+          "native_equivalence_proven": false,
+          "prior_category": "excluded",
+          "source_case_sha256": "224442e42d6a1b6aa382601a74563ffe038d52dd3ac3c9cfd2d4b259ad7ad8c0"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": []
+    },
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "static-inference",
+          "coverage": "not-promoted",
+          "findings": [
+            "F03",
+            "F23"
+          ],
+          "id": "C11",
+          "kernel_tests": [],
+          "native_equivalence_proven": false,
+          "prior_category": "excluded",
+          "source_case_sha256": "ca4c288a1b494198ac54ee3ca53e8a597e44c187e58bc743262860dea2da5e98"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": []
+    },
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "static-inference",
+          "coverage": "not-promoted",
+          "findings": [
+            "F01",
+            "F02"
+          ],
+          "id": "C12",
+          "kernel_tests": [],
+          "native_equivalence_proven": false,
+          "prior_category": "excluded",
+          "source_case_sha256": "a7b9a3330ac06d6b317bd4437b78bbb4484ccac897444fd0e65850685b04263b"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": []
+    },
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "design",
+          "coverage": "not-promoted",
+          "findings": [
+            "F01",
+            "F21"
+          ],
+          "id": "C13",
+          "kernel_tests": [],
+          "native_equivalence_proven": false,
+          "prior_category": "excluded",
+          "source_case_sha256": "63ff9730111743e243fc2afa9f9099e17d162f15fd796c18fc53e286df36e4bf"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": []
+    },
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "static-inference",
+          "coverage": "not-promoted",
+          "findings": [
+            "F02",
+            "F20"
+          ],
+          "id": "C14",
+          "kernel_tests": [],
+          "native_equivalence_proven": false,
+          "prior_category": "excluded",
+          "source_case_sha256": "0723392b4225a47c97d3496b448bf6286817305c5c36280417834d472dc58a67"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": []
+    },
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "unresolved",
+          "coverage": "not-promoted",
+          "findings": [
+            "F02",
+            "F20"
+          ],
+          "id": "C15",
+          "kernel_tests": [],
+          "native_equivalence_proven": false,
+          "prior_category": "native-unknown",
+          "source_case_sha256": "540dc2869532a7ffec71ebf0f958e36a662c0c81dade75c9df4f2184cae77dec"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": []
+    },
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "static-inference",
+          "coverage": "not-promoted",
+          "findings": [
+            "F05",
+            "F07"
+          ],
+          "id": "C16",
+          "kernel_tests": [],
+          "native_equivalence_proven": false,
+          "prior_category": "excluded",
+          "source_case_sha256": "841e5d861a5add45cda9bc29dd8a43b01a95aeb6d0477b31c42b45c7903d0539"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": []
+    },
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "static-inference",
+          "coverage": "not-promoted",
+          "findings": [
+            "F06",
+            "F07"
+          ],
+          "id": "C17",
+          "kernel_tests": [],
+          "native_equivalence_proven": false,
+          "prior_category": "excluded",
+          "source_case_sha256": "ac457fb6d3da275c6d3aa99ae4c438aa4ecce6ef2288b7aaa4eb93968c90ef6c"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": []
+    },
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "static-inference",
+          "coverage": "not-promoted",
+          "findings": [
+            "F05",
+            "F07"
+          ],
+          "id": "C18",
+          "kernel_tests": [],
+          "native_equivalence_proven": false,
+          "prior_category": "excluded",
+          "source_case_sha256": "3610f1e837dc5b09098850cea1dd13a720ea9819c30093d10115aabc078524f9"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": []
+    },
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "static-inference",
+          "coverage": "not-promoted",
+          "findings": [
+            "F06",
+            "F07"
+          ],
+          "id": "C19",
+          "kernel_tests": [],
+          "native_equivalence_proven": false,
+          "prior_category": "excluded",
+          "source_case_sha256": "5cb04d07a2c53e19f24f03ce35c474378b9d9010ebcabf461ca3154e1e8b9699"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": []
+    },
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "static-inference",
+          "coverage": "not-promoted",
+          "findings": [
+            "F05",
+            "F09",
+            "F18"
+          ],
+          "id": "C20",
+          "kernel_tests": [],
+          "native_equivalence_proven": false,
+          "prior_category": "partial-model",
+          "source_case_sha256": "877615c66482665f646d0237b8da09bd74551ef7fc03e361c62c4ae7acf44715"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": []
+    },
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "static-inference",
+          "coverage": "not-promoted",
+          "findings": [
+            "F06",
+            "F08",
+            "F09"
+          ],
+          "id": "C21",
+          "kernel_tests": [],
+          "native_equivalence_proven": false,
+          "prior_category": "partial-model",
+          "source_case_sha256": "e945bdf40c195422a923007a44cea0e43b1763a97693fc3fa82a4af54d8ebe8c"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": []
+    },
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "static-inference",
+          "coverage": "not-promoted",
+          "findings": [
+            "F05",
+            "F09",
+            "F18"
+          ],
+          "id": "C22",
+          "kernel_tests": [],
+          "native_equivalence_proven": false,
+          "prior_category": "excluded",
+          "source_case_sha256": "463b3dce51cb2d8997ba911a28c1e4ee2fe5339cd728d3b685ecb2756ae61aee"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": []
+    },
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "static-inference",
+          "coverage": "not-promoted",
+          "findings": [
+            "F06",
+            "F08",
+            "F09"
+          ],
+          "id": "C23",
+          "kernel_tests": [],
+          "native_equivalence_proven": false,
+          "prior_category": "excluded",
+          "source_case_sha256": "5bafdae110af4d987bebaeb1bf36e1090456043deba7c34fee81869e444a8000"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": []
+    },
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "static-inference",
+          "coverage": "not-promoted",
+          "findings": [
+            "F08",
+            "F06"
+          ],
+          "id": "C24",
+          "kernel_tests": [],
+          "native_equivalence_proven": false,
+          "prior_category": "excluded",
+          "source_case_sha256": "0a95bdc8d2e26b519f80691157173d49722274fce4063f934f541221ffe6079b"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": []
+    },
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "static-inference",
+          "coverage": "not-promoted",
+          "findings": [
+            "F06",
+            "F11"
+          ],
+          "id": "C25",
+          "kernel_tests": [],
+          "native_equivalence_proven": false,
+          "prior_category": "excluded",
+          "source_case_sha256": "dd3557819ae568828135c31ebff60528ead8a245f1ccb74e5b006c32644db70f"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": []
+    },
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [
+          "lifecycle_adapter::tests::physical_head_view_does_not_extend_creator_or_allow_revival"
+        ],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "design",
+          "coverage": "bounded-policy-slice",
+          "findings": [
+            "F21"
+          ],
+          "id": "C26",
+          "kernel_tests": [
+            "kernel::tests::snapshot_and_alias_are_not_payload_owners"
+          ],
+          "native_equivalence_proven": false,
+          "prior_category": "modeled",
+          "source_case_sha256": "4abdb6912c1e7d03d7dba5d95eec5b0e851f36ad5c8b105173a2e98cdafb799c"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": []
+    },
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "static-inference",
+          "coverage": "not-promoted",
+          "findings": [
+            "F05",
+            "F06"
+          ],
+          "id": "C27",
+          "kernel_tests": [],
+          "native_equivalence_proven": false,
+          "prior_category": "excluded",
+          "source_case_sha256": "383e2fb411f5fb7964ec48e24879f7c152e7375b7bc47d4018165f22676e1bea"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": []
+    },
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [
+          "lifecycle_adapter::tests::shallow_container_copy_does_not_duplicate_member_object_lease"
+        ],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "static-inference",
+          "coverage": "not-promoted",
+          "findings": [
+            "F07",
+            "F08"
+          ],
+          "id": "C28",
+          "kernel_tests": [],
+          "native_equivalence_proven": false,
+          "prior_category": "excluded",
+          "source_case_sha256": "54159cd94ef8fbf8d390bd5e6fe37339372f1feadae9e4ff3ba5424f26d2d624"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": []
+    },
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [
+          "lifecycle_adapter::tests::pending_is_copyable_invalid_normalizes_actual_source"
+        ],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "static-inference",
+          "coverage": "not-promoted",
+          "findings": [
+            "F08",
+            "F22"
+          ],
+          "id": "C29",
+          "kernel_tests": [],
+          "native_equivalence_proven": false,
+          "prior_category": "partial-model",
+          "source_case_sha256": "358e7b22af683acfdc0aa4ec2dc5023b0c846a3bcf0dbf317a8d3f7e4b8dd9eb"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": []
+    },
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "static-inference",
+          "coverage": "not-promoted",
+          "findings": [
+            "F08",
+            "F22"
+          ],
+          "id": "C30",
+          "kernel_tests": [],
+          "native_equivalence_proven": false,
+          "prior_category": "partial-model",
+          "source_case_sha256": "4a6906342eceb4620a8c5363536762fde97612f5294416af7acf57be97a94ddb"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": []
+    },
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [
+          "lifecycle_adapter::tests::pending_is_copyable_invalid_normalizes_actual_source"
+        ],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "static-inference",
+          "coverage": "not-promoted",
+          "findings": [
+            "F08",
+            "F12"
+          ],
+          "id": "C31",
+          "kernel_tests": [],
+          "native_equivalence_proven": false,
+          "prior_category": "partial-model",
+          "source_case_sha256": "a3a29dce0d7176d61f11bd5680b85a769824def8168477495580b13aaf00b847"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": []
+    },
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "static-inference",
+          "coverage": "not-promoted",
+          "findings": [
+            "F08",
+            "F13"
+          ],
+          "id": "C32",
+          "kernel_tests": [],
+          "native_equivalence_proven": false,
+          "prior_category": "excluded",
+          "source_case_sha256": "52ed8fc7abb513e760563bb9f58d6557dd64300c59e5824beeb4dd5a331f1135"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": []
+    },
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "static-inference",
+          "coverage": "not-promoted",
+          "findings": [
+            "F08",
+            "F13"
+          ],
+          "id": "C33",
+          "kernel_tests": [],
+          "native_equivalence_proven": false,
+          "prior_category": "excluded",
+          "source_case_sha256": "357bdb7a1edf236cde7830c540869a25024ed83f022c8f6b3ad67afc0debb626"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": []
+    },
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "static-inference",
+          "coverage": "not-promoted",
+          "findings": [
+            "F13"
+          ],
+          "id": "C34",
+          "kernel_tests": [],
+          "native_equivalence_proven": false,
+          "prior_category": "excluded",
+          "source_case_sha256": "fb448674191b848e1324782569d33908a9626513f719914460d6dba009ff3cb1"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": []
+    },
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [
+          "lifecycle_adapter::tests::array_retained_member_keeps_payload_mapping_clears_it"
+        ],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "static-inference",
+          "coverage": "not-promoted",
+          "findings": [
+            "F14"
+          ],
+          "id": "C35",
+          "kernel_tests": [],
+          "native_equivalence_proven": false,
+          "prior_category": "excluded",
+          "source_case_sha256": "9604c8ebfacd0a2cedd7ca819742231e6d9babc6d1e6156cc95e4b67ddfff2b8"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": []
+    },
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [
+          "lifecycle_adapter::tests::array_retained_member_keeps_payload_mapping_clears_it"
+        ],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "static-inference",
+          "coverage": "not-promoted",
+          "findings": [
+            "F15"
+          ],
+          "id": "C36",
+          "kernel_tests": [],
+          "native_equivalence_proven": false,
+          "prior_category": "excluded",
+          "source_case_sha256": "81a99cef6dcfd0f772812f8a8820150e072a2dfb87a63aca5bc1e68e8fba4418"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": []
+    },
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [
+          "lifecycle_adapter::tests::creator_once_per_head_not_per_function_slot"
+        ],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "static-inference",
+          "coverage": "bounded-policy-slice",
+          "findings": [
+            "F11"
+          ],
+          "id": "C37",
+          "kernel_tests": [
+            "kernel::tests::creator_and_payload_counts_are_independent"
+          ],
+          "native_equivalence_proven": false,
+          "prior_category": "modeled",
+          "source_case_sha256": "63005d1c3b3bc74932b775f01629691899a665b13217ddd22ab997bdf011ac95"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": []
+    },
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [
+          "lifecycle_adapter::tests::unique_expansion_moves_shared_expansion_copies_invalid_capture"
+        ],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "static-inference",
+          "coverage": "bounded-policy-slice",
+          "findings": [
+            "F05",
+            "F11"
+          ],
+          "id": "C38",
+          "kernel_tests": [
+            "kernel::tests::unique_move_vs_shared_copy_invalid_capture"
+          ],
+          "native_equivalence_proven": false,
+          "prior_category": "modeled",
+          "source_case_sha256": "8a9bfa7fdde8da94814c8936c4f0add1a51845a9180761d3542382e2573c9414"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": []
+    },
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "static-inference",
+          "coverage": "not-promoted",
+          "findings": [
+            "F16"
+          ],
+          "id": "C39",
+          "kernel_tests": [],
+          "native_equivalence_proven": false,
+          "prior_category": "excluded",
+          "source_case_sha256": "0d8527021478b3d1dc343dc9b3db071eae3d06d4aa32af663af61a6cf0ec82c3"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": []
+    },
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "unresolved",
+          "coverage": "not-promoted",
+          "findings": [
+            "F16",
+            "F20"
+          ],
+          "id": "C40",
+          "kernel_tests": [],
+          "native_equivalence_proven": false,
+          "prior_category": "native-unknown",
+          "source_case_sha256": "b3b764abfc7081ec8e837785c1b872cdfbdf416862d88aba87e20e6b50e2d826"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": []
+    },
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "static-inference",
+          "coverage": "not-promoted",
+          "findings": [
+            "F09",
+            "F18",
+            "F19"
+          ],
+          "id": "C41",
+          "kernel_tests": [],
+          "native_equivalence_proven": false,
+          "prior_category": "excluded",
+          "source_case_sha256": "69d306137f8df0a44b3da0f9d4c252001c81ba6374036344ae372f9a0fc35dda"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": []
+    },
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "static-inference",
+          "coverage": "not-promoted",
+          "findings": [
+            "F05",
+            "F18",
+            "F19"
+          ],
+          "id": "C42",
+          "kernel_tests": [],
+          "native_equivalence_proven": false,
+          "prior_category": "excluded",
+          "source_case_sha256": "782fd151fcf4281a7e5298886de32c3a90ded69e5211eda4b85ee5d06a9e7ca8"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": []
+    },
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "static-inference",
+          "coverage": "not-promoted",
+          "findings": [
+            "F18",
+            "F19"
+          ],
+          "id": "C43",
+          "kernel_tests": [],
+          "native_equivalence_proven": false,
+          "prior_category": "excluded",
+          "source_case_sha256": "ff1af92c0b3656c8caefb38782e5a3c237e25892c3dd6ccc97285e9500ff505f"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": []
+    },
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "static-inference",
+          "coverage": "not-promoted",
+          "findings": [
+            "F18",
+            "F19"
+          ],
+          "id": "C44",
+          "kernel_tests": [],
+          "native_equivalence_proven": false,
+          "prior_category": "excluded",
+          "source_case_sha256": "d8417360ee84c3ac55f29d45e4807fc3a6e05ea2cda98736273ede81b85a2b45"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": []
+    },
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "static-inference",
+          "coverage": "not-promoted",
+          "findings": [
+            "F10"
+          ],
+          "id": "C45",
+          "kernel_tests": [],
+          "native_equivalence_proven": false,
+          "prior_category": "excluded",
+          "source_case_sha256": "9c8af73a691a29b59b11045b9a3846c01acd493b98367b5a92c7380c3a4a0acd"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": []
+    },
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "unresolved",
+          "coverage": "not-promoted",
+          "findings": [
+            "F19",
+            "F20",
+            "F23"
+          ],
+          "id": "C46",
+          "kernel_tests": [],
+          "native_equivalence_proven": false,
+          "prior_category": "native-unknown",
+          "source_case_sha256": "7f237db502e8e0c031e016899d7bff0cdd7f6a5991534118fcb1eebc55719f84"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": []
+    },
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [
+          "lifecycle_adapter::tests::shared_subcontainer_cells_are_counted_once"
+        ],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "design",
+          "coverage": "not-promoted",
+          "findings": [
+            "F07",
+            "F17",
+            "F21"
+          ],
+          "id": "C47",
+          "kernel_tests": [],
+          "native_equivalence_proven": false,
+          "prior_category": "excluded",
+          "source_case_sha256": "d71fc1dcb5b53ebbabc52807a47496e748a05da160ec10a502789f16204a64b4"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": []
+    },
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "unresolved",
+          "coverage": "not-promoted",
+          "findings": [
+            "F17",
+            "F20"
+          ],
+          "id": "C48",
+          "kernel_tests": [],
+          "native_equivalence_proven": false,
+          "prior_category": "native-unknown",
+          "source_case_sha256": "eacf2aafc2c1fb90c739c0cee4ed0480040527a693af540306534708d69850d6"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": []
+    },
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [
+          "lifecycle_adapter::tests::mixed_origin_and_legacy_graphs_reject"
+        ],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "design",
+          "coverage": "not-promoted",
+          "findings": [
+            "F21"
+          ],
+          "id": "C49",
+          "kernel_tests": [],
+          "native_equivalence_proven": false,
+          "prior_category": "excluded",
+          "source_case_sha256": "2497b8c2a38d6283b55258cf57ad36f66c17090ead712f773d6d88e383165d3d"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": []
+    },
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "design",
+          "coverage": "not-promoted",
+          "findings": [
+            "F21"
+          ],
+          "id": "C50",
+          "kernel_tests": [],
+          "native_equivalence_proven": false,
+          "prior_category": "excluded",
+          "source_case_sha256": "2570781c5d9c7755a2b4b360c8f102979269f4413a5ff659790f65983cf8909f"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": []
+    },
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "design",
+          "coverage": "not-promoted",
+          "findings": [
+            "F21"
+          ],
+          "id": "C51",
+          "kernel_tests": [],
+          "native_equivalence_proven": false,
+          "prior_category": "excluded",
+          "source_case_sha256": "9e1bafad3a0ad096ab6807932ac1288f4db2bc560f010eef9f13dd0b28463860"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": []
+    },
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [
+          "lifecycle_adapter::tests::creator_once_per_head_not_per_function_slot"
+        ],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "static-inference",
+          "coverage": "bounded-policy-slice",
+          "findings": [
+            "F24"
+          ],
+          "id": "C52",
+          "kernel_tests": [
+            "kernel::tests::creator_and_payload_counts_are_independent"
+          ],
+          "native_equivalence_proven": false,
+          "prior_category": "modeled",
+          "source_case_sha256": "c921bd32dd49402e543c9e6e0ce08bf63b9cbe760a69f6f10b8f1de1052ff8f3"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": []
+    },
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "static-inference",
+          "coverage": "bounded-policy-slice",
+          "findings": [
+            "F26",
+            "F27"
+          ],
+          "id": "C53",
+          "kernel_tests": [
+            "kernel::tests::pending_copy_is_valid_then_last_exec_queues"
+          ],
+          "native_equivalence_proven": false,
+          "prior_category": "modeled",
+          "source_case_sha256": "2a36d326fb67cebc6bd57fda41f4324752fc4cc9a1fa113a493e1ffa78924b4f"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": [
+        "vm::lifecycle_vm_tests::pending_return_queues_without_automatic_drain"
+      ]
+    },
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "static-inference",
+          "coverage": "bounded-policy-slice",
+          "findings": [
+            "F26"
+          ],
+          "id": "C54",
+          "kernel_tests": [
+            "kernel::tests::two_exec_leases_enqueue_once_and_lifo"
+          ],
+          "native_equivalence_proven": false,
+          "prior_category": "modeled",
+          "source_case_sha256": "e773617882d87ae35705779a970a995e83323c241073d613489a7db4480a132d"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": [
+        "vm::lifecycle_vm_tests::recursive_frames_each_hold_one_execution_reference"
+      ]
+    },
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "static-inference",
+          "coverage": "bounded-policy-slice",
+          "findings": [
+            "F26"
+          ],
+          "id": "C55",
+          "kernel_tests": [
+            "kernel::tests::two_exec_leases_enqueue_once_and_lifo"
+          ],
+          "native_equivalence_proven": false,
+          "prior_category": "modeled",
+          "source_case_sha256": "484c7378ca91eae9769b73a76b276c53ba14e1cfa1632fb21704df3b1618e8f4"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": [
+        "vm::lifecycle_vm_tests::borrowed_variable_rejects_drain_without_detaching_queue"
+      ]
+    },
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [
+          "lifecycle_adapter::tests::pending_is_copyable_invalid_normalizes_actual_source"
+        ],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "static-inference",
+          "coverage": "bounded-policy-slice",
+          "findings": [
+            "F27"
+          ],
+          "id": "C56",
+          "kernel_tests": [
+            "kernel::tests::pending_copy_is_valid_then_last_exec_queues"
+          ],
+          "native_equivalence_proven": false,
+          "prior_category": "modeled",
+          "source_case_sha256": "d63b8853f6377d6988c79ec7d3b49ac0c78a2abe53ded45f02d64c1ae4fa7f7b"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": [
+        "vm::lifecycle_vm_tests::pending_object_copy_and_raw_return_keep_shell_until_completion_retires"
+      ]
+    },
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [
+          "lifecycle_adapter::tests::nested_function_container_graph_releases_in_order"
+        ],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "static-inference",
+          "coverage": "bounded-policy-slice",
+          "findings": [
+            "F25"
+          ],
+          "id": "C57",
+          "kernel_tests": [
+            "kernel::tests::nested_head_release_cleans_captures_before_creator"
+          ],
+          "native_equivalence_proven": false,
+          "prior_category": "modeled",
+          "source_case_sha256": "673f69f3dfecd64e093f996416474f9b642e6d0b850f1e7ee217bc61889b7104"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": []
+    },
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "unresolved",
+          "coverage": "not-promoted",
+          "findings": [
+            "F25",
+            "F37"
+          ],
+          "id": "C58",
+          "kernel_tests": [],
+          "native_equivalence_proven": false,
+          "prior_category": "native-unknown",
+          "source_case_sha256": "714797d861bc5c5ed3f2b860d5b3839726e56555d7896f4e56cea9b1c03ebe5a"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": []
+    },
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "static-inference",
+          "coverage": "not-promoted",
+          "findings": [
+            "F28"
+          ],
+          "id": "C59",
+          "kernel_tests": [],
+          "native_equivalence_proven": false,
+          "prior_category": "excluded",
+          "source_case_sha256": "1a2e84d77e83bf3b6b34d0f773943436ab736c5113caabe30ff823b87c398b57"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": []
+    },
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "static-inference",
+          "coverage": "not-promoted",
+          "findings": [
+            "F29"
+          ],
+          "id": "C60",
+          "kernel_tests": [],
+          "native_equivalence_proven": false,
+          "prior_category": "excluded",
+          "source_case_sha256": "899cad195202db95d40420e3c5c231700da7bf6fea48bf093223682e4259813a"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": []
+    },
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "unresolved",
+          "coverage": "not-promoted",
+          "findings": [
+            "F28",
+            "F29",
+            "F30"
+          ],
+          "id": "C61",
+          "kernel_tests": [],
+          "native_equivalence_proven": false,
+          "prior_category": "native-unknown",
+          "source_case_sha256": "8739f65d8d53ba911278f6682ecf92d77bc6885da53f81d06a2a0215c87eb406"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": []
+    },
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "static-inference",
+          "coverage": "not-promoted",
+          "findings": [
+            "F31"
+          ],
+          "id": "C62",
+          "kernel_tests": [],
+          "native_equivalence_proven": false,
+          "prior_category": "excluded",
+          "source_case_sha256": "0518155030c4c38042f760d7352c821201077f4ad7058d87ea7e832eaeb33ec6"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": []
+    },
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "static-inference",
+          "coverage": "not-promoted",
+          "findings": [
+            "F31",
+            "F32"
+          ],
+          "id": "C63",
+          "kernel_tests": [],
+          "native_equivalence_proven": false,
+          "prior_category": "excluded",
+          "source_case_sha256": "3139ac0a78872d7af4450ee6504a41085f162e937d00b5fb2d1d0869624754db"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": []
+    },
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "static-inference",
+          "coverage": "not-promoted",
+          "findings": [
+            "F33"
+          ],
+          "id": "C64",
+          "kernel_tests": [],
+          "native_equivalence_proven": false,
+          "prior_category": "excluded",
+          "source_case_sha256": "f325fba9015c4eac39fdf99f5da7e21014365e66cce65fd57b0c2e54df969c91"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": []
+    },
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "static-inference",
+          "coverage": "not-promoted",
+          "findings": [
+            "F34"
+          ],
+          "id": "C65",
+          "kernel_tests": [],
+          "native_equivalence_proven": false,
+          "prior_category": "excluded",
+          "source_case_sha256": "54d8b6416a270607becc79c1d5077b588bedb63da64fad6fae75fb353a64bf04"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": []
+    },
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "static-inference",
+          "coverage": "not-promoted",
+          "findings": [
+            "F35"
+          ],
+          "id": "C66",
+          "kernel_tests": [],
+          "native_equivalence_proven": false,
+          "prior_category": "excluded",
+          "source_case_sha256": "f101531534facbd1f903a2cfcee6082cec505e345fa116201d3699786850cb76"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": []
+    },
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "unresolved",
+          "coverage": "not-promoted",
+          "findings": [
+            "F26",
+            "F32",
+            "F36"
+          ],
+          "id": "C67",
+          "kernel_tests": [],
+          "native_equivalence_proven": false,
+          "prior_category": "native-unknown",
+          "source_case_sha256": "74727905c69f6fa97f8d3f50ae6c0792b9af74110334c5101077a1660ca57905"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": []
+    },
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "unresolved",
+          "coverage": "not-promoted",
+          "findings": [
+            "F30",
+            "F38",
+            "F39"
+          ],
+          "id": "C68",
+          "kernel_tests": [],
+          "native_equivalence_proven": false,
+          "prior_category": "native-unknown",
+          "source_case_sha256": "e0dcffa8779ba6ed9ee1af027069860a5ee5144c0f21bb0d6b3e20f2c2b91909"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": []
+    },
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "unresolved",
+          "coverage": "not-promoted",
+          "findings": [
+            "F39"
+          ],
+          "id": "C69",
+          "kernel_tests": [],
+          "native_equivalence_proven": false,
+          "prior_category": "native-unknown",
+          "source_case_sha256": "3c48bc1447353646fa1f0d716befa721f8045bce5314427cbb9454799db09442"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": []
+    },
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "design",
+          "coverage": "not-promoted",
+          "findings": [
+            "F40"
+          ],
+          "id": "C70",
+          "kernel_tests": [],
+          "native_equivalence_proven": false,
+          "prior_category": "excluded",
+          "source_case_sha256": "c622cad79aae70f754bff572a18efa3ae96c38952ec4605caadad489280cb440"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": []
+    },
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "design",
+          "coverage": "not-promoted",
+          "findings": [
+            "F24",
+            "F25",
+            "F37",
+            "F38",
+            "F40"
+          ],
+          "id": "C71",
+          "kernel_tests": [],
+          "native_equivalence_proven": false,
+          "prior_category": "excluded",
+          "source_case_sha256": "44e6f9c390cbdd3dce0688c243d7ba3d09d3b29de5983b53567c8ddd191b687e"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": []
+    },
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "static-inference",
+          "coverage": "not-promoted",
+          "findings": [
+            "F41"
+          ],
+          "id": "C72",
+          "kernel_tests": [],
+          "native_equivalence_proven": false,
+          "prior_category": "excluded",
+          "source_case_sha256": "67b19427e6d28b15cc4c08a955aab84f900e8bd45561646d931b371059cdc2da"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": []
+    },
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "static-inference",
+          "coverage": "not-promoted",
+          "findings": [
+            "F41"
+          ],
+          "id": "C73",
+          "kernel_tests": [],
+          "native_equivalence_proven": false,
+          "prior_category": "excluded",
+          "source_case_sha256": "c381e62773a2ce403a2cdf46d323a67b511042a8a406b91687ec033bed026f11"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": []
+    },
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "static-inference",
+          "coverage": "not-promoted",
+          "findings": [
+            "F42"
+          ],
+          "id": "C74",
+          "kernel_tests": [],
+          "native_equivalence_proven": false,
+          "prior_category": "excluded",
+          "source_case_sha256": "dfe95629a8c97e0f15688fa35269e1bacec6ee8635953fc8e0e30d57e3d1afa7"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": []
+    },
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "static-inference",
+          "coverage": "not-promoted",
+          "findings": [
+            "F42"
+          ],
+          "id": "C75",
+          "kernel_tests": [],
+          "native_equivalence_proven": false,
+          "prior_category": "excluded",
+          "source_case_sha256": "ded7d9e430e8d6b340e45f23a3eeabcc86c99465300f2bf21c0e7506458dde95"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": []
+    },
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "static-inference",
+          "coverage": "not-promoted",
+          "findings": [
+            "F41",
+            "F42",
+            "F43"
+          ],
+          "id": "C76",
+          "kernel_tests": [],
+          "native_equivalence_proven": false,
+          "prior_category": "excluded",
+          "source_case_sha256": "2c8607ad494035add25cda96b79b5d3b6710cbac64e64180241178baecce2d36"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": []
+    },
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "static-inference",
+          "coverage": "not-promoted",
+          "findings": [
+            "F44"
+          ],
+          "id": "C77",
+          "kernel_tests": [],
+          "native_equivalence_proven": false,
+          "prior_category": "excluded",
+          "source_case_sha256": "45199a61c7059e6093725723a4103e2e6dbeb00f29e573ae2785cfdef43349bb"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": []
+    },
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "static-inference",
+          "coverage": "not-promoted",
+          "findings": [
+            "F44"
+          ],
+          "id": "C78",
+          "kernel_tests": [],
+          "native_equivalence_proven": false,
+          "prior_category": "excluded",
+          "source_case_sha256": "0fb9a4f443acd744762e11321e9c783f81d75c692f2961011bf004c236035e7b"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": []
+    },
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "static-inference",
+          "coverage": "not-promoted",
+          "findings": [
+            "F45"
+          ],
+          "id": "C79",
+          "kernel_tests": [],
+          "native_equivalence_proven": false,
+          "prior_category": "excluded",
+          "source_case_sha256": "b5f1eea973b5271fe417e21bf722330afc9fd47095567ec644277d454310f606"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": []
+    },
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "static-inference",
+          "coverage": "not-promoted",
+          "findings": [
+            "F46"
+          ],
+          "id": "C80",
+          "kernel_tests": [],
+          "native_equivalence_proven": false,
+          "prior_category": "excluded",
+          "source_case_sha256": "bc593f5ec1cba1808cffb2cdb71f18e9d2a11142982f09b3b76c802f72ae9b3e"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": []
+    },
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "unresolved",
+          "coverage": "not-promoted",
+          "findings": [
+            "F44",
+            "F47"
+          ],
+          "id": "C81",
+          "kernel_tests": [],
+          "native_equivalence_proven": false,
+          "prior_category": "native-unknown",
+          "source_case_sha256": "763fe7497a52f834f1a95782a363e7bbc20ed4ecd83d7542345fa835c543cd06"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": []
+    },
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "unresolved",
+          "coverage": "not-promoted",
+          "findings": [
+            "F45",
+            "F46",
+            "F47"
+          ],
+          "id": "C82",
+          "kernel_tests": [],
+          "native_equivalence_proven": false,
+          "prior_category": "native-unknown",
+          "source_case_sha256": "5054609ee3273f9690f552462479c949148f68d6a073fe0197c01348598b7dc7"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": []
+    },
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "static-inference",
+          "coverage": "not-promoted",
+          "findings": [
+            "F48"
+          ],
+          "id": "C83",
+          "kernel_tests": [],
+          "native_equivalence_proven": false,
+          "prior_category": "excluded",
+          "source_case_sha256": "36a7a4c4022815223daeb41f81ddb0e97debbfa13b1125560bec7c29778f4602"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": []
+    },
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "unresolved",
+          "coverage": "not-promoted",
+          "findings": [
+            "F48",
+            "F54"
+          ],
+          "id": "C84",
+          "kernel_tests": [],
+          "native_equivalence_proven": false,
+          "prior_category": "native-unknown",
+          "source_case_sha256": "9207862aae45345965a2bad3cfaf625d266d4ce9dfba9b6af6135a273f4a9ae8"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": []
+    },
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "static-inference",
+          "coverage": "not-promoted",
+          "findings": [
+            "F50"
+          ],
+          "id": "C85",
+          "kernel_tests": [],
+          "native_equivalence_proven": false,
+          "prior_category": "excluded",
+          "source_case_sha256": "8b4df829bdd7b3c1c0f656e6c33fddd49320b7acd8bad24d909281925a5d68d5"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": []
+    },
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "static-inference",
+          "coverage": "not-promoted",
+          "findings": [
+            "F50"
+          ],
+          "id": "C86",
+          "kernel_tests": [],
+          "native_equivalence_proven": false,
+          "prior_category": "excluded",
+          "source_case_sha256": "527d6f983518f072f494d52ed450fde4a9e08c6e857d3c3a82257056282677e7"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": []
+    },
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "static-inference",
+          "coverage": "not-promoted",
+          "findings": [
+            "F50",
+            "F54"
+          ],
+          "id": "C87",
+          "kernel_tests": [],
+          "native_equivalence_proven": false,
+          "prior_category": "excluded",
+          "source_case_sha256": "37f91fd34f5659ce04e2bb67f8c4ca98eab8c3b043dd1399c15a5846a468745c"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": []
+    },
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "static-inference",
+          "coverage": "not-promoted",
+          "findings": [
+            "F49"
+          ],
+          "id": "C88",
+          "kernel_tests": [],
+          "native_equivalence_proven": false,
+          "prior_category": "excluded",
+          "source_case_sha256": "e3ee97824bd5f00079aab88403a531b393376adfc87a9c3d3b1908582bf0add8"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": []
+    },
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "unresolved",
+          "coverage": "not-promoted",
+          "findings": [
+            "F49",
+            "F54"
+          ],
+          "id": "C89",
+          "kernel_tests": [],
+          "native_equivalence_proven": false,
+          "prior_category": "native-unknown",
+          "source_case_sha256": "b9e8b18f0220d51a819f5aece295a98ede4d5f10e1d95b65a0e8d91de4b3d29f"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": []
+    },
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "static-inference",
+          "coverage": "not-promoted",
+          "findings": [
+            "F51"
+          ],
+          "id": "C90",
+          "kernel_tests": [],
+          "native_equivalence_proven": false,
+          "prior_category": "excluded",
+          "source_case_sha256": "93813a7f1b95cb94e66d6aa3c256b9cea2505124aaaa485009ab6c83f159fcbc"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": []
+    },
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "unresolved",
+          "coverage": "not-promoted",
+          "findings": [
+            "F35",
+            "F51",
+            "F54"
+          ],
+          "id": "C91",
+          "kernel_tests": [],
+          "native_equivalence_proven": false,
+          "prior_category": "native-unknown",
+          "source_case_sha256": "f3f63602f89d2cdd89d010bd10150a24390bfd1f926e219ad3e8f9e3f64db9da"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": []
+    },
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "static-inference",
+          "coverage": "not-promoted",
+          "findings": [
+            "F52"
+          ],
+          "id": "C92",
+          "kernel_tests": [],
+          "native_equivalence_proven": false,
+          "prior_category": "excluded",
+          "source_case_sha256": "10935ee37b3dbf7584fb6ac728e6dcf0cc37c97a120c295d4195ee35e9a7df23"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": []
+    },
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "static-inference",
+          "coverage": "not-promoted",
+          "findings": [
+            "F53"
+          ],
+          "id": "C93",
+          "kernel_tests": [],
+          "native_equivalence_proven": false,
+          "prior_category": "excluded",
+          "source_case_sha256": "468e41b5930a22d996eaf0fdbb89470838f3e67e4347a14ae95ccf385b9e3c34"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": []
+    },
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "unresolved",
+          "coverage": "not-promoted",
+          "findings": [
+            "F35",
+            "F54"
+          ],
+          "id": "C94",
+          "kernel_tests": [],
+          "native_equivalence_proven": false,
+          "prior_category": "native-unknown",
+          "source_case_sha256": "f033715cf307acdbad6143cec068210ed3ee53d47228e59589839370fe67900b"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": []
+    },
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "static-inference",
+          "coverage": "not-promoted",
+          "findings": [
+            "F55"
+          ],
+          "id": "C95",
+          "kernel_tests": [],
+          "native_equivalence_proven": false,
+          "prior_category": "excluded",
+          "source_case_sha256": "795ca55b5a60030e7e5c6a71f926d3bb5cc4570e6fc5792cd02ee181d1ed6e4d"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": []
+    },
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "static-inference",
+          "coverage": "not-promoted",
+          "findings": [
+            "F55"
+          ],
+          "id": "C96",
+          "kernel_tests": [],
+          "native_equivalence_proven": false,
+          "prior_category": "excluded",
+          "source_case_sha256": "56c64975ed19ec08e215f054ffdbf38a4488628d0ef275627c42e48d2744e3ec"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": []
+    },
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "static-inference",
+          "coverage": "not-promoted",
+          "findings": [
+            "F55"
+          ],
+          "id": "C97",
+          "kernel_tests": [],
+          "native_equivalence_proven": false,
+          "prior_category": "partial-model",
+          "source_case_sha256": "fbb3b89e389c6e57ba715e323b53e4ea94c1d2f8b613115f0a5e23686eaa158d"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": []
+    },
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "static-inference",
+          "coverage": "not-promoted",
+          "findings": [
+            "F56"
+          ],
+          "id": "C98",
+          "kernel_tests": [],
+          "native_equivalence_proven": false,
+          "prior_category": "excluded",
+          "source_case_sha256": "fb3582276b5aaa94461198154aa8c7dc96c9ff8696bc61255ec2fa0d65c50407"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": []
+    },
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "unresolved",
+          "coverage": "not-promoted",
+          "findings": [
+            "F55",
+            "F56",
+            "F60"
+          ],
+          "id": "C99",
+          "kernel_tests": [],
+          "native_equivalence_proven": false,
+          "prior_category": "native-unknown",
+          "source_case_sha256": "c62cbaa1cde308b28aa1baf8c0c54c9adb9349635db19e84595d14fc852d79f8"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": []
+    },
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "static-inference",
+          "coverage": "not-promoted",
+          "findings": [
+            "F57"
+          ],
+          "id": "C100",
+          "kernel_tests": [],
+          "native_equivalence_proven": false,
+          "prior_category": "excluded",
+          "source_case_sha256": "123e5d98d9bc62da39fd4caa76935c2308000d6012772f6ddd1f7b8cbe83fc83"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": []
+    },
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "static-inference",
+          "coverage": "not-promoted",
+          "findings": [
+            "F58",
+            "F59"
+          ],
+          "id": "C101",
+          "kernel_tests": [],
+          "native_equivalence_proven": false,
+          "prior_category": "excluded",
+          "source_case_sha256": "54d48a3e909bb62304e12e1f28f94d3f66ff753b05d58e95a859cd62b713bf86"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": []
+    },
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "unresolved",
+          "coverage": "not-promoted",
+          "findings": [
+            "F59",
+            "F60"
+          ],
+          "id": "C102",
+          "kernel_tests": [],
+          "native_equivalence_proven": false,
+          "prior_category": "native-unknown",
+          "source_case_sha256": "266c6a604d485da286ce5f245daa971a1477837f3c690291f47e11a516af5c61"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": []
+    },
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "unresolved",
+          "coverage": "not-promoted",
+          "findings": [
+            "F55",
+            "F58",
+            "F59",
+            "F60"
+          ],
+          "id": "C103",
+          "kernel_tests": [],
+          "native_equivalence_proven": false,
+          "prior_category": "native-unknown",
+          "source_case_sha256": "1c713f72bb753e603afba82d964416e7f5c0211e59a9d40473540a1ff6d538de"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": []
+    },
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "static-inference",
+          "coverage": "not-promoted",
+          "findings": [
+            "F55",
+            "F60"
+          ],
+          "id": "C104",
+          "kernel_tests": [],
+          "native_equivalence_proven": false,
+          "prior_category": "partial-model",
+          "source_case_sha256": "60d7d62d40c4c1f6b766dee3733f33fd5df2e7e3f15691ddaf87ab3acdf681d7"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": []
+    },
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "unresolved",
+          "coverage": "not-promoted",
+          "findings": [
+            "F60"
+          ],
+          "id": "C105",
+          "kernel_tests": [],
+          "native_equivalence_proven": false,
+          "prior_category": "native-unknown",
+          "source_case_sha256": "0305f3e060fee1b22b78d08b513aa9ea9dae9f6759c6a0ec612649b19a36f889"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": []
+    },
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "static-inference",
+          "coverage": "not-promoted",
+          "findings": [
+            "F61"
+          ],
+          "id": "C106",
+          "kernel_tests": [],
+          "native_equivalence_proven": false,
+          "prior_category": "excluded",
+          "source_case_sha256": "cbb54b9201bd8eb4965950b3317cb8af80932e99976d89fd3480377315c959a2"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": []
+    },
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "static-inference",
+          "coverage": "not-promoted",
+          "findings": [
+            "F62"
+          ],
+          "id": "C107",
+          "kernel_tests": [],
+          "native_equivalence_proven": false,
+          "prior_category": "excluded",
+          "source_case_sha256": "bf59e869142859795ee3bb0574a4ec3663c4b47e3635d51587e3214db9c0658c"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": []
+    },
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "static-inference",
+          "coverage": "not-promoted",
+          "findings": [
+            "F62"
+          ],
+          "id": "C108",
+          "kernel_tests": [],
+          "native_equivalence_proven": false,
+          "prior_category": "excluded",
+          "source_case_sha256": "58e8d57efe9b3ae5c73e6fd3d829fd5ff25d8948378ab05485415681fdc15311"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": []
+    },
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "static-inference",
+          "coverage": "not-promoted",
+          "findings": [
+            "F62",
+            "F66"
+          ],
+          "id": "C109",
+          "kernel_tests": [],
+          "native_equivalence_proven": false,
+          "prior_category": "excluded",
+          "source_case_sha256": "7792b838addd8ba49d2739de600c94c28b09535b9e8d4a1ff459daf7d6611b95"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": []
+    },
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "static-inference",
+          "coverage": "not-promoted",
+          "findings": [
+            "F63"
+          ],
+          "id": "C110",
+          "kernel_tests": [],
+          "native_equivalence_proven": false,
+          "prior_category": "excluded",
+          "source_case_sha256": "125d3f78a90e6c37eed2d79bf426d220969361c8f8f8242b3ebd1e9c4e3b33ba"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": []
+    },
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "static-inference",
+          "coverage": "not-promoted",
+          "findings": [
+            "F63"
+          ],
+          "id": "C111",
+          "kernel_tests": [],
+          "native_equivalence_proven": false,
+          "prior_category": "excluded",
+          "source_case_sha256": "e11a8f710acaf2e63c0f2c4bb1fe7f74bfc3cf67ed176057fc97c86b575a2657"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": []
+    },
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "static-inference",
+          "coverage": "not-promoted",
+          "findings": [
+            "F61",
+            "F63"
+          ],
+          "id": "C112",
+          "kernel_tests": [],
+          "native_equivalence_proven": false,
+          "prior_category": "excluded",
+          "source_case_sha256": "22b73d3a4b052269cd00f1830d8c97ea782e3665a77eaa882d273cb2a8a1c2a6"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": []
+    },
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "static-inference",
+          "coverage": "not-promoted",
+          "findings": [
+            "F64"
+          ],
+          "id": "C113",
+          "kernel_tests": [],
+          "native_equivalence_proven": false,
+          "prior_category": "excluded",
+          "source_case_sha256": "e5955be0ed5924af8ab13f0cb144b4d844f099db1133cb34e9b19da941b05e2a"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": []
+    },
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "static-inference",
+          "coverage": "not-promoted",
+          "findings": [
+            "F65"
+          ],
+          "id": "C114",
+          "kernel_tests": [],
+          "native_equivalence_proven": false,
+          "prior_category": "excluded",
+          "source_case_sha256": "fc2830729be4ad8afed5e67871634066b6e975e12d06b8e2ab7838adc412300f"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": []
+    },
+    {
+      "native_equivalence_proven": false,
+      "prior_case": {
+        "adapter_tests": [],
+        "native_equivalence_proven": false,
+        "prior_case": {
+          "basis": "unresolved",
+          "coverage": "not-promoted",
+          "findings": [
+            "F66"
+          ],
+          "id": "C115",
+          "kernel_tests": [],
+          "native_equivalence_proven": false,
+          "prior_category": "native-unknown",
+          "source_case_sha256": "dc07c61c4d124205a207424b129bd8763ced1c441470625f9186a73e2fd67c8d"
+        },
+        "scope": "Rust policy slice only; production preparation and native unknowns unchanged"
+      },
+      "runtime_tests": []
+    }
+  ],
+  "prior_sha256": "9e10840402e0ec193e47eb2a6eb61fb0edd3113c5aa799ec5a4b58041f7196ee",
+  "rust_policy_only": true,
+  "stage": "2BE"
+}
