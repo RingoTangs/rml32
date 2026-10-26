@@ -1,3 +1,5 @@
+> 阶段 2BA：已交付受限生命周期 D01 设计、独立模型与有界枚举；仅设计，Rust 运行时/API 与直接捕获门禁不变。原生未发布 H/A 最终清理仍未知。详见 [设计总览](docs/stage2ba-design/overview.md)。
+
 # rml32 · 当前阶段 2AZ
 
 阶段2AZ完成未发布H/A追踪与外部引用分类：新增9条完整函数记录和5条数据引用记录，复用76条函数记录，形成351个锚点、66条结论、115个案例及94项历史映射。已核实C栈保存、catch元数据、allocator扩展页物理释放，并区分3条CALL、4条尾JMP及模块表条件化分派。见[本批说明](docs/stage2az-evidence/overview.md)、[逐分配处置](docs/stage2az-evidence/allocation-disposition.json)、[门槛重评](docs/stage2az-evidence/gate-review.md)和[验证收据](docs/stage2az-validation.json)。运行时、API、版本、依赖和状态模型保持；没有运行原程序或业务字节码。语义恢复、creator释放和完整退出进展仍未闭合，直接Object/Function捕获继续关闭，阶段2未完成。[下一步](docs/stage2az-evidence/next-batch.md)按精确剩余前沿或明确兼容边界规划，不重复泛化unknown。以下完整原文保留为历史快照。

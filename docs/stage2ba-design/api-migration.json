@@ -1,0 +1,68 @@
+[
+  {
+    "file": "src/boundary.rs",
+    "implemented": false,
+    "planned_change": "Keep legacy semantics; add separate opt-in constructor only in future implementation.",
+    "symbol": "ObjectStore::new / with_limits"
+  },
+  {
+    "file": "src/boundary.rs",
+    "implemented": false,
+    "planned_change": "Carry immutable mode, origin and arena control block across transfer.",
+    "symbol": "Vm / into_objects"
+  },
+  {
+    "file": "src/boundary.rs",
+    "implemented": false,
+    "planned_change": "Explicit leases; retirement while borrowed defers exactly one release; close rejects import but keeps retained roots safe.",
+    "symbol": "Registry / HostValue / HostScope"
+  },
+  {
+    "file": "src/object.rs",
+    "implemented": false,
+    "planned_change": "Single arena, semantic counters, states and variable cleanup; keep legacy remove branch.",
+    "symbol": "ObjectStore / Object / remove"
+  },
+  {
+    "file": "src/value.rs",
+    "implemented": false,
+    "planned_change": "Object slot lease and one creator lease per head; physical Rc count is not semantic count.",
+    "symbol": "Value::Object / FunctionData"
+  },
+  {
+    "file": "src/cell.rs",
+    "implemented": false,
+    "planned_change": "Actual stable slots own payload; aliases and snapshots do not duplicate it.",
+    "symbol": "Cell / SlotPayload"
+  },
+  {
+    "file": "src/ownership.rs",
+    "implemented": false,
+    "planned_change": "Independent counter leases; acquire new owners before releasing overwritten payloads.",
+    "symbol": "Counter / Owner / OwnedValue"
+  },
+  {
+    "file": "src/vm.rs",
+    "implemented": false,
+    "planned_change": "Preserve preflight and atomic rejection, stable capture cells, graph checks and publication boundary.",
+    "symbol": "create_function_value / CopyPlan"
+  },
+  {
+    "file": "src/vm.rs",
+    "implemented": false,
+    "planned_change": "Frame exec leases; unwind once; sticky failure does not imply implicit drain; preflight restart before mutation.",
+    "symbol": "frames / start / cancel / failures"
+  },
+  {
+    "file": "src/graph.rs",
+    "implemented": false,
+    "planned_change": "Retain graph restrictions; no full GC or escaping capture references.",
+    "symbol": "projected Function-container DAG"
+  },
+  {
+    "file": "src/prepared.rs",
+    "implemented": false,
+    "planned_change": "Lifecycle opt-in grants no capture permission; direct Object/Function captures remain gated.",
+    "symbol": "preparation capabilities"
+  }
+]

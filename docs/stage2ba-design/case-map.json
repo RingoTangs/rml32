@@ -1,0 +1,2275 @@
+{
+  "cases": [
+    {
+      "category": "excluded",
+      "id": "C01",
+      "model_evidence": null,
+      "reason": "Outside lifecycle event grammar: allocator, backend, container, dispatch or other gated behavior.",
+      "source_case": {
+        "basis": "static-inference",
+        "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+        "expected": "Move type/attrib/payload into initialized capture slot, clear source type/attrib; retain raw payload identity.",
+        "findings": [
+          "F01",
+          "F03"
+        ],
+        "group": "capture-create",
+        "id": "C01",
+        "input": "17 receives already-evaluated raw stack Undefined; creator is valid; resources available.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "8ef4117ba04194703592c23a0a4f19678cc857d77463ca01e826e04d134c87cb"
+    },
+    {
+      "category": "excluded",
+      "id": "C02",
+      "model_evidence": null,
+      "reason": "Outside lifecycle event grammar: allocator, backend, container, dispatch or other gated behavior.",
+      "source_case": {
+        "basis": "static-inference",
+        "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+        "expected": "Move type/attrib/payload into initialized capture slot, clear source type/attrib; retain raw payload identity.",
+        "findings": [
+          "F01",
+          "F03"
+        ],
+        "group": "capture-create",
+        "id": "C02",
+        "input": "17 receives already-evaluated raw stack Void; creator is valid; resources available.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "709ed163d4707e25ee57d28686f9c8ac80278bfff19a916c507866e0a2b07446"
+    },
+    {
+      "category": "excluded",
+      "id": "C03",
+      "model_evidence": null,
+      "reason": "Outside lifecycle event grammar: allocator, backend, container, dispatch or other gated behavior.",
+      "source_case": {
+        "basis": "static-inference",
+        "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+        "expected": "Move type/attrib/payload into initialized capture slot, clear source type/attrib; retain raw payload identity.",
+        "findings": [
+          "F01",
+          "F03"
+        ],
+        "group": "capture-create",
+        "id": "C03",
+        "input": "17 receives already-evaluated raw stack Int; creator is valid; resources available.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "ced1eec8546861bf634c57cdc3c4e0bc07f7038a8dbd47da2cf38798036b96b7"
+    },
+    {
+      "category": "excluded",
+      "id": "C04",
+      "model_evidence": null,
+      "reason": "Outside lifecycle event grammar: allocator, backend, container, dispatch or other gated behavior.",
+      "source_case": {
+        "basis": "static-inference",
+        "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+        "expected": "Move type/attrib/payload into initialized capture slot, clear source type/attrib; retain raw payload identity.",
+        "findings": [
+          "F01",
+          "F03"
+        ],
+        "group": "capture-create",
+        "id": "C04",
+        "input": "17 receives already-evaluated raw stack Real bits; creator is valid; resources available.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "6f053aac6336a1c80a39674625f42d382b54931f83c033a1743b884fcd642a52"
+    },
+    {
+      "category": "excluded",
+      "id": "C05",
+      "model_evidence": null,
+      "reason": "Outside lifecycle event grammar: allocator, backend, container, dispatch or other gated behavior.",
+      "source_case": {
+        "basis": "static-inference",
+        "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+        "expected": "Move type/attrib/payload into initialized capture slot, clear source type/attrib; retain raw payload identity.",
+        "findings": [
+          "F01",
+          "F03"
+        ],
+        "group": "capture-create",
+        "id": "C05",
+        "input": "17 receives already-evaluated raw stack Bytes; creator is valid; resources available.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "8739f218066ee85fe87a89b07c191b8ba36ccd40ad5a1705c512688f75962c0d"
+    },
+    {
+      "category": "excluded",
+      "id": "C06",
+      "model_evidence": null,
+      "reason": "Outside lifecycle event grammar: allocator, backend, container, dispatch or other gated behavior.",
+      "source_case": {
+        "basis": "static-inference",
+        "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+        "expected": "Move type/attrib/payload into initialized capture slot, clear source type/attrib; retain raw payload identity.",
+        "findings": [
+          "F01",
+          "F03"
+        ],
+        "group": "capture-create",
+        "id": "C06",
+        "input": "17 receives already-evaluated raw stack Array; creator is valid; resources available.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "95727767d6de883f19f15742ccdd35581aa4dfe057004860a863ec170bbc93d8"
+    },
+    {
+      "category": "excluded",
+      "id": "C07",
+      "model_evidence": null,
+      "reason": "Outside lifecycle event grammar: allocator, backend, container, dispatch or other gated behavior.",
+      "source_case": {
+        "basis": "static-inference",
+        "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+        "expected": "Move type/attrib/payload into initialized capture slot, clear source type/attrib; retain raw payload identity.",
+        "findings": [
+          "F01",
+          "F03"
+        ],
+        "group": "capture-create",
+        "id": "C07",
+        "input": "17 receives already-evaluated raw stack Mapping; creator is valid; resources available.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "ad7f3c1d2a1955bd75e01e74c55c38cff76804f17a4976adebb6b79d537a2a6d"
+    },
+    {
+      "category": "partial-model",
+      "id": "C08",
+      "model_evidence": "capture payload ownership; construction currently copies, not native raw create move",
+      "reason": "Lifecycle ownership slice only; original boundary still applies.",
+      "source_case": {
+        "basis": "static-inference",
+        "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+        "expected": "Move type/attrib/payload into initialized capture slot, clear source type/attrib; retain raw payload identity.",
+        "findings": [
+          "F01",
+          "F03"
+        ],
+        "group": "capture-create",
+        "id": "C08",
+        "input": "17 receives already-evaluated raw stack live Object; creator is valid; resources available.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "79a88dce91ae18d59dd8f40b1ee729ffee879775ee680d278fb12d9927481b9a"
+    },
+    {
+      "category": "excluded",
+      "id": "C09",
+      "model_evidence": null,
+      "reason": "Outside lifecycle event grammar: allocator, backend, container, dispatch or other gated behavior.",
+      "source_case": {
+        "basis": "static-inference",
+        "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+        "expected": "Move type/attrib/payload into initialized capture slot, clear source type/attrib; retain raw payload identity.",
+        "findings": [
+          "F01",
+          "F03"
+        ],
+        "group": "capture-create",
+        "id": "C09",
+        "input": "17 receives already-evaluated raw stack Function with live or null creator; creator is valid; resources available.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "69f44b8638a99ed5809d429ca6439d64836bcb8efacb9e24060f5f6df7f260a4"
+    },
+    {
+      "category": "excluded",
+      "id": "C10",
+      "model_evidence": null,
+      "reason": "Outside lifecycle event grammar: allocator, backend, container, dispatch or other gated behavior.",
+      "source_case": {
+        "basis": "static-inference",
+        "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+        "expected": "Transfer itself does not invoke copy-based source normalization; no claim about how preceding expression produced raw value.",
+        "findings": [
+          "F03",
+          "F08"
+        ],
+        "group": "capture-create",
+        "id": "C10",
+        "input": "17 receives raw deleted Object payload already on stack.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "224442e42d6a1b6aa382601a74563ffe038d52dd3ac3c9cfd2d4b259ad7ad8c0"
+    },
+    {
+      "category": "excluded",
+      "id": "C11",
+      "model_evidence": null,
+      "reason": "Outside lifecycle event grammar: allocator, backend, container, dispatch or other gated behavior.",
+      "source_case": {
+        "basis": "static-inference",
+        "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+        "expected": "Raw captured Function payload is transferred at this point; outer creator validation is a separate identity.",
+        "findings": [
+          "F03",
+          "F23"
+        ],
+        "group": "capture-create",
+        "id": "C11",
+        "input": "17 receives raw Function whose creator is deleted, creator of outer Function valid.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "ca4c288a1b494198ac54ee3ca53e8a597e44c187e58bc743262860dea2da5e98"
+    },
+    {
+      "category": "excluded",
+      "id": "C12",
+      "model_evidence": null,
+      "reason": "Outside lifecycle event grammar: allocator, backend, container, dispatch or other gated behavior.",
+      "source_case": {
+        "basis": "static-inference",
+        "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+        "expected": "Native helper raises argument error during reference scan before capture allocations/transfers.",
+        "findings": [
+          "F01",
+          "F02"
+        ],
+        "group": "capture-create",
+        "id": "C12",
+        "input": "17 capture operand is tag8 Reference.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "a7b9a3330ac06d6b317bd4437b78bbb4484ccac897444fd0e65850685b04263b"
+    },
+    {
+      "category": "excluded",
+      "id": "C13",
+      "model_evidence": null,
+      "reason": "Outside lifecycle event grammar: allocator, backend, container, dispatch or other gated behavior.",
+      "source_case": {
+        "basis": "design",
+        "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+        "expected": "No legal capture guarantee follows from this helper; Rust continues explicit rejection.",
+        "findings": [
+          "F01",
+          "F21"
+        ],
+        "group": "capture-create",
+        "id": "C13",
+        "input": "17 capture operand is hidden Loop tag0x14.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "63ff9730111743e243fc2afa9f9099e17d162f15fd796c18fc53e286df36e4bf"
+    },
+    {
+      "category": "excluded",
+      "id": "C14",
+      "model_evidence": null,
+      "reason": "Outside lifecycle event grammar: allocator, backend, container, dispatch or other gated behavior.",
+      "source_case": {
+        "basis": "static-inference",
+        "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+        "expected": "Header freed then vm_error, before capture transfer; final uncaught cleanup outside this local ordering remains separate.",
+        "findings": [
+          "F02",
+          "F20"
+        ],
+        "group": "capture-create",
+        "id": "C14",
+        "input": "17 header allocation succeeds; capture storage allocation fails.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "0723392b4225a47c97d3496b448bf6286817305c5c36280417834d472dc58a67"
+    },
+    {
+      "category": "native-unknown",
+      "id": "C15",
+      "model_evidence": null,
+      "reason": "Native unresolved status retained; no new native oracle.",
+      "source_case": {
+        "basis": "unresolved",
+        "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+        "expected": "Creation is not proven failure-atomic; C-local unpublished head ownership/rooting and final cleanup remain unresolved.",
+        "findings": [
+          "F02",
+          "F20"
+        ],
+        "group": "capture-create",
+        "id": "C15",
+        "input": "17 has moved captures but final result stack has no space.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "540dc2869532a7ffec71ebf0f958e36a662c0c81dade75c9df4f2184cae77dec"
+    },
+    {
+      "category": "excluded",
+      "id": "C16",
+      "model_evidence": null,
+      "reason": "Outside lifecycle event grammar: allocator, backend, container, dispatch or other gated behavior.",
+      "source_case": {
+        "basis": "static-inference",
+        "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+        "expected": "Reverse-index raw move, clear bound source slots, free unique Function head. Container children are not recursively normalized.",
+        "findings": [
+          "F05",
+          "F07"
+        ],
+        "group": "head-expansion",
+        "id": "C16",
+        "input": "Native head ref is 1; raw bound Array; enough stack.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "841e5d861a5add45cda9bc29dd8a43b01a95aeb6d0477b31c42b45c7903d0539"
+    },
+    {
+      "category": "excluded",
+      "id": "C17",
+      "model_evidence": null,
+      "reason": "Outside lifecycle event grammar: allocator, backend, container, dispatch or other gated behavior.",
+      "source_case": {
+        "basis": "static-inference",
+        "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+        "expected": "Release local call-target holder, push/copy bound header; surviving Function capture and argument share container. Container children are not recursively normalized.",
+        "findings": [
+          "F06",
+          "F07"
+        ],
+        "group": "head-expansion",
+        "id": "C17",
+        "input": "Native head ref is 2; raw bound Array; enough stack.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "ac457fb6d3da275c6d3aa99ae4c438aa4ecce6ef2288b7aaa4eb93968c90ef6c"
+    },
+    {
+      "category": "excluded",
+      "id": "C18",
+      "model_evidence": null,
+      "reason": "Outside lifecycle event grammar: allocator, backend, container, dispatch or other gated behavior.",
+      "source_case": {
+        "basis": "static-inference",
+        "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+        "expected": "Reverse-index raw move, clear bound source slots, free unique Function head. Container children are not recursively normalized.",
+        "findings": [
+          "F05",
+          "F07"
+        ],
+        "group": "head-expansion",
+        "id": "C18",
+        "input": "Native head ref is 1; raw bound Mapping; enough stack.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "3610f1e837dc5b09098850cea1dd13a720ea9819c30093d10115aabc078524f9"
+    },
+    {
+      "category": "excluded",
+      "id": "C19",
+      "model_evidence": null,
+      "reason": "Outside lifecycle event grammar: allocator, backend, container, dispatch or other gated behavior.",
+      "source_case": {
+        "basis": "static-inference",
+        "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+        "expected": "Release local call-target holder, push/copy bound header; surviving Function capture and argument share container. Container children are not recursively normalized.",
+        "findings": [
+          "F06",
+          "F07"
+        ],
+        "group": "head-expansion",
+        "id": "C19",
+        "input": "Native head ref is 2; raw bound Mapping; enough stack.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "5cb04d07a2c53e19f24f03ce35c474378b9d9010ebcabf461ca3154e1e8b9699"
+    },
+    {
+      "category": "partial-model",
+      "id": "C20",
+      "model_evidence": "test_unique_move_vs_shared_copy",
+      "reason": "Lifecycle ownership slice only; original boundary still applies.",
+      "source_case": {
+        "basis": "static-inference",
+        "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+        "expected": "Raw payload moves to argument stack without copy-based normalization; Function head/capture storage released; callee checks may subsequently reject.",
+        "findings": [
+          "F05",
+          "F09",
+          "F18"
+        ],
+        "group": "head-expansion",
+        "id": "C20",
+        "input": "Native head ref==1, bound Object deleted after capture; inspect immediately after expansion, before callee 0f.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "877615c66482665f646d0237b8da09bd74551ef7fc03e361c62c4ae7acf44715"
+    },
+    {
+      "category": "partial-model",
+      "id": "C21",
+      "model_evidence": "test_unique_move_vs_shared_copy",
+      "reason": "Lifecycle ownership slice only; original boundary still applies.",
+      "source_case": {
+        "basis": "static-inference",
+        "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+        "expected": "copy cleans bound SOURCE to Undefined/attrib0 and pushes Undefined. Surviving head retains normalized capture for later calls.",
+        "findings": [
+          "F06",
+          "F08",
+          "F09"
+        ],
+        "group": "head-expansion",
+        "id": "C21",
+        "input": "Native head ref>1, bound Object deleted after capture; inspect expansion and surviving head.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "e945bdf40c195422a923007a44cea0e43b1763a97693fc3fa82a4af54d8ebe8c"
+    },
+    {
+      "category": "excluded",
+      "id": "C22",
+      "model_evidence": null,
+      "reason": "Outside lifecycle event grammar: allocator, backend, container, dispatch or other gated behavior.",
+      "source_case": {
+        "basis": "static-inference",
+        "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+        "expected": "Raw payload moves to argument stack without copy-based normalization; Function head/capture storage released; callee checks may subsequently reject.",
+        "findings": [
+          "F05",
+          "F09",
+          "F18"
+        ],
+        "group": "head-expansion",
+        "id": "C22",
+        "input": "Native head ref==1, bound Function whose nonnull creator was deleted after capture; inspect immediately after expansion, before callee 0f.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "463b3dce51cb2d8997ba911a28c1e4ee2fe5339cd728d3b685ecb2756ae61aee"
+    },
+    {
+      "category": "excluded",
+      "id": "C23",
+      "model_evidence": null,
+      "reason": "Outside lifecycle event grammar: allocator, backend, container, dispatch or other gated behavior.",
+      "source_case": {
+        "basis": "static-inference",
+        "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+        "expected": "copy cleans bound SOURCE to Undefined/attrib0 and pushes Undefined. Surviving head retains normalized capture for later calls.",
+        "findings": [
+          "F06",
+          "F08",
+          "F09"
+        ],
+        "group": "head-expansion",
+        "id": "C23",
+        "input": "Native head ref>1, bound Function whose nonnull creator was deleted after capture; inspect expansion and surviving head.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "5bafdae110af4d987bebaeb1bf36e1090456043deba7c34fee81869e444a8000"
+    },
+    {
+      "category": "excluded",
+      "id": "C24",
+      "model_evidence": null,
+      "reason": "Outside lifecycle event grammar: allocator, backend, container, dispatch or other gated behavior.",
+      "source_case": {
+        "basis": "static-inference",
+        "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+        "expected": "copy does not classify it dead merely because creator is null; nested Function head identity is shared.",
+        "findings": [
+          "F08",
+          "F06"
+        ],
+        "group": "head-expansion",
+        "id": "C24",
+        "input": "Shared head captures Function whose creator is null.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "0a95bdc8d2e26b519f80691157173d49722274fce4063f934f541221ffe6079b"
+    },
+    {
+      "category": "excluded",
+      "id": "C25",
+      "model_evidence": null,
+      "reason": "Outside lifecycle event grammar: allocator, backend, container, dispatch or other gated behavior.",
+      "source_case": {
+        "basis": "static-inference",
+        "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+        "expected": "Normal copy shares nested head; final outer cleanup releases its bound payload before creator/pArgs/head.",
+        "findings": [
+          "F06",
+          "F11"
+        ],
+        "group": "head-expansion",
+        "id": "C25",
+        "input": "Shared outer head captures another live Function; later drop last outer holder.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "dd3557819ae568828135c31ebff60528ead8a245f1ccb74e5b006c32644db70f"
+    },
+    {
+      "category": "modeled",
+      "id": "C26",
+      "model_evidence": "test_snapshot_adds_no_owner",
+      "reason": "Lifecycle ownership slice only; original boundary still applies.",
+      "source_case": {
+        "basis": "design",
+        "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+        "expected": "Do not select native unique/shared path using that physical count; semantic ownership model is a prerequisite.",
+        "findings": [
+          "F21"
+        ],
+        "group": "head-expansion",
+        "id": "C26",
+        "input": "VM diagnostic snapshot or host Rc clone changes physical strong_count without a bytecode store.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "4abdb6912c1e7d03d7dba5d95eec5b0e851f36ad5c8b105173a2e98cdafb799c"
+    },
+    {
+      "category": "excluded",
+      "id": "C27",
+      "model_evidence": null,
+      "reason": "Outside lifecycle event grammar: allocator, backend, container, dispatch or other gated behavior.",
+      "source_case": {
+        "basis": "static-inference",
+        "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+        "expected": "Expansion visits bound indices in reverse to preserve logical bound-before-new order; no scalar conversion in raw transfer.",
+        "findings": [
+          "F05",
+          "F06"
+        ],
+        "group": "head-expansion",
+        "id": "C27",
+        "input": "Bound [b0,b1], new arguments [n0,n1], successful 05.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "383e2fb411f5fb7964ec48e24879f7c152e7375b7bc47d4018165f22676e1bea"
+    },
+    {
+      "category": "excluded",
+      "id": "C28",
+      "model_evidence": null,
+      "reason": "Outside lifecycle event grammar: allocator, backend, container, dispatch or other gated behavior.",
+      "source_case": {
+        "basis": "static-inference",
+        "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+        "expected": "Header is shared; member raw payload remains until an operation actually copies that member.",
+        "findings": [
+          "F07",
+          "F08"
+        ],
+        "group": "copy-sites",
+        "id": "C28",
+        "input": "Array header contains raw deleted Object member; copy header only.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "54159cd94ef8fbf8d390bd5e6fe37339372f1feadae9e4ff3ba5424f26d2d624"
+    },
+    {
+      "category": "partial-model",
+      "id": "C29",
+      "model_evidence": "test_invalid_copy_normalizes_source",
+      "reason": "Lifecycle ownership slice only; original boundary still applies.",
+      "source_case": {
+        "basis": "static-inference",
+        "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+        "expected": "vm_pushGlobalVar copies actual slot: source and result become Undefined at that copy point.",
+        "findings": [
+          "F08",
+          "F22"
+        ],
+        "group": "copy-sites",
+        "id": "C29",
+        "input": "Shared global slot contains deleted Object or Function with deleted nonnull creator.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "358e7b22af683acfdc0aa4ec2dc5023b0c846a3bcf0dbf317a8d3f7e4b8dd9eb"
+    },
+    {
+      "category": "partial-model",
+      "id": "C30",
+      "model_evidence": "test_invalid_copy_normalizes_source",
+      "reason": "Lifecycle ownership slice only; original boundary still applies.",
+      "source_case": {
+        "basis": "static-inference",
+        "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+        "expected": "Source-copy normalization acts on the actual relocated object slot; not a blanket return normalization.",
+        "findings": [
+          "F08",
+          "F22"
+        ],
+        "group": "copy-sites",
+        "id": "C30",
+        "input": "Object variable contains dead handle; ordinary Object variable read.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "4a6906342eceb4620a8c5363536762fde97612f5294416af7acf57be97a94ddb"
+    },
+    {
+      "category": "partial-model",
+      "id": "C31",
+      "model_evidence": "aliases have no payload owner; external Reference lifetime excluded",
+      "reason": "Lifecycle ownership slice only; original boundary still applies.",
+      "source_case": {
+        "basis": "static-inference",
+        "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+        "expected": "copy normalizes underlying source to Undefined, then consumed Reference unrefs slot; other alias can observe Undefined.",
+        "findings": [
+          "F08",
+          "F12"
+        ],
+        "group": "copy-sites",
+        "id": "C31",
+        "input": "Two References alias slot containing dead handle; convert one Reference to ordinary value.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "a3a29dce0d7176d61f11bd5680b85a769824def8168477495580b13aaf00b847"
+    },
+    {
+      "category": "excluded",
+      "id": "C32",
+      "model_evidence": null,
+      "reason": "Outside lifecycle event grammar: allocator, backend, container, dispatch or other gated behavior.",
+      "source_case": {
+        "basis": "static-inference",
+        "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+        "expected": "Copy selected member and normalize its source before consuming query container header; preserve query-specific result attribute policy.",
+        "findings": [
+          "F08",
+          "F13"
+        ],
+        "group": "copy-sites",
+        "id": "C32",
+        "input": "Query existing Array member containing deleted Object, container still shared.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "52ed8fc7abb513e760563bb9f58d6557dd64300c59e5824beeb4dd5a331f1135"
+    },
+    {
+      "category": "excluded",
+      "id": "C33",
+      "model_evidence": null,
+      "reason": "Outside lifecycle event grammar: allocator, backend, container, dispatch or other gated behavior.",
+      "source_case": {
+        "basis": "static-inference",
+        "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+        "expected": "Copy selected member and normalize its source before consuming query container header; preserve query-specific result attribute policy.",
+        "findings": [
+          "F08",
+          "F13"
+        ],
+        "group": "copy-sites",
+        "id": "C33",
+        "input": "Query existing Mapping member containing deleted Object, container still shared.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "357bdb7a1edf236cde7830c540869a25024ed83f022c8f6b3ad67afc0debb626"
+    },
+    {
+      "category": "excluded",
+      "id": "C34",
+      "model_evidence": null,
+      "reason": "Outside lifecycle event grammar: allocator, backend, container, dispatch or other gated behavior.",
+      "source_case": {
+        "basis": "static-inference",
+        "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+        "expected": "Query returns Undefined and consumes lookup values without inserting a missing node.",
+        "findings": [
+          "F13"
+        ],
+        "group": "copy-sites",
+        "id": "C34",
+        "input": "Mapping lookup misses a key.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "fb448674191b848e1324782569d33908a9626513f719914460d6dba009ff3cb1"
+    },
+    {
+      "category": "excluded",
+      "id": "C35",
+      "model_evidence": null,
+      "reason": "Outside lifecycle event grammar: allocator, backend, container, dispatch or other gated behavior.",
+      "source_case": {
+        "basis": "static-inference",
+        "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+        "expected": "Header ownership unrefs slot; surviving slot reference prevents ref==0 cleanup and may retain payload.",
+        "findings": [
+          "F14"
+        ],
+        "group": "release",
+        "id": "C35",
+        "input": "Last Array header released while an external element Ref remains.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "9604c8ebfacd0a2cedd7ca819742231e6d9babc6d1e6156cc95e4b67ddfff2b8"
+    },
+    {
+      "category": "excluded",
+      "id": "C36",
+      "model_evidence": null,
+      "reason": "Outside lifecycle event grammar: allocator, backend, container, dispatch or other gated behavior.",
+      "source_case": {
+        "basis": "static-inference",
+        "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+        "expected": "freeNode clears key/value payload immediately; physical node reclamation can be deferred, so surviving Ref sees cleared value.",
+        "findings": [
+          "F15"
+        ],
+        "group": "release",
+        "id": "C36",
+        "input": "Last Mapping header released while an external value Ref remains.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "81a99cef6dcfd0f772812f8a8820150e072a2dfb87a63aca5bc1e68e8fba4418"
+    },
+    {
+      "category": "modeled",
+      "id": "C37",
+      "model_evidence": "test_creator_and_capture_same_or_distinct",
+      "reason": "Lifecycle ownership slice only; original boundary still applies.",
+      "source_case": {
+        "basis": "static-inference",
+        "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+        "expected": "Clean capture payloads/unlink capture slots, unref creator, free pArgs then head; external capture-slot lifetime not inferred.",
+        "findings": [
+          "F11"
+        ],
+        "group": "release",
+        "id": "C37",
+        "input": "Last Function head dropped with nonempty captures and nonnull creator.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "63005d1c3b3bc74932b775f01629691899a665b13217ddd22ab997bdf011ac95"
+    },
+    {
+      "category": "modeled",
+      "id": "C38",
+      "model_evidence": "test_unique_move_vs_shared_copy",
+      "reason": "Lifecycle ownership slice only; original boundary still applies.",
+      "source_case": {
+        "basis": "static-inference",
+        "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+        "expected": "Moved capture slots are Undefined, so head cleanup does not double-release transferred payload; argument stack later owns release.",
+        "findings": [
+          "F05",
+          "F11"
+        ],
+        "group": "release",
+        "id": "C38",
+        "input": "Unique head raw-moves captures then frees head.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "8a9bfa7fdde8da94814c8936c4f0add1a51845a9180761d3542382e2573c9414"
+    },
+    {
+      "category": "excluded",
+      "id": "C39",
+      "model_evidence": null,
+      "reason": "Outside lifecycle event grammar: allocator, backend, container, dispatch or other gated behavior.",
+      "source_case": {
+        "basis": "static-inference",
+        "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+        "expected": "takeOffValueFromStack cleans removed frame slots and raw-moves result; transfer itself does not invoke copy normalization.",
+        "findings": [
+          "F16"
+        ],
+        "group": "return",
+        "id": "C39",
+        "input": "Raw dead handle is already the result of ordinary nonconst mixed return; no conversion/hook required.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "0d8527021478b3d1dc343dc9b3db071eae3d06d4aa32af663af61a6cf0ec82c3"
+    },
+    {
+      "category": "native-unknown",
+      "id": "C40",
+      "model_evidence": null,
+      "reason": "Native unresolved status retained; no new native oracle.",
+      "source_case": {
+        "basis": "unresolved",
+        "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+        "expected": "Simple return-move rule is insufficient; recover that specific branch before implementation.",
+        "findings": [
+          "F16",
+          "F20"
+        ],
+        "group": "return",
+        "id": "C40",
+        "input": "Const return, conversion or return hook path.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "b3b764abfc7081ec8e837785c1b872cdfbdf416862d88aba87e20e6b50e2d826"
+    },
+    {
+      "category": "excluded",
+      "id": "C41",
+      "model_evidence": null,
+      "reason": "Outside lifecycle event grammar: allocator, backend, container, dispatch or other gated behavior.",
+      "source_case": {
+        "basis": "static-inference",
+        "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+        "expected": "Exiting argument/temporary stack is cleaned and saved catch sp restored; still-live head capture remains Undefined, not rolled back.",
+        "findings": [
+          "F09",
+          "F18",
+          "F19"
+        ],
+        "group": "failure",
+        "id": "C41",
+        "input": "Shared capture copy normalized source, then callee later argument fails under interpreter threadType1 with valid script catch.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "69d306137f8df0a44b3da0f9d4c252001c81ba6374036344ae372f9a0fc35dda"
+    },
+    {
+      "category": "excluded",
+      "id": "C42",
+      "model_evidence": null,
+      "reason": "Outside lifecycle event grammar: allocator, backend, container, dispatch or other gated behavior.",
+      "source_case": {
+        "basis": "static-inference",
+        "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+        "expected": "Head is not recreated. Moved payloads are released from callee/unwound stack through cleanup; consumed target is not restored.",
+        "findings": [
+          "F05",
+          "F18",
+          "F19"
+        ],
+        "group": "failure",
+        "id": "C42",
+        "input": "Unique capture expansion completed; callee parameter count fails under same valid script catch conditions.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "782fd151fcf4281a7e5298886de32c3a90ded69e5211eda4b85ee5d06a9e7ca8"
+    },
+    {
+      "category": "excluded",
+      "id": "C43",
+      "model_evidence": null,
+      "reason": "Outside lifecycle event grammar: allocator, backend, container, dispatch or other gated behavior.",
+      "source_case": {
+        "basis": "static-inference",
+        "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+        "expected": "Catch saved-sp cleanup removes expanded calculation values even without a new callee frame; no target restoration.",
+        "findings": [
+          "F18",
+          "F19"
+        ],
+        "group": "failure",
+        "id": "C43",
+        "input": "Captures expanded but call depth or missing code body fails before installing callee frame; valid ordinary script catch.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "ff1af92c0b3656c8caefb38782e5a3c237e25892c3dd6ccc97285e9500ff505f"
+    },
+    {
+      "category": "excluded",
+      "id": "C44",
+      "model_evidence": null,
+      "reason": "Outside lifecycle event grammar: allocator, backend, container, dispatch or other gated behavior.",
+      "source_case": {
+        "basis": "static-inference",
+        "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+        "expected": "Native 0f can mutate earlier argument before failure; current Rust all-argument preflight is separate policy.",
+        "findings": [
+          "F18",
+          "F19"
+        ],
+        "group": "failure",
+        "id": "C44",
+        "input": "Earlier parameter Int converts to Real, later parameter type fails.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "d8417360ee84c3ac55f29d45e4807fc3a6e05ea2cda98736273ede81b85a2b45"
+    },
+    {
+      "category": "excluded",
+      "id": "C45",
+      "model_evidence": null,
+      "reason": "Outside lifecycle event grammar: allocator, backend, container, dispatch or other gated behavior.",
+      "source_case": {
+        "basis": "static-inference",
+        "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+        "expected": "Stack check raises before vm_copyValue, so this push does not perform source cleanup first.",
+        "findings": [
+          "F10"
+        ],
+        "group": "failure",
+        "id": "C45",
+        "input": "Native vm_pushValue has no free destination stack position.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "9c8af73a691a29b59b11045b9a3846c01acd493b98367b5a92c7380c3a4a0acd"
+    },
+    {
+      "category": "native-unknown",
+      "id": "C46",
+      "model_evidence": null,
+      "reason": "Native unresolved status retained; no new native oracle.",
+      "source_case": {
+        "basis": "unresolved",
+        "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+        "expected": "Do not extend ordinary valid-script-catch cleanup proof; precise final lifecycle remains unresolved.",
+        "findings": [
+          "F19",
+          "F20",
+          "F23"
+        ],
+        "group": "failure",
+        "id": "C46",
+        "input": "No script catch, non-interpreter thread, JIT, callback-catch or reentrant deletion cleanup.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "7f237db502e8e0c031e016899d7bff0cdd7f6a5991534118fcb1eebc55719f84"
+    },
+    {
+      "category": "excluded",
+      "id": "C47",
+      "model_evidence": null,
+      "reason": "Outside lifecycle event grammar: allocator, backend, container, dispatch or other gated behavior.",
+      "source_case": {
+        "basis": "design",
+        "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+        "expected": "Native copy remains shallow and marker follows captures/children. Future Rust implementation must preserve sharing and bounded graph validation.",
+        "findings": [
+          "F07",
+          "F17",
+          "F21"
+        ],
+        "group": "graph",
+        "id": "C47",
+        "input": "Function captures a shared acyclic Array/Mapping; child graph contains shared ordinary subcontainers.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "d71fc1dcb5b53ebbabc52807a47496e748a05da160ec10a502789f16204a64b4"
+    },
+    {
+      "category": "native-unknown",
+      "id": "C48",
+      "model_evidence": null,
+      "reason": "Native unresolved status retained; no new native oracle.",
+      "source_case": {
+        "basis": "unresolved",
+        "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+        "expected": "Marker observations alone do not prove complete root coverage, release order or recoverability; cycles remain excluded from first implementation.",
+        "findings": [
+          "F17",
+          "F20"
+        ],
+        "group": "graph",
+        "id": "C48",
+        "input": "Function/container cycle or arbitrary Reference graph; force garbage collection.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "eacf2aafc2c1fb90c739c0cee4ed0480040527a693af540306534708d69850d6"
+    },
+    {
+      "category": "excluded",
+      "id": "C49",
+      "model_evidence": null,
+      "reason": "Outside lifecycle event grammar: allocator, backend, container, dispatch or other gated behavior.",
+      "source_case": {
+        "basis": "design",
+        "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+        "expected": "Preserve explicit Rust store isolation; no native origin-token equivalent is established.",
+        "findings": [
+          "F21"
+        ],
+        "group": "policy",
+        "id": "C49",
+        "input": "Foreign-origin Function passed as capture or call target to another Rust ObjectStore.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "2497b8c2a38d6283b55258cf57ad36f66c17090ead712f773d6d88e383165d3d"
+    },
+    {
+      "category": "excluded",
+      "id": "C50",
+      "model_evidence": null,
+      "reason": "Outside lifecycle event grammar: allocator, backend, container, dispatch or other gated behavior.",
+      "source_case": {
+        "basis": "design",
+        "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+        "expected": "Future extension keeps current inert behavior: no source edits, allocations, semantic owner change or callback. This is a Rust acceptance requirement.",
+        "findings": [
+          "F21"
+        ],
+        "group": "policy",
+        "id": "C50",
+        "input": "Zero Rust instruction budget before 05/17.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "2570781c5d9c7755a2b4b360c8f102979269f4413a5ff659790f65983cf8909f"
+    },
+    {
+      "category": "excluded",
+      "id": "C51",
+      "model_evidence": null,
+      "reason": "Outside lifecycle event grammar: allocator, backend, container, dispatch or other gated behavior.",
+      "source_case": {
+        "basis": "design",
+        "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+        "expected": "Future extension preserves current single-instruction boundaries and precommit failure policy; never exposes a partial capture transfer.",
+        "findings": [
+          "F21"
+        ],
+        "group": "policy",
+        "id": "C51",
+        "input": "One-step Rust budget around 17 publication and 05 callee entry or synchronous Host completion.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "9e1bafad3a0ad096ab6807932ac1288f4db2bc560f010eef9f13dd0b28463860"
+    },
+    {
+      "category": "modeled",
+      "id": "C52",
+      "model_evidence": "test_creator_and_capture_same_or_distinct",
+      "reason": "Lifecycle ownership slice only; original boundary still applies.",
+      "source_case": {
+        "basis": "static-inference",
+        "boundary": "Static contact only; no target execution or Rust direct-capture implementation.",
+        "expected": "Header creator gains its own ordinary ref; payload is moved, not merged with creator or execRef.",
+        "findings": [
+          "F24"
+        ],
+        "group": "creator-ownership",
+        "id": "C52",
+        "input": "Creator and a raw captured Object denote the same valid Object.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "c921bd32dd49402e543c9e6e0ce08bf63b9cbe760a69f6f10b8f1de1052ff8f3"
+    },
+    {
+      "category": "modeled",
+      "id": "C53",
+      "model_evidence": "test_pending_and_queue_hold",
+      "reason": "Lifecycle ownership slice only; original boundary still applies.",
+      "source_case": {
+        "basis": "static-inference",
+        "boundary": "Static contact only; no target execution or Rust direct-capture implementation.",
+        "expected": "Set 0x4000 and return; do not treat this request alone as 0x8000 invalidation.",
+        "findings": [
+          "F26",
+          "F27"
+        ],
+        "group": "delayed-delete",
+        "id": "C53",
+        "input": "Destruction requested while execRef is positive.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "2a36d326fb67cebc6bd57fda41f4324752fc4cc9a1fa113a493e1ffa78924b4f"
+    },
+    {
+      "category": "modeled",
+      "id": "C54",
+      "model_evidence": "test_pending_and_queue_hold",
+      "reason": "Lifecycle ownership slice only; original boundary still applies.",
+      "source_case": {
+        "basis": "static-inference",
+        "boundary": "Static contact only; no target execution or Rust direct-capture implementation.",
+        "expected": "Isolate, queue, set 0x8000 and add independent queue ordinary ref.",
+        "findings": [
+          "F26"
+        ],
+        "group": "delayed-delete",
+        "id": "C54",
+        "input": "Last execRef exits while 0x4000 is set.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "e773617882d87ae35705779a970a995e83323c241073d613489a7db4480a132d"
+    },
+    {
+      "category": "modeled",
+      "id": "C55",
+      "model_evidence": "test_two_frames_and_lifo",
+      "reason": "Lifecycle ownership slice only; original boundary still applies.",
+      "source_case": {
+        "basis": "static-inference",
+        "boundary": "Static contact only; no target execution or Rust direct-capture implementation.",
+        "expected": "Unlink queue entry before low-level deletion and queue-ref decrement; retained invalid shell has independent final-unref lifetime.",
+        "findings": [
+          "F26"
+        ],
+        "group": "delayed-delete",
+        "id": "C55",
+        "input": "A queued Object reaches the observed drain routine.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "484c7378ca91eae9769b73a76b276c53ba14e1cfa1632fb21704df3b1618e8f4"
+    },
+    {
+      "category": "modeled",
+      "id": "C56",
+      "model_evidence": "test_pending_and_queue_hold",
+      "reason": "Lifecycle ownership slice only; original boundary still applies.",
+      "source_case": {
+        "basis": "static-inference",
+        "boundary": "Static contact only; no target execution or Rust direct-capture implementation.",
+        "expected": "Pending bit alone does not cause source normalization; invalid 0x8000 selects source cleanup/reread.",
+        "findings": [
+          "F27"
+        ],
+        "group": "source-copy",
+        "id": "C56",
+        "input": "COPY an Object or creator-bearing Function while creator is pending 0x4000 but not invalid 0x8000.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "d63b8853f6377d6988c79ec7d3b49ac0c78a2abe53ded45f02d64c1ae4fa7f7b"
+    },
+    {
+      "category": "modeled",
+      "id": "C57",
+      "model_evidence": "test_creator_and_capture_same_or_distinct",
+      "reason": "Lifecycle ownership slice only; original boundary still applies.",
+      "source_case": {
+        "basis": "static-inference",
+        "boundary": "Static contact only; no target execution or Rust direct-capture implementation.",
+        "expected": "Clean and unlink capture slots, unref creator, free capture storage then head.",
+        "findings": [
+          "F25"
+        ],
+        "group": "function-release",
+        "id": "C57",
+        "input": "Last Function head ref reaches nonpositive with nonempty captures and creator.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "673f69f3dfecd64e093f996416474f9b642e6d0b850f1e7ee217bc61889b7104"
+    },
+    {
+      "category": "native-unknown",
+      "id": "C58",
+      "model_evidence": null,
+      "reason": "Native unresolved status retained; no new native oracle.",
+      "source_case": {
+        "basis": "unresolved",
+        "boundary": "Do not import Array element-reference guarantees into Function capture storage.",
+        "expected": "No safe capture-slot lifetime guarantee; keep public capture-slot Reference escape excluded.",
+        "findings": [
+          "F25",
+          "F37"
+        ],
+        "group": "capture-slot-reference",
+        "id": "C58",
+        "input": "External Reference allegedly outlives the final owning Function head.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "714797d861bc5c5ed3f2b860d5b3839726e56555d7896f4e56cea9b1c03ebe5a"
+    },
+    {
+      "category": "excluded",
+      "id": "C59",
+      "model_evidence": null,
+      "reason": "Outside lifecycle event grammar: allocator, backend, container, dispatch or other gated behavior.",
+      "source_case": {
+        "basis": "static-inference",
+        "boundary": "Static contact only; no target execution or Rust direct-capture implementation.",
+        "expected": "Each capture move increases sp; final sp==0 result-overflow premise of historical C15 is infeasible in this bounded domain.",
+        "findings": [
+          "F28"
+        ],
+        "group": "result-stack-reachability",
+        "id": "C59",
+        "input": "Legal stack, nonnegative nonzero captures and no intervening state mutation.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "1a2e84d77e83bf3b6b34d0f773943436ab736c5113caabe30ff823b87c398b57"
+    },
+    {
+      "category": "excluded",
+      "id": "C60",
+      "model_evidence": null,
+      "reason": "Outside lifecycle event grammar: allocator, backend, container, dispatch or other gated behavior.",
+      "source_case": {
+        "basis": "static-inference",
+        "boundary": "Conditional static success, not runtime allocator observation or a recovery root.",
+        "expected": "Eligible pool or positive-size fallback allocation can return block+0xc; zero size is not intrinsically rejected.",
+        "findings": [
+          "F29"
+        ],
+        "group": "zero-allocation",
+        "id": "C60",
+        "input": "Initialized pdb allocator receives size zero and resources are available.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "899cad195202db95d40420e3c5c231700da7bf6fea48bf093223682e4259813a"
+    },
+    {
+      "category": "native-unknown",
+      "id": "C61",
+      "model_evidence": null,
+      "reason": "Native unresolved status retained; no new native oracle.",
+      "source_case": {
+        "basis": "unresolved",
+        "boundary": "No demonstrated leak; nonempty legal captures and allocator failure are different branches.",
+        "expected": "Unpublished C-local head recovery root and eventual release remain unproved.",
+        "findings": [
+          "F28",
+          "F29",
+          "F30"
+        ],
+        "group": "unpublished-head",
+        "id": "C61",
+        "input": "Zero captures, initial sp==0, both allocations succeed and final result push errors.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "8739f65d8d53ba911278f6682ecf92d77bc6885da53f81d06a2a0215c87eb406"
+    },
+    {
+      "category": "excluded",
+      "id": "C62",
+      "model_evidence": null,
+      "reason": "Outside lifecycle event grammar: allocator, backend, container, dispatch or other gated behavior.",
+      "source_case": {
+        "basis": "static-inference",
+        "boundary": "Selected ordinary path only; not whole-exit coverage.",
+        "expected": "traceError unwinds to backend boundary; errorQuit longjmps and doActions returns -3 to the scheduler.",
+        "findings": [
+          "F31"
+        ],
+        "group": "ordinary-uncaught",
+        "id": "C62",
+        "input": "Ordinary interpreter threadType1, valid backend environment, no script catch, no interfering hook or nonlocal failure.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "0518155030c4c38042f760d7352c821201077f4ad7058d87ea7e832eaeb33ec6"
+    },
+    {
+      "category": "excluded",
+      "id": "C63",
+      "model_evidence": null,
+      "reason": "Outside lifecycle event grammar: allocator, backend, container, dispatch or other gated behavior.",
+      "source_case": {
+        "basis": "static-inference",
+        "boundary": "No same-iteration second drain guarantee.",
+        "expected": "endForBackend drains its queues before scheduler saves PCB sp/funCp and calls deleteProcess.",
+        "findings": [
+          "F31",
+          "F32"
+        ],
+        "group": "backend-delete-order",
+        "id": "C63",
+        "input": "Selected ordinary scheduler path receives uncaught-error return.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "3139ac0a78872d7af4450ee6504a41085f162e937d00b5fb2d1d0869624754db"
+    },
+    {
+      "category": "excluded",
+      "id": "C64",
+      "model_evidence": null,
+      "reason": "Outside lifecycle event grammar: allocator, backend, container, dispatch or other gated behavior.",
+      "source_case": {
+        "basis": "static-inference",
+        "boundary": "Target bodies, reentry, retention and exceptions remain unresolved.",
+        "expected": "Hook contacts occur before PCB ref decrement; crash records are detached/freed before callback.",
+        "findings": [
+          "F33"
+        ],
+        "group": "delete-hooks",
+        "id": "C64",
+        "input": "deleteProcess has held-object release hooks, crash-list hooks or PCB endHook.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "f325fba9015c4eac39fdf99f5da7e21014365e66cce65fd57b0c2e54df969c91"
+    },
+    {
+      "category": "excluded",
+      "id": "C65",
+      "model_evidence": null,
+      "reason": "Outside lifecycle event grammar: allocator, backend, container, dispatch or other gated behavior.",
+      "source_case": {
+        "basis": "static-inference",
+        "boundary": "Does not drain newly queued objects by itself or release external owners.",
+        "expected": "Release deletionFunc, clean saved stack range, drop eligible remaining frame execRefs and retire PCB.",
+        "findings": [
+          "F34"
+        ],
+        "group": "pcb-final-reference",
+        "id": "C65",
+        "input": "deleteProcess hooks complete and decrement changes PCB ref from one to zero.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "54d8b6416a270607becc79c1d5077b588bedb63da64fad6fae75fb353a64bf04"
+    },
+    {
+      "category": "excluded",
+      "id": "C66",
+      "model_evidence": null,
+      "reason": "Outside lifecycle event grammar: allocator, backend, container, dispatch or other gated behavior.",
+      "source_case": {
+        "basis": "static-inference",
+        "boundary": "No guarantee that every external holder eventually releases.",
+        "expected": "First call skips final values/frames; final unref performs deletionFunc, stack and context cleanup.",
+        "findings": [
+          "F35"
+        ],
+        "group": "pcb-retained-reference",
+        "id": "C66",
+        "input": "deleteProcess leaves positive PCB ref, then a later final vm_unrefToPCB reaches exactly zero.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "f101531534facbd1f903a2cfcee6082cec505e345fa116201d3699786850cb76"
+    },
+    {
+      "category": "native-unknown",
+      "id": "C67",
+      "model_evidence": null,
+      "reason": "Native unresolved status retained; no new native oracle.",
+      "source_case": {
+        "basis": "unresolved",
+        "boundary": "Backend drain precedes this deletion contact; do not assert immediate final release.",
+        "expected": "Queue state is known, but next guaranteed drain across scheduler-stop paths remains a gate.",
+        "findings": [
+          "F26",
+          "F32",
+          "F36"
+        ],
+        "group": "post-delete-drain",
+        "id": "C67",
+        "input": "Final remaining-frame execRef release during PCB deletion queues another Object.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "74727905c69f6fa97f8d3f50ae6c0792b9af74110334c5101077a1660ca57905"
+    },
+    {
+      "category": "native-unknown",
+      "id": "C68",
+      "model_evidence": null,
+      "reason": "Native unresolved status retained; no new native oracle.",
+      "source_case": {
+        "basis": "unresolved",
+        "boundary": "Retain full GC and external-root unknowns.",
+        "expected": "Recorded allocation chain/known roots do not prove complete recovery or cyclic release order.",
+        "findings": [
+          "F30",
+          "F38",
+          "F39"
+        ],
+        "group": "root-coverage",
+        "id": "C68",
+        "input": "A zero-capture unpublished head, arbitrary Reference graph or external mark callback is proposed as GC-recoverable.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "e0dcffa8779ba6ed9ee1af027069860a5ee5144c0f21bb0d6b3e20f2c2b91909"
+    },
+    {
+      "category": "native-unknown",
+      "id": "C69",
+      "model_evidence": null,
+      "reason": "Native unresolved status retained; no new native oracle.",
+      "source_case": {
+        "basis": "unresolved",
+        "boundary": "Require independent per-exit evidence before implementation.",
+        "expected": "No extension of the closed ordinary-thread path is justified.",
+        "findings": [
+          "F39"
+        ],
+        "group": "excluded-exits",
+        "id": "C69",
+        "input": "Failure occurs in another thread type, JIT, callback-catch or reentrant deletion hook.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "3c48bc1447353646fa1f0d716befa721f8045bce5314427cbb9454799db09442"
+    },
+    {
+      "category": "excluded",
+      "id": "C70",
+      "model_evidence": null,
+      "reason": "Outside lifecycle event grammar: allocator, backend, container, dispatch or other gated behavior.",
+      "source_case": {
+        "basis": "design",
+        "boundary": "Evidence/specification completion is separate from permission to open runtime capabilities.",
+        "expected": "Keep direct Object/Function captures, generic non-scalar readiness and stage2 completion false; runtime/API/dependencies unchanged.",
+        "findings": [
+          "F40"
+        ],
+        "group": "direct-capture-gate",
+        "id": "C70",
+        "input": "2AX evidence ledger and gated T05 specification are delivered.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "c622cad79aae70f754bff572a18efa3ae96c38952ec4605caadad489280cb440"
+    },
+    {
+      "category": "excluded",
+      "id": "C71",
+      "model_evidence": null,
+      "reason": "Outside lifecycle event grammar: allocator, backend, container, dispatch or other gated behavior.",
+      "source_case": {
+        "basis": "design",
+        "boundary": "A bounded Rust graph policy is not native GC or delayed-delete equivalence.",
+        "expected": "Reuse semantic unique/shared COPY and final-graph acceptance rules; specify Object variable/creator edges independently and keep cycles/capture-slot Reference escape closed.",
+        "findings": [
+          "F24",
+          "F25",
+          "F37",
+          "F38",
+          "F40"
+        ],
+        "group": "graph-policy",
+        "id": "C71",
+        "input": "Future direct capture proposes a nested Function or Object ownership graph.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "44e6f9c390cbdd3dce0688c243d7ba3d09d3b29de5983b53567c8ddd191b687e"
+    },
+    {
+      "category": "excluded",
+      "id": "C72",
+      "model_evidence": null,
+      "reason": "Outside lifecycle event grammar: allocator, backend, container, dispatch or other gated behavior.",
+      "source_case": {
+        "basis": "static-inference",
+        "boundary": "Static observation or inference only; no target execution, main-corpus reachability or runtime/model implementation is claimed.",
+        "expected": "Clamp stack size to 256; initialize sp to stackSize, PCB ref to one and the entry context to ip=0/bp=stackSize.",
+        "findings": [
+          "F41"
+        ],
+        "group": "e01-initialization",
+        "id": "C72",
+        "input": "Successful initProcess with explicit nonnull attrib stackSize=1 and valid environment.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "67b19427e6d28b15cc4c08a955aab84f900e8bd45561646d931b371059cdc2da"
+    },
+    {
+      "category": "excluded",
+      "id": "C73",
+      "model_evidence": null,
+      "reason": "Outside lifecycle event grammar: allocator, backend, container, dispatch or other gated behavior.",
+      "source_case": {
+        "basis": "static-inference",
+        "boundary": "Static observation or inference only; no target execution, main-corpus reachability or runtime/model implementation is claimed.",
+        "expected": "Use configured defaults; do not infer the explicit-attrib local clamp also ran on this branch.",
+        "findings": [
+          "F41"
+        ],
+        "group": "e01-initialization",
+        "id": "C73",
+        "input": "initProcess receives null attrib and succeeds.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "c381e62773a2ce403a2cdf46d323a67b511042a8a406b91687ec033bed026f11"
+    },
+    {
+      "category": "excluded",
+      "id": "C74",
+      "model_evidence": null,
+      "reason": "Outside lifecycle event grammar: allocator, backend, container, dispatch or other gated behavior.",
+      "source_case": {
+        "basis": "static-inference",
+        "boundary": "Frozen table/ELF contact and machine-call path; not bounded by a direct-caller-only search.",
+        "expected": "Decode actual machine-call arguments and indirectly call the entry; this dispatch has no generic sp-capacity preflight.",
+        "findings": [
+          "F42"
+        ],
+        "group": "e01-dispatch",
+        "id": "C74",
+        "input": "Ordinary no-hook processor reads two-parameter action17 or one-parameter action3b from the checked table.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "dfe95629a8c97e0f15688fa35269e1bacec6ee8635953fc8e0e30d57e3d1afa7"
+    },
+    {
+      "category": "excluded",
+      "id": "C75",
+      "model_evidence": null,
+      "reason": "Outside lifecycle event grammar: allocator, backend, container, dispatch or other gated behavior.",
+      "source_case": {
+        "basis": "static-inference",
+        "boundary": "Valid target/global environment is an explicit premise.",
+        "expected": "Wrapper obtains Global flag one and zero captured operands from the low six bits.",
+        "findings": [
+          "F42"
+        ],
+        "group": "e01-zero-encoding",
+        "id": "C75",
+        "input": "Function-value action has par8=0x80 and an encodable existing type-matching Global target.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "ded7d9e430e8d6b340e45f23a3eeabcc86c99465300f2bf21c0e7506458dde95"
+    },
+    {
+      "category": "excluded",
+      "id": "C76",
+      "model_evidence": null,
+      "reason": "Outside lifecycle event grammar: allocator, backend, container, dispatch or other gated behavior.",
+      "source_case": {
+        "basis": "static-inference",
+        "boundary": "A conditional finite static entry-path witness of257 actions, not executed and not a corpus/compiler reachability proof.",
+        "expected": "All Int pushes are within slots0..255 and end at sp=0; 17 leaves sp zero and reaches its result-overflow error edge.",
+        "findings": [
+          "F41",
+          "F42",
+          "F43"
+        ],
+        "group": "e01-finite-path",
+        "id": "C76",
+        "input": "Successful explicit 256-slot entry, 256 nodes 3b(0), then 17(g,0x80); valid Global target/environment, no state interference and successful H/A allocations.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "2c8607ad494035add25cda96b79b5d3b6710cbac64e64180241178baecce2d36"
+    },
+    {
+      "category": "excluded",
+      "id": "C77",
+      "model_evidence": null,
+      "reason": "Outside lifecycle event grammar: allocator, backend, container, dispatch or other gated behavior.",
+      "source_case": {
+        "basis": "static-inference",
+        "boundary": "Static observation or inference only; no target execution, main-corpus reachability or runtime/model implementation is claimed.",
+        "expected": "H points at A but is not yet published as the result stack Function Value; optional creator ref is a separate obligation.",
+        "findings": [
+          "F44"
+        ],
+        "group": "e01-publication",
+        "id": "C77",
+        "input": "The zero-capture result error is reached after H/A allocation and target setup.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "45199a61c7059e6093725723a4103e2e6dbeb00f29e573ae2785cfdef43349bb"
+    },
+    {
+      "category": "excluded",
+      "id": "C78",
+      "model_evidence": null,
+      "reason": "Outside lifecycle event grammar: allocator, backend, container, dispatch or other gated behavior.",
+      "source_case": {
+        "basis": "static-inference",
+        "boundary": "Local registration/publication inventory does not exhaust external roots.",
+        "expected": "No capture vm_initValue iteration registers A slots in vm_allValues; header H is not itself registered as a Value slot by this helper.",
+        "findings": [
+          "F44"
+        ],
+        "group": "e01-root-registration",
+        "id": "C78",
+        "input": "Zero captured operands skip capture initialization.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "0fb9a4f443acd744762e11321e9c783f81d75c692f2961011bf004c236035e7b"
+    },
+    {
+      "category": "excluded",
+      "id": "C79",
+      "model_evidence": null,
+      "reason": "Outside lifecycle event grammar: allocator, backend, container, dispatch or other gated behavior.",
+      "source_case": {
+        "basis": "static-inference",
+        "boundary": "Static observation or inference only; no target execution, main-corpus reachability or runtime/model implementation is claimed.",
+        "expected": "Track extension page and block free-list metadata; do not classify that storage tracking as a Function/creator semantic recovery root.",
+        "findings": [
+          "F45"
+        ],
+        "group": "e01-allocator-tracking",
+        "id": "C79",
+        "input": "pdb allocator extends a group and then allocates H/A from its storage.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "b5f1eea973b5271fe417e21bf722330afc9fd47095567ec644277d454310f606"
+    },
+    {
+      "category": "excluded",
+      "id": "C80",
+      "model_evidence": null,
+      "reason": "Outside lifecycle event grammar: allocator, backend, container, dispatch or other gated behavior.",
+      "source_case": {
+        "basis": "static-inference",
+        "boundary": "Physical free is separate from semantic Function cleanup; fatal paths excluded.",
+        "expected": "Validate metadata and return storage to a group or libc free, without VM Value dispatch or creator unref in these routines.",
+        "findings": [
+          "F46"
+        ],
+        "group": "e01-allocator-release",
+        "id": "C80",
+        "input": "Normal freeMemory/l2FreeMemory receives an explicit valid allocation payload pointer.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "bc593f5ec1cba1808cffb2cdb71f18e9d2a11142982f09b3b76c802f72ae9b3e"
+    },
+    {
+      "category": "native-unknown",
+      "id": "C81",
+      "model_evidence": null,
+      "reason": "Native unresolved status retained; no new native oracle.",
+      "source_case": {
+        "basis": "unresolved",
+        "boundary": "No global leak or GC recovery conclusion.",
+        "expected": "Known stack/deletionFunc/context cleanup does not establish the missing H/A recovery root or final creator release.",
+        "findings": [
+          "F44",
+          "F47"
+        ],
+        "group": "e01-pcb-recovery",
+        "id": "C81",
+        "input": "Unpublished H/A remain C-local after the result error and ordinary backend recovery reaches final PCB ref cleanup.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "763fe7497a52f834f1a95782a363e7bbc20ed4ecd83d7542345fa835c543cd06"
+    },
+    {
+      "category": "native-unknown",
+      "id": "C82",
+      "model_evidence": null,
+      "reason": "Native unresolved status retained; no new native oracle.",
+      "source_case": {
+        "basis": "unresolved",
+        "boundary": "Keep direct capture lifecycle gate blocked; do not require or claim corpus runtime execution.",
+        "expected": "Eventual H/A storage and optional creator ordinary-ref release remain unclosed; storage page tracking alone is insufficient.",
+        "findings": [
+          "F45",
+          "F46",
+          "F47"
+        ],
+        "group": "e01-eventual-release",
+        "id": "C82",
+        "input": "Allocator extension storage remains globally tracked after the unpublished-head error.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "5054609ee3273f9690f552462479c949148f68d6a073fe0197c01348598b7dc7"
+    },
+    {
+      "category": "excluded",
+      "id": "C83",
+      "model_evidence": null,
+      "reason": "Outside lifecycle event grammar: allocator, backend, container, dispatch or other gated behavior.",
+      "source_case": {
+        "basis": "static-inference",
+        "boundary": "Requires actual normal backend completion, not merely active pointer nonnull.",
+        "expected": "The following endForBackend can drain the existing queue after that backend execution.",
+        "findings": [
+          "F48"
+        ],
+        "group": "e02-later-backend",
+        "id": "C83",
+        "input": "After one final PCB cleanup queues an Object, a later ordinary PCB actually enters and completes doActions normally.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "36a7a4c4022815223daeb41f81ddb0e97debbfa13b1125560bec7c29778f4602"
+    },
+    {
+      "category": "native-unknown",
+      "id": "C84",
+      "model_evidence": null,
+      "reason": "Native unresolved status retained; no new native oracle.",
+      "source_case": {
+        "basis": "unresolved",
+        "boundary": "No progress or eventual reclaim guarantee.",
+        "expected": "No guaranteed next backend completion or next drain follows from activity alone.",
+        "findings": [
+          "F48",
+          "F54"
+        ],
+        "group": "e02-progress",
+        "id": "C84",
+        "input": "Another PCB is active but resume hooks, quota, stop or nonlocal-exit effects are not fixed.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "9207862aae45345965a2bad3cfaf625d266d4ce9dfba9b6af6135a273f4a9ae8"
+    },
+    {
+      "category": "excluded",
+      "id": "C85",
+      "model_evidence": null,
+      "reason": "Outside lifecycle event grammar: allocator, backend, container, dispatch or other gated behavior.",
+      "source_case": {
+        "basis": "static-inference",
+        "boundary": "Internal/helper effects retain their own conditions.",
+        "expected": "Only scheduler-state reset and return remain; no additional explicit Object drain in this tail.",
+        "findings": [
+          "F50"
+        ],
+        "group": "e02-wrapper-tail",
+        "id": "C85",
+        "input": "Single schedule wrapper returns from its one internal call.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "8b4df829bdd7b3c1c0f656e6c33fddd49320b7acd8bad24d909281925a5d68d5"
+    },
+    {
+      "category": "excluded",
+      "id": "C86",
+      "model_evidence": null,
+      "reason": "Outside lifecycle event grammar: allocator, backend, container, dispatch or other gated behavior.",
+      "source_case": {
+        "basis": "static-inference",
+        "boundary": "The controlling later scan result is not the earlier scheduler return variable.",
+        "expected": "Visible return tail has no extra Object drain.",
+        "findings": [
+          "F50"
+        ],
+        "group": "e02-mainloop-return",
+        "id": "C86",
+        "input": "Actual scan/helper results select mainLoop nonnull-pPara return-zero branch.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "527d6f983518f072f494d52ed450fde4a9e08c6e857d3c3a82257056282677e7"
+    },
+    {
+      "category": "excluded",
+      "id": "C87",
+      "model_evidence": null,
+      "reason": "Outside lifecycle event grammar: allocator, backend, container, dispatch or other gated behavior.",
+      "source_case": {
+        "basis": "static-inference",
+        "boundary": "Stop signaling alone does not prove later shutdown is invoked or completed.",
+        "expected": "Set stop state and signal end; no extra explicit Object drain in the selected visible tail.",
+        "findings": [
+          "F50",
+          "F54"
+        ],
+        "group": "e02-mainloop-stop",
+        "id": "C87",
+        "input": "mainLoop selects requestStop or internal-minus99 stop tail.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "37f91fd34f5659ce04e2bb67f8c4ca98eab8c3b043dd1399c15a5846a468745c"
+    },
+    {
+      "category": "excluded",
+      "id": "C88",
+      "model_evidence": null,
+      "reason": "Outside lifecycle event grammar: allocator, backend, container, dispatch or other gated behavior.",
+      "source_case": {
+        "basis": "static-inference",
+        "boundary": "This does not prove the peek helper itself is effect-free.",
+        "expected": "Respond helper follows its visible return tail without extra drain.",
+        "findings": [
+          "F49"
+        ],
+        "group": "e02-response-empty-tail",
+        "id": "C88",
+        "input": "Responding queue peek has returned 0.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "e3ee97824bd5f00079aab88403a531b393376adfc87a9c3d3b1908582bf0add8"
+    },
+    {
+      "category": "native-unknown",
+      "id": "C89",
+      "model_evidence": null,
+      "reason": "Native unresolved status retained; no new native oracle.",
+      "source_case": {
+        "basis": "unresolved",
+        "boundary": "Keep arbitrary callback domain outside the ordinary closed path.",
+        "expected": "Indirect callback effects, retention, exception and reentry are not closed by the responding helper body.",
+        "findings": [
+          "F49",
+          "F54"
+        ],
+        "group": "e02-response-callbacks",
+        "id": "C89",
+        "input": "Responding queue contains a node with callback or destruction callback.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "b9e8b18f0220d51a819f5aece295a98ede4d5f10e1d95b65a0e8d91de4b3d29f"
+    },
+    {
+      "category": "excluded",
+      "id": "C90",
+      "model_evidence": null,
+      "reason": "Outside lifecycle event grammar: allocator, backend, container, dispatch or other gated behavior.",
+      "source_case": {
+        "basis": "static-inference",
+        "boundary": "Conditional contact, not full clearEnvironment effects or retained-PCB progress.",
+        "expected": "deleteProcess cleanup can queue Objects; explicit post-scan drain handles the then-existing queue before identifier/all-object cleanup.",
+        "findings": [
+          "F51"
+        ],
+        "group": "e02-clear-drain",
+        "id": "C90",
+        "input": "clearEnvironment reaches and completes its eligible PCB scan with prior helpers/hooks normal and relevant PCB refs reaching zero.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "93813a7f1b95cb94e66d6aa3c256b9cea2505124aaaa485009ab6c83f159fcbc"
+    },
+    {
+      "category": "native-unknown",
+      "id": "C91",
+      "model_evidence": null,
+      "reason": "Native unresolved status retained; no new native oracle.",
+      "source_case": {
+        "basis": "unresolved",
+        "boundary": "Only while PCB storage remains valid; no external-holder progress guarantee.",
+        "expected": "Its prior post-scan drain cannot by itself cover Object queues produced by a later final unref.",
+        "findings": [
+          "F35",
+          "F51",
+          "F54"
+        ],
+        "group": "e02-clear-retained-pcb",
+        "id": "C91",
+        "input": "clearEnvironment scan leaves a positive external PCB ref.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "f3f63602f89d2cdd89d010bd10150a24390bfd1f926e219ad3e8f9e3f64db9da"
+    },
+    {
+      "category": "excluded",
+      "id": "C92",
+      "model_evidence": null,
+      "reason": "Outside lifecycle event grammar: allocator, backend, container, dispatch or other gated behavior.",
+      "source_case": {
+        "basis": "static-inference",
+        "boundary": "Entry/progress and arbitrary external-holder behavior remain conditional.",
+        "expected": "Explicit Object drain follows PCB deletion and precedes PCB storage shutdown.",
+        "findings": [
+          "F52"
+        ],
+        "group": "e02-shutdown-drain",
+        "id": "C92",
+        "input": "shutdownScheduler completes stop/wait and helpers and reaches its eligible PCB deletion scan.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "10935ee37b3dbf7584fb6ac728e6dcf0cc37c97a120c295d4195ee35e9a7df23"
+    },
+    {
+      "category": "excluded",
+      "id": "C93",
+      "model_evidence": null,
+      "reason": "Outside lifecycle event grammar: allocator, backend, container, dispatch or other gated behavior.",
+      "source_case": {
+        "basis": "static-inference",
+        "boundary": "Storage release does not independently prove arbitrary external-root lifetimes.",
+        "expected": "Set slot tag to Undefined before destructStaticValue; do not infer a second original-payload destructor pass from this loop.",
+        "findings": [
+          "F53"
+        ],
+        "group": "e02-shutdown-slot-tag",
+        "id": "C93",
+        "input": "shutdownScheduler reaches its post-drain static stack-storage pass.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "468e41b5930a22d996eaf0fdbb89470838f3e67e4347a14ae95ccf385b9e3c34"
+    },
+    {
+      "category": "native-unknown",
+      "id": "C94",
+      "model_evidence": null,
+      "reason": "Native unresolved status retained; no new native oracle.",
+      "source_case": {
+        "basis": "unresolved",
+        "boundary": "Does not authorize PCB access after full shutdown frees its storage.",
+        "expected": "Local final-ref cleanup order is known; a subsequent universally guaranteed queue drain across all exit paths is not established.",
+        "findings": [
+          "F35",
+          "F54"
+        ],
+        "group": "e02-late-final-unref",
+        "id": "C94",
+        "input": "A retained PCB reaches final unref after an earlier observed drain while its storage is still valid.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "f033715cf307acdbad6143cec068210ed3ee53d47228e59589839370fe67900b"
+    },
+    {
+      "category": "excluded",
+      "id": "C95",
+      "model_evidence": null,
+      "reason": "Outside lifecycle event grammar: allocator, backend, container, dispatch or other gated behavior.",
+      "source_case": {
+        "basis": "static-inference",
+        "boundary": "Do not confuse genuine C-machine saves with an established semantic recovery root.",
+        "expected": "H is saved in [EBP-0x14] and ECX at the selected callsite; it has not yet been installed as result stack Function Value.",
+        "findings": [
+          "F55"
+        ],
+        "group": "r01-saved-head",
+        "id": "C95",
+        "input": "Zero-capture create has allocated H and reaches its final result error call.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "795ca55b5a60030e7e5c6a71f926d3bb5cc4570e6fc5792cd02ee181d1ed6e4d"
+    },
+    {
+      "category": "excluded",
+      "id": "C96",
+      "model_evidence": null,
+      "reason": "Outside lifecycle event grammar: allocator, backend, container, dispatch or other gated behavior.",
+      "source_case": {
+        "basis": "static-inference",
+        "boundary": "Register claim ends at the error call boundary; no cross-longjmp retention guarantee.",
+        "expected": "A is held in EDI and H+0x10; zero captured slots skip initValue registration.",
+        "findings": [
+          "F55"
+        ],
+        "group": "r01-saved-captures",
+        "id": "C96",
+        "input": "Zero-length capture allocation A succeeds before the result error.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "56c64975ed19ec08e215f054ffdbf38a4488628d0ef275627c42e48d2744e3ec"
+    },
+    {
+      "category": "partial-model",
+      "id": "C97",
+      "model_evidence": "test_creator_and_capture_same_or_distinct",
+      "reason": "Lifecycle ownership slice only; original boundary still applies.",
+      "source_case": {
+        "basis": "static-inference",
+        "boundary": "The finite Global-entry null-creator witness is a separate case.",
+        "expected": "Increment its ordinary ref and store it in H+0xc separately from H/A storage and any capture payload.",
+        "findings": [
+          "F55"
+        ],
+        "group": "r01-creator-present",
+        "id": "C97",
+        "input": "A nonnull noninvalid creator is supplied to the selected creation contact.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "fbb3b89e389c6e57ba715e323b53e4ea94c1d2f8b613115f0a5e23686eaa158d"
+    },
+    {
+      "category": "excluded",
+      "id": "C98",
+      "model_evidence": null,
+      "reason": "Outside lifecycle event grammar: allocator, backend, container, dispatch or other gated behavior.",
+      "source_case": {
+        "basis": "static-inference",
+        "boundary": "Does not exhaust imported setjmp byte writes or external roots.",
+        "expected": "Store funCp/catchLevel and increment topCatch; the helper adds no H/A allocation-registry entry.",
+        "findings": [
+          "F56"
+        ],
+        "group": "r01-catch-metadata",
+        "id": "C98",
+        "input": "Ordinary backend calls newCatch before processor execution of the create action.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "fb3582276b5aaa94461198154aa8c7dc96c9ff8696bc61255ec2fa0d65c50407"
+    },
+    {
+      "category": "native-unknown",
+      "id": "C99",
+      "model_evidence": null,
+      "reason": "Native unresolved status retained; no new native oracle.",
+      "source_case": {
+        "basis": "unresolved",
+        "boundary": "No claim that physical C-stack bytes vanish or that every external root is absent.",
+        "expected": "A semantically usable post-error discovery/read of those values is not established by the recorded catch metadata.",
+        "findings": [
+          "F55",
+          "F56",
+          "F60"
+        ],
+        "group": "r01-saves-versus-root",
+        "id": "C99",
+        "input": "The create frame/registers contain H/A while backend recovery later resumes.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "c62cbaa1cde308b28aa1baf8c0c54c9adb9349635db19e84595d14fc852d79f8"
+    },
+    {
+      "category": "excluded",
+      "id": "C100",
+      "model_evidence": null,
+      "reason": "Outside lifecycle event grammar: allocator, backend, container, dispatch or other gated behavior.",
+      "source_case": {
+        "basis": "static-inference",
+        "boundary": "Exact-address analyzed coverage, not alias/computed-root completeness.",
+        "expected": "Five source addresses match containing-dossier READ/WRITE metadata; BSS cell has no fabricated file bytes.",
+        "findings": [
+          "F57"
+        ],
+        "group": "r01-data-references",
+        "id": "C100",
+        "input": "Exact-address xrefs query targets _pdb_extendGrpList at0x0860d024.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "123e5d98d9bc62da39fd4caa76935c2308000d6012772f6ddd1f7b8cbe83fc83"
+    },
+    {
+      "category": "excluded",
+      "id": "C101",
+      "model_evidence": null,
+      "reason": "Outside lifecycle event grammar: allocator, backend, container, dispatch or other gated behavior.",
+      "source_case": {
+        "basis": "static-inference",
+        "boundary": "Conditional storage free only; does not establish shutdown progress or semantic release.",
+        "expected": "Free the encompassing physical page without Function payload cleanup or creator unref in the selected routine.",
+        "findings": [
+          "F58",
+          "F59"
+        ],
+        "group": "r01-extension-page-free",
+        "id": "C101",
+        "input": "H or A is within a still-linked extension page and normal allocator shutdown reaches that page.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "54d48a3e909bb62304e12e1f28f94d3f66ff753b05d58e95a859cd62b713bf86"
+    },
+    {
+      "category": "native-unknown",
+      "id": "C102",
+      "model_evidence": null,
+      "reason": "Native unresolved status retained; no new native oracle.",
+      "source_case": {
+        "basis": "unresolved",
+        "boundary": "Do not assume flat/waste/stable storage aliases or creator cleanup.",
+        "expected": "The extension-page walk does not establish per-allocation discovery/free for every fallback block.",
+        "findings": [
+          "F59",
+          "F60"
+        ],
+        "group": "r01-fallback-free",
+        "id": "C102",
+        "input": "H or A comes from the independent malloc fallback branch and remains unpublished.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "266c6a604d485da286ce5f245daa971a1477837f3c690291f47e11a516af5c61"
+    },
+    {
+      "category": "native-unknown",
+      "id": "C103",
+      "model_evidence": null,
+      "reason": "Native unresolved status retained; no new native oracle.",
+      "source_case": {
+        "basis": "unresolved",
+        "boundary": "Maintain independent storage and semantic obligations.",
+        "expected": "Physical free alone does not establish the creator ordinary-ref decrement or Function semantic cleanup.",
+        "findings": [
+          "F55",
+          "F58",
+          "F59",
+          "F60"
+        ],
+        "group": "r01-semantic-release",
+        "id": "C103",
+        "input": "Allocator shutdown physically frees storage containing an unpublished H with nonnull creator.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "1c713f72bb753e603afba82d964416e7f5c0211e59a9d40473540a1ff6d538de"
+    },
+    {
+      "category": "partial-model",
+      "id": "C104",
+      "model_evidence": "null creator supported; native entry witness not modeled",
+      "reason": "Lifecycle ownership slice only; original boundary still applies.",
+      "source_case": {
+        "basis": "static-inference",
+        "boundary": "No creator obligation does not close allocation recovery.",
+        "expected": "No creator ordinary ref is acquired; H/A recovery and storage obligations remain independently unresolved.",
+        "findings": [
+          "F55",
+          "F60"
+        ],
+        "group": "r01-creator-absent",
+        "id": "C104",
+        "input": "Global-entry witness has null creator when H is initialized.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "60d7d62d40c4c1f6b766dee3733f33fd5df2e7e3f15691ddaf87ab3acdf681d7"
+    },
+    {
+      "category": "native-unknown",
+      "id": "C105",
+      "model_evidence": null,
+      "reason": "Native unresolved status retained; no new native oracle.",
+      "source_case": {
+        "basis": "unresolved",
+        "boundary": "Further expansion needs a concrete root/reader/alias or imported-recovery relation.",
+        "expected": "Keep a named discovery/read/free/creator-unref frontier and bounded coverage record, rather than infer global leak or repeat an unqualified unknown.",
+        "findings": [
+          "F60"
+        ],
+        "group": "r01-precise-frontier",
+        "id": "C105",
+        "input": "Review reaches C-frame/register saves, catch metadata and allocator page shutdown but no complete semantic recovery chain.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "0305f3e060fee1b22b78d08b513aa9ea9dae9f6759c6a0ec612649b19a36f889"
+    },
+    {
+      "category": "excluded",
+      "id": "C106",
+      "model_evidence": null,
+      "reason": "Outside lifecycle event grammar: allocator, backend, container, dispatch or other gated behavior.",
+      "source_case": {
+        "basis": "static-inference",
+        "boundary": "Classification does not establish all execution/lifetime outcomes.",
+        "expected": "Actual source instructions are3 CALL and4 tail JMP; keep raw provider kind, instruction mnemonic, address-taking DATA and debug metadata separate.",
+        "findings": [
+          "F61"
+        ],
+        "group": "r02-control-kinds",
+        "id": "C106",
+        "input": "Incoming unrefToPCB metadata labels seven control sites as UNCONDITIONAL_CALL across six functions.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "cbb54b9201bd8eb4965950b3317cb8af80932e99976d89fd3480377315c959a2"
+    },
+    {
+      "category": "excluded",
+      "id": "C107",
+      "model_evidence": null,
+      "reason": "Outside lifecycle event grammar: allocator, backend, container, dispatch or other gated behavior.",
+      "source_case": {
+        "basis": "static-inference",
+        "boundary": "Address registration is not eventual callback invocation.",
+        "expected": "Register unref function pointer at node+8 and PCB cookie at+12 after a separate PCB ref increment.",
+        "findings": [
+          "F62"
+        ],
+        "group": "r02-service-registration",
+        "id": "C107",
+        "input": "Selected ordinary serviceWakeup post path retains PCB and builds a node.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "bf59e869142859795ee3bb0574a4ec3663c4b47e3635d51587e3214db9c0658c"
+    },
+    {
+      "category": "excluded",
+      "id": "C108",
+      "model_evidence": null,
+      "reason": "Outside lifecycle event grammar: allocator, backend, container, dispatch or other gated behavior.",
+      "source_case": {
+        "basis": "static-inference",
+        "boundary": "Other service-flag branches and callback progress are independent.",
+        "expected": "Free a created failed node when present, then perform the explicit unref CALL before local exit.",
+        "findings": [
+          "F62"
+        ],
+        "group": "r02-service-failure",
+        "id": "C108",
+        "input": "Wakeup node allocation/post fails on the selected retained path.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "58e8d57efe9b3ae5c73e6fd3d829fd5ff25d8948378ab05485415681fdc15311"
+    },
+    {
+      "category": "excluded",
+      "id": "C109",
+      "model_evidence": null,
+      "reason": "Outside lifecycle event grammar: allocator, backend, container, dispatch or other gated behavior.",
+      "source_case": {
+        "basis": "static-inference",
+        "boundary": "No scheduler, callback or external-holder progress guarantee.",
+        "expected": "Record node unref/cookie registration and explicit failed-post unref/error order; later indirect resume transfer remains outside classification.",
+        "findings": [
+          "F62",
+          "F66"
+        ],
+        "group": "r02-transfer-hold",
+        "id": "C109",
+        "input": "transferControl saves process info, retains PCB and attempts a service/responding post.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "7792b838addd8ba49d2739de600c94c28b09535b9e8d4a1ff459daf7d6611b95"
+    },
+    {
+      "category": "excluded",
+      "id": "C110",
+      "model_evidence": null,
+      "reason": "Outside lifecycle event grammar: allocator, backend, container, dispatch or other gated behavior.",
+      "source_case": {
+        "basis": "static-inference",
+        "boundary": "Do not merge target-PCB ordinary ref and Function-head semantic ownership.",
+        "expected": "Retain target PCB and Function head independently, then register crash/catch/return contacts.",
+        "findings": [
+          "F63"
+        ],
+        "group": "r02-delete-two-owners",
+        "id": "C110",
+        "input": "delete_thread uses a valid deletion Function.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "125d3f78a90e6c37eed2d79bf426d220969361c8f8f8242b3ebd1e9c4e3b33ba"
+    },
+    {
+      "category": "excluded",
+      "id": "C111",
+      "model_evidence": null,
+      "reason": "Outside lifecycle event grammar: allocator, backend, container, dispatch or other gated behavior.",
+      "source_case": {
+        "basis": "static-inference",
+        "boundary": "No guarantee the registered helper will execute or all prerequisites return.",
+        "expected": "Same-depth path locally clears hooks/catch then kills/pushes/unrefs; changed-depth path registers the return helper.",
+        "findings": [
+          "F63"
+        ],
+        "group": "r02-delete-inline-versus-registered",
+        "id": "C111",
+        "input": "delete_thread compares call depth after invoking its deletion Function.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "e11a8f710acaf2e63c0f2c4bb1fe7f74bfc3cf67ed176057fc97c86b575a2657"
+    },
+    {
+      "category": "excluded",
+      "id": "C112",
+      "model_evidence": null,
+      "reason": "Outside lifecycle event grammar: allocator, backend, container, dispatch or other gated behavior.",
+      "source_case": {
+        "basis": "static-inference",
+        "boundary": "Local adjacency only, not uniqueness/finality or callback-domain completion.",
+        "expected": "Follow the recorded distinct prefixes to two ok tail JMP sites or the single failed/crash tail JMP.",
+        "findings": [
+          "F61",
+          "F63"
+        ],
+        "group": "r02-delete-helper-tails",
+        "id": "C112",
+        "input": "Execution actually enters an ok/failed/crash helper and its required prefix completes normally.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "22b73d3a4b052269cd00f1830d8c97ea782e3665a77eaa882d273cb2a8a1c2a6"
+    },
+    {
+      "category": "excluded",
+      "id": "C113",
+      "model_evidence": null,
+      "reason": "Outside lifecycle event grammar: allocator, backend, container, dispatch or other gated behavior.",
+      "source_case": {
+        "basis": "static-inference",
+        "boundary": "Empty exact references do not establish unused registration or post-stop progress.",
+        "expected": "Registration at record19 remains compatible with reverse indexed consumption; actual invocation requires runtime flags/slot/guards and preceding completion.",
+        "findings": [
+          "F64"
+        ],
+        "group": "r02-computed-registration",
+        "id": "C113",
+        "input": "Exact table-base/base+8/scheduler-slot xrefs are empty, while checked original table bytes and shutdown consumer are available.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "e5955be0ed5924af8ab13f0cb144b4d844f099db1133cb34e9b19da941b05e2a"
+    },
+    {
+      "category": "excluded",
+      "id": "C114",
+      "model_evidence": null,
+      "reason": "Outside lifecycle event grammar: allocator, backend, container, dispatch or other gated behavior.",
+      "source_case": {
+        "basis": "static-inference",
+        "boundary": "The function name is not a final-reclamation guarantee.",
+        "expected": "Return immediately, or call mainLoop(NULL) then return; no extra shutdownScheduler call in this wrapper.",
+        "findings": [
+          "F65"
+        ],
+        "group": "r02-wait-wrapper",
+        "id": "C114",
+        "input": "waitMainLoopDone is entered with alreadyShutdown nonzero or zero.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "fc2830729be4ad8afed5e67871634066b6e975e12d06b8e2ab7838adc412300f"
+    },
+    {
+      "category": "native-unknown",
+      "id": "C115",
+      "model_evidence": null,
+      "reason": "Native unresolved status retained; no new native oracle.",
+      "source_case": {
+        "basis": "unresolved",
+        "boundary": "Arbitrary callbacks, other threads/JIT and full reclamation remain excluded.",
+        "expected": "Keep classification separate from eventual ref retirement, next drain and safe storage lifetime; do not advance lifecycle design or capture readiness.",
+        "findings": [
+          "F66"
+        ],
+        "group": "r02-progress-frontier",
+        "id": "C115",
+        "input": "A stored release callback or module shutdown registration exists but actual invocation/lifetime progress is not fixed.",
+        "runtime_executed": false
+      },
+      "source_case_sha256": "dc07c61c4d124205a207424b129bd8763ced1c441470625f9186a73e2fd67c8d"
+    }
+  ],
+  "source": "docs/stage2az-evidence/expected-cases.json",
+  "source_sha256": "2b60a5cdfb7ced41d13d0238eef149e6b72e7723ebe82d17ba927859c8e3a58b",
+  "stage": "2BA"
+}

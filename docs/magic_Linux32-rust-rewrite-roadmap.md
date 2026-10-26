@@ -1,3 +1,5 @@
+> 阶段 2BA：已交付受限生命周期 D01 设计、独立模型与有界枚举；仅设计，Rust 运行时/API 与直接捕获门禁不变。原生未发布 H/A 最终清理仍未知。详见 [设计总览](stage2ba-design/overview.md)。
+
 # 最新进度：阶段2AZ
 
 阶段2AZ完成[H/A保存与处置追踪](stage2az-evidence/r01-paths.md)、[外部引用接点分类](stage2az-evidence/r02-classification.md)及[数据引用核验](stage2az-evidence/data-references.json)。新增9条函数dossier和5条xref，复用76条函数记录；保留273A/54F/94C前缀，当前351A/66F/115C及94项历史映射。物理页free与语义清理、provider CALL kind与实际CALL/JMP、表注册与条件调用分别验收。运行时、公共API、版本、依赖和状态模型不变；没有原程序或业务字节码执行。直接捕获与阶段2仍未完成，详见[门槛](stage2az-evidence/gate-review.md)、[收据](stage2az-validation.json)及[下一步](stage2az-evidence/next-batch.md)。以下完整原文保留为历史快照。

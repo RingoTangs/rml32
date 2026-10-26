@@ -1,0 +1,42 @@
+{
+  "complete": true,
+  "domains": [
+    {
+      "accepted_transitions": 2771,
+      "complete": true,
+      "depth": 6,
+      "max_external_slots": 2,
+      "max_frames": 1,
+      "max_heads": 1,
+      "max_states": 200000,
+      "max_transitions": 1000000,
+      "objects": 1,
+      "rejected_transitions": 3236,
+      "state_set_sha256": "66ba29a89cd441b193d219be6e5699e182a91523911f687144006a4fbdab624c",
+      "states": 341
+    },
+    {
+      "accepted_transitions": 4827,
+      "complete": true,
+      "depth": 4,
+      "max_external_slots": 2,
+      "max_frames": 1,
+      "max_heads": 1,
+      "max_states": 200000,
+      "max_transitions": 1000000,
+      "objects": 2,
+      "rejected_transitions": 4114,
+      "state_set_sha256": "ea34b3a1ce59ee937c97046dfa5dcbedc63900bc50f0cf24a22b8c3ff395a075",
+      "states": 891
+    }
+  ],
+  "full_state_space_proof": false,
+  "grammar": "actions(world); zero-capture heads in enumeration; captures covered by hand tests",
+  "native_execution": false,
+  "rust_execution": false,
+  "source_sha256": {
+    "explore.py": "56c2993dd773145bde3beed759139da27171055ff7b5dacdf7b1acf323f3e27c",
+    "model.py": "e2561fafc55a7ab1be6321d9d4dbd3fd11dff9aa462030e61160812b0de088fc"
+  },
+  "stage": "2BA"
+}
