@@ -1,0 +1,71 @@
+{
+  "before": {
+    "open": false,
+    "source": "binary_session observed before opening the reference ELF"
+  },
+  "after": {
+    "open": false,
+    "source": "close_binary completed, then binary_session observed closed"
+  },
+  "target_execution": "none",
+  "target_sha256": "5d4ebac58d8c415d9cf95bbcdd50f78afac91adf4f7e667ea3afc6f5336a6f34",
+  "analysis_requests": [
+    {
+      "procedure": "vm_initProcess",
+      "status": "failed",
+      "reason": "Input validation rejected unrecognized detail=\"summary\"; no analysis ran for that request."
+    },
+    {
+      "procedure": "vm_initProcess",
+      "status": "complete",
+      "evidence_id": "ev_6d29a100bf81351c9a23e7aafccf7e7b686400d183819f4c456e3c03a886c6ef"
+    },
+    {
+      "procedure": "pdb_freeMemory",
+      "status": "complete",
+      "evidence_id": "ev_d7cd867b7d8979108b472049c77c2ed0272efc48c431ff4071039afb7b2e15ab"
+    },
+    {
+      "procedure": "pdb_l2FreeMemory",
+      "status": "complete",
+      "evidence_id": "ev_d6e6b77318b57369520badc1b7a8bfebb3e43f1702000111099db0a94299e06a"
+    },
+    {
+      "procedure": "pdb_extendBlocksOfGroup",
+      "status": "complete",
+      "evidence_id": "ev_69e5d889c7b964db3c123bbbc5f6c7a4512b0633b9d910e1a3e131018281b99d"
+    },
+    {
+      "procedure": "vm_clearEnvironment",
+      "status": "complete",
+      "evidence_id": "ev_c8ed1b0d33d59a3c3e7dd9afa1d7cdba9b5e21d7e042d4b49dcac0ae8fc24a29"
+    },
+    {
+      "procedure": "vm_shutdownScheduler",
+      "status": "complete",
+      "evidence_id": "ev_fa72d6497d785e96f2008f5e0c88d23b56be0c6334a7128afc2e2ee91b59b9d5"
+    },
+    {
+      "procedure": "vm_processAllRespondingInQueue",
+      "status": "complete",
+      "evidence_id": "ev_6e8d3bdf322cb3574f900949a394c797df34a67db5831a7a96393c9b30719a72"
+    },
+    {
+      "procedure": "vm_pushShortNumber",
+      "status": "complete",
+      "evidence_id": "ev_435c34c38da3d259692fcf6ea5ca1336fb90f91e53e999c32ea0cb40d27d806a"
+    }
+  ],
+  "export": {
+    "bytes": 6545666,
+    "records": 8,
+    "unknowns": 0,
+    "scope": "complete current-session bundle, no target execution",
+    "sha256": "b8656c4d714e1c96511761e7908d43404f4c0918905c248b77a078b4eedeb0db"
+  },
+  "limitations": [
+    "Observed static Ghidra records are not runtime execution or whole-lifecycle equivalence.",
+    "The rejected detail argument did not execute analysis; all successful requests retain their complete dossiers.",
+    "Provider limitations and unresolved indirect calls remain in each full record."
+  ]
+}

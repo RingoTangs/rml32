@@ -1,3 +1,7 @@
+# rml32 · 当前阶段 2AY
+
+阶段2AY完成E01/E02定向静态取证与[生命周期门槛重评](docs/stage2ay-evidence/gate-review.md)：新增8条、复用67条完整记录，补齐零捕获满栈候选的有限静态路径，以及clear/shutdown扫描后的条件化排空接点。原180个锚点、40条结论、71个案例完整保留，当前为273个锚点、54条结论、94个案例。见[本批说明](docs/stage2ay-evidence/overview.md)、[方法](docs/stage2ay-evidence/method.md)及[验证收据](docs/stage2ay-validation.json)。Rust/API/依赖和原644项普通测试及2项doctest保持；没有运行参考程序、业务字节码或新增模型。未发布头最终释放、外部持有与完整退出域仍未闭合，直接Object/Function捕获继续关闭，阶段2未完成。[下一批](docs/stage2ay-evidence/next-batch.md)继续补具体生命周期契约。以下完整原文保留为历史快照。
+
 # rml32 · 当前阶段 2AX
 
 阶段2AX已补齐既有8条新增、57条复用原生静态记录的证据总账、51项历史案例映射与[T05门控规格](docs/stage2ax-evidence/runtime-design.md)。Rust运行时、公共API、版本及依赖保持2AW基线；原644项普通测试与2项doctest保持。见[本批说明](docs/stage2ax-evidence/overview.md)、[复现方法](docs/stage2ax-evidence/method.md)和[验证收据](docs/stage2ax-validation.json)。受限容器捕获能力保持；直接Object/Function捕获仍阻塞，阶段2未完成。下一批为[T05-lifecycle-contract-evidence](docs/stage2ax-evidence/next-batch.md)，先补未发布头与最终清理后的安全点等生命周期证据。未执行参考程序或业务字节码，语料结果复用冻结2AW记录。以下原文保留为历史快照。

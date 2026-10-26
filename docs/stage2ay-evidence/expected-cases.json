@@ -1,0 +1,1203 @@
+[
+  {
+    "id": "C01",
+    "group": "capture-create",
+    "basis": "static-inference",
+    "input": "17 receives already-evaluated raw stack Undefined; creator is valid; resources available.",
+    "expected": "Move type/attrib/payload into initialized capture slot, clear source type/attrib; retain raw payload identity.",
+    "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+    "findings": [
+      "F01",
+      "F03"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C02",
+    "group": "capture-create",
+    "basis": "static-inference",
+    "input": "17 receives already-evaluated raw stack Void; creator is valid; resources available.",
+    "expected": "Move type/attrib/payload into initialized capture slot, clear source type/attrib; retain raw payload identity.",
+    "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+    "findings": [
+      "F01",
+      "F03"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C03",
+    "group": "capture-create",
+    "basis": "static-inference",
+    "input": "17 receives already-evaluated raw stack Int; creator is valid; resources available.",
+    "expected": "Move type/attrib/payload into initialized capture slot, clear source type/attrib; retain raw payload identity.",
+    "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+    "findings": [
+      "F01",
+      "F03"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C04",
+    "group": "capture-create",
+    "basis": "static-inference",
+    "input": "17 receives already-evaluated raw stack Real bits; creator is valid; resources available.",
+    "expected": "Move type/attrib/payload into initialized capture slot, clear source type/attrib; retain raw payload identity.",
+    "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+    "findings": [
+      "F01",
+      "F03"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C05",
+    "group": "capture-create",
+    "basis": "static-inference",
+    "input": "17 receives already-evaluated raw stack Bytes; creator is valid; resources available.",
+    "expected": "Move type/attrib/payload into initialized capture slot, clear source type/attrib; retain raw payload identity.",
+    "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+    "findings": [
+      "F01",
+      "F03"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C06",
+    "group": "capture-create",
+    "basis": "static-inference",
+    "input": "17 receives already-evaluated raw stack Array; creator is valid; resources available.",
+    "expected": "Move type/attrib/payload into initialized capture slot, clear source type/attrib; retain raw payload identity.",
+    "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+    "findings": [
+      "F01",
+      "F03"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C07",
+    "group": "capture-create",
+    "basis": "static-inference",
+    "input": "17 receives already-evaluated raw stack Mapping; creator is valid; resources available.",
+    "expected": "Move type/attrib/payload into initialized capture slot, clear source type/attrib; retain raw payload identity.",
+    "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+    "findings": [
+      "F01",
+      "F03"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C08",
+    "group": "capture-create",
+    "basis": "static-inference",
+    "input": "17 receives already-evaluated raw stack live Object; creator is valid; resources available.",
+    "expected": "Move type/attrib/payload into initialized capture slot, clear source type/attrib; retain raw payload identity.",
+    "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+    "findings": [
+      "F01",
+      "F03"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C09",
+    "group": "capture-create",
+    "basis": "static-inference",
+    "input": "17 receives already-evaluated raw stack Function with live or null creator; creator is valid; resources available.",
+    "expected": "Move type/attrib/payload into initialized capture slot, clear source type/attrib; retain raw payload identity.",
+    "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+    "findings": [
+      "F01",
+      "F03"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C10",
+    "group": "capture-create",
+    "basis": "static-inference",
+    "input": "17 receives raw deleted Object payload already on stack.",
+    "expected": "Transfer itself does not invoke copy-based source normalization; no claim about how preceding expression produced raw value.",
+    "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+    "findings": [
+      "F03",
+      "F08"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C11",
+    "group": "capture-create",
+    "basis": "static-inference",
+    "input": "17 receives raw Function whose creator is deleted, creator of outer Function valid.",
+    "expected": "Raw captured Function payload is transferred at this point; outer creator validation is a separate identity.",
+    "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+    "findings": [
+      "F03",
+      "F23"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C12",
+    "group": "capture-create",
+    "basis": "static-inference",
+    "input": "17 capture operand is tag8 Reference.",
+    "expected": "Native helper raises argument error during reference scan before capture allocations/transfers.",
+    "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+    "findings": [
+      "F01",
+      "F02"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C13",
+    "group": "capture-create",
+    "basis": "design",
+    "input": "17 capture operand is hidden Loop tag0x14.",
+    "expected": "No legal capture guarantee follows from this helper; Rust continues explicit rejection.",
+    "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+    "findings": [
+      "F01",
+      "F21"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C14",
+    "group": "capture-create",
+    "basis": "static-inference",
+    "input": "17 header allocation succeeds; capture storage allocation fails.",
+    "expected": "Header freed then vm_error, before capture transfer; final uncaught cleanup outside this local ordering remains separate.",
+    "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+    "findings": [
+      "F02",
+      "F20"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C15",
+    "group": "capture-create",
+    "basis": "unresolved",
+    "input": "17 has moved captures but final result stack has no space.",
+    "expected": "Creation is not proven failure-atomic; C-local unpublished head ownership/rooting and final cleanup remain unresolved.",
+    "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+    "findings": [
+      "F02",
+      "F20"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C16",
+    "group": "head-expansion",
+    "basis": "static-inference",
+    "input": "Native head ref is 1; raw bound Array; enough stack.",
+    "expected": "Reverse-index raw move, clear bound source slots, free unique Function head. Container children are not recursively normalized.",
+    "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+    "findings": [
+      "F05",
+      "F07"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C17",
+    "group": "head-expansion",
+    "basis": "static-inference",
+    "input": "Native head ref is 2; raw bound Array; enough stack.",
+    "expected": "Release local call-target holder, push/copy bound header; surviving Function capture and argument share container. Container children are not recursively normalized.",
+    "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+    "findings": [
+      "F06",
+      "F07"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C18",
+    "group": "head-expansion",
+    "basis": "static-inference",
+    "input": "Native head ref is 1; raw bound Mapping; enough stack.",
+    "expected": "Reverse-index raw move, clear bound source slots, free unique Function head. Container children are not recursively normalized.",
+    "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+    "findings": [
+      "F05",
+      "F07"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C19",
+    "group": "head-expansion",
+    "basis": "static-inference",
+    "input": "Native head ref is 2; raw bound Mapping; enough stack.",
+    "expected": "Release local call-target holder, push/copy bound header; surviving Function capture and argument share container. Container children are not recursively normalized.",
+    "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+    "findings": [
+      "F06",
+      "F07"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C20",
+    "group": "head-expansion",
+    "basis": "static-inference",
+    "input": "Native head ref==1, bound Object deleted after capture; inspect immediately after expansion, before callee 0f.",
+    "expected": "Raw payload moves to argument stack without copy-based normalization; Function head/capture storage released; callee checks may subsequently reject.",
+    "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+    "findings": [
+      "F05",
+      "F09",
+      "F18"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C21",
+    "group": "head-expansion",
+    "basis": "static-inference",
+    "input": "Native head ref>1, bound Object deleted after capture; inspect expansion and surviving head.",
+    "expected": "copy cleans bound SOURCE to Undefined/attrib0 and pushes Undefined. Surviving head retains normalized capture for later calls.",
+    "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+    "findings": [
+      "F06",
+      "F08",
+      "F09"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C22",
+    "group": "head-expansion",
+    "basis": "static-inference",
+    "input": "Native head ref==1, bound Function whose nonnull creator was deleted after capture; inspect immediately after expansion, before callee 0f.",
+    "expected": "Raw payload moves to argument stack without copy-based normalization; Function head/capture storage released; callee checks may subsequently reject.",
+    "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+    "findings": [
+      "F05",
+      "F09",
+      "F18"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C23",
+    "group": "head-expansion",
+    "basis": "static-inference",
+    "input": "Native head ref>1, bound Function whose nonnull creator was deleted after capture; inspect expansion and surviving head.",
+    "expected": "copy cleans bound SOURCE to Undefined/attrib0 and pushes Undefined. Surviving head retains normalized capture for later calls.",
+    "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+    "findings": [
+      "F06",
+      "F08",
+      "F09"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C24",
+    "group": "head-expansion",
+    "basis": "static-inference",
+    "input": "Shared head captures Function whose creator is null.",
+    "expected": "copy does not classify it dead merely because creator is null; nested Function head identity is shared.",
+    "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+    "findings": [
+      "F08",
+      "F06"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C25",
+    "group": "head-expansion",
+    "basis": "static-inference",
+    "input": "Shared outer head captures another live Function; later drop last outer holder.",
+    "expected": "Normal copy shares nested head; final outer cleanup releases its bound payload before creator/pArgs/head.",
+    "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+    "findings": [
+      "F06",
+      "F11"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C26",
+    "group": "head-expansion",
+    "basis": "design",
+    "input": "VM diagnostic snapshot or host Rc clone changes physical strong_count without a bytecode store.",
+    "expected": "Do not select native unique/shared path using that physical count; semantic ownership model is a prerequisite.",
+    "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+    "findings": [
+      "F21"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C27",
+    "group": "head-expansion",
+    "basis": "static-inference",
+    "input": "Bound [b0,b1], new arguments [n0,n1], successful 05.",
+    "expected": "Expansion visits bound indices in reverse to preserve logical bound-before-new order; no scalar conversion in raw transfer.",
+    "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+    "findings": [
+      "F05",
+      "F06"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C28",
+    "group": "copy-sites",
+    "basis": "static-inference",
+    "input": "Array header contains raw deleted Object member; copy header only.",
+    "expected": "Header is shared; member raw payload remains until an operation actually copies that member.",
+    "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+    "findings": [
+      "F07",
+      "F08"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C29",
+    "group": "copy-sites",
+    "basis": "static-inference",
+    "input": "Shared global slot contains deleted Object or Function with deleted nonnull creator.",
+    "expected": "vm_pushGlobalVar copies actual slot: source and result become Undefined at that copy point.",
+    "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+    "findings": [
+      "F08",
+      "F22"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C30",
+    "group": "copy-sites",
+    "basis": "static-inference",
+    "input": "Object variable contains dead handle; ordinary Object variable read.",
+    "expected": "Source-copy normalization acts on the actual relocated object slot; not a blanket return normalization.",
+    "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+    "findings": [
+      "F08",
+      "F22"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C31",
+    "group": "copy-sites",
+    "basis": "static-inference",
+    "input": "Two References alias slot containing dead handle; convert one Reference to ordinary value.",
+    "expected": "copy normalizes underlying source to Undefined, then consumed Reference unrefs slot; other alias can observe Undefined.",
+    "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+    "findings": [
+      "F08",
+      "F12"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C32",
+    "group": "copy-sites",
+    "basis": "static-inference",
+    "input": "Query existing Array member containing deleted Object, container still shared.",
+    "expected": "Copy selected member and normalize its source before consuming query container header; preserve query-specific result attribute policy.",
+    "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+    "findings": [
+      "F08",
+      "F13"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C33",
+    "group": "copy-sites",
+    "basis": "static-inference",
+    "input": "Query existing Mapping member containing deleted Object, container still shared.",
+    "expected": "Copy selected member and normalize its source before consuming query container header; preserve query-specific result attribute policy.",
+    "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+    "findings": [
+      "F08",
+      "F13"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C34",
+    "group": "copy-sites",
+    "basis": "static-inference",
+    "input": "Mapping lookup misses a key.",
+    "expected": "Query returns Undefined and consumes lookup values without inserting a missing node.",
+    "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+    "findings": [
+      "F13"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C35",
+    "group": "release",
+    "basis": "static-inference",
+    "input": "Last Array header released while an external element Ref remains.",
+    "expected": "Header ownership unrefs slot; surviving slot reference prevents ref==0 cleanup and may retain payload.",
+    "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+    "findings": [
+      "F14"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C36",
+    "group": "release",
+    "basis": "static-inference",
+    "input": "Last Mapping header released while an external value Ref remains.",
+    "expected": "freeNode clears key/value payload immediately; physical node reclamation can be deferred, so surviving Ref sees cleared value.",
+    "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+    "findings": [
+      "F15"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C37",
+    "group": "release",
+    "basis": "static-inference",
+    "input": "Last Function head dropped with nonempty captures and nonnull creator.",
+    "expected": "Clean capture payloads/unlink capture slots, unref creator, free pArgs then head; external capture-slot lifetime not inferred.",
+    "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+    "findings": [
+      "F11"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C38",
+    "group": "release",
+    "basis": "static-inference",
+    "input": "Unique head raw-moves captures then frees head.",
+    "expected": "Moved capture slots are Undefined, so head cleanup does not double-release transferred payload; argument stack later owns release.",
+    "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+    "findings": [
+      "F05",
+      "F11"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C39",
+    "group": "return",
+    "basis": "static-inference",
+    "input": "Raw dead handle is already the result of ordinary nonconst mixed return; no conversion/hook required.",
+    "expected": "takeOffValueFromStack cleans removed frame slots and raw-moves result; transfer itself does not invoke copy normalization.",
+    "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+    "findings": [
+      "F16"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C40",
+    "group": "return",
+    "basis": "unresolved",
+    "input": "Const return, conversion or return hook path.",
+    "expected": "Simple return-move rule is insufficient; recover that specific branch before implementation.",
+    "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+    "findings": [
+      "F16",
+      "F20"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C41",
+    "group": "failure",
+    "basis": "static-inference",
+    "input": "Shared capture copy normalized source, then callee later argument fails under interpreter threadType1 with valid script catch.",
+    "expected": "Exiting argument/temporary stack is cleaned and saved catch sp restored; still-live head capture remains Undefined, not rolled back.",
+    "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+    "findings": [
+      "F09",
+      "F18",
+      "F19"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C42",
+    "group": "failure",
+    "basis": "static-inference",
+    "input": "Unique capture expansion completed; callee parameter count fails under same valid script catch conditions.",
+    "expected": "Head is not recreated. Moved payloads are released from callee/unwound stack through cleanup; consumed target is not restored.",
+    "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+    "findings": [
+      "F05",
+      "F18",
+      "F19"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C43",
+    "group": "failure",
+    "basis": "static-inference",
+    "input": "Captures expanded but call depth or missing code body fails before installing callee frame; valid ordinary script catch.",
+    "expected": "Catch saved-sp cleanup removes expanded calculation values even without a new callee frame; no target restoration.",
+    "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+    "findings": [
+      "F18",
+      "F19"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C44",
+    "group": "failure",
+    "basis": "static-inference",
+    "input": "Earlier parameter Int converts to Real, later parameter type fails.",
+    "expected": "Native 0f can mutate earlier argument before failure; current Rust all-argument preflight is separate policy.",
+    "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+    "findings": [
+      "F18",
+      "F19"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C45",
+    "group": "failure",
+    "basis": "static-inference",
+    "input": "Native vm_pushValue has no free destination stack position.",
+    "expected": "Stack check raises before vm_copyValue, so this push does not perform source cleanup first.",
+    "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+    "findings": [
+      "F10"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C46",
+    "group": "failure",
+    "basis": "unresolved",
+    "input": "No script catch, non-interpreter thread, JIT, callback-catch or reentrant deletion cleanup.",
+    "expected": "Do not extend ordinary valid-script-catch cleanup proof; precise final lifecycle remains unresolved.",
+    "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+    "findings": [
+      "F19",
+      "F20",
+      "F23"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C47",
+    "group": "graph",
+    "basis": "design",
+    "input": "Function captures a shared acyclic Array/Mapping; child graph contains shared ordinary subcontainers.",
+    "expected": "Native copy remains shallow and marker follows captures/children. Future Rust implementation must preserve sharing and bounded graph validation.",
+    "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+    "findings": [
+      "F07",
+      "F17",
+      "F21"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C48",
+    "group": "graph",
+    "basis": "unresolved",
+    "input": "Function/container cycle or arbitrary Reference graph; force garbage collection.",
+    "expected": "Marker observations alone do not prove complete root coverage, release order or recoverability; cycles remain excluded from first implementation.",
+    "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+    "findings": [
+      "F17",
+      "F20"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C49",
+    "group": "policy",
+    "basis": "design",
+    "input": "Foreign-origin Function passed as capture or call target to another Rust ObjectStore.",
+    "expected": "Preserve explicit Rust store isolation; no native origin-token equivalent is established.",
+    "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+    "findings": [
+      "F21"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C50",
+    "group": "policy",
+    "basis": "design",
+    "input": "Zero Rust instruction budget before 05/17.",
+    "expected": "Future extension keeps current inert behavior: no source edits, allocations, semantic owner change or callback. This is a Rust acceptance requirement.",
+    "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+    "findings": [
+      "F21"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C51",
+    "group": "policy",
+    "basis": "design",
+    "input": "One-step Rust budget around 17 publication and 05 callee entry or synchronous Host completion.",
+    "expected": "Future extension preserves current single-instruction boundaries and precommit failure policy; never exposes a partial capture transfer.",
+    "boundary": "Only the named transfer/cleanup point; not whole-program equivalence.",
+    "findings": [
+      "F21"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C52",
+    "group": "creator-ownership",
+    "basis": "static-inference",
+    "input": "Creator and a raw captured Object denote the same valid Object.",
+    "expected": "Header creator gains its own ordinary ref; payload is moved, not merged with creator or execRef.",
+    "boundary": "Static contact only; no target execution or Rust direct-capture implementation.",
+    "findings": [
+      "F24"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C53",
+    "group": "delayed-delete",
+    "basis": "static-inference",
+    "input": "Destruction requested while execRef is positive.",
+    "expected": "Set 0x4000 and return; do not treat this request alone as 0x8000 invalidation.",
+    "boundary": "Static contact only; no target execution or Rust direct-capture implementation.",
+    "findings": [
+      "F26",
+      "F27"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C54",
+    "group": "delayed-delete",
+    "basis": "static-inference",
+    "input": "Last execRef exits while 0x4000 is set.",
+    "expected": "Isolate, queue, set 0x8000 and add independent queue ordinary ref.",
+    "boundary": "Static contact only; no target execution or Rust direct-capture implementation.",
+    "findings": [
+      "F26"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C55",
+    "group": "delayed-delete",
+    "basis": "static-inference",
+    "input": "A queued Object reaches the observed drain routine.",
+    "expected": "Unlink queue entry before low-level deletion and queue-ref decrement; retained invalid shell has independent final-unref lifetime.",
+    "boundary": "Static contact only; no target execution or Rust direct-capture implementation.",
+    "findings": [
+      "F26"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C56",
+    "group": "source-copy",
+    "basis": "static-inference",
+    "input": "COPY an Object or creator-bearing Function while creator is pending 0x4000 but not invalid 0x8000.",
+    "expected": "Pending bit alone does not cause source normalization; invalid 0x8000 selects source cleanup/reread.",
+    "boundary": "Static contact only; no target execution or Rust direct-capture implementation.",
+    "findings": [
+      "F27"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C57",
+    "group": "function-release",
+    "basis": "static-inference",
+    "input": "Last Function head ref reaches nonpositive with nonempty captures and creator.",
+    "expected": "Clean and unlink capture slots, unref creator, free capture storage then head.",
+    "boundary": "Static contact only; no target execution or Rust direct-capture implementation.",
+    "findings": [
+      "F25"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C58",
+    "group": "capture-slot-reference",
+    "basis": "unresolved",
+    "input": "External Reference allegedly outlives the final owning Function head.",
+    "expected": "No safe capture-slot lifetime guarantee; keep public capture-slot Reference escape excluded.",
+    "boundary": "Do not import Array element-reference guarantees into Function capture storage.",
+    "findings": [
+      "F25",
+      "F37"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C59",
+    "group": "result-stack-reachability",
+    "basis": "static-inference",
+    "input": "Legal stack, nonnegative nonzero captures and no intervening state mutation.",
+    "expected": "Each capture move increases sp; final sp==0 result-overflow premise of historical C15 is infeasible in this bounded domain.",
+    "boundary": "Static contact only; no target execution or Rust direct-capture implementation.",
+    "findings": [
+      "F28"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C60",
+    "group": "zero-allocation",
+    "basis": "static-inference",
+    "input": "Initialized pdb allocator receives size zero and resources are available.",
+    "expected": "Eligible pool or positive-size fallback allocation can return block+0xc; zero size is not intrinsically rejected.",
+    "boundary": "Conditional static success, not runtime allocator observation or a recovery root.",
+    "findings": [
+      "F29"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C61",
+    "group": "unpublished-head",
+    "basis": "unresolved",
+    "input": "Zero captures, initial sp==0, both allocations succeed and final result push errors.",
+    "expected": "Unpublished C-local head recovery root and eventual release remain unproved.",
+    "boundary": "No demonstrated leak; nonempty legal captures and allocator failure are different branches.",
+    "findings": [
+      "F28",
+      "F29",
+      "F30"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C62",
+    "group": "ordinary-uncaught",
+    "basis": "static-inference",
+    "input": "Ordinary interpreter threadType1, valid backend environment, no script catch, no interfering hook or nonlocal failure.",
+    "expected": "traceError unwinds to backend boundary; errorQuit longjmps and doActions returns -3 to the scheduler.",
+    "boundary": "Selected ordinary path only; not whole-exit coverage.",
+    "findings": [
+      "F31"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C63",
+    "group": "backend-delete-order",
+    "basis": "static-inference",
+    "input": "Selected ordinary scheduler path receives uncaught-error return.",
+    "expected": "endForBackend drains its queues before scheduler saves PCB sp/funCp and calls deleteProcess.",
+    "boundary": "No same-iteration second drain guarantee.",
+    "findings": [
+      "F31",
+      "F32"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C64",
+    "group": "delete-hooks",
+    "basis": "static-inference",
+    "input": "deleteProcess has held-object release hooks, crash-list hooks or PCB endHook.",
+    "expected": "Hook contacts occur before PCB ref decrement; crash records are detached/freed before callback.",
+    "boundary": "Target bodies, reentry, retention and exceptions remain unresolved.",
+    "findings": [
+      "F33"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C65",
+    "group": "pcb-final-reference",
+    "basis": "static-inference",
+    "input": "deleteProcess hooks complete and decrement changes PCB ref from one to zero.",
+    "expected": "Release deletionFunc, clean saved stack range, drop eligible remaining frame execRefs and retire PCB.",
+    "boundary": "Does not drain newly queued objects by itself or release external owners.",
+    "findings": [
+      "F34"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C66",
+    "group": "pcb-retained-reference",
+    "basis": "static-inference",
+    "input": "deleteProcess leaves positive PCB ref, then a later final vm_unrefToPCB reaches exactly zero.",
+    "expected": "First call skips final values/frames; final unref performs deletionFunc, stack and context cleanup.",
+    "boundary": "No guarantee that every external holder eventually releases.",
+    "findings": [
+      "F35"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C67",
+    "group": "post-delete-drain",
+    "basis": "unresolved",
+    "input": "Final remaining-frame execRef release during PCB deletion queues another Object.",
+    "expected": "Queue state is known, but next guaranteed drain across scheduler-stop paths remains a gate.",
+    "boundary": "Backend drain precedes this deletion contact; do not assert immediate final release.",
+    "findings": [
+      "F26",
+      "F32",
+      "F36"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C68",
+    "group": "root-coverage",
+    "basis": "unresolved",
+    "input": "A zero-capture unpublished head, arbitrary Reference graph or external mark callback is proposed as GC-recoverable.",
+    "expected": "Recorded allocation chain/known roots do not prove complete recovery or cyclic release order.",
+    "boundary": "Retain full GC and external-root unknowns.",
+    "findings": [
+      "F30",
+      "F38",
+      "F39"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C69",
+    "group": "excluded-exits",
+    "basis": "unresolved",
+    "input": "Failure occurs in another thread type, JIT, callback-catch or reentrant deletion hook.",
+    "expected": "No extension of the closed ordinary-thread path is justified.",
+    "boundary": "Require independent per-exit evidence before implementation.",
+    "findings": [
+      "F39"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C70",
+    "group": "direct-capture-gate",
+    "basis": "design",
+    "input": "2AX evidence ledger and gated T05 specification are delivered.",
+    "expected": "Keep direct Object/Function captures, generic non-scalar readiness and stage2 completion false; runtime/API/dependencies unchanged.",
+    "boundary": "Evidence/specification completion is separate from permission to open runtime capabilities.",
+    "findings": [
+      "F40"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C71",
+    "group": "graph-policy",
+    "basis": "design",
+    "input": "Future direct capture proposes a nested Function or Object ownership graph.",
+    "expected": "Reuse semantic unique/shared COPY and final-graph acceptance rules; specify Object variable/creator edges independently and keep cycles/capture-slot Reference escape closed.",
+    "boundary": "A bounded Rust graph policy is not native GC or delayed-delete equivalence.",
+    "findings": [
+      "F24",
+      "F25",
+      "F37",
+      "F38",
+      "F40"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C72",
+    "group": "e01-initialization",
+    "basis": "static-inference",
+    "input": "Successful initProcess with explicit nonnull attrib stackSize=1 and valid environment.",
+    "expected": "Clamp stack size to 256; initialize sp to stackSize, PCB ref to one and the entry context to ip=0/bp=stackSize.",
+    "boundary": "Static observation or inference only; no target execution, main-corpus reachability or runtime/model implementation is claimed.",
+    "findings": [
+      "F41"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C73",
+    "group": "e01-initialization",
+    "basis": "static-inference",
+    "input": "initProcess receives null attrib and succeeds.",
+    "expected": "Use configured defaults; do not infer the explicit-attrib local clamp also ran on this branch.",
+    "boundary": "Static observation or inference only; no target execution, main-corpus reachability or runtime/model implementation is claimed.",
+    "findings": [
+      "F41"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C74",
+    "group": "e01-dispatch",
+    "basis": "static-inference",
+    "input": "Ordinary no-hook processor reads two-parameter action17 or one-parameter action3b from the checked table.",
+    "expected": "Decode actual machine-call arguments and indirectly call the entry; this dispatch has no generic sp-capacity preflight.",
+    "boundary": "Frozen table/ELF contact and machine-call path; not bounded by a direct-caller-only search.",
+    "findings": [
+      "F42"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C75",
+    "group": "e01-zero-encoding",
+    "basis": "static-inference",
+    "input": "Function-value action has par8=0x80 and an encodable existing type-matching Global target.",
+    "expected": "Wrapper obtains Global flag one and zero captured operands from the low six bits.",
+    "boundary": "Valid target/global environment is an explicit premise.",
+    "findings": [
+      "F42"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C76",
+    "group": "e01-finite-path",
+    "basis": "static-inference",
+    "input": "Successful explicit 256-slot entry, 256 nodes 3b(0), then 17(g,0x80); valid Global target/environment, no state interference and successful H/A allocations.",
+    "expected": "All Int pushes are within slots0..255 and end at sp=0; 17 leaves sp zero and reaches its result-overflow error edge.",
+    "boundary": "A conditional finite static entry-path witness of257 actions, not executed and not a corpus/compiler reachability proof.",
+    "findings": [
+      "F41",
+      "F42",
+      "F43"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C77",
+    "group": "e01-publication",
+    "basis": "static-inference",
+    "input": "The zero-capture result error is reached after H/A allocation and target setup.",
+    "expected": "H points at A but is not yet published as the result stack Function Value; optional creator ref is a separate obligation.",
+    "boundary": "Static observation or inference only; no target execution, main-corpus reachability or runtime/model implementation is claimed.",
+    "findings": [
+      "F44"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C78",
+    "group": "e01-root-registration",
+    "basis": "static-inference",
+    "input": "Zero captured operands skip capture initialization.",
+    "expected": "No capture vm_initValue iteration registers A slots in vm_allValues; header H is not itself registered as a Value slot by this helper.",
+    "boundary": "Local registration/publication inventory does not exhaust external roots.",
+    "findings": [
+      "F44"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C79",
+    "group": "e01-allocator-tracking",
+    "basis": "static-inference",
+    "input": "pdb allocator extends a group and then allocates H/A from its storage.",
+    "expected": "Track extension page and block free-list metadata; do not classify that storage tracking as a Function/creator semantic recovery root.",
+    "boundary": "Static observation or inference only; no target execution, main-corpus reachability or runtime/model implementation is claimed.",
+    "findings": [
+      "F45"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C80",
+    "group": "e01-allocator-release",
+    "basis": "static-inference",
+    "input": "Normal freeMemory/l2FreeMemory receives an explicit valid allocation payload pointer.",
+    "expected": "Validate metadata and return storage to a group or libc free, without VM Value dispatch or creator unref in these routines.",
+    "boundary": "Physical free is separate from semantic Function cleanup; fatal paths excluded.",
+    "findings": [
+      "F46"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C81",
+    "group": "e01-pcb-recovery",
+    "basis": "unresolved",
+    "input": "Unpublished H/A remain C-local after the result error and ordinary backend recovery reaches final PCB ref cleanup.",
+    "expected": "Known stack/deletionFunc/context cleanup does not establish the missing H/A recovery root or final creator release.",
+    "boundary": "No global leak or GC recovery conclusion.",
+    "findings": [
+      "F44",
+      "F47"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C82",
+    "group": "e01-eventual-release",
+    "basis": "unresolved",
+    "input": "Allocator extension storage remains globally tracked after the unpublished-head error.",
+    "expected": "Eventual H/A storage and optional creator ordinary-ref release remain unclosed; storage page tracking alone is insufficient.",
+    "boundary": "Keep direct capture lifecycle gate blocked; do not require or claim corpus runtime execution.",
+    "findings": [
+      "F45",
+      "F46",
+      "F47"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C83",
+    "group": "e02-later-backend",
+    "basis": "static-inference",
+    "input": "After one final PCB cleanup queues an Object, a later ordinary PCB actually enters and completes doActions normally.",
+    "expected": "The following endForBackend can drain the existing queue after that backend execution.",
+    "boundary": "Requires actual normal backend completion, not merely active pointer nonnull.",
+    "findings": [
+      "F48"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C84",
+    "group": "e02-progress",
+    "basis": "unresolved",
+    "input": "Another PCB is active but resume hooks, quota, stop or nonlocal-exit effects are not fixed.",
+    "expected": "No guaranteed next backend completion or next drain follows from activity alone.",
+    "boundary": "No progress or eventual reclaim guarantee.",
+    "findings": [
+      "F48",
+      "F54"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C85",
+    "group": "e02-wrapper-tail",
+    "basis": "static-inference",
+    "input": "Single schedule wrapper returns from its one internal call.",
+    "expected": "Only scheduler-state reset and return remain; no additional explicit Object drain in this tail.",
+    "boundary": "Internal/helper effects retain their own conditions.",
+    "findings": [
+      "F50"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C86",
+    "group": "e02-mainloop-return",
+    "basis": "static-inference",
+    "input": "Actual scan/helper results select mainLoop nonnull-pPara return-zero branch.",
+    "expected": "Visible return tail has no extra Object drain.",
+    "boundary": "The controlling later scan result is not the earlier scheduler return variable.",
+    "findings": [
+      "F50"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C87",
+    "group": "e02-mainloop-stop",
+    "basis": "static-inference",
+    "input": "mainLoop selects requestStop or internal-minus99 stop tail.",
+    "expected": "Set stop state and signal end; no extra explicit Object drain in the selected visible tail.",
+    "boundary": "Stop signaling alone does not prove later shutdown is invoked or completed.",
+    "findings": [
+      "F50",
+      "F54"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C88",
+    "group": "e02-response-empty-tail",
+    "basis": "static-inference",
+    "input": "Responding queue peek has returned 0.",
+    "expected": "Respond helper follows its visible return tail without extra drain.",
+    "boundary": "This does not prove the peek helper itself is effect-free.",
+    "findings": [
+      "F49"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C89",
+    "group": "e02-response-callbacks",
+    "basis": "unresolved",
+    "input": "Responding queue contains a node with callback or destruction callback.",
+    "expected": "Indirect callback effects, retention, exception and reentry are not closed by the responding helper body.",
+    "boundary": "Keep arbitrary callback domain outside the ordinary closed path.",
+    "findings": [
+      "F49",
+      "F54"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C90",
+    "group": "e02-clear-drain",
+    "basis": "static-inference",
+    "input": "clearEnvironment reaches and completes its eligible PCB scan with prior helpers/hooks normal and relevant PCB refs reaching zero.",
+    "expected": "deleteProcess cleanup can queue Objects; explicit post-scan drain handles the then-existing queue before identifier/all-object cleanup.",
+    "boundary": "Conditional contact, not full clearEnvironment effects or retained-PCB progress.",
+    "findings": [
+      "F51"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C91",
+    "group": "e02-clear-retained-pcb",
+    "basis": "unresolved",
+    "input": "clearEnvironment scan leaves a positive external PCB ref.",
+    "expected": "Its prior post-scan drain cannot by itself cover Object queues produced by a later final unref.",
+    "boundary": "Only while PCB storage remains valid; no external-holder progress guarantee.",
+    "findings": [
+      "F35",
+      "F51",
+      "F54"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C92",
+    "group": "e02-shutdown-drain",
+    "basis": "static-inference",
+    "input": "shutdownScheduler completes stop/wait and helpers and reaches its eligible PCB deletion scan.",
+    "expected": "Explicit Object drain follows PCB deletion and precedes PCB storage shutdown.",
+    "boundary": "Entry/progress and arbitrary external-holder behavior remain conditional.",
+    "findings": [
+      "F52"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C93",
+    "group": "e02-shutdown-slot-tag",
+    "basis": "static-inference",
+    "input": "shutdownScheduler reaches its post-drain static stack-storage pass.",
+    "expected": "Set slot tag to Undefined before destructStaticValue; do not infer a second original-payload destructor pass from this loop.",
+    "boundary": "Storage release does not independently prove arbitrary external-root lifetimes.",
+    "findings": [
+      "F53"
+    ],
+    "runtime_executed": false
+  },
+  {
+    "id": "C94",
+    "group": "e02-late-final-unref",
+    "basis": "unresolved",
+    "input": "A retained PCB reaches final unref after an earlier observed drain while its storage is still valid.",
+    "expected": "Local final-ref cleanup order is known; a subsequent universally guaranteed queue drain across all exit paths is not established.",
+    "boundary": "Does not authorize PCB access after full shutdown frees its storage.",
+    "findings": [
+      "F35",
+      "F54"
+    ],
+    "runtime_executed": false
+  }
+]

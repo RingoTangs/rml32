@@ -1,3 +1,7 @@
+# 最新进度：阶段2AY
+
+阶段2AY完成E01/E02定向静态取证与[门槛重评](stage2ay-evidence/gate-review.md)：8条新增、67条复用记录，保留原180A/40F/71C，当前273A/54F/94C及71项历史映射。有限静态路径支持零捕获满栈失败候选，clear/shutdown各有扫描后条件化排空接点；未发布头最终释放与完整退出进展仍未闭合。运行时、公共API、版本、依赖及原644项普通测试/2项doctest保持，没有原程序或业务字节码执行、新状态模型或捕获能力开放。见[本批说明](stage2ay-evidence/overview.md)、[2AY收据](stage2ay-validation.json)与[后续定向任务](stage2ay-evidence/next-batch.md)。以下完整原文保留为历史快照。
+
 # 最新进度：阶段2AX
 
 阶段2AX已补齐既有8条新增、57条复用原生静态记录的[证据总账](stage2ax-evidence/findings.md)、51项历史案例映射与[T05门控规格](stage2ax-evidence/runtime-design.md)。Rust运行时、公共API、版本及依赖保持2AW基线；原644项普通测试与2项doctest保持，验证见[2AX收据](stage2ax-validation.json)。直接Object/Function捕获仍阻塞，阶段2未完成；下一批为[T05-lifecycle-contract-evidence](stage2ax-evidence/next-batch.md)，先补未发布头与最终PCB清理后的安全点等生命周期证据。没有执行参考程序或业务字节码，未新增独立状态模型；语料结果复用冻结2AW记录。以下完整原文保留为历史快照。
