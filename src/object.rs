@@ -26,6 +26,8 @@ pub struct Object {
     pub(crate) initialization: InitializationState,
     pub(crate) lifecycle: LifecycleState,
     pub(crate) variables: Vec<Rc<crate::cell::Cell>>,
+    #[cfg(test)]
+    probe: Rc<()>,
 }
 impl Object {
     pub fn lifecycle_state(&self) -> LifecycleState {
@@ -52,6 +54,8 @@ pub struct ObjectStore {
     global_program: Option<ProgramId>,
     next_program: u32,
     next_object: u32,
+    #[cfg(test)]
+    pub(crate) test_life: Option<Rc<crate::lifecycle_adapter::runtime::StoreState>>,
 }
 impl ObjectStore {
     /// Register a synthetic synchronous callback, independently of Global code and variables.
@@ -135,7 +139,7 @@ impl ObjectStore {
         }
         let cells: Vec<_> = values
             .into_iter()
-            .map(crate::cell::Cell::new)
+            .map(|v| life_cell!(self, v))
             .collect::<Result<_, _>>()?;
         crate::graph::cells(&cells)?;
         self.globals = Some(cells);
@@ -188,6 +192,15 @@ impl ObjectStore {
             .ok_or_else(|| VmError::new(VmErrorKind::InvalidState, "global program is not bound"))
     }
     pub fn register_program(&mut self, program: PreparedProgram) -> Result<ProgramId, VmError> {
+        #[cfg(test)]
+        if self.test_life.is_some()
+            && (program.allow_host_calls || program.allow_host_function_values)
+        {
+            return Err(VmError::new(
+                VmErrorKind::UnsupportedFeature,
+                "test lifecycle excludes Host",
+            ));
+        }
         let id = ProgramId(self.next_program);
         self.next_program = self
             .next_program
@@ -218,7 +231,7 @@ impl ObjectStore {
         crate::graph::values(&initial_values)?;
         let variables = initial_values
             .into_iter()
-            .map(crate::cell::Cell::new)
+            .map(|v| life_cell!(self, v))
             .collect::<Result<Vec<_>, _>>()?;
         crate::graph::cells(&variables)?;
         let id = ObjectId(self.next_object);
@@ -226,10 +239,16 @@ impl ObjectStore {
             .next_object
             .checked_add(1)
             .ok_or_else(|| VmError::new(VmErrorKind::Limit, "object ID space exhausted"))?;
+        #[cfg(test)]
+        if let Some(life) = &self.test_life {
+            life.register(id)?;
+        }
         self.objects.insert(
             id,
             Object {
                 program,
+                #[cfg(test)]
+                probe: Rc::new(()),
                 initialization: InitializationState::Manual,
                 lifecycle: LifecycleState::Unmanaged,
                 variables,
@@ -238,6 +257,13 @@ impl ObjectStore {
         Ok(id)
     }
     pub fn get(&self, id: ObjectId) -> Result<&Object, VmError> {
+        #[cfg(test)]
+        if self.test_life.as_ref().is_some_and(|life| !life.valid(id)) {
+            return Err(VmError::new(
+                VmErrorKind::InvalidObject,
+                "object is invalid",
+            ));
+        }
         self.objects.get(&id).ok_or_else(|| {
             let mut e = VmError::new(VmErrorKind::InvalidObject, "object is missing or deleted");
             e.object = Some(id);
@@ -271,6 +297,18 @@ impl ObjectStore {
         Ok(())
     }
     pub fn remove(&mut self, id: ObjectId) -> Result<(), VmError> {
+        #[cfg(test)]
+        if let Some(life) = self.test_life.clone() {
+            self.get(id)?;
+            if life.request_pending(id)? {
+                return Ok(());
+            }
+            let cells = self.objects[&id].variables.clone();
+            crate::cell::Cell::lifecycle_clear(&cells, || life.invalidate(id))?;
+            self.objects.get_mut(&id).unwrap().variables.clear();
+            life.finish(id);
+            return Ok(());
+        }
         self.objects
             .remove(&id)
             .map(|_| ())
@@ -281,6 +319,84 @@ impl ObjectStore {
             .get(&id)
             .cloned()
             .ok_or_else(|| VmError::new(VmErrorKind::InvalidProgram, "program handle is unknown"))
+    }
+}
+
+#[cfg(test)]
+impl ObjectStore {
+    pub(crate) fn with_test_lifecycle(limits: crate::ValueLimits) -> Result<Self, VmError> {
+        Self::with_test_capacity(limits, usize::MAX)
+    }
+    pub(crate) fn with_test_capacity(
+        limits: crate::ValueLimits,
+        capacity: usize,
+    ) -> Result<Self, VmError> {
+        let mut store = Self::new();
+        store.value_limits = Rc::new(limits);
+        store.test_life = Some(crate::lifecycle_adapter::runtime::StoreState::new(
+            store.function_origin.clone(),
+            limits,
+            capacity,
+        )?);
+        Ok(store)
+    }
+    pub(crate) fn test_cell(&self, value: Value) -> Result<Rc<crate::cell::Cell>, VmError> {
+        match &self.test_life {
+            Some(life) => life.cell(value),
+            None => crate::cell::Cell::new(value),
+        }
+    }
+    pub(crate) fn drain_one_for_test(&mut self) -> Result<(), VmError> {
+        let life = self
+            .test_life
+            .clone()
+            .ok_or_else(|| VmError::new(VmErrorKind::InvalidState, "legacy store"))?;
+        let id = life
+            .head()
+            .ok_or_else(|| VmError::new(VmErrorKind::InvalidState, "empty queue"))?;
+        let cells = self.objects[&id].variables.clone();
+        let held = crate::cell::Cell::lifecycle_clear(&cells, || life.detach())?;
+        self.objects.get_mut(&id).unwrap().variables.clear();
+        life.finish(id);
+        drop(held);
+        self.reap_for_test();
+        Ok(())
+    }
+    pub(crate) fn reap_for_test(&mut self) {
+        if let Some(life) = &self.test_life {
+            self.objects.retain(|id, _| {
+                life.state(*id).unwrap() != crate::lifecycle_adapter::runtime::State::Freed
+            });
+        }
+    }
+    pub(crate) fn objects_for_audit_for_test(
+        &self,
+        id: ObjectId,
+    ) -> Option<&[Rc<crate::cell::Cell>]> {
+        self.objects.get(&id).map(|o| o.variables.as_slice())
+    }
+    pub(crate) fn probe_for_test(&self, id: ObjectId) -> std::rc::Weak<()> {
+        Rc::downgrade(&self.objects[&id].probe)
+    }
+    pub(crate) fn lifecycle_snapshot_for_test(&self) -> serde_json::Value {
+        let mut snap = self.test_life.as_ref().unwrap().snapshot();
+        snap["resident"] =
+            serde_json::json!(self.objects.keys().map(|id| id.get()).collect::<Vec<_>>());
+        snap
+    }
+}
+#[cfg(test)]
+impl Drop for ObjectStore {
+    fn drop(&mut self) {
+        if let Some(life) = &self.test_life {
+            life.begin_close();
+            for object in self.objects.values() {
+                for cell in &object.variables {
+                    cell.lifecycle_close();
+                }
+            }
+            life.close();
+        }
     }
 }
 

@@ -424,6 +424,43 @@ fn native_hash(value: &Value) -> u32 {
 }
 
 #[cfg(test)]
+pub(crate) fn lifecycle_array(cells: Vec<Rc<Cell>>) -> Result<Value, VmError> {
+    let values = cells
+        .iter()
+        .map(|c| c.read())
+        .collect::<Result<Vec<_>, _>>()?;
+    validate_values(values.len(), values.iter())?;
+    let value = Value::Array(ArrayValue(Rc::new(ArrayData {
+        counter: crate::ownership::Counter::new()?,
+        elements: cells,
+    })));
+    crate::graph::register(&value)?;
+    crate::graph::values(std::slice::from_ref(&value))?;
+    Ok(value)
+}
+#[cfg(test)]
+pub(crate) fn lifecycle_mapping(cells: Vec<(Value, Rc<Cell>)>) -> Result<Value, VmError> {
+    let mut data = MappingData::new(cells.len())?;
+    for (key, cell) in cells {
+        let k = Key::new(&key)?;
+        if let Some(i) = data.index.get(&k).copied() {
+            data.entries[i] = (key, cell);
+        } else {
+            let hash = native_hash(&key);
+            data.reserve_insert(hash)?;
+            data.insert(key, k, cell, hash);
+        }
+    }
+    let value = Value::Mapping(MappingValue(
+        Rc::new(RefCell::new(data)),
+        crate::ownership::Counter::new()?,
+    ));
+    crate::graph::register(&value)?;
+    crate::graph::values(std::slice::from_ref(&value))?;
+    Ok(value)
+}
+
+#[cfg(test)]
 mod mapping_tests {
     use super::*;
     #[test]

@@ -1,0 +1,30 @@
+{
+  "ignored_driver": "vm::lifecycle_vm_tests::replay_lifecycle_vm_traces",
+  "ordinary": [
+    "vm::lifecycle_vm_tests::actual_container_instruction_binds_all_function_and_object_members",
+    "vm::lifecycle_vm_tests::borrowed_variable_rejects_drain_without_detaching_queue",
+    "vm::lifecycle_vm_tests::catch_unwind_releases_children_but_retains_owner",
+    "vm::lifecycle_vm_tests::direct_method_installs_the_target_object_execution_lease",
+    "vm::lifecycle_vm_tests::execution_audit_detects_missing_binding_and_restores_safely",
+    "vm::lifecycle_vm_tests::explicit_extraction_exits_frames_preserves_mode_and_does_not_drain",
+    "vm::lifecycle_vm_tests::failed_indirect_commit_releases_prepared_callee_execution_lease",
+    "vm::lifecycle_vm_tests::freed_id_import_does_not_resurrect_an_object_record_or_counter",
+    "vm::lifecycle_vm_tests::global_frames_have_no_object_execution_lease",
+    "vm::lifecycle_vm_tests::host_program_registration_is_rejected_before_execution",
+    "vm::lifecycle_vm_tests::immediate_cleanup_and_start_allocation_failures_are_atomic",
+    "vm::lifecycle_vm_tests::immediate_delete_and_shell_reap_clear_actual_variables_once",
+    "vm::lifecycle_vm_tests::indirect_two_object_exits_have_lifo_queue_and_separate_creator_ref",
+    "vm::lifecycle_vm_tests::inspection_clones_never_acquire_execution_references",
+    "vm::lifecycle_vm_tests::managed_entry_and_loop_remain_gated",
+    "vm::lifecycle_vm_tests::normal_return_releases_real_frame_once",
+    "vm::lifecycle_vm_tests::pending_object_copy_and_raw_return_keep_shell_until_completion_retires",
+    "vm::lifecycle_vm_tests::pending_return_queues_without_automatic_drain",
+    "vm::lifecycle_vm_tests::queued_reference_reserve_is_available_at_last_frame_exit",
+    "vm::lifecycle_vm_tests::real_variable_function_creator_cycle_is_broken_only_at_drain",
+    "vm::lifecycle_vm_tests::recursive_frames_each_hold_one_execution_reference",
+    "vm::lifecycle_vm_tests::sticky_failure_retains_frames_until_successful_restart_or_cancel",
+    "vm::lifecycle_vm_tests::store_drop_closes_epoch_and_allows_late_private_slot_release"
+  ],
+  "source_sha256": "1dcd62c217e2cec692ad4daab2148139b01c19a1c5eb5e46d51e2552fd542b00",
+  "stage": "2BD"
+}

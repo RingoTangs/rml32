@@ -26,6 +26,7 @@ enum Status {
 struct ObjectEntry {
     counter: Rc<Counter>,
     status: Flag<Status>,
+    life: RefCell<Option<Rc<runtime::Life>>>,
 }
 #[derive(Debug)]
 pub(crate) struct ObjectLease {
@@ -34,10 +35,37 @@ pub(crate) struct ObjectLease {
 }
 impl ObjectLease {
     fn new(entry: &Rc<ObjectEntry>) -> Result<Self> {
+        if let Some(life) = entry.life.borrow().as_ref() {
+            if life.state.get() == runtime::State::Freed {
+                return Err(VmError::new(
+                    VmErrorKind::InvalidObject,
+                    "freed object cannot acquire a lease",
+                ));
+            }
+            let ceiling = if life.state.get().valid() {
+                life.capacity - 1
+            } else {
+                life.capacity
+            };
+            if entry.counter.owners() >= ceiling {
+                return Err(VmError::new(
+                    VmErrorKind::Limit,
+                    "ordinary capacity reserved for queue",
+                ));
+            }
+        }
         Ok(Self {
             _owner: Owner::new(Some(entry.counter.clone()))?,
             entry: entry.clone(),
         })
+    }
+}
+impl Drop for ObjectLease {
+    fn drop(&mut self) {
+        drop(self._owner.take());
+        if let Some(life) = self.entry.life.borrow().as_ref() {
+            life.released(self.entry.counter.owners());
+        }
     }
 }
 pub(crate) struct HeadState {
@@ -96,6 +124,7 @@ impl Drop for Lease {
 #[derive(Debug)]
 pub(crate) struct AdapterContext {
     origin: Rc<()>,
+    closed: Flag<bool>,
     objects: RefCell<BTreeMap<ObjectId, Rc<ObjectEntry>>>,
     cells: RefCell<BTreeMap<u64, Weak<Cell>>>,
     owned: RefCell<Vec<Weak<OwnedValue>>>,
@@ -112,6 +141,7 @@ impl AdapterContext {
     fn new(limits: ValueLimits) -> Rc<Self> {
         Rc::new(Self {
             origin: Rc::new(()),
+            closed: Flag::new(false),
             objects: RefCell::new(BTreeMap::new()),
             cells: RefCell::new(BTreeMap::new()),
             owned: RefCell::new(Vec::new()),
@@ -128,6 +158,7 @@ impl AdapterContext {
                 Rc::new(ObjectEntry {
                     counter: Counter::new()?,
                     status: Flag::new(Status::Alive),
+                    life: RefCell::new(None),
                 }),
             );
         }
@@ -147,6 +178,9 @@ impl AdapterContext {
         }
     }
     fn validate(&self, v: &Value) -> Result<()> {
+        if self.closed.get() {
+            return Err(invalid("closed adapter epoch"));
+        }
         match v {
             Value::Object(id) => {
                 if !self.objects.borrow().contains_key(id) {
@@ -384,6 +418,9 @@ impl AdapterContext {
         Ok(out)
     }
     fn audit(&self) {
+        self.audit_extra(&[]);
+    }
+    fn audit_extra(&self, extra: &[ObjectId]) {
         let mut object_refs = BTreeMap::<ObjectId, usize>::new();
         let mut header_refs = BTreeMap::<u64, usize>::new();
         let mut seen = BTreeSet::new();
@@ -422,6 +459,9 @@ impl AdapterContext {
                 assert_eq!(h.leases.get(), 0);
                 assert!(h.creator_lease.borrow().is_none());
             }
+        }
+        for id in extra {
+            *object_refs.entry(*id).or_default() += 1;
         }
         for (id, e) in self.objects.borrow().iter() {
             assert_eq!(
@@ -1246,5 +1286,37 @@ mod tests {
             "ADAPTER_REPLAY {}",
             json!({"traces":traces,"steps":steps,"rejected":rejected,"physical_teardowns":traces})
         );
+    }
+}
+
+#[path = "lifecycle_runtime.rs"]
+pub(crate) mod runtime;
+
+impl AdapterContext {
+    fn runtime_array(self: &Rc<Self>, values: Vec<Value>) -> Result<Value> {
+        let _scope = crate::graph::Scope::new(self.limits);
+        let cells = values
+            .into_iter()
+            .map(|v| self.cell(&self.bound(v)))
+            .collect::<Result<Vec<_>>>()?;
+        let value = crate::container::lifecycle_array(cells)?;
+        let counter = value.counter().unwrap();
+        self.graphs
+            .borrow_mut()
+            .insert(counter.id, Rc::downgrade(&counter));
+        Ok(value)
+    }
+    fn runtime_mapping(self: &Rc<Self>, values: Vec<(Value, Value)>) -> Result<Value> {
+        let _scope = crate::graph::Scope::new(self.limits);
+        let cells = values
+            .into_iter()
+            .map(|(k, v)| Ok((k, self.cell(&self.bound(v))?)))
+            .collect::<Result<Vec<_>>>()?;
+        let value = crate::container::lifecycle_mapping(cells)?;
+        let counter = value.counter().unwrap();
+        self.graphs
+            .borrow_mut()
+            .insert(counter.id, Rc::downgrade(&counter));
+        Ok(value)
     }
 }

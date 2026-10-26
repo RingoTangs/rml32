@@ -1,0 +1,27 @@
+{
+  "business_bytecode_execution": false,
+  "full_native_equivalence": false,
+  "input_sha256": "89522103c2a27594c6d1b9bfe6ad5622bc8aab3f20501a011bd46d966dcd4e72",
+  "log_sha256": "e15f8a55b31bae725069b740d3620184e451450b5e98cfbbe9af54aad1279f3c",
+  "native_execution": false,
+  "replay": {
+    "physical_teardowns": 10,
+    "steps": 70,
+    "traces": 10
+  },
+  "source_sha256": {
+    "docs/stage2ba-design/model.py": "e2561fafc55a7ab1be6321d9d4dbd3fd11dff9aa462030e61160812b0de088fc",
+    "docs/stage2bd-runtime-test/vm_diff.py": "67f3b5ea0bd8e9e1df4b8e30a217dd60d6c663f41bd208b1319ca8655b53cd44",
+    "src/cell.rs": "e75234c53f2cf2764eba9dcf4b9d27cece77ab65e65a1aeb3a36386e616a6cae",
+    "src/container.rs": "0198b18b51f2e3ecce088bfe0062d4541bc6225f19ae2856090949b622aed30e",
+    "src/lib.rs": "ddc190c487b50c33a362c39a7a69d4014b6d488e2a06139bae8a217ea4cca415",
+    "src/lifecycle_adapter.rs": "6c9268ea2876458c75524c73e7bf24eefa7d2d85e8d7ec30212583e4d853a62d",
+    "src/lifecycle_runtime.rs": "e9e3fcf3b90dba1e0ecd640e5f9037af456f71813addf2195a8df62fb3580d1b",
+    "src/lifecycle_vm_tests.rs": "1dcd62c217e2cec692ad4daab2148139b01c19a1c5eb5e46d51e2552fd542b00",
+    "src/object.rs": "8941228a30a021ac533c8d037debec5a47a97fa1a499abf00a6c5cb63db65010",
+    "src/vm.rs": "9bff3569e2fe8deff1f3d7c0e638351880eb377662aaca6e08ab5d1468fdb06a"
+  },
+  "stage": "2BD",
+  "status": "pass",
+  "synthetic_vm_execution": true
+}

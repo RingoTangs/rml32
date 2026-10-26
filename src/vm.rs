@@ -361,6 +361,8 @@ pub struct Vm {
     initialization: Option<InitializationTask>,
     construction: Option<ConstructionTask>,
     rollback_errors: Vec<VmError>,
+    #[cfg(test)]
+    exec_leases: Vec<(u64, crate::lifecycle_adapter::runtime::ExecLease)>,
 }
 fn err(kind: VmErrorKind, message: impl Into<String>) -> VmError {
     VmError::new(kind, message)
@@ -380,9 +382,18 @@ impl Vm {
             initialization: None,
             construction: None,
             rollback_errors: vec![],
+            #[cfg(test)]
+            exec_leases: Vec::new(),
         }
     }
     pub fn with_limits(objects: ObjectStore, limits: VmLimits) -> Self {
+        #[cfg(test)]
+        {
+            let mut vm = Self::new(objects);
+            vm.limits = limits;
+            vm
+        }
+        #[cfg(not(test))]
         Self {
             limits,
             ..Self::new(objects)
@@ -410,6 +421,12 @@ impl Vm {
     /// Extract storage, cancelling and deleting any unfinished managed lifecycle object.
     pub fn into_objects(mut self) -> ObjectStore {
         self.cleanup_initialization();
+        #[cfg(test)]
+        {
+            self.cancel_execution_for_test();
+            std::mem::replace(&mut self.objects, ObjectStore::new())
+        }
+        #[cfg(not(test))]
         self.objects
     }
     fn cleanup_initialization(&mut self) {
@@ -425,6 +442,14 @@ impl Vm {
     }
     /// Allocate a new object and start only its bounded initialization segments.
     pub fn begin_initialize(&mut self, program: ProgramId) -> Result<ObjectId, VmError> {
+        #[cfg(test)]
+        if self.objects.test_life.is_some() {
+            return Err(err(
+                VmErrorKind::UnsupportedFeature,
+                "test lifecycle excludes managed construction",
+            ));
+        }
+
         let _graph_scope = crate::graph::Scope::new(*self.objects.value_limits);
         if self.initialization.is_some()
             || self.construction.is_some()
@@ -545,6 +570,14 @@ impl Vm {
         program: ProgramId,
         parameter: Option<Value>,
     ) -> Result<ObjectId, VmError> {
+        #[cfg(test)]
+        if self.objects.test_life.is_some() {
+            return Err(err(
+                VmErrorKind::UnsupportedFeature,
+                "test lifecycle excludes managed construction",
+            ));
+        }
+
         let p = self.objects.program(program)?;
         if !p.is_constructible() {
             return Err(err(
@@ -666,7 +699,7 @@ impl Vm {
         }
         let arguments = parameter
             .into_iter()
-            .map(|v| Cell::new(v).map(StackEntry::Value))
+            .map(|v| life_cell!(self, v).map(StackEntry::Value))
             .collect::<Result<Vec<_>, _>>()?;
         crate::graph::cells(
             &arguments
@@ -831,7 +864,7 @@ impl Vm {
         match &self.stack[pos] {
             StackEntry::Value(c) => c.replace(value),
             StackEntry::Reference(_) => {
-                let cell = Cell::new(value)?;
+                let cell = life_cell!(self, value)?;
                 crate::graph::cells(std::slice::from_ref(&cell))?;
                 self.stack[pos] = StackEntry::Value(cell);
                 Ok(())
@@ -852,7 +885,7 @@ impl Vm {
         self.stack
             .try_reserve(1)
             .map_err(|_| err(VmErrorKind::Limit, "value stack allocation failed"))?;
-        let cell = Cell::new(v)?;
+        let cell = life_cell!(self, v)?;
         crate::graph::cells(std::slice::from_ref(&cell))?;
         self.stack.push(StackEntry::Value(cell));
         Ok(())
@@ -939,7 +972,7 @@ impl Vm {
     // Allocate the result before normalizing a dead Object in its source Cell.
     fn read_reference(&self, r: &Reference) -> Result<StackEntry, VmError> {
         let cell = self.resolve(r)?;
-        let mut plan = CopyPlan::default();
+        let mut plan = life_plan!(self);
         let value = self.copy_cell(&mut plan, cell)?;
         let entry = StackEntry::Value(plan.output(value)?);
         plan.commit()?;
@@ -1034,10 +1067,10 @@ impl Vm {
         if self.limits.max_frames == 0 || arguments.len() > self.limits.max_stack {
             return Err(err(VmErrorKind::Limit, "entry exceeds VM limits"));
         }
-        let mut plan = CopyPlan::default();
+        let mut plan = life_plan!(self);
         let imported = arguments
             .into_iter()
-            .map(Cell::new)
+            .map(|v| life_cell!(self, v))
             .collect::<Result<Vec<_>, _>>()?;
         let mut arguments = Vec::new();
         arguments
@@ -1048,9 +1081,13 @@ impl Vm {
             arguments.push(StackEntry::Value(plan.output(value)?));
         }
         let id = self.frame_id()?;
+        #[cfg(test)]
+        let lease = self.prepare_exec_for_test(Some(object))?;
         plan.commit()?;
         self.stack = arguments;
         self.catches.clear();
+        #[cfg(test)]
+        self.release_exec_to_for_test(0);
         self.frames = vec![Frame {
             id,
             execution: ExecutionSource::ObjectProgram(program),
@@ -1062,6 +1099,8 @@ impl Vm {
             entered: false,
             phase: EntryPhase::Unchecked,
         }];
+        #[cfg(test)]
+        self.install_exec_for_test(id, lease);
         self.reference_cells.clear();
         self.completion = None;
         self.failure = None;
@@ -1257,7 +1296,7 @@ impl Vm {
         self.stack
             .try_reserve(1)
             .map_err(|_| err(VmErrorKind::Limit, "argument array stack allocation failed"))?;
-        let mut plan = CopyPlan::default();
+        let mut plan = life_plan!(self);
         let mut values = Vec::new();
         values
             .try_reserve(frame.argc)
@@ -1269,7 +1308,7 @@ impl Vm {
             };
             values.push(self.copy_cell(&mut plan, cell)?);
         }
-        let result = StackEntry::Value(plan.output(Value::array(values)?)?);
+        let result = StackEntry::Value(plan.output(life_array!(self, values)?)?);
         plan.commit()?;
         self.stack.push(result);
         Ok(())
@@ -1282,7 +1321,7 @@ impl Vm {
             ));
         }
         Self::argument_plan(f, frame.argc)?;
-        let mut updates = CopyPlan::default();
+        let mut updates = life_plan!(self);
         for (i, arg) in f.args.iter().enumerate().take(frame.argc) {
             let pos = frame.bp - 1 - i;
             let (cell, value) = if arg.flag == 1 {
@@ -1405,7 +1444,7 @@ impl Vm {
             // Pop only target: the original method cell becomes the new arg0.
             (slot, 1, argc + 1)
         } else if flags & 4 != 0 {
-            let result = StackEntry::Value(Cell::new(Value::Void)?);
+            let result = StackEntry::Value(life_cell!(self, Value::Void)?);
             if let StackEntry::Value(cell) = &result {
                 crate::graph::cells(std::slice::from_ref(cell))?;
             }
@@ -1451,8 +1490,12 @@ impl Vm {
         // Preflight types without consuming operands or normalizing caller-owned slots.
         // The ordinary 0f entry performs the batch commit after the frame is installed.
         self.argument_updates(&next, target)?;
+        #[cfg(test)]
+        let lease = self.prepare_exec_for_test(next.active_object)?;
         self.frame_id()?;
         self.stack.truncate(bp);
+        #[cfg(test)]
+        self.install_exec_for_test(next.id, lease);
         self.frames.push(next);
         Ok(())
     }
@@ -1552,7 +1595,11 @@ impl Vm {
         if global {
             self.argument_updates(&next, target)?;
         }
+        #[cfg(test)]
+        let lease = self.prepare_exec_for_test(next.active_object)?;
         self.frame_id()?;
+        #[cfg(test)]
+        self.install_exec_for_test(next.id, lease);
         self.frames.push(next);
         Ok(())
     }
@@ -1657,7 +1704,7 @@ impl Vm {
                     "function value result exceeds stack limit",
                 )
             })?;
-        let mut plan = CopyPlan::default();
+        let mut plan = life_plan!(self);
         let mut bound = Vec::new();
         bound
             .try_reserve(count)
@@ -1729,6 +1776,10 @@ impl Vm {
             bound_count: count,
             counter: crate::ownership::Counter::new()?,
         }));
+        #[cfg(test)]
+        if let Some(life) = &self.objects.test_life {
+            life.register_function(&function)?;
+        }
         let cell = plan.output(Value::Function(function))?;
         plan.commit()?;
         self.stack.truncate(n - count);
@@ -1852,7 +1903,7 @@ impl Vm {
             .checked_add(argc)
             .ok_or_else(|| err(VmErrorKind::Limit, "indirect argument stack overflow"))?;
         let unique = function.0.counter.owners() == 1;
-        let mut plan = CopyPlan::default();
+        let mut plan = life_plan!(self);
         let activation_cell = plan.transfer(self.value_cell(n - 1)?)?;
         plan.retire(&activation_cell);
         let mut cells = Vec::new();
@@ -1929,6 +1980,8 @@ impl Vm {
             entered: false,
             phase: EntryPhase::Unchecked,
         };
+        #[cfg(test)]
+        let lease = self.prepare_exec_for_test(next.active_object)?;
         // Net ownership of the target is unchanged by its move to activation.
         // Branch selection above used semantic owners before provisional output reservations.
         plan.commit()?;
@@ -1939,6 +1992,8 @@ impl Vm {
         self.stack.truncate(prefix);
         self.stack.extend(cells.into_iter().rev());
         self.frames.last_mut().unwrap().pc += 1;
+        #[cfg(test)]
+        self.install_exec_for_test(next.id, lease);
         self.frames.push(next);
         Ok(())
     }
@@ -2145,7 +2200,7 @@ impl Vm {
         if result_len > self.limits.max_stack {
             return Err(err(VmErrorKind::Limit, "host result exceeds stack limit"));
         }
-        let cell = Cell::new(Value::Void)?;
+        let cell = life_cell!(self, Value::Void)?;
         // The minimum output-slot budget is known before invoking host code.
         crate::graph::cells(std::slice::from_ref(&cell))?;
         self.stack
@@ -2167,7 +2222,7 @@ impl Vm {
             }
         };
         validate_value(&value)?;
-        let mut plan = CopyPlan::default();
+        let mut plan = life_plan!(self);
         finish(self, &mut plan)?;
         plan.write(cell.clone(), value)?;
         plan.commit()?;
@@ -2247,7 +2302,7 @@ impl Vm {
         if self.frames.len() > 1 && floor >= self.limits.max_stack {
             return Err(err(VmErrorKind::Limit, "return result exceeds stack limit"));
         }
-        let mut plan = CopyPlan::default();
+        let mut plan = life_plan!(self);
         let raw_source = if count == 1 {
             Some(self.value_cell(self.stack.len() - 1)?)
         } else {
@@ -2277,6 +2332,8 @@ impl Vm {
         };
         plan.commit()?;
         self.stack.truncate(floor);
+        #[cfg(test)]
+        self.release_exec_to_for_test(self.frames.len() - 1);
         self.frames.pop();
         if let Some(entry) = result_entry {
             self.stack.push(entry);
@@ -2361,7 +2418,7 @@ impl Vm {
             }
         };
         // Result and target form one checked publication.
-        let mut plan = CopyPlan::default();
+        let mut plan = life_plan!(self);
         let entry = if opcode == 0x2f {
             Some(StackEntry::Value(plan.output(result.clone())?))
         } else {
@@ -2474,7 +2531,7 @@ impl Vm {
         let mut control = cell.loop_control()?;
         self.validate_binding(&control.bound)?;
         let mut output = None;
-        let mut plan = CopyPlan::default();
+        let mut plan = life_plan!(self);
         let mut member_updates = Vec::new();
         let valid = match &mut control.state {
             LoopState::Numeric {
@@ -2627,7 +2684,7 @@ impl Vm {
         let source = self.value(n - 3)?;
         let begin = self.value(n - 2)?;
         let end = self.value(n - 1)?;
-        let mut plan = CopyPlan::default();
+        let mut plan = life_plan!(self);
         let result = match source {
             Value::Bytes(bytes) => {
                 let range = Self::range_bounds(bytes.len(), &begin, &end, mode)?;
@@ -2652,7 +2709,7 @@ impl Vm {
                     let copied = self.copy_cell(&mut plan, cell)?;
                     values.push(copied);
                 }
-                Value::array(values)?
+                life_array!(self, values)?
             }
             _ => {
                 return Err(err(
@@ -2786,6 +2843,8 @@ impl Vm {
         // or budget yield may occur between these two native-corresponding phases.
         if let Some(floor) = child_floor {
             self.stack.truncate(floor);
+            #[cfg(test)]
+            self.release_exec_to_for_test(depth);
             self.frames.truncate(depth);
         }
         self.catches.pop();
@@ -2905,6 +2964,13 @@ impl Vm {
                 ));
             }
         }
+        #[cfg(test)]
+        if self.objects.test_life.is_some() && matches!(opcode, 0x06 | 0x12 | 0x23 | 0x50) {
+            return Err(err(
+                VmErrorKind::UnsupportedFeature,
+                "instruction excluded from test lifecycle",
+            ));
+        }
         // Synthetic 06 commits PC only after a complete synchronous call.
         // Other instructions retain the native pre-dispatch increment.
         if opcode == 0x06 {
@@ -3014,7 +3080,7 @@ impl Vm {
                     (n - 2, n - 1)
                 };
                 let reference = self.reference(target)?;
-                let mut plan = CopyPlan::default();
+                let mut plan = life_plan!(self);
                 let value = self.copy_stack(&mut plan, source)?;
                 let cell = self.writable(&reference, &value)?;
                 let result = StackEntry::Value(plan.output(value.clone())?);
@@ -3076,7 +3142,7 @@ impl Vm {
                     ));
                 }
                 self.reserve_reference(None)?;
-                let cell = Cell::new(value)?;
+                let cell = life_cell!(self, value)?;
                 crate::graph::cells(std::slice::from_ref(&cell))?;
                 let r = self.owned_reference(cell, ReferenceKind::Temporary)?;
                 self.stack[n - 1] = StackEntry::Reference(r);
@@ -3128,6 +3194,12 @@ impl Vm {
                         }
                     }
                 };
+                #[cfg(test)]
+                if let Some(life) = &self.objects.test_life
+                    && !cell.adapter_bound()
+                {
+                    cell.bind_adapter(&life.ctx)?;
+                }
                 let reference = self.owned_reference(cell, kind)?;
                 self.stack.pop();
                 self.stack[n - 2] = StackEntry::Reference(reference);
@@ -3155,9 +3227,10 @@ impl Vm {
                     .map(|i| self.value(i))
                     .collect::<Result<Vec<_>, _>>()?;
                 let value = if opcode == 0x16 {
-                    Value::array(values)?
+                    life_array!(self, values)?
                 } else {
-                    Value::mapping(
+                    life_mapping!(
+                        self,
                         values
                             .as_chunks::<2>()
                             .0
@@ -3169,7 +3242,7 @@ impl Vm {
                 self.stack
                     .try_reserve(1)
                     .map_err(|_| err(VmErrorKind::Limit, "container result allocation failed"))?;
-                let cell = Cell::new(value)?;
+                let cell = life_cell!(self, value)?;
                 crate::graph::cells(std::slice::from_ref(&cell))?;
                 self.stack.truncate(n - count);
                 self.stack.push(StackEntry::Value(cell));
@@ -3188,7 +3261,7 @@ impl Vm {
                         ));
                     }
                 };
-                let mut plan = CopyPlan::default();
+                let mut plan = life_plan!(self);
                 let value = if let Some(cell) = selected {
                     self.copy_cell(&mut plan, cell)?
                 } else {
@@ -3306,7 +3379,7 @@ impl Vm {
                             self.read_reference(r)?
                         }
                         StackEntry::Value(c) => {
-                            let mut plan = CopyPlan::default();
+                            let mut plan = life_plan!(self);
                             let value = self.copy_cell(&mut plan, c.clone())?;
                             let cell = plan.output(value)?;
                             plan.commit()?;
@@ -3314,7 +3387,7 @@ impl Vm {
                         }
                     }
                 } else {
-                    let cell = Cell::new(Value::Undefined)?;
+                    let cell = life_cell!(self, Value::Undefined)?;
                     crate::graph::cells(std::slice::from_ref(&cell))?;
                     StackEntry::Value(cell)
                 };
@@ -3325,7 +3398,7 @@ impl Vm {
                 let pos = self
                     .slot(a, &frame)
                     .ok_or_else(|| err(VmErrorKind::Bounds, "no such local/argument slot"))?;
-                let mut plan = CopyPlan::default();
+                let mut plan = life_plan!(self);
                 let value = self.copy_stack(&mut plan, n - 1)?;
                 let target = match &self.stack[pos] {
                     StackEntry::Reference(r) => {
@@ -3408,7 +3481,7 @@ impl Vm {
                 self.stack
                     .try_reserve(1)
                     .map_err(|_| err(VmErrorKind::Limit, "object read stack allocation failed"))?;
-                let mut plan = CopyPlan::default();
+                let mut plan = life_plan!(self);
                 let value = self.copy_cell(&mut plan, self.object_cell(&frame, a)?)?;
                 let result = plan.output(value)?;
                 plan.commit()?;
@@ -3418,7 +3491,7 @@ impl Vm {
             0x4e => {
                 self.need(1, &frame, f.local_count)?;
                 let cell = self.object_cell(&frame, a)?;
-                let mut plan = CopyPlan::default();
+                let mut plan = life_plan!(self);
                 let value = self.copy_stack(&mut plan, n - 1)?;
                 plan.write(cell, value)?;
                 plan.commit()
@@ -3541,7 +3614,7 @@ impl Vm {
                     ));
                 }
                 let locals = (0..f.local_count)
-                    .map(|_| Cell::new(Value::Undefined).map(StackEntry::Value))
+                    .map(|_| life_cell!(self, Value::Undefined).map(StackEntry::Value))
                     .collect::<Result<Vec<_>, _>>()?;
                 crate::graph::cells(
                     &locals
@@ -3570,6 +3643,13 @@ impl Vm {
                         VmErrorKind::UnsupportedFeature,
                         "finishAction cannot complete an initialization task",
                     ));
+                }
+                #[cfg(test)]
+                {
+                    self.release_exec_to_for_test(0);
+                    if self.objects.test_life.is_some() {
+                        self.frames.clear();
+                    }
                 }
                 self.completion = Some(StoredCompletion::new(Completion::ActionFinished)?);
                 self.catches.clear();
@@ -6583,3 +6663,104 @@ mod mapping_loop_tests {
         }
     }
 }
+
+#[cfg(test)]
+impl Vm {
+    fn test_cell(&self, value: Value) -> Result<Rc<Cell>, VmError> {
+        self.objects.test_cell(value)
+    }
+    fn test_plan(&self) -> CopyPlan {
+        match &self.objects.test_life {
+            Some(life) => life.plan(),
+            None => CopyPlan::default(),
+        }
+    }
+    fn test_array(&self, values: Vec<Value>) -> Result<Value, VmError> {
+        match &self.objects.test_life {
+            Some(life) => life.array(values),
+            None => Value::array(values),
+        }
+    }
+    fn test_mapping(&self, values: Vec<(Value, Value)>) -> Result<Value, VmError> {
+        match &self.objects.test_life {
+            Some(life) => life.mapping(values),
+            None => Value::mapping(values),
+        }
+    }
+    fn prepare_exec_for_test(
+        &mut self,
+        object: Option<ObjectId>,
+    ) -> Result<Option<crate::lifecycle_adapter::runtime::ExecLease>, VmError> {
+        if let Some(life) = self.objects.test_life.clone() {
+            self.frames
+                .try_reserve(1)
+                .map_err(|_| err(VmErrorKind::Limit, "frame allocation"))?;
+            if let Some(id) = object {
+                self.exec_leases
+                    .try_reserve(1)
+                    .map_err(|_| err(VmErrorKind::Limit, "lease allocation"))?;
+                return life.exec(id).map(Some);
+            }
+        }
+        Ok(None)
+    }
+    fn install_exec_for_test(
+        &mut self,
+        id: u64,
+        lease: Option<crate::lifecycle_adapter::runtime::ExecLease>,
+    ) {
+        if let Some(lease) = lease {
+            self.exec_leases.push((id, lease));
+        }
+    }
+    fn release_exec_to_for_test(&mut self, depth: usize) {
+        for frame in self.frames[depth..].iter().rev() {
+            if let Some(i) = self.exec_leases.iter().position(|(id, _)| *id == frame.id) {
+                drop(self.exec_leases.swap_remove(i));
+            }
+        }
+    }
+    pub(crate) fn cancel_execution_for_test(&mut self) {
+        self.release_exec_to_for_test(0);
+        self.frames.clear();
+        self.stack.clear();
+        self.catches.clear();
+        self.reference_cells.clear();
+        self.completion = None;
+        self.failure = None;
+    }
+    fn lifecycle_audit_for_test(&self) {
+        if let Some(life) = &self.objects.test_life {
+            let frames = self
+                .frames
+                .iter()
+                .filter_map(|f| f.active_object.map(|id| (f.id, id)))
+                .collect::<Vec<_>>();
+            life.audit(&frames, &self.exec_leases);
+            let snapshot = life.snapshot();
+            for (id, state) in snapshot["objects"].as_object().unwrap() {
+                let key = ObjectId(id.parse().unwrap());
+                let resident = self.objects.objects_for_audit_for_test(key);
+                if state["state"] != "freed" {
+                    assert!(resident.is_some());
+                }
+                if let Some(cells) = resident
+                    && (state["state"] == "shell" || state["state"] == "freed")
+                {
+                    assert!(cells.is_empty());
+                }
+            }
+        }
+    }
+}
+#[cfg(test)]
+impl Drop for Vm {
+    fn drop(&mut self) {
+        if self.objects.test_life.is_some() {
+            self.cancel_execution_for_test();
+        }
+    }
+}
+#[cfg(test)]
+#[path = "lifecycle_vm_tests.rs"]
+mod lifecycle_vm_tests;

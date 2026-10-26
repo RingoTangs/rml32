@@ -1,0 +1,1659 @@
+{
+  "bounds": {
+    "container_heads": 2,
+    "depth": 3,
+    "frames": 3,
+    "function_heads": 2,
+    "instruction_budget_each_case": 1000,
+    "objects": 2,
+    "owning_slots": 16
+  },
+  "cases": [
+    {
+      "functions": [
+        {
+          "args": 0,
+          "nodes": [
+            [
+              7,
+              0,
+              59
+            ]
+          ],
+          "slot": 0
+        }
+      ],
+      "id": "pending-budget-return-drain",
+      "objects": 1,
+      "steps": [
+        [
+          {
+            "function": 0,
+            "object": 0,
+            "op": "start"
+          },
+          [
+            [
+              "enter",
+              "a",
+              "0"
+            ]
+          ],
+          [
+            [
+              0,
+              0
+            ]
+          ]
+        ],
+        [
+          {
+            "op": "inspect"
+          },
+          [],
+          [
+            [
+              0,
+              0
+            ]
+          ]
+        ],
+        [
+          {
+            "object": 0,
+            "op": "delete"
+          },
+          [
+            [
+              "delete",
+              "0"
+            ]
+          ],
+          [
+            [
+              0,
+              0
+            ]
+          ]
+        ],
+        [
+          {
+            "budget": 0,
+            "op": "run"
+          },
+          [],
+          [
+            [
+              0,
+              0
+            ]
+          ]
+        ],
+        [
+          {
+            "budget": 4,
+            "op": "run"
+          },
+          [
+            [
+              "exit",
+              "a"
+            ]
+          ],
+          []
+        ],
+        [
+          {
+            "op": "inspect"
+          },
+          [],
+          []
+        ],
+        [
+          {
+            "op": "drain"
+          },
+          [
+            [
+              "drain"
+            ]
+          ],
+          []
+        ]
+      ],
+      "vars": 0
+    },
+    {
+      "functions": [
+        {
+          "args": 0,
+          "nodes": [
+            [
+              7,
+              0,
+              59
+            ]
+          ],
+          "slot": 0
+        }
+      ],
+      "id": "immediate-delete-explicit-reap",
+      "objects": 1,
+      "steps": [
+        [
+          {
+            "object": 0,
+            "op": "delete"
+          },
+          [
+            [
+              "delete",
+              "0"
+            ]
+          ],
+          []
+        ],
+        [
+          {
+            "op": "reap"
+          },
+          [],
+          []
+        ]
+      ],
+      "vars": 1
+    },
+    {
+      "functions": [
+        {
+          "args": 0,
+          "nodes": [
+            [
+              7,
+              0,
+              59
+            ]
+          ],
+          "slot": 0
+        }
+      ],
+      "id": "extract-rebuild-preserves-mode",
+      "objects": 1,
+      "steps": [
+        [
+          {
+            "function": 0,
+            "object": 0,
+            "op": "start"
+          },
+          [
+            [
+              "enter",
+              "a",
+              "0"
+            ]
+          ],
+          [
+            [
+              0,
+              0
+            ]
+          ]
+        ],
+        [
+          {
+            "object": 0,
+            "op": "delete"
+          },
+          [
+            [
+              "delete",
+              "0"
+            ]
+          ],
+          [
+            [
+              0,
+              0
+            ]
+          ]
+        ],
+        [
+          {
+            "op": "extract"
+          },
+          [
+            [
+              "exit",
+              "a"
+            ]
+          ],
+          []
+        ],
+        [
+          {
+            "op": "rebuild"
+          },
+          [],
+          []
+        ],
+        [
+          {
+            "op": "drain"
+          },
+          [
+            [
+              "drain"
+            ]
+          ],
+          []
+        ]
+      ],
+      "vars": 0
+    },
+    {
+      "functions": [
+        {
+          "args": 0,
+          "nodes": [
+            [
+              1,
+              0,
+              7
+            ]
+          ],
+          "slot": 0
+        },
+        {
+          "args": 0,
+          "nodes": [
+            [
+              2,
+              0,
+              7
+            ]
+          ],
+          "slot": 1
+        },
+        {
+          "args": 0,
+          "nodes": [
+            [
+              9,
+              0,
+              59
+            ]
+          ],
+          "slot": 2
+        }
+      ],
+      "id": "three-recursive-real-frames",
+      "objects": 1,
+      "steps": [
+        [
+          {
+            "function": 0,
+            "object": 0,
+            "op": "start"
+          },
+          [
+            [
+              "enter",
+              "a",
+              "0"
+            ]
+          ],
+          [
+            [
+              0,
+              0
+            ]
+          ]
+        ],
+        [
+          {
+            "budget": 3,
+            "op": "run"
+          },
+          [
+            [
+              "enter",
+              "b",
+              "0"
+            ]
+          ],
+          [
+            [
+              0,
+              0
+            ],
+            [
+              0,
+              1
+            ]
+          ]
+        ],
+        [
+          {
+            "budget": 3,
+            "op": "run"
+          },
+          [
+            [
+              "enter",
+              "c",
+              "0"
+            ]
+          ],
+          [
+            [
+              0,
+              0
+            ],
+            [
+              0,
+              1
+            ],
+            [
+              0,
+              2
+            ]
+          ]
+        ],
+        [
+          {
+            "object": 0,
+            "op": "delete"
+          },
+          [
+            [
+              "delete",
+              "0"
+            ]
+          ],
+          [
+            [
+              0,
+              0
+            ],
+            [
+              0,
+              1
+            ],
+            [
+              0,
+              2
+            ]
+          ]
+        ],
+        [
+          {
+            "budget": 4,
+            "op": "run"
+          },
+          [
+            [
+              "exit",
+              "c"
+            ]
+          ],
+          [
+            [
+              0,
+              0
+            ],
+            [
+              0,
+              1
+            ]
+          ]
+        ],
+        [
+          {
+            "budget": 1,
+            "op": "run"
+          },
+          [
+            [
+              "exit",
+              "b"
+            ]
+          ],
+          [
+            [
+              0,
+              0
+            ]
+          ]
+        ],
+        [
+          {
+            "budget": 1,
+            "op": "run"
+          },
+          [
+            [
+              "exit",
+              "a"
+            ]
+          ],
+          []
+        ],
+        [
+          {
+            "op": "drain"
+          },
+          [
+            [
+              "drain"
+            ]
+          ],
+          []
+        ]
+      ],
+      "vars": 0
+    },
+    {
+      "functions": [
+        {
+          "args": 0,
+          "nodes": [
+            [
+              3,
+              0,
+              44
+            ],
+            [
+              1,
+              0,
+              7
+            ],
+            [
+              0,
+              0,
+              26
+            ],
+            [
+              1,
+              0,
+              31
+            ],
+            [
+              0,
+              0,
+              14
+            ]
+          ],
+          "slot": 0
+        },
+        {
+          "args": 0,
+          "nodes": [
+            [
+              2,
+              0,
+              7
+            ]
+          ],
+          "slot": 1
+        },
+        {
+          "args": 0,
+          "nodes": [
+            [
+              1,
+              0,
+              59
+            ],
+            [
+              0,
+              0,
+              59
+            ],
+            [
+              0,
+              0,
+              25
+            ]
+          ],
+          "slot": 2
+        }
+      ],
+      "id": "catch-exits-top-down",
+      "objects": 1,
+      "steps": [
+        [
+          {
+            "function": 0,
+            "object": 0,
+            "op": "start"
+          },
+          [
+            [
+              "enter",
+              "a",
+              "0"
+            ]
+          ],
+          [
+            [
+              0,
+              0
+            ]
+          ]
+        ],
+        [
+          {
+            "budget": 4,
+            "op": "run"
+          },
+          [
+            [
+              "enter",
+              "b",
+              "0"
+            ]
+          ],
+          [
+            [
+              0,
+              0
+            ],
+            [
+              0,
+              1
+            ]
+          ]
+        ],
+        [
+          {
+            "budget": 3,
+            "op": "run"
+          },
+          [
+            [
+              "enter",
+              "c",
+              "0"
+            ]
+          ],
+          [
+            [
+              0,
+              0
+            ],
+            [
+              0,
+              1
+            ],
+            [
+              0,
+              2
+            ]
+          ]
+        ],
+        [
+          {
+            "object": 0,
+            "op": "delete"
+          },
+          [
+            [
+              "delete",
+              "0"
+            ]
+          ],
+          [
+            [
+              0,
+              0
+            ],
+            [
+              0,
+              1
+            ],
+            [
+              0,
+              2
+            ]
+          ]
+        ],
+        [
+          {
+            "budget": 5,
+            "op": "run"
+          },
+          [
+            [
+              "exit",
+              "c"
+            ],
+            [
+              "exit",
+              "b"
+            ]
+          ],
+          [
+            [
+              0,
+              0
+            ]
+          ]
+        ],
+        [
+          {
+            "budget": 2,
+            "op": "run"
+          },
+          [
+            [
+              "exit",
+              "a"
+            ]
+          ],
+          []
+        ],
+        [
+          {
+            "op": "drain"
+          },
+          [
+            [
+              "drain"
+            ]
+          ],
+          []
+        ]
+      ],
+      "vars": 0
+    },
+    {
+      "functions": [
+        {
+          "args": 0,
+          "nodes": [
+            [
+              1,
+              0,
+              7
+            ]
+          ],
+          "slot": 0
+        },
+        {
+          "args": 0,
+          "nodes": [
+            [
+              1,
+              0,
+              59
+            ],
+            [
+              0,
+              0,
+              59
+            ],
+            [
+              0,
+              0,
+              25
+            ]
+          ],
+          "slot": 1
+        },
+        {
+          "args": 0,
+          "nodes": [
+            [
+              7,
+              0,
+              59
+            ]
+          ],
+          "slot": 2
+        }
+      ],
+      "id": "sticky-restart-prepares-before-retiring",
+      "objects": 1,
+      "steps": [
+        [
+          {
+            "function": 0,
+            "object": 0,
+            "op": "start"
+          },
+          [
+            [
+              "enter",
+              "a",
+              "0"
+            ]
+          ],
+          [
+            [
+              0,
+              0
+            ]
+          ]
+        ],
+        [
+          {
+            "budget": 3,
+            "op": "run"
+          },
+          [
+            [
+              "enter",
+              "b",
+              "0"
+            ]
+          ],
+          [
+            [
+              0,
+              0
+            ],
+            [
+              0,
+              1
+            ]
+          ]
+        ],
+        [
+          {
+            "budget": 5,
+            "error": true,
+            "op": "run"
+          },
+          [],
+          [
+            [
+              0,
+              0
+            ],
+            [
+              0,
+              1
+            ]
+          ]
+        ],
+        [
+          {
+            "object": 0,
+            "op": "delete"
+          },
+          [
+            [
+              "delete",
+              "0"
+            ]
+          ],
+          [
+            [
+              0,
+              0
+            ],
+            [
+              0,
+              1
+            ]
+          ]
+        ],
+        [
+          {
+            "budget": 0,
+            "error": true,
+            "op": "run"
+          },
+          [],
+          [
+            [
+              0,
+              0
+            ],
+            [
+              0,
+              1
+            ]
+          ]
+        ],
+        [
+          {
+            "function": 2,
+            "object": 0,
+            "op": "start"
+          },
+          [
+            [
+              "enter",
+              "c",
+              "0"
+            ],
+            [
+              "exit",
+              "b"
+            ],
+            [
+              "exit",
+              "a"
+            ]
+          ],
+          [
+            [
+              0,
+              2
+            ]
+          ]
+        ],
+        [
+          {
+            "op": "cancel"
+          },
+          [
+            [
+              "exit",
+              "c"
+            ]
+          ],
+          []
+        ],
+        [
+          {
+            "op": "drain"
+          },
+          [
+            [
+              "drain"
+            ]
+          ],
+          []
+        ]
+      ],
+      "vars": 0
+    },
+    {
+      "function_values": true,
+      "functions": [
+        {
+          "args": 0,
+          "nodes": [
+            [
+              5,
+              0,
+              59
+            ],
+            [
+              1,
+              1,
+              23
+            ],
+            [
+              0,
+              0,
+              78
+            ],
+            [
+              0,
+              0,
+              51
+            ],
+            [
+              7,
+              0,
+              59
+            ]
+          ],
+          "slot": 0
+        },
+        {
+          "args": 1,
+          "nodes": [
+            [
+              8,
+              0,
+              59
+            ]
+          ],
+          "slot": 1
+        }
+      ],
+      "id": "variable-function-creator-cycle",
+      "objects": 1,
+      "steps": [
+        [
+          {
+            "function": 0,
+            "object": 0,
+            "op": "start"
+          },
+          [
+            [
+              "enter",
+              "a",
+              "0"
+            ]
+          ],
+          [
+            [
+              0,
+              0
+            ]
+          ]
+        ],
+        [
+          {
+            "budget": 6,
+            "op": "run"
+          },
+          [
+            [
+              "put",
+              "tmp",
+              [
+                "int",
+                5
+              ]
+            ],
+            [
+              "function",
+              "h",
+              "0",
+              [
+                "tmp"
+              ],
+              "var:0:f"
+            ],
+            [
+              "drop",
+              "tmp"
+            ]
+          ],
+          [
+            [
+              0,
+              0
+            ]
+          ]
+        ],
+        [
+          {
+            "object": 0,
+            "op": "delete"
+          },
+          [
+            [
+              "delete",
+              "0"
+            ]
+          ],
+          [
+            [
+              0,
+              0
+            ]
+          ]
+        ],
+        [
+          {
+            "object": 0,
+            "op": "delete"
+          },
+          [
+            [
+              "delete",
+              "0"
+            ]
+          ],
+          [
+            [
+              0,
+              0
+            ]
+          ]
+        ],
+        [
+          {
+            "budget": 2,
+            "op": "run"
+          },
+          [
+            [
+              "exit",
+              "a"
+            ]
+          ],
+          []
+        ],
+        [
+          {
+            "op": "drain"
+          },
+          [
+            [
+              "drain"
+            ]
+          ],
+          []
+        ]
+      ],
+      "vars": 1
+    },
+    {
+      "functions": [
+        {
+          "args": 0,
+          "nodes": [
+            [
+              559,
+              -128,
+              7
+            ]
+          ],
+          "slot": 0
+        }
+      ],
+      "global_": true,
+      "id": "global-frame-has-no-exec",
+      "objects": 1,
+      "steps": [
+        [
+          {
+            "function": 0,
+            "object": 0,
+            "op": "start"
+          },
+          [
+            [
+              "enter",
+              "a",
+              "0"
+            ]
+          ],
+          [
+            [
+              0,
+              0
+            ]
+          ]
+        ],
+        [
+          {
+            "budget": 3,
+            "op": "run"
+          },
+          [],
+          [
+            [
+              0,
+              0
+            ],
+            [
+              null,
+              559
+            ]
+          ]
+        ],
+        [
+          {
+            "object": 0,
+            "op": "delete"
+          },
+          [
+            [
+              "delete",
+              "0"
+            ]
+          ],
+          [
+            [
+              0,
+              0
+            ],
+            [
+              null,
+              559
+            ]
+          ]
+        ],
+        [
+          {
+            "budget": 4,
+            "op": "run"
+          },
+          [],
+          [
+            [
+              0,
+              0
+            ]
+          ]
+        ],
+        [
+          {
+            "budget": 1,
+            "op": "run"
+          },
+          [
+            [
+              "exit",
+              "a"
+            ]
+          ],
+          []
+        ],
+        [
+          {
+            "op": "drain"
+          },
+          [
+            [
+              "drain"
+            ]
+          ],
+          []
+        ]
+      ],
+      "vars": 0
+    },
+    {
+      "function_values": true,
+      "functions": [
+        {
+          "args": 0,
+          "nodes": [
+            [
+              1,
+              0,
+              23
+            ]
+          ],
+          "slot": 0
+        },
+        {
+          "args": 0,
+          "nodes": [
+            [
+              8,
+              0,
+              59
+            ]
+          ],
+          "slot": 1
+        },
+        {
+          "args": 1,
+          "nodes": [
+            [
+              0,
+              0,
+              55
+            ],
+            [
+              0,
+              1,
+              5
+            ]
+          ],
+          "slot": 2
+        }
+      ],
+      "id": "dual-return-lifo-separate-creator",
+      "objects": 2,
+      "steps": [
+        [
+          {
+            "function": 0,
+            "object": 1,
+            "op": "start"
+          },
+          [
+            [
+              "enter",
+              "ctor",
+              "1"
+            ]
+          ],
+          [
+            [
+              1,
+              0
+            ]
+          ]
+        ],
+        [
+          {
+            "budget": 4,
+            "op": "run"
+          },
+          [
+            [
+              "function",
+              "h",
+              "1",
+              [],
+              "f"
+            ],
+            [
+              "exit",
+              "ctor"
+            ]
+          ],
+          []
+        ],
+        [
+          {
+            "function": 2,
+            "object": 0,
+            "op": "start",
+            "result_argument": true
+          },
+          [
+            [
+              "enter",
+              "a",
+              "0"
+            ]
+          ],
+          [
+            [
+              0,
+              2
+            ]
+          ]
+        ],
+        [
+          {
+            "budget": 3,
+            "op": "run"
+          },
+          [
+            [
+              "copy",
+              "f",
+              "t"
+            ]
+          ],
+          [
+            [
+              0,
+              2
+            ]
+          ]
+        ],
+        [
+          {
+            "budget": 1,
+            "op": "run"
+          },
+          [
+            [
+              "enter",
+              "b",
+              "1"
+            ],
+            [
+              "drop",
+              "t"
+            ]
+          ],
+          [
+            [
+              0,
+              2
+            ],
+            [
+              1,
+              1
+            ]
+          ]
+        ],
+        [
+          {
+            "object": 0,
+            "op": "delete"
+          },
+          [
+            [
+              "delete",
+              "0"
+            ]
+          ],
+          [
+            [
+              0,
+              2
+            ],
+            [
+              1,
+              1
+            ]
+          ]
+        ],
+        [
+          {
+            "object": 1,
+            "op": "delete"
+          },
+          [
+            [
+              "delete",
+              "1"
+            ]
+          ],
+          [
+            [
+              0,
+              2
+            ],
+            [
+              1,
+              1
+            ]
+          ]
+        ],
+        [
+          {
+            "budget": 4,
+            "op": "run"
+          },
+          [
+            [
+              "exit",
+              "b"
+            ]
+          ],
+          [
+            [
+              0,
+              2
+            ]
+          ]
+        ],
+        [
+          {
+            "budget": 1,
+            "op": "run"
+          },
+          [
+            [
+              "drop",
+              "f"
+            ],
+            [
+              "exit",
+              "a"
+            ]
+          ],
+          []
+        ],
+        [
+          {
+            "op": "drain"
+          },
+          [
+            [
+              "drain"
+            ]
+          ],
+          []
+        ],
+        [
+          {
+            "op": "drain"
+          },
+          [
+            [
+              "drain"
+            ]
+          ],
+          []
+        ]
+      ],
+      "vars": 0
+    },
+    {
+      "function_values": true,
+      "functions": [
+        {
+          "args": 0,
+          "nodes": [
+            [
+              1,
+              0,
+              23
+            ]
+          ],
+          "slot": 0
+        },
+        {
+          "args": 0,
+          "nodes": [
+            [
+              8,
+              0,
+              59
+            ]
+          ],
+          "slot": 1
+        },
+        {
+          "args": 1,
+          "nodes": [
+            [
+              0,
+              0,
+              55
+            ],
+            [
+              0,
+              1,
+              5
+            ]
+          ],
+          "slot": 2
+        }
+      ],
+      "id": "dual-cancel-lifo-top-down",
+      "objects": 2,
+      "steps": [
+        [
+          {
+            "function": 0,
+            "object": 1,
+            "op": "start"
+          },
+          [
+            [
+              "enter",
+              "ctor",
+              "1"
+            ]
+          ],
+          [
+            [
+              1,
+              0
+            ]
+          ]
+        ],
+        [
+          {
+            "budget": 4,
+            "op": "run"
+          },
+          [
+            [
+              "function",
+              "h",
+              "1",
+              [],
+              "f"
+            ],
+            [
+              "exit",
+              "ctor"
+            ]
+          ],
+          []
+        ],
+        [
+          {
+            "function": 2,
+            "object": 0,
+            "op": "start",
+            "result_argument": true
+          },
+          [
+            [
+              "enter",
+              "a",
+              "0"
+            ]
+          ],
+          [
+            [
+              0,
+              2
+            ]
+          ]
+        ],
+        [
+          {
+            "budget": 3,
+            "op": "run"
+          },
+          [
+            [
+              "copy",
+              "f",
+              "t"
+            ]
+          ],
+          [
+            [
+              0,
+              2
+            ]
+          ]
+        ],
+        [
+          {
+            "budget": 1,
+            "op": "run"
+          },
+          [
+            [
+              "enter",
+              "b",
+              "1"
+            ],
+            [
+              "drop",
+              "t"
+            ]
+          ],
+          [
+            [
+              0,
+              2
+            ],
+            [
+              1,
+              1
+            ]
+          ]
+        ],
+        [
+          {
+            "object": 0,
+            "op": "delete"
+          },
+          [
+            [
+              "delete",
+              "0"
+            ]
+          ],
+          [
+            [
+              0,
+              2
+            ],
+            [
+              1,
+              1
+            ]
+          ]
+        ],
+        [
+          {
+            "object": 1,
+            "op": "delete"
+          },
+          [
+            [
+              "delete",
+              "1"
+            ]
+          ],
+          [
+            [
+              0,
+              2
+            ],
+            [
+              1,
+              1
+            ]
+          ]
+        ],
+        [
+          {
+            "op": "cancel"
+          },
+          [
+            [
+              "exit",
+              "b"
+            ],
+            [
+              "exit",
+              "a"
+            ],
+            [
+              "drop",
+              "f"
+            ]
+          ],
+          []
+        ],
+        [
+          {
+            "op": "drain"
+          },
+          [
+            [
+              "drain"
+            ]
+          ],
+          []
+        ],
+        [
+          {
+            "op": "drain"
+          },
+          [
+            [
+              "drain"
+            ]
+          ],
+          []
+        ]
+      ],
+      "vars": 0
+    }
+  ],
+  "full_state_space_proof": false,
+  "stage": "2BD",
+  "unwind_policy": "real stack newest-first; explicit exit events, not model cancel"
+}

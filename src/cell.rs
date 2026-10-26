@@ -525,6 +525,62 @@ impl Cell {
 }
 
 #[cfg(test)]
+impl Cell {
+    pub(crate) fn lifecycle_clear<H>(
+        cells: &[Rc<Self>],
+        commit: impl FnOnce() -> H,
+    ) -> Result<H, VmError> {
+        Self::preflight_cells(cells)?;
+        let mut old = Vec::new();
+        crate::copy_plan::reserve(&mut old, cells.len())?;
+        let mut guards = cells
+            .iter()
+            .map(|c| {
+                c.value.try_borrow_mut().map_err(|_| {
+                    VmError::new(VmErrorKind::InvalidState, "cleanup variable borrowed")
+                })
+            })
+            .collect::<Result<Vec<_>, _>>()?;
+        let held = commit();
+        for (g, c) in guards.iter_mut().zip(cells) {
+            c.header.set(None);
+            old.push(std::mem::replace(
+                &mut **g,
+                OwnedPayload {
+                    _owner: None,
+                    lifecycle: None,
+                    payload: SlotPayload::Value(Value::Undefined),
+                },
+            ));
+        }
+        drop(guards);
+        drop(old);
+        Ok(held)
+    }
+}
+
+#[cfg(test)]
+impl Cell {
+    pub(crate) fn lifecycle_close(&self) {
+        if let Ok(mut guard) = self.value.try_borrow_mut() {
+            self.header.set(None);
+            let old = std::mem::replace(
+                &mut *guard,
+                OwnedPayload {
+                    _owner: None,
+                    lifecycle: None,
+                    payload: SlotPayload::Value(Value::Undefined),
+                },
+            );
+            drop(guard);
+            drop(old);
+        }
+        // A private borrowed observation may retain its slot until final Rc drop.
+        // The closed epoch rejects executable reuse; no callback or allocation.
+    }
+}
+
+#[cfg(test)]
 mod tests {
     use super::*;
     #[test]

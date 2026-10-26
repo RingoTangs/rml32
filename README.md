@@ -1,3 +1,5 @@
+> 阶段 2BD：已交付真实 ObjectStore 与 VM 帧生命周期的测试接入，覆盖执行租约、延迟删除及显式 drain/reap；生产运行时/API 和捕获门禁不变。详见 [测试总览](docs/stage2bd-runtime-test/overview.md)。
+
 > 阶段 2BC：已交付真实值槽、Function 与受限容器图的测试适配；生产运行时/API 和捕获门禁不变。历史 Python 验收在固定基线副本运行。详见 [适配总览](docs/stage2bc-adapter/overview.md)。
 
 > 阶段 2BB：已交付隔离 Rust 生命周期内核及全转换差分回放；仅测试目标编译，现有运行时/API 与捕获门禁不变。详见 [内核总览](docs/stage2bb-kernel/overview.md)。
