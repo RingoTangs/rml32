@@ -1,0 +1,48 @@
+{
+  "business_bytecode_execution": false,
+  "domains": [
+    {
+      "accepted_transitions": 2771,
+      "complete": true,
+      "depth": 6,
+      "max_states": 200000,
+      "max_transitions": 1000000,
+      "objects": 1,
+      "rejected_transitions": 3236,
+      "state_set_sha256": "66ba29a89cd441b193d219be6e5699e182a91523911f687144006a4fbdab624c",
+      "states": 341
+    },
+    {
+      "accepted_transitions": 4827,
+      "complete": true,
+      "depth": 4,
+      "max_states": 200000,
+      "max_transitions": 1000000,
+      "objects": 2,
+      "rejected_transitions": 4114,
+      "state_set_sha256": "ea34b3a1ce59ee937c97046dfa5dcbedc63900bc50f0cf24a22b8c3ff395a075",
+      "states": 891
+    }
+  ],
+  "full_state_space_proof": false,
+  "input_bytes": 6154741,
+  "input_sha256": "feff21395db0e9fe47eb991662f87f5dcb8979ff15d6d922ceedc3627dc0a5ac",
+  "native_execution": false,
+  "replay": {
+    "accepted": 7598,
+    "physical_teardowns": 14948,
+    "rejected": 7350,
+    "transitions": 14948
+  },
+  "replay_log_sha256": "47da499bcb67613d9b39817557f0149fade0413db43f0f397a52686c9bb149e5",
+  "rust_kernel_execution": true,
+  "source_sha256": {
+    "docs/stage2ba-design/explore.py": "56c2993dd773145bde3beed759139da27171055ff7b5dacdf7b1acf323f3e27c",
+    "docs/stage2ba-design/model.py": "e2561fafc55a7ab1be6321d9d4dbd3fd11dff9aa462030e61160812b0de088fc",
+    "docs/stage2bb-kernel/differential.py": "363c0c4db20a838295d51844348b5a9d7a211517ab7a6674199b809f2a7176c9",
+    "tests/lifecycle_kernel.rs": "bfedb88ddd75bb27b8de3465931780c55ff193154fba68ff18b9a4599730f11c",
+    "tests/support/lifecycle_kernel.rs": "1bd348cb166afa99ca2168a8a93faf5da6d4e8342200c2d3bb00c9ff1a48b2d6"
+  },
+  "stage": "2BB",
+  "status": "pass"
+}

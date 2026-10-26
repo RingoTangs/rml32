@@ -1,3 +1,5 @@
+> 阶段 2BB：已交付隔离 Rust 生命周期内核及全转换差分回放；仅测试目标编译，现有运行时/API 与捕获门禁不变。详见 [内核总览](docs/stage2bb-kernel/overview.md)。
+
 > 阶段 2BA：已交付受限生命周期 D01 设计、独立模型与有界枚举；仅设计，Rust 运行时/API 与直接捕获门禁不变。原生未发布 H/A 最终清理仍未知。详见 [设计总览](docs/stage2ba-design/overview.md)。
 
 # rml32 · 当前阶段 2AZ
