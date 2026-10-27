@@ -123,16 +123,20 @@ pub(crate) struct StoreState {
     closed: Flag<bool>,
     pub(crate) host_boundary: bool,
     pub(crate) managed_tasks: bool,
+    pub(crate) host_function_values: bool,
 }
 impl StoreState {
     pub(crate) fn new(origin: Rc<()>, limits: ValueLimits, capacity: usize) -> Result<Rc<Self>> {
-        Self::new_mode(origin, limits, capacity, false, false)
+        Self::new_mode(origin, limits, capacity, false, false, false)
     }
     pub(crate) fn new_host(origin: Rc<()>, limits: ValueLimits) -> Result<Rc<Self>> {
-        Self::new_mode(origin, limits, usize::MAX, true, false)
+        Self::new_mode(origin, limits, usize::MAX, true, false, false)
     }
     pub(crate) fn new_managed(origin: Rc<()>, limits: ValueLimits) -> Result<Rc<Self>> {
-        Self::new_mode(origin, limits, usize::MAX, true, true)
+        Self::new_mode(origin, limits, usize::MAX, true, true, false)
+    }
+    pub(crate) fn new_host_function(origin: Rc<()>, limits: ValueLimits) -> Result<Rc<Self>> {
+        Self::new_mode(origin, limits, usize::MAX, true, true, true)
     }
     fn new_mode(
         origin: Rc<()>,
@@ -140,6 +144,7 @@ impl StoreState {
         capacity: usize,
         host_boundary: bool,
         managed_tasks: bool,
+        host_function_values: bool,
     ) -> Result<Rc<Self>> {
         if capacity < 2 {
             return Err(VmError::new(
@@ -156,6 +161,7 @@ impl StoreState {
             closed: Flag::new(false),
             host_boundary,
             managed_tasks,
+            host_function_values,
         }))
     }
     pub(crate) fn register(&self, id: ObjectId) -> Result<()> {
@@ -265,7 +271,7 @@ impl StoreState {
         self.queue.pop().expect("preflight queue head")
     }
     pub(crate) fn register_function(&self, f: &FunctionValue) -> Result<()> {
-        if matches!(f.target(), FunctionTarget::Host { .. }) {
+        if matches!(f.target(), FunctionTarget::Host { .. }) && !self.host_function_values {
             return Err(VmError::new(
                 VmErrorKind::UnsupportedFeature,
                 "Host target excluded",
@@ -423,6 +429,55 @@ impl StoreState {
                 _ => {}
             }
         }
+    }
+    pub(crate) fn assert_host_corruption_detected(
+        &self,
+        f: &FunctionValue,
+        roots: &[&OwnedValue],
+        kind: &str,
+    ) {
+        let h = self.ctx.heads.borrow()[&f.0.counter.id].clone();
+        let rejected = match kind {
+            "missing_creator" => {
+                let saved = h.creator_lease.borrow_mut().take();
+                let rejected = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
+                    self.audit_host(&[], &[], roots)
+                }))
+                .is_err();
+                *h.creator_lease.borrow_mut() = saved;
+                rejected
+            }
+            "duplicate_creator" => {
+                let extra = ObjectLease::new(h.creator.as_ref().unwrap()).unwrap();
+                let rejected = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
+                    self.audit_host(&[], &[], roots)
+                }))
+                .is_err();
+                drop(extra);
+                rejected
+            }
+            "missing_capture" => {
+                let cell = &f.0.bound[0];
+                let saved = self.ctx.cells.borrow_mut().remove(&cell.id()).unwrap();
+                let rejected = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
+                    self.audit_host(&[], &[], roots)
+                }))
+                .is_err();
+                self.ctx.cells.borrow_mut().insert(cell.id(), saved);
+                rejected
+            }
+            "extra_exec" => {
+                let extra = self.exec(f.owner().unwrap()).unwrap();
+                let rejected = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
+                    self.audit_host(&[], &[], roots)
+                }))
+                .is_err();
+                drop(extra);
+                rejected
+            }
+            _ => panic!("unknown audit corruption"),
+        };
+        assert!(rejected, "audit missed {kind}");
     }
     pub(crate) fn begin_close(&self) {
         self.closed.set(true);

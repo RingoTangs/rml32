@@ -1,3 +1,5 @@
+> 阶段 2BG：已接入 Host Function 创建、捕获和间接调用的生命周期测试，覆盖 creator、回调事务和最终释放；生产运行时/API 与准备门禁不变。详见 [Host Function 测试总览](stage2bg-host-function-test/overview.md)。
+
 > 阶段 2BF：已接入托管初始化、多层构造与失败回滚的生命周期测试，覆盖真实帧租约、参数所有权及显式清理队列；生产运行时/API 和捕获门禁不变。详见 [托管测试总览](stage2bf-managed-test/overview.md)。
 
 > 阶段 2BE：已接入真实 Host 根、直接同步回调及关闭存储保活的测试模式，完成逐检查点回放；生产运行时/API 与捕获门禁不变。详见 [Host 测试总览](stage2be-host-test/overview.md)。

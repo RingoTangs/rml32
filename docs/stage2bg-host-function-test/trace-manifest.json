@@ -1,0 +1,5860 @@
+{
+  "bounds": {
+    "containers": 2,
+    "frames": 3,
+    "heads": 2,
+    "host_roots": 8,
+    "instructions": 1000,
+    "objects": 2,
+    "owning_slots": 16
+  },
+  "cases": [
+    {
+      "callback": "borrowed",
+      "capture": "none",
+      "name": "unique-none",
+      "shared_model": true,
+      "steps": [
+        {
+          "command": [
+            "start-unique"
+          ],
+          "expected": {
+            "calls": 0,
+            "closed": false,
+            "frames": [
+              {
+                "body": "fun:5",
+                "id": 0,
+                "object": 0
+              }
+            ],
+            "graph_owners": null,
+            "head": null,
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 0,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 0
+          },
+          "model_events": [
+            [
+              "enter",
+              "f0",
+              "0"
+            ]
+          ]
+        },
+        {
+          "command": [
+            "run",
+            3,
+            "budget"
+          ],
+          "expected": {
+            "calls": 0,
+            "closed": false,
+            "frames": [
+              {
+                "body": "fun:5",
+                "id": 0,
+                "object": 0
+              }
+            ],
+            "graph_owners": null,
+            "head": {
+              "bound": 0,
+              "captures": [],
+              "creator": 0,
+              "owners": 1
+            },
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 0
+          },
+          "model_events": [
+            [
+              "function",
+              "h",
+              "0",
+              [],
+              "activation"
+            ]
+          ]
+        },
+        {
+          "command": [
+            "run",
+            0,
+            "budget"
+          ],
+          "expected": {
+            "calls": 0,
+            "closed": false,
+            "frames": [
+              {
+                "body": "fun:5",
+                "id": 0,
+                "object": 0
+              }
+            ],
+            "graph_owners": null,
+            "head": {
+              "bound": 0,
+              "captures": [],
+              "creator": 0,
+              "owners": 1
+            },
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 0
+          },
+          "model_events": []
+        },
+        {
+          "command": [
+            "run",
+            1,
+            "budget"
+          ],
+          "expected": {
+            "calls": 1,
+            "closed": false,
+            "frames": [
+              {
+                "body": "fun:5",
+                "id": 0,
+                "object": 0
+              }
+            ],
+            "graph_owners": null,
+            "head": {
+              "bound": 0,
+              "captures": [],
+              "creator": 0,
+              "owners": 0
+            },
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 0,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 0
+          },
+          "model_events": [
+            [
+              "invoke",
+              "activation",
+              []
+            ]
+          ]
+        },
+        {
+          "command": [
+            "run",
+            1,
+            "finished"
+          ],
+          "expected": {
+            "calls": 1,
+            "closed": false,
+            "frames": [],
+            "graph_owners": null,
+            "head": {
+              "bound": 0,
+              "captures": [],
+              "creator": 0,
+              "owners": 0
+            },
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 0,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 0
+          },
+          "model_events": [
+            [
+              "exit",
+              "f0"
+            ]
+          ]
+        },
+        {
+          "command": [
+            "take-result"
+          ],
+          "expected": {
+            "calls": 1,
+            "closed": false,
+            "frames": [],
+            "graph_owners": null,
+            "head": {
+              "bound": 0,
+              "captures": [],
+              "creator": 0,
+              "owners": 0
+            },
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 0,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 1
+          },
+          "model_events": []
+        },
+        {
+          "command": [
+            "drop-result"
+          ],
+          "expected": {
+            "calls": 1,
+            "closed": false,
+            "frames": [],
+            "graph_owners": null,
+            "head": {
+              "bound": 0,
+              "captures": [],
+              "creator": 0,
+              "owners": 0
+            },
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 0,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 0
+          },
+          "model_events": []
+        }
+      ]
+    },
+    {
+      "callback": "borrowed",
+      "capture": "scalar",
+      "name": "unique-scalar",
+      "shared_model": true,
+      "steps": [
+        {
+          "command": [
+            "start-unique"
+          ],
+          "expected": {
+            "calls": 0,
+            "closed": false,
+            "frames": [
+              {
+                "body": "fun:3",
+                "id": 0,
+                "object": 0
+              }
+            ],
+            "graph_owners": null,
+            "head": null,
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 0,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 0
+          },
+          "model_events": [
+            [
+              "enter",
+              "f0",
+              "0"
+            ]
+          ]
+        },
+        {
+          "command": [
+            "run",
+            4,
+            "budget"
+          ],
+          "expected": {
+            "calls": 0,
+            "closed": false,
+            "frames": [
+              {
+                "body": "fun:3",
+                "id": 0,
+                "object": 0
+              }
+            ],
+            "graph_owners": null,
+            "head": {
+              "bound": 1,
+              "captures": [
+                "int:7"
+              ],
+              "creator": 0,
+              "owners": 1
+            },
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 0
+          },
+          "model_events": [
+            [
+              "put",
+              "input",
+              [
+                "int",
+                7
+              ]
+            ],
+            [
+              "function",
+              "h",
+              "0",
+              [
+                "input"
+              ],
+              "activation"
+            ]
+          ]
+        },
+        {
+          "command": [
+            "run",
+            0,
+            "budget"
+          ],
+          "expected": {
+            "calls": 0,
+            "closed": false,
+            "frames": [
+              {
+                "body": "fun:3",
+                "id": 0,
+                "object": 0
+              }
+            ],
+            "graph_owners": null,
+            "head": {
+              "bound": 1,
+              "captures": [
+                "int:7"
+              ],
+              "creator": 0,
+              "owners": 1
+            },
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 0
+          },
+          "model_events": []
+        },
+        {
+          "command": [
+            "run",
+            1,
+            "budget"
+          ],
+          "expected": {
+            "calls": 1,
+            "closed": false,
+            "frames": [
+              {
+                "body": "fun:3",
+                "id": 0,
+                "object": 0
+              }
+            ],
+            "graph_owners": null,
+            "head": {
+              "bound": 1,
+              "captures": [
+                "undefined"
+              ],
+              "creator": 0,
+              "owners": 0
+            },
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 0,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 0
+          },
+          "model_events": [
+            [
+              "invoke",
+              "activation",
+              [
+                "tmp"
+              ]
+            ],
+            [
+              "drop",
+              "tmp"
+            ]
+          ]
+        },
+        {
+          "command": [
+            "run",
+            1,
+            "finished"
+          ],
+          "expected": {
+            "calls": 1,
+            "closed": false,
+            "frames": [],
+            "graph_owners": null,
+            "head": {
+              "bound": 1,
+              "captures": [
+                "undefined"
+              ],
+              "creator": 0,
+              "owners": 0
+            },
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 0,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 0
+          },
+          "model_events": [
+            [
+              "exit",
+              "f0"
+            ]
+          ]
+        },
+        {
+          "command": [
+            "take-result"
+          ],
+          "expected": {
+            "calls": 1,
+            "closed": false,
+            "frames": [],
+            "graph_owners": null,
+            "head": {
+              "bound": 1,
+              "captures": [
+                "undefined"
+              ],
+              "creator": 0,
+              "owners": 0
+            },
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 0,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 1
+          },
+          "model_events": []
+        },
+        {
+          "command": [
+            "drop-result"
+          ],
+          "expected": {
+            "calls": 1,
+            "closed": false,
+            "frames": [],
+            "graph_owners": null,
+            "head": {
+              "bound": 1,
+              "captures": [
+                "undefined"
+              ],
+              "creator": 0,
+              "owners": 0
+            },
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 0,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 0
+          },
+          "model_events": []
+        }
+      ]
+    },
+    {
+      "callback": "borrowed",
+      "capture": "scalar",
+      "name": "shared-scalar-retain",
+      "shared_model": true,
+      "steps": [
+        {
+          "command": [
+            "start-make"
+          ],
+          "expected": {
+            "calls": 0,
+            "closed": false,
+            "frames": [
+              {
+                "body": "fun:1",
+                "id": 0,
+                "object": 0
+              }
+            ],
+            "graph_owners": null,
+            "head": null,
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 0,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 0
+          },
+          "model_events": [
+            [
+              "enter",
+              "f0",
+              "0"
+            ]
+          ]
+        },
+        {
+          "command": [
+            "run",
+            5,
+            "finished"
+          ],
+          "expected": {
+            "calls": 0,
+            "closed": false,
+            "frames": [],
+            "graph_owners": null,
+            "head": {
+              "bound": 1,
+              "captures": [
+                "int:7"
+              ],
+              "creator": 0,
+              "owners": 1
+            },
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 0
+          },
+          "model_events": [
+            [
+              "put",
+              "input",
+              [
+                "int",
+                7
+              ]
+            ],
+            [
+              "function",
+              "h",
+              "0",
+              [
+                "input"
+              ],
+              "completion"
+            ],
+            [
+              "exit",
+              "f0"
+            ]
+          ]
+        },
+        {
+          "command": [
+            "take-function"
+          ],
+          "expected": {
+            "calls": 0,
+            "closed": false,
+            "frames": [],
+            "graph_owners": null,
+            "head": {
+              "bound": 1,
+              "captures": [
+                "int:7"
+              ],
+              "creator": 0,
+              "owners": 1
+            },
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 1
+          },
+          "model_events": [
+            [
+              "move",
+              "completion",
+              "host:f"
+            ]
+          ]
+        },
+        {
+          "command": [
+            "retain-function"
+          ],
+          "expected": {
+            "calls": 0,
+            "closed": false,
+            "frames": [],
+            "graph_owners": null,
+            "head": {
+              "bound": 1,
+              "captures": [
+                "int:7"
+              ],
+              "creator": 0,
+              "owners": 2
+            },
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 2
+          },
+          "model_events": [
+            [
+              "copy",
+              "host:f",
+              "host:g"
+            ]
+          ]
+        },
+        {
+          "command": [
+            "start-call",
+            1
+          ],
+          "expected": {
+            "calls": 0,
+            "closed": false,
+            "frames": [
+              {
+                "body": "fun:2",
+                "id": 1,
+                "object": 1
+              }
+            ],
+            "graph_owners": null,
+            "head": {
+              "bound": 1,
+              "captures": [
+                "int:7"
+              ],
+              "creator": 0,
+              "owners": 3
+            },
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 2
+          },
+          "model_events": [
+            [
+              "copy",
+              "host:f",
+              "arg"
+            ],
+            [
+              "enter",
+              "f1",
+              "1"
+            ]
+          ]
+        },
+        {
+          "command": [
+            "run",
+            3,
+            "budget"
+          ],
+          "expected": {
+            "calls": 0,
+            "closed": false,
+            "frames": [
+              {
+                "body": "fun:2",
+                "id": 1,
+                "object": 1
+              }
+            ],
+            "graph_owners": null,
+            "head": {
+              "bound": 1,
+              "captures": [
+                "int:7"
+              ],
+              "creator": 0,
+              "owners": 4
+            },
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 2
+          },
+          "model_events": [
+            [
+              "copy",
+              "arg",
+              "activation"
+            ]
+          ]
+        },
+        {
+          "command": [
+            "run",
+            1,
+            "budget"
+          ],
+          "expected": {
+            "calls": 1,
+            "closed": false,
+            "frames": [
+              {
+                "body": "fun:2",
+                "id": 1,
+                "object": 1
+              }
+            ],
+            "graph_owners": null,
+            "head": {
+              "bound": 1,
+              "captures": [
+                "int:7"
+              ],
+              "creator": 0,
+              "owners": 3
+            },
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 2
+          },
+          "model_events": [
+            [
+              "invoke",
+              "activation",
+              [
+                "tmp"
+              ]
+            ],
+            [
+              "drop",
+              "tmp"
+            ],
+            [
+              "drop",
+              "activation"
+            ]
+          ]
+        },
+        {
+          "command": [
+            "run",
+            1,
+            "finished"
+          ],
+          "expected": {
+            "calls": 1,
+            "closed": false,
+            "frames": [],
+            "graph_owners": null,
+            "head": {
+              "bound": 1,
+              "captures": [
+                "int:7"
+              ],
+              "creator": 0,
+              "owners": 2
+            },
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 2
+          },
+          "model_events": [
+            [
+              "drop",
+              "arg"
+            ],
+            [
+              "exit",
+              "f1"
+            ]
+          ]
+        },
+        {
+          "command": [
+            "drop-retained"
+          ],
+          "expected": {
+            "calls": 1,
+            "closed": false,
+            "frames": [],
+            "graph_owners": null,
+            "head": {
+              "bound": 1,
+              "captures": [
+                "int:7"
+              ],
+              "creator": 0,
+              "owners": 1
+            },
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 1
+          },
+          "model_events": [
+            [
+              "retire",
+              "host:g"
+            ],
+            [
+              "drain-host"
+            ]
+          ]
+        },
+        {
+          "command": [
+            "drop-function"
+          ],
+          "expected": {
+            "calls": 1,
+            "closed": false,
+            "frames": [],
+            "graph_owners": null,
+            "head": {
+              "bound": 1,
+              "captures": [
+                "undefined"
+              ],
+              "creator": 0,
+              "owners": 0
+            },
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 0,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 0
+          },
+          "model_events": [
+            [
+              "retire",
+              "host:f"
+            ],
+            [
+              "drain-host"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "callback": "save",
+      "capture": "array",
+      "name": "unique-array-retain",
+      "shared_model": false,
+      "steps": [
+        {
+          "command": [
+            "start-unique"
+          ],
+          "expected": {
+            "calls": 0,
+            "closed": false,
+            "frames": [
+              {
+                "body": "fun:3",
+                "id": 0,
+                "object": 0
+              }
+            ],
+            "graph_owners": 2,
+            "head": null,
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 0,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 1
+          },
+          "model_events": []
+        },
+        {
+          "command": [
+            "run",
+            4,
+            "budget"
+          ],
+          "expected": {
+            "calls": 0,
+            "closed": false,
+            "frames": [
+              {
+                "body": "fun:3",
+                "id": 0,
+                "object": 0
+              }
+            ],
+            "graph_owners": 3,
+            "head": {
+              "bound": 1,
+              "captures": [
+                "array"
+              ],
+              "creator": 0,
+              "owners": 1
+            },
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 1
+          },
+          "model_events": []
+        },
+        {
+          "command": [
+            "run",
+            1,
+            "budget"
+          ],
+          "expected": {
+            "calls": 1,
+            "closed": false,
+            "frames": [
+              {
+                "body": "fun:3",
+                "id": 0,
+                "object": 0
+              }
+            ],
+            "graph_owners": 4,
+            "head": {
+              "bound": 1,
+              "captures": [
+                "undefined"
+              ],
+              "creator": 0,
+              "owners": 0
+            },
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 0,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 2
+          },
+          "model_events": []
+        },
+        {
+          "command": [
+            "run",
+            1,
+            "finished"
+          ],
+          "expected": {
+            "calls": 1,
+            "closed": false,
+            "frames": [],
+            "graph_owners": 3,
+            "head": {
+              "bound": 1,
+              "captures": [
+                "undefined"
+              ],
+              "creator": 0,
+              "owners": 0
+            },
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 0,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 2
+          },
+          "model_events": []
+        },
+        {
+          "command": [
+            "take-result"
+          ],
+          "expected": {
+            "calls": 1,
+            "closed": false,
+            "frames": [],
+            "graph_owners": 3,
+            "head": {
+              "bound": 1,
+              "captures": [
+                "undefined"
+              ],
+              "creator": 0,
+              "owners": 0
+            },
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 0,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 3
+          },
+          "model_events": []
+        },
+        {
+          "command": [
+            "drop-result"
+          ],
+          "expected": {
+            "calls": 1,
+            "closed": false,
+            "frames": [],
+            "graph_owners": 2,
+            "head": {
+              "bound": 1,
+              "captures": [
+                "undefined"
+              ],
+              "creator": 0,
+              "owners": 0
+            },
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 0,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 2
+          },
+          "model_events": []
+        },
+        {
+          "command": [
+            "drop-saved"
+          ],
+          "expected": {
+            "calls": 1,
+            "closed": false,
+            "frames": [],
+            "graph_owners": 1,
+            "head": {
+              "bound": 1,
+              "captures": [
+                "undefined"
+              ],
+              "creator": 0,
+              "owners": 0
+            },
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 0,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 1
+          },
+          "model_events": []
+        },
+        {
+          "command": [
+            "drop-container"
+          ],
+          "expected": {
+            "calls": 1,
+            "closed": false,
+            "frames": [],
+            "graph_owners": null,
+            "head": {
+              "bound": 1,
+              "captures": [
+                "undefined"
+              ],
+              "creator": 0,
+              "owners": 0
+            },
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 0,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 0
+          },
+          "model_events": []
+        }
+      ]
+    },
+    {
+      "callback": "borrowed",
+      "capture": "array",
+      "name": "shared-array",
+      "shared_model": false,
+      "steps": [
+        {
+          "command": [
+            "start-make"
+          ],
+          "expected": {
+            "calls": 0,
+            "closed": false,
+            "frames": [
+              {
+                "body": "fun:1",
+                "id": 0,
+                "object": 0
+              }
+            ],
+            "graph_owners": 2,
+            "head": null,
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 0,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 1
+          },
+          "model_events": []
+        },
+        {
+          "command": [
+            "run",
+            5,
+            "finished"
+          ],
+          "expected": {
+            "calls": 0,
+            "closed": false,
+            "frames": [],
+            "graph_owners": 2,
+            "head": {
+              "bound": 1,
+              "captures": [
+                "array"
+              ],
+              "creator": 0,
+              "owners": 1
+            },
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 1
+          },
+          "model_events": []
+        },
+        {
+          "command": [
+            "take-function"
+          ],
+          "expected": {
+            "calls": 0,
+            "closed": false,
+            "frames": [],
+            "graph_owners": 2,
+            "head": {
+              "bound": 1,
+              "captures": [
+                "array"
+              ],
+              "creator": 0,
+              "owners": 1
+            },
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 2
+          },
+          "model_events": []
+        },
+        {
+          "command": [
+            "start-call",
+            1
+          ],
+          "expected": {
+            "calls": 0,
+            "closed": false,
+            "frames": [
+              {
+                "body": "fun:2",
+                "id": 1,
+                "object": 1
+              }
+            ],
+            "graph_owners": 2,
+            "head": {
+              "bound": 1,
+              "captures": [
+                "array"
+              ],
+              "creator": 0,
+              "owners": 2
+            },
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 1,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 2
+          },
+          "model_events": []
+        },
+        {
+          "command": [
+            "run",
+            3,
+            "budget"
+          ],
+          "expected": {
+            "calls": 0,
+            "closed": false,
+            "frames": [
+              {
+                "body": "fun:2",
+                "id": 1,
+                "object": 1
+              }
+            ],
+            "graph_owners": 2,
+            "head": {
+              "bound": 1,
+              "captures": [
+                "array"
+              ],
+              "creator": 0,
+              "owners": 3
+            },
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 1,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 2
+          },
+          "model_events": []
+        },
+        {
+          "command": [
+            "run",
+            1,
+            "budget"
+          ],
+          "expected": {
+            "calls": 1,
+            "closed": false,
+            "frames": [
+              {
+                "body": "fun:2",
+                "id": 1,
+                "object": 1
+              }
+            ],
+            "graph_owners": 3,
+            "head": {
+              "bound": 1,
+              "captures": [
+                "array"
+              ],
+              "creator": 0,
+              "owners": 2
+            },
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 1,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 2
+          },
+          "model_events": []
+        },
+        {
+          "command": [
+            "run",
+            1,
+            "finished"
+          ],
+          "expected": {
+            "calls": 1,
+            "closed": false,
+            "frames": [],
+            "graph_owners": 3,
+            "head": {
+              "bound": 1,
+              "captures": [
+                "array"
+              ],
+              "creator": 0,
+              "owners": 1
+            },
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 2
+          },
+          "model_events": []
+        },
+        {
+          "command": [
+            "take-result"
+          ],
+          "expected": {
+            "calls": 1,
+            "closed": false,
+            "frames": [],
+            "graph_owners": 3,
+            "head": {
+              "bound": 1,
+              "captures": [
+                "array"
+              ],
+              "creator": 0,
+              "owners": 1
+            },
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 3
+          },
+          "model_events": []
+        },
+        {
+          "command": [
+            "drop-result"
+          ],
+          "expected": {
+            "calls": 1,
+            "closed": false,
+            "frames": [],
+            "graph_owners": 2,
+            "head": {
+              "bound": 1,
+              "captures": [
+                "array"
+              ],
+              "creator": 0,
+              "owners": 1
+            },
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 2
+          },
+          "model_events": []
+        },
+        {
+          "command": [
+            "drop-function"
+          ],
+          "expected": {
+            "calls": 1,
+            "closed": false,
+            "frames": [],
+            "graph_owners": 1,
+            "head": {
+              "bound": 1,
+              "captures": [
+                "undefined"
+              ],
+              "creator": 0,
+              "owners": 0
+            },
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 0,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 1
+          },
+          "model_events": []
+        },
+        {
+          "command": [
+            "drop-container"
+          ],
+          "expected": {
+            "calls": 1,
+            "closed": false,
+            "frames": [],
+            "graph_owners": null,
+            "head": {
+              "bound": 1,
+              "captures": [
+                "undefined"
+              ],
+              "creator": 0,
+              "owners": 0
+            },
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 0,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 0
+          },
+          "model_events": []
+        }
+      ]
+    },
+    {
+      "callback": "save",
+      "capture": "mapping",
+      "name": "unique-mapping-retain",
+      "shared_model": false,
+      "steps": [
+        {
+          "command": [
+            "start-unique"
+          ],
+          "expected": {
+            "calls": 0,
+            "closed": false,
+            "frames": [
+              {
+                "body": "fun:3",
+                "id": 0,
+                "object": 0
+              }
+            ],
+            "graph_owners": 2,
+            "head": null,
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 0,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 1
+          },
+          "model_events": []
+        },
+        {
+          "command": [
+            "run",
+            4,
+            "budget"
+          ],
+          "expected": {
+            "calls": 0,
+            "closed": false,
+            "frames": [
+              {
+                "body": "fun:3",
+                "id": 0,
+                "object": 0
+              }
+            ],
+            "graph_owners": 3,
+            "head": {
+              "bound": 1,
+              "captures": [
+                "mapping"
+              ],
+              "creator": 0,
+              "owners": 1
+            },
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 1
+          },
+          "model_events": []
+        },
+        {
+          "command": [
+            "run",
+            1,
+            "budget"
+          ],
+          "expected": {
+            "calls": 1,
+            "closed": false,
+            "frames": [
+              {
+                "body": "fun:3",
+                "id": 0,
+                "object": 0
+              }
+            ],
+            "graph_owners": 4,
+            "head": {
+              "bound": 1,
+              "captures": [
+                "undefined"
+              ],
+              "creator": 0,
+              "owners": 0
+            },
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 0,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 2
+          },
+          "model_events": []
+        },
+        {
+          "command": [
+            "run",
+            1,
+            "finished"
+          ],
+          "expected": {
+            "calls": 1,
+            "closed": false,
+            "frames": [],
+            "graph_owners": 3,
+            "head": {
+              "bound": 1,
+              "captures": [
+                "undefined"
+              ],
+              "creator": 0,
+              "owners": 0
+            },
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 0,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 2
+          },
+          "model_events": []
+        },
+        {
+          "command": [
+            "take-result"
+          ],
+          "expected": {
+            "calls": 1,
+            "closed": false,
+            "frames": [],
+            "graph_owners": 3,
+            "head": {
+              "bound": 1,
+              "captures": [
+                "undefined"
+              ],
+              "creator": 0,
+              "owners": 0
+            },
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 0,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 3
+          },
+          "model_events": []
+        },
+        {
+          "command": [
+            "drop-result"
+          ],
+          "expected": {
+            "calls": 1,
+            "closed": false,
+            "frames": [],
+            "graph_owners": 2,
+            "head": {
+              "bound": 1,
+              "captures": [
+                "undefined"
+              ],
+              "creator": 0,
+              "owners": 0
+            },
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 0,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 2
+          },
+          "model_events": []
+        },
+        {
+          "command": [
+            "drop-saved"
+          ],
+          "expected": {
+            "calls": 1,
+            "closed": false,
+            "frames": [],
+            "graph_owners": 1,
+            "head": {
+              "bound": 1,
+              "captures": [
+                "undefined"
+              ],
+              "creator": 0,
+              "owners": 0
+            },
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 0,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 1
+          },
+          "model_events": []
+        },
+        {
+          "command": [
+            "drop-container"
+          ],
+          "expected": {
+            "calls": 1,
+            "closed": false,
+            "frames": [],
+            "graph_owners": null,
+            "head": {
+              "bound": 1,
+              "captures": [
+                "undefined"
+              ],
+              "creator": 0,
+              "owners": 0
+            },
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 0,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 0
+          },
+          "model_events": []
+        }
+      ]
+    },
+    {
+      "callback": "borrowed",
+      "capture": "mapping",
+      "name": "shared-mapping",
+      "shared_model": false,
+      "steps": [
+        {
+          "command": [
+            "start-make"
+          ],
+          "expected": {
+            "calls": 0,
+            "closed": false,
+            "frames": [
+              {
+                "body": "fun:1",
+                "id": 0,
+                "object": 0
+              }
+            ],
+            "graph_owners": 2,
+            "head": null,
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 0,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 1
+          },
+          "model_events": []
+        },
+        {
+          "command": [
+            "run",
+            5,
+            "finished"
+          ],
+          "expected": {
+            "calls": 0,
+            "closed": false,
+            "frames": [],
+            "graph_owners": 2,
+            "head": {
+              "bound": 1,
+              "captures": [
+                "mapping"
+              ],
+              "creator": 0,
+              "owners": 1
+            },
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 1
+          },
+          "model_events": []
+        },
+        {
+          "command": [
+            "take-function"
+          ],
+          "expected": {
+            "calls": 0,
+            "closed": false,
+            "frames": [],
+            "graph_owners": 2,
+            "head": {
+              "bound": 1,
+              "captures": [
+                "mapping"
+              ],
+              "creator": 0,
+              "owners": 1
+            },
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 2
+          },
+          "model_events": []
+        },
+        {
+          "command": [
+            "start-call",
+            1
+          ],
+          "expected": {
+            "calls": 0,
+            "closed": false,
+            "frames": [
+              {
+                "body": "fun:2",
+                "id": 1,
+                "object": 1
+              }
+            ],
+            "graph_owners": 2,
+            "head": {
+              "bound": 1,
+              "captures": [
+                "mapping"
+              ],
+              "creator": 0,
+              "owners": 2
+            },
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 1,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 2
+          },
+          "model_events": []
+        },
+        {
+          "command": [
+            "run",
+            3,
+            "budget"
+          ],
+          "expected": {
+            "calls": 0,
+            "closed": false,
+            "frames": [
+              {
+                "body": "fun:2",
+                "id": 1,
+                "object": 1
+              }
+            ],
+            "graph_owners": 2,
+            "head": {
+              "bound": 1,
+              "captures": [
+                "mapping"
+              ],
+              "creator": 0,
+              "owners": 3
+            },
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 1,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 2
+          },
+          "model_events": []
+        },
+        {
+          "command": [
+            "run",
+            1,
+            "budget"
+          ],
+          "expected": {
+            "calls": 1,
+            "closed": false,
+            "frames": [
+              {
+                "body": "fun:2",
+                "id": 1,
+                "object": 1
+              }
+            ],
+            "graph_owners": 3,
+            "head": {
+              "bound": 1,
+              "captures": [
+                "mapping"
+              ],
+              "creator": 0,
+              "owners": 2
+            },
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 1,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 2
+          },
+          "model_events": []
+        },
+        {
+          "command": [
+            "run",
+            1,
+            "finished"
+          ],
+          "expected": {
+            "calls": 1,
+            "closed": false,
+            "frames": [],
+            "graph_owners": 3,
+            "head": {
+              "bound": 1,
+              "captures": [
+                "mapping"
+              ],
+              "creator": 0,
+              "owners": 1
+            },
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 2
+          },
+          "model_events": []
+        },
+        {
+          "command": [
+            "take-result"
+          ],
+          "expected": {
+            "calls": 1,
+            "closed": false,
+            "frames": [],
+            "graph_owners": 3,
+            "head": {
+              "bound": 1,
+              "captures": [
+                "mapping"
+              ],
+              "creator": 0,
+              "owners": 1
+            },
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 3
+          },
+          "model_events": []
+        },
+        {
+          "command": [
+            "drop-result"
+          ],
+          "expected": {
+            "calls": 1,
+            "closed": false,
+            "frames": [],
+            "graph_owners": 2,
+            "head": {
+              "bound": 1,
+              "captures": [
+                "mapping"
+              ],
+              "creator": 0,
+              "owners": 1
+            },
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 2
+          },
+          "model_events": []
+        },
+        {
+          "command": [
+            "drop-function"
+          ],
+          "expected": {
+            "calls": 1,
+            "closed": false,
+            "frames": [],
+            "graph_owners": 1,
+            "head": {
+              "bound": 1,
+              "captures": [
+                "undefined"
+              ],
+              "creator": 0,
+              "owners": 0
+            },
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 0,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 1
+          },
+          "model_events": []
+        },
+        {
+          "command": [
+            "drop-container"
+          ],
+          "expected": {
+            "calls": 1,
+            "closed": false,
+            "frames": [],
+            "graph_owners": null,
+            "head": {
+              "bound": 1,
+              "captures": [
+                "undefined"
+              ],
+              "creator": 0,
+              "owners": 0
+            },
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 0,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 0
+          },
+          "model_events": []
+        }
+      ]
+    },
+    {
+      "callback": "error",
+      "capture": "array",
+      "name": "callback-error-keeps-saved-array",
+      "shared_model": false,
+      "steps": [
+        {
+          "command": [
+            "start-unique"
+          ],
+          "expected": {
+            "calls": 0,
+            "closed": false,
+            "frames": [
+              {
+                "body": "fun:3",
+                "id": 0,
+                "object": 0
+              }
+            ],
+            "graph_owners": 2,
+            "head": null,
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 0,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 1
+          },
+          "model_events": []
+        },
+        {
+          "command": [
+            "run",
+            4,
+            "budget"
+          ],
+          "expected": {
+            "calls": 0,
+            "closed": false,
+            "frames": [
+              {
+                "body": "fun:3",
+                "id": 0,
+                "object": 0
+              }
+            ],
+            "graph_owners": 3,
+            "head": {
+              "bound": 1,
+              "captures": [
+                "array"
+              ],
+              "creator": 0,
+              "owners": 1
+            },
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 1
+          },
+          "model_events": []
+        },
+        {
+          "command": [
+            "run",
+            1,
+            "error"
+          ],
+          "expected": {
+            "calls": 1,
+            "closed": false,
+            "frames": [
+              {
+                "body": "fun:3",
+                "id": 0,
+                "object": 0
+              }
+            ],
+            "graph_owners": 4,
+            "head": {
+              "bound": 1,
+              "captures": [
+                "array"
+              ],
+              "creator": 0,
+              "owners": 1
+            },
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 2
+          },
+          "model_events": []
+        },
+        {
+          "command": [
+            "run",
+            100,
+            "error"
+          ],
+          "expected": {
+            "calls": 1,
+            "closed": false,
+            "frames": [
+              {
+                "body": "fun:3",
+                "id": 0,
+                "object": 0
+              }
+            ],
+            "graph_owners": 4,
+            "head": {
+              "bound": 1,
+              "captures": [
+                "array"
+              ],
+              "creator": 0,
+              "owners": 1
+            },
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 2
+          },
+          "model_events": []
+        },
+        {
+          "command": [
+            "cancel"
+          ],
+          "expected": {
+            "calls": 1,
+            "closed": false,
+            "frames": [],
+            "graph_owners": 2,
+            "head": {
+              "bound": 1,
+              "captures": [
+                "undefined"
+              ],
+              "creator": 0,
+              "owners": 0
+            },
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 0,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 2
+          },
+          "model_events": []
+        },
+        {
+          "command": [
+            "drop-saved"
+          ],
+          "expected": {
+            "calls": 1,
+            "closed": false,
+            "frames": [],
+            "graph_owners": 1,
+            "head": {
+              "bound": 1,
+              "captures": [
+                "undefined"
+              ],
+              "creator": 0,
+              "owners": 0
+            },
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 0,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 1
+          },
+          "model_events": []
+        },
+        {
+          "command": [
+            "drop-container"
+          ],
+          "expected": {
+            "calls": 1,
+            "closed": false,
+            "frames": [],
+            "graph_owners": null,
+            "head": {
+              "bound": 1,
+              "captures": [
+                "undefined"
+              ],
+              "creator": 0,
+              "owners": 0
+            },
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 0,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 0
+          },
+          "model_events": []
+        }
+      ]
+    },
+    {
+      "callback": "borrowed",
+      "capture": "scalar",
+      "name": "pending-creator-shared-call",
+      "shared_model": true,
+      "steps": [
+        {
+          "command": [
+            "start-make"
+          ],
+          "expected": {
+            "calls": 0,
+            "closed": false,
+            "frames": [
+              {
+                "body": "fun:1",
+                "id": 0,
+                "object": 0
+              }
+            ],
+            "graph_owners": null,
+            "head": null,
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 0,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 0
+          },
+          "model_events": [
+            [
+              "enter",
+              "f0",
+              "0"
+            ]
+          ]
+        },
+        {
+          "command": [
+            "run",
+            5,
+            "finished"
+          ],
+          "expected": {
+            "calls": 0,
+            "closed": false,
+            "frames": [],
+            "graph_owners": null,
+            "head": {
+              "bound": 1,
+              "captures": [
+                "int:7"
+              ],
+              "creator": 0,
+              "owners": 1
+            },
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 0
+          },
+          "model_events": [
+            [
+              "put",
+              "input",
+              [
+                "int",
+                7
+              ]
+            ],
+            [
+              "function",
+              "h",
+              "0",
+              [
+                "input"
+              ],
+              "completion"
+            ],
+            [
+              "exit",
+              "f0"
+            ]
+          ]
+        },
+        {
+          "command": [
+            "take-function"
+          ],
+          "expected": {
+            "calls": 0,
+            "closed": false,
+            "frames": [],
+            "graph_owners": null,
+            "head": {
+              "bound": 1,
+              "captures": [
+                "int:7"
+              ],
+              "creator": 0,
+              "owners": 1
+            },
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 1
+          },
+          "model_events": [
+            [
+              "move",
+              "completion",
+              "host:f"
+            ]
+          ]
+        },
+        {
+          "command": [
+            "start-call",
+            0
+          ],
+          "expected": {
+            "calls": 0,
+            "closed": false,
+            "frames": [
+              {
+                "body": "fun:2",
+                "id": 1,
+                "object": 0
+              }
+            ],
+            "graph_owners": null,
+            "head": {
+              "bound": 1,
+              "captures": [
+                "int:7"
+              ],
+              "creator": 0,
+              "owners": 2
+            },
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 1
+          },
+          "model_events": [
+            [
+              "copy",
+              "host:f",
+              "arg"
+            ],
+            [
+              "enter",
+              "f1",
+              "0"
+            ]
+          ]
+        },
+        {
+          "command": [
+            "run",
+            3,
+            "budget"
+          ],
+          "expected": {
+            "calls": 0,
+            "closed": false,
+            "frames": [
+              {
+                "body": "fun:2",
+                "id": 1,
+                "object": 0
+              }
+            ],
+            "graph_owners": null,
+            "head": {
+              "bound": 1,
+              "captures": [
+                "int:7"
+              ],
+              "creator": 0,
+              "owners": 3
+            },
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 1
+          },
+          "model_events": [
+            [
+              "copy",
+              "arg",
+              "activation"
+            ]
+          ]
+        },
+        {
+          "command": [
+            "delete-creator"
+          ],
+          "expected": {
+            "calls": 0,
+            "closed": false,
+            "frames": [
+              {
+                "body": "fun:2",
+                "id": 1,
+                "object": 0
+              }
+            ],
+            "graph_owners": null,
+            "head": {
+              "bound": 1,
+              "captures": [
+                "int:7"
+              ],
+              "creator": 0,
+              "owners": 3
+            },
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 1,
+                  "state": "pending"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 1
+          },
+          "model_events": [
+            [
+              "delete",
+              "0"
+            ]
+          ]
+        },
+        {
+          "command": [
+            "run",
+            1,
+            "budget"
+          ],
+          "expected": {
+            "calls": 1,
+            "closed": false,
+            "frames": [
+              {
+                "body": "fun:2",
+                "id": 1,
+                "object": 0
+              }
+            ],
+            "graph_owners": null,
+            "head": {
+              "bound": 1,
+              "captures": [
+                "int:7"
+              ],
+              "creator": 0,
+              "owners": 2
+            },
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 1,
+                  "state": "pending"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 1
+          },
+          "model_events": [
+            [
+              "invoke",
+              "activation",
+              [
+                "tmp"
+              ]
+            ],
+            [
+              "drop",
+              "tmp"
+            ],
+            [
+              "drop",
+              "activation"
+            ]
+          ]
+        },
+        {
+          "command": [
+            "run",
+            1,
+            "finished"
+          ],
+          "expected": {
+            "calls": 1,
+            "closed": false,
+            "frames": [],
+            "graph_owners": null,
+            "head": {
+              "bound": 1,
+              "captures": [
+                "int:7"
+              ],
+              "creator": 0,
+              "owners": 1
+            },
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 2,
+                  "state": "queued"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [
+                0
+              ],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 1
+          },
+          "model_events": [
+            [
+              "drop",
+              "arg"
+            ],
+            [
+              "exit",
+              "f1"
+            ]
+          ]
+        },
+        {
+          "command": [
+            "drain"
+          ],
+          "expected": {
+            "calls": 1,
+            "closed": false,
+            "frames": [],
+            "graph_owners": null,
+            "head": {
+              "bound": 1,
+              "captures": [
+                "int:7"
+              ],
+              "creator": 0,
+              "owners": 1
+            },
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": true,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "shell"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 1
+          },
+          "model_events": [
+            [
+              "drain"
+            ]
+          ]
+        },
+        {
+          "command": [
+            "drop-function"
+          ],
+          "expected": {
+            "calls": 1,
+            "closed": false,
+            "frames": [],
+            "graph_owners": null,
+            "head": {
+              "bound": 1,
+              "captures": [
+                "undefined"
+              ],
+              "creator": 0,
+              "owners": 0
+            },
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": true,
+                  "execs": 0,
+                  "refs": 0,
+                  "state": "freed"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 0
+          },
+          "model_events": [
+            [
+              "retire",
+              "host:f"
+            ],
+            [
+              "drain-host"
+            ]
+          ]
+        },
+        {
+          "command": [
+            "reap"
+          ],
+          "expected": {
+            "calls": 1,
+            "closed": false,
+            "frames": [],
+            "graph_owners": null,
+            "head": {
+              "bound": 1,
+              "captures": [
+                "undefined"
+              ],
+              "creator": 0,
+              "owners": 0
+            },
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": true,
+                  "execs": 0,
+                  "refs": 0,
+                  "state": "freed"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                1
+              ]
+            },
+            "roots": 0
+          },
+          "model_events": []
+        }
+      ]
+    },
+    {
+      "callback": "borrowed",
+      "capture": "scalar",
+      "name": "binding-removal-rejects-call",
+      "shared_model": false,
+      "steps": [
+        {
+          "command": [
+            "start-make"
+          ],
+          "expected": {
+            "calls": 0,
+            "closed": false,
+            "frames": [
+              {
+                "body": "fun:1",
+                "id": 0,
+                "object": 0
+              }
+            ],
+            "graph_owners": null,
+            "head": null,
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 0,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 0
+          },
+          "model_events": [
+            [
+              "enter",
+              "f0",
+              "0"
+            ]
+          ]
+        },
+        {
+          "command": [
+            "run",
+            5,
+            "finished"
+          ],
+          "expected": {
+            "calls": 0,
+            "closed": false,
+            "frames": [],
+            "graph_owners": null,
+            "head": {
+              "bound": 1,
+              "captures": [
+                "int:7"
+              ],
+              "creator": 0,
+              "owners": 1
+            },
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 0
+          },
+          "model_events": [
+            [
+              "put",
+              "input",
+              [
+                "int",
+                7
+              ]
+            ],
+            [
+              "function",
+              "h",
+              "0",
+              [
+                "input"
+              ],
+              "completion"
+            ],
+            [
+              "exit",
+              "f0"
+            ]
+          ]
+        },
+        {
+          "command": [
+            "take-function"
+          ],
+          "expected": {
+            "calls": 0,
+            "closed": false,
+            "frames": [],
+            "graph_owners": null,
+            "head": {
+              "bound": 1,
+              "captures": [
+                "int:7"
+              ],
+              "creator": 0,
+              "owners": 1
+            },
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 1
+          },
+          "model_events": [
+            [
+              "move",
+              "completion",
+              "host:f"
+            ]
+          ]
+        },
+        {
+          "command": [
+            "remove-binding"
+          ],
+          "expected": {
+            "calls": 0,
+            "closed": false,
+            "frames": [],
+            "graph_owners": null,
+            "head": {
+              "bound": 1,
+              "captures": [
+                "int:7"
+              ],
+              "creator": 0,
+              "owners": 1
+            },
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 1
+          },
+          "model_events": []
+        },
+        {
+          "command": [
+            "start-call",
+            1
+          ],
+          "expected": {
+            "calls": 0,
+            "closed": false,
+            "frames": [
+              {
+                "body": "fun:2",
+                "id": 1,
+                "object": 1
+              }
+            ],
+            "graph_owners": null,
+            "head": {
+              "bound": 1,
+              "captures": [
+                "int:7"
+              ],
+              "creator": 0,
+              "owners": 2
+            },
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 1
+          },
+          "model_events": []
+        },
+        {
+          "command": [
+            "run",
+            3,
+            "budget"
+          ],
+          "expected": {
+            "calls": 0,
+            "closed": false,
+            "frames": [
+              {
+                "body": "fun:2",
+                "id": 1,
+                "object": 1
+              }
+            ],
+            "graph_owners": null,
+            "head": {
+              "bound": 1,
+              "captures": [
+                "int:7"
+              ],
+              "creator": 0,
+              "owners": 3
+            },
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 1
+          },
+          "model_events": []
+        },
+        {
+          "command": [
+            "run",
+            1,
+            "error"
+          ],
+          "expected": {
+            "calls": 0,
+            "closed": false,
+            "frames": [
+              {
+                "body": "fun:2",
+                "id": 1,
+                "object": 1
+              }
+            ],
+            "graph_owners": null,
+            "head": {
+              "bound": 1,
+              "captures": [
+                "int:7"
+              ],
+              "creator": 0,
+              "owners": 3
+            },
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 1
+          },
+          "model_events": []
+        },
+        {
+          "command": [
+            "cancel"
+          ],
+          "expected": {
+            "calls": 0,
+            "closed": false,
+            "frames": [],
+            "graph_owners": null,
+            "head": {
+              "bound": 1,
+              "captures": [
+                "int:7"
+              ],
+              "creator": 0,
+              "owners": 1
+            },
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 1
+          },
+          "model_events": []
+        },
+        {
+          "command": [
+            "replace-binding"
+          ],
+          "expected": {
+            "calls": 0,
+            "closed": false,
+            "frames": [],
+            "graph_owners": null,
+            "head": {
+              "bound": 1,
+              "captures": [
+                "int:7"
+              ],
+              "creator": 0,
+              "owners": 1
+            },
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 1
+          },
+          "model_events": []
+        }
+      ]
+    },
+    {
+      "callback": "borrowed",
+      "capture": "scalar",
+      "name": "deleted-creator-rejects-call",
+      "shared_model": false,
+      "steps": [
+        {
+          "command": [
+            "start-make"
+          ],
+          "expected": {
+            "calls": 0,
+            "closed": false,
+            "frames": [
+              {
+                "body": "fun:1",
+                "id": 0,
+                "object": 0
+              }
+            ],
+            "graph_owners": null,
+            "head": null,
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 0,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 0
+          },
+          "model_events": [
+            [
+              "enter",
+              "f0",
+              "0"
+            ]
+          ]
+        },
+        {
+          "command": [
+            "run",
+            5,
+            "finished"
+          ],
+          "expected": {
+            "calls": 0,
+            "closed": false,
+            "frames": [],
+            "graph_owners": null,
+            "head": {
+              "bound": 1,
+              "captures": [
+                "int:7"
+              ],
+              "creator": 0,
+              "owners": 1
+            },
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 0
+          },
+          "model_events": [
+            [
+              "put",
+              "input",
+              [
+                "int",
+                7
+              ]
+            ],
+            [
+              "function",
+              "h",
+              "0",
+              [
+                "input"
+              ],
+              "completion"
+            ],
+            [
+              "exit",
+              "f0"
+            ]
+          ]
+        },
+        {
+          "command": [
+            "take-function"
+          ],
+          "expected": {
+            "calls": 0,
+            "closed": false,
+            "frames": [],
+            "graph_owners": null,
+            "head": {
+              "bound": 1,
+              "captures": [
+                "int:7"
+              ],
+              "creator": 0,
+              "owners": 1
+            },
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 1
+          },
+          "model_events": [
+            [
+              "move",
+              "completion",
+              "host:f"
+            ]
+          ]
+        },
+        {
+          "command": [
+            "start-call",
+            1
+          ],
+          "expected": {
+            "calls": 0,
+            "closed": false,
+            "frames": [
+              {
+                "body": "fun:2",
+                "id": 1,
+                "object": 1
+              }
+            ],
+            "graph_owners": null,
+            "head": {
+              "bound": 1,
+              "captures": [
+                "int:7"
+              ],
+              "creator": 0,
+              "owners": 2
+            },
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 1
+          },
+          "model_events": []
+        },
+        {
+          "command": [
+            "run",
+            3,
+            "budget"
+          ],
+          "expected": {
+            "calls": 0,
+            "closed": false,
+            "frames": [
+              {
+                "body": "fun:2",
+                "id": 1,
+                "object": 1
+              }
+            ],
+            "graph_owners": null,
+            "head": {
+              "bound": 1,
+              "captures": [
+                "int:7"
+              ],
+              "creator": 0,
+              "owners": 3
+            },
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 1
+          },
+          "model_events": []
+        },
+        {
+          "command": [
+            "delete-creator"
+          ],
+          "expected": {
+            "calls": 0,
+            "closed": false,
+            "frames": [
+              {
+                "body": "fun:2",
+                "id": 1,
+                "object": 1
+              }
+            ],
+            "graph_owners": null,
+            "head": {
+              "bound": 1,
+              "captures": [
+                "int:7"
+              ],
+              "creator": 0,
+              "owners": 3
+            },
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": true,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "shell"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 1
+          },
+          "model_events": []
+        },
+        {
+          "command": [
+            "run",
+            1,
+            "error"
+          ],
+          "expected": {
+            "calls": 0,
+            "closed": false,
+            "frames": [
+              {
+                "body": "fun:2",
+                "id": 1,
+                "object": 1
+              }
+            ],
+            "graph_owners": null,
+            "head": {
+              "bound": 1,
+              "captures": [
+                "int:7"
+              ],
+              "creator": 0,
+              "owners": 3
+            },
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": true,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "shell"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 1
+          },
+          "model_events": []
+        },
+        {
+          "command": [
+            "cancel"
+          ],
+          "expected": {
+            "calls": 0,
+            "closed": false,
+            "frames": [],
+            "graph_owners": null,
+            "head": {
+              "bound": 1,
+              "captures": [
+                "int:7"
+              ],
+              "creator": 0,
+              "owners": 1
+            },
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": true,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "shell"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 1
+          },
+          "model_events": []
+        },
+        {
+          "command": [
+            "drop-function"
+          ],
+          "expected": {
+            "calls": 0,
+            "closed": false,
+            "frames": [],
+            "graph_owners": null,
+            "head": {
+              "bound": 1,
+              "captures": [
+                "undefined"
+              ],
+              "creator": 0,
+              "owners": 0
+            },
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": true,
+                  "execs": 0,
+                  "refs": 0,
+                  "state": "freed"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 0
+          },
+          "model_events": []
+        },
+        {
+          "command": [
+            "reap"
+          ],
+          "expected": {
+            "calls": 0,
+            "closed": false,
+            "frames": [],
+            "graph_owners": null,
+            "head": {
+              "bound": 1,
+              "captures": [
+                "undefined"
+              ],
+              "creator": 0,
+              "owners": 0
+            },
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": true,
+                  "execs": 0,
+                  "refs": 0,
+                  "state": "freed"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                1
+              ]
+            },
+            "roots": 0
+          },
+          "model_events": []
+        }
+      ]
+    },
+    {
+      "callback": "borrowed",
+      "capture": "scalar",
+      "name": "extract-rebuild",
+      "shared_model": false,
+      "steps": [
+        {
+          "command": [
+            "start-make"
+          ],
+          "expected": {
+            "calls": 0,
+            "closed": false,
+            "frames": [
+              {
+                "body": "fun:1",
+                "id": 0,
+                "object": 0
+              }
+            ],
+            "graph_owners": null,
+            "head": null,
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 0,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 0
+          },
+          "model_events": [
+            [
+              "enter",
+              "f0",
+              "0"
+            ]
+          ]
+        },
+        {
+          "command": [
+            "run",
+            5,
+            "finished"
+          ],
+          "expected": {
+            "calls": 0,
+            "closed": false,
+            "frames": [],
+            "graph_owners": null,
+            "head": {
+              "bound": 1,
+              "captures": [
+                "int:7"
+              ],
+              "creator": 0,
+              "owners": 1
+            },
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 0
+          },
+          "model_events": [
+            [
+              "put",
+              "input",
+              [
+                "int",
+                7
+              ]
+            ],
+            [
+              "function",
+              "h",
+              "0",
+              [
+                "input"
+              ],
+              "completion"
+            ],
+            [
+              "exit",
+              "f0"
+            ]
+          ]
+        },
+        {
+          "command": [
+            "take-function"
+          ],
+          "expected": {
+            "calls": 0,
+            "closed": false,
+            "frames": [],
+            "graph_owners": null,
+            "head": {
+              "bound": 1,
+              "captures": [
+                "int:7"
+              ],
+              "creator": 0,
+              "owners": 1
+            },
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 1
+          },
+          "model_events": [
+            [
+              "move",
+              "completion",
+              "host:f"
+            ]
+          ]
+        },
+        {
+          "command": [
+            "extract"
+          ],
+          "expected": {
+            "calls": 0,
+            "closed": false,
+            "frames": [],
+            "graph_owners": null,
+            "head": {
+              "bound": 1,
+              "captures": [
+                "int:7"
+              ],
+              "creator": 0,
+              "owners": 1
+            },
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 1
+          },
+          "model_events": []
+        },
+        {
+          "command": [
+            "rebuild"
+          ],
+          "expected": {
+            "calls": 0,
+            "closed": false,
+            "frames": [],
+            "graph_owners": null,
+            "head": {
+              "bound": 1,
+              "captures": [
+                "int:7"
+              ],
+              "creator": 0,
+              "owners": 1
+            },
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 1
+          },
+          "model_events": []
+        },
+        {
+          "command": [
+            "start-call",
+            1
+          ],
+          "expected": {
+            "calls": 0,
+            "closed": false,
+            "frames": [
+              {
+                "body": "fun:2",
+                "id": 0,
+                "object": 1
+              }
+            ],
+            "graph_owners": null,
+            "head": {
+              "bound": 1,
+              "captures": [
+                "int:7"
+              ],
+              "creator": 0,
+              "owners": 2
+            },
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 1
+          },
+          "model_events": []
+        },
+        {
+          "command": [
+            "run",
+            4,
+            "budget"
+          ],
+          "expected": {
+            "calls": 1,
+            "closed": false,
+            "frames": [
+              {
+                "body": "fun:2",
+                "id": 0,
+                "object": 1
+              }
+            ],
+            "graph_owners": null,
+            "head": {
+              "bound": 1,
+              "captures": [
+                "int:7"
+              ],
+              "creator": 0,
+              "owners": 2
+            },
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 1
+          },
+          "model_events": []
+        },
+        {
+          "command": [
+            "run",
+            1,
+            "finished"
+          ],
+          "expected": {
+            "calls": 1,
+            "closed": false,
+            "frames": [],
+            "graph_owners": null,
+            "head": {
+              "bound": 1,
+              "captures": [
+                "int:7"
+              ],
+              "creator": 0,
+              "owners": 1
+            },
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 1
+          },
+          "model_events": []
+        }
+      ]
+    },
+    {
+      "callback": "borrowed",
+      "capture": "scalar",
+      "name": "close-retains-host-head",
+      "shared_model": false,
+      "steps": [
+        {
+          "command": [
+            "start-make"
+          ],
+          "expected": {
+            "calls": 0,
+            "closed": false,
+            "frames": [
+              {
+                "body": "fun:1",
+                "id": 0,
+                "object": 0
+              }
+            ],
+            "graph_owners": null,
+            "head": null,
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 0,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 0
+          },
+          "model_events": [
+            [
+              "enter",
+              "f0",
+              "0"
+            ]
+          ]
+        },
+        {
+          "command": [
+            "run",
+            5,
+            "finished"
+          ],
+          "expected": {
+            "calls": 0,
+            "closed": false,
+            "frames": [],
+            "graph_owners": null,
+            "head": {
+              "bound": 1,
+              "captures": [
+                "int:7"
+              ],
+              "creator": 0,
+              "owners": 1
+            },
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 0
+          },
+          "model_events": [
+            [
+              "put",
+              "input",
+              [
+                "int",
+                7
+              ]
+            ],
+            [
+              "function",
+              "h",
+              "0",
+              [
+                "input"
+              ],
+              "completion"
+            ],
+            [
+              "exit",
+              "f0"
+            ]
+          ]
+        },
+        {
+          "command": [
+            "take-function"
+          ],
+          "expected": {
+            "calls": 0,
+            "closed": false,
+            "frames": [],
+            "graph_owners": null,
+            "head": {
+              "bound": 1,
+              "captures": [
+                "int:7"
+              ],
+              "creator": 0,
+              "owners": 1
+            },
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 1
+          },
+          "model_events": [
+            [
+              "move",
+              "completion",
+              "host:f"
+            ]
+          ]
+        },
+        {
+          "command": [
+            "close"
+          ],
+          "expected": {
+            "calls": 0,
+            "closed": true,
+            "frames": [],
+            "graph_owners": null,
+            "head": {
+              "bound": 1,
+              "captures": [
+                "int:7"
+              ],
+              "creator": 0,
+              "owners": 1
+            },
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 1
+          },
+          "model_events": []
+        }
+      ]
+    },
+    {
+      "callback": "borrowed",
+      "capture": "none",
+      "name": "global-creator-host-target-independent",
+      "shared_model": false,
+      "steps": [
+        {
+          "command": [
+            "start-global"
+          ],
+          "expected": {
+            "calls": 0,
+            "closed": false,
+            "frames": [
+              {
+                "body": "fun:7",
+                "id": 0,
+                "object": 0
+              }
+            ],
+            "graph_owners": null,
+            "head": null,
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 0,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 0
+          },
+          "model_events": []
+        },
+        {
+          "command": [
+            "run",
+            3,
+            "budget"
+          ],
+          "expected": {
+            "calls": 0,
+            "closed": false,
+            "frames": [
+              {
+                "body": "fun:7",
+                "id": 0,
+                "object": 0
+              },
+              {
+                "body": "fun:559",
+                "id": 1,
+                "object": null
+              }
+            ],
+            "graph_owners": null,
+            "head": null,
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 0,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 0
+          },
+          "model_events": []
+        },
+        {
+          "command": [
+            "run",
+            3,
+            "budget"
+          ],
+          "expected": {
+            "calls": 0,
+            "closed": false,
+            "frames": [
+              {
+                "body": "fun:7",
+                "id": 0,
+                "object": 0
+              },
+              {
+                "body": "fun:559",
+                "id": 1,
+                "object": null
+              }
+            ],
+            "graph_owners": null,
+            "head": {
+              "bound": 0,
+              "captures": [],
+              "creator": null,
+              "owners": 1
+            },
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 0,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 0
+          },
+          "model_events": []
+        },
+        {
+          "command": [
+            "run",
+            2,
+            "finished"
+          ],
+          "expected": {
+            "calls": 0,
+            "closed": false,
+            "frames": [],
+            "graph_owners": null,
+            "head": {
+              "bound": 0,
+              "captures": [],
+              "creator": null,
+              "owners": 1
+            },
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 0,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 0
+          },
+          "model_events": []
+        },
+        {
+          "command": [
+            "take-function"
+          ],
+          "expected": {
+            "calls": 0,
+            "closed": false,
+            "frames": [],
+            "graph_owners": null,
+            "head": {
+              "bound": 0,
+              "captures": [],
+              "creator": null,
+              "owners": 1
+            },
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 0,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 1
+          },
+          "model_events": []
+        },
+        {
+          "command": [
+            "clear-global"
+          ],
+          "expected": {
+            "calls": 0,
+            "closed": false,
+            "frames": [],
+            "graph_owners": null,
+            "head": {
+              "bound": 0,
+              "captures": [],
+              "creator": null,
+              "owners": 1
+            },
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 0,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 1
+          },
+          "model_events": []
+        },
+        {
+          "command": [
+            "start-call",
+            1
+          ],
+          "expected": {
+            "calls": 0,
+            "closed": false,
+            "frames": [
+              {
+                "body": "fun:2",
+                "id": 2,
+                "object": 1
+              }
+            ],
+            "graph_owners": null,
+            "head": {
+              "bound": 0,
+              "captures": [],
+              "creator": null,
+              "owners": 2
+            },
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 0,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 1
+          },
+          "model_events": []
+        },
+        {
+          "command": [
+            "run",
+            4,
+            "budget"
+          ],
+          "expected": {
+            "calls": 1,
+            "closed": false,
+            "frames": [
+              {
+                "body": "fun:2",
+                "id": 2,
+                "object": 1
+              }
+            ],
+            "graph_owners": null,
+            "head": {
+              "bound": 0,
+              "captures": [],
+              "creator": null,
+              "owners": 2
+            },
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 0,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 1
+          },
+          "model_events": []
+        },
+        {
+          "command": [
+            "run",
+            1,
+            "finished"
+          ],
+          "expected": {
+            "calls": 1,
+            "closed": false,
+            "frames": [],
+            "graph_owners": null,
+            "head": {
+              "bound": 0,
+              "captures": [],
+              "creator": null,
+              "owners": 1
+            },
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 0,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "roots": 1
+          },
+          "model_events": []
+        }
+      ]
+    }
+  ],
+  "stage": "2BG"
+}

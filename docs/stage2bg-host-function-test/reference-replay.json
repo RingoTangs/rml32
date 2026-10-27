@@ -1,0 +1,149 @@
+{
+  "adapter": {
+    "business_bytecode_execution": false,
+    "full_model_equivalence": false,
+    "input_sha256": "3c72a37f9ac0a152236f7be508c65b1e54c6ea01a10c6d65fd13abde7b515348",
+    "log_sha256": "2237919af8cdb2f1b0b6ee50e95debf3f8e05eb242440f64a4f1622f2bcf9665",
+    "native_execution": false,
+    "real_cell_execution": true,
+    "replay": {
+      "physical_teardowns": 18,
+      "rejected": 2,
+      "steps": 146,
+      "traces": 18
+    },
+    "source_sha256": {
+      "docs/stage2as-design/model.py": "0d8b2fe0a6e20618314eb431dccb7b7e168ff9a544fac9f7cf398920b5182de3",
+      "docs/stage2ba-design/model.py": "e2561fafc55a7ab1be6321d9d4dbd3fd11dff9aa462030e61160812b0de088fc",
+      "docs/stage2bc-adapter/adapter_diff.py": "5f3bba182b6d1546fc02ec71051fa69cb999b64804c89f0022cc988034e069d6",
+      "src/cell.rs": "e75234c53f2cf2764eba9dcf4b9d27cece77ab65e65a1aeb3a36386e616a6cae",
+      "src/copy_plan.rs": "74f6dfc4999c8ff364227ff38521a120bd5c96043c332e117740ceec2b3f279d",
+      "src/lib.rs": "ddc190c487b50c33a362c39a7a69d4014b6d488e2a06139bae8a217ea4cca415",
+      "src/lifecycle_adapter.rs": "0f8f29177627d1404462dbcf6ed60ed8720f36b2f55475363c82ca6226938037",
+      "src/ownership.rs": "e9ac1bc37eb6b0692d7936f1f3a8f25e2d7526b49b72ffdef2ac81be6c94c41e"
+    },
+    "stage": "2BC",
+    "status": "pass"
+  },
+  "host": {
+    "input_sha256": "b3ee3850bc7c25e72dbb43017cf71cf84630878dd09aacdead1c80567f1a7bf7",
+    "log_sha256": "d25b101d2a048ad877c11ffeddcdda83d8c17cc1e7869acbf452eff78e9d63d8",
+    "replay": {
+      "physical_teardowns": 12,
+      "steps": 75,
+      "traces": 12
+    },
+    "source_sha256": {
+      "docs/stage2ba-design/model.py": "e2561fafc55a7ab1be6321d9d4dbd3fd11dff9aa462030e61160812b0de088fc",
+      "docs/stage2be-host-test/host_diff.py": "b1cb4822ec0da68809603e3bec21f1d85e2919bbbd87242154459f89feb87e36",
+      "src/boundary.rs": "2d084abaf8a1306a3576d2cdd4b1663c0962d139dc0a46af487b057b209e94da",
+      "src/lifecycle_adapter.rs": "0f8f29177627d1404462dbcf6ed60ed8720f36b2f55475363c82ca6226938037",
+      "src/lifecycle_boundary_tests.rs": "2ff7a9e11d13780df3d460005889b91c92c2ebf58803c162c987ec3fa8cdbb35",
+      "src/lifecycle_runtime.rs": "8ec95240fcff8ae564c2db1bb418fe6e733909214aec6caa81a76c7955d62249",
+      "src/object.rs": "c5f8cd83df04f5dfa3624004ed8b8ef76a9da0d2ca64c3be62e162232a46151c",
+      "src/vm.rs": "f00d521112d627bb0b102fa09e2760942f79bd4d4cb50575c64692757bb54e87",
+      "tests/boundary_support.rs.inc": "3c914473bcf99d3642dc5e2920ff653b2b329068aec7f7ec3a5b2a69857139d5"
+    },
+    "stage": "2BE",
+    "status": "pass"
+  },
+  "kernel": {
+    "business_bytecode_execution": false,
+    "domains": [
+      {
+        "accepted_transitions": 2771,
+        "complete": true,
+        "depth": 6,
+        "max_states": 200000,
+        "max_transitions": 1000000,
+        "objects": 1,
+        "rejected_transitions": 3236,
+        "state_set_sha256": "66ba29a89cd441b193d219be6e5699e182a91523911f687144006a4fbdab624c",
+        "states": 341
+      },
+      {
+        "accepted_transitions": 4827,
+        "complete": true,
+        "depth": 4,
+        "max_states": 200000,
+        "max_transitions": 1000000,
+        "objects": 2,
+        "rejected_transitions": 4114,
+        "state_set_sha256": "ea34b3a1ce59ee937c97046dfa5dcbedc63900bc50f0cf24a22b8c3ff395a075",
+        "states": 891
+      }
+    ],
+    "full_state_space_proof": false,
+    "input_bytes": 6154741,
+    "input_sha256": "feff21395db0e9fe47eb991662f87f5dcb8979ff15d6d922ceedc3627dc0a5ac",
+    "native_execution": false,
+    "replay": {
+      "accepted": 7598,
+      "physical_teardowns": 14948,
+      "rejected": 7350,
+      "transitions": 14948
+    },
+    "replay_log_sha256": "14228ddeb9825dffc928fc529096f03ac7cf8aeb3ca9443de790c16c1cee3eeb",
+    "rust_kernel_execution": true,
+    "source_sha256": {
+      "docs/stage2ba-design/explore.py": "56c2993dd773145bde3beed759139da27171055ff7b5dacdf7b1acf323f3e27c",
+      "docs/stage2ba-design/model.py": "e2561fafc55a7ab1be6321d9d4dbd3fd11dff9aa462030e61160812b0de088fc",
+      "docs/stage2bb-kernel/differential.py": "363c0c4db20a838295d51844348b5a9d7a211517ab7a6674199b809f2a7176c9",
+      "tests/lifecycle_kernel.rs": "bfedb88ddd75bb27b8de3465931780c55ff193154fba68ff18b9a4599730f11c",
+      "tests/support/lifecycle_kernel.rs": "1bd348cb166afa99ca2168a8a93faf5da6d4e8342200c2d3bb00c9ff1a48b2d6"
+    },
+    "stage": "2BB",
+    "status": "pass"
+  },
+  "managed": {
+    "input_sha256": "478d301f7518fadc9aa4dba2e57f8f0e51ab593b1cfb90d52b9a596fd1778df5",
+    "log_sha256": "8b8a745ae842107a64769052cc4f843a4c3f6ec7534bc3ef5807f88de259d545",
+    "replay": {
+      "frozen_model_traces": 3,
+      "physical_teardowns": 13,
+      "steps": 85,
+      "traces": 13
+    },
+    "source_sha256": {
+      "docs/stage2ba-design/model.py": "e2561fafc55a7ab1be6321d9d4dbd3fd11dff9aa462030e61160812b0de088fc",
+      "docs/stage2bf-managed-test/managed_diff.py": "ce7859c883948fc8838ac54aaad1d9cd2059e65add48e3ead971600927fe6738",
+      "src/boundary.rs": "2d084abaf8a1306a3576d2cdd4b1663c0962d139dc0a46af487b057b209e94da",
+      "src/lifecycle_managed_tests.rs": "8183cc31fd4cb9b78d88878218f59befc557f7e70fe561916706fb5f513e289e",
+      "src/lifecycle_runtime.rs": "8ec95240fcff8ae564c2db1bb418fe6e733909214aec6caa81a76c7955d62249",
+      "src/object.rs": "c5f8cd83df04f5dfa3624004ed8b8ef76a9da0d2ca64c3be62e162232a46151c",
+      "src/vm.rs": "f00d521112d627bb0b102fa09e2760942f79bd4d4cb50575c64692757bb54e87",
+      "tests/boundary_support.rs.inc": "3c914473bcf99d3642dc5e2920ff653b2b329068aec7f7ec3a5b2a69857139d5"
+    },
+    "stage": "2BF",
+    "status": "pass"
+  },
+  "stage": "2BG",
+  "status": "pass",
+  "vm": {
+    "business_bytecode_execution": false,
+    "full_native_equivalence": false,
+    "input_sha256": "89522103c2a27594c6d1b9bfe6ad5622bc8aab3f20501a011bd46d966dcd4e72",
+    "log_sha256": "886310526d4bb0727e64805a781544896aa14498c20e5dd87b85688f55b80b69",
+    "native_execution": false,
+    "replay": {
+      "physical_teardowns": 10,
+      "steps": 70,
+      "traces": 10
+    },
+    "source_sha256": {
+      "docs/stage2ba-design/model.py": "e2561fafc55a7ab1be6321d9d4dbd3fd11dff9aa462030e61160812b0de088fc",
+      "docs/stage2bd-runtime-test/vm_diff.py": "67f3b5ea0bd8e9e1df4b8e30a217dd60d6c663f41bd208b1319ca8655b53cd44",
+      "src/cell.rs": "e75234c53f2cf2764eba9dcf4b9d27cece77ab65e65a1aeb3a36386e616a6cae",
+      "src/container.rs": "0198b18b51f2e3ecce088bfe0062d4541bc6225f19ae2856090949b622aed30e",
+      "src/lib.rs": "ddc190c487b50c33a362c39a7a69d4014b6d488e2a06139bae8a217ea4cca415",
+      "src/lifecycle_adapter.rs": "0f8f29177627d1404462dbcf6ed60ed8720f36b2f55475363c82ca6226938037",
+      "src/lifecycle_runtime.rs": "8ec95240fcff8ae564c2db1bb418fe6e733909214aec6caa81a76c7955d62249",
+      "src/lifecycle_vm_tests.rs": "1dcd62c217e2cec692ad4daab2148139b01c19a1c5eb5e46d51e2552fd542b00",
+      "src/object.rs": "c5f8cd83df04f5dfa3624004ed8b8ef76a9da0d2ca64c3be62e162232a46151c",
+      "src/vm.rs": "f00d521112d627bb0b102fa09e2760942f79bd4d4cb50575c64692757bb54e87"
+    },
+    "stage": "2BD",
+    "status": "pass",
+    "synthetic_vm_execution": true
+  }
+}

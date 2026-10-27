@@ -6720,6 +6720,9 @@ mod mapping_loop_tests {
 
 #[cfg(test)]
 impl Vm {
+    pub(crate) fn host_target_alias_for_test(&self) -> Rc<Cell> {
+        self.value_cell(self.stack.len() - 1).unwrap()
+    }
     fn test_managed_for_test(&self) -> bool {
         self.objects
             .test_life

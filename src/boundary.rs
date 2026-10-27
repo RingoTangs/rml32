@@ -1139,6 +1139,30 @@ impl ObjectStore {
     }
 }
 #[cfg(test)]
+impl ObjectStore {
+    pub(crate) fn with_test_host_function_lifecycle(limits: ValueLimits) -> Result<Self, VmError> {
+        let inner = object::ObjectStore::with_test_host_function_lifecycle(limits)?;
+        let registry = Rc::new(Registry {
+            identity: Counter::new()?,
+            function_origin: inner.function_origin.clone(),
+            alive: Cell::new(true),
+            next: Cell::new(1),
+            entries: RefCell::new(Vec::new()),
+            limits: inner.value_limits.clone(),
+            test_life: inner.test_life.clone(),
+            closed_store: RefCell::new(None),
+        });
+        Ok(Self {
+            inner: Some(inner),
+            registry,
+        })
+    }
+}
+#[cfg(test)]
+#[path = "lifecycle_host_function_tests.rs"]
+mod lifecycle_host_function_tests;
+
+#[cfg(test)]
 #[path = "lifecycle_managed_tests.rs"]
 mod lifecycle_managed_tests;
 
