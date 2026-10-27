@@ -1,3 +1,5 @@
+> 阶段 2BH：已交付生产生命周期 D08 契约与独立配额模型，明确五项显式配额、峰值预留、Host raw 传输及分预算维护进度；仅设计，Rust 运行时/API、旧模型及捕获门禁不变。39 项模型案例、112 项算术检查与完整回归通过。详见 [契约总览](stage2bh-production-contract/overview.md)及 [验证收据](stage2bh-validation.json)。
+
 > 阶段 2BG：已接入 Host Function 创建、捕获和间接调用的生命周期测试，覆盖 creator、回调事务和最终释放；生产运行时/API 与准备门禁不变。详见 [Host Function 测试总览](stage2bg-host-function-test/overview.md)。
 
 > 阶段 2BF：已接入托管初始化、多层构造与失败回滚的生命周期测试，覆盖真实帧租约、参数所有权及显式清理队列；生产运行时/API 和捕获门禁不变。详见 [托管测试总览](stage2bf-managed-test/overview.md)。

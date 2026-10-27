@@ -1,0 +1,78 @@
+{
+  "implemented": false,
+  "rows": [
+    {
+      "implemented": false,
+      "path": "src/boundary.rs",
+      "required_change": "future constructor/types and maintenance facade; preserve legacy constructors and pure Host authority"
+    },
+    {
+      "implemented": false,
+      "path": "src/object.rs",
+      "required_change": "record quota, node reservation and atomic cleanup/reap; retire metadata with records"
+    },
+    {
+      "implemented": false,
+      "path": "src/ownership.rs",
+      "required_change": "origin-associated quota ledger and prepared owner reservations; no arena back-link"
+    },
+    {
+      "implemented": false,
+      "path": "src/cell.rs",
+      "required_change": "peak preflight, raw transfer and failure-atomic payload publication"
+    },
+    {
+      "implemented": false,
+      "path": "src/copy_plan.rs",
+      "required_change": "reservation lifetime, commit validation and abort; no net quota credit"
+    },
+    {
+      "implemented": false,
+      "path": "src/value.rs",
+      "required_change": "one creator per head and distinct physical/semantic lifetime"
+    },
+    {
+      "implemented": false,
+      "path": "src/container.rs",
+      "required_change": "header owner accounting and existing DAG/type restrictions"
+    },
+    {
+      "implemented": false,
+      "path": "src/vm.rs",
+      "required_change": "prospective frame quota, task roots, sticky error and transfer cursor preservation"
+    },
+    {
+      "implemented": false,
+      "path": "src/graph.rs",
+      "required_change": "per-origin dead weak metadata pruning; existing value limits remain independent"
+    },
+    {
+      "implemented": false,
+      "path": "src/prepared.rs",
+      "required_change": "unchanged preparation permissions; lifecycle opt-in grants no new capture capability"
+    },
+    {
+      "implemented": false,
+      "path": "src/lifecycle_runtime.rs",
+      "required_change": "test evidence only; replace private usize::MAX capacity through separately reviewed production integration"
+    }
+  ],
+  "stage": "2BH",
+  "supersedes": [
+    {
+      "new": "ObjectStore::with_bounded_lifecycle(ValueLimits, LifecycleLimits) -> Result<Self, VmError>",
+      "old": "with_bounded_lifecycle(ValueLimits)",
+      "source": "docs/stage2ba-design/design.md"
+    },
+    {
+      "new": "raw Host transport; script COPY normalization only",
+      "old": "Host retain COPY row",
+      "source": "docs/stage2ba-design/design.md"
+    },
+    {
+      "new": "D08 migration rows; no implementation promotion",
+      "old": "future migration inventory",
+      "source": "docs/stage2ba-design/api-migration.md"
+    }
+  ]
+}

@@ -1,0 +1,126 @@
+{
+  "constructor": "ObjectStore::with_bounded_lifecycle(ValueLimits, LifecycleLimits) -> Result<Self, VmError>",
+  "implemented": false,
+  "maintenance": [
+    "ObjectStore::maintain_lifecycle(LifecycleBudget) -> Result<LifecycleProgress, VmError>",
+    "Vm::maintain_lifecycle(LifecycleBudget) -> Result<LifecycleProgress, VmError>"
+  ],
+  "maintenance_contract": {
+    "atomic_unit": "one Host retirement, complete Object cleanup or metadata entry",
+    "complete": "queues/retirements empty and scan observed current mutation epoch; not all capacity free or global/native completion",
+    "entry_errors": {
+      "closed": "InvalidState",
+      "legacy": "UnsupportedFeature"
+    },
+    "independent_budgets": true,
+    "order": [
+      "retired Host roots by lease ID",
+      "LIFO queued Objects",
+      "incremental Object/head/weak metadata"
+    ],
+    "origin_isolation": true,
+    "partial_success_rollback": false,
+    "per_unit_block_returns": "Ok(progress)",
+    "queue_head_skip": false,
+    "queue_owner_held_through_cleanup": true,
+    "scan": "persistent per-origin cursor, fixed pass high-watermark, mutation epoch; dirty completed pass requires another pass; u64 epoch wrap sets allocation-free force-rescan flag",
+    "scope_authority": "store/VM only; never HostScope or HostValue",
+    "transfer_preserves_cursor": true,
+    "zero_budget_mutates": false
+  },
+  "policies": {
+    "host_transport": "raw",
+    "id_reuse": false,
+    "implicit_object_drain": false,
+    "invalid_ordinary_ceiling": "max_ordinary_refs_per_object",
+    "legacy_host_root_safepoints_preserved": true,
+    "managed_failure": "enqueue including zero-exec case",
+    "managed_pending_delete": "abort at next positive-budget step",
+    "net_credit": false,
+    "nonce_exhaustion_independent": true,
+    "physical_views_add_owner": false,
+    "queue_node_preallocated_per_record": true,
+    "queue_owner_reserve": 1,
+    "quota_accounting": "peak",
+    "quota_return": "after record/metadata removal, not semantic retirement",
+    "raw_move_adds_owner": false,
+    "resource_scope": "semantic counts, not process memory bytes or wall-clock budget",
+    "script_copy_normalizes_actual_sources": true,
+    "terminal_close": "retain arena for Host roots; structural final teardown",
+    "valid_ordinary_ceiling": "max_ordinary_refs_per_object - 1",
+    "zero_exec_remove": "preflight and synchronous variable cleanup; freed record awaits reap",
+    "zero_ordinary_deletes_live_object": false
+  },
+  "public_api_changed": false,
+  "revision": "D08",
+  "stage": "2BH",
+  "types": {
+    "LifecycleBudget": {
+      "default": null,
+      "fields": {
+        "host_roots": "usize",
+        "metadata_entries": "usize",
+        "objects": "usize"
+      },
+      "zero_allowed": true
+    },
+    "LifecycleLimits": {
+      "default": null,
+      "fields": {
+        "max_exec_refs_per_object": {
+          "charge": "installed and prospective Object execution leases",
+          "maximum": "usize::MAX",
+          "minimum": 1,
+          "type": "usize"
+        },
+        "max_function_heads": {
+          "charge": "registered Function metadata plus prospective head reservations; retired entries remain charged until removal",
+          "maximum": "usize::MAX",
+          "minimum": 0,
+          "type": "usize"
+        },
+        "max_objects": {
+          "charge": "resident lifecycle records plus prospective object reservations; includes queued, shell and freed-unreaped",
+          "maximum": "min(usize::MAX, u32::MAX)",
+          "minimum": 0,
+          "type": "usize"
+        },
+        "max_ordinary_refs_per_object": {
+          "charge": "Object payload, creator and queue owners, including provisional owners",
+          "maximum": "usize::MAX",
+          "minimum": 2,
+          "type": "usize"
+        },
+        "max_owners_per_header": {
+          "charge": "Function/Array/Mapping semantic owners, including provisional and transport owners",
+          "maximum": "usize::MAX",
+          "minimum": 1,
+          "type": "usize"
+        }
+      },
+      "immutable_per_store": true
+    },
+    "LifecycleProgress": {
+      "fields": {
+        "drained_objects": "usize",
+        "metadata_examined": "usize",
+        "pending_roots": "usize",
+        "pruned_weak_entries": "usize",
+        "queued_objects": "usize",
+        "reaped_objects": "usize",
+        "reclaimed_heads": "usize",
+        "retired_roots": "usize",
+        "scan_complete": "bool",
+        "stop": "LifecycleStop"
+      }
+    },
+    "LifecycleStop": {
+      "variants": [
+        "Complete",
+        "BudgetExhausted",
+        "BorrowBlocked",
+        "WorkspaceLimit"
+      ]
+    }
+  }
+}

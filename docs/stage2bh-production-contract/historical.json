@@ -1,0 +1,222 @@
+{
+  "baseline_files_sha256": "a4cb892c3531b5889e545dd138ee7a5fb7c5491e9e06337450f9dd3cdabcddc0",
+  "checked_files": 980,
+  "checkout_line_ending_restorations": [
+    "docs/compatibility-evidence/auth-efuns.csv",
+    "docs/compatibility-evidence/efun-usage.csv",
+    "docs/compatibility-evidence/efuns.csv",
+    "docs/compatibility-evidence/inheritance.csv",
+    "docs/compatibility-evidence/programs.csv",
+    "docs/evidence/actions.csv",
+    "docs/evidence/auth_1980.c.txt",
+    "docs/evidence/commands.csv",
+    "docs/evidence/elf-imports.csv",
+    "docs/evidence/initializers.csv",
+    "docs/evidence/pwd_gen_1980.c.txt"
+  ],
+  "execution_location": "pinned 2BG snapshot plus its nested pinned 2BF/2BE/2BD/2BC/2BB authorities; not current source",
+  "historical_python_tests": 392,
+  "log_sha256": "cc1f61a9e2b376f81c66261c71a76113e259d57a67cdf1147f1d908e8660f362",
+  "nested_python_tests": 366,
+  "nested_report": {
+    "baseline_files_sha256": "e7c67755755a0ea74abde4e5857a832cfe09d3da19ee812cc24971cdded5510f",
+    "checked_files": 950,
+    "checkout_line_ending_restorations": [
+      "docs/compatibility-evidence/auth-efuns.csv",
+      "docs/compatibility-evidence/efun-usage.csv",
+      "docs/compatibility-evidence/efuns.csv",
+      "docs/compatibility-evidence/inheritance.csv",
+      "docs/compatibility-evidence/programs.csv",
+      "docs/evidence/actions.csv",
+      "docs/evidence/auth_1980.c.txt",
+      "docs/evidence/commands.csv",
+      "docs/evidence/elf-imports.csv",
+      "docs/evidence/initializers.csv",
+      "docs/evidence/pwd_gen_1980.c.txt"
+    ],
+    "execution_location": "pinned 2BF snapshot plus its nested pinned 2BE/2BD/2BC/2BB authorities; not current source",
+    "historical_python_tests": 366,
+    "log_sha256": "65004d2fa723141d83a45387175e0be2c4d710aa874d8a826e3b493e030bcac6",
+    "nested_python_tests": 340,
+    "nested_report": {
+      "baseline_files_sha256": "c921d5e56f6ad8be8b9933357b630706d1e60fe744cbfaaf2f6688c2abb1ab31",
+      "checked_files": 921,
+      "checkout_line_ending_restorations": [
+        "docs/compatibility-evidence/auth-efuns.csv",
+        "docs/compatibility-evidence/efun-usage.csv",
+        "docs/compatibility-evidence/efuns.csv",
+        "docs/compatibility-evidence/inheritance.csv",
+        "docs/compatibility-evidence/programs.csv",
+        "docs/evidence/actions.csv",
+        "docs/evidence/auth_1980.c.txt",
+        "docs/evidence/commands.csv",
+        "docs/evidence/elf-imports.csv",
+        "docs/evidence/initializers.csv",
+        "docs/evidence/pwd_gen_1980.c.txt"
+      ],
+      "execution_location": "pinned 2BE snapshot plus its nested pinned 2BD/2BC/2BB authorities; not current source",
+      "historical_python_tests": 340,
+      "log_sha256": "ed195df9cb57ae5b620775d87194c4d5d4eabb04465ce1f7983bbc2476f50116",
+      "nested_python_tests": 316,
+      "nested_report": {
+        "baseline_files_sha256": "e6c0e767403bda42a7a28952a082b4770ff7ea0ed935d6ccbb970efb6b9a2658",
+        "checked_files": 893,
+        "checkout_line_ending_restorations": [
+          "docs/compatibility-evidence/auth-efuns.csv",
+          "docs/compatibility-evidence/efun-usage.csv",
+          "docs/compatibility-evidence/efuns.csv",
+          "docs/compatibility-evidence/inheritance.csv",
+          "docs/compatibility-evidence/programs.csv",
+          "docs/evidence/actions.csv",
+          "docs/evidence/auth_1980.c.txt",
+          "docs/evidence/commands.csv",
+          "docs/evidence/elf-imports.csv",
+          "docs/evidence/initializers.csv",
+          "docs/evidence/pwd_gen_1980.c.txt"
+        ],
+        "execution_location": "pinned 2BD snapshot plus its nested pinned 2BC/2BB authorities; not current source",
+        "historical_python_tests": 316,
+        "log_sha256": "54d0af11d233eb0c54eb04bf05370f987e901cfecfad5539abe50c9abdbd2f51",
+        "nested_python_tests": 292,
+        "nested_report": {
+          "baseline_files_sha256": "335c35bf83a07785c6650f0ff027dddb018e53b1cd9db95ab3f680f886da88cd",
+          "checked_files": 865,
+          "checkout_line_ending_restorations": [
+            "docs/compatibility-evidence/auth-efuns.csv",
+            "docs/compatibility-evidence/efun-usage.csv",
+            "docs/compatibility-evidence/efuns.csv",
+            "docs/compatibility-evidence/inheritance.csv",
+            "docs/compatibility-evidence/programs.csv",
+            "docs/evidence/actions.csv",
+            "docs/evidence/auth_1980.c.txt",
+            "docs/evidence/commands.csv",
+            "docs/evidence/elf-imports.csv",
+            "docs/evidence/initializers.csv",
+            "docs/evidence/pwd_gen_1980.c.txt"
+          ],
+          "execution_location": "pinned 2BC snapshot plus its nested pinned 2BB replay; not current source",
+          "historical_python_tests": 292,
+          "log_sha256": "0f2e5828d6bd6a274b49ad720faee2e37e40d7c47b7eaafdd370f9be55dc7300",
+          "nested_commit": "7a215303c8828cfb6dd5c868499ef8f24c5d9d3d",
+          "nested_python_tests": 267,
+          "nested_report": {
+            "baseline_files_sha256": "42db1d75a14c169b71c5a98ffac1dc2f560ac43a10c9b5ed435ed502a57f30a9",
+            "checked_files": 839,
+            "checkout_line_ending_restorations": [
+              {
+                "checkout_sha256": "c2b6172b6ec07d2685c3d5bd82a6651d5d3aa3754d27a6234476ae1dc19121ec",
+                "frozen_sha256": "01b5611caf4064f62f3fa7aa9b8d3ddcf1dde529ef553a7e044ceff90f94279f",
+                "method": "restore verified frozen CRLF bytes; normalized contents identical",
+                "path": "docs/compatibility-evidence/auth-efuns.csv"
+              },
+              {
+                "checkout_sha256": "d42834c97becd1bf8aa94767643335d1fef06f82437591a318264d2104dc7d2a",
+                "frozen_sha256": "8a3858981be96789cc9e21efe50c97d8d211e61ec57cf12fd221398fc645d880",
+                "method": "restore verified frozen CRLF bytes; normalized contents identical",
+                "path": "docs/compatibility-evidence/efun-usage.csv"
+              },
+              {
+                "checkout_sha256": "7f2095faf94f67be0ef6739f7484ea910e64616ecc01a79c7d5a2501a378c59b",
+                "frozen_sha256": "896cb552f0204efc58dfece811a5e230b3ce7780cf9064e346564e17980473eb",
+                "method": "restore verified frozen CRLF bytes; normalized contents identical",
+                "path": "docs/compatibility-evidence/efuns.csv"
+              },
+              {
+                "checkout_sha256": "8d012ccfc77a8f978d680fc7604c7f584184368612abf95026014aadcc2ebf76",
+                "frozen_sha256": "0b754f78d765cf4ed7465606be491c916afb905328bb69975a33d9b9ebe31846",
+                "method": "restore verified frozen CRLF bytes; normalized contents identical",
+                "path": "docs/compatibility-evidence/inheritance.csv"
+              },
+              {
+                "checkout_sha256": "24a5afc8549ea15b831e3166419ce0176853a444922b791f92123aa804ca9e4d",
+                "frozen_sha256": "29e2e1c9c8e3ef4f6049c4cbed61c1d78d21bfb99ed7494108067ff968b50920",
+                "method": "restore verified frozen CRLF bytes; normalized contents identical",
+                "path": "docs/compatibility-evidence/programs.csv"
+              },
+              {
+                "checkout_sha256": "938e025b6c14fc833b58518fb386e6bd3e254410232c8157bfc9877822de88bb",
+                "frozen_sha256": "fb3d30f8c047e881ecc2d7132111c581d76d45bcb6e64a0effd3cfc4c7cea325",
+                "method": "restore verified frozen CRLF bytes; normalized contents identical",
+                "path": "docs/evidence/actions.csv"
+              },
+              {
+                "checkout_sha256": "8956ac26c17a292fcb93105eaefa62eca683a6db11518dd2d0284155d57605d3",
+                "frozen_sha256": "c7543a36dedf5caea6abab8f9fb24f2addb08fd0ed74cd261369289bb3e4fc2c",
+                "method": "restore verified frozen CRLF bytes; normalized contents identical",
+                "path": "docs/evidence/auth_1980.c.txt"
+              },
+              {
+                "checkout_sha256": "1d3be8974780ffba4bf65218b07c4c19f44fd2e2df2bbad63fe0761ea4580ad6",
+                "frozen_sha256": "97df92afd82cd2e2dc0135d78e4d929d53dcd9f4726d6ba67ceedff1d7d9e3d5",
+                "method": "restore verified frozen CRLF bytes; normalized contents identical",
+                "path": "docs/evidence/commands.csv"
+              },
+              {
+                "checkout_sha256": "c02d11be6c62c15ec669763a9240dd13a6a3f77542db0c3411acf9c93433aa83",
+                "frozen_sha256": "9cc49fd1749b97a6841359934597ec866e6c9bf62c2e8f92f904b1171a196e59",
+                "method": "restore verified frozen CRLF bytes; normalized contents identical",
+                "path": "docs/evidence/elf-imports.csv"
+              },
+              {
+                "checkout_sha256": "1250d35368b25123a5b07421d0eb427953de2d52ed467f2be3b95f7ed9df307e",
+                "frozen_sha256": "71a7a708c6860106e45ddea5efb6bcb57d8fc24b3f5c2370832e6e7a66e26f7a",
+                "method": "restore verified frozen CRLF bytes; normalized contents identical",
+                "path": "docs/evidence/initializers.csv"
+              },
+              {
+                "checkout_sha256": "64b4f30f0e3774f298567c7be4ab3155ee354fa071267ffc3530dd3eb000b0c6",
+                "frozen_sha256": "b1f590995a398fa88dbc762718447d5a36939a2021446a98d76e509bae8506cd",
+                "method": "restore verified frozen CRLF bytes; normalized contents identical",
+                "path": "docs/evidence/pwd_gen_1980.c.txt"
+              }
+            ],
+            "execution_location": "temporary pinned baseline clone; not current source",
+            "historical_python_tests": 267,
+            "log_sha256": "5484acf6fdfb04d3e5bc66bb664ff217994d7521482e672c5e9a0497d8c7937b",
+            "network_used": false,
+            "python_counts": {
+              "docs/stage2as-design/test_explore.py": 6,
+              "docs/stage2as-design/test_model.py": 50,
+              "docs/stage2ax-evidence/test_verify_evidence.py": 37,
+              "docs/stage2ax-evidence/test_verify_validation.py": 15,
+              "docs/stage2ay-evidence/test_verify_evidence.py": 20,
+              "docs/stage2ay-evidence/test_verify_validation.py": 15,
+              "docs/stage2az-evidence/test_verify_evidence.py": 37,
+              "docs/stage2az-evidence/test_verify_validation.py": 15,
+              "docs/stage2ba-design/test_*.py": 40,
+              "docs/stage2bb-kernel/test_*.py": 32
+            },
+            "source_commit": "7a215303c8828cfb6dd5c868499ef8f24c5d9d3d",
+            "stage": "2BC",
+            "status": "pass"
+          },
+          "network_used": false,
+          "outer_python_tests": 25,
+          "source_commit": "1306a9bca296813f83df779fb62aa1a0f651d20c",
+          "stage": "2BD",
+          "status": "pass"
+        },
+        "network_used": false,
+        "outer_python_tests": 24,
+        "source_commit": "d237bf3a55e0d37084184cc3b3efbbb6e0c1c8e3",
+        "stage": "2BE",
+        "status": "pass"
+      },
+      "network_used": false,
+      "outer_python_tests": 24,
+      "source_commit": "891f55b5dae527dd8da425dcab0a6d903b7e4702",
+      "stage": "2BF",
+      "status": "pass"
+    },
+    "network_used": false,
+    "outer_python_tests": 26,
+    "source_commit": "1927505f6ee5a2eb5c5c6db7eb8121e9e0632936",
+    "stage": "2BG",
+    "status": "pass"
+  },
+  "network_used": false,
+  "outer_python_tests": 26,
+  "source_commit": "5827a6387fc2fbaa142a428133316c446713c230",
+  "stage": "2BH",
+  "status": "pass"
+}

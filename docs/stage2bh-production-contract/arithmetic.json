@@ -1,0 +1,786 @@
+[
+  {
+    "a": "0",
+    "b": "0",
+    "expected": "0",
+    "kind": "checked_add",
+    "width": 32
+  },
+  {
+    "a": "0",
+    "b": "1",
+    "expected": "1",
+    "kind": "checked_add",
+    "width": 32
+  },
+  {
+    "a": "0",
+    "b": "4294967294",
+    "expected": "4294967294",
+    "kind": "checked_add",
+    "width": 32
+  },
+  {
+    "a": "0",
+    "b": "4294967295",
+    "expected": "4294967295",
+    "kind": "checked_add",
+    "width": 32
+  },
+  {
+    "a": "1",
+    "b": "0",
+    "expected": "1",
+    "kind": "checked_add",
+    "width": 32
+  },
+  {
+    "a": "1",
+    "b": "1",
+    "expected": "2",
+    "kind": "checked_add",
+    "width": 32
+  },
+  {
+    "a": "1",
+    "b": "4294967294",
+    "expected": "4294967295",
+    "kind": "checked_add",
+    "width": 32
+  },
+  {
+    "a": "1",
+    "b": "4294967295",
+    "expected": null,
+    "kind": "checked_add",
+    "width": 32
+  },
+  {
+    "a": "4294967294",
+    "b": "0",
+    "expected": "4294967294",
+    "kind": "checked_add",
+    "width": 32
+  },
+  {
+    "a": "4294967294",
+    "b": "1",
+    "expected": "4294967295",
+    "kind": "checked_add",
+    "width": 32
+  },
+  {
+    "a": "4294967294",
+    "b": "4294967294",
+    "expected": null,
+    "kind": "checked_add",
+    "width": 32
+  },
+  {
+    "a": "4294967294",
+    "b": "4294967295",
+    "expected": null,
+    "kind": "checked_add",
+    "width": 32
+  },
+  {
+    "a": "4294967295",
+    "b": "0",
+    "expected": "4294967295",
+    "kind": "checked_add",
+    "width": 32
+  },
+  {
+    "a": "4294967295",
+    "b": "1",
+    "expected": null,
+    "kind": "checked_add",
+    "width": 32
+  },
+  {
+    "a": "4294967295",
+    "b": "4294967294",
+    "expected": null,
+    "kind": "checked_add",
+    "width": 32
+  },
+  {
+    "a": "4294967295",
+    "b": "4294967295",
+    "expected": null,
+    "kind": "checked_add",
+    "width": 32
+  },
+  {
+    "accepted": true,
+    "field": "max_objects",
+    "kind": "limit",
+    "value": "0",
+    "width": 32
+  },
+  {
+    "accepted": true,
+    "field": "max_objects",
+    "kind": "limit",
+    "value": "1",
+    "width": 32
+  },
+  {
+    "accepted": true,
+    "field": "max_objects",
+    "kind": "limit",
+    "value": "2",
+    "width": 32
+  },
+  {
+    "accepted": true,
+    "field": "max_objects",
+    "kind": "limit",
+    "value": "3",
+    "width": 32
+  },
+  {
+    "accepted": true,
+    "field": "max_objects",
+    "kind": "limit",
+    "value": "4294967295",
+    "width": 32
+  },
+  {
+    "accepted": false,
+    "field": "max_objects",
+    "kind": "limit",
+    "value": "4294967296",
+    "width": 32
+  },
+  {
+    "accepted": false,
+    "field": "max_objects",
+    "kind": "limit",
+    "value": "-1",
+    "width": 32
+  },
+  {
+    "accepted": false,
+    "field": "max_objects",
+    "kind": "limit",
+    "value": "True",
+    "width": 32
+  },
+  {
+    "accepted": true,
+    "field": "max_function_heads",
+    "kind": "limit",
+    "value": "0",
+    "width": 32
+  },
+  {
+    "accepted": true,
+    "field": "max_function_heads",
+    "kind": "limit",
+    "value": "1",
+    "width": 32
+  },
+  {
+    "accepted": true,
+    "field": "max_function_heads",
+    "kind": "limit",
+    "value": "2",
+    "width": 32
+  },
+  {
+    "accepted": true,
+    "field": "max_function_heads",
+    "kind": "limit",
+    "value": "3",
+    "width": 32
+  },
+  {
+    "accepted": true,
+    "field": "max_function_heads",
+    "kind": "limit",
+    "value": "4294967295",
+    "width": 32
+  },
+  {
+    "accepted": false,
+    "field": "max_function_heads",
+    "kind": "limit",
+    "value": "4294967296",
+    "width": 32
+  },
+  {
+    "accepted": false,
+    "field": "max_function_heads",
+    "kind": "limit",
+    "value": "-1",
+    "width": 32
+  },
+  {
+    "accepted": false,
+    "field": "max_function_heads",
+    "kind": "limit",
+    "value": "True",
+    "width": 32
+  },
+  {
+    "accepted": false,
+    "field": "max_ordinary_refs_per_object",
+    "kind": "limit",
+    "value": "0",
+    "width": 32
+  },
+  {
+    "accepted": false,
+    "field": "max_ordinary_refs_per_object",
+    "kind": "limit",
+    "value": "1",
+    "width": 32
+  },
+  {
+    "accepted": true,
+    "field": "max_ordinary_refs_per_object",
+    "kind": "limit",
+    "value": "2",
+    "width": 32
+  },
+  {
+    "accepted": true,
+    "field": "max_ordinary_refs_per_object",
+    "kind": "limit",
+    "value": "3",
+    "width": 32
+  },
+  {
+    "accepted": true,
+    "field": "max_ordinary_refs_per_object",
+    "kind": "limit",
+    "value": "4294967295",
+    "width": 32
+  },
+  {
+    "accepted": false,
+    "field": "max_ordinary_refs_per_object",
+    "kind": "limit",
+    "value": "4294967296",
+    "width": 32
+  },
+  {
+    "accepted": false,
+    "field": "max_ordinary_refs_per_object",
+    "kind": "limit",
+    "value": "-1",
+    "width": 32
+  },
+  {
+    "accepted": false,
+    "field": "max_ordinary_refs_per_object",
+    "kind": "limit",
+    "value": "True",
+    "width": 32
+  },
+  {
+    "accepted": false,
+    "field": "max_exec_refs_per_object",
+    "kind": "limit",
+    "value": "0",
+    "width": 32
+  },
+  {
+    "accepted": true,
+    "field": "max_exec_refs_per_object",
+    "kind": "limit",
+    "value": "1",
+    "width": 32
+  },
+  {
+    "accepted": true,
+    "field": "max_exec_refs_per_object",
+    "kind": "limit",
+    "value": "2",
+    "width": 32
+  },
+  {
+    "accepted": true,
+    "field": "max_exec_refs_per_object",
+    "kind": "limit",
+    "value": "3",
+    "width": 32
+  },
+  {
+    "accepted": true,
+    "field": "max_exec_refs_per_object",
+    "kind": "limit",
+    "value": "4294967295",
+    "width": 32
+  },
+  {
+    "accepted": false,
+    "field": "max_exec_refs_per_object",
+    "kind": "limit",
+    "value": "4294967296",
+    "width": 32
+  },
+  {
+    "accepted": false,
+    "field": "max_exec_refs_per_object",
+    "kind": "limit",
+    "value": "-1",
+    "width": 32
+  },
+  {
+    "accepted": false,
+    "field": "max_exec_refs_per_object",
+    "kind": "limit",
+    "value": "True",
+    "width": 32
+  },
+  {
+    "accepted": false,
+    "field": "max_owners_per_header",
+    "kind": "limit",
+    "value": "0",
+    "width": 32
+  },
+  {
+    "accepted": true,
+    "field": "max_owners_per_header",
+    "kind": "limit",
+    "value": "1",
+    "width": 32
+  },
+  {
+    "accepted": true,
+    "field": "max_owners_per_header",
+    "kind": "limit",
+    "value": "2",
+    "width": 32
+  },
+  {
+    "accepted": true,
+    "field": "max_owners_per_header",
+    "kind": "limit",
+    "value": "3",
+    "width": 32
+  },
+  {
+    "accepted": true,
+    "field": "max_owners_per_header",
+    "kind": "limit",
+    "value": "4294967295",
+    "width": 32
+  },
+  {
+    "accepted": false,
+    "field": "max_owners_per_header",
+    "kind": "limit",
+    "value": "4294967296",
+    "width": 32
+  },
+  {
+    "accepted": false,
+    "field": "max_owners_per_header",
+    "kind": "limit",
+    "value": "-1",
+    "width": 32
+  },
+  {
+    "accepted": false,
+    "field": "max_owners_per_header",
+    "kind": "limit",
+    "value": "True",
+    "width": 32
+  },
+  {
+    "a": "0",
+    "b": "0",
+    "expected": "0",
+    "kind": "checked_add",
+    "width": 64
+  },
+  {
+    "a": "0",
+    "b": "1",
+    "expected": "1",
+    "kind": "checked_add",
+    "width": 64
+  },
+  {
+    "a": "0",
+    "b": "18446744073709551614",
+    "expected": "18446744073709551614",
+    "kind": "checked_add",
+    "width": 64
+  },
+  {
+    "a": "0",
+    "b": "18446744073709551615",
+    "expected": "18446744073709551615",
+    "kind": "checked_add",
+    "width": 64
+  },
+  {
+    "a": "1",
+    "b": "0",
+    "expected": "1",
+    "kind": "checked_add",
+    "width": 64
+  },
+  {
+    "a": "1",
+    "b": "1",
+    "expected": "2",
+    "kind": "checked_add",
+    "width": 64
+  },
+  {
+    "a": "1",
+    "b": "18446744073709551614",
+    "expected": "18446744073709551615",
+    "kind": "checked_add",
+    "width": 64
+  },
+  {
+    "a": "1",
+    "b": "18446744073709551615",
+    "expected": null,
+    "kind": "checked_add",
+    "width": 64
+  },
+  {
+    "a": "18446744073709551614",
+    "b": "0",
+    "expected": "18446744073709551614",
+    "kind": "checked_add",
+    "width": 64
+  },
+  {
+    "a": "18446744073709551614",
+    "b": "1",
+    "expected": "18446744073709551615",
+    "kind": "checked_add",
+    "width": 64
+  },
+  {
+    "a": "18446744073709551614",
+    "b": "18446744073709551614",
+    "expected": null,
+    "kind": "checked_add",
+    "width": 64
+  },
+  {
+    "a": "18446744073709551614",
+    "b": "18446744073709551615",
+    "expected": null,
+    "kind": "checked_add",
+    "width": 64
+  },
+  {
+    "a": "18446744073709551615",
+    "b": "0",
+    "expected": "18446744073709551615",
+    "kind": "checked_add",
+    "width": 64
+  },
+  {
+    "a": "18446744073709551615",
+    "b": "1",
+    "expected": null,
+    "kind": "checked_add",
+    "width": 64
+  },
+  {
+    "a": "18446744073709551615",
+    "b": "18446744073709551614",
+    "expected": null,
+    "kind": "checked_add",
+    "width": 64
+  },
+  {
+    "a": "18446744073709551615",
+    "b": "18446744073709551615",
+    "expected": null,
+    "kind": "checked_add",
+    "width": 64
+  },
+  {
+    "accepted": true,
+    "field": "max_objects",
+    "kind": "limit",
+    "value": "0",
+    "width": 64
+  },
+  {
+    "accepted": true,
+    "field": "max_objects",
+    "kind": "limit",
+    "value": "1",
+    "width": 64
+  },
+  {
+    "accepted": true,
+    "field": "max_objects",
+    "kind": "limit",
+    "value": "2",
+    "width": 64
+  },
+  {
+    "accepted": true,
+    "field": "max_objects",
+    "kind": "limit",
+    "value": "3",
+    "width": 64
+  },
+  {
+    "accepted": false,
+    "field": "max_objects",
+    "kind": "limit",
+    "value": "18446744073709551615",
+    "width": 64
+  },
+  {
+    "accepted": false,
+    "field": "max_objects",
+    "kind": "limit",
+    "value": "18446744073709551616",
+    "width": 64
+  },
+  {
+    "accepted": false,
+    "field": "max_objects",
+    "kind": "limit",
+    "value": "-1",
+    "width": 64
+  },
+  {
+    "accepted": false,
+    "field": "max_objects",
+    "kind": "limit",
+    "value": "True",
+    "width": 64
+  },
+  {
+    "accepted": true,
+    "field": "max_function_heads",
+    "kind": "limit",
+    "value": "0",
+    "width": 64
+  },
+  {
+    "accepted": true,
+    "field": "max_function_heads",
+    "kind": "limit",
+    "value": "1",
+    "width": 64
+  },
+  {
+    "accepted": true,
+    "field": "max_function_heads",
+    "kind": "limit",
+    "value": "2",
+    "width": 64
+  },
+  {
+    "accepted": true,
+    "field": "max_function_heads",
+    "kind": "limit",
+    "value": "3",
+    "width": 64
+  },
+  {
+    "accepted": true,
+    "field": "max_function_heads",
+    "kind": "limit",
+    "value": "18446744073709551615",
+    "width": 64
+  },
+  {
+    "accepted": false,
+    "field": "max_function_heads",
+    "kind": "limit",
+    "value": "18446744073709551616",
+    "width": 64
+  },
+  {
+    "accepted": false,
+    "field": "max_function_heads",
+    "kind": "limit",
+    "value": "-1",
+    "width": 64
+  },
+  {
+    "accepted": false,
+    "field": "max_function_heads",
+    "kind": "limit",
+    "value": "True",
+    "width": 64
+  },
+  {
+    "accepted": false,
+    "field": "max_ordinary_refs_per_object",
+    "kind": "limit",
+    "value": "0",
+    "width": 64
+  },
+  {
+    "accepted": false,
+    "field": "max_ordinary_refs_per_object",
+    "kind": "limit",
+    "value": "1",
+    "width": 64
+  },
+  {
+    "accepted": true,
+    "field": "max_ordinary_refs_per_object",
+    "kind": "limit",
+    "value": "2",
+    "width": 64
+  },
+  {
+    "accepted": true,
+    "field": "max_ordinary_refs_per_object",
+    "kind": "limit",
+    "value": "3",
+    "width": 64
+  },
+  {
+    "accepted": true,
+    "field": "max_ordinary_refs_per_object",
+    "kind": "limit",
+    "value": "18446744073709551615",
+    "width": 64
+  },
+  {
+    "accepted": false,
+    "field": "max_ordinary_refs_per_object",
+    "kind": "limit",
+    "value": "18446744073709551616",
+    "width": 64
+  },
+  {
+    "accepted": false,
+    "field": "max_ordinary_refs_per_object",
+    "kind": "limit",
+    "value": "-1",
+    "width": 64
+  },
+  {
+    "accepted": false,
+    "field": "max_ordinary_refs_per_object",
+    "kind": "limit",
+    "value": "True",
+    "width": 64
+  },
+  {
+    "accepted": false,
+    "field": "max_exec_refs_per_object",
+    "kind": "limit",
+    "value": "0",
+    "width": 64
+  },
+  {
+    "accepted": true,
+    "field": "max_exec_refs_per_object",
+    "kind": "limit",
+    "value": "1",
+    "width": 64
+  },
+  {
+    "accepted": true,
+    "field": "max_exec_refs_per_object",
+    "kind": "limit",
+    "value": "2",
+    "width": 64
+  },
+  {
+    "accepted": true,
+    "field": "max_exec_refs_per_object",
+    "kind": "limit",
+    "value": "3",
+    "width": 64
+  },
+  {
+    "accepted": true,
+    "field": "max_exec_refs_per_object",
+    "kind": "limit",
+    "value": "18446744073709551615",
+    "width": 64
+  },
+  {
+    "accepted": false,
+    "field": "max_exec_refs_per_object",
+    "kind": "limit",
+    "value": "18446744073709551616",
+    "width": 64
+  },
+  {
+    "accepted": false,
+    "field": "max_exec_refs_per_object",
+    "kind": "limit",
+    "value": "-1",
+    "width": 64
+  },
+  {
+    "accepted": false,
+    "field": "max_exec_refs_per_object",
+    "kind": "limit",
+    "value": "True",
+    "width": 64
+  },
+  {
+    "accepted": false,
+    "field": "max_owners_per_header",
+    "kind": "limit",
+    "value": "0",
+    "width": 64
+  },
+  {
+    "accepted": true,
+    "field": "max_owners_per_header",
+    "kind": "limit",
+    "value": "1",
+    "width": 64
+  },
+  {
+    "accepted": true,
+    "field": "max_owners_per_header",
+    "kind": "limit",
+    "value": "2",
+    "width": 64
+  },
+  {
+    "accepted": true,
+    "field": "max_owners_per_header",
+    "kind": "limit",
+    "value": "3",
+    "width": 64
+  },
+  {
+    "accepted": true,
+    "field": "max_owners_per_header",
+    "kind": "limit",
+    "value": "18446744073709551615",
+    "width": 64
+  },
+  {
+    "accepted": false,
+    "field": "max_owners_per_header",
+    "kind": "limit",
+    "value": "18446744073709551616",
+    "width": 64
+  },
+  {
+    "accepted": false,
+    "field": "max_owners_per_header",
+    "kind": "limit",
+    "value": "-1",
+    "width": 64
+  },
+  {
+    "accepted": false,
+    "field": "max_owners_per_header",
+    "kind": "limit",
+    "value": "True",
+    "width": 64
+  }
+]

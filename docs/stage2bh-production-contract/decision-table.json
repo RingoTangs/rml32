@@ -1,0 +1,55 @@
+{
+  "rows": [
+    {
+      "id": "Q01",
+      "result": "Limit; abort prospective resources; preserve published slots/frames and prior completion",
+      "trigger": "peak quota exhausted before publication"
+    },
+    {
+      "id": "Q02",
+      "result": "move existing owner; no new owner charge",
+      "trigger": "raw transfer at owner ceiling"
+    },
+    {
+      "id": "Q03",
+      "result": "infallible LIFO enqueue using preallocated node and reserved ordinary unit",
+      "trigger": "last pending execution lease exits"
+    },
+    {
+      "id": "Q04",
+      "result": "enqueue once; do not clear variables until explicit maintenance",
+      "trigger": "zero-exec managed failure/cancel"
+    },
+    {
+      "id": "Q05",
+      "result": "keep quota charged until metadata reclamation",
+      "trigger": "freed record or retired head still indexed"
+    },
+    {
+      "id": "M01",
+      "result": "no mutation, including no implicit Registry.check retirement",
+      "trigger": "zero maintenance budget"
+    },
+    {
+      "id": "M02",
+      "result": "Ok(progress) with blocking stop; preserve current unit; retain earlier commits",
+      "trigger": "borrow/workspace conflict after earlier successful units"
+    },
+    {
+      "id": "M03",
+      "result": "finish fixed fence fairly, then require new epoch pass before scan_complete",
+      "trigger": "metadata changes during a resumable pass"
+    },
+    {
+      "id": "H01",
+      "result": "raw transport; script COPY alone normalizes under existing rules",
+      "trigger": "Host retain/export/callback return of invalid retained payload"
+    },
+    {
+      "id": "I01",
+      "result": "new identity; never reuse old ID; numeric exhaustion remains Limit",
+      "trigger": "reap returns capacity after ID issuance"
+    }
+  ],
+  "stage": "2BH"
+}
