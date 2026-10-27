@@ -1,3 +1,5 @@
+> 阶段 2BI：已将 D08 受限生命周期接入正常 Rust 库，增补显式配额构造器及 store/VM 分预算维护 API；legacy 构造、准备权限、版本与依赖保持。851 项普通 Rust 测试及 5 项 doctest 在 debug/release 通过，旧模型和证据冻结，直接捕获与阶段2门槛仍未开放。详见 [生产接入总览](stage2bi-production-lifecycle/overview.md)及 [验证收据](stage2bi-validation.json)。
+
 > 阶段 2BH：已交付生产生命周期 D08 契约与独立配额模型，明确五项显式配额、峰值预留、Host raw 传输及分预算维护进度；仅设计，Rust 运行时/API、旧模型及捕获门禁不变。39 项模型案例、112 项算术检查与完整回归通过。详见 [契约总览](stage2bh-production-contract/overview.md)及 [验证收据](stage2bh-validation.json)。
 
 > 阶段 2BG：已接入 Host Function 创建、捕获和间接调用的生命周期测试，覆盖 creator、回调事务和最终释放；生产运行时/API 与准备门禁不变。详见 [Host Function 测试总览](stage2bg-host-function-test/overview.md)。

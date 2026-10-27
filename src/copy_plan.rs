@@ -40,7 +40,6 @@ pub(crate) fn reserve<T>(values: &mut Vec<T>, additional: usize) -> Result<(), V
 
 #[derive(Debug, Default)]
 pub(crate) struct CopyPlan {
-    #[cfg(test)]
     adapter: Option<Rc<crate::lifecycle_adapter::AdapterContext>>,
     pub outputs: Vec<Rc<Cell>>,
     pub source_updates: Vec<(Rc<Cell>, Value)>,
@@ -50,16 +49,40 @@ pub(crate) struct CopyPlan {
     // Each edge transfers the existing payload AND Owner, without a retain/drop pair.
     pub semantic_owner_effects: Vec<(Rc<Cell>, Rc<Cell>)>,
     retiring: Vec<Rc<Cell>>,
+    versions: BTreeMap<u64, (Rc<Cell>, u64)>,
 }
 impl CopyPlan {
-    #[cfg(test)]
+    fn watch(&mut self, cell: &Rc<Cell>) -> Result<(), VmError> {
+        let version = cell.revision()?;
+        if let Some((_, old)) = self.versions.get(&cell.id()) {
+            if *old != version {
+                return Err(VmError::new(
+                    VmErrorKind::InvalidState,
+                    "stale transaction slot",
+                ));
+            }
+        } else {
+            self.versions.insert(cell.id(), (cell.clone(), version));
+        }
+        Ok(())
+    }
+    fn validate_versions(&self) -> Result<(), VmError> {
+        for (cell, version) in self.versions.values() {
+            if cell.revision()? != *version {
+                return Err(VmError::new(
+                    VmErrorKind::InvalidState,
+                    "stale transaction slot",
+                ));
+            }
+        }
+        Ok(())
+    }
     pub(crate) fn with_adapter(ctx: &Rc<crate::lifecycle_adapter::AdapterContext>) -> Self {
         Self {
             adapter: Some(ctx.clone()),
             ..Self::default()
         }
     }
-    #[cfg(test)]
     fn check_adapter(&self, cell: &Rc<Cell>) -> Result<(), VmError> {
         match (&self.adapter, cell.adapter()) {
             (Some(a), Some(b)) if Rc::ptr_eq(a, &b) => Ok(()),
@@ -71,7 +94,6 @@ impl CopyPlan {
         }
     }
 
-    #[cfg(test)]
     fn validate_adapter_plan(&self) -> Result<(), VmError> {
         for cell in self
             .outputs
@@ -93,7 +115,7 @@ impl CopyPlan {
         source: Rc<Cell>,
         normalize: impl FnOnce(&Value) -> Result<Value, VmError>,
     ) -> Result<Value, VmError> {
-        #[cfg(test)]
+        self.watch(&source)?;
         self.check_adapter(&source)?;
         let raw = source.read()?;
         let value = normalize(&raw)?;
@@ -103,7 +125,7 @@ impl CopyPlan {
         Ok(value)
     }
     pub fn write(&mut self, cell: Rc<Cell>, value: Value) -> Result<(), VmError> {
-        #[cfg(test)]
+        self.watch(&cell)?;
         self.check_adapter(&cell)?;
         if let Some(&index) = self.source_indices.get(&cell.id()) {
             let old = &self.source_updates[index].1;
@@ -123,16 +145,21 @@ impl CopyPlan {
     }
     pub fn output(&mut self, value: Value) -> Result<Rc<Cell>, VmError> {
         reserve(&mut self.outputs, 1)?;
+        if let Some(ctx) = &self.adapter
+            && let (Some(q), Some(c)) = (ctx.quotas, value.counter())
+        {
+            c.bind(ctx, q.max_owners_per_header)?;
+        }
         let cell = Cell::new(value)?;
-        #[cfg(test)]
         if let Some(ctx) = &self.adapter {
             cell.bind_adapter(ctx)?;
         }
+        self.watch(&cell)?;
         self.outputs.push(cell.clone());
         Ok(cell)
     }
     pub fn transfer(&mut self, source: Rc<Cell>) -> Result<Rc<Cell>, VmError> {
-        #[cfg(test)]
+        self.watch(&source)?;
         self.check_adapter(&source)?;
         reserve(&mut self.semantic_owner_effects, 1)?;
         let target = self.output(Value::Undefined)?;
@@ -146,7 +173,7 @@ impl CopyPlan {
         mut self,
         payloads: Vec<(Rc<Cell>, crate::cell::SlotPayload)>,
     ) -> Result<(), VmError> {
-        #[cfg(test)]
+        self.validate_versions()?;
         self.validate_adapter_plan()?;
         let mut hidden = Vec::new();
         for (cell, payload) in payloads {
@@ -180,7 +207,7 @@ impl CopyPlan {
         Cell::replace_payload_batch_with_roots(hidden, self.outputs)
     }
     pub fn commit(self) -> Result<(), VmError> {
-        #[cfg(test)]
+        self.validate_versions()?;
         self.validate_adapter_plan()?;
         Cell::transfer_batch(
             self.source_updates,

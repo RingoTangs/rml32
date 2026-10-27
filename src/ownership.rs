@@ -10,6 +10,10 @@ static NEXT: AtomicU64 = AtomicU64::new(1);
 pub(crate) struct Counter {
     pub id: u64,
     owners: Cell<usize>,
+    ceiling: Cell<usize>,
+    pub(crate) context:
+        std::cell::RefCell<Option<std::rc::Weak<crate::lifecycle_adapter::AdapterContext>>>,
+    epoch: std::cell::RefCell<Option<Rc<crate::lifecycle::Epoch>>>,
 }
 impl Counter {
     pub fn new() -> Result<Rc<Self>, VmError> {
@@ -22,10 +26,45 @@ impl Counter {
         Ok(Rc::new(Self {
             id,
             owners: Cell::new(0),
+            ceiling: Cell::new(usize::MAX),
+            context: std::cell::RefCell::new(None),
+            epoch: std::cell::RefCell::new(None),
         }))
     }
     pub fn owners(&self) -> usize {
         self.owners.get()
+    }
+    pub(crate) fn bind(
+        &self,
+        ctx: &Rc<crate::lifecycle_adapter::AdapterContext>,
+        ceiling: usize,
+    ) -> Result<(), VmError> {
+        if self
+            .context
+            .borrow()
+            .as_ref()
+            .and_then(std::rc::Weak::upgrade)
+            .is_some_and(|old| !Rc::ptr_eq(&old, ctx))
+        {
+            return Err(VmError::new(
+                VmErrorKind::InvalidState,
+                "foreign counter context",
+            ));
+        }
+        if self.owners() > ceiling {
+            return Err(VmError::new(VmErrorKind::Limit, "header owner capacity"));
+        }
+        self.ceiling.set(ceiling);
+        *self.context.borrow_mut() = Some(Rc::downgrade(ctx));
+        *self.epoch.borrow_mut() = Some(ctx.epoch.clone());
+        Ok(())
+    }
+}
+impl Drop for Counter {
+    fn drop(&mut self) {
+        if let Some(epoch) = self.epoch.get_mut() {
+            epoch.touch();
+        }
     }
 }
 #[derive(Debug)]
@@ -34,10 +73,18 @@ impl Owner {
     pub fn new(counter: Option<Rc<Counter>>) -> Result<Option<Self>, VmError> {
         counter
             .map(|c| {
-                let n = c.owners.get().checked_add(1).ok_or_else(|| {
-                    VmError::new(VmErrorKind::Limit, "semantic owner space exhausted")
-                })?;
+                let n = c
+                    .owners
+                    .get()
+                    .checked_add(1)
+                    .filter(|n| *n <= c.ceiling.get())
+                    .ok_or_else(|| {
+                        VmError::new(VmErrorKind::Limit, "semantic owner space exhausted")
+                    })?;
                 c.owners.set(n);
+                if let Some(epoch) = c.epoch.borrow().as_ref() {
+                    epoch.touch();
+                }
                 Ok(Self(c))
             })
             .transpose()
@@ -52,13 +99,15 @@ impl Drop for Owner {
                 .checked_sub(1)
                 .expect("semantic owner underflow"),
         );
+        if let Some(epoch) = self.0.epoch.borrow().as_ref() {
+            epoch.touch();
+        }
     }
 }
 /// Owner drops before the physical value (field order is intentional).
 #[derive(Debug)]
 pub(crate) struct OwnedValue {
     pub(crate) _owner: Option<Owner>,
-    #[cfg(test)]
     pub(crate) lifecycle: Option<crate::lifecycle_adapter::Lease>,
     pub value: crate::Value,
 }
@@ -66,7 +115,6 @@ impl OwnedValue {
     pub fn new(value: crate::Value) -> Result<Self, VmError> {
         Ok(Self {
             _owner: Owner::new(value.counter())?,
-            #[cfg(test)]
             lifecycle: None,
             value,
         })

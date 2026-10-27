@@ -213,7 +213,16 @@ impl MappingValue {
         }
         self.insertion_needed(key)?;
         let k = Key::new(key)?;
-        let cell = Cell::new(Value::Undefined)?;
+        let cell = match self
+            .1
+            .context
+            .borrow()
+            .as_ref()
+            .and_then(std::rc::Weak::upgrade)
+        {
+            Some(ctx) => ctx.slot(Value::Undefined)?,
+            None => Cell::new(Value::Undefined)?,
+        };
         let header = Value::Mapping(self.clone());
         let mut projection = crate::graph::Projection::default();
         projection.extra(&header, cell.clone());
@@ -423,7 +432,6 @@ fn native_hash(value: &Value) -> u32 {
     }
 }
 
-#[cfg(test)]
 pub(crate) fn lifecycle_array(cells: Vec<Rc<Cell>>) -> Result<Value, VmError> {
     let values = cells
         .iter()
@@ -438,7 +446,28 @@ pub(crate) fn lifecycle_array(cells: Vec<Rc<Cell>>) -> Result<Value, VmError> {
     crate::graph::values(std::slice::from_ref(&value))?;
     Ok(value)
 }
-#[cfg(test)]
+pub(crate) fn lifecycle_members(value: &Value) -> Result<Vec<Rc<Cell>>, VmError> {
+    match value {
+        Value::Array(a) => Ok(a.0.elements.clone()),
+        Value::Mapping(m) => Ok(m.graph_entries()?.into_iter().map(|(_, c)| c).collect()),
+        _ => Ok(vec![]),
+    }
+}
+pub(crate) fn clear_lifecycle_members(value: &Value) {
+    match value {
+        Value::Array(a) => {
+            for c in &a.0.elements {
+                c.clear_on_owner_drop();
+            }
+        }
+        Value::Mapping(m) => {
+            for (_, c) in &m.0.borrow().entries {
+                c.clear_on_owner_drop();
+            }
+        }
+        _ => (),
+    }
+}
 pub(crate) fn lifecycle_mapping(cells: Vec<(Value, Rc<Cell>)>) -> Result<Value, VmError> {
     let mut data = MappingData::new(cells.len())?;
     for (key, cell) in cells {

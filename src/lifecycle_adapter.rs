@@ -1,11 +1,14 @@
-//! Test-only bridge to real Cell/OwnedValue/CopyPlan and acyclic containers.
+//! Shared lifecycle leases for production slots and frozen test replay modes.
+#[cfg(test)]
+use crate::value::{CaptureProfile, ProgramId};
 use crate::{
     Value, ValueLimits, VmError, VmErrorKind,
     cell::Cell,
     copy_plan::CopyPlan,
     ownership::{Counter, OwnedValue, Owner},
-    value::{CaptureProfile, FunctionData, FunctionTarget, FunctionValue, ObjectId, ProgramId},
+    value::{FunctionData, FunctionTarget, FunctionValue, ObjectId},
 };
+#[cfg(test)]
 use serde_json::{Value as Json, json};
 use std::{
     cell::{Cell as Flag, RefCell},
@@ -74,6 +77,7 @@ pub(crate) struct HeadState {
     creator_lease: RefCell<Option<ObjectLease>>,
     leases: Flag<usize>,
     retired: Flag<bool>,
+    epoch: Rc<crate::lifecycle::Epoch>,
 }
 impl std::fmt::Debug for HeadState {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
@@ -87,22 +91,48 @@ impl std::fmt::Debug for HeadState {
 pub(crate) enum Lease {
     Object(ObjectLease),
     Function(Rc<HeadState>),
+    Container(Rc<ContainerState>),
+}
+#[derive(Debug)]
+pub(crate) struct ContainerState {
+    id: u64,
+    header: crate::graph::WeakHeader,
+    leases: Flag<usize>,
+    retired: Flag<bool>,
+    epoch: Rc<crate::lifecycle::Epoch>,
 }
 #[derive(Clone)]
 pub(crate) enum LeaseView {
     Object,
     Function(Rc<HeadState>),
+    Container(Rc<ContainerState>),
 }
 impl Lease {
     pub(crate) fn view(&self) -> LeaseView {
         match self {
             Self::Object(_) => LeaseView::Object,
             Self::Function(h) => LeaseView::Function(h.clone()),
+            Self::Container(h) => LeaseView::Container(h.clone()),
         }
     }
 }
 impl Drop for Lease {
     fn drop(&mut self) {
+        if let Self::Container(h) = self {
+            h.leases.set(
+                h.leases
+                    .get()
+                    .checked_sub(1)
+                    .expect("container lease underflow"),
+            );
+            if h.leases.get() == 0 {
+                assert!(!h.retired.replace(true));
+                if let Some(value) = h.header.upgrade() {
+                    crate::container::clear_lifecycle_members(&value);
+                }
+                h.epoch.touch();
+            }
+        }
         if let Self::Object(o) = self {
             debug_assert!(o.entry.counter.owners() > 0);
         }
@@ -117,6 +147,7 @@ impl Drop for Lease {
                     }
                 }
                 drop(h.creator_lease.borrow_mut().take());
+                h.epoch.touch();
             }
         }
     }
@@ -127,10 +158,14 @@ pub(crate) struct AdapterContext {
     closed: Flag<bool>,
     objects: RefCell<BTreeMap<ObjectId, Rc<ObjectEntry>>>,
     cells: RefCell<BTreeMap<u64, Weak<Cell>>>,
+    #[cfg(test)]
     owned: RefCell<Vec<Weak<OwnedValue>>>,
+    containers: RefCell<BTreeMap<u64, Rc<ContainerState>>>,
     graphs: RefCell<BTreeMap<u64, Weak<Counter>>>,
     heads: RefCell<BTreeMap<u64, Rc<HeadState>>>,
     limits: ValueLimits,
+    pub(crate) quotas: Option<crate::LifecycleLimits>,
+    pub(crate) epoch: Rc<crate::lifecycle::Epoch>,
 }
 #[derive(Clone, Debug)]
 struct BoundValue {
@@ -144,10 +179,14 @@ impl AdapterContext {
             closed: Flag::new(false),
             objects: RefCell::new(BTreeMap::new()),
             cells: RefCell::new(BTreeMap::new()),
+            #[cfg(test)]
             owned: RefCell::new(Vec::new()),
+            containers: RefCell::new(BTreeMap::new()),
             graphs: RefCell::new(BTreeMap::new()),
             heads: RefCell::new(BTreeMap::new()),
             limits,
+            quotas: None,
+            epoch: Rc::default(),
         })
     }
     fn object(self: &Rc<Self>, id: u32) -> Result<BoundValue> {
@@ -216,9 +255,15 @@ impl AdapterContext {
     }
     pub(crate) fn register_cell(&self, c: &Rc<Cell>) {
         self.cells.borrow_mut().insert(c.id(), Rc::downgrade(c));
+        self.epoch.touch();
     }
     pub(crate) fn acquire(&self, v: &Value) -> Result<Option<Lease>> {
         self.validate(v)?;
+        if let (Some(q), Some(c)) = (self.quotas, v.counter())
+            && c.owners() > q.max_owners_per_header
+        {
+            return Err(VmError::new(VmErrorKind::Limit, "header owner capacity"));
+        }
         match v {
             Value::Object(id) => Ok(Some(Lease::Object(ObjectLease::new(
                 &self.objects.borrow()[id],
@@ -244,16 +289,66 @@ impl AdapterContext {
                 h.leases.set(h.leases.get() + 1);
                 Ok(Some(Lease::Function(h)))
             }
+            Value::Array(_) | Value::Mapping(_) if self.quotas.is_some() => {
+                let id = v.counter().unwrap().id;
+                let h = self
+                    .containers
+                    .borrow()
+                    .get(&id)
+                    .cloned()
+                    .ok_or_else(|| invalid("unbound container"))?;
+                if h.retired.get() {
+                    return Err(invalid("retired container"));
+                }
+                h.leases.set(
+                    h.leases.get().checked_add(1).ok_or_else(|| {
+                        VmError::new(VmErrorKind::Limit, "container owner overflow")
+                    })?,
+                );
+                Ok(Some(Lease::Container(h)))
+            }
             _ => Ok(None),
         }
     }
+    pub(crate) fn slot(self: &Rc<Self>, value: Value) -> Result<Rc<Cell>> {
+        self.cell(&self.bound(value))
+    }
+    fn register_container(self: &Rc<Self>, value: &Value) -> Result<()> {
+        if let Some(q) = self.quotas {
+            let counter = value.counter().unwrap();
+            counter.bind(self, q.max_owners_per_header)?;
+            let header = match value {
+                Value::Array(a) => crate::graph::WeakHeader::Array(Rc::downgrade(&a.0)),
+                Value::Mapping(m) => {
+                    crate::graph::WeakHeader::Mapping(Rc::downgrade(&m.0), Rc::downgrade(&m.1))
+                }
+                _ => unreachable!(),
+            };
+            self.containers.borrow_mut().insert(
+                counter.id,
+                Rc::new(ContainerState {
+                    id: counter.id,
+                    header,
+                    leases: Flag::new(0),
+                    retired: Flag::new(false),
+                    epoch: self.epoch.clone(),
+                }),
+            );
+            self.epoch.touch();
+        }
+        Ok(())
+    }
     fn cell(self: &Rc<Self>, v: &BoundValue) -> Result<Rc<Cell>> {
         self.check(v)?;
+        if let (Some(q), Some(c)) = (self.quotas, v.value.counter()) {
+            c.bind(self, q.max_owners_per_header)?;
+        }
         let _scope = crate::graph::Scope::new(self.limits);
         let c = Cell::new(v.value.clone())?;
         c.bind_adapter(self)?;
         Ok(c)
     }
+    #[cfg(test)]
     fn owned(self: &Rc<Self>, v: &BoundValue) -> Result<Rc<OwnedValue>> {
         self.check(v)?;
         let mut owned = OwnedValue::new(v.value.clone())?;
@@ -262,11 +357,13 @@ impl AdapterContext {
         self.owned.borrow_mut().push(Rc::downgrade(&owned));
         Ok(owned)
     }
+    #[cfg(test)]
     fn track_owned(&self, value: OwnedValue) -> Rc<OwnedValue> {
         let value = Rc::new(value);
         self.owned.borrow_mut().push(Rc::downgrade(&value));
         value
     }
+    #[cfg(test)]
     fn array(self: &Rc<Self>, values: &[BoundValue]) -> Result<BoundValue> {
         for v in values {
             self.check(v)?;
@@ -285,6 +382,7 @@ impl AdapterContext {
             .insert(counter.id, Rc::downgrade(&counter));
         Ok(self.bound(value))
     }
+    #[cfg(test)]
     fn mapping(self: &Rc<Self>, values: &[(Value, BoundValue)]) -> Result<BoundValue> {
         for (_, v) in values {
             self.check(v)?;
@@ -308,6 +406,7 @@ impl AdapterContext {
             .insert(counter.id, Rc::downgrade(&counter));
         Ok(self.bound(value))
     }
+    #[cfg(test)]
     fn function(
         self: &Rc<Self>,
         creator: Option<u32>,
@@ -361,16 +460,20 @@ impl AdapterContext {
                 creator_lease: RefCell::new(None),
                 leases: Flag::new(0),
                 retired: Flag::new(false),
+                epoch: self.epoch.clone(),
             }),
         );
         Ok(self.bound(Value::Function(FunctionValue(data))))
     }
+    #[cfg(test)]
     fn status(&self, id: u32, status: Status) {
         self.objects.borrow()[&ObjectId(id)].status.set(status);
     }
+    #[cfg(test)]
     fn refs(&self, id: u32) -> usize {
         self.objects.borrow()[&ObjectId(id)].counter.owners()
     }
+    #[cfg(test)]
     fn normalize(&self, v: &Value) -> Result<Value> {
         self.validate(v)?;
         let dead = match v {
@@ -383,6 +486,7 @@ impl AdapterContext {
         };
         Ok(if dead { Value::Undefined } else { v.clone() })
     }
+    #[cfg(test)]
     fn copy(self: &Rc<Self>, source: &Rc<Cell>) -> Result<Rc<Cell>> {
         let _scope = crate::graph::Scope::new(self.limits);
         let mut p = CopyPlan::with_adapter(self);
@@ -391,6 +495,7 @@ impl AdapterContext {
         p.commit()?;
         Ok(out)
     }
+    #[cfg(test)]
     fn invoke(self: &Rc<Self>, source: &Rc<Cell>) -> Result<Vec<Rc<Cell>>> {
         let Value::Function(f) = source.read()? else {
             return Err(invalid("not a function"));
@@ -417,12 +522,15 @@ impl AdapterContext {
         p.commit()?;
         Ok(out)
     }
+    #[cfg(test)]
     fn audit(&self) {
         self.audit_extra(&[]);
     }
+    #[cfg(test)]
     fn audit_extra(&self, extra: &[ObjectId]) {
         self.audit_roots(extra, &[]);
     }
+    #[cfg(test)]
     fn audit_roots(&self, extra: &[ObjectId], roots: &[&OwnedValue]) {
         let mut object_refs = BTreeMap::<ObjectId, usize>::new();
         let mut header_refs = BTreeMap::<u64, usize>::new();
@@ -477,6 +585,7 @@ impl AdapterContext {
             );
         }
     }
+    #[cfg(test)]
     fn snapshot(&self) -> Json {
         json!({"objects":self.objects.borrow().iter().map(|(id,e)|(id.get().to_string(),e.counter.owners())).collect::<BTreeMap<_,_>>()})
     }
@@ -489,46 +598,80 @@ pub(crate) fn check_cells(a: &Rc<Cell>, b: &Rc<Cell>) -> Result<()> {
     }
 }
 pub(crate) fn preflight_release(values: &[LeaseView], moved: &BTreeSet<u64>) -> Result<()> {
-    let mut pending = BTreeMap::<u64, (Rc<HeadState>, usize)>::new();
+    #[derive(Clone)]
+    enum Head {
+        Function(Rc<HeadState>),
+        Container(Rc<ContainerState>),
+    }
+    impl Head {
+        fn from_view(v: &LeaseView) -> Option<(u64, Self)> {
+            match v {
+                LeaseView::Function(h) => h
+                    .function
+                    .upgrade()
+                    .map(|f| (f.counter.id, Self::Function(h.clone()))),
+                LeaseView::Container(h) => Some((h.id, Self::Container(h.clone()))),
+                _ => None,
+            }
+        }
+        fn count(&self) -> usize {
+            match self {
+                Self::Function(h) => h.leases.get(),
+                Self::Container(h) => h.leases.get(),
+            }
+        }
+        fn cells(&self) -> Result<Vec<Rc<Cell>>> {
+            match self {
+                Self::Function(h) => Ok(h
+                    .function
+                    .upgrade()
+                    .map(|f| f.bound.clone())
+                    .unwrap_or_default()),
+                Self::Container(h) => h
+                    .header
+                    .upgrade()
+                    .map(|v| crate::container::lifecycle_members(&v))
+                    .unwrap_or_else(|| Ok(vec![])),
+            }
+        }
+    }
+    let mut pending = BTreeMap::<u64, (Head, usize)>::new();
     for v in values {
-        if let LeaseView::Function(h) = v
-            && let Some(f) = h.function.upgrade()
-        {
-            let e = pending.entry(f.counter.id).or_insert((h.clone(), 0));
-            e.1 += 1;
+        if let Some((id, h)) = Head::from_view(v) {
+            pending.entry(id).or_insert((h, 0)).1 += 1;
         }
     }
     let mut visited = BTreeSet::new();
+    let mut seen = moved.clone();
     loop {
         let next = pending
             .iter()
-            .find(|(id, (h, n))| !visited.contains(*id) && h.leases.get() == *n)
+            .find(|(id, (h, n))| !visited.contains(*id) && h.count() == *n)
             .map(|(id, (h, _))| (*id, h.clone()));
         let Some((id, h)) = next else { break };
         visited.insert(id);
-        if let Some(f) = h.function.upgrade() {
-            for c in &f.bound {
-                if let Some(LeaseView::Function(child)) = c.adapter_release_view()? {
-                    if moved.contains(&c.id()) {
-                        continue;
-                    }
-                    if let Some(f) = child.function.upgrade() {
-                        let e = pending.entry(f.counter.id).or_insert((child, 0));
-                        e.1 += 1;
-                    }
-                }
+        for c in h.cells()? {
+            if !seen.insert(c.id()) {
+                continue;
+            }
+            if let Some(v) = c.adapter_release_view()?
+                && let Some((id, h)) = Head::from_view(&v)
+            {
+                pending.entry(id).or_insert((h, 0)).1 += 1;
             }
         }
     }
     Ok(())
 }
 // Differential driver: frozen model IDs are observation labels, never raw handles.
+#[cfg(test)]
 struct TraceDriver {
     ctx: Rc<AdapterContext>,
     roots: BTreeMap<String, Rc<Cell>>,
     headers: BTreeMap<u64, (u64, String, Weak<Counter>)>,
     next: u64,
 }
+#[cfg(test)]
 impl TraceDriver {
     fn new() -> Self {
         Self {
@@ -1306,6 +1449,7 @@ impl AdapterContext {
             .map(|v| self.cell(&self.bound(v)))
             .collect::<Result<Vec<_>>>()?;
         let value = crate::container::lifecycle_array(cells)?;
+        self.register_container(&value)?;
         let counter = value.counter().unwrap();
         self.graphs
             .borrow_mut()
@@ -1319,6 +1463,7 @@ impl AdapterContext {
             .map(|(k, v)| Ok((k, self.cell(&self.bound(v))?)))
             .collect::<Result<Vec<_>>>()?;
         let value = crate::container::lifecycle_mapping(cells)?;
+        self.register_container(&value)?;
         let counter = value.counter().unwrap();
         self.graphs
             .borrow_mut()

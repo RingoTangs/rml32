@@ -1,0 +1,90 @@
+{
+  "additive_public_api": true,
+  "contract": "D08",
+  "legacy_constructors_unchanged": true,
+  "preparation_permissions_unchanged": true,
+  "reference_artifact_unchanged": true,
+  "rows": [
+    {
+      "path": "src/boundary.rs",
+      "production_compiled": true,
+      "status": "implemented"
+    },
+    {
+      "path": "src/cell.rs",
+      "production_compiled": true,
+      "status": "implemented"
+    },
+    {
+      "path": "src/container.rs",
+      "production_compiled": true,
+      "status": "implemented"
+    },
+    {
+      "path": "src/copy_plan.rs",
+      "production_compiled": true,
+      "status": "implemented"
+    },
+    {
+      "path": "src/graph.rs",
+      "production_compiled": true,
+      "status": "implemented"
+    },
+    {
+      "path": "src/lib.rs",
+      "production_compiled": true,
+      "status": "implemented"
+    },
+    {
+      "path": "src/lifecycle_adapter.rs",
+      "production_compiled": true,
+      "status": "implemented"
+    },
+    {
+      "path": "src/lifecycle_runtime.rs",
+      "production_compiled": true,
+      "status": "implemented"
+    },
+    {
+      "path": "src/object.rs",
+      "production_compiled": true,
+      "status": "implemented"
+    },
+    {
+      "path": "src/ownership.rs",
+      "production_compiled": true,
+      "status": "implemented"
+    },
+    {
+      "path": "src/vm.rs",
+      "production_compiled": true,
+      "status": "implemented"
+    },
+    {
+      "path": "src/lifecycle.rs",
+      "production_compiled": true,
+      "status": "implemented"
+    },
+    {
+      "path": "src/lifecycle_production_tests.rs",
+      "production_compiled": false,
+      "status": "implemented"
+    },
+    {
+      "path": "tests/bounded_lifecycle.rs",
+      "production_compiled": false,
+      "status": "implemented"
+    },
+    {
+      "path": "src/value.rs",
+      "sha256": "782c13b251aa4b9fa41538405a155cbd1ad5d6594f48f65dea33be3e42cf717a",
+      "status": "unchanged prerequisite"
+    },
+    {
+      "path": "src/prepared.rs",
+      "sha256": "0bc6faa740bb51fcc80df0f6b3bd8fe7dae707f255ea9e83f1c177b4367ab544",
+      "status": "unchanged prerequisite"
+    }
+  ],
+  "stage": "2BI"
+}

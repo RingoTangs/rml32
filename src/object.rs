@@ -54,10 +54,52 @@ pub struct ObjectStore {
     global_program: Option<ProgramId>,
     next_program: u32,
     next_object: u32,
-    #[cfg(test)]
     pub(crate) test_life: Option<Rc<crate::lifecycle_adapter::runtime::StoreState>>,
 }
 impl ObjectStore {
+    pub(crate) fn maintain_objects(
+        &mut self,
+        budget: crate::LifecycleBudget,
+        progress: &mut crate::LifecycleProgress,
+    ) {
+        let life = self.test_life.as_ref().unwrap().clone();
+        while progress.drained_objects < budget.objects {
+            let Some(id) = life.head() else { break };
+            let cells = &self.objects[&id].variables;
+            match crate::cell::Cell::lifecycle_clear(cells, || life.detach()) {
+                Ok(held) => {
+                    self.objects.get_mut(&id).unwrap().variables.clear();
+                    life.finish(id);
+                    drop(held);
+                    progress.drained_objects += 1;
+                }
+                Err(e) => {
+                    progress.stop = if e.kind == VmErrorKind::Limit {
+                        crate::LifecycleStop::WorkspaceLimit
+                    } else {
+                        crate::LifecycleStop::BorrowBlocked
+                    };
+                    return;
+                }
+            }
+        }
+        while progress.metadata_examined < budget.metadata_entries {
+            let before = progress.metadata_examined;
+            match life.metadata_one(progress) {
+                Ok(Some(id)) => {
+                    self.objects.remove(&id);
+                }
+                Ok(None) => (),
+                Err(_) => {
+                    progress.stop = crate::LifecycleStop::BorrowBlocked;
+                    return;
+                }
+            }
+            if before == progress.metadata_examined {
+                break;
+            }
+        }
+    }
     /// Register a synthetic synchronous callback, independently of Global code and variables.
     pub fn register_host_function(
         &mut self,
@@ -192,7 +234,6 @@ impl ObjectStore {
             .ok_or_else(|| VmError::new(VmErrorKind::InvalidState, "global program is not bound"))
     }
     pub fn register_program(&mut self, program: PreparedProgram) -> Result<ProgramId, VmError> {
-        #[cfg(test)]
         if self.test_life.is_some()
             && ((program.allow_host_function_values
                 && !self.test_life.as_ref().unwrap().host_function_values)
@@ -237,14 +278,14 @@ impl ObjectStore {
             .collect::<Result<Vec<_>, _>>()?;
         crate::graph::cells(&variables)?;
         let id = ObjectId(self.next_object);
-        self.next_object = self
+        let next_object = self
             .next_object
             .checked_add(1)
             .ok_or_else(|| VmError::new(VmErrorKind::Limit, "object ID space exhausted"))?;
-        #[cfg(test)]
         if let Some(life) = &self.test_life {
             life.register(id)?;
         }
+        self.next_object = next_object;
         self.objects.insert(
             id,
             Object {
@@ -259,7 +300,6 @@ impl ObjectStore {
         Ok(id)
     }
     pub fn get(&self, id: ObjectId) -> Result<&Object, VmError> {
-        #[cfg(test)]
         if self.test_life.as_ref().is_some_and(|life| !life.valid(id)) {
             return Err(VmError::new(
                 VmErrorKind::InvalidObject,
@@ -299,7 +339,6 @@ impl ObjectStore {
         Ok(())
     }
     pub fn remove(&mut self, id: ObjectId) -> Result<(), VmError> {
-        #[cfg(test)]
         if let Some(life) = self.test_life.clone() {
             self.get(id)?;
             if life.request_pending(id)? {
@@ -324,11 +363,12 @@ impl ObjectStore {
     }
 }
 
-#[cfg(test)]
 impl ObjectStore {
+    #[cfg(test)]
     pub(crate) fn with_test_lifecycle(limits: crate::ValueLimits) -> Result<Self, VmError> {
         Self::with_test_capacity(limits, usize::MAX)
     }
+    #[cfg(test)]
     pub(crate) fn with_test_capacity(
         limits: crate::ValueLimits,
         capacity: usize,
@@ -342,6 +382,7 @@ impl ObjectStore {
         )?);
         Ok(store)
     }
+    #[cfg(test)]
     pub(crate) fn with_test_host_lifecycle(limits: crate::ValueLimits) -> Result<Self, VmError> {
         let mut store = Self::new();
         store.value_limits = Rc::new(limits);
@@ -351,6 +392,7 @@ impl ObjectStore {
         )?);
         Ok(store)
     }
+    #[cfg(test)]
     pub(crate) fn with_test_managed_lifecycle(limits: crate::ValueLimits) -> Result<Self, VmError> {
         let mut store = Self::new();
         store.value_limits = Rc::new(limits);
@@ -360,6 +402,7 @@ impl ObjectStore {
         )?);
         Ok(store)
     }
+    #[cfg(test)]
     pub(crate) fn with_test_host_function_lifecycle(
         limits: crate::ValueLimits,
     ) -> Result<Self, VmError> {
@@ -384,6 +427,7 @@ impl ObjectStore {
             None => crate::cell::Cell::new(value),
         }
     }
+    #[cfg(test)]
     pub(crate) fn drain_one_for_test(&mut self) -> Result<(), VmError> {
         let life = self
             .test_life
@@ -400,6 +444,7 @@ impl ObjectStore {
         self.reap_for_test();
         Ok(())
     }
+    #[cfg(test)]
     pub(crate) fn reap_for_test(&mut self) {
         if let Some(life) = &self.test_life {
             self.objects.retain(|id, _| {
@@ -407,15 +452,18 @@ impl ObjectStore {
             });
         }
     }
+    #[cfg(test)]
     pub(crate) fn objects_for_audit_for_test(
         &self,
         id: ObjectId,
     ) -> Option<&[Rc<crate::cell::Cell>]> {
         self.objects.get(&id).map(|o| o.variables.as_slice())
     }
+    #[cfg(test)]
     pub(crate) fn probe_for_test(&self, id: ObjectId) -> std::rc::Weak<()> {
         Rc::downgrade(&self.objects[&id].probe)
     }
+    #[cfg(test)]
     pub(crate) fn lifecycle_snapshot_for_test(&self) -> serde_json::Value {
         let mut snap = self.test_life.as_ref().unwrap().snapshot();
         snap["resident"] =
@@ -423,7 +471,6 @@ impl ObjectStore {
         snap
     }
 }
-#[cfg(test)]
 impl Drop for ObjectStore {
     fn drop(&mut self) {
         if let Some(life) = &self.test_life {

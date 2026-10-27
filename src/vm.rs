@@ -361,7 +361,6 @@ pub struct Vm {
     initialization: Option<InitializationTask>,
     construction: Option<ConstructionTask>,
     rollback_errors: Vec<VmError>,
-    #[cfg(test)]
     exec_leases: Vec<(u64, crate::lifecycle_adapter::runtime::ExecLease)>,
 }
 fn err(kind: VmErrorKind, message: impl Into<String>) -> VmError {
@@ -382,22 +381,13 @@ impl Vm {
             initialization: None,
             construction: None,
             rollback_errors: vec![],
-            #[cfg(test)]
             exec_leases: Vec::new(),
         }
     }
     pub fn with_limits(objects: ObjectStore, limits: VmLimits) -> Self {
-        #[cfg(test)]
-        {
-            let mut vm = Self::new(objects);
-            vm.limits = limits;
-            vm
-        }
-        #[cfg(not(test))]
-        Self {
-            limits,
-            ..Self::new(objects)
-        }
+        let mut vm = Self::new(objects);
+        vm.limits = limits;
+        vm
     }
     pub(crate) fn returned_cell(&self) -> Result<Rc<Cell>, VmError> {
         self.completion
@@ -421,16 +411,12 @@ impl Vm {
     /// Extract storage, cancelling and deleting any unfinished managed lifecycle object.
     pub fn into_objects(mut self) -> ObjectStore {
         self.cleanup_initialization();
-        #[cfg(test)]
         {
             self.cancel_execution_for_test();
             std::mem::replace(&mut self.objects, ObjectStore::new())
         }
-        #[cfg(not(test))]
-        self.objects
     }
     fn cleanup_initialization(&mut self) {
-        #[cfg(test)]
         self.enqueue_task_cleanup_for_test();
         let init = self.initialization.take();
         let construct = self.construction.take();
@@ -444,11 +430,9 @@ impl Vm {
     }
     /// Allocate a new object and start only its bounded initialization segments.
     pub fn begin_initialize(&mut self, program: ProgramId) -> Result<ObjectId, VmError> {
-        #[cfg(test)]
         if self.test_managed_for_test() {
             return self.begin_initialize_managed_for_test(program);
         }
-        #[cfg(test)]
         if self
             .objects
             .test_life
@@ -548,13 +532,10 @@ impl Vm {
         let position = task.position + 1;
         if let Some(&constitution) = p.init_order.get(position) {
             let id = self.frame_id()?;
-            #[cfg(test)]
             let lease = self.prepare_exec_for_test(Some(frame.object()?))?;
-            #[cfg(test)]
             self.release_exec_to_for_test(0);
             self.frames[0] =
                 Self::initialization_frame(id, frame.program(), frame.object()?, constitution);
-            #[cfg(test)]
             self.install_exec_for_test(id, lease);
             let task = self.initialization.as_mut().unwrap();
             task.position = position;
@@ -562,7 +543,6 @@ impl Vm {
         } else {
             self.objects
                 .set_initialization(frame.object()?, InitializationState::Initialized)?;
-            #[cfg(test)]
             self.release_exec_to_for_test(0);
             self.frames.clear();
             self.reference_cells.clear();
@@ -589,7 +569,6 @@ impl Vm {
         program: ProgramId,
         parameter: Option<Value>,
     ) -> Result<ObjectId, VmError> {
-        #[cfg(test)]
         if self
             .objects
             .test_life
@@ -622,12 +601,7 @@ impl Vm {
         if let Some(value) = &parameter {
             crate::graph::values(std::slice::from_ref(value))?;
         }
-        #[cfg(test)]
         let parameter = parameter.map(|v| self.test_owned_for_test(v)).transpose()?;
-        #[cfg(not(test))]
-        let parameter = parameter
-            .map(crate::ownership::OwnedValue::new)
-            .transpose()?;
         let object = self.begin_initialize(program)?;
         self.objects
             .set_lifecycle(object, LifecycleState::Constructing)?;
@@ -644,7 +618,6 @@ impl Vm {
         Ok(object)
     }
     fn clear_task_frames(&mut self) {
-        #[cfg(test)]
         self.release_exec_to_for_test(0);
         self.catches.clear();
         self.frames.clear();
@@ -667,7 +640,6 @@ impl Vm {
     }
     fn finish_construction_failure(&mut self) {
         let task = self.construction.take().unwrap();
-        #[cfg(test)]
         if self.test_managed_for_test() {
             self.objects
                 .test_life
@@ -684,11 +656,9 @@ impl Vm {
         self.failure = Some(primary);
     }
     fn construction_error(&mut self, error: VmError) {
-        #[cfg(test)]
         let cancelled = self.test_task_pending_for_test();
         let task = self.construction.as_mut().unwrap();
         let missing = self.objects.get(task.object).is_err();
-        #[cfg(test)]
         let missing = missing || cancelled;
         if task.primary.is_none() {
             task.primary = Some(error);
@@ -752,7 +722,6 @@ impl Vm {
                 .collect::<Vec<_>>(),
         )?;
         let id = self.frame_id()?;
-        #[cfg(test)]
         let lease = self.prepare_exec_for_test(Some(self.construction.as_ref().unwrap().object))?;
         let task = self.construction.as_ref().unwrap();
         self.frames = vec![Frame {
@@ -766,7 +735,6 @@ impl Vm {
             entered: false,
             phase: EntryPhase::Unchecked,
         }];
-        #[cfg(test)]
         self.install_exec_for_test(id, lease);
         self.stack = arguments;
         self.catches.clear();
@@ -1126,12 +1094,10 @@ impl Vm {
             arguments.push(StackEntry::Value(plan.output(value)?));
         }
         let id = self.frame_id()?;
-        #[cfg(test)]
         let lease = self.prepare_exec_for_test(Some(object))?;
         plan.commit()?;
         self.stack = arguments;
         self.catches.clear();
-        #[cfg(test)]
         self.release_exec_to_for_test(0);
         self.frames = vec![Frame {
             id,
@@ -1144,7 +1110,6 @@ impl Vm {
             entered: false,
             phase: EntryPhase::Unchecked,
         }];
-        #[cfg(test)]
         self.install_exec_for_test(id, lease);
         self.reference_cells.clear();
         self.completion = None;
@@ -1535,11 +1500,9 @@ impl Vm {
         // Preflight types without consuming operands or normalizing caller-owned slots.
         // The ordinary 0f entry performs the batch commit after the frame is installed.
         self.argument_updates(&next, target)?;
-        #[cfg(test)]
         let lease = self.prepare_exec_for_test(next.active_object)?;
         self.frame_id()?;
         self.stack.truncate(bp);
-        #[cfg(test)]
         self.install_exec_for_test(next.id, lease);
         self.frames.push(next);
         Ok(())
@@ -1640,10 +1603,8 @@ impl Vm {
         if global {
             self.argument_updates(&next, target)?;
         }
-        #[cfg(test)]
         let lease = self.prepare_exec_for_test(next.active_object)?;
         self.frame_id()?;
-        #[cfg(test)]
         self.install_exec_for_test(next.id, lease);
         self.frames.push(next);
         Ok(())
@@ -1821,12 +1782,17 @@ impl Vm {
             bound_count: count,
             counter: crate::ownership::Counter::new()?,
         }));
-        #[cfg(test)]
-        if let Some(life) = &self.objects.test_life {
-            life.register_function(&function)?;
-        }
+        let reservation = self
+            .objects
+            .test_life
+            .as_ref()
+            .map(|life| life.reserve_function(&function))
+            .transpose()?;
         let cell = plan.output(Value::Function(function))?;
         plan.commit()?;
+        if let Some(reservation) = reservation {
+            reservation.commit();
+        }
         self.stack.truncate(n - count);
         self.stack.push(StackEntry::Value(cell));
         self.frames.last_mut().unwrap().pc += 1;
@@ -2025,7 +1991,6 @@ impl Vm {
             entered: false,
             phase: EntryPhase::Unchecked,
         };
-        #[cfg(test)]
         let lease = self.prepare_exec_for_test(next.active_object)?;
         // Net ownership of the target is unchanged by its move to activation.
         // Branch selection above used semantic owners before provisional output reservations.
@@ -2037,7 +2002,6 @@ impl Vm {
         self.stack.truncate(prefix);
         self.stack.extend(cells.into_iter().rev());
         self.frames.last_mut().unwrap().pc += 1;
-        #[cfg(test)]
         self.install_exec_for_test(next.id, lease);
         self.frames.push(next);
         Ok(())
@@ -2377,7 +2341,6 @@ impl Vm {
         };
         plan.commit()?;
         self.stack.truncate(floor);
-        #[cfg(test)]
         self.release_exec_to_for_test(self.frames.len() - 1);
         self.frames.pop();
         if let Some(entry) = result_entry {
@@ -2888,7 +2851,6 @@ impl Vm {
         // or budget yield may occur between these two native-corresponding phases.
         if let Some(floor) = child_floor {
             self.stack.truncate(floor);
-            #[cfg(test)]
             self.release_exec_to_for_test(depth);
             self.frames.truncate(depth);
         }
@@ -2984,7 +2946,6 @@ impl Vm {
         &mut self,
         fault_site: &mut Option<RuntimeFaultSite>,
     ) -> Result<(), VmError> {
-        #[cfg(test)]
         if self.test_task_pending_for_test() {
             return Err(err(
                 VmErrorKind::InvalidObject,
@@ -3016,9 +2977,9 @@ impl Vm {
                 ));
             }
         }
-        #[cfg(test)]
         if self.objects.test_life.as_ref().is_some_and(|life| {
-            matches!(opcode, 0x12 | 0x23 | 0x50) || (opcode == 0x06 && !life.host_boundary)
+            (life.ctx.quotas.is_none() && matches!(opcode, 0x12 | 0x23 | 0x50))
+                || (opcode == 0x06 && !life.host_boundary)
         }) {
             return Err(err(
                 VmErrorKind::UnsupportedFeature,
@@ -3248,7 +3209,6 @@ impl Vm {
                         }
                     }
                 };
-                #[cfg(test)]
                 if let Some(life) = &self.objects.test_life
                     && !cell.adapter_bound()
                 {
@@ -3698,7 +3658,6 @@ impl Vm {
                         "finishAction cannot complete an initialization task",
                     ));
                 }
-                #[cfg(test)]
                 {
                     self.release_exec_to_for_test(0);
                     if self.objects.test_life.is_some() {
@@ -6718,8 +6677,8 @@ mod mapping_loop_tests {
     }
 }
 
-#[cfg(test)]
 impl Vm {
+    #[cfg(test)]
     pub(crate) fn host_target_alias_for_test(&self) -> Rc<Cell> {
         self.value_cell(self.stack.len() - 1).unwrap()
     }
@@ -6837,6 +6796,7 @@ impl Vm {
         self.rollback_errors.clear();
         Ok(object)
     }
+    #[cfg(test)]
     pub(crate) fn managed_snapshot_for_test(&self) -> serde_json::Value {
         use serde_json::json;
         json!({"init":self.initialization.as_ref().map(|t|json!({"object":t.object.get(),"position":t.position,"constitution":t.constitution})),
@@ -6910,6 +6870,7 @@ impl Vm {
         self.completion = None;
         self.failure = None;
     }
+    #[cfg(test)]
     pub(crate) fn lifecycle_audit_omitting_task_for_test(
         &self,
         roots: &[&crate::ownership::OwnedValue],
@@ -6925,6 +6886,7 @@ impl Vm {
             .unwrap()
             .audit_host(&frames, &self.exec_leases, roots);
     }
+    #[cfg(test)]
     pub(crate) fn lifecycle_audit_host_for_test(&self, roots: &[&crate::ownership::OwnedValue]) {
         let mut owned = roots.to_vec();
         if let Some(parameter) = self
@@ -6945,6 +6907,7 @@ impl Vm {
             .unwrap()
             .audit_host(&frames, &self.exec_leases, &owned);
     }
+    #[cfg(test)]
     fn lifecycle_audit_for_test(&self) {
         if let Some(life) = &self.objects.test_life {
             let frames = self
@@ -6975,7 +6938,6 @@ impl Vm {
         }
     }
 }
-#[cfg(test)]
 impl Drop for Vm {
     fn drop(&mut self) {
         if self.objects.test_life.is_some() {

@@ -37,7 +37,7 @@ pub(crate) enum WeakHeader {
     Function(Weak<crate::value::FunctionData>),
 }
 impl WeakHeader {
-    fn upgrade(&self) -> Option<Value> {
+    pub(crate) fn upgrade(&self) -> Option<Value> {
         match self {
             Self::Array(a) => a
                 .upgrade()
@@ -85,6 +85,18 @@ pub(crate) fn register_cell(cell: &Rc<Cell>, value: &Value) -> Result<(), VmErro
     });
     bind(cell.id(), value);
     Ok(())
+}
+pub(crate) fn prune_cell(id: u64) {
+    INDEX.with_borrow_mut(|i| {
+        i.cells.remove(&id);
+        i.parents.remove(&id);
+    });
+}
+pub(crate) fn prune_header(id: u64) {
+    INDEX.with_borrow_mut(|i| {
+        i.headers.remove(&id);
+        i.owners.remove(&id);
+    });
 }
 // Weak cache entries are reserved before mutation. A failed transaction leaves
 // only stale weak metadata, filtered against the actual/projected payload.

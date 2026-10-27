@@ -1,0 +1,171 @@
+{
+  "adapter": {
+    "business_bytecode_execution": false,
+    "full_model_equivalence": false,
+    "input_sha256": "3c72a37f9ac0a152236f7be508c65b1e54c6ea01a10c6d65fd13abde7b515348",
+    "log_sha256": "f99f6a40151abdc8f0fea44f003a29f0583590d2f14209d7c4471fe5f7bef684",
+    "native_execution": false,
+    "real_cell_execution": true,
+    "replay": {
+      "physical_teardowns": 18,
+      "rejected": 2,
+      "steps": 146,
+      "traces": 18
+    },
+    "source_sha256": {
+      "docs/stage2as-design/model.py": "0d8b2fe0a6e20618314eb431dccb7b7e168ff9a544fac9f7cf398920b5182de3",
+      "docs/stage2ba-design/model.py": "e2561fafc55a7ab1be6321d9d4dbd3fd11dff9aa462030e61160812b0de088fc",
+      "docs/stage2bc-adapter/adapter_diff.py": "5f3bba182b6d1546fc02ec71051fa69cb999b64804c89f0022cc988034e069d6",
+      "src/cell.rs": "290d306faeefdbd73e17ac18359e91d5e70740d452171fbd97e45dc3caf786a0",
+      "src/copy_plan.rs": "5fab8d0ab19209ce76cd9258a3d128c4c7aaafe4371e774af36f255eced68505",
+      "src/lib.rs": "b9dc8f8b482d8efbd1f9d5d5315f59b9ff26aaf1658fad19e4021a0fc9027e50",
+      "src/lifecycle_adapter.rs": "698110560438922e12c64a24a71ca25bbc050cc9d0d77875b8206a10f9a8b3c6",
+      "src/ownership.rs": "973fcbb54bf1040fdda55de6c0f376d57097e1d0cfc57343e208712f783d1625"
+    },
+    "stage": "2BC",
+    "status": "pass"
+  },
+  "callable": {
+    "input_sha256": "8bd5c56692d67c2c3abead9bc4dea77d995b828a52d7271a7beea7b3467b330d",
+    "log_sha256": "026c59f8abb7bf7d241acd4d829c190a7f3b0d86b4c7967b158ac5ac9e4b6496",
+    "replay": {
+      "frozen_model_traces": 4,
+      "physical_teardowns": 14,
+      "steps": 120,
+      "traces": 14
+    },
+    "source_sha256": {
+      "docs/stage2ba-design/model.py": "e2561fafc55a7ab1be6321d9d4dbd3fd11dff9aa462030e61160812b0de088fc",
+      "docs/stage2bg-host-function-test/callable_diff.py": "e63bd8bb80dcaa3414fb68f1263dc0ad8f9f95f468f2e80e61733bfc31469177",
+      "src/boundary.rs": "2a76d68967c57800a02d4f3e8e0097ef4f772db27b09c264d01632c6c42115ea",
+      "src/lifecycle_host_function_tests.rs": "b0158b957d42466fb4af751f385626f1c0b3c2c1585bbae0e60b0d8548e0ef1a",
+      "src/lifecycle_runtime.rs": "bcdee7b690eff1a484ba3f4a78d89bdc7bcaf93324461bf3fee0c4dadb6582b1",
+      "src/object.rs": "24d67273a1c629dc5cd50356edff12d80015df0371ec4e836d89cf39365399ae",
+      "src/vm.rs": "82b293b28b5b8501522287672258dd9768412a06300adbb65ad20f70b0e23014",
+      "tests/boundary_support.rs.inc": "3c914473bcf99d3642dc5e2920ff653b2b329068aec7f7ec3a5b2a69857139d5"
+    },
+    "stage": "2BG",
+    "status": "pass"
+  },
+  "host": {
+    "input_sha256": "b3ee3850bc7c25e72dbb43017cf71cf84630878dd09aacdead1c80567f1a7bf7",
+    "log_sha256": "be1f5f9fe2d0dece5d3f514e14a82d57218c6c36b01f5df82fa349af6c14197d",
+    "replay": {
+      "physical_teardowns": 12,
+      "steps": 75,
+      "traces": 12
+    },
+    "source_sha256": {
+      "docs/stage2ba-design/model.py": "e2561fafc55a7ab1be6321d9d4dbd3fd11dff9aa462030e61160812b0de088fc",
+      "docs/stage2be-host-test/host_diff.py": "b1cb4822ec0da68809603e3bec21f1d85e2919bbbd87242154459f89feb87e36",
+      "src/boundary.rs": "2a76d68967c57800a02d4f3e8e0097ef4f772db27b09c264d01632c6c42115ea",
+      "src/lifecycle_adapter.rs": "698110560438922e12c64a24a71ca25bbc050cc9d0d77875b8206a10f9a8b3c6",
+      "src/lifecycle_boundary_tests.rs": "2ff7a9e11d13780df3d460005889b91c92c2ebf58803c162c987ec3fa8cdbb35",
+      "src/lifecycle_runtime.rs": "bcdee7b690eff1a484ba3f4a78d89bdc7bcaf93324461bf3fee0c4dadb6582b1",
+      "src/object.rs": "24d67273a1c629dc5cd50356edff12d80015df0371ec4e836d89cf39365399ae",
+      "src/vm.rs": "82b293b28b5b8501522287672258dd9768412a06300adbb65ad20f70b0e23014",
+      "tests/boundary_support.rs.inc": "3c914473bcf99d3642dc5e2920ff653b2b329068aec7f7ec3a5b2a69857139d5"
+    },
+    "stage": "2BE",
+    "status": "pass"
+  },
+  "kernel": {
+    "business_bytecode_execution": false,
+    "domains": [
+      {
+        "accepted_transitions": 2771,
+        "complete": true,
+        "depth": 6,
+        "max_states": 200000,
+        "max_transitions": 1000000,
+        "objects": 1,
+        "rejected_transitions": 3236,
+        "state_set_sha256": "66ba29a89cd441b193d219be6e5699e182a91523911f687144006a4fbdab624c",
+        "states": 341
+      },
+      {
+        "accepted_transitions": 4827,
+        "complete": true,
+        "depth": 4,
+        "max_states": 200000,
+        "max_transitions": 1000000,
+        "objects": 2,
+        "rejected_transitions": 4114,
+        "state_set_sha256": "ea34b3a1ce59ee937c97046dfa5dcbedc63900bc50f0cf24a22b8c3ff395a075",
+        "states": 891
+      }
+    ],
+    "full_state_space_proof": false,
+    "input_bytes": 6154741,
+    "input_sha256": "feff21395db0e9fe47eb991662f87f5dcb8979ff15d6d922ceedc3627dc0a5ac",
+    "native_execution": false,
+    "replay": {
+      "accepted": 7598,
+      "physical_teardowns": 14948,
+      "rejected": 7350,
+      "transitions": 14948
+    },
+    "replay_log_sha256": "f6eb4f86ad8e98ccc039e338d1cd4949d5b4ab4c6fdf13f95dbff2d5d413c47c",
+    "rust_kernel_execution": true,
+    "source_sha256": {
+      "docs/stage2ba-design/explore.py": "56c2993dd773145bde3beed759139da27171055ff7b5dacdf7b1acf323f3e27c",
+      "docs/stage2ba-design/model.py": "e2561fafc55a7ab1be6321d9d4dbd3fd11dff9aa462030e61160812b0de088fc",
+      "docs/stage2bb-kernel/differential.py": "363c0c4db20a838295d51844348b5a9d7a211517ab7a6674199b809f2a7176c9",
+      "tests/lifecycle_kernel.rs": "bfedb88ddd75bb27b8de3465931780c55ff193154fba68ff18b9a4599730f11c",
+      "tests/support/lifecycle_kernel.rs": "1bd348cb166afa99ca2168a8a93faf5da6d4e8342200c2d3bb00c9ff1a48b2d6"
+    },
+    "stage": "2BB",
+    "status": "pass"
+  },
+  "managed": {
+    "input_sha256": "478d301f7518fadc9aa4dba2e57f8f0e51ab593b1cfb90d52b9a596fd1778df5",
+    "log_sha256": "e4c33bb3fff7acf4b4abab35f2f8da58aebe33d4c28265cf7e66629300f05678",
+    "replay": {
+      "frozen_model_traces": 3,
+      "physical_teardowns": 13,
+      "steps": 85,
+      "traces": 13
+    },
+    "source_sha256": {
+      "docs/stage2ba-design/model.py": "e2561fafc55a7ab1be6321d9d4dbd3fd11dff9aa462030e61160812b0de088fc",
+      "docs/stage2bf-managed-test/managed_diff.py": "ce7859c883948fc8838ac54aaad1d9cd2059e65add48e3ead971600927fe6738",
+      "src/boundary.rs": "2a76d68967c57800a02d4f3e8e0097ef4f772db27b09c264d01632c6c42115ea",
+      "src/lifecycle_managed_tests.rs": "8183cc31fd4cb9b78d88878218f59befc557f7e70fe561916706fb5f513e289e",
+      "src/lifecycle_runtime.rs": "bcdee7b690eff1a484ba3f4a78d89bdc7bcaf93324461bf3fee0c4dadb6582b1",
+      "src/object.rs": "24d67273a1c629dc5cd50356edff12d80015df0371ec4e836d89cf39365399ae",
+      "src/vm.rs": "82b293b28b5b8501522287672258dd9768412a06300adbb65ad20f70b0e23014",
+      "tests/boundary_support.rs.inc": "3c914473bcf99d3642dc5e2920ff653b2b329068aec7f7ec3a5b2a69857139d5"
+    },
+    "stage": "2BF",
+    "status": "pass"
+  },
+  "stage": "2BI",
+  "status": "pass",
+  "vm": {
+    "business_bytecode_execution": false,
+    "full_native_equivalence": false,
+    "input_sha256": "89522103c2a27594c6d1b9bfe6ad5622bc8aab3f20501a011bd46d966dcd4e72",
+    "log_sha256": "cb900a756e4c92f0659fd467401e48050c977e1b3f14d2aeefea3b1ca1bb9f57",
+    "native_execution": false,
+    "replay": {
+      "physical_teardowns": 10,
+      "steps": 70,
+      "traces": 10
+    },
+    "source_sha256": {
+      "docs/stage2ba-design/model.py": "e2561fafc55a7ab1be6321d9d4dbd3fd11dff9aa462030e61160812b0de088fc",
+      "docs/stage2bd-runtime-test/vm_diff.py": "67f3b5ea0bd8e9e1df4b8e30a217dd60d6c663f41bd208b1319ca8655b53cd44",
+      "src/cell.rs": "290d306faeefdbd73e17ac18359e91d5e70740d452171fbd97e45dc3caf786a0",
+      "src/container.rs": "2004ea3e71a8cd08754a1b6a114adccb3b0a63f0373616a23d06afaa6a407625",
+      "src/lib.rs": "b9dc8f8b482d8efbd1f9d5d5315f59b9ff26aaf1658fad19e4021a0fc9027e50",
+      "src/lifecycle_adapter.rs": "698110560438922e12c64a24a71ca25bbc050cc9d0d77875b8206a10f9a8b3c6",
+      "src/lifecycle_runtime.rs": "bcdee7b690eff1a484ba3f4a78d89bdc7bcaf93324461bf3fee0c4dadb6582b1",
+      "src/lifecycle_vm_tests.rs": "1dcd62c217e2cec692ad4daab2148139b01c19a1c5eb5e46d51e2552fd542b00",
+      "src/object.rs": "24d67273a1c629dc5cd50356edff12d80015df0371ec4e836d89cf39365399ae",
+      "src/vm.rs": "82b293b28b5b8501522287672258dd9768412a06300adbb65ad20f70b0e23014"
+    },
+    "stage": "2BD",
+    "status": "pass",
+    "synthetic_vm_execution": true
+  }
+}

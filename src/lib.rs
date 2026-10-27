@@ -1,54 +1,28 @@
 //! Read-only parsers plus a bounded Magic559 core interpreter.
 //! Reference artifacts are only parsed; execution tests use synthetic programs.
 
-#[cfg(test)]
 macro_rules! life_cell {
     ($owner:expr, $value:expr $(,)?) => {
         $owner.test_cell($value)
     };
 }
-#[cfg(not(test))]
-macro_rules! life_cell {
-    ($owner:expr, $value:expr $(,)?) => {
-        crate::cell::Cell::new($value)
-    };
-}
-#[cfg(test)]
 macro_rules! life_plan {
     ($owner:expr) => {
         $owner.test_plan()
     };
 }
-#[cfg(not(test))]
-macro_rules! life_plan {
-    ($owner:expr) => {
-        crate::copy_plan::CopyPlan::default()
-    };
-}
-#[cfg(test)]
 macro_rules! life_array {
     ($owner:expr, $value:expr $(,)?) => {
         $owner.test_array($value)
     };
 }
-#[cfg(not(test))]
-macro_rules! life_array {
-    ($owner:expr, $value:expr $(,)?) => {
-        crate::Value::array($value)
-    };
-}
-#[cfg(test)]
 macro_rules! life_mapping {
     ($owner:expr, $value:expr $(,)?) => {
         $owner.test_mapping($value)
     };
 }
-#[cfg(not(test))]
-macro_rules! life_mapping {
-    ($owner:expr, $value:expr $(,)?) => {
-        crate::Value::mapping($value)
-    };
-}
+mod lifecycle;
+pub use lifecycle::{LifecycleBudget, LifecycleLimits, LifecycleProgress, LifecycleStop};
 
 mod boundary;
 mod bytes;
@@ -140,5 +114,4 @@ mod regression_api {
 #[cfg(test)]
 mod regression;
 
-#[cfg(test)]
 mod lifecycle_adapter;

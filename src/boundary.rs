@@ -115,15 +115,89 @@ struct Registry {
     function_origin: Rc<()>,
     alive: Cell<bool>,
     next: Cell<u64>,
+    pending: Cell<usize>,
     entries: RefCell<Vec<Entry>>,
     limits: Rc<ValueLimits>,
-    #[cfg(test)]
     test_life: Option<Rc<crate::lifecycle_adapter::runtime::StoreState>>,
     // Entries precede the parked store so final Registry teardown releases roots first.
-    #[cfg(test)]
     closed_store: RefCell<Option<object::ObjectStore>>,
 }
 impl Registry {
+    fn maintain(
+        &self,
+        store: &mut object::ObjectStore,
+        budget: crate::LifecycleBudget,
+    ) -> Result<crate::LifecycleProgress, VmError> {
+        use crate::{LifecycleProgress, LifecycleStop};
+        let life = self
+            .test_life
+            .as_ref()
+            .filter(|l| l.ctx.quotas.is_some())
+            .ok_or_else(|| {
+                VmError::new(VmErrorKind::UnsupportedFeature, "legacy lifecycle mode")
+            })?;
+        if !self.alive.get() {
+            return Err(invalid("store is closed"));
+        }
+        let mut p = LifecycleProgress::new();
+        if budget.host_roots > 0 {
+            match self.entries.try_borrow_mut() {
+                Ok(mut entries) => {
+                    while p.retired_roots < budget.host_roots {
+                        let next = entries
+                            .iter()
+                            .enumerate()
+                            .filter(|(_, e)| e.retired.get())
+                            .min_by_key(|(_, e)| e.id)
+                            .map(|(i, _)| i);
+                        let Some(i) = next else { break };
+                        let views = entries[i]
+                            .payload
+                            .lifecycle
+                            .as_ref()
+                            .map(|v| vec![v.view()])
+                            .unwrap_or_default();
+                        match crate::lifecycle_adapter::preflight_release(&views, &BTreeSet::new())
+                        {
+                            Ok(()) => {
+                                drop(entries.swap_remove(i));
+                                self.pending.set(self.pending.get() - 1);
+                                p.retired_roots += 1;
+                            }
+                            Err(e) => {
+                                p.stop = if e.kind == VmErrorKind::Limit {
+                                    LifecycleStop::WorkspaceLimit
+                                } else {
+                                    LifecycleStop::BorrowBlocked
+                                };
+                                break;
+                            }
+                        }
+                    }
+                }
+                Err(_) => p.stop = LifecycleStop::BorrowBlocked,
+            }
+        }
+        if !matches!(
+            p.stop,
+            LifecycleStop::BorrowBlocked | LifecycleStop::WorkspaceLimit
+        ) {
+            store.maintain_objects(budget, &mut p);
+        }
+        p.pending_roots = self.pending.get();
+        p.queued_objects = life.queue_count();
+        p.scan_complete = life.scan_complete();
+        if !matches!(
+            p.stop,
+            LifecycleStop::BorrowBlocked | LifecycleStop::WorkspaceLimit
+        ) && p.pending_roots == 0
+            && p.queued_objects == 0
+            && p.scan_complete
+        {
+            p.stop = LifecycleStop::Complete;
+        }
+        Ok(p)
+    }
     fn program(&self, slot: value::ProgramId) -> ProgramId {
         ProgramId {
             origin: self.identity.id,
@@ -166,23 +240,41 @@ impl Registry {
             return false;
         };
         let mut i = 0;
+        let mut blocked = false;
         while i < entries.len() {
             if entries[i].retired.get() {
+                if self
+                    .test_life
+                    .as_ref()
+                    .is_some_and(|life| life.ctx.quotas.is_some())
+                {
+                    let views = entries[i]
+                        .payload
+                        .lifecycle
+                        .as_ref()
+                        .map(|v| vec![v.view()])
+                        .unwrap_or_default();
+                    if crate::lifecycle_adapter::preflight_release(&views, &BTreeSet::new())
+                        .is_err()
+                    {
+                        blocked = true;
+                        i += 1;
+                        continue;
+                    }
+                }
                 drop(entries.swap_remove(i));
+                self.pending.set(self.pending.get() - 1);
             } else {
                 i += 1;
             }
         }
-        #[cfg(test)]
         let release_store = !self.alive.get() && entries.is_empty();
-        #[cfg(test)]
         drop(entries);
-        #[cfg(test)]
         if release_store {
             let store = self.closed_store.borrow_mut().take();
             drop(store);
         }
-        true
+        !blocked
     }
     fn close(&self) {
         self.alive.set(false);
@@ -243,10 +335,7 @@ impl Registry {
             .try_reserve(1)
             .map_err(|_| limit("host root allocation failed"))?;
         let retired = Rc::new(Cell::new(false));
-        #[cfg(test)]
         let payload = self.test_owned(value)?;
-        #[cfg(not(test))]
-        let payload = OwnedValue::new(value)?;
         entries.push(Entry {
             id,
             retired: retired.clone(),
@@ -415,7 +504,6 @@ impl Registry {
     }
     fn array(self: &Rc<Self>, inputs: &[ValueInput<'_>]) -> Result<HostValue, VmError> {
         let _scope = crate::graph::Scope::new(*self.limits);
-        #[cfg(test)]
         if let Some(life) = &self.test_life {
             return self.publish(life.array(self.inputs(inputs)?)?);
         }
@@ -433,7 +521,6 @@ impl Registry {
             .iter()
             .map(|&(k, v)| Ok((self.input(k)?, self.input(v)?)))
             .collect::<Result<_, VmError>>()?;
-        #[cfg(test)]
         if let Some(life) = &self.test_life {
             return self.publish(life.mapping(values)?);
         }
@@ -462,7 +549,9 @@ impl fmt::Debug for HostValue {
 }
 impl Drop for HostValue {
     fn drop(&mut self) {
-        self.retired.set(true);
+        if !self.retired.replace(true) {
+            self.registry.pending.set(self.registry.pending.get() + 1);
+        }
         self.registry.drain();
     }
 }
@@ -528,7 +617,6 @@ pub struct ObjectStore {
 }
 impl Drop for ObjectStore {
     fn drop(&mut self) {
-        #[cfg(test)]
         if self.registry.test_life.is_some() {
             if let Some(inner) = self.inner.take() {
                 self.registry.close_store_for_test(inner);
@@ -541,6 +629,29 @@ impl Drop for ObjectStore {
     }
 }
 impl ObjectStore {
+    /// Opt in to D08 lifecycle accounting. Existing constructors remain legacy.
+    pub fn with_bounded_lifecycle(
+        values: ValueLimits,
+        limits: crate::LifecycleLimits,
+    ) -> Result<Self, VmError> {
+        limits.validate()?;
+        let mut store = Self::with_limits(values)?;
+        let inner = store.inner.as_mut().unwrap();
+        let life = crate::lifecycle_adapter::runtime::StoreState::bounded(
+            inner.function_origin.clone(),
+            values,
+            limits,
+        )?;
+        inner.test_life = Some(life.clone());
+        Rc::get_mut(&mut store.registry).unwrap().test_life = Some(life);
+        Ok(store)
+    }
+    pub fn maintain_lifecycle(
+        &mut self,
+        budget: crate::LifecycleBudget,
+    ) -> Result<crate::LifecycleProgress, VmError> {
+        self.registry.maintain(self.inner.as_mut().unwrap(), budget)
+    }
     pub fn new() -> Result<Self, VmError> {
         Self::with_limits(ValueLimits::default())
     }
@@ -553,10 +664,9 @@ impl ObjectStore {
             function_origin: inner.function_origin.clone(),
             alive: Cell::new(true),
             next: Cell::new(1),
+            pending: Cell::new(0),
             entries: RefCell::new(Vec::new()),
-            #[cfg(test)]
             test_life: None,
-            #[cfg(test)]
             closed_store: RefCell::new(None),
             limits,
         });
@@ -748,21 +858,15 @@ impl StoreMut<'_> {
                                 ))
                             })?;
                             registry.snapshot(raw).map_err(host_error)?;
-                            #[cfg(test)]
-                            return registry
+                            registry
                                 .test_owned(raw.clone())
                                 .map(Some)
-                                .map_err(host_error);
-                            #[cfg(not(test))]
-                            OwnedValue::new(raw.clone()).map(Some).map_err(host_error)
+                                .map_err(host_error)
                         }
                         HostResult::Owned(value) => {
                             let raw = registry.raw(&value).map_err(host_error)?;
                             registry.snapshot(&raw).map_err(host_error)?;
-                            #[cfg(test)]
-                            return registry.test_owned(raw).map(Some).map_err(host_error);
-                            #[cfg(not(test))]
-                            OwnedValue::new(raw).map(Some).map_err(host_error)
+                            registry.test_owned(raw).map(Some).map_err(host_error)
                         }
                     }
                 }),
@@ -853,7 +957,6 @@ pub struct Vm {
 }
 impl Drop for Vm {
     fn drop(&mut self) {
-        #[cfg(test)]
         if self.registry.test_life.is_some() {
             if let Some(inner) = self.inner.take() {
                 self.registry.close_store_for_test(inner.into_objects());
@@ -866,6 +969,13 @@ impl Drop for Vm {
     }
 }
 impl Vm {
+    pub fn maintain_lifecycle(
+        &mut self,
+        budget: crate::LifecycleBudget,
+    ) -> Result<crate::LifecycleProgress, VmError> {
+        self.registry
+            .maintain(self.inner.as_mut().unwrap().objects_mut(), budget)
+    }
     pub fn new(mut objects: ObjectStore) -> Self {
         Self {
             inner: Some(vm::Vm::new(objects.inner.take().unwrap())),
@@ -1079,7 +1189,6 @@ impl fmt::Debug for HostFunction {
     }
 }
 
-#[cfg(test)]
 impl Registry {
     fn test_owned(&self, value: value::Value) -> Result<OwnedValue, VmError> {
         match &self.test_life {
@@ -1107,6 +1216,7 @@ impl ObjectStore {
             function_origin: inner.function_origin.clone(),
             alive: Cell::new(true),
             next: Cell::new(1),
+            pending: Cell::new(0),
             entries: RefCell::new(Vec::new()),
             limits: inner.value_limits.clone(),
             test_life: inner.test_life.clone(),
@@ -1127,6 +1237,7 @@ impl ObjectStore {
             function_origin: inner.function_origin.clone(),
             alive: Cell::new(true),
             next: Cell::new(1),
+            pending: Cell::new(0),
             entries: RefCell::new(Vec::new()),
             limits: inner.value_limits.clone(),
             test_life: inner.test_life.clone(),
@@ -1147,6 +1258,7 @@ impl ObjectStore {
             function_origin: inner.function_origin.clone(),
             alive: Cell::new(true),
             next: Cell::new(1),
+            pending: Cell::new(0),
             entries: RefCell::new(Vec::new()),
             limits: inner.value_limits.clone(),
             test_life: inner.test_life.clone(),
@@ -1161,6 +1273,10 @@ impl ObjectStore {
 #[cfg(test)]
 #[path = "lifecycle_host_function_tests.rs"]
 mod lifecycle_host_function_tests;
+
+#[cfg(test)]
+#[path = "lifecycle_production_tests.rs"]
+mod lifecycle_production_tests;
 
 #[cfg(test)]
 #[path = "lifecycle_managed_tests.rs"]

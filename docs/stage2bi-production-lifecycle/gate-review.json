@@ -1,0 +1,19 @@
+{
+  "bounded_lifecycle_ready": true,
+  "dependencies_changed": false,
+  "direct_owner_capture_ready": false,
+  "existing_models_changed": false,
+  "gate_scope": "bounded policy implemented; native-equivalent lifecycle and capture promotion remain closed",
+  "implementation_ready": false,
+  "native_unknowns": 20,
+  "new_native_analysis": false,
+  "new_quota_contract_model_added": false,
+  "non_scalar_ready": false,
+  "production_contract_validated": true,
+  "production_lifecycle_implemented": true,
+  "public_api_changed": true,
+  "runtime_changed": true,
+  "stage": "2BI",
+  "stage2_complete": false,
+  "target_execution": "none"
+}
