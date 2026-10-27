@@ -1,3 +1,5 @@
+> 阶段 2BF：已接入托管初始化、多层构造与失败回滚的生命周期测试，覆盖真实帧租约、参数所有权及显式清理队列；生产运行时/API 和捕获门禁不变。详见 [托管测试总览](docs/stage2bf-managed-test/overview.md)。
+
 > 阶段 2BE：已接入真实 Host 根、直接同步回调及关闭存储保活的测试模式，完成逐检查点回放；生产运行时/API 与捕获门禁不变。详见 [Host 测试总览](docs/stage2be-host-test/overview.md)。
 
 > 阶段 2BD：已交付真实 ObjectStore 与 VM 帧生命周期的测试接入，覆盖执行租约、延迟删除及显式 drain/reap；生产运行时/API 和捕获门禁不变。详见 [测试总览](docs/stage2bd-runtime-test/overview.md)。

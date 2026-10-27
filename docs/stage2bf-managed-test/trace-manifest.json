@@ -1,0 +1,4989 @@
+{
+  "bounds": {
+    "constitutions": 3,
+    "frames": 3,
+    "host_roots": 8,
+    "instructions": 1000,
+    "objects": 2,
+    "owning_slots": 16
+  },
+  "cases": [
+    {
+      "construct": false,
+      "layers": 3,
+      "name": "initialization-root-handoffs",
+      "shared_model": true,
+      "steps": [
+        {
+          "command": [
+            "begin"
+          ],
+          "expected": {
+            "closed": false,
+            "host_roots": 1,
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "managed": {
+              "construct": null,
+              "failure": null,
+              "frames": [
+                {
+                  "body": "init:1",
+                  "id": 0,
+                  "object": 1
+                }
+              ],
+              "init": {
+                "constitution": 1,
+                "object": 1,
+                "position": 0
+              },
+              "rollback_errors": []
+            },
+            "parameter_owners": 1
+          },
+          "model_events": [
+            [
+              "object",
+              "1"
+            ],
+            [
+              "enter",
+              "f0",
+              "1"
+            ]
+          ]
+        },
+        {
+          "command": [
+            "run",
+            0,
+            "budget"
+          ],
+          "expected": {
+            "closed": false,
+            "host_roots": 1,
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "managed": {
+              "construct": null,
+              "failure": null,
+              "frames": [
+                {
+                  "body": "init:1",
+                  "id": 0,
+                  "object": 1
+                }
+              ],
+              "init": {
+                "constitution": 1,
+                "object": 1,
+                "position": 0
+              },
+              "rollback_errors": []
+            },
+            "parameter_owners": 1
+          },
+          "model_events": []
+        },
+        {
+          "command": [
+            "run",
+            1,
+            "budget"
+          ],
+          "expected": {
+            "closed": false,
+            "host_roots": 1,
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "managed": {
+              "construct": null,
+              "failure": null,
+              "frames": [
+                {
+                  "body": "init:2",
+                  "id": 1,
+                  "object": 1
+                }
+              ],
+              "init": {
+                "constitution": 2,
+                "object": 1,
+                "position": 1
+              },
+              "rollback_errors": []
+            },
+            "parameter_owners": 1
+          },
+          "model_events": [
+            [
+              "exit",
+              "f0"
+            ],
+            [
+              "enter",
+              "f1",
+              "1"
+            ]
+          ]
+        },
+        {
+          "command": [
+            "run",
+            1,
+            "budget"
+          ],
+          "expected": {
+            "closed": false,
+            "host_roots": 1,
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "managed": {
+              "construct": null,
+              "failure": null,
+              "frames": [
+                {
+                  "body": "init:0",
+                  "id": 2,
+                  "object": 1
+                }
+              ],
+              "init": {
+                "constitution": 0,
+                "object": 1,
+                "position": 2
+              },
+              "rollback_errors": []
+            },
+            "parameter_owners": 1
+          },
+          "model_events": [
+            [
+              "exit",
+              "f1"
+            ],
+            [
+              "enter",
+              "f2",
+              "1"
+            ]
+          ]
+        },
+        {
+          "command": [
+            "run",
+            1,
+            "initialized"
+          ],
+          "expected": {
+            "closed": false,
+            "host_roots": 1,
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "managed": {
+              "construct": null,
+              "failure": null,
+              "frames": [],
+              "init": null,
+              "rollback_errors": []
+            },
+            "parameter_owners": 1
+          },
+          "model_events": [
+            [
+              "exit",
+              "f2"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "construct": true,
+      "layers": 3,
+      "name": "construct-all-phases",
+      "shared_model": true,
+      "steps": [
+        {
+          "command": [
+            "begin"
+          ],
+          "expected": {
+            "closed": false,
+            "host_roots": 1,
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "managed": {
+              "construct": {
+                "constitution": 1,
+                "object": 1,
+                "parameter_owners": 2,
+                "phase": "Initialize",
+                "position": 0,
+                "primary": null
+              },
+              "failure": null,
+              "frames": [
+                {
+                  "body": "init:1",
+                  "id": 0,
+                  "object": 1
+                }
+              ],
+              "init": {
+                "constitution": 1,
+                "object": 1,
+                "position": 0
+              },
+              "rollback_errors": []
+            },
+            "parameter_owners": 2
+          },
+          "model_events": [
+            [
+              "object",
+              "1"
+            ],
+            [
+              "enter",
+              "f0",
+              "1"
+            ]
+          ]
+        },
+        {
+          "command": [
+            "run",
+            1,
+            "budget"
+          ],
+          "expected": {
+            "closed": false,
+            "host_roots": 1,
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "managed": {
+              "construct": {
+                "constitution": 1,
+                "object": 1,
+                "parameter_owners": 2,
+                "phase": "Initialize",
+                "position": 0,
+                "primary": null
+              },
+              "failure": null,
+              "frames": [
+                {
+                  "body": "init:2",
+                  "id": 1,
+                  "object": 1
+                }
+              ],
+              "init": {
+                "constitution": 2,
+                "object": 1,
+                "position": 1
+              },
+              "rollback_errors": []
+            },
+            "parameter_owners": 2
+          },
+          "model_events": [
+            [
+              "exit",
+              "f0"
+            ],
+            [
+              "enter",
+              "f1",
+              "1"
+            ]
+          ]
+        },
+        {
+          "command": [
+            "run",
+            1,
+            "budget"
+          ],
+          "expected": {
+            "closed": false,
+            "host_roots": 1,
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "managed": {
+              "construct": {
+                "constitution": 1,
+                "object": 1,
+                "parameter_owners": 2,
+                "phase": "Initialize",
+                "position": 0,
+                "primary": null
+              },
+              "failure": null,
+              "frames": [
+                {
+                  "body": "init:0",
+                  "id": 2,
+                  "object": 1
+                }
+              ],
+              "init": {
+                "constitution": 0,
+                "object": 1,
+                "position": 2
+              },
+              "rollback_errors": []
+            },
+            "parameter_owners": 2
+          },
+          "model_events": [
+            [
+              "exit",
+              "f1"
+            ],
+            [
+              "enter",
+              "f2",
+              "1"
+            ]
+          ]
+        },
+        {
+          "command": [
+            "run",
+            1,
+            "budget"
+          ],
+          "expected": {
+            "closed": false,
+            "host_roots": 1,
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "managed": {
+              "construct": {
+                "constitution": 1,
+                "object": 1,
+                "parameter_owners": 3,
+                "phase": "Create",
+                "position": 1,
+                "primary": null
+              },
+              "failure": null,
+              "frames": [
+                {
+                  "body": "fun:0",
+                  "id": 3,
+                  "object": 1
+                }
+              ],
+              "init": null,
+              "rollback_errors": []
+            },
+            "parameter_owners": 3
+          },
+          "model_events": [
+            [
+              "exit",
+              "f2"
+            ],
+            [
+              "enter",
+              "f3",
+              "1"
+            ]
+          ]
+        },
+        {
+          "command": [
+            "run",
+            3,
+            "budget"
+          ],
+          "expected": {
+            "closed": false,
+            "host_roots": 1,
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "managed": {
+              "construct": {
+                "constitution": 2,
+                "object": 1,
+                "parameter_owners": 3,
+                "phase": "Create",
+                "position": 2,
+                "primary": null
+              },
+              "failure": null,
+              "frames": [
+                {
+                  "body": "fun:2",
+                  "id": 4,
+                  "object": 1
+                }
+              ],
+              "init": null,
+              "rollback_errors": []
+            },
+            "parameter_owners": 3
+          },
+          "model_events": [
+            [
+              "exit",
+              "f3"
+            ],
+            [
+              "enter",
+              "f4",
+              "1"
+            ]
+          ]
+        },
+        {
+          "command": [
+            "run",
+            3,
+            "budget"
+          ],
+          "expected": {
+            "closed": false,
+            "host_roots": 1,
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "managed": {
+              "construct": {
+                "constitution": 0,
+                "object": 1,
+                "parameter_owners": 3,
+                "phase": "Create",
+                "position": 3,
+                "primary": null
+              },
+              "failure": null,
+              "frames": [
+                {
+                  "body": "fun:4",
+                  "id": 5,
+                  "object": 1
+                }
+              ],
+              "init": null,
+              "rollback_errors": []
+            },
+            "parameter_owners": 3
+          },
+          "model_events": [
+            [
+              "exit",
+              "f4"
+            ],
+            [
+              "enter",
+              "f5",
+              "1"
+            ]
+          ]
+        },
+        {
+          "command": [
+            "run",
+            3,
+            "constructed"
+          ],
+          "expected": {
+            "closed": false,
+            "host_roots": 1,
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "managed": {
+              "construct": null,
+              "failure": null,
+              "frames": [],
+              "init": null,
+              "rollback_errors": []
+            },
+            "parameter_owners": 1
+          },
+          "model_events": [
+            [
+              "exit",
+              "f5"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "construct": true,
+      "init_fail": true,
+      "layers": 3,
+      "name": "initialization-failure-queues",
+      "shared_model": false,
+      "steps": [
+        {
+          "command": [
+            "begin"
+          ],
+          "expected": {
+            "closed": false,
+            "host_roots": 1,
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "managed": {
+              "construct": {
+                "constitution": 1,
+                "object": 1,
+                "parameter_owners": 2,
+                "phase": "Initialize",
+                "position": 0,
+                "primary": null
+              },
+              "failure": null,
+              "frames": [
+                {
+                  "body": "init:1",
+                  "id": 0,
+                  "object": 1
+                }
+              ],
+              "init": {
+                "constitution": 1,
+                "object": 1,
+                "position": 0
+              },
+              "rollback_errors": []
+            },
+            "parameter_owners": 2
+          },
+          "model_events": [
+            [
+              "object",
+              "1"
+            ],
+            [
+              "enter",
+              "f0",
+              "1"
+            ]
+          ]
+        },
+        {
+          "command": [
+            "run",
+            1,
+            "error"
+          ],
+          "expected": {
+            "closed": false,
+            "host_roots": 1,
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "queued"
+                }
+              },
+              "queue": [
+                1
+              ],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "managed": {
+              "construct": null,
+              "failure": "StackUnderflow",
+              "frames": [],
+              "init": null,
+              "rollback_errors": []
+            },
+            "parameter_owners": 1
+          },
+          "model_events": []
+        },
+        {
+          "command": [
+            "run",
+            0,
+            "error"
+          ],
+          "expected": {
+            "closed": false,
+            "host_roots": 1,
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "queued"
+                }
+              },
+              "queue": [
+                1
+              ],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "managed": {
+              "construct": null,
+              "failure": "StackUnderflow",
+              "frames": [],
+              "init": null,
+              "rollback_errors": []
+            },
+            "parameter_owners": 1
+          },
+          "model_events": []
+        },
+        {
+          "command": [
+            "drain"
+          ],
+          "expected": {
+            "closed": false,
+            "host_roots": 1,
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": true,
+                  "execs": 0,
+                  "refs": 0,
+                  "state": "freed"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0
+              ]
+            },
+            "managed": {
+              "construct": null,
+              "failure": "StackUnderflow",
+              "frames": [],
+              "init": null,
+              "rollback_errors": []
+            },
+            "parameter_owners": 1
+          },
+          "model_events": []
+        }
+      ]
+    },
+    {
+      "construct": true,
+      "create_fail": 0,
+      "layers": 3,
+      "name": "create-first-layer-failure",
+      "shared_model": false,
+      "steps": [
+        {
+          "command": [
+            "begin"
+          ],
+          "expected": {
+            "closed": false,
+            "host_roots": 1,
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "managed": {
+              "construct": {
+                "constitution": 1,
+                "object": 1,
+                "parameter_owners": 2,
+                "phase": "Initialize",
+                "position": 0,
+                "primary": null
+              },
+              "failure": null,
+              "frames": [
+                {
+                  "body": "init:1",
+                  "id": 0,
+                  "object": 1
+                }
+              ],
+              "init": {
+                "constitution": 1,
+                "object": 1,
+                "position": 0
+              },
+              "rollback_errors": []
+            },
+            "parameter_owners": 2
+          },
+          "model_events": [
+            [
+              "object",
+              "1"
+            ],
+            [
+              "enter",
+              "f0",
+              "1"
+            ]
+          ]
+        },
+        {
+          "command": [
+            "run",
+            1,
+            "budget"
+          ],
+          "expected": {
+            "closed": false,
+            "host_roots": 1,
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "managed": {
+              "construct": {
+                "constitution": 1,
+                "object": 1,
+                "parameter_owners": 2,
+                "phase": "Initialize",
+                "position": 0,
+                "primary": null
+              },
+              "failure": null,
+              "frames": [
+                {
+                  "body": "init:2",
+                  "id": 1,
+                  "object": 1
+                }
+              ],
+              "init": {
+                "constitution": 2,
+                "object": 1,
+                "position": 1
+              },
+              "rollback_errors": []
+            },
+            "parameter_owners": 2
+          },
+          "model_events": [
+            [
+              "exit",
+              "f0"
+            ],
+            [
+              "enter",
+              "f1",
+              "1"
+            ]
+          ]
+        },
+        {
+          "command": [
+            "run",
+            1,
+            "budget"
+          ],
+          "expected": {
+            "closed": false,
+            "host_roots": 1,
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "managed": {
+              "construct": {
+                "constitution": 1,
+                "object": 1,
+                "parameter_owners": 2,
+                "phase": "Initialize",
+                "position": 0,
+                "primary": null
+              },
+              "failure": null,
+              "frames": [
+                {
+                  "body": "init:0",
+                  "id": 2,
+                  "object": 1
+                }
+              ],
+              "init": {
+                "constitution": 0,
+                "object": 1,
+                "position": 2
+              },
+              "rollback_errors": []
+            },
+            "parameter_owners": 2
+          },
+          "model_events": [
+            [
+              "exit",
+              "f1"
+            ],
+            [
+              "enter",
+              "f2",
+              "1"
+            ]
+          ]
+        },
+        {
+          "command": [
+            "run",
+            1,
+            "budget"
+          ],
+          "expected": {
+            "closed": false,
+            "host_roots": 1,
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "managed": {
+              "construct": {
+                "constitution": 1,
+                "object": 1,
+                "parameter_owners": 3,
+                "phase": "Create",
+                "position": 1,
+                "primary": null
+              },
+              "failure": null,
+              "frames": [
+                {
+                  "body": "fun:0",
+                  "id": 3,
+                  "object": 1
+                }
+              ],
+              "init": null,
+              "rollback_errors": []
+            },
+            "parameter_owners": 3
+          },
+          "model_events": [
+            [
+              "exit",
+              "f2"
+            ],
+            [
+              "enter",
+              "f3",
+              "1"
+            ]
+          ]
+        },
+        {
+          "command": [
+            "run",
+            3,
+            "budget"
+          ],
+          "expected": {
+            "closed": false,
+            "host_roots": 1,
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "managed": {
+              "construct": {
+                "constitution": 1,
+                "object": 1,
+                "parameter_owners": 2,
+                "phase": "RollbackDestruct",
+                "position": 0,
+                "primary": "StackUnderflow"
+              },
+              "failure": null,
+              "frames": [
+                {
+                  "body": "fun:1",
+                  "id": 4,
+                  "object": 1
+                }
+              ],
+              "init": null,
+              "rollback_errors": []
+            },
+            "parameter_owners": 2
+          },
+          "model_events": []
+        },
+        {
+          "command": [
+            "run",
+            3,
+            "error"
+          ],
+          "expected": {
+            "closed": false,
+            "host_roots": 1,
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "queued"
+                }
+              },
+              "queue": [
+                1
+              ],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "managed": {
+              "construct": null,
+              "failure": "StackUnderflow",
+              "frames": [],
+              "init": null,
+              "rollback_errors": []
+            },
+            "parameter_owners": 1
+          },
+          "model_events": []
+        },
+        {
+          "command": [
+            "drain"
+          ],
+          "expected": {
+            "closed": false,
+            "host_roots": 1,
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": true,
+                  "execs": 0,
+                  "refs": 0,
+                  "state": "freed"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0
+              ]
+            },
+            "managed": {
+              "construct": null,
+              "failure": "StackUnderflow",
+              "frames": [],
+              "init": null,
+              "rollback_errors": []
+            },
+            "parameter_owners": 1
+          },
+          "model_events": []
+        }
+      ]
+    },
+    {
+      "construct": true,
+      "create_fail": 2,
+      "layers": 3,
+      "name": "create-last-layer-reverse-rollback",
+      "shared_model": false,
+      "steps": [
+        {
+          "command": [
+            "begin"
+          ],
+          "expected": {
+            "closed": false,
+            "host_roots": 1,
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "managed": {
+              "construct": {
+                "constitution": 1,
+                "object": 1,
+                "parameter_owners": 2,
+                "phase": "Initialize",
+                "position": 0,
+                "primary": null
+              },
+              "failure": null,
+              "frames": [
+                {
+                  "body": "init:1",
+                  "id": 0,
+                  "object": 1
+                }
+              ],
+              "init": {
+                "constitution": 1,
+                "object": 1,
+                "position": 0
+              },
+              "rollback_errors": []
+            },
+            "parameter_owners": 2
+          },
+          "model_events": [
+            [
+              "object",
+              "1"
+            ],
+            [
+              "enter",
+              "f0",
+              "1"
+            ]
+          ]
+        },
+        {
+          "command": [
+            "run",
+            1,
+            "budget"
+          ],
+          "expected": {
+            "closed": false,
+            "host_roots": 1,
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "managed": {
+              "construct": {
+                "constitution": 1,
+                "object": 1,
+                "parameter_owners": 2,
+                "phase": "Initialize",
+                "position": 0,
+                "primary": null
+              },
+              "failure": null,
+              "frames": [
+                {
+                  "body": "init:2",
+                  "id": 1,
+                  "object": 1
+                }
+              ],
+              "init": {
+                "constitution": 2,
+                "object": 1,
+                "position": 1
+              },
+              "rollback_errors": []
+            },
+            "parameter_owners": 2
+          },
+          "model_events": [
+            [
+              "exit",
+              "f0"
+            ],
+            [
+              "enter",
+              "f1",
+              "1"
+            ]
+          ]
+        },
+        {
+          "command": [
+            "run",
+            1,
+            "budget"
+          ],
+          "expected": {
+            "closed": false,
+            "host_roots": 1,
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "managed": {
+              "construct": {
+                "constitution": 1,
+                "object": 1,
+                "parameter_owners": 2,
+                "phase": "Initialize",
+                "position": 0,
+                "primary": null
+              },
+              "failure": null,
+              "frames": [
+                {
+                  "body": "init:0",
+                  "id": 2,
+                  "object": 1
+                }
+              ],
+              "init": {
+                "constitution": 0,
+                "object": 1,
+                "position": 2
+              },
+              "rollback_errors": []
+            },
+            "parameter_owners": 2
+          },
+          "model_events": [
+            [
+              "exit",
+              "f1"
+            ],
+            [
+              "enter",
+              "f2",
+              "1"
+            ]
+          ]
+        },
+        {
+          "command": [
+            "run",
+            1,
+            "budget"
+          ],
+          "expected": {
+            "closed": false,
+            "host_roots": 1,
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "managed": {
+              "construct": {
+                "constitution": 1,
+                "object": 1,
+                "parameter_owners": 3,
+                "phase": "Create",
+                "position": 1,
+                "primary": null
+              },
+              "failure": null,
+              "frames": [
+                {
+                  "body": "fun:0",
+                  "id": 3,
+                  "object": 1
+                }
+              ],
+              "init": null,
+              "rollback_errors": []
+            },
+            "parameter_owners": 3
+          },
+          "model_events": [
+            [
+              "exit",
+              "f2"
+            ],
+            [
+              "enter",
+              "f3",
+              "1"
+            ]
+          ]
+        },
+        {
+          "command": [
+            "run",
+            3,
+            "budget"
+          ],
+          "expected": {
+            "closed": false,
+            "host_roots": 1,
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "managed": {
+              "construct": {
+                "constitution": 2,
+                "object": 1,
+                "parameter_owners": 3,
+                "phase": "Create",
+                "position": 2,
+                "primary": null
+              },
+              "failure": null,
+              "frames": [
+                {
+                  "body": "fun:2",
+                  "id": 4,
+                  "object": 1
+                }
+              ],
+              "init": null,
+              "rollback_errors": []
+            },
+            "parameter_owners": 3
+          },
+          "model_events": [
+            [
+              "exit",
+              "f3"
+            ],
+            [
+              "enter",
+              "f4",
+              "1"
+            ]
+          ]
+        },
+        {
+          "command": [
+            "run",
+            3,
+            "budget"
+          ],
+          "expected": {
+            "closed": false,
+            "host_roots": 1,
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "managed": {
+              "construct": {
+                "constitution": 0,
+                "object": 1,
+                "parameter_owners": 3,
+                "phase": "Create",
+                "position": 3,
+                "primary": null
+              },
+              "failure": null,
+              "frames": [
+                {
+                  "body": "fun:4",
+                  "id": 5,
+                  "object": 1
+                }
+              ],
+              "init": null,
+              "rollback_errors": []
+            },
+            "parameter_owners": 3
+          },
+          "model_events": [
+            [
+              "exit",
+              "f4"
+            ],
+            [
+              "enter",
+              "f5",
+              "1"
+            ]
+          ]
+        },
+        {
+          "command": [
+            "run",
+            3,
+            "budget"
+          ],
+          "expected": {
+            "closed": false,
+            "host_roots": 1,
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "managed": {
+              "construct": {
+                "constitution": 0,
+                "object": 1,
+                "parameter_owners": 2,
+                "phase": "RollbackDestruct",
+                "position": 2,
+                "primary": "StackUnderflow"
+              },
+              "failure": null,
+              "frames": [
+                {
+                  "body": "fun:5",
+                  "id": 6,
+                  "object": 1
+                }
+              ],
+              "init": null,
+              "rollback_errors": []
+            },
+            "parameter_owners": 2
+          },
+          "model_events": []
+        },
+        {
+          "command": [
+            "run",
+            3,
+            "budget"
+          ],
+          "expected": {
+            "closed": false,
+            "host_roots": 1,
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "managed": {
+              "construct": {
+                "constitution": 2,
+                "object": 1,
+                "parameter_owners": 2,
+                "phase": "RollbackDestruct",
+                "position": 1,
+                "primary": "StackUnderflow"
+              },
+              "failure": null,
+              "frames": [
+                {
+                  "body": "fun:3",
+                  "id": 7,
+                  "object": 1
+                }
+              ],
+              "init": null,
+              "rollback_errors": []
+            },
+            "parameter_owners": 2
+          },
+          "model_events": []
+        },
+        {
+          "command": [
+            "run",
+            3,
+            "budget"
+          ],
+          "expected": {
+            "closed": false,
+            "host_roots": 1,
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "managed": {
+              "construct": {
+                "constitution": 1,
+                "object": 1,
+                "parameter_owners": 2,
+                "phase": "RollbackDestruct",
+                "position": 0,
+                "primary": "StackUnderflow"
+              },
+              "failure": null,
+              "frames": [
+                {
+                  "body": "fun:1",
+                  "id": 8,
+                  "object": 1
+                }
+              ],
+              "init": null,
+              "rollback_errors": []
+            },
+            "parameter_owners": 2
+          },
+          "model_events": []
+        },
+        {
+          "command": [
+            "run",
+            3,
+            "error"
+          ],
+          "expected": {
+            "closed": false,
+            "host_roots": 1,
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "queued"
+                }
+              },
+              "queue": [
+                1
+              ],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "managed": {
+              "construct": null,
+              "failure": "StackUnderflow",
+              "frames": [],
+              "init": null,
+              "rollback_errors": []
+            },
+            "parameter_owners": 1
+          },
+          "model_events": []
+        },
+        {
+          "command": [
+            "run",
+            100,
+            "error"
+          ],
+          "expected": {
+            "closed": false,
+            "host_roots": 1,
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "queued"
+                }
+              },
+              "queue": [
+                1
+              ],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "managed": {
+              "construct": null,
+              "failure": "StackUnderflow",
+              "frames": [],
+              "init": null,
+              "rollback_errors": []
+            },
+            "parameter_owners": 1
+          },
+          "model_events": []
+        }
+      ]
+    },
+    {
+      "construct": true,
+      "create_fail": 2,
+      "destruct_fail": true,
+      "layers": 3,
+      "name": "rollback-errors-preserve-primary",
+      "shared_model": false,
+      "steps": [
+        {
+          "command": [
+            "begin"
+          ],
+          "expected": {
+            "closed": false,
+            "host_roots": 1,
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "managed": {
+              "construct": {
+                "constitution": 1,
+                "object": 1,
+                "parameter_owners": 2,
+                "phase": "Initialize",
+                "position": 0,
+                "primary": null
+              },
+              "failure": null,
+              "frames": [
+                {
+                  "body": "init:1",
+                  "id": 0,
+                  "object": 1
+                }
+              ],
+              "init": {
+                "constitution": 1,
+                "object": 1,
+                "position": 0
+              },
+              "rollback_errors": []
+            },
+            "parameter_owners": 2
+          },
+          "model_events": [
+            [
+              "object",
+              "1"
+            ],
+            [
+              "enter",
+              "f0",
+              "1"
+            ]
+          ]
+        },
+        {
+          "command": [
+            "run",
+            1,
+            "budget"
+          ],
+          "expected": {
+            "closed": false,
+            "host_roots": 1,
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "managed": {
+              "construct": {
+                "constitution": 1,
+                "object": 1,
+                "parameter_owners": 2,
+                "phase": "Initialize",
+                "position": 0,
+                "primary": null
+              },
+              "failure": null,
+              "frames": [
+                {
+                  "body": "init:2",
+                  "id": 1,
+                  "object": 1
+                }
+              ],
+              "init": {
+                "constitution": 2,
+                "object": 1,
+                "position": 1
+              },
+              "rollback_errors": []
+            },
+            "parameter_owners": 2
+          },
+          "model_events": [
+            [
+              "exit",
+              "f0"
+            ],
+            [
+              "enter",
+              "f1",
+              "1"
+            ]
+          ]
+        },
+        {
+          "command": [
+            "run",
+            1,
+            "budget"
+          ],
+          "expected": {
+            "closed": false,
+            "host_roots": 1,
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "managed": {
+              "construct": {
+                "constitution": 1,
+                "object": 1,
+                "parameter_owners": 2,
+                "phase": "Initialize",
+                "position": 0,
+                "primary": null
+              },
+              "failure": null,
+              "frames": [
+                {
+                  "body": "init:0",
+                  "id": 2,
+                  "object": 1
+                }
+              ],
+              "init": {
+                "constitution": 0,
+                "object": 1,
+                "position": 2
+              },
+              "rollback_errors": []
+            },
+            "parameter_owners": 2
+          },
+          "model_events": [
+            [
+              "exit",
+              "f1"
+            ],
+            [
+              "enter",
+              "f2",
+              "1"
+            ]
+          ]
+        },
+        {
+          "command": [
+            "run",
+            1,
+            "budget"
+          ],
+          "expected": {
+            "closed": false,
+            "host_roots": 1,
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "managed": {
+              "construct": {
+                "constitution": 1,
+                "object": 1,
+                "parameter_owners": 3,
+                "phase": "Create",
+                "position": 1,
+                "primary": null
+              },
+              "failure": null,
+              "frames": [
+                {
+                  "body": "fun:0",
+                  "id": 3,
+                  "object": 1
+                }
+              ],
+              "init": null,
+              "rollback_errors": []
+            },
+            "parameter_owners": 3
+          },
+          "model_events": [
+            [
+              "exit",
+              "f2"
+            ],
+            [
+              "enter",
+              "f3",
+              "1"
+            ]
+          ]
+        },
+        {
+          "command": [
+            "run",
+            3,
+            "budget"
+          ],
+          "expected": {
+            "closed": false,
+            "host_roots": 1,
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "managed": {
+              "construct": {
+                "constitution": 2,
+                "object": 1,
+                "parameter_owners": 3,
+                "phase": "Create",
+                "position": 2,
+                "primary": null
+              },
+              "failure": null,
+              "frames": [
+                {
+                  "body": "fun:2",
+                  "id": 4,
+                  "object": 1
+                }
+              ],
+              "init": null,
+              "rollback_errors": []
+            },
+            "parameter_owners": 3
+          },
+          "model_events": [
+            [
+              "exit",
+              "f3"
+            ],
+            [
+              "enter",
+              "f4",
+              "1"
+            ]
+          ]
+        },
+        {
+          "command": [
+            "run",
+            3,
+            "budget"
+          ],
+          "expected": {
+            "closed": false,
+            "host_roots": 1,
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "managed": {
+              "construct": {
+                "constitution": 0,
+                "object": 1,
+                "parameter_owners": 3,
+                "phase": "Create",
+                "position": 3,
+                "primary": null
+              },
+              "failure": null,
+              "frames": [
+                {
+                  "body": "fun:4",
+                  "id": 5,
+                  "object": 1
+                }
+              ],
+              "init": null,
+              "rollback_errors": []
+            },
+            "parameter_owners": 3
+          },
+          "model_events": [
+            [
+              "exit",
+              "f4"
+            ],
+            [
+              "enter",
+              "f5",
+              "1"
+            ]
+          ]
+        },
+        {
+          "command": [
+            "run",
+            3,
+            "budget"
+          ],
+          "expected": {
+            "closed": false,
+            "host_roots": 1,
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "managed": {
+              "construct": {
+                "constitution": 0,
+                "object": 1,
+                "parameter_owners": 2,
+                "phase": "RollbackDestruct",
+                "position": 2,
+                "primary": "StackUnderflow"
+              },
+              "failure": null,
+              "frames": [
+                {
+                  "body": "fun:5",
+                  "id": 6,
+                  "object": 1
+                }
+              ],
+              "init": null,
+              "rollback_errors": []
+            },
+            "parameter_owners": 2
+          },
+          "model_events": []
+        },
+        {
+          "command": [
+            "run",
+            3,
+            "budget"
+          ],
+          "expected": {
+            "closed": false,
+            "host_roots": 1,
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "managed": {
+              "construct": {
+                "constitution": 2,
+                "object": 1,
+                "parameter_owners": 2,
+                "phase": "RollbackDestruct",
+                "position": 1,
+                "primary": "StackUnderflow"
+              },
+              "failure": null,
+              "frames": [
+                {
+                  "body": "fun:3",
+                  "id": 7,
+                  "object": 1
+                }
+              ],
+              "init": null,
+              "rollback_errors": [
+                "StackUnderflow"
+              ]
+            },
+            "parameter_owners": 2
+          },
+          "model_events": []
+        },
+        {
+          "command": [
+            "run",
+            3,
+            "budget"
+          ],
+          "expected": {
+            "closed": false,
+            "host_roots": 1,
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "managed": {
+              "construct": {
+                "constitution": 1,
+                "object": 1,
+                "parameter_owners": 2,
+                "phase": "RollbackDestruct",
+                "position": 0,
+                "primary": "StackUnderflow"
+              },
+              "failure": null,
+              "frames": [
+                {
+                  "body": "fun:1",
+                  "id": 8,
+                  "object": 1
+                }
+              ],
+              "init": null,
+              "rollback_errors": [
+                "StackUnderflow",
+                "StackUnderflow"
+              ]
+            },
+            "parameter_owners": 2
+          },
+          "model_events": []
+        },
+        {
+          "command": [
+            "run",
+            3,
+            "error"
+          ],
+          "expected": {
+            "closed": false,
+            "host_roots": 1,
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "queued"
+                }
+              },
+              "queue": [
+                1
+              ],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "managed": {
+              "construct": null,
+              "failure": "StackUnderflow",
+              "frames": [],
+              "init": null,
+              "rollback_errors": [
+                "StackUnderflow",
+                "StackUnderflow",
+                "StackUnderflow"
+              ]
+            },
+            "parameter_owners": 1
+          },
+          "model_events": []
+        }
+      ]
+    },
+    {
+      "construct": true,
+      "layers": 3,
+      "name": "delete-initialize-next-step",
+      "shared_model": true,
+      "steps": [
+        {
+          "command": [
+            "begin"
+          ],
+          "expected": {
+            "closed": false,
+            "host_roots": 1,
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "managed": {
+              "construct": {
+                "constitution": 1,
+                "object": 1,
+                "parameter_owners": 2,
+                "phase": "Initialize",
+                "position": 0,
+                "primary": null
+              },
+              "failure": null,
+              "frames": [
+                {
+                  "body": "init:1",
+                  "id": 0,
+                  "object": 1
+                }
+              ],
+              "init": {
+                "constitution": 1,
+                "object": 1,
+                "position": 0
+              },
+              "rollback_errors": []
+            },
+            "parameter_owners": 2
+          },
+          "model_events": [
+            [
+              "object",
+              "1"
+            ],
+            [
+              "enter",
+              "f0",
+              "1"
+            ]
+          ]
+        },
+        {
+          "command": [
+            "delete"
+          ],
+          "expected": {
+            "closed": false,
+            "host_roots": 1,
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 0,
+                  "state": "pending"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "managed": {
+              "construct": {
+                "constitution": 1,
+                "object": 1,
+                "parameter_owners": 2,
+                "phase": "Initialize",
+                "position": 0,
+                "primary": null
+              },
+              "failure": null,
+              "frames": [
+                {
+                  "body": "init:1",
+                  "id": 0,
+                  "object": 1
+                }
+              ],
+              "init": {
+                "constitution": 1,
+                "object": 1,
+                "position": 0
+              },
+              "rollback_errors": []
+            },
+            "parameter_owners": 2
+          },
+          "model_events": [
+            [
+              "delete",
+              "1"
+            ]
+          ]
+        },
+        {
+          "command": [
+            "run",
+            0,
+            "budget"
+          ],
+          "expected": {
+            "closed": false,
+            "host_roots": 1,
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 0,
+                  "state": "pending"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "managed": {
+              "construct": {
+                "constitution": 1,
+                "object": 1,
+                "parameter_owners": 2,
+                "phase": "Initialize",
+                "position": 0,
+                "primary": null
+              },
+              "failure": null,
+              "frames": [
+                {
+                  "body": "init:1",
+                  "id": 0,
+                  "object": 1
+                }
+              ],
+              "init": {
+                "constitution": 1,
+                "object": 1,
+                "position": 0
+              },
+              "rollback_errors": []
+            },
+            "parameter_owners": 2
+          },
+          "model_events": []
+        },
+        {
+          "command": [
+            "run",
+            1,
+            "error"
+          ],
+          "expected": {
+            "closed": false,
+            "host_roots": 1,
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "queued"
+                }
+              },
+              "queue": [
+                1
+              ],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "managed": {
+              "construct": null,
+              "failure": "InvalidObject",
+              "frames": [],
+              "init": null,
+              "rollback_errors": []
+            },
+            "parameter_owners": 1
+          },
+          "model_events": [
+            [
+              "exit",
+              "f0"
+            ]
+          ]
+        },
+        {
+          "command": [
+            "drain"
+          ],
+          "expected": {
+            "closed": false,
+            "host_roots": 1,
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": true,
+                  "execs": 0,
+                  "refs": 0,
+                  "state": "freed"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0
+              ]
+            },
+            "managed": {
+              "construct": null,
+              "failure": "InvalidObject",
+              "frames": [],
+              "init": null,
+              "rollback_errors": []
+            },
+            "parameter_owners": 1
+          },
+          "model_events": [
+            [
+              "drain"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "construct": true,
+      "layers": 3,
+      "name": "delete-create-next-step",
+      "shared_model": false,
+      "steps": [
+        {
+          "command": [
+            "begin"
+          ],
+          "expected": {
+            "closed": false,
+            "host_roots": 1,
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "managed": {
+              "construct": {
+                "constitution": 1,
+                "object": 1,
+                "parameter_owners": 2,
+                "phase": "Initialize",
+                "position": 0,
+                "primary": null
+              },
+              "failure": null,
+              "frames": [
+                {
+                  "body": "init:1",
+                  "id": 0,
+                  "object": 1
+                }
+              ],
+              "init": {
+                "constitution": 1,
+                "object": 1,
+                "position": 0
+              },
+              "rollback_errors": []
+            },
+            "parameter_owners": 2
+          },
+          "model_events": [
+            [
+              "object",
+              "1"
+            ],
+            [
+              "enter",
+              "f0",
+              "1"
+            ]
+          ]
+        },
+        {
+          "command": [
+            "run",
+            1,
+            "budget"
+          ],
+          "expected": {
+            "closed": false,
+            "host_roots": 1,
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "managed": {
+              "construct": {
+                "constitution": 1,
+                "object": 1,
+                "parameter_owners": 2,
+                "phase": "Initialize",
+                "position": 0,
+                "primary": null
+              },
+              "failure": null,
+              "frames": [
+                {
+                  "body": "init:2",
+                  "id": 1,
+                  "object": 1
+                }
+              ],
+              "init": {
+                "constitution": 2,
+                "object": 1,
+                "position": 1
+              },
+              "rollback_errors": []
+            },
+            "parameter_owners": 2
+          },
+          "model_events": [
+            [
+              "exit",
+              "f0"
+            ],
+            [
+              "enter",
+              "f1",
+              "1"
+            ]
+          ]
+        },
+        {
+          "command": [
+            "run",
+            1,
+            "budget"
+          ],
+          "expected": {
+            "closed": false,
+            "host_roots": 1,
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "managed": {
+              "construct": {
+                "constitution": 1,
+                "object": 1,
+                "parameter_owners": 2,
+                "phase": "Initialize",
+                "position": 0,
+                "primary": null
+              },
+              "failure": null,
+              "frames": [
+                {
+                  "body": "init:0",
+                  "id": 2,
+                  "object": 1
+                }
+              ],
+              "init": {
+                "constitution": 0,
+                "object": 1,
+                "position": 2
+              },
+              "rollback_errors": []
+            },
+            "parameter_owners": 2
+          },
+          "model_events": [
+            [
+              "exit",
+              "f1"
+            ],
+            [
+              "enter",
+              "f2",
+              "1"
+            ]
+          ]
+        },
+        {
+          "command": [
+            "run",
+            1,
+            "budget"
+          ],
+          "expected": {
+            "closed": false,
+            "host_roots": 1,
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "managed": {
+              "construct": {
+                "constitution": 1,
+                "object": 1,
+                "parameter_owners": 3,
+                "phase": "Create",
+                "position": 1,
+                "primary": null
+              },
+              "failure": null,
+              "frames": [
+                {
+                  "body": "fun:0",
+                  "id": 3,
+                  "object": 1
+                }
+              ],
+              "init": null,
+              "rollback_errors": []
+            },
+            "parameter_owners": 3
+          },
+          "model_events": [
+            [
+              "exit",
+              "f2"
+            ],
+            [
+              "enter",
+              "f3",
+              "1"
+            ]
+          ]
+        },
+        {
+          "command": [
+            "delete"
+          ],
+          "expected": {
+            "closed": false,
+            "host_roots": 1,
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 0,
+                  "state": "pending"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "managed": {
+              "construct": {
+                "constitution": 1,
+                "object": 1,
+                "parameter_owners": 3,
+                "phase": "Create",
+                "position": 1,
+                "primary": null
+              },
+              "failure": null,
+              "frames": [
+                {
+                  "body": "fun:0",
+                  "id": 3,
+                  "object": 1
+                }
+              ],
+              "init": null,
+              "rollback_errors": []
+            },
+            "parameter_owners": 3
+          },
+          "model_events": []
+        },
+        {
+          "command": [
+            "run",
+            0,
+            "budget"
+          ],
+          "expected": {
+            "closed": false,
+            "host_roots": 1,
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 0,
+                  "state": "pending"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "managed": {
+              "construct": {
+                "constitution": 1,
+                "object": 1,
+                "parameter_owners": 3,
+                "phase": "Create",
+                "position": 1,
+                "primary": null
+              },
+              "failure": null,
+              "frames": [
+                {
+                  "body": "fun:0",
+                  "id": 3,
+                  "object": 1
+                }
+              ],
+              "init": null,
+              "rollback_errors": []
+            },
+            "parameter_owners": 3
+          },
+          "model_events": []
+        },
+        {
+          "command": [
+            "run",
+            1,
+            "error"
+          ],
+          "expected": {
+            "closed": false,
+            "host_roots": 1,
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "queued"
+                }
+              },
+              "queue": [
+                1
+              ],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "managed": {
+              "construct": null,
+              "failure": "InvalidObject",
+              "frames": [],
+              "init": null,
+              "rollback_errors": []
+            },
+            "parameter_owners": 1
+          },
+          "model_events": []
+        }
+      ]
+    },
+    {
+      "construct": true,
+      "create_fail": 2,
+      "layers": 3,
+      "name": "delete-rollback-preserves-primary",
+      "shared_model": false,
+      "steps": [
+        {
+          "command": [
+            "begin"
+          ],
+          "expected": {
+            "closed": false,
+            "host_roots": 1,
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "managed": {
+              "construct": {
+                "constitution": 1,
+                "object": 1,
+                "parameter_owners": 2,
+                "phase": "Initialize",
+                "position": 0,
+                "primary": null
+              },
+              "failure": null,
+              "frames": [
+                {
+                  "body": "init:1",
+                  "id": 0,
+                  "object": 1
+                }
+              ],
+              "init": {
+                "constitution": 1,
+                "object": 1,
+                "position": 0
+              },
+              "rollback_errors": []
+            },
+            "parameter_owners": 2
+          },
+          "model_events": [
+            [
+              "object",
+              "1"
+            ],
+            [
+              "enter",
+              "f0",
+              "1"
+            ]
+          ]
+        },
+        {
+          "command": [
+            "run",
+            1,
+            "budget"
+          ],
+          "expected": {
+            "closed": false,
+            "host_roots": 1,
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "managed": {
+              "construct": {
+                "constitution": 1,
+                "object": 1,
+                "parameter_owners": 2,
+                "phase": "Initialize",
+                "position": 0,
+                "primary": null
+              },
+              "failure": null,
+              "frames": [
+                {
+                  "body": "init:2",
+                  "id": 1,
+                  "object": 1
+                }
+              ],
+              "init": {
+                "constitution": 2,
+                "object": 1,
+                "position": 1
+              },
+              "rollback_errors": []
+            },
+            "parameter_owners": 2
+          },
+          "model_events": [
+            [
+              "exit",
+              "f0"
+            ],
+            [
+              "enter",
+              "f1",
+              "1"
+            ]
+          ]
+        },
+        {
+          "command": [
+            "run",
+            1,
+            "budget"
+          ],
+          "expected": {
+            "closed": false,
+            "host_roots": 1,
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "managed": {
+              "construct": {
+                "constitution": 1,
+                "object": 1,
+                "parameter_owners": 2,
+                "phase": "Initialize",
+                "position": 0,
+                "primary": null
+              },
+              "failure": null,
+              "frames": [
+                {
+                  "body": "init:0",
+                  "id": 2,
+                  "object": 1
+                }
+              ],
+              "init": {
+                "constitution": 0,
+                "object": 1,
+                "position": 2
+              },
+              "rollback_errors": []
+            },
+            "parameter_owners": 2
+          },
+          "model_events": [
+            [
+              "exit",
+              "f1"
+            ],
+            [
+              "enter",
+              "f2",
+              "1"
+            ]
+          ]
+        },
+        {
+          "command": [
+            "run",
+            1,
+            "budget"
+          ],
+          "expected": {
+            "closed": false,
+            "host_roots": 1,
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "managed": {
+              "construct": {
+                "constitution": 1,
+                "object": 1,
+                "parameter_owners": 3,
+                "phase": "Create",
+                "position": 1,
+                "primary": null
+              },
+              "failure": null,
+              "frames": [
+                {
+                  "body": "fun:0",
+                  "id": 3,
+                  "object": 1
+                }
+              ],
+              "init": null,
+              "rollback_errors": []
+            },
+            "parameter_owners": 3
+          },
+          "model_events": [
+            [
+              "exit",
+              "f2"
+            ],
+            [
+              "enter",
+              "f3",
+              "1"
+            ]
+          ]
+        },
+        {
+          "command": [
+            "run",
+            3,
+            "budget"
+          ],
+          "expected": {
+            "closed": false,
+            "host_roots": 1,
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "managed": {
+              "construct": {
+                "constitution": 2,
+                "object": 1,
+                "parameter_owners": 3,
+                "phase": "Create",
+                "position": 2,
+                "primary": null
+              },
+              "failure": null,
+              "frames": [
+                {
+                  "body": "fun:2",
+                  "id": 4,
+                  "object": 1
+                }
+              ],
+              "init": null,
+              "rollback_errors": []
+            },
+            "parameter_owners": 3
+          },
+          "model_events": [
+            [
+              "exit",
+              "f3"
+            ],
+            [
+              "enter",
+              "f4",
+              "1"
+            ]
+          ]
+        },
+        {
+          "command": [
+            "run",
+            3,
+            "budget"
+          ],
+          "expected": {
+            "closed": false,
+            "host_roots": 1,
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "managed": {
+              "construct": {
+                "constitution": 0,
+                "object": 1,
+                "parameter_owners": 3,
+                "phase": "Create",
+                "position": 3,
+                "primary": null
+              },
+              "failure": null,
+              "frames": [
+                {
+                  "body": "fun:4",
+                  "id": 5,
+                  "object": 1
+                }
+              ],
+              "init": null,
+              "rollback_errors": []
+            },
+            "parameter_owners": 3
+          },
+          "model_events": [
+            [
+              "exit",
+              "f4"
+            ],
+            [
+              "enter",
+              "f5",
+              "1"
+            ]
+          ]
+        },
+        {
+          "command": [
+            "run",
+            3,
+            "budget"
+          ],
+          "expected": {
+            "closed": false,
+            "host_roots": 1,
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "managed": {
+              "construct": {
+                "constitution": 0,
+                "object": 1,
+                "parameter_owners": 2,
+                "phase": "RollbackDestruct",
+                "position": 2,
+                "primary": "StackUnderflow"
+              },
+              "failure": null,
+              "frames": [
+                {
+                  "body": "fun:5",
+                  "id": 6,
+                  "object": 1
+                }
+              ],
+              "init": null,
+              "rollback_errors": []
+            },
+            "parameter_owners": 2
+          },
+          "model_events": []
+        },
+        {
+          "command": [
+            "delete"
+          ],
+          "expected": {
+            "closed": false,
+            "host_roots": 1,
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 0,
+                  "state": "pending"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "managed": {
+              "construct": {
+                "constitution": 0,
+                "object": 1,
+                "parameter_owners": 2,
+                "phase": "RollbackDestruct",
+                "position": 2,
+                "primary": "StackUnderflow"
+              },
+              "failure": null,
+              "frames": [
+                {
+                  "body": "fun:5",
+                  "id": 6,
+                  "object": 1
+                }
+              ],
+              "init": null,
+              "rollback_errors": []
+            },
+            "parameter_owners": 2
+          },
+          "model_events": []
+        },
+        {
+          "command": [
+            "run",
+            0,
+            "budget"
+          ],
+          "expected": {
+            "closed": false,
+            "host_roots": 1,
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 0,
+                  "state": "pending"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "managed": {
+              "construct": {
+                "constitution": 0,
+                "object": 1,
+                "parameter_owners": 2,
+                "phase": "RollbackDestruct",
+                "position": 2,
+                "primary": "StackUnderflow"
+              },
+              "failure": null,
+              "frames": [
+                {
+                  "body": "fun:5",
+                  "id": 6,
+                  "object": 1
+                }
+              ],
+              "init": null,
+              "rollback_errors": []
+            },
+            "parameter_owners": 2
+          },
+          "model_events": []
+        },
+        {
+          "command": [
+            "run",
+            1,
+            "error"
+          ],
+          "expected": {
+            "closed": false,
+            "host_roots": 1,
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "queued"
+                }
+              },
+              "queue": [
+                1
+              ],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "managed": {
+              "construct": null,
+              "failure": "StackUnderflow",
+              "frames": [],
+              "init": null,
+              "rollback_errors": [
+                "InvalidObject"
+              ]
+            },
+            "parameter_owners": 1
+          },
+          "model_events": []
+        }
+      ]
+    },
+    {
+      "construct": true,
+      "layers": 3,
+      "name": "cancel-is-idempotent",
+      "shared_model": false,
+      "steps": [
+        {
+          "command": [
+            "begin"
+          ],
+          "expected": {
+            "closed": false,
+            "host_roots": 1,
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "managed": {
+              "construct": {
+                "constitution": 1,
+                "object": 1,
+                "parameter_owners": 2,
+                "phase": "Initialize",
+                "position": 0,
+                "primary": null
+              },
+              "failure": null,
+              "frames": [
+                {
+                  "body": "init:1",
+                  "id": 0,
+                  "object": 1
+                }
+              ],
+              "init": {
+                "constitution": 1,
+                "object": 1,
+                "position": 0
+              },
+              "rollback_errors": []
+            },
+            "parameter_owners": 2
+          },
+          "model_events": [
+            [
+              "object",
+              "1"
+            ],
+            [
+              "enter",
+              "f0",
+              "1"
+            ]
+          ]
+        },
+        {
+          "command": [
+            "run",
+            1,
+            "budget"
+          ],
+          "expected": {
+            "closed": false,
+            "host_roots": 1,
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "managed": {
+              "construct": {
+                "constitution": 1,
+                "object": 1,
+                "parameter_owners": 2,
+                "phase": "Initialize",
+                "position": 0,
+                "primary": null
+              },
+              "failure": null,
+              "frames": [
+                {
+                  "body": "init:2",
+                  "id": 1,
+                  "object": 1
+                }
+              ],
+              "init": {
+                "constitution": 2,
+                "object": 1,
+                "position": 1
+              },
+              "rollback_errors": []
+            },
+            "parameter_owners": 2
+          },
+          "model_events": [
+            [
+              "exit",
+              "f0"
+            ],
+            [
+              "enter",
+              "f1",
+              "1"
+            ]
+          ]
+        },
+        {
+          "command": [
+            "run",
+            1,
+            "budget"
+          ],
+          "expected": {
+            "closed": false,
+            "host_roots": 1,
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "managed": {
+              "construct": {
+                "constitution": 1,
+                "object": 1,
+                "parameter_owners": 2,
+                "phase": "Initialize",
+                "position": 0,
+                "primary": null
+              },
+              "failure": null,
+              "frames": [
+                {
+                  "body": "init:0",
+                  "id": 2,
+                  "object": 1
+                }
+              ],
+              "init": {
+                "constitution": 0,
+                "object": 1,
+                "position": 2
+              },
+              "rollback_errors": []
+            },
+            "parameter_owners": 2
+          },
+          "model_events": [
+            [
+              "exit",
+              "f1"
+            ],
+            [
+              "enter",
+              "f2",
+              "1"
+            ]
+          ]
+        },
+        {
+          "command": [
+            "run",
+            1,
+            "budget"
+          ],
+          "expected": {
+            "closed": false,
+            "host_roots": 1,
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "managed": {
+              "construct": {
+                "constitution": 1,
+                "object": 1,
+                "parameter_owners": 3,
+                "phase": "Create",
+                "position": 1,
+                "primary": null
+              },
+              "failure": null,
+              "frames": [
+                {
+                  "body": "fun:0",
+                  "id": 3,
+                  "object": 1
+                }
+              ],
+              "init": null,
+              "rollback_errors": []
+            },
+            "parameter_owners": 3
+          },
+          "model_events": [
+            [
+              "exit",
+              "f2"
+            ],
+            [
+              "enter",
+              "f3",
+              "1"
+            ]
+          ]
+        },
+        {
+          "command": [
+            "cancel"
+          ],
+          "expected": {
+            "closed": false,
+            "host_roots": 1,
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "queued"
+                }
+              },
+              "queue": [
+                1
+              ],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "managed": {
+              "construct": null,
+              "failure": null,
+              "frames": [],
+              "init": null,
+              "rollback_errors": []
+            },
+            "parameter_owners": 1
+          },
+          "model_events": []
+        },
+        {
+          "command": [
+            "cancel"
+          ],
+          "expected": {
+            "closed": false,
+            "host_roots": 1,
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "queued"
+                }
+              },
+              "queue": [
+                1
+              ],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "managed": {
+              "construct": null,
+              "failure": null,
+              "frames": [],
+              "init": null,
+              "rollback_errors": []
+            },
+            "parameter_owners": 1
+          },
+          "model_events": []
+        },
+        {
+          "command": [
+            "drain"
+          ],
+          "expected": {
+            "closed": false,
+            "host_roots": 1,
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": true,
+                  "execs": 0,
+                  "refs": 0,
+                  "state": "freed"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0
+              ]
+            },
+            "managed": {
+              "construct": null,
+              "failure": null,
+              "frames": [],
+              "init": null,
+              "rollback_errors": []
+            },
+            "parameter_owners": 1
+          },
+          "model_events": []
+        }
+      ]
+    },
+    {
+      "construct": true,
+      "layers": 3,
+      "name": "extract-rebuild-retains-cleanup",
+      "shared_model": false,
+      "steps": [
+        {
+          "command": [
+            "begin"
+          ],
+          "expected": {
+            "closed": false,
+            "host_roots": 1,
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "managed": {
+              "construct": {
+                "constitution": 1,
+                "object": 1,
+                "parameter_owners": 2,
+                "phase": "Initialize",
+                "position": 0,
+                "primary": null
+              },
+              "failure": null,
+              "frames": [
+                {
+                  "body": "init:1",
+                  "id": 0,
+                  "object": 1
+                }
+              ],
+              "init": {
+                "constitution": 1,
+                "object": 1,
+                "position": 0
+              },
+              "rollback_errors": []
+            },
+            "parameter_owners": 2
+          },
+          "model_events": [
+            [
+              "object",
+              "1"
+            ],
+            [
+              "enter",
+              "f0",
+              "1"
+            ]
+          ]
+        },
+        {
+          "command": [
+            "extract"
+          ],
+          "expected": {
+            "closed": false,
+            "host_roots": 1,
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "queued"
+                }
+              },
+              "queue": [
+                1
+              ],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "managed": {
+              "construct": null,
+              "failure": null,
+              "frames": [],
+              "init": null,
+              "rollback_errors": []
+            },
+            "parameter_owners": 1
+          },
+          "model_events": []
+        },
+        {
+          "command": [
+            "rebuild"
+          ],
+          "expected": {
+            "closed": false,
+            "host_roots": 1,
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "queued"
+                }
+              },
+              "queue": [
+                1
+              ],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "managed": {
+              "construct": null,
+              "failure": null,
+              "frames": [],
+              "init": null,
+              "rollback_errors": []
+            },
+            "parameter_owners": 1
+          },
+          "model_events": []
+        },
+        {
+          "command": [
+            "drain"
+          ],
+          "expected": {
+            "closed": false,
+            "host_roots": 1,
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": true,
+                  "execs": 0,
+                  "refs": 0,
+                  "state": "freed"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0
+              ]
+            },
+            "managed": {
+              "construct": null,
+              "failure": null,
+              "frames": [],
+              "init": null,
+              "rollback_errors": []
+            },
+            "parameter_owners": 1
+          },
+          "model_events": []
+        }
+      ]
+    },
+    {
+      "construct": true,
+      "layers": 3,
+      "name": "close-retains-records-for-host-root",
+      "shared_model": false,
+      "steps": [
+        {
+          "command": [
+            "begin"
+          ],
+          "expected": {
+            "closed": false,
+            "host_roots": 1,
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "managed": {
+              "construct": {
+                "constitution": 1,
+                "object": 1,
+                "parameter_owners": 2,
+                "phase": "Initialize",
+                "position": 0,
+                "primary": null
+              },
+              "failure": null,
+              "frames": [
+                {
+                  "body": "init:1",
+                  "id": 0,
+                  "object": 1
+                }
+              ],
+              "init": {
+                "constitution": 1,
+                "object": 1,
+                "position": 0
+              },
+              "rollback_errors": []
+            },
+            "parameter_owners": 2
+          },
+          "model_events": [
+            [
+              "object",
+              "1"
+            ],
+            [
+              "enter",
+              "f0",
+              "1"
+            ]
+          ]
+        },
+        {
+          "command": [
+            "run",
+            1,
+            "budget"
+          ],
+          "expected": {
+            "closed": false,
+            "host_roots": 1,
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "managed": {
+              "construct": {
+                "constitution": 1,
+                "object": 1,
+                "parameter_owners": 2,
+                "phase": "Initialize",
+                "position": 0,
+                "primary": null
+              },
+              "failure": null,
+              "frames": [
+                {
+                  "body": "init:2",
+                  "id": 1,
+                  "object": 1
+                }
+              ],
+              "init": {
+                "constitution": 2,
+                "object": 1,
+                "position": 1
+              },
+              "rollback_errors": []
+            },
+            "parameter_owners": 2
+          },
+          "model_events": [
+            [
+              "exit",
+              "f0"
+            ],
+            [
+              "enter",
+              "f1",
+              "1"
+            ]
+          ]
+        },
+        {
+          "command": [
+            "run",
+            1,
+            "budget"
+          ],
+          "expected": {
+            "closed": false,
+            "host_roots": 1,
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "managed": {
+              "construct": {
+                "constitution": 1,
+                "object": 1,
+                "parameter_owners": 2,
+                "phase": "Initialize",
+                "position": 0,
+                "primary": null
+              },
+              "failure": null,
+              "frames": [
+                {
+                  "body": "init:0",
+                  "id": 2,
+                  "object": 1
+                }
+              ],
+              "init": {
+                "constitution": 0,
+                "object": 1,
+                "position": 2
+              },
+              "rollback_errors": []
+            },
+            "parameter_owners": 2
+          },
+          "model_events": [
+            [
+              "exit",
+              "f1"
+            ],
+            [
+              "enter",
+              "f2",
+              "1"
+            ]
+          ]
+        },
+        {
+          "command": [
+            "run",
+            1,
+            "budget"
+          ],
+          "expected": {
+            "closed": false,
+            "host_roots": 1,
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "managed": {
+              "construct": {
+                "constitution": 1,
+                "object": 1,
+                "parameter_owners": 3,
+                "phase": "Create",
+                "position": 1,
+                "primary": null
+              },
+              "failure": null,
+              "frames": [
+                {
+                  "body": "fun:0",
+                  "id": 3,
+                  "object": 1
+                }
+              ],
+              "init": null,
+              "rollback_errors": []
+            },
+            "parameter_owners": 3
+          },
+          "model_events": [
+            [
+              "exit",
+              "f2"
+            ],
+            [
+              "enter",
+              "f3",
+              "1"
+            ]
+          ]
+        },
+        {
+          "command": [
+            "close"
+          ],
+          "expected": {
+            "closed": true,
+            "host_roots": 1,
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "queued"
+                }
+              },
+              "queue": [
+                1
+              ],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "managed": {
+              "construct": null,
+              "failure": null,
+              "frames": [],
+              "init": null,
+              "rollback_errors": []
+            },
+            "parameter_owners": 1
+          },
+          "model_events": []
+        }
+      ]
+    },
+    {
+      "construct": true,
+      "layers": 1,
+      "name": "zero-exec-entry-failure-queues",
+      "no_destruct": true,
+      "shared_model": false,
+      "stack_limit": 0,
+      "steps": [
+        {
+          "command": [
+            "begin"
+          ],
+          "expected": {
+            "closed": false,
+            "host_roots": 1,
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 1,
+                  "refs": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "managed": {
+              "construct": {
+                "constitution": 0,
+                "object": 1,
+                "parameter_owners": 2,
+                "phase": "Initialize",
+                "position": 0,
+                "primary": null
+              },
+              "failure": null,
+              "frames": [
+                {
+                  "body": "init:0",
+                  "id": 0,
+                  "object": 1
+                }
+              ],
+              "init": {
+                "constitution": 0,
+                "object": 1,
+                "position": 0
+              },
+              "rollback_errors": []
+            },
+            "parameter_owners": 2
+          },
+          "model_events": []
+        },
+        {
+          "command": [
+            "run",
+            1,
+            "error"
+          ],
+          "expected": {
+            "closed": false,
+            "host_roots": 1,
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "queued"
+                }
+              },
+              "queue": [
+                1
+              ],
+              "resident": [
+                0,
+                1
+              ]
+            },
+            "managed": {
+              "construct": null,
+              "failure": "Limit",
+              "frames": [],
+              "init": null,
+              "rollback_errors": []
+            },
+            "parameter_owners": 1
+          },
+          "model_events": []
+        },
+        {
+          "command": [
+            "drain"
+          ],
+          "expected": {
+            "closed": false,
+            "host_roots": 1,
+            "life": {
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "execs": 0,
+                  "refs": 1,
+                  "state": "alive"
+                },
+                "1": {
+                  "cleaned": true,
+                  "execs": 0,
+                  "refs": 0,
+                  "state": "freed"
+                }
+              },
+              "queue": [],
+              "resident": [
+                0
+              ]
+            },
+            "managed": {
+              "construct": null,
+              "failure": "Limit",
+              "frames": [],
+              "init": null,
+              "rollback_errors": []
+            },
+            "parameter_owners": 1
+          },
+          "model_events": []
+        }
+      ]
+    }
+  ],
+  "stage": "2BF"
+}

@@ -430,6 +430,8 @@ impl Vm {
         self.objects
     }
     fn cleanup_initialization(&mut self) {
+        #[cfg(test)]
+        self.enqueue_task_cleanup_for_test();
         let init = self.initialization.take();
         let construct = self.construction.take();
         if let Some(object) = construct
@@ -443,7 +445,16 @@ impl Vm {
     /// Allocate a new object and start only its bounded initialization segments.
     pub fn begin_initialize(&mut self, program: ProgramId) -> Result<ObjectId, VmError> {
         #[cfg(test)]
-        if self.objects.test_life.is_some() {
+        if self.test_managed_for_test() {
+            return self.begin_initialize_managed_for_test(program);
+        }
+        #[cfg(test)]
+        if self
+            .objects
+            .test_life
+            .as_ref()
+            .is_some_and(|life| !life.managed_tasks)
+        {
             return Err(err(
                 VmErrorKind::UnsupportedFeature,
                 "test lifecycle excludes managed construction",
@@ -537,14 +548,22 @@ impl Vm {
         let position = task.position + 1;
         if let Some(&constitution) = p.init_order.get(position) {
             let id = self.frame_id()?;
+            #[cfg(test)]
+            let lease = self.prepare_exec_for_test(Some(frame.object()?))?;
+            #[cfg(test)]
+            self.release_exec_to_for_test(0);
             self.frames[0] =
                 Self::initialization_frame(id, frame.program(), frame.object()?, constitution);
+            #[cfg(test)]
+            self.install_exec_for_test(id, lease);
             let task = self.initialization.as_mut().unwrap();
             task.position = position;
             task.constitution = constitution;
         } else {
             self.objects
                 .set_initialization(frame.object()?, InitializationState::Initialized)?;
+            #[cfg(test)]
+            self.release_exec_to_for_test(0);
             self.frames.clear();
             self.reference_cells.clear();
             self.initialization = None;
@@ -571,7 +590,12 @@ impl Vm {
         parameter: Option<Value>,
     ) -> Result<ObjectId, VmError> {
         #[cfg(test)]
-        if self.objects.test_life.is_some() {
+        if self
+            .objects
+            .test_life
+            .as_ref()
+            .is_some_and(|life| !life.managed_tasks)
+        {
             return Err(err(
                 VmErrorKind::UnsupportedFeature,
                 "test lifecycle excludes managed construction",
@@ -598,6 +622,9 @@ impl Vm {
         if let Some(value) = &parameter {
             crate::graph::values(std::slice::from_ref(value))?;
         }
+        #[cfg(test)]
+        let parameter = parameter.map(|v| self.test_owned_for_test(v)).transpose()?;
+        #[cfg(not(test))]
         let parameter = parameter
             .map(crate::ownership::OwnedValue::new)
             .transpose()?;
@@ -617,6 +644,8 @@ impl Vm {
         Ok(object)
     }
     fn clear_task_frames(&mut self) {
+        #[cfg(test)]
+        self.release_exec_to_for_test(0);
         self.catches.clear();
         self.frames.clear();
         self.stack.clear();
@@ -638,6 +667,14 @@ impl Vm {
     }
     fn finish_construction_failure(&mut self) {
         let task = self.construction.take().unwrap();
+        #[cfg(test)]
+        if self.test_managed_for_test() {
+            self.objects
+                .test_life
+                .as_ref()
+                .unwrap()
+                .enqueue_task_cleanup(task.object);
+        }
         let primary = task
             .primary
             .expect("failed construction has a primary error");
@@ -647,8 +684,12 @@ impl Vm {
         self.failure = Some(primary);
     }
     fn construction_error(&mut self, error: VmError) {
+        #[cfg(test)]
+        let cancelled = self.test_task_pending_for_test();
         let task = self.construction.as_mut().unwrap();
         let missing = self.objects.get(task.object).is_err();
+        #[cfg(test)]
+        let missing = missing || cancelled;
         if task.primary.is_none() {
             task.primary = Some(error);
         } else {
@@ -711,6 +752,8 @@ impl Vm {
                 .collect::<Vec<_>>(),
         )?;
         let id = self.frame_id()?;
+        #[cfg(test)]
+        let lease = self.prepare_exec_for_test(Some(self.construction.as_ref().unwrap().object))?;
         let task = self.construction.as_ref().unwrap();
         self.frames = vec![Frame {
             id,
@@ -723,6 +766,8 @@ impl Vm {
             entered: false,
             phase: EntryPhase::Unchecked,
         }];
+        #[cfg(test)]
+        self.install_exec_for_test(id, lease);
         self.stack = arguments;
         self.catches.clear();
         Ok(())
@@ -2939,6 +2984,13 @@ impl Vm {
         &mut self,
         fault_site: &mut Option<RuntimeFaultSite>,
     ) -> Result<(), VmError> {
+        #[cfg(test)]
+        if self.test_task_pending_for_test() {
+            return Err(err(
+                VmErrorKind::InvalidObject,
+                "managed task deletion requested",
+            ));
+        }
         let (frame, p) = self.context()?;
         let f = CodeView::get(&p, frame.body)?;
         let Instruction {
@@ -6668,6 +6720,127 @@ mod mapping_loop_tests {
 
 #[cfg(test)]
 impl Vm {
+    fn test_managed_for_test(&self) -> bool {
+        self.objects
+            .test_life
+            .as_ref()
+            .is_some_and(|life| life.managed_tasks)
+    }
+    fn test_task_pending_for_test(&self) -> bool {
+        if !self.test_managed_for_test() {
+            return false;
+        }
+        self.initialization
+            .as_ref()
+            .map(|t| t.object)
+            .or_else(|| self.construction.as_ref().map(|t| t.object))
+            .is_some_and(|id| {
+                self.objects
+                    .test_life
+                    .as_ref()
+                    .unwrap()
+                    .state(id)
+                    .is_ok_and(|s| s == crate::lifecycle_adapter::runtime::State::Pending)
+            })
+    }
+    fn enqueue_task_cleanup_for_test(&self) {
+        if self.test_managed_for_test()
+            && let Some(id) = self
+                .construction
+                .as_ref()
+                .map(|t| t.object)
+                .or_else(|| self.initialization.as_ref().map(|t| t.object))
+        {
+            self.objects
+                .test_life
+                .as_ref()
+                .unwrap()
+                .enqueue_task_cleanup(id);
+        }
+    }
+    fn test_owned_for_test(&self, value: Value) -> Result<crate::ownership::OwnedValue, VmError> {
+        match &self.objects.test_life {
+            Some(life) => life.owned(value),
+            None => crate::ownership::OwnedValue::new(value),
+        }
+    }
+    fn begin_initialize_managed_for_test(
+        &mut self,
+        program: ProgramId,
+    ) -> Result<ObjectId, VmError> {
+        let _scope = crate::graph::Scope::new(*self.objects.value_limits);
+        if self.initialization.is_some()
+            || self.construction.is_some()
+            || (!self.frames.is_empty() && self.completion.is_none() && self.failure.is_none())
+        {
+            return Err(err(
+                VmErrorKind::InvalidState,
+                "an execution is already active",
+            ));
+        }
+        let p = self.objects.program(program)?;
+        if !p.is_initializable() {
+            return Err(err(
+                VmErrorKind::UnsupportedFeature,
+                "program was not prepared for initialization",
+            ));
+        }
+        if self.limits.max_frames == 0 {
+            return Err(err(
+                VmErrorKind::Limit,
+                "initialization exceeds frame limit",
+            ));
+        }
+        let constitution = *p
+            .init_order
+            .first()
+            .ok_or_else(|| err(VmErrorKind::InvalidProgram, "missing initialization order"))?;
+        crate::copy_plan::reserve(&mut self.frames, 1)?;
+        crate::copy_plan::reserve(&mut self.exec_leases, 1)?;
+        let id = self.frame_id()?;
+        let object = self
+            .objects
+            .create(program, vec![Value::Undefined; p.variable_count])?;
+        // Fresh registered records have exec=0 and the constructor reserves capacity >=2.
+        let lease = self
+            .objects
+            .test_life
+            .as_ref()
+            .unwrap()
+            .exec(object)
+            .expect("fresh task execution capacity");
+        self.objects
+            .set_initialization(object, InitializationState::Initializing)
+            .expect("fresh task object");
+        self.release_exec_to_for_test(0);
+        self.frames.clear();
+        self.stack.clear();
+        self.catches.clear();
+        self.reference_cells.clear();
+        self.frames.push(Self::initialization_frame(
+            id,
+            program,
+            object,
+            constitution,
+        ));
+        self.install_exec_for_test(id, Some(lease));
+        self.initialization = Some(InitializationTask {
+            object,
+            position: 0,
+            constitution,
+        });
+        self.completion = None;
+        self.failure = None;
+        self.rollback_errors.clear();
+        Ok(object)
+    }
+    pub(crate) fn managed_snapshot_for_test(&self) -> serde_json::Value {
+        use serde_json::json;
+        json!({"init":self.initialization.as_ref().map(|t|json!({"object":t.object.get(),"position":t.position,"constitution":t.constitution})),
+            "construct":self.construction.as_ref().map(|t|json!({"object":t.object.get(),"phase":format!("{:?}",t.phase),"position":t.position,"constitution":t.constitution,"primary":t.primary.as_ref().map(|e|format!("{:?}",e.kind)),"parameter_owners":t.parameter.as_ref().and_then(|p|p.value.counter().map(|c|c.owners()))})),
+            "frames":self.frames.iter().map(|f|json!({"id":f.id,"object":f.active_object.map(|o|o.get()),"body":match f.body {FrameBody::Initialization(c)=>format!("init:{c}"),FrameBody::Function(slot)=>format!("fun:{slot}")}})).collect::<Vec<_>>(),
+            "failure":self.failure.as_ref().map(|e|format!("{:?}",e.kind)),"rollback_errors":self.rollback_errors.iter().map(|e|format!("{:?}",e.kind)).collect::<Vec<_>>()})
+    }
     fn test_cell(&self, value: Value) -> Result<Rc<Cell>, VmError> {
         self.objects.test_cell(value)
     }
@@ -6723,6 +6896,9 @@ impl Vm {
         }
     }
     pub(crate) fn cancel_execution_for_test(&mut self) {
+        if self.test_managed_for_test() {
+            self.cleanup_initialization();
+        }
         self.release_exec_to_for_test(0);
         self.frames.clear();
         self.stack.clear();
@@ -6731,7 +6907,10 @@ impl Vm {
         self.completion = None;
         self.failure = None;
     }
-    pub(crate) fn lifecycle_audit_host_for_test(&self, roots: &[&crate::ownership::OwnedValue]) {
+    pub(crate) fn lifecycle_audit_omitting_task_for_test(
+        &self,
+        roots: &[&crate::ownership::OwnedValue],
+    ) {
         let frames = self
             .frames
             .iter()
@@ -6743,6 +6922,26 @@ impl Vm {
             .unwrap()
             .audit_host(&frames, &self.exec_leases, roots);
     }
+    pub(crate) fn lifecycle_audit_host_for_test(&self, roots: &[&crate::ownership::OwnedValue]) {
+        let mut owned = roots.to_vec();
+        if let Some(parameter) = self
+            .construction
+            .as_ref()
+            .and_then(|t| t.parameter.as_ref())
+        {
+            owned.push(parameter);
+        }
+        let frames = self
+            .frames
+            .iter()
+            .filter_map(|f| f.active_object.map(|id| (f.id, id)))
+            .collect::<Vec<_>>();
+        self.objects
+            .test_life
+            .as_ref()
+            .unwrap()
+            .audit_host(&frames, &self.exec_leases, &owned);
+    }
     fn lifecycle_audit_for_test(&self) {
         if let Some(life) = &self.objects.test_life {
             let frames = self
@@ -6750,7 +6949,13 @@ impl Vm {
                 .iter()
                 .filter_map(|f| f.active_object.map(|id| (f.id, id)))
                 .collect::<Vec<_>>();
-            life.audit(&frames, &self.exec_leases);
+            let roots = self
+                .construction
+                .as_ref()
+                .and_then(|t| t.parameter.as_ref())
+                .into_iter()
+                .collect::<Vec<_>>();
+            life.audit_host(&frames, &self.exec_leases, &roots);
             let snapshot = life.snapshot();
             for (id, state) in snapshot["objects"].as_object().unwrap() {
                 let key = ObjectId(id.parse().unwrap());

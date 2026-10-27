@@ -1,0 +1,32 @@
+{
+  "ignored_driver": "boundary::lifecycle_managed_tests::replay_managed_lifecycle_traces",
+  "ordinary": [
+    "boundary::lifecycle_managed_tests::closing_active_vm_keeps_actual_records_until_last_host_root",
+    "boundary::lifecycle_managed_tests::construct_runs_all_initializers_before_all_create_layers",
+    "boundary::lifecycle_managed_tests::core_and_host_modes_continue_to_reject_prepared_managed_tasks",
+    "boundary::lifecycle_managed_tests::deletion_in_each_managed_phase_aborts_at_next_positive_budget",
+    "boundary::lifecycle_managed_tests::each_failed_create_rolls_back_visited_layers_in_reverse",
+    "boundary::lifecycle_managed_tests::error_context_tracks_real_source_constitution_and_function",
+    "boundary::lifecycle_managed_tests::explicit_cancel_is_idempotent_in_every_phase",
+    "boundary::lifecycle_managed_tests::extraction_cancels_each_phase_and_preserves_origin_mode_and_queue",
+    "boundary::lifecycle_managed_tests::failed_drain_keeps_queue_variables_and_cleanup_responsibility",
+    "boundary::lifecycle_managed_tests::failed_initialization_self_reference_is_broken_only_at_drain",
+    "boundary::lifecycle_managed_tests::first_create_argument_allocation_failure_rolls_back_with_primary_limit",
+    "boundary::lifecycle_managed_tests::initialization_failures_at_each_layer_queue_without_destruct",
+    "boundary::lifecycle_managed_tests::initialization_helpers_have_one_lease_per_installed_frame",
+    "boundary::lifecycle_managed_tests::initialization_replaces_real_frame_ids_and_releases_last_exec",
+    "boundary::lifecycle_managed_tests::missing_create_layer_still_visits_destruct_in_failure_rollback",
+    "boundary::lifecycle_managed_tests::missing_initialized_frame_is_detected_by_exec_audit",
+    "boundary::lifecycle_managed_tests::missing_task_parameter_is_detected_by_graph_root_audit",
+    "boundary::lifecycle_managed_tests::nested_frame_limit_failure_queues_and_unwinds_all_task_frames",
+    "boundary::lifecycle_managed_tests::new_task_after_sticky_failure_preserves_old_queue_and_unique_ids",
+    "boundary::lifecycle_managed_tests::no_lifecycle_functions_complete_without_an_ordinary_object_owner",
+    "boundary::lifecycle_managed_tests::prepublication_failures_preserve_prior_completion_and_no_new_records",
+    "boundary::lifecycle_managed_tests::rollback_errors_continue_and_primary_error_is_sticky",
+    "boundary::lifecycle_managed_tests::task_parameter_graph_survives_host_root_drop_until_explicit_cleanup",
+    "boundary::lifecycle_managed_tests::typed_parameter_rejection_preserves_completed_task",
+    "boundary::lifecycle_managed_tests::zero_budget_preserves_task_frame_parameter_and_cursor",
+    "boundary::lifecycle_managed_tests::zero_frame_create_entry_failure_still_owns_exactly_one_cleanup_node"
+  ],
+  "source_sha256": "8183cc31fd4cb9b78d88878218f59befc557f7e70fe561916706fb5f513e289e"
+}

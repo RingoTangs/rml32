@@ -350,6 +350,15 @@ impl ObjectStore {
         )?);
         Ok(store)
     }
+    pub(crate) fn with_test_managed_lifecycle(limits: crate::ValueLimits) -> Result<Self, VmError> {
+        let mut store = Self::new();
+        store.value_limits = Rc::new(limits);
+        store.test_life = Some(crate::lifecycle_adapter::runtime::StoreState::new_managed(
+            store.function_origin.clone(),
+            limits,
+        )?);
+        Ok(store)
+    }
     pub(crate) fn take_host_callbacks_for_test(
         &mut self,
     ) -> BTreeMap<u16, crate::host::HostFunction> {

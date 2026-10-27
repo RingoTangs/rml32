@@ -122,19 +122,24 @@ pub(crate) struct StoreState {
     capacity: usize,
     closed: Flag<bool>,
     pub(crate) host_boundary: bool,
+    pub(crate) managed_tasks: bool,
 }
 impl StoreState {
     pub(crate) fn new(origin: Rc<()>, limits: ValueLimits, capacity: usize) -> Result<Rc<Self>> {
-        Self::new_mode(origin, limits, capacity, false)
+        Self::new_mode(origin, limits, capacity, false, false)
     }
     pub(crate) fn new_host(origin: Rc<()>, limits: ValueLimits) -> Result<Rc<Self>> {
-        Self::new_mode(origin, limits, usize::MAX, true)
+        Self::new_mode(origin, limits, usize::MAX, true, false)
+    }
+    pub(crate) fn new_managed(origin: Rc<()>, limits: ValueLimits) -> Result<Rc<Self>> {
+        Self::new_mode(origin, limits, usize::MAX, true, true)
     }
     fn new_mode(
         origin: Rc<()>,
         limits: ValueLimits,
         capacity: usize,
         host_boundary: bool,
+        managed_tasks: bool,
     ) -> Result<Rc<Self>> {
         if capacity < 2 {
             return Err(VmError::new(
@@ -150,6 +155,7 @@ impl StoreState {
             capacity,
             closed: Flag::new(false),
             host_boundary,
+            managed_tasks,
         }))
     }
     pub(crate) fn register(&self, id: ObjectId) -> Result<()> {
@@ -220,6 +226,23 @@ impl StoreState {
             Ok(true)
         } else {
             Ok(false)
+        }
+    }
+    // Test policy: failed/cancelled managed work retains cleanup responsibility
+    // even if the last installed frame has already returned. No fake exec lease.
+    pub(crate) fn enqueue_task_cleanup(&self, id: ObjectId) {
+        let entry = self.entry(id).expect("registered task object");
+        let binding = entry.life.borrow();
+        let life = binding.as_ref().unwrap();
+        if !matches!(life.state.get(), State::Alive | State::Pending) {
+            return;
+        }
+        life.state.set(State::Pending);
+        entry.status.set(Status::Pending);
+        let enqueue = life.exec.get() == 0;
+        drop(binding);
+        if enqueue {
+            self.queue.push(id, &entry);
         }
     }
     pub(crate) fn invalidate(&self, id: ObjectId) {
@@ -306,6 +329,9 @@ impl StoreState {
         roots: &[&OwnedValue],
     ) {
         self.audit_reachable();
+        if self.managed_tasks {
+            self.audit_graph_roots(roots);
+        }
         self.ctx.audit_roots(&self.queue.ids(), roots);
         let mut exec = BTreeMap::new();
         for (_, id) in frames {
@@ -338,6 +364,30 @@ impl StoreState {
                 assert_eq!(l.exec.get(), 0);
                 assert!(l.cleaned.get());
             }
+        }
+    }
+    fn audit_graph_roots(&self, roots: &[&OwnedValue]) {
+        let mut expected = BTreeMap::<u64, usize>::new();
+        let mut visit = |v: &Value| {
+            if let Some(counter) = v.counter() {
+                *expected.entry(counter.id).or_default() += 1;
+            }
+        };
+        for cell in self.ctx.cells.borrow().values().filter_map(Weak::upgrade) {
+            visit(&cell.read().unwrap());
+        }
+        for root in self.ctx.owned.borrow().iter().filter_map(Weak::upgrade) {
+            visit(&root.value);
+        }
+        for root in roots {
+            visit(&root.value);
+        }
+        for counter in self.ctx.graphs.borrow().values().filter_map(Weak::upgrade) {
+            assert_eq!(
+                counter.owners(),
+                *expected.get(&counter.id).unwrap_or(&0),
+                "actual graph root audit"
+            );
         }
     }
     fn audit_reachable(&self) {
