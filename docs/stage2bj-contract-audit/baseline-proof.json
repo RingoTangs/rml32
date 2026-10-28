@@ -1,0 +1,19 @@
+{
+  "baseline_commit": "0c4fbf40007d0bc2f877a269ba6e1ca22ef6fcc0",
+  "baseline_files_verified": 1048,
+  "expected_baseline_failure_commands": 1,
+  "findings_reproduced": [
+    "D08-R01",
+    "D08-R02"
+  ],
+  "log_sha256": "f7aec55dbc8ec0608fe96745ec328934665ae6e20e29a2608c7451f14b5e182e",
+  "production_tokens_unchanged_by_observers": true,
+  "repaired": {
+    "error_kind": "InvalidObject",
+    "id": "D08-R01",
+    "step": 7,
+    "trace": "P078-F10"
+  },
+  "stage": "2BJ",
+  "status": "pass"
+}

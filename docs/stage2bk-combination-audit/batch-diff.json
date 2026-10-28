@@ -1,0 +1,54 @@
+{
+  "input_sha256": "040c40dcdc20421b92701fec4ddf7f6cbfea90cd428496c9cc1f9f1c6dfbe9de",
+  "log_sha256": "a0b47c8a93be67cd587b007befa15d22e0366b00ce1d59fc6592902fb69fce61",
+  "observations_sha256": "cb0addb782c622ec99fd33968c603d9fd161549e414acdcb6de9901172682905",
+  "stage": "2BK",
+  "status": "pass",
+  "summary": {
+    "accepted": 214689,
+    "layouts": {
+      "copy_move_alias": {
+        "aborted": 4687,
+        "committed": 0,
+        "reached": 9374,
+        "rejected": 4687
+      },
+      "fanout": {
+        "aborted": 4687,
+        "committed": 481,
+        "reached": 9374,
+        "rejected": 4206
+      },
+      "independent": {
+        "aborted": 4687,
+        "committed": 343,
+        "reached": 9374,
+        "rejected": 4344
+      },
+      "moves": {
+        "aborted": 4687,
+        "committed": 763,
+        "reached": 9374,
+        "rejected": 3924
+      },
+      "same_conflict": {
+        "aborted": 0,
+        "committed": 0,
+        "reached": 9374,
+        "rejected": 0
+      },
+      "same_equal": {
+        "aborted": 4687,
+        "committed": 1533,
+        "reached": 9374,
+        "rejected": 3154
+      }
+    },
+    "rejected": 57553,
+    "setup_rejected": 27864,
+    "steps": 272242,
+    "target_reached": 56244,
+    "traces": 84108,
+    "unclassified_differences": 0
+  }
+}

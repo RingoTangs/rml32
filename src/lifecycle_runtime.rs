@@ -180,6 +180,26 @@ pub(crate) struct HeadReservation {
     abort: bool,
 }
 impl HeadReservation {
+    pub(crate) fn validate(&self) -> Result<()> {
+        if self.ctx.closed.get() {
+            return Err(invalid("closed head reservation"));
+        }
+        let heads = self.ctx.heads.borrow();
+        let head = heads
+            .get(&self.id)
+            .ok_or_else(|| invalid("expired head reservation"))?;
+        if head
+            .creator
+            .as_ref()
+            .is_some_and(|e| e.status.get() == Status::Invalid)
+        {
+            return Err(VmError::new(
+                VmErrorKind::InvalidObject,
+                "creator invalidated before publication",
+            ));
+        }
+        Ok(())
+    }
     pub(crate) fn commit(mut self) {
         self.abort = false;
     }
@@ -825,6 +845,56 @@ impl StoreState {
     #[cfg(test)]
     pub(crate) fn snapshot(&self) -> Json {
         json!({"objects":self.ctx.objects.borrow().iter().map(|(id,e)|{let b=e.life.borrow();let l=b.as_ref().unwrap();(id.get().to_string(),json!({"state":l.state.get().name(),"refs":e.counter.owners(),"execs":l.exec.get(),"cleaned":l.cleaned.get()}))}).collect::<BTreeMap<_,_>>(),"queue":self.queue.ids().iter().map(|id|id.get()).collect::<Vec<_>>()})
+    }
+    /// Scalar-only observation; no owners, safety points or retained physical views.
+    #[cfg(test)]
+    pub(crate) fn contract_observation(&self) -> Json {
+        let objects = self.ctx.objects.borrow().iter().map(|(id,e)| {
+            let life=e.life.borrow();let life=life.as_ref().unwrap();
+            (id.get().to_string(),json!({"state":life.state.get().name(),"ordinary":e.counter.owners(),"exec":life.exec.get(),"cleaned":life.cleaned.get()}))
+        }).collect::<BTreeMap<_,_>>();
+        let heads = self.ctx.heads.borrow().iter().map(|(id,h)|(*id,json!({"kind":"function","owners":h.leases.get(),"retired":h.retired.get()}))).chain(
+            self.ctx.containers.borrow().iter().map(|(id,h)|(*id,json!({"kind":match h.header {crate::graph::WeakHeader::Array(_)=>"array",_=>"mapping"},"owners":h.leases.get(),"retired":h.retired.get()})))
+        ).map(|(id,v)|(id.to_string(),v)).collect::<BTreeMap<_,_>>();
+        let mut rows = Vec::new();
+        for (id, e) in self.ctx.objects.borrow().iter() {
+            rows.push(json!({"phase":0,"key":id.get(),"eligible":e.life.borrow().as_ref().unwrap().state.get()==State::Freed}));
+        }
+        for (id, h) in self.ctx.heads.borrow().iter() {
+            rows.push(json!({"phase":1,"key":id,"eligible":h.leases.get()==0 && h.function.strong_count()==0}));
+        }
+        for (id, c) in self.ctx.cells.borrow().iter() {
+            rows.push(json!({"phase":2,"key":id,"eligible":c.strong_count()==0}));
+        }
+        for (id, c) in self.ctx.graphs.borrow().iter() {
+            rows.push(json!({"phase":3,"key":id,"eligible":c.strong_count()==0}));
+        }
+        let scan = self.scan.borrow();
+        json!({"objects":objects,"heads":heads,"function_heads_charged":self.ctx.heads.borrow().len(),"queue":self.queue.ids().iter().map(|id|id.get()).collect::<Vec<_>>(),
+            "metadata":rows,"epoch":self.ctx.epoch.value.get(),"force":self.ctx.epoch.force.get(),
+            "scan":{"active":scan.active,"complete":scan.complete,"epoch":scan.epoch,"phase":scan.phase,"after":scan.after,"fence":scan.fence},"scan_complete":self.scan_complete()})
+    }
+    #[cfg(test)]
+    pub(crate) fn contract_borrow<T>(&self, index: &str, f: impl FnOnce() -> T) -> T {
+        match index {
+            "objects" => {
+                let _g = self.ctx.objects.borrow_mut();
+                f()
+            }
+            "heads" => {
+                let _g = self.ctx.heads.borrow_mut();
+                f()
+            }
+            "cells" => {
+                let _g = self.ctx.cells.borrow_mut();
+                f()
+            }
+            "graphs" => {
+                let _g = self.ctx.graphs.borrow_mut();
+                f()
+            }
+            _ => f(),
+        }
     }
     pub(crate) fn close(&self) {
         self.begin_close();

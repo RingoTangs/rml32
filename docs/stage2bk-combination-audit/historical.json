@@ -1,0 +1,14 @@
+{
+  "base_commit": "0c4fbf40007d0bc2f877a269ba6e1ca22ef6fcc0",
+  "execution_location": "sealed 2BJ overlay on detached base plus its pinned nested authorities; not current source",
+  "historical_python_tests": 497,
+  "log_sha256": "84f2146ec05aca3f3083655deab73383679f6d393d8c74741c065099fcddb026",
+  "nested_python_tests": 465,
+  "network_used": false,
+  "outer_python_tests": 32,
+  "overlay_sha256": "b9d0aa541b94f3fa62bdee2c6239eeab15721315eca1acb8cdb70c3a7bc02f64",
+  "snapshot_files": 1096,
+  "snapshot_sha256": "7bdd57a2e7621d3eb204c3f178d7958d5fb4a3956effa6d6908acab38bfc8d96",
+  "stage": "2BK",
+  "status": "pass"
+}

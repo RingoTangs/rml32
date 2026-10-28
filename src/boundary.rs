@@ -1279,6 +1279,14 @@ mod lifecycle_host_function_tests;
 mod lifecycle_production_tests;
 
 #[cfg(test)]
+#[path = "lifecycle_contract_tests.rs"]
+mod lifecycle_contract_tests;
+
+#[cfg(test)]
+#[path = "lifecycle_combination_tests.rs"]
+mod lifecycle_combination_tests;
+
+#[cfg(test)]
 #[path = "lifecycle_managed_tests.rs"]
 mod lifecycle_managed_tests;
 

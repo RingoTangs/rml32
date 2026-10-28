@@ -1,0 +1,1658 @@
+{
+  "baseline_commit": "0c4fbf40007d0bc2f877a269ba6e1ca22ef6fcc0",
+  "findings": [
+    {
+      "command": {
+        "argv": [
+          "cargo",
+          "test",
+          "--locked",
+          "--offline",
+          "--lib",
+          "boundary::lifecycle_contract_tests::replay_production_contract_traces",
+          "--",
+          "--ignored",
+          "--exact",
+          "--nocapture"
+        ],
+        "returncode": 0,
+        "stderr": "    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.01s\n     Running unittests src/lib.rs (target/debug/deps/rml32-4c4c2c49e0f67311)\n",
+        "stdout": "\nrunning 1 test\nPRODUCTION_CONTRACT_REPLAY {\"steps\":8,\"teardowns\":1,\"traces\":1}\ntest boundary::lifecycle_contract_tests::replay_production_contract_traces ... ok\n\ntest result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 748 filtered out; finished in 0.00s\n\n"
+      },
+      "expected": [
+        {
+          "error_kind": null,
+          "semantic": {
+            "function_heads_charged": 0,
+            "headers": {},
+            "objects": {
+              "o0": {
+                "cleaned": false,
+                "exec": 0,
+                "ordinary": 0,
+                "state": "alive"
+              }
+            },
+            "pending_roots": 0,
+            "queue": [],
+            "slots": {
+              "var:o0:0": [
+                "scalar",
+                null
+              ]
+            }
+          }
+        },
+        {
+          "error_kind": null,
+          "semantic": {
+            "function_heads_charged": 0,
+            "headers": {},
+            "objects": {
+              "o0": {
+                "cleaned": false,
+                "exec": 0,
+                "ordinary": 0,
+                "state": "alive"
+              }
+            },
+            "pending_roots": 0,
+            "queue": [],
+            "slots": {
+              "s": [
+                "scalar",
+                null
+              ],
+              "var:o0:0": [
+                "scalar",
+                null
+              ]
+            }
+          }
+        },
+        {
+          "error_kind": null,
+          "semantic": {
+            "function_heads_charged": 0,
+            "headers": {},
+            "objects": {
+              "o0": {
+                "cleaned": false,
+                "exec": 0,
+                "ordinary": 0,
+                "state": "alive"
+              }
+            },
+            "pending_roots": 0,
+            "queue": [],
+            "slots": {
+              "s": [
+                "scalar",
+                null
+              ],
+              "var:o0:0": [
+                "scalar",
+                null
+              ]
+            }
+          }
+        },
+        {
+          "error_kind": null,
+          "semantic": {
+            "function_heads_charged": 0,
+            "headers": {},
+            "objects": {
+              "o0": {
+                "cleaned": false,
+                "exec": 0,
+                "ordinary": 1,
+                "state": "alive"
+              }
+            },
+            "pending_roots": 0,
+            "queue": [],
+            "slots": {
+              "s": [
+                "object",
+                "o0"
+              ],
+              "var:o0:0": [
+                "scalar",
+                null
+              ]
+            }
+          }
+        },
+        {
+          "error_kind": "InvalidState",
+          "semantic": {
+            "function_heads_charged": 0,
+            "headers": {},
+            "objects": {
+              "o0": {
+                "cleaned": false,
+                "exec": 0,
+                "ordinary": 1,
+                "state": "alive"
+              }
+            },
+            "pending_roots": 0,
+            "queue": [],
+            "slots": {
+              "s": [
+                "object",
+                "o0"
+              ],
+              "var:o0:0": [
+                "scalar",
+                null
+              ]
+            }
+          }
+        },
+        {
+          "error_kind": null,
+          "semantic": {
+            "function_heads_charged": 1,
+            "headers": {},
+            "objects": {
+              "o0": {
+                "cleaned": false,
+                "exec": 0,
+                "ordinary": 2,
+                "state": "alive"
+              }
+            },
+            "pending_roots": 0,
+            "queue": [],
+            "slots": {
+              "s": [
+                "object",
+                "o0"
+              ],
+              "var:o0:0": [
+                "scalar",
+                null
+              ]
+            }
+          }
+        },
+        {
+          "error_kind": null,
+          "semantic": {
+            "function_heads_charged": 1,
+            "headers": {},
+            "objects": {
+              "o0": {
+                "cleaned": true,
+                "exec": 0,
+                "ordinary": 2,
+                "state": "shell"
+              }
+            },
+            "pending_roots": 0,
+            "queue": [],
+            "slots": {
+              "s": [
+                "object",
+                "o0"
+              ],
+              "var:o0:0": [
+                "scalar",
+                null
+              ]
+            }
+          }
+        },
+        {
+          "error_kind": "InvalidObject",
+          "semantic": {
+            "function_heads_charged": 0,
+            "headers": {},
+            "objects": {
+              "o0": {
+                "cleaned": true,
+                "exec": 0,
+                "ordinary": 1,
+                "state": "shell"
+              }
+            },
+            "pending_roots": 0,
+            "queue": [],
+            "slots": {
+              "s": [
+                "object",
+                "o0"
+              ],
+              "var:o0:0": [
+                "scalar",
+                null
+              ]
+            }
+          }
+        }
+      ],
+      "id": "D08-R01",
+      "pre_fix_observations": [
+        {
+          "accepted": true,
+          "after": {
+            "raw": {
+              "epoch": 2,
+              "force": false,
+              "function_heads_charged": 0,
+              "heads": {},
+              "metadata": [
+                {
+                  "eligible": false,
+                  "key": 0,
+                  "phase": 0
+                },
+                {
+                  "eligible": false,
+                  "key": 1,
+                  "phase": 2
+                }
+              ],
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "exec": 0,
+                  "ordinary": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "scan": {
+                "active": false,
+                "after": null,
+                "complete": false,
+                "epoch": 0,
+                "fence": [
+                  null,
+                  null,
+                  null,
+                  null
+                ],
+                "phase": 0
+              },
+              "scan_complete": false
+            },
+            "semantic": {
+              "function_heads_charged": 0,
+              "headers": {},
+              "objects": {
+                "o0": {
+                  "cleaned": false,
+                  "exec": 0,
+                  "ordinary": 0,
+                  "state": "alive"
+                }
+              },
+              "pending_roots": 0,
+              "queue": [],
+              "slots": {
+                "var:o0:0": [
+                  "scalar",
+                  null
+                ]
+              }
+            }
+          },
+          "before": {
+            "raw": {
+              "epoch": 0,
+              "force": false,
+              "function_heads_charged": 0,
+              "heads": {},
+              "metadata": [],
+              "objects": {},
+              "queue": [],
+              "scan": {
+                "active": false,
+                "after": null,
+                "complete": false,
+                "epoch": 0,
+                "fence": [
+                  null,
+                  null,
+                  null,
+                  null
+                ],
+                "phase": 0
+              },
+              "scan_complete": true
+            },
+            "semantic": {
+              "function_heads_charged": 0,
+              "headers": {},
+              "objects": {},
+              "pending_roots": 0,
+              "queue": [],
+              "slots": {}
+            }
+          },
+          "error_kind": null,
+          "id": "P078-F10",
+          "progress": null,
+          "step": 0
+        },
+        {
+          "accepted": true,
+          "after": {
+            "raw": {
+              "epoch": 3,
+              "force": false,
+              "function_heads_charged": 0,
+              "heads": {},
+              "metadata": [
+                {
+                  "eligible": false,
+                  "key": 0,
+                  "phase": 0
+                },
+                {
+                  "eligible": false,
+                  "key": 1,
+                  "phase": 2
+                },
+                {
+                  "eligible": false,
+                  "key": 2,
+                  "phase": 2
+                }
+              ],
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "exec": 0,
+                  "ordinary": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "scan": {
+                "active": false,
+                "after": null,
+                "complete": false,
+                "epoch": 0,
+                "fence": [
+                  null,
+                  null,
+                  null,
+                  null
+                ],
+                "phase": 0
+              },
+              "scan_complete": false
+            },
+            "semantic": {
+              "function_heads_charged": 0,
+              "headers": {},
+              "objects": {
+                "o0": {
+                  "cleaned": false,
+                  "exec": 0,
+                  "ordinary": 0,
+                  "state": "alive"
+                }
+              },
+              "pending_roots": 0,
+              "queue": [],
+              "slots": {
+                "s": [
+                  "scalar",
+                  null
+                ],
+                "var:o0:0": [
+                  "scalar",
+                  null
+                ]
+              }
+            }
+          },
+          "before": {
+            "raw": {
+              "epoch": 2,
+              "force": false,
+              "function_heads_charged": 0,
+              "heads": {},
+              "metadata": [
+                {
+                  "eligible": false,
+                  "key": 0,
+                  "phase": 0
+                },
+                {
+                  "eligible": false,
+                  "key": 1,
+                  "phase": 2
+                }
+              ],
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "exec": 0,
+                  "ordinary": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "scan": {
+                "active": false,
+                "after": null,
+                "complete": false,
+                "epoch": 0,
+                "fence": [
+                  null,
+                  null,
+                  null,
+                  null
+                ],
+                "phase": 0
+              },
+              "scan_complete": false
+            },
+            "semantic": {
+              "function_heads_charged": 0,
+              "headers": {},
+              "objects": {
+                "o0": {
+                  "cleaned": false,
+                  "exec": 0,
+                  "ordinary": 0,
+                  "state": "alive"
+                }
+              },
+              "pending_roots": 0,
+              "queue": [],
+              "slots": {
+                "var:o0:0": [
+                  "scalar",
+                  null
+                ]
+              }
+            }
+          },
+          "error_kind": null,
+          "id": "P078-F10",
+          "progress": null,
+          "step": 1
+        },
+        {
+          "accepted": true,
+          "after": {
+            "raw": {
+              "epoch": 4,
+              "force": false,
+              "function_heads_charged": 0,
+              "heads": {},
+              "metadata": [
+                {
+                  "eligible": false,
+                  "key": 0,
+                  "phase": 0
+                },
+                {
+                  "eligible": false,
+                  "key": 1,
+                  "phase": 2
+                },
+                {
+                  "eligible": false,
+                  "key": 2,
+                  "phase": 2
+                },
+                {
+                  "eligible": false,
+                  "key": 3,
+                  "phase": 2
+                }
+              ],
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "exec": 0,
+                  "ordinary": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "scan": {
+                "active": false,
+                "after": null,
+                "complete": false,
+                "epoch": 0,
+                "fence": [
+                  null,
+                  null,
+                  null,
+                  null
+                ],
+                "phase": 0
+              },
+              "scan_complete": false
+            },
+            "semantic": {
+              "function_heads_charged": 0,
+              "headers": {},
+              "objects": {
+                "o0": {
+                  "cleaned": false,
+                  "exec": 0,
+                  "ordinary": 0,
+                  "state": "alive"
+                }
+              },
+              "pending_roots": 0,
+              "queue": [],
+              "slots": {
+                "s": [
+                  "scalar",
+                  null
+                ],
+                "var:o0:0": [
+                  "scalar",
+                  null
+                ]
+              }
+            }
+          },
+          "before": {
+            "raw": {
+              "epoch": 3,
+              "force": false,
+              "function_heads_charged": 0,
+              "heads": {},
+              "metadata": [
+                {
+                  "eligible": false,
+                  "key": 0,
+                  "phase": 0
+                },
+                {
+                  "eligible": false,
+                  "key": 1,
+                  "phase": 2
+                },
+                {
+                  "eligible": false,
+                  "key": 2,
+                  "phase": 2
+                }
+              ],
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "exec": 0,
+                  "ordinary": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "scan": {
+                "active": false,
+                "after": null,
+                "complete": false,
+                "epoch": 0,
+                "fence": [
+                  null,
+                  null,
+                  null,
+                  null
+                ],
+                "phase": 0
+              },
+              "scan_complete": false
+            },
+            "semantic": {
+              "function_heads_charged": 0,
+              "headers": {},
+              "objects": {
+                "o0": {
+                  "cleaned": false,
+                  "exec": 0,
+                  "ordinary": 0,
+                  "state": "alive"
+                }
+              },
+              "pending_roots": 0,
+              "queue": [],
+              "slots": {
+                "s": [
+                  "scalar",
+                  null
+                ],
+                "var:o0:0": [
+                  "scalar",
+                  null
+                ]
+              }
+            }
+          },
+          "error_kind": null,
+          "id": "P078-F10",
+          "progress": null,
+          "step": 2
+        },
+        {
+          "accepted": true,
+          "after": {
+            "raw": {
+              "epoch": 5,
+              "force": false,
+              "function_heads_charged": 0,
+              "heads": {},
+              "metadata": [
+                {
+                  "eligible": false,
+                  "key": 0,
+                  "phase": 0
+                },
+                {
+                  "eligible": false,
+                  "key": 1,
+                  "phase": 2
+                },
+                {
+                  "eligible": false,
+                  "key": 2,
+                  "phase": 2
+                },
+                {
+                  "eligible": false,
+                  "key": 3,
+                  "phase": 2
+                }
+              ],
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "exec": 0,
+                  "ordinary": 1,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "scan": {
+                "active": false,
+                "after": null,
+                "complete": false,
+                "epoch": 0,
+                "fence": [
+                  null,
+                  null,
+                  null,
+                  null
+                ],
+                "phase": 0
+              },
+              "scan_complete": false
+            },
+            "semantic": {
+              "function_heads_charged": 0,
+              "headers": {},
+              "objects": {
+                "o0": {
+                  "cleaned": false,
+                  "exec": 0,
+                  "ordinary": 1,
+                  "state": "alive"
+                }
+              },
+              "pending_roots": 0,
+              "queue": [],
+              "slots": {
+                "s": [
+                  "object",
+                  "o0"
+                ],
+                "var:o0:0": [
+                  "scalar",
+                  null
+                ]
+              }
+            }
+          },
+          "before": {
+            "raw": {
+              "epoch": 4,
+              "force": false,
+              "function_heads_charged": 0,
+              "heads": {},
+              "metadata": [
+                {
+                  "eligible": false,
+                  "key": 0,
+                  "phase": 0
+                },
+                {
+                  "eligible": false,
+                  "key": 1,
+                  "phase": 2
+                },
+                {
+                  "eligible": false,
+                  "key": 2,
+                  "phase": 2
+                },
+                {
+                  "eligible": false,
+                  "key": 3,
+                  "phase": 2
+                }
+              ],
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "exec": 0,
+                  "ordinary": 0,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "scan": {
+                "active": false,
+                "after": null,
+                "complete": false,
+                "epoch": 0,
+                "fence": [
+                  null,
+                  null,
+                  null,
+                  null
+                ],
+                "phase": 0
+              },
+              "scan_complete": false
+            },
+            "semantic": {
+              "function_heads_charged": 0,
+              "headers": {},
+              "objects": {
+                "o0": {
+                  "cleaned": false,
+                  "exec": 0,
+                  "ordinary": 0,
+                  "state": "alive"
+                }
+              },
+              "pending_roots": 0,
+              "queue": [],
+              "slots": {
+                "s": [
+                  "scalar",
+                  null
+                ],
+                "var:o0:0": [
+                  "scalar",
+                  null
+                ]
+              }
+            }
+          },
+          "error_kind": null,
+          "id": "P078-F10",
+          "progress": null,
+          "step": 3
+        },
+        {
+          "accepted": false,
+          "after": {
+            "raw": {
+              "epoch": 6,
+              "force": false,
+              "function_heads_charged": 0,
+              "heads": {},
+              "metadata": [
+                {
+                  "eligible": false,
+                  "key": 0,
+                  "phase": 0
+                },
+                {
+                  "eligible": false,
+                  "key": 1,
+                  "phase": 2
+                },
+                {
+                  "eligible": false,
+                  "key": 2,
+                  "phase": 2
+                },
+                {
+                  "eligible": true,
+                  "key": 3,
+                  "phase": 2
+                }
+              ],
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "exec": 0,
+                  "ordinary": 1,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "scan": {
+                "active": false,
+                "after": null,
+                "complete": false,
+                "epoch": 0,
+                "fence": [
+                  null,
+                  null,
+                  null,
+                  null
+                ],
+                "phase": 0
+              },
+              "scan_complete": false
+            },
+            "semantic": {
+              "function_heads_charged": 0,
+              "headers": {},
+              "objects": {
+                "o0": {
+                  "cleaned": false,
+                  "exec": 0,
+                  "ordinary": 1,
+                  "state": "alive"
+                }
+              },
+              "pending_roots": 0,
+              "queue": [],
+              "slots": {
+                "s": [
+                  "object",
+                  "o0"
+                ],
+                "var:o0:0": [
+                  "scalar",
+                  null
+                ]
+              }
+            }
+          },
+          "before": {
+            "raw": {
+              "epoch": 5,
+              "force": false,
+              "function_heads_charged": 0,
+              "heads": {},
+              "metadata": [
+                {
+                  "eligible": false,
+                  "key": 0,
+                  "phase": 0
+                },
+                {
+                  "eligible": false,
+                  "key": 1,
+                  "phase": 2
+                },
+                {
+                  "eligible": false,
+                  "key": 2,
+                  "phase": 2
+                },
+                {
+                  "eligible": false,
+                  "key": 3,
+                  "phase": 2
+                }
+              ],
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "exec": 0,
+                  "ordinary": 1,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "scan": {
+                "active": false,
+                "after": null,
+                "complete": false,
+                "epoch": 0,
+                "fence": [
+                  null,
+                  null,
+                  null,
+                  null
+                ],
+                "phase": 0
+              },
+              "scan_complete": false
+            },
+            "semantic": {
+              "function_heads_charged": 0,
+              "headers": {},
+              "objects": {
+                "o0": {
+                  "cleaned": false,
+                  "exec": 0,
+                  "ordinary": 1,
+                  "state": "alive"
+                }
+              },
+              "pending_roots": 0,
+              "queue": [],
+              "slots": {
+                "s": [
+                  "object",
+                  "o0"
+                ],
+                "var:o0:0": [
+                  "scalar",
+                  null
+                ]
+              }
+            }
+          },
+          "error_kind": "InvalidState",
+          "id": "P078-F10",
+          "progress": null,
+          "step": 4
+        },
+        {
+          "accepted": true,
+          "after": {
+            "raw": {
+              "epoch": 10,
+              "force": false,
+              "function_heads_charged": 1,
+              "heads": {
+                "3": {
+                  "kind": "function",
+                  "owners": 1,
+                  "retired": false
+                }
+              },
+              "metadata": [
+                {
+                  "eligible": false,
+                  "key": 0,
+                  "phase": 0
+                },
+                {
+                  "eligible": false,
+                  "key": 3,
+                  "phase": 1
+                },
+                {
+                  "eligible": false,
+                  "key": 1,
+                  "phase": 2
+                },
+                {
+                  "eligible": false,
+                  "key": 2,
+                  "phase": 2
+                },
+                {
+                  "eligible": true,
+                  "key": 3,
+                  "phase": 2
+                },
+                {
+                  "eligible": false,
+                  "key": 4,
+                  "phase": 2
+                },
+                {
+                  "eligible": false,
+                  "key": 5,
+                  "phase": 2
+                }
+              ],
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "exec": 0,
+                  "ordinary": 2,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "scan": {
+                "active": false,
+                "after": null,
+                "complete": false,
+                "epoch": 0,
+                "fence": [
+                  null,
+                  null,
+                  null,
+                  null
+                ],
+                "phase": 0
+              },
+              "scan_complete": false
+            },
+            "semantic": {
+              "function_heads_charged": 1,
+              "headers": {},
+              "objects": {
+                "o0": {
+                  "cleaned": false,
+                  "exec": 0,
+                  "ordinary": 2,
+                  "state": "alive"
+                }
+              },
+              "pending_roots": 0,
+              "queue": [],
+              "slots": {
+                "s": [
+                  "object",
+                  "o0"
+                ],
+                "var:o0:0": [
+                  "scalar",
+                  null
+                ]
+              }
+            }
+          },
+          "before": {
+            "raw": {
+              "epoch": 6,
+              "force": false,
+              "function_heads_charged": 0,
+              "heads": {},
+              "metadata": [
+                {
+                  "eligible": false,
+                  "key": 0,
+                  "phase": 0
+                },
+                {
+                  "eligible": false,
+                  "key": 1,
+                  "phase": 2
+                },
+                {
+                  "eligible": false,
+                  "key": 2,
+                  "phase": 2
+                },
+                {
+                  "eligible": true,
+                  "key": 3,
+                  "phase": 2
+                }
+              ],
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "exec": 0,
+                  "ordinary": 1,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "scan": {
+                "active": false,
+                "after": null,
+                "complete": false,
+                "epoch": 0,
+                "fence": [
+                  null,
+                  null,
+                  null,
+                  null
+                ],
+                "phase": 0
+              },
+              "scan_complete": false
+            },
+            "semantic": {
+              "function_heads_charged": 0,
+              "headers": {},
+              "objects": {
+                "o0": {
+                  "cleaned": false,
+                  "exec": 0,
+                  "ordinary": 1,
+                  "state": "alive"
+                }
+              },
+              "pending_roots": 0,
+              "queue": [],
+              "slots": {
+                "s": [
+                  "object",
+                  "o0"
+                ],
+                "var:o0:0": [
+                  "scalar",
+                  null
+                ]
+              }
+            }
+          },
+          "error_kind": null,
+          "id": "P078-F10",
+          "progress": null,
+          "step": 5
+        },
+        {
+          "accepted": true,
+          "after": {
+            "raw": {
+              "epoch": 13,
+              "force": false,
+              "function_heads_charged": 1,
+              "heads": {
+                "3": {
+                  "kind": "function",
+                  "owners": 1,
+                  "retired": false
+                }
+              },
+              "metadata": [
+                {
+                  "eligible": false,
+                  "key": 0,
+                  "phase": 0
+                },
+                {
+                  "eligible": false,
+                  "key": 3,
+                  "phase": 1
+                },
+                {
+                  "eligible": false,
+                  "key": 1,
+                  "phase": 2
+                },
+                {
+                  "eligible": false,
+                  "key": 2,
+                  "phase": 2
+                },
+                {
+                  "eligible": true,
+                  "key": 3,
+                  "phase": 2
+                },
+                {
+                  "eligible": false,
+                  "key": 4,
+                  "phase": 2
+                },
+                {
+                  "eligible": false,
+                  "key": 5,
+                  "phase": 2
+                }
+              ],
+              "objects": {
+                "0": {
+                  "cleaned": true,
+                  "exec": 0,
+                  "ordinary": 2,
+                  "state": "shell"
+                }
+              },
+              "queue": [],
+              "scan": {
+                "active": false,
+                "after": null,
+                "complete": false,
+                "epoch": 0,
+                "fence": [
+                  null,
+                  null,
+                  null,
+                  null
+                ],
+                "phase": 0
+              },
+              "scan_complete": false
+            },
+            "semantic": {
+              "function_heads_charged": 1,
+              "headers": {},
+              "objects": {
+                "o0": {
+                  "cleaned": true,
+                  "exec": 0,
+                  "ordinary": 2,
+                  "state": "shell"
+                }
+              },
+              "pending_roots": 0,
+              "queue": [],
+              "slots": {
+                "s": [
+                  "object",
+                  "o0"
+                ],
+                "var:o0:0": [
+                  "scalar",
+                  null
+                ]
+              }
+            }
+          },
+          "before": {
+            "raw": {
+              "epoch": 10,
+              "force": false,
+              "function_heads_charged": 1,
+              "heads": {
+                "3": {
+                  "kind": "function",
+                  "owners": 1,
+                  "retired": false
+                }
+              },
+              "metadata": [
+                {
+                  "eligible": false,
+                  "key": 0,
+                  "phase": 0
+                },
+                {
+                  "eligible": false,
+                  "key": 3,
+                  "phase": 1
+                },
+                {
+                  "eligible": false,
+                  "key": 1,
+                  "phase": 2
+                },
+                {
+                  "eligible": false,
+                  "key": 2,
+                  "phase": 2
+                },
+                {
+                  "eligible": true,
+                  "key": 3,
+                  "phase": 2
+                },
+                {
+                  "eligible": false,
+                  "key": 4,
+                  "phase": 2
+                },
+                {
+                  "eligible": false,
+                  "key": 5,
+                  "phase": 2
+                }
+              ],
+              "objects": {
+                "0": {
+                  "cleaned": false,
+                  "exec": 0,
+                  "ordinary": 2,
+                  "state": "alive"
+                }
+              },
+              "queue": [],
+              "scan": {
+                "active": false,
+                "after": null,
+                "complete": false,
+                "epoch": 0,
+                "fence": [
+                  null,
+                  null,
+                  null,
+                  null
+                ],
+                "phase": 0
+              },
+              "scan_complete": false
+            },
+            "semantic": {
+              "function_heads_charged": 1,
+              "headers": {},
+              "objects": {
+                "o0": {
+                  "cleaned": false,
+                  "exec": 0,
+                  "ordinary": 2,
+                  "state": "alive"
+                }
+              },
+              "pending_roots": 0,
+              "queue": [],
+              "slots": {
+                "s": [
+                  "object",
+                  "o0"
+                ],
+                "var:o0:0": [
+                  "scalar",
+                  null
+                ]
+              }
+            }
+          },
+          "error_kind": null,
+          "id": "P078-F10",
+          "progress": null,
+          "step": 6
+        },
+        {
+          "accepted": true,
+          "after": {
+            "raw": {
+              "epoch": 13,
+              "force": false,
+              "function_heads_charged": 1,
+              "heads": {
+                "3": {
+                  "kind": "function",
+                  "owners": 1,
+                  "retired": false
+                }
+              },
+              "metadata": [
+                {
+                  "eligible": false,
+                  "key": 0,
+                  "phase": 0
+                },
+                {
+                  "eligible": false,
+                  "key": 3,
+                  "phase": 1
+                },
+                {
+                  "eligible": false,
+                  "key": 1,
+                  "phase": 2
+                },
+                {
+                  "eligible": false,
+                  "key": 2,
+                  "phase": 2
+                },
+                {
+                  "eligible": true,
+                  "key": 3,
+                  "phase": 2
+                },
+                {
+                  "eligible": false,
+                  "key": 4,
+                  "phase": 2
+                },
+                {
+                  "eligible": false,
+                  "key": 5,
+                  "phase": 2
+                }
+              ],
+              "objects": {
+                "0": {
+                  "cleaned": true,
+                  "exec": 0,
+                  "ordinary": 2,
+                  "state": "shell"
+                }
+              },
+              "queue": [],
+              "scan": {
+                "active": false,
+                "after": null,
+                "complete": false,
+                "epoch": 0,
+                "fence": [
+                  null,
+                  null,
+                  null,
+                  null
+                ],
+                "phase": 0
+              },
+              "scan_complete": false
+            },
+            "semantic": {
+              "function_heads_charged": 1,
+              "headers": {
+                "h0": {
+                  "kind": "function",
+                  "owners": 1,
+                  "retired": false
+                }
+              },
+              "objects": {
+                "o0": {
+                  "cleaned": true,
+                  "exec": 0,
+                  "ordinary": 2,
+                  "state": "shell"
+                }
+              },
+              "pending_roots": 0,
+              "queue": [],
+              "slots": {
+                "f": [
+                  "header",
+                  "h0"
+                ],
+                "mem:h0:0": [
+                  "scalar",
+                  null
+                ],
+                "s": [
+                  "object",
+                  "o0"
+                ],
+                "var:o0:0": [
+                  "scalar",
+                  null
+                ]
+              }
+            }
+          },
+          "before": {
+            "raw": {
+              "epoch": 13,
+              "force": false,
+              "function_heads_charged": 1,
+              "heads": {
+                "3": {
+                  "kind": "function",
+                  "owners": 1,
+                  "retired": false
+                }
+              },
+              "metadata": [
+                {
+                  "eligible": false,
+                  "key": 0,
+                  "phase": 0
+                },
+                {
+                  "eligible": false,
+                  "key": 3,
+                  "phase": 1
+                },
+                {
+                  "eligible": false,
+                  "key": 1,
+                  "phase": 2
+                },
+                {
+                  "eligible": false,
+                  "key": 2,
+                  "phase": 2
+                },
+                {
+                  "eligible": true,
+                  "key": 3,
+                  "phase": 2
+                },
+                {
+                  "eligible": false,
+                  "key": 4,
+                  "phase": 2
+                },
+                {
+                  "eligible": false,
+                  "key": 5,
+                  "phase": 2
+                }
+              ],
+              "objects": {
+                "0": {
+                  "cleaned": true,
+                  "exec": 0,
+                  "ordinary": 2,
+                  "state": "shell"
+                }
+              },
+              "queue": [],
+              "scan": {
+                "active": false,
+                "after": null,
+                "complete": false,
+                "epoch": 0,
+                "fence": [
+                  null,
+                  null,
+                  null,
+                  null
+                ],
+                "phase": 0
+              },
+              "scan_complete": false
+            },
+            "semantic": {
+              "function_heads_charged": 1,
+              "headers": {},
+              "objects": {
+                "o0": {
+                  "cleaned": true,
+                  "exec": 0,
+                  "ordinary": 2,
+                  "state": "shell"
+                }
+              },
+              "pending_roots": 0,
+              "queue": [],
+              "slots": {
+                "s": [
+                  "object",
+                  "o0"
+                ],
+                "var:o0:0": [
+                  "scalar",
+                  null
+                ]
+              }
+            }
+          },
+          "error_kind": null,
+          "id": "P078-F10",
+          "progress": null,
+          "step": 7
+        }
+      ],
+      "production_baseline_preserved_except_test_observers": true,
+      "title": "creator invalidation after prepare is accepted at publication",
+      "trace": {
+        "actions": [
+          {
+            "id": "o0",
+            "op": "object"
+          },
+          {
+            "dest": "s",
+            "op": "put",
+            "value": [
+              "scalar",
+              null
+            ]
+          },
+          {
+            "dest": "out",
+            "op": "prepare_copy",
+            "source": "s",
+            "token": "t"
+          },
+          {
+            "dest": "s",
+            "op": "put",
+            "value": [
+              "object",
+              "o0"
+            ]
+          },
+          {
+            "continue_on_error": true,
+            "op": "commit_copy",
+            "token": "t"
+          },
+          {
+            "creator": "o0",
+            "dest": "f",
+            "id": "h0",
+            "kind": "function",
+            "op": "prepare_head",
+            "token": "h"
+          },
+          {
+            "object": "o0",
+            "op": "delete"
+          },
+          {
+            "continue_on_error": true,
+            "creator": "o0",
+            "op": "commit_head",
+            "token": "h"
+          }
+        ],
+        "family": "F10",
+        "id": "P078-F10",
+        "limits": {
+          "max_exec_refs_per_object": 1,
+          "max_function_heads": 1,
+          "max_objects": 1,
+          "max_ordinary_refs_per_object": 3,
+          "max_owners_per_header": 1
+        },
+        "name": "version_publication",
+        "profile": 78
+      }
+    },
+    {
+      "command": {
+        "argv": [
+          "cargo",
+          "test",
+          "--locked",
+          "--offline",
+          "--test",
+          "lifecycle_contract_combinations",
+          "bounded_mapping_loop_allocates_output_and_catch_unwinds_real_leases",
+          "--",
+          "--exact",
+          "--nocapture"
+        ],
+        "returncode": 101,
+        "stderr": "    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.01s\n     Running tests/lifecycle_contract_combinations.rs (target/debug/deps/lifecycle_contract_combinations-26e482f5355328cd)\n\nthread 'bounded_mapping_loop_allocates_output_and_catch_unwinds_real_leases' (1540742) panicked at tests/lifecycle_contract_combinations.rs:8:58:\ncalled `Result::unwrap()` on an `Err` value: VmError { kind: InvalidState, source: \"sha256:e2eb9688b226ffd792fd493c97bbc4809ff2c05cf416e481a242cf447cfd8f20\", program: Some(ProgramId(0)), object: Some(ObjectId(0)), function: Some(0), initialization: None, lifecycle: None, pc: Some(6), offset: Some(267), message: \"mixed slot origins\" }\nnote: run with `RUST_BACKTRACE=1` environment variable to display a backtrace\nerror: test failed, to rerun pass `--test lifecycle_contract_combinations`\n",
+        "stdout": "\nrunning 1 test\ntest bounded_mapping_loop_allocates_output_and_catch_unwinds_real_leases ... FAILED\n\nfailures:\n\nfailures:\n    bounded_mapping_loop_allocates_output_and_catch_unwinds_real_leases\n\ntest result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 3 filtered out; finished in 0.00s\n\n"
+      },
+      "expected": "return [0,0,2]; numeric catch returns 1",
+      "fixture_sha256": "ef6c63756c9e9235eff9f7d953e9b99d59b970488f8c7b73dd198bbccc46a306",
+      "id": "D08-R02",
+      "loop_implementation_unchanged_from_baseline": true,
+      "test": "bounded_mapping_loop_allocates_output_and_catch_unwinds_real_leases",
+      "title": "fresh Mapping997 loop output and members bypass bounded factory"
+    }
+  ],
+  "stage": "2BJ"
+}

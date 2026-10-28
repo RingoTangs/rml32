@@ -1,3 +1,7 @@
+> 阶段 2BK：完成生产组合有界审计：84,108 条批处理、11,736 条公开/内部组合及 1,154 条失败点回放在 debug/release 通过，未复现新的生产偏差。863 项普通 Rust 测试及 5 项 doctest 通过；运行时/API、旧模型和捕获门槛保持。详见 [审计总览](docs/stage2bk-combination-audit/overview.md)及 [验证收据](docs/stage2bk-validation.json)。
+
+> 阶段 2BJ：完成 D08 生产契约差分审计，修复失效 creator 的 Function 预发布和 Mapping 循环输出 origin 两项偏差。2,592 条核心 trace、972 条正常库镜像在 debug/release 通过；857 项普通 Rust 测试及 5 项 doctest 保持回归，公共 API、旧模型和捕获门槛不变。详见 [审计总览](docs/stage2bj-contract-audit/overview.md)及 [验证收据](docs/stage2bj-validation.json)。
+
 > 阶段 2BI：已将 D08 受限生命周期接入正常 Rust 库，增补显式配额构造器及 store/VM 分预算维护 API；legacy 构造、准备权限、版本与依赖保持。851 项普通 Rust 测试及 5 项 doctest 在 debug/release 通过，旧模型和证据冻结，直接捕获与阶段2门槛仍未开放。详见 [生产接入总览](docs/stage2bi-production-lifecycle/overview.md)及 [验证收据](docs/stage2bi-validation.json)。
 
 > 阶段 2BH：已交付生产生命周期 D08 契约与独立配额模型，明确五项显式配额、峰值预留、Host raw 传输及分预算维护进度；仅设计，Rust 运行时/API、旧模型及捕获门禁不变。39 项模型案例、112 项算术检查与完整回归通过。详见 [契约总览](docs/stage2bh-production-contract/overview.md)及 [验证收据](docs/stage2bh-validation.json)。

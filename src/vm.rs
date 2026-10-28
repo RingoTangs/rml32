@@ -1789,6 +1789,15 @@ impl Vm {
             .map(|life| life.reserve_function(&function))
             .transpose()?;
         let cell = plan.output(Value::Function(function))?;
+        if let Some(reservation) = &reservation
+            && let Err(error) = reservation.validate()
+        {
+            // Release all prospective slots before the registration guard so
+            // its abort also returns the unpublished metadata quota.
+            drop(cell);
+            drop(plan);
+            return Err(error);
+        }
         plan.commit()?;
         if let Some(reservation) = reservation {
             reservation.commit();
@@ -2586,7 +2595,23 @@ impl Vm {
                     let value = self.copy_cell(&mut plan, source)?;
                     let values = [key.clone(), value, Value::Int(number as i32)];
                     let binding = self.resolve(&control.bound)?.read()?;
-                    let array = crate::container::mapping_output(owner, binding, &values)?;
+                    let bounded = self
+                        .objects
+                        .test_life
+                        .as_ref()
+                        .is_some_and(|life| life.ctx.quotas.is_some());
+                    let array = if bounded && !matches!(&binding,Value::Array(a)if a.len()==3) {
+                        // Fresh output cells must share the origin. Initialize
+                        // them empty; the atomic update below reserves each
+                        // output payload once, without a duplicate retain.
+                        let Value::Array(array) = life_array!(self, vec![Value::Undefined; 3])?
+                        else {
+                            unreachable!()
+                        };
+                        array
+                    } else {
+                        crate::container::mapping_output(owner, binding, &values)?
+                    };
                     for (i, value) in values.into_iter().enumerate() {
                         member_updates.push((array.cell(i)?, SlotPayload::Value(value)));
                     }

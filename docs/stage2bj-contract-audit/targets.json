@@ -1,0 +1,16 @@
+{
+  "arithmetic_rows": 112,
+  "business_bytecode_execution": false,
+  "host_target": "aarch64-apple-darwin",
+  "installed_targets": [
+    "aarch64-apple-darwin"
+  ],
+  "model_unsigned_widths": [
+    32,
+    64
+  ],
+  "reason": "No installed 32-bit Rust target or usable pre-existing 32-bit Linux environment; no toolchain installation or image pull authorized by this batch.",
+  "reference_elf_execution": "not_run",
+  "rust32_execution": "not_run",
+  "stage": "2BJ"
+}

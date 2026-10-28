@@ -1,0 +1,28 @@
+{
+  "eligible_mapping_controls": 24,
+  "faults": {
+    "injected_rejections": 1130,
+    "success_controls": 24,
+    "traces": 1154
+  },
+  "log_sha256": "ff78ebb570a4f547c556bf3ba8839e2d8c7029c558f05eff1efe1e8c4f509845",
+  "observation_sha256": {
+    "faults": "f2a8d1c2673e6e98ba8dc8e0d5f5885e1038cc82004ca97da316fc0b556392be",
+    "private": "4ecc8989b5222d50c3fff2d3f45d8db5426ca8e1409d5f41596411d0b02c5b48",
+    "public": "df2ada73e6d6027f73e8aec7799e9b04c17e17597fc8c7729941ca25fbaf955e"
+  },
+  "stage": "2BK",
+  "status": "pass",
+  "summary": {
+    "classifications": {
+      "close:closed": 2640,
+      "close:entry_setup": 5184,
+      "mapping:accepted": 24,
+      "mapping:entry_prefix": 180,
+      "mapping:entry_setup": 3360,
+      "mapping:entry_start": 348
+    },
+    "traces": 11736,
+    "unclassified_differences": 0
+  }
+}

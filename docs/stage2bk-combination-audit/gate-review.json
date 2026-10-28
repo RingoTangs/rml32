@@ -1,0 +1,21 @@
+{
+  "dependencies_changed": false,
+  "direct_owner_capture_ready": false,
+  "existing_models_changed": false,
+  "full_model_equivalence": false,
+  "implementation_ready": false,
+  "native_equivalence_proven": false,
+  "native_unknowns": 20,
+  "native_unknowns_promoted": 0,
+  "new_batch_reference_layer_added": true,
+  "new_maintenance_reference_model_added": false,
+  "new_native_analysis": false,
+  "new_production_deviations": 0,
+  "public_api_changed": false,
+  "quota_semantics_changed": false,
+  "runtime_changed": false,
+  "rust32_execution": "not_run",
+  "stage": "2BK",
+  "stage2_complete": false,
+  "target_execution": "none"
+}

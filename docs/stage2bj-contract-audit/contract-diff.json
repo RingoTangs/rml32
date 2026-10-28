@@ -1,0 +1,105 @@
+{
+  "full_state_space_proof": false,
+  "input_sha256": "0b9f9a9b603d1719273746cefabedc8c44e61b6134f230bc5f2133b47879771f",
+  "log_sha256": "3feca36a78d1facbd0ffb36f9d1985a0ae2252b73eefff7e96fc52e87648451c",
+  "native_equivalence_proven": false,
+  "observations_sha256": "e0759e13cada06616e519774d07f16070672ae4c833169a09acbf8aa354365a5",
+  "profiles_checked": [
+    "debug",
+    "release"
+  ],
+  "stage": "2BJ",
+  "status": "pass",
+  "summary": {
+    "accepted": 9124,
+    "families": {
+      "F01": {
+        "accepted": 162,
+        "rejected": 162,
+        "traces": 162
+      },
+      "F02": {
+        "accepted": 244,
+        "rejected": 146,
+        "traces": 162
+      },
+      "F03": {
+        "accepted": 864,
+        "rejected": 54,
+        "traces": 162
+      },
+      "F04": {
+        "accepted": 324,
+        "rejected": 108,
+        "traces": 162
+      },
+      "F05": {
+        "accepted": 810,
+        "rejected": 0,
+        "traces": 162
+      },
+      "F06": {
+        "accepted": 648,
+        "rejected": 162,
+        "traces": 162
+      },
+      "F07": {
+        "accepted": 756,
+        "rejected": 54,
+        "traces": 162
+      },
+      "F08": {
+        "accepted": 396,
+        "rejected": 138,
+        "traces": 162
+      },
+      "F09": {
+        "accepted": 648,
+        "rejected": 108,
+        "traces": 162
+      },
+      "F10": {
+        "accepted": 744,
+        "rejected": 294,
+        "traces": 162
+      },
+      "F11": {
+        "accepted": 576,
+        "rejected": 90,
+        "traces": 162
+      },
+      "F12": {
+        "accepted": 648,
+        "rejected": 108,
+        "traces": 162
+      },
+      "F13": {
+        "accepted": 972,
+        "rejected": 126,
+        "traces": 162
+      },
+      "F14": {
+        "accepted": 684,
+        "rejected": 162,
+        "traces": 162
+      },
+      "F15": {
+        "accepted": 540,
+        "rejected": 54,
+        "traces": 162
+      },
+      "F16": {
+        "accepted": 108,
+        "rejected": 54,
+        "traces": 162
+      }
+    },
+    "metadata_checkpoints": 1518,
+    "observer_checks": 10944,
+    "rejected": 1820,
+    "semantic_checkpoints": 10008,
+    "steps": 10944,
+    "traces": 2592,
+    "unclassified_differences": 0
+  }
+}

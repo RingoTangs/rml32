@@ -5,6 +5,20 @@ use std::{collections::BTreeMap, rc::Rc};
 #[cfg(test)]
 thread_local! { static FAIL_WORKSPACE: std::cell::Cell<Option<usize>> = const { std::cell::Cell::new(None) }; }
 #[cfg(test)]
+thread_local! { static COUNT_WORKSPACE: std::cell::Cell<Option<usize>> = const { std::cell::Cell::new(None) }; }
+#[cfg(test)]
+pub(crate) fn with_workspace_count<T>(action: impl FnOnce() -> T) -> (T, usize) {
+    struct Restore(Option<usize>);
+    impl Drop for Restore {
+        fn drop(&mut self) {
+            COUNT_WORKSPACE.set(self.0);
+        }
+    }
+    let _restore = Restore(COUNT_WORKSPACE.replace(Some(0)));
+    let result = action();
+    (result, COUNT_WORKSPACE.get().unwrap())
+}
+#[cfg(test)]
 pub(crate) fn with_workspace_failure<T>(after: usize, action: impl FnOnce() -> T) -> T {
     struct Restore(Option<usize>);
     impl Drop for Restore {
@@ -16,6 +30,12 @@ pub(crate) fn with_workspace_failure<T>(after: usize, action: impl FnOnce() -> T
     action()
 }
 pub(crate) fn reserve<T>(values: &mut Vec<T>, additional: usize) -> Result<(), VmError> {
+    #[cfg(test)]
+    COUNT_WORKSPACE.with(|c| {
+        if let Some(n) = c.get() {
+            c.set(Some(n + 1));
+        }
+    });
     #[cfg(test)]
     if FAIL_WORKSPACE.with(|f| match f.get() {
         Some(0) => true,
