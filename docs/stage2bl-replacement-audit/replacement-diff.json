@@ -1,0 +1,414 @@
+{
+  "log_sha256": "2d0297caf2afc4adb111f95c45e6680380d9b9312e8b62e792ec0b68bed9178a",
+  "observation_sha256": {
+    "borrow": "b1ceb58ab4101acf5ad8ba0191743f9391419c4ab2acde75a43f109066ad2906",
+    "core": "48ad4fd179de2db995c629ee566c4026980cfaea9d4bef9e51b664016c8c65ab",
+    "fault": "a8461e7c2c0d0fd026557405cdd1edca47165e3eed04a508e217357e4b290420"
+  },
+  "quick": false,
+  "reports": {
+    "borrow": {
+      "accepted": 64,
+      "families": {
+        "array_external_alias": {
+          "aborted": 0,
+          "committed": 1,
+          "prepared": 2,
+          "rejected": 1,
+          "setup_rejected": 0,
+          "traces": 2
+        },
+        "array_last_owner": {
+          "aborted": 0,
+          "committed": 0,
+          "prepared": 2,
+          "rejected": 2,
+          "setup_rejected": 0,
+          "traces": 2
+        },
+        "array_retired_member": {
+          "aborted": 0,
+          "committed": 0,
+          "prepared": 2,
+          "rejected": 2,
+          "setup_rejected": 0,
+          "traces": 2
+        },
+        "array_same_header": {
+          "aborted": 0,
+          "committed": 1,
+          "prepared": 2,
+          "rejected": 1,
+          "setup_rejected": 0,
+          "traces": 2
+        },
+        "function_dag": {
+          "aborted": 0,
+          "committed": 0,
+          "prepared": 2,
+          "rejected": 2,
+          "setup_rejected": 0,
+          "traces": 2
+        },
+        "function_external_alias": {
+          "aborted": 0,
+          "committed": 1,
+          "prepared": 2,
+          "rejected": 1,
+          "setup_rejected": 0,
+          "traces": 2
+        },
+        "function_last_owner": {
+          "aborted": 0,
+          "committed": 0,
+          "prepared": 2,
+          "rejected": 2,
+          "setup_rejected": 0,
+          "traces": 2
+        },
+        "function_retired_member": {
+          "aborted": 0,
+          "committed": 0,
+          "prepared": 2,
+          "rejected": 2,
+          "setup_rejected": 0,
+          "traces": 2
+        },
+        "function_same_header": {
+          "aborted": 0,
+          "committed": 1,
+          "prepared": 2,
+          "rejected": 1,
+          "setup_rejected": 0,
+          "traces": 2
+        },
+        "mapping_external_alias": {
+          "aborted": 0,
+          "committed": 1,
+          "prepared": 2,
+          "rejected": 1,
+          "setup_rejected": 0,
+          "traces": 2
+        },
+        "mapping_last_owner": {
+          "aborted": 0,
+          "committed": 0,
+          "prepared": 2,
+          "rejected": 2,
+          "setup_rejected": 0,
+          "traces": 2
+        },
+        "mapping_retired_member": {
+          "aborted": 0,
+          "committed": 0,
+          "prepared": 2,
+          "rejected": 2,
+          "setup_rejected": 0,
+          "traces": 2
+        },
+        "mapping_same_header": {
+          "aborted": 0,
+          "committed": 1,
+          "prepared": 2,
+          "rejected": 1,
+          "setup_rejected": 0,
+          "traces": 2
+        },
+        "object_swap": {
+          "aborted": 0,
+          "committed": 0,
+          "prepared": 1,
+          "rejected": 1,
+          "setup_rejected": 0,
+          "traces": 1
+        },
+        "shared_dag": {
+          "aborted": 0,
+          "committed": 0,
+          "prepared": 2,
+          "rejected": 2,
+          "setup_rejected": 0,
+          "traces": 2
+        }
+      },
+      "rejected": 23,
+      "rows": 87,
+      "setup_rejected": 0,
+      "target_reached": 29,
+      "traces": 29,
+      "unclassified_differences": 0
+    },
+    "core": {
+      "accepted": 178456,
+      "families": {
+        "array_external_alias": {
+          "aborted": 1419,
+          "committed": 693,
+          "prepared": 2838,
+          "rejected": 726,
+          "setup_rejected": 12126,
+          "traces": 14964
+        },
+        "array_last_owner": {
+          "aborted": 1935,
+          "committed": 945,
+          "prepared": 3870,
+          "rejected": 990,
+          "setup_rejected": 11008,
+          "traces": 14878
+        },
+        "array_retired_member": {
+          "aborted": 1935,
+          "committed": 945,
+          "prepared": 3870,
+          "rejected": 990,
+          "setup_rejected": 11008,
+          "traces": 14878
+        },
+        "array_same_header": {
+          "aborted": 1462,
+          "committed": 279,
+          "prepared": 2924,
+          "rejected": 1183,
+          "setup_rejected": 12040,
+          "traces": 14964
+        },
+        "function_dag": {
+          "aborted": 301,
+          "committed": 217,
+          "prepared": 602,
+          "rejected": 84,
+          "setup_rejected": 14362,
+          "traces": 14964
+        },
+        "function_external_alias": {
+          "aborted": 301,
+          "committed": 147,
+          "prepared": 602,
+          "rejected": 154,
+          "setup_rejected": 14362,
+          "traces": 14964
+        },
+        "function_last_owner": {
+          "aborted": 301,
+          "committed": 147,
+          "prepared": 602,
+          "rejected": 154,
+          "setup_rejected": 14362,
+          "traces": 14964
+        },
+        "function_retired_member": {
+          "aborted": 301,
+          "committed": 147,
+          "prepared": 602,
+          "rejected": 154,
+          "setup_rejected": 14362,
+          "traces": 14964
+        },
+        "function_same_header": {
+          "aborted": 344,
+          "committed": 217,
+          "prepared": 688,
+          "rejected": 127,
+          "setup_rejected": 14276,
+          "traces": 14964
+        },
+        "mapping_external_alias": {
+          "aborted": 1419,
+          "committed": 693,
+          "prepared": 2838,
+          "rejected": 726,
+          "setup_rejected": 12126,
+          "traces": 14964
+        },
+        "mapping_last_owner": {
+          "aborted": 1935,
+          "committed": 945,
+          "prepared": 3870,
+          "rejected": 990,
+          "setup_rejected": 11008,
+          "traces": 14878
+        },
+        "mapping_retired_member": {
+          "aborted": 1935,
+          "committed": 945,
+          "prepared": 3870,
+          "rejected": 990,
+          "setup_rejected": 11008,
+          "traces": 14878
+        },
+        "mapping_same_header": {
+          "aborted": 1462,
+          "committed": 279,
+          "prepared": 2924,
+          "rejected": 1183,
+          "setup_rejected": 12040,
+          "traces": 14964
+        },
+        "object_swap": {
+          "aborted": 1935,
+          "committed": 546,
+          "prepared": 3870,
+          "rejected": 1389,
+          "setup_rejected": 10922,
+          "traces": 14792
+        },
+        "raw_occupied": {
+          "aborted": 1892,
+          "committed": 0,
+          "prepared": 3784,
+          "rejected": 1892,
+          "setup_rejected": 11008,
+          "traces": 14792
+        },
+        "shared_dag": {
+          "aborted": 903,
+          "committed": 651,
+          "prepared": 1806,
+          "rejected": 252,
+          "setup_rejected": 13158,
+          "traces": 14964
+        }
+      },
+      "rejected": 211160,
+      "rows": 389616,
+      "setup_rejected": 199176,
+      "target_reached": 39560,
+      "traces": 238736,
+      "unclassified_differences": 0
+    },
+    "fault": {
+      "accepted": 7376,
+      "families": {
+        "array_external_alias": {
+          "aborted": 0,
+          "committed": 33,
+          "prepared": 264,
+          "rejected": 231,
+          "setup_rejected": 0,
+          "traces": 264
+        },
+        "array_last_owner": {
+          "aborted": 0,
+          "committed": 45,
+          "prepared": 360,
+          "rejected": 315,
+          "setup_rejected": 0,
+          "traces": 360
+        },
+        "array_retired_member": {
+          "aborted": 0,
+          "committed": 45,
+          "prepared": 495,
+          "rejected": 450,
+          "setup_rejected": 0,
+          "traces": 495
+        },
+        "array_same_header": {
+          "aborted": 0,
+          "committed": 9,
+          "prepared": 153,
+          "rejected": 144,
+          "setup_rejected": 0,
+          "traces": 153
+        },
+        "function_dag": {
+          "aborted": 0,
+          "committed": 7,
+          "prepared": 77,
+          "rejected": 70,
+          "setup_rejected": 0,
+          "traces": 77
+        },
+        "function_external_alias": {
+          "aborted": 0,
+          "committed": 7,
+          "prepared": 56,
+          "rejected": 49,
+          "setup_rejected": 0,
+          "traces": 56
+        },
+        "function_last_owner": {
+          "aborted": 0,
+          "committed": 7,
+          "prepared": 56,
+          "rejected": 49,
+          "setup_rejected": 0,
+          "traces": 56
+        },
+        "function_retired_member": {
+          "aborted": 0,
+          "committed": 7,
+          "prepared": 77,
+          "rejected": 70,
+          "setup_rejected": 0,
+          "traces": 77
+        },
+        "function_same_header": {
+          "aborted": 0,
+          "committed": 7,
+          "prepared": 161,
+          "rejected": 154,
+          "setup_rejected": 0,
+          "traces": 161
+        },
+        "mapping_external_alias": {
+          "aborted": 0,
+          "committed": 33,
+          "prepared": 264,
+          "rejected": 231,
+          "setup_rejected": 0,
+          "traces": 264
+        },
+        "mapping_last_owner": {
+          "aborted": 0,
+          "committed": 45,
+          "prepared": 360,
+          "rejected": 315,
+          "setup_rejected": 0,
+          "traces": 360
+        },
+        "mapping_retired_member": {
+          "aborted": 0,
+          "committed": 45,
+          "prepared": 495,
+          "rejected": 450,
+          "setup_rejected": 0,
+          "traces": 495
+        },
+        "mapping_same_header": {
+          "aborted": 0,
+          "committed": 9,
+          "prepared": 180,
+          "rejected": 171,
+          "setup_rejected": 0,
+          "traces": 180
+        },
+        "object_swap": {
+          "aborted": 0,
+          "committed": 26,
+          "prepared": 286,
+          "rejected": 260,
+          "setup_rejected": 0,
+          "traces": 286
+        },
+        "shared_dag": {
+          "aborted": 0,
+          "committed": 21,
+          "prepared": 231,
+          "rejected": 210,
+          "setup_rejected": 0,
+          "traces": 231
+        }
+      },
+      "rejected": 3169,
+      "rows": 10545,
+      "setup_rejected": 0,
+      "target_reached": 3515,
+      "traces": 3515,
+      "unclassified_differences": 0
+    }
+  },
+  "stage": "2BL",
+  "status": "pass"
+}

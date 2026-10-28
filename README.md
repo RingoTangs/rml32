@@ -1,3 +1,5 @@
+> 阶段 2BL：完成占用目的槽替换审计：238,736 条核心 trace、29 条借用、3,515 条失败点及对照、2,624 条正常库场景在 debug/release 通过，未发现新的生产偏差。869 项普通 Rust 测试及 5 项 doctest 回归通过；运行时/API、旧模型和捕获门槛保持。详见 [审计总览](docs/stage2bl-replacement-audit/overview.md)及 [验证收据](docs/stage2bl-validation.json)。
+
 > 阶段 2BK：完成生产组合有界审计：84,108 条批处理、11,736 条公开/内部组合及 1,154 条失败点回放在 debug/release 通过，未复现新的生产偏差。863 项普通 Rust 测试及 5 项 doctest 通过；运行时/API、旧模型和捕获门槛保持。详见 [审计总览](docs/stage2bk-combination-audit/overview.md)及 [验证收据](docs/stage2bk-validation.json)。
 
 > 阶段 2BJ：完成 D08 生产契约差分审计，修复失效 creator 的 Function 预发布和 Mapping 循环输出 origin 两项偏差。2,592 条核心 trace、972 条正常库镜像在 debug/release 通过；857 项普通 Rust 测试及 5 项 doctest 保持回归，公共 API、旧模型和捕获门槛不变。详见 [审计总览](docs/stage2bj-contract-audit/overview.md)及 [验证收据](docs/stage2bj-validation.json)。

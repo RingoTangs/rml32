@@ -1287,6 +1287,10 @@ mod lifecycle_contract_tests;
 mod lifecycle_combination_tests;
 
 #[cfg(test)]
+#[path = "lifecycle_replacement_tests.rs"]
+mod lifecycle_replacement_tests;
+
+#[cfg(test)]
 #[path = "lifecycle_managed_tests.rs"]
 mod lifecycle_managed_tests;
 

@@ -1,0 +1,13 @@
+{
+  "baseline_commit": "54eb8e62d96dcc2d129abe7936aed8a4ea9595e5",
+  "baseline_files": 1132,
+  "execution_location": "detached pinned 2BK and its nested fixed authorities; not current source",
+  "files_sha256": "848fdf0846037afe4ed06c370655beddb0290a8dcabe6677aa7954c78bc73764",
+  "historical_python_tests": 525,
+  "log_sha256": "b87c8d0d74a19e1b2406327e9b8dfee8b62956e3879c4561329025c4bcd7ab07",
+  "nested_python_tests": 497,
+  "network_used": false,
+  "outer_python_tests": 28,
+  "stage": "2BL",
+  "status": "pass"
+}
