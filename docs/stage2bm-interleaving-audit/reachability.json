@@ -1,0 +1,13 @@
+{
+  "stage": "2BM",
+  "construction": "real operations only; no forced lifecycle state",
+  "covered_states": ["alive", "pending", "queued", "shell", "freed", "reaped"],
+  "unreachable_combinations": [
+    {"combination": "freed with an installed or prospective ordinary owner", "reason": "Freed requires zero ordinary and execution responsibility"},
+    {"combination": "freed creator while a staged Function output still owns its creator lease", "reason": "unpublished head output contributes a creator owner until abort"},
+    {"combination": "pending after the last installed and prospective execution lease exits", "reason": "the final exit immediately invalidates and queues exactly once"},
+    {"combination": "public caller interposes between one synchronous opcode's prepare and commit", "reason": "only private deterministic test boundaries expose that interval"},
+    {"combination": "committed raw move to an occupied destination", "reason": "the production transfer boundary requires an unpublished empty destination"}
+  ],
+  "qualification": "The generator enumerates reachable paths, not every payload/state Cartesian pair. Setup and preparation refusals are counted separately."
+}

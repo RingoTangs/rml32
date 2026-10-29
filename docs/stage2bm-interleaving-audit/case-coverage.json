@@ -1,0 +1,45 @@
+{
+  "classification": "bounded Rust policy and concrete maintenance refinement, not native equivalence",
+  "excluded": [
+    "arbitrary header cycles",
+    "public prepared transaction API",
+    "native lifecycle equivalence",
+    "32-bit execution"
+  ],
+  "internal_boundaries": [
+    "CopyPlan",
+    "HeadReservation",
+    "prospective ExecLease"
+  ],
+  "layout_authority": "byte-frozen 2BL 16 families",
+  "native_unknowns": 20,
+  "native_unknowns_promoted": 0,
+  "new_test_names": [
+    "boundary::lifecycle_interleaving_tests::script_normalization_is_frozen_at_copy_preparation_not_replayed_at_commit",
+    "boundary::lifecycle_interleaving_tests::prepared_function_accepts_pending_creator_and_aborts_after_queue_invalidation",
+    "boundary::lifecycle_interleaving_tests::aborting_last_prospective_execution_lease_uses_reserved_queue_unit_once",
+    "boundary::lifecycle_interleaving_tests::variable_cleanup_invalidates_prepared_source_and_destination_versions",
+    "boundary::lifecycle_interleaving_tests::raw_move_preserves_invalid_payload_at_ceiling_without_adding_an_owner",
+    "boundary::lifecycle_interleaving_tests::borrowed_queued_variable_preserves_head_then_retry_finishes_remaining_object",
+    "boundary::lifecycle_interleaving_tests::workspace_failure_after_one_drain_preserves_partial_progress_and_remaining_queue",
+    "real_frames_copy_pending_values_and_normalize_queued_or_shell_members",
+    "deletion_after_argument_copy_keeps_host_callback_and_completion_raw"
+  ],
+  "prior_path": "docs/stage2bl-replacement-audit/case-coverage.json",
+  "prior_sha256": "0780ff98ffce50d2dbbafefa4e3759293cc3aaccc72c0b0e9120101226ed1987",
+  "public_boundaries": [
+    "real VM frames",
+    "Array/Mapping member COPY",
+    "Host raw retain/callback/completion",
+    "explicit maintenance"
+  ],
+  "stage": "2BM",
+  "state_domain": [
+    "alive",
+    "pending",
+    "queued",
+    "shell",
+    "freed",
+    "reaped"
+  ]
+}

@@ -1,3 +1,5 @@
+> 阶段 2BM：完成对象状态转换与已准备事务交错审计：255,924 条核心、41,656 条定向、357 条借用、54,012 条失败点及对照、6 条元数据和 5,248 条正常库场景在 debug/release 通过，未发现新的生产偏差。878 项普通 Rust 测试及 5 项 doctest 回归通过；运行时/API、旧模型和捕获门槛保持。详见 [审计总览](docs/stage2bm-interleaving-audit/overview.md)及 [验证收据](docs/stage2bm-validation.json)。
+
 > 阶段 2BL：完成占用目的槽替换审计：238,736 条核心 trace、29 条借用、3,515 条失败点及对照、2,624 条正常库场景在 debug/release 通过，未发现新的生产偏差。869 项普通 Rust 测试及 5 项 doctest 回归通过；运行时/API、旧模型和捕获门槛保持。详见 [审计总览](docs/stage2bl-replacement-audit/overview.md)及 [验证收据](docs/stage2bl-validation.json)。
 
 > 阶段 2BK：完成生产组合有界审计：84,108 条批处理、11,736 条公开/内部组合及 1,154 条失败点回放在 debug/release 通过，未复现新的生产偏差。863 项普通 Rust 测试及 5 项 doctest 通过；运行时/API、旧模型和捕获门槛保持。详见 [审计总览](docs/stage2bk-combination-audit/overview.md)及 [验证收据](docs/stage2bk-validation.json)。

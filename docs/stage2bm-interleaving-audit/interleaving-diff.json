@@ -1,0 +1,756 @@
+{
+  "log_sha256": "1d40f170dd291cf3335e8f16730445ffc0f2f639ad448504c71da28b7ddfee85",
+  "observation_sha256": {
+    "borrow": "b41d1195b1761dedb6004d70b54d7b0d6877ec4d2e84fea64c6ad580f4dc04af",
+    "core": "ae20d82e6c5968c2ff1a8ed748b324e108f2a54eb79d5ecb23ea1f3de42bafd7",
+    "directed": "8161898fbd341d81d9baa35092cab6871b609136d3c91e9f4d28031591887131",
+    "fault": "0e238f2dba95a6bea665cbb2c50f38c895be3056d64b3cfc91fb69a3c4aa9143",
+    "metadata": "c0676a056dcc4c319e44aad7bc026be7ee2e514f8a06ccc4f0737ba27daf0a63"
+  },
+  "quick": false,
+  "reports": {
+    "borrow": {
+      "aborted": 0,
+      "committed": 135,
+      "families": {
+        "array_external_alias": {
+          "aborted": 0,
+          "committed": 10,
+          "prepared": 17,
+          "rejected": 8,
+          "setup_rejected": 0,
+          "traces": 17
+        },
+        "array_last_owner": {
+          "aborted": 0,
+          "committed": 3,
+          "prepared": 17,
+          "rejected": 15,
+          "setup_rejected": 0,
+          "traces": 17
+        },
+        "array_retired_member": {
+          "aborted": 0,
+          "committed": 3,
+          "prepared": 17,
+          "rejected": 15,
+          "setup_rejected": 0,
+          "traces": 17
+        },
+        "array_same_header": {
+          "aborted": 0,
+          "committed": 11,
+          "prepared": 19,
+          "rejected": 9,
+          "setup_rejected": 0,
+          "traces": 19
+        },
+        "function_dag": {
+          "aborted": 0,
+          "committed": 4,
+          "prepared": 26,
+          "rejected": 23,
+          "setup_rejected": 0,
+          "traces": 26
+        },
+        "function_external_alias": {
+          "aborted": 0,
+          "committed": 14,
+          "prepared": 24,
+          "rejected": 11,
+          "setup_rejected": 0,
+          "traces": 24
+        },
+        "function_last_owner": {
+          "aborted": 0,
+          "committed": 4,
+          "prepared": 24,
+          "rejected": 21,
+          "setup_rejected": 0,
+          "traces": 24
+        },
+        "function_raw": {
+          "aborted": 0,
+          "committed": 6,
+          "prepared": 10,
+          "rejected": 4,
+          "setup_rejected": 0,
+          "traces": 10
+        },
+        "function_retired_member": {
+          "aborted": 0,
+          "committed": 4,
+          "prepared": 24,
+          "rejected": 21,
+          "setup_rejected": 0,
+          "traces": 24
+        },
+        "function_same_header": {
+          "aborted": 0,
+          "committed": 15,
+          "prepared": 26,
+          "rejected": 12,
+          "setup_rejected": 0,
+          "traces": 26
+        },
+        "function_script": {
+          "aborted": 0,
+          "committed": 6,
+          "prepared": 10,
+          "rejected": 4,
+          "setup_rejected": 0,
+          "traces": 10
+        },
+        "lifo_freed": {
+          "aborted": 0,
+          "committed": 0,
+          "prepared": 0,
+          "rejected": 0,
+          "setup_rejected": 0,
+          "traces": 6
+        },
+        "mapping_external_alias": {
+          "aborted": 0,
+          "committed": 10,
+          "prepared": 17,
+          "rejected": 8,
+          "setup_rejected": 0,
+          "traces": 17
+        },
+        "mapping_last_owner": {
+          "aborted": 0,
+          "committed": 3,
+          "prepared": 17,
+          "rejected": 15,
+          "setup_rejected": 0,
+          "traces": 17
+        },
+        "mapping_retired_member": {
+          "aborted": 0,
+          "committed": 3,
+          "prepared": 17,
+          "rejected": 15,
+          "setup_rejected": 0,
+          "traces": 17
+        },
+        "mapping_same_header": {
+          "aborted": 0,
+          "committed": 11,
+          "prepared": 19,
+          "rejected": 9,
+          "setup_rejected": 0,
+          "traces": 19
+        },
+        "metadata": {
+          "aborted": 0,
+          "committed": 0,
+          "prepared": 0,
+          "rejected": 1,
+          "setup_rejected": 0,
+          "traces": 1
+        },
+        "object_raw": {
+          "aborted": 0,
+          "committed": 2,
+          "prepared": 6,
+          "rejected": 4,
+          "setup_rejected": 0,
+          "traces": 6
+        },
+        "object_script": {
+          "aborted": 0,
+          "committed": 2,
+          "prepared": 6,
+          "rejected": 4,
+          "setup_rejected": 0,
+          "traces": 6
+        },
+        "object_swap": {
+          "aborted": 0,
+          "committed": 3,
+          "prepared": 10,
+          "rejected": 8,
+          "setup_rejected": 0,
+          "traces": 10
+        },
+        "prospective_exec": {
+          "aborted": 0,
+          "committed": 2,
+          "prepared": 2,
+          "rejected": 0,
+          "setup_rejected": 0,
+          "traces": 2
+        },
+        "raw_empty_move": {
+          "aborted": 0,
+          "committed": 6,
+          "prepared": 6,
+          "rejected": 0,
+          "setup_rejected": 0,
+          "traces": 6
+        },
+        "raw_occupied": {
+          "aborted": 0,
+          "committed": 0,
+          "prepared": 3,
+          "rejected": 4,
+          "setup_rejected": 0,
+          "traces": 3
+        },
+        "shared_dag": {
+          "aborted": 0,
+          "committed": 3,
+          "prepared": 19,
+          "rejected": 17,
+          "setup_rejected": 0,
+          "traces": 19
+        },
+        "unpublished_function": {
+          "aborted": 0,
+          "committed": 2,
+          "prepared": 2,
+          "rejected": 0,
+          "setup_rejected": 0,
+          "traces": 2
+        },
+        "variable_destination": {
+          "aborted": 0,
+          "committed": 6,
+          "prepared": 6,
+          "rejected": 0,
+          "setup_rejected": 0,
+          "traces": 6
+        },
+        "variable_source": {
+          "aborted": 0,
+          "committed": 2,
+          "prepared": 6,
+          "rejected": 4,
+          "setup_rejected": 0,
+          "traces": 6
+        }
+      },
+      "prepared": 350,
+      "rejected": 232,
+      "rows": 1818,
+      "setup_rejected": 0,
+      "states": {
+        "alive": 3484,
+        "freed": 23,
+        "pending": 315,
+        "queued": 270,
+        "shell": 167
+      },
+      "traces": 357,
+      "unclassified_differences": 0
+    },
+    "core": {
+      "aborted": 27522,
+      "committed": 21528,
+      "families": {
+        "array_external_alias": {
+          "aborted": 1764,
+          "committed": 1692,
+          "prepared": 3528,
+          "rejected": 72,
+          "setup_rejected": 10368,
+          "traces": 13896
+        },
+        "array_last_owner": {
+          "aborted": 2196,
+          "committed": 2124,
+          "prepared": 4392,
+          "rejected": 72,
+          "setup_rejected": 9360,
+          "traces": 13752
+        },
+        "array_retired_member": {
+          "aborted": 2196,
+          "committed": 2124,
+          "prepared": 4392,
+          "rejected": 72,
+          "setup_rejected": 9360,
+          "traces": 13752
+        },
+        "array_same_header": {
+          "aborted": 1800,
+          "committed": 792,
+          "prepared": 3600,
+          "rejected": 1008,
+          "setup_rejected": 10296,
+          "traces": 13896
+        },
+        "function_dag": {
+          "aborted": 1188,
+          "committed": 1134,
+          "prepared": 2376,
+          "rejected": 54,
+          "setup_rejected": 18468,
+          "traces": 20844
+        },
+        "function_external_alias": {
+          "aborted": 1188,
+          "committed": 1080,
+          "prepared": 2376,
+          "rejected": 108,
+          "setup_rejected": 18468,
+          "traces": 20844
+        },
+        "function_last_owner": {
+          "aborted": 1188,
+          "committed": 1080,
+          "prepared": 2376,
+          "rejected": 108,
+          "setup_rejected": 18468,
+          "traces": 20844
+        },
+        "function_retired_member": {
+          "aborted": 1188,
+          "committed": 1080,
+          "prepared": 2376,
+          "rejected": 108,
+          "setup_rejected": 18468,
+          "traces": 20844
+        },
+        "function_same_header": {
+          "aborted": 1242,
+          "committed": 1026,
+          "prepared": 2484,
+          "rejected": 216,
+          "setup_rejected": 18360,
+          "traces": 20844
+        },
+        "mapping_external_alias": {
+          "aborted": 1764,
+          "committed": 1692,
+          "prepared": 3528,
+          "rejected": 72,
+          "setup_rejected": 10368,
+          "traces": 13896
+        },
+        "mapping_last_owner": {
+          "aborted": 2196,
+          "committed": 2124,
+          "prepared": 4392,
+          "rejected": 72,
+          "setup_rejected": 9360,
+          "traces": 13752
+        },
+        "mapping_retired_member": {
+          "aborted": 2196,
+          "committed": 2124,
+          "prepared": 4392,
+          "rejected": 72,
+          "setup_rejected": 9360,
+          "traces": 13752
+        },
+        "mapping_same_header": {
+          "aborted": 1800,
+          "committed": 792,
+          "prepared": 3600,
+          "rejected": 1008,
+          "setup_rejected": 10296,
+          "traces": 13896
+        },
+        "object_swap": {
+          "aborted": 2160,
+          "committed": 1368,
+          "prepared": 4320,
+          "rejected": 792,
+          "setup_rejected": 9288,
+          "traces": 13608
+        },
+        "raw_occupied": {
+          "aborted": 2124,
+          "committed": 0,
+          "prepared": 4248,
+          "rejected": 2124,
+          "setup_rejected": 9360,
+          "traces": 13608
+        },
+        "shared_dag": {
+          "aborted": 1332,
+          "committed": 1296,
+          "prepared": 2664,
+          "rejected": 36,
+          "setup_rejected": 11232,
+          "traces": 13896
+        }
+      },
+      "prepared": 55044,
+      "rejected": 5994,
+      "rows": 566658,
+      "setup_rejected": 200880,
+      "states": {
+        "alive": 783024,
+        "freed": 2016,
+        "pending": 65550,
+        "queued": 65994,
+        "shell": 83658
+      },
+      "traces": 255924,
+      "unclassified_differences": 0
+    },
+    "directed": {
+      "aborted": 5437,
+      "committed": 3933,
+      "families": {
+        "function_raw": {
+          "aborted": 390,
+          "committed": 270,
+          "prepared": 780,
+          "rejected": 120,
+          "setup_rejected": 4140,
+          "traces": 4920
+        },
+        "function_script": {
+          "aborted": 390,
+          "committed": 294,
+          "prepared": 780,
+          "rejected": 96,
+          "setup_rejected": 4140,
+          "traces": 4920
+        },
+        "lifo_freed": {
+          "aborted": 0,
+          "committed": 0,
+          "prepared": 0,
+          "rejected": 0,
+          "setup_rejected": 216,
+          "traces": 328
+        },
+        "object_raw": {
+          "aborted": 840,
+          "committed": 660,
+          "prepared": 1680,
+          "rejected": 180,
+          "setup_rejected": 3240,
+          "traces": 4920
+        },
+        "object_script": {
+          "aborted": 840,
+          "committed": 678,
+          "prepared": 1680,
+          "rejected": 162,
+          "setup_rejected": 3240,
+          "traces": 4920
+        },
+        "prospective_exec": {
+          "aborted": 145,
+          "committed": 145,
+          "prepared": 290,
+          "rejected": 382,
+          "setup_rejected": 1296,
+          "traces": 1968
+        },
+        "raw_empty_move": {
+          "aborted": 840,
+          "committed": 840,
+          "prepared": 1680,
+          "rejected": 0,
+          "setup_rejected": 3240,
+          "traces": 4920
+        },
+        "unpublished_function": {
+          "aborted": 312,
+          "committed": 156,
+          "prepared": 624,
+          "rejected": 1212,
+          "setup_rejected": 3240,
+          "traces": 4920
+        },
+        "variable_destination": {
+          "aborted": 840,
+          "committed": 454,
+          "prepared": 1680,
+          "rejected": 386,
+          "setup_rejected": 3240,
+          "traces": 4920
+        },
+        "variable_source": {
+          "aborted": 840,
+          "committed": 436,
+          "prepared": 1680,
+          "rejected": 404,
+          "setup_rejected": 3240,
+          "traces": 4920
+        }
+      },
+      "prepared": 10874,
+      "rejected": 2942,
+      "rows": 111510,
+      "setup_rejected": 29232,
+      "states": {
+        "alive": 132324,
+        "freed": 974,
+        "pending": 17135,
+        "queued": 16391,
+        "shell": 15048
+      },
+      "traces": 41656,
+      "unclassified_differences": 0
+    },
+    "fault": {
+      "aborted": 0,
+      "committed": 8372,
+      "families": {
+        "array_external_alias": {
+          "aborted": 0,
+          "committed": 559,
+          "prepared": 2666,
+          "rejected": 2150,
+          "setup_rejected": 0,
+          "traces": 2666
+        },
+        "array_last_owner": {
+          "aborted": 0,
+          "committed": 715,
+          "prepared": 3410,
+          "rejected": 2750,
+          "setup_rejected": 0,
+          "traces": 3410
+        },
+        "array_retired_member": {
+          "aborted": 0,
+          "committed": 715,
+          "prepared": 4565,
+          "rejected": 3905,
+          "setup_rejected": 0,
+          "traces": 4565
+        },
+        "array_same_header": {
+          "aborted": 0,
+          "committed": 222,
+          "prepared": 2304,
+          "rejected": 2126,
+          "setup_rejected": 0,
+          "traces": 2304
+        },
+        "function_dag": {
+          "aborted": 0,
+          "committed": 289,
+          "prepared": 1899,
+          "rejected": 1626,
+          "setup_rejected": 0,
+          "traces": 1899
+        },
+        "function_external_alias": {
+          "aborted": 0,
+          "committed": 288,
+          "prepared": 1408,
+          "rejected": 1136,
+          "setup_rejected": 0,
+          "traces": 1408
+        },
+        "function_last_owner": {
+          "aborted": 0,
+          "committed": 288,
+          "prepared": 1408,
+          "rejected": 1136,
+          "setup_rejected": 0,
+          "traces": 1408
+        },
+        "function_raw": {
+          "aborted": 0,
+          "committed": 108,
+          "prepared": 1060,
+          "rejected": 952,
+          "setup_rejected": 0,
+          "traces": 1060
+        },
+        "function_retired_member": {
+          "aborted": 0,
+          "committed": 288,
+          "prepared": 1888,
+          "rejected": 1616,
+          "setup_rejected": 0,
+          "traces": 1888
+        },
+        "function_same_header": {
+          "aborted": 0,
+          "committed": 253,
+          "prepared": 3379,
+          "rejected": 3143,
+          "setup_rejected": 0,
+          "traces": 3379
+        },
+        "function_script": {
+          "aborted": 0,
+          "committed": 124,
+          "prepared": 1236,
+          "rejected": 1112,
+          "setup_rejected": 0,
+          "traces": 1236
+        },
+        "lifo_freed": {
+          "aborted": 0,
+          "committed": 0,
+          "prepared": 0,
+          "rejected": 0,
+          "setup_rejected": 0,
+          "traces": 336
+        },
+        "mapping_external_alias": {
+          "aborted": 0,
+          "committed": 559,
+          "prepared": 2666,
+          "rejected": 2150,
+          "setup_rejected": 0,
+          "traces": 2666
+        },
+        "mapping_last_owner": {
+          "aborted": 0,
+          "committed": 715,
+          "prepared": 3410,
+          "rejected": 2750,
+          "setup_rejected": 0,
+          "traces": 3410
+        },
+        "mapping_retired_member": {
+          "aborted": 0,
+          "committed": 715,
+          "prepared": 4565,
+          "rejected": 3905,
+          "setup_rejected": 0,
+          "traces": 4565
+        },
+        "mapping_same_header": {
+          "aborted": 0,
+          "committed": 222,
+          "prepared": 2664,
+          "rejected": 2486,
+          "setup_rejected": 0,
+          "traces": 2664
+        },
+        "metadata": {
+          "aborted": 0,
+          "committed": 0,
+          "prepared": 0,
+          "rejected": 1,
+          "setup_rejected": 0,
+          "traces": 2
+        },
+        "object_raw": {
+          "aborted": 0,
+          "committed": 246,
+          "prepared": 1472,
+          "rejected": 1226,
+          "setup_rejected": 0,
+          "traces": 1472
+        },
+        "object_script": {
+          "aborted": 0,
+          "committed": 264,
+          "prepared": 1670,
+          "rejected": 1406,
+          "setup_rejected": 0,
+          "traces": 1670
+        },
+        "object_swap": {
+          "aborted": 0,
+          "committed": 442,
+          "prepared": 2942,
+          "rejected": 2554,
+          "setup_rejected": 0,
+          "traces": 2942
+        },
+        "prospective_exec": {
+          "aborted": 0,
+          "committed": 58,
+          "prepared": 58,
+          "rejected": 0,
+          "setup_rejected": 0,
+          "traces": 58
+        },
+        "raw_empty_move": {
+          "aborted": 0,
+          "committed": 336,
+          "prepared": 2576,
+          "rejected": 2240,
+          "setup_rejected": 0,
+          "traces": 2576
+        },
+        "raw_occupied": {
+          "aborted": 0,
+          "committed": 0,
+          "prepared": 318,
+          "rejected": 371,
+          "setup_rejected": 0,
+          "traces": 318
+        },
+        "shared_dag": {
+          "aborted": 0,
+          "committed": 404,
+          "prepared": 2584,
+          "rejected": 2211,
+          "setup_rejected": 0,
+          "traces": 2584
+        },
+        "unpublished_function": {
+          "aborted": 0,
+          "committed": 52,
+          "prepared": 104,
+          "rejected": 52,
+          "setup_rejected": 0,
+          "traces": 216
+        },
+        "variable_destination": {
+          "aborted": 0,
+          "committed": 264,
+          "prepared": 1838,
+          "rejected": 1574,
+          "setup_rejected": 0,
+          "traces": 1838
+        },
+        "variable_source": {
+          "aborted": 0,
+          "committed": 246,
+          "prepared": 1472,
+          "rejected": 1226,
+          "setup_rejected": 0,
+          "traces": 1472
+        }
+      },
+      "prepared": 53562,
+      "rejected": 45804,
+      "rows": 271008,
+      "setup_rejected": 0,
+      "states": {
+        "alive": 471356,
+        "freed": 661,
+        "pending": 48716,
+        "queued": 38132,
+        "shell": 32007
+      },
+      "traces": 54012,
+      "unclassified_differences": 0
+    },
+    "metadata": {
+      "aborted": 0,
+      "committed": 0,
+      "families": {
+        "metadata": {
+          "aborted": 0,
+          "committed": 0,
+          "prepared": 0,
+          "rejected": 6,
+          "setup_rejected": 0,
+          "traces": 6
+        }
+      },
+      "prepared": 0,
+      "rejected": 6,
+      "rows": 186,
+      "setup_rejected": 0,
+      "states": {
+        "alive": 9,
+        "freed": 10,
+        "shell": 2
+      },
+      "traces": 6,
+      "unclassified_differences": 0
+    }
+  },
+  "stage": "2BM",
+  "status": "pass"
+}

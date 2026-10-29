@@ -1,0 +1,50 @@
+{
+  "log_sha256": "8d6e645ea537f715dbfc2c09410e60a5db8a8ca1e5bcb84fc9ef6be06077fb9c",
+  "observations_sha256": "665950f08309606b02009e48eef76473032ea56bd01a11c2a1ee00d5f961d92a",
+  "stage": "2BM",
+  "status": "pass",
+  "summary": {
+    "accepted": 220,
+    "quota_refusals": {
+      "setup": 4320,
+      "start": 264,
+      "transition": 444
+    },
+    "success_by_combination": {
+      "function-array-alive-False": 14,
+      "function-array-alive-True": 2,
+      "function-array-pending-False": 14,
+      "function-array-pending-True": 2,
+      "function-array-queued-False": 14,
+      "function-array-queued-True": 2,
+      "function-array-shell-False": 14,
+      "function-array-shell-True": 2,
+      "function-mapping-alive-False": 14,
+      "function-mapping-alive-True": 2,
+      "function-mapping-pending-False": 14,
+      "function-mapping-pending-True": 2,
+      "function-mapping-queued-False": 14,
+      "function-mapping-queued-True": 2,
+      "function-mapping-shell-False": 14,
+      "function-mapping-shell-True": 2,
+      "object-array-alive-False": 8,
+      "object-array-alive-True": 2,
+      "object-array-pending-False": 8,
+      "object-array-pending-True": 2,
+      "object-array-queued-False": 8,
+      "object-array-queued-True": 2,
+      "object-array-shell-False": 14,
+      "object-array-shell-True": 2,
+      "object-mapping-alive-False": 8,
+      "object-mapping-alive-True": 2,
+      "object-mapping-pending-False": 8,
+      "object-mapping-pending-True": 2,
+      "object-mapping-queued-False": 8,
+      "object-mapping-queued-True": 2,
+      "object-mapping-shell-False": 14,
+      "object-mapping-shell-True": 2
+    },
+    "traces": 5248,
+    "unclassified_differences": 0
+  }
+}
