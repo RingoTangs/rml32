@@ -91,6 +91,7 @@ pub struct HostCallContext {
     pub source: String,
     pub program: ProgramId,
     pub object: Option<ObjectId>,
+    /// Ordinary function slot, or -1 for the isolated startup initialization probe.
     pub function: i16,
     pub pc: usize,
     pub offset: usize,

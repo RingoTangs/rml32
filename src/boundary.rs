@@ -1032,6 +1032,19 @@ impl Vm {
         self.claimed = false;
         Ok(self.registry.object(id))
     }
+    pub(crate) fn begin_startup_prefix(&mut self, program: ProgramId) -> Result<(), VmError> {
+        let program = self.registry.program_input(program)?;
+        self.inner.as_mut().unwrap().begin_startup_prefix(program)
+    }
+    pub(crate) fn run_startup_prefix(&mut self, budget: usize) -> Result<bool, VmError> {
+        self.registry.check()?;
+        let result = self.inner.as_mut().unwrap().run_startup_prefix(budget);
+        self.registry.drain();
+        result
+    }
+    pub(crate) fn startup_pc(&self) -> Result<usize, VmError> {
+        self.inner.as_ref().unwrap().startup_pc()
+    }
     pub fn begin_construct(
         &mut self,
         program: ProgramId,

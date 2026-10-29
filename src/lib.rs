@@ -1,5 +1,6 @@
 //! Read-only parsers plus a bounded Magic559 core interpreter.
-//! Reference artifacts are only parsed; execution tests use synthetic programs.
+//! Reference ELF files are never executed. The opt-in startup probe executes only
+//! a bounded prefix of a parsed Global initialization segment in the Rust VM.
 
 macro_rules! life_cell {
     ($owner:expr, $value:expr $(,)?) => {
@@ -41,6 +42,7 @@ pub mod pak;
 pub mod prepared;
 pub mod program;
 mod reader;
+pub mod startup_probe;
 mod value;
 mod vm;
 pub mod vm_error;

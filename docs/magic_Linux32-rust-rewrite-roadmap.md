@@ -1,3 +1,5 @@
+> 阶段 2BO：新增隔离的真实启动探针，五个服务均可执行 Global 初始化 PC 0—24，在 PC 25 停止；唯一实际 efun 为 allocate_array(1024)，下一依赖为 PC 26 的 mkdir。908 项普通 Rust 测试及 5 项 doctest 在 debug/release 通过。初始化完成与服务启动仍未宣称。详见 [启动切片总览](stage2bo-startup-probe/overview.md)及 [验证收据](stage2bo-validation.json)。
+
 > 阶段 2BN：完成六类双事务交错审计：83,832 条核心、84,720 条状态干扰、64 条存活期、24 条元数据、677 条借用及 37,303 条失败点和对照在 debug/release 通过；1,640 条正常库场景覆盖十种公开组合，未发现新的生产偏差。892 项普通 Rust 测试及 5 项 doctest 保持回归。详见 [审计总览](stage2bn-pair-audit/overview.md)及 [验证收据](stage2bn-validation.json)。
 
 > 阶段 2BM：完成对象状态转换与已准备事务交错审计：255,924 条核心、41,656 条定向、357 条借用、54,012 条失败点及对照、6 条元数据和 5,248 条正常库场景在 debug/release 通过，未发现新的生产偏差。878 项普通 Rust 测试及 5 项 doctest 回归通过；运行时/API、旧模型和捕获门槛保持。详见 [审计总览](stage2bm-interleaving-audit/overview.md)及 [验证收据](stage2bm-validation.json)。

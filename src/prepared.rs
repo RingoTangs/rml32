@@ -129,7 +129,7 @@ impl PreparedProgram {
     }
     /// True only when all inherited initialization bodies were explicitly prepared.
     pub fn is_initializable(&self) -> bool {
-        self.initializations.is_some()
+        self.kind == ProgramKind::Object && self.initializations.is_some()
     }
     pub fn variable_count(&self) -> usize {
         self.variable_count
@@ -891,6 +891,112 @@ fn prepare_code_program(
     };
     build().map_err(|mut e| {
         e.source = source;
+        e
+    })
+}
+
+/// The startup probe admits no control transfer and only the one-argument
+/// allocate_array ABI. This check is also applied before each executed node.
+pub(crate) fn check_startup_instruction(i: &Instruction) -> Result<(), VmError> {
+    match i.opcode {
+        0x03 | 0x18 | 0x33 | 0x36 | 0x3b | 0x40 => Ok(()),
+        0x06 if i.operands == [0, 1] => Ok(()),
+        _ => Err(unsupported(
+            "instruction is outside the startup prefix permission",
+        )),
+    }
+}
+
+pub(crate) fn prepare_startup_prefix(
+    image: &ProgramImage,
+    source: &str,
+) -> Result<PreparedProgram, VmError> {
+    let build = || {
+        if image.mode != ProgramMode::Global || !image.inherits.is_empty() {
+            return Err(unsupported(
+                "startup prefix requires a Global image without inheritance",
+            ));
+        }
+        if image.efuns_count != 559
+            || image.max_vars < 0
+            || image.max_vars as usize > MAX_GLOBAL_SLOTS
+            || image.function_base < 559
+            || image.function_base > i32::from(image.max_functions)
+        {
+            return Err(err("invalid startup Global capacities"));
+        }
+        let mut prefix = image.init.clone();
+        if prefix.nodes.len() < crate::startup_probe::PREFIX_END_PC {
+            return Err(err("initialization is shorter than the startup prefix"));
+        }
+        prefix.nodes.truncate(crate::startup_probe::PREFIX_END_PC);
+        // This is a separate opt-in code view. Reuse ordinary operand validation
+        // for 06/36; it does not relax the existing Object initialization paths.
+        let code = instructions(
+            &prefix,
+            &image.strings,
+            image.max_vars as usize,
+            false,
+            PreparationOptions {
+                globals: Some(GlobalBankSchema {
+                    slots: image.max_vars as usize,
+                }),
+                global_code: true,
+                host_calls: true,
+                ..PreparationOptions::default()
+            },
+        )?;
+        for (pc, i) in code.iter().enumerate() {
+            check_startup_instruction(i).map_err(|mut e| {
+                e.pc = Some(pc);
+                e.offset = Some(i.offset);
+                e
+            })?;
+        }
+        let strings: Vec<_> = image
+            .strings
+            .iter()
+            .map(|s| {
+                s.as_ref().map(|s| {
+                    let mut bytes = s.bytes.clone();
+                    if let Some(last) = bytes.last_mut() {
+                        *last = 0;
+                    }
+                    Value::bytes(bytes.split(|b| *b == 0).next().unwrap_or_default())
+                })
+            })
+            .collect();
+        Ok(PreparedProgram {
+            source: source.into(),
+            global_schema: Some(GlobalBankSchema {
+                slots: image.max_vars as usize,
+            }),
+            allow_host_calls: true,
+            allow_function_values: false,
+            allow_global_function_values: false,
+            allow_host_function_values: false,
+            allow_container_captures: false,
+            kind: ProgramKind::Global,
+            function_capacity: image.max_functions as usize,
+            variable_count: image.max_vars as usize,
+            strings: strings.clone(),
+            functions: BTreeMap::new(),
+            unimplemented: BTreeSet::new(),
+            initializations: Some(vec![PreparedInitialization {
+                instructions: Rc::new(code),
+                source: source.into(),
+                pool: Rc::new(strings),
+                function_base: image.function_base as i16,
+                variable_base: 0,
+            }]),
+            init_order: vec![],
+            lifecycles: None,
+            methods: None,
+        })
+    };
+    build().map_err(|mut e| {
+        e.source = source.into();
+        e.initialization = Some(0);
         e
     })
 }

@@ -1,4 +1,5 @@
-//! Bounded Magic559 interpreter; reference artifacts are never executed by tests.
+//! Bounded Magic559 interpreter. Only the explicit startup probe admits a real
+//! Global initialization prefix; the reference ELF is never executed.
 use crate::{
     cell::{Cell, SlotPayload},
     copy_plan::CopyPlan,
@@ -11,6 +12,9 @@ use std::{
     collections::BTreeMap,
     rc::{Rc, Weak},
 };
+#[cfg(test)]
+#[path = "startup_vm_tests.rs"]
+mod startup_prefix_tests;
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum Completion {
     Returned(Value),
@@ -388,6 +392,98 @@ impl Vm {
         let mut vm = Self::new(objects);
         vm.limits = limits;
         vm
+    }
+    pub(crate) fn begin_startup_prefix(&mut self, program: ProgramId) -> Result<(), VmError> {
+        let p = self.objects.program(program)?;
+        if p.kind != ProgramKind::Global
+            || p.initializations.is_none()
+            || !p.functions.is_empty()
+            || !self.frames.is_empty()
+            || self.initialization.is_some()
+            || self.construction.is_some()
+        {
+            return Err(err(
+                VmErrorKind::InvalidState,
+                "not an idle startup prefix VM",
+            ));
+        }
+        if self.limits.max_frames == 0 {
+            return Err(err(VmErrorKind::Limit, "startup frame exceeds frame limit"));
+        }
+        if p.global_schema.is_none_or(|s| {
+            self.objects
+                .global_cells()
+                .map_or(true, |c| c.len() != s.slots)
+        }) {
+            return Err(err(
+                VmErrorKind::InvalidState,
+                "startup global bank does not match schema",
+            ));
+        }
+        self.frames
+            .try_reserve(1)
+            .map_err(|_| err(VmErrorKind::Limit, "startup frame allocation failed"))?;
+        let id = self.frame_id()?;
+        self.frames.push(Frame {
+            id,
+            execution: ExecutionSource::GlobalProgram(program),
+            active_object: None,
+            body: FrameBody::Initialization(0),
+            pc: 0,
+            bp: 0,
+            argc: 0,
+            entered: false,
+            phase: EntryPhase::Body,
+        });
+        self.failure = None;
+        self.completion = None;
+        Ok(())
+    }
+    pub(crate) fn startup_pc(&self) -> Result<usize, VmError> {
+        let (frame, p) = self.context()?;
+        if p.kind != ProgramKind::Global
+            || !matches!(frame.body, FrameBody::Initialization(0))
+            || self.frames.len() != 1
+        {
+            return Err(err(VmErrorKind::InvalidState, "not a startup prefix frame"));
+        }
+        Ok(frame.pc)
+    }
+    pub(crate) fn run_startup_prefix(&mut self, budget: usize) -> Result<bool, VmError> {
+        if let Some(e) = &self.failure {
+            return Err(e.clone());
+        }
+        let pc = self.startup_pc()?;
+        let remaining = crate::startup_probe::PREFIX_END_PC
+            .checked_sub(pc)
+            .ok_or_else(|| {
+                err(
+                    VmErrorKind::Bounds,
+                    "startup PC crossed its execution fence",
+                )
+            })?;
+        if remaining > 0 {
+            self.run(budget.min(remaining))?;
+        }
+        let reached = self.startup_pc()? == crate::startup_probe::PREFIX_END_PC;
+        if reached && !self.stack.is_empty() {
+            let mut e = err(
+                VmErrorKind::InvalidProgram,
+                "unbalanced stack at startup prefix boundary",
+            );
+            let (frame, p) = self.context()?;
+            e.source = p.source.clone();
+            e.program = Some(frame.program());
+            e.initialization = Some(0);
+            e.pc = Some(frame.pc);
+            e.offset = CodeView::get(&p, frame.body)?
+                .instructions
+                .last()
+                .and_then(|i| i.offset.checked_add(4));
+            self.failure = Some(e.clone());
+            return Err(e);
+        }
+        Ok(reached)
     }
     pub(crate) fn returned_cell(&self) -> Result<Rc<Cell>, VmError> {
         self.completion
@@ -1133,7 +1229,20 @@ impl Vm {
         }
         for _ in 0..instruction_budget {
             let frame = self.frames.last().unwrap().clone();
-            let initialization = self.initialization.as_ref().map(|t| t.constitution);
+            let initialization = self
+                .initialization
+                .as_ref()
+                .map(|t| t.constitution)
+                .or_else(|| {
+                    matches!(
+                        (frame.execution, frame.body),
+                        (
+                            ExecutionSource::GlobalProgram(_),
+                            FrameBody::Initialization(0)
+                        )
+                    )
+                    .then_some(0)
+                });
             if let Err(fault) = self.step() {
                 let mut e = *fault.diagnostic;
                 e.program = Some(frame.program());
@@ -2086,7 +2195,26 @@ impl Vm {
                 source: code.source.to_owned(),
                 program: frame.program(),
                 object: frame.active_object,
-                function: code.function()?.index,
+                // -1 denotes the probe's initialization context, never a callable slot.
+                function: match code.function {
+                    Some(f) => f.index,
+                    None if matches!(
+                        (frame.execution, frame.body),
+                        (
+                            ExecutionSource::GlobalProgram(_),
+                            FrameBody::Initialization(0)
+                        )
+                    ) =>
+                    {
+                        -1
+                    }
+                    None => {
+                        return Err(err(
+                            VmErrorKind::UnsupportedFeature,
+                            "host call outside an ordinary function",
+                        ));
+                    }
+                },
                 pc: frame.pc,
                 offset: code.instructions[frame.pc].offset,
             },
@@ -2979,6 +3107,23 @@ impl Vm {
         }
         let (frame, p) = self.context()?;
         let f = CodeView::get(&p, frame.body)?;
+        if matches!(
+            (frame.execution, frame.body),
+            (
+                ExecutionSource::GlobalProgram(_),
+                FrameBody::Initialization(0)
+            )
+        ) {
+            if frame.pc >= crate::startup_probe::PREFIX_END_PC {
+                return Err(err(
+                    VmErrorKind::Bounds,
+                    "startup prefix execution fence reached",
+                ));
+            }
+            if let Some(i) = f.instructions.get(frame.pc) {
+                crate::prepared::check_startup_instruction(i)?;
+            }
+        }
         let Instruction {
             opcode, operands, ..
         } = f
@@ -3457,7 +3602,14 @@ impl Vm {
             0x35 | 0x36 => {
                 if self.initialization.is_some()
                     || self.construction.is_some()
-                    || !matches!(frame.body, FrameBody::Function(_))
+                    || (!matches!(frame.body, FrameBody::Function(_))
+                        && !matches!(
+                            (frame.execution, frame.body),
+                            (
+                                ExecutionSource::GlobalProgram(_),
+                                FrameBody::Initialization(0)
+                            )
+                        ))
                 {
                     return Err(err(
                         VmErrorKind::UnsupportedFeature,

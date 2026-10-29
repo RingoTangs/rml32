@@ -2,6 +2,7 @@
 name = "rml32"
 version = "0.1.0"
 edition = "2024"
+default-run = "rml32-inspect"
 description = "Read-only PAK and Magic559 bytecode inspection"
 
 [dependencies]
@@ -12,6 +13,10 @@ sha2 = "0.11"
 [[bin]]
 name = "rml32-inspect"
 path = "src/main.rs"
+
+[[bin]]
+name = "rml32-startup-probe"
+path = "src/startup_probe_main.rs"
 
 [lints.rust]
 unsafe_code = "forbid"
