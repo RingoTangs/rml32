@@ -1,0 +1,991 @@
+{
+  "log_sha256": "04df04c7964fcc1efd87c379b1c9bcdafdc09e7808e2599fb4501528afe3fb51",
+  "observation_sha256": {
+    "borrow": "b01f402179fa5e43347a65c9827f2e8d43910740eb7b96b20df20103af8e034f",
+    "core": "2270de9f52585156d437303ed1c018f156d6aed0104b2074b19542a981215dfb",
+    "fault": "351227ac9911a444c68c2ab75ae51ca9562db53e550eed5c41077ba13132e8cb",
+    "interference": "13da086cc6dc2db9dccacf0777a75f6559e2d5733e245b73c200aff1471752be",
+    "lifetime": "0ff124b74b9c795cd0a09e8629f1b900029d912e758c050961536ca560a7cf60",
+    "metadata": "9570fa860a35eddc9c83e1f190bb4504ac2479b188aa9f68ef7aeca6a018a649"
+  },
+  "quick": false,
+  "reports": {
+    "borrow": {
+      "aborted": 119,
+      "committed": 413,
+      "families": {
+        "CE_different": {
+          "aborted": 0,
+          "committed": 14,
+          "prepared": 46,
+          "rejected": 25,
+          "traces": 26
+        },
+        "CE_same": {
+          "aborted": 0,
+          "committed": 14,
+          "prepared": 46,
+          "rejected": 22,
+          "traces": 26
+        },
+        "CH_different": {
+          "aborted": 7,
+          "committed": 22,
+          "prepared": 81,
+          "rejected": 37,
+          "traces": 45
+        },
+        "CH_same": {
+          "aborted": 7,
+          "committed": 22,
+          "prepared": 81,
+          "rejected": 37,
+          "traces": 45
+        },
+        "EE_different": {
+          "aborted": 0,
+          "committed": 5,
+          "prepared": 11,
+          "rejected": 7,
+          "traces": 8
+        },
+        "EE_same": {
+          "aborted": 0,
+          "committed": 6,
+          "prepared": 14,
+          "rejected": 4,
+          "traces": 9
+        },
+        "HE_different": {
+          "aborted": 1,
+          "committed": 8,
+          "prepared": 22,
+          "rejected": 11,
+          "traces": 15
+        },
+        "HE_same": {
+          "aborted": 3,
+          "committed": 7,
+          "prepared": 22,
+          "rejected": 6,
+          "traces": 15
+        },
+        "HH_different": {
+          "aborted": 6,
+          "committed": 18,
+          "prepared": 45,
+          "rejected": 14,
+          "traces": 27
+        },
+        "HH_same": {
+          "aborted": 7,
+          "committed": 18,
+          "prepared": 47,
+          "rejected": 14,
+          "traces": 27
+        },
+        "forward": {
+          "aborted": 8,
+          "committed": 24,
+          "prepared": 74,
+          "rejected": 27,
+          "traces": 39
+        },
+        "function_member": {
+          "aborted": 9,
+          "committed": 24,
+          "prepared": 75,
+          "rejected": 25,
+          "traces": 39
+        },
+        "independent": {
+          "aborted": 0,
+          "committed": 35,
+          "prepared": 74,
+          "rejected": 24,
+          "traces": 39
+        },
+        "lifetime_array": {
+          "aborted": 0,
+          "committed": 16,
+          "prepared": 28,
+          "rejected": 6,
+          "traces": 14
+        },
+        "lifetime_function": {
+          "aborted": 0,
+          "committed": 6,
+          "prepared": 16,
+          "rejected": 6,
+          "traces": 8
+        },
+        "lifetime_mapping": {
+          "aborted": 0,
+          "committed": 16,
+          "prepared": 28,
+          "rejected": 6,
+          "traces": 14
+        },
+        "lifetime_object": {
+          "aborted": 0,
+          "committed": 6,
+          "prepared": 16,
+          "rejected": 6,
+          "traces": 8
+        },
+        "metadata": {
+          "aborted": 0,
+          "committed": 7,
+          "prepared": 12,
+          "rejected": 2,
+          "traces": 6
+        },
+        "mutual": {
+          "aborted": 18,
+          "committed": 37,
+          "prepared": 79,
+          "rejected": 7,
+          "traces": 41
+        },
+        "retired_member": {
+          "aborted": 9,
+          "committed": 14,
+          "prepared": 74,
+          "rejected": 35,
+          "traces": 39
+        },
+        "reverse": {
+          "aborted": 9,
+          "committed": 28,
+          "prepared": 77,
+          "rejected": 23,
+          "traces": 40
+        },
+        "same_destination_different": {
+          "aborted": 17,
+          "committed": 6,
+          "prepared": 74,
+          "rejected": 36,
+          "traces": 39
+        },
+        "same_destination_equal": {
+          "aborted": 18,
+          "committed": 6,
+          "prepared": 75,
+          "rejected": 34,
+          "traces": 39
+        },
+        "shared_dag": {
+          "aborted": 0,
+          "committed": 18,
+          "prepared": 57,
+          "rejected": 22,
+          "traces": 30
+        },
+        "shared_source": {
+          "aborted": 0,
+          "committed": 36,
+          "prepared": 75,
+          "rejected": 22,
+          "traces": 39
+        }
+      },
+      "pairs": {
+        "CC": {
+          "aborted": 88,
+          "committed": 279,
+          "prepared": 834,
+          "rejected": 281,
+          "traces": 434
+        },
+        "CE": {
+          "aborted": 0,
+          "committed": 28,
+          "prepared": 92,
+          "rejected": 47,
+          "traces": 52
+        },
+        "CH": {
+          "aborted": 14,
+          "committed": 44,
+          "prepared": 162,
+          "rejected": 74,
+          "traces": 90
+        },
+        "EE": {
+          "aborted": 0,
+          "committed": 11,
+          "prepared": 25,
+          "rejected": 11,
+          "traces": 17
+        },
+        "HE": {
+          "aborted": 4,
+          "committed": 15,
+          "prepared": 44,
+          "rejected": 17,
+          "traces": 30
+        },
+        "HH": {
+          "aborted": 13,
+          "committed": 36,
+          "prepared": 92,
+          "rejected": 28,
+          "traces": 54
+        }
+      },
+      "prepared": 1249,
+      "rejected": 458,
+      "rows": 9055,
+      "setup_rejected": 0,
+      "states": {
+        "alive": 16150,
+        "freed": 9,
+        "pending": 426,
+        "queued": 563,
+        "shell": 285
+      },
+      "traces": 677,
+      "two_preparations_checkpoints": 1065,
+      "unclassified_differences": 0,
+      "workspace_blocked": 0
+    },
+    "core": {
+      "aborted": 24541,
+      "committed": 19618,
+      "families": {
+        "CE_different": {
+          "aborted": 1584,
+          "committed": 1356,
+          "prepared": 3168,
+          "rejected": 2844,
+          "traces": 4200
+        },
+        "CE_same": {
+          "aborted": 1584,
+          "committed": 1356,
+          "prepared": 3168,
+          "rejected": 2844,
+          "traces": 4200
+        },
+        "CH_different": {
+          "aborted": 1116,
+          "committed": 888,
+          "prepared": 2232,
+          "rejected": 4812,
+          "traces": 4224
+        },
+        "CH_same": {
+          "aborted": 1119,
+          "committed": 840,
+          "prepared": 2238,
+          "rejected": 4851,
+          "traces": 4224
+        },
+        "EE_different": {
+          "aborted": 1560,
+          "committed": 1560,
+          "prepared": 3120,
+          "rejected": 2616,
+          "traces": 4176
+        },
+        "EE_same": {
+          "aborted": 1304,
+          "committed": 1304,
+          "prepared": 2608,
+          "rejected": 3736,
+          "traces": 4200
+        },
+        "HE_different": {
+          "aborted": 1140,
+          "committed": 1140,
+          "prepared": 2280,
+          "rejected": 4584,
+          "traces": 4248
+        },
+        "HE_same": {
+          "aborted": 1140,
+          "committed": 1140,
+          "prepared": 2280,
+          "rejected": 4584,
+          "traces": 4248
+        },
+        "HH_different": {
+          "aborted": 532,
+          "committed": 532,
+          "prepared": 1064,
+          "rejected": 6920,
+          "traces": 4224
+        },
+        "HH_same": {
+          "aborted": 526,
+          "committed": 526,
+          "prepared": 1052,
+          "rejected": 6944,
+          "traces": 4224
+        },
+        "forward": {
+          "aborted": 1536,
+          "committed": 1209,
+          "prepared": 3072,
+          "rejected": 2943,
+          "traces": 4152
+        },
+        "function_member": {
+          "aborted": 598,
+          "committed": 546,
+          "prepared": 1196,
+          "rejected": 3756,
+          "traces": 4224
+        },
+        "independent": {
+          "aborted": 1536,
+          "committed": 1080,
+          "prepared": 3072,
+          "rejected": 3072,
+          "traces": 4152
+        },
+        "mutual": {
+          "aborted": 1536,
+          "committed": 882,
+          "prepared": 3072,
+          "rejected": 3270,
+          "traces": 4152
+        },
+        "retired_member": {
+          "aborted": 1058,
+          "committed": 966,
+          "prepared": 2116,
+          "rejected": 3348,
+          "traces": 4176
+        },
+        "reverse": {
+          "aborted": 1536,
+          "committed": 993,
+          "prepared": 3072,
+          "rejected": 3159,
+          "traces": 4152
+        },
+        "same_destination_different": {
+          "aborted": 1536,
+          "committed": 900,
+          "prepared": 3072,
+          "rejected": 3252,
+          "traces": 4152
+        },
+        "same_destination_equal": {
+          "aborted": 1536,
+          "committed": 882,
+          "prepared": 3072,
+          "rejected": 3270,
+          "traces": 4152
+        },
+        "shared_dag": {
+          "aborted": 528,
+          "committed": 528,
+          "prepared": 1056,
+          "rejected": 3672,
+          "traces": 4200
+        },
+        "shared_source": {
+          "aborted": 1536,
+          "committed": 990,
+          "prepared": 3072,
+          "rejected": 3162,
+          "traces": 4152
+        }
+      },
+      "pairs": {
+        "CC": {
+          "aborted": 12936,
+          "committed": 8976,
+          "prepared": 25872,
+          "rejected": 32904,
+          "traces": 41664
+        },
+        "CE": {
+          "aborted": 3168,
+          "committed": 2712,
+          "prepared": 6336,
+          "rejected": 5688,
+          "traces": 8400
+        },
+        "CH": {
+          "aborted": 2235,
+          "committed": 1728,
+          "prepared": 4470,
+          "rejected": 9663,
+          "traces": 8448
+        },
+        "EE": {
+          "aborted": 2864,
+          "committed": 2864,
+          "prepared": 5728,
+          "rejected": 6352,
+          "traces": 8376
+        },
+        "HE": {
+          "aborted": 2280,
+          "committed": 2280,
+          "prepared": 4560,
+          "rejected": 9168,
+          "traces": 8496
+        },
+        "HH": {
+          "aborted": 1058,
+          "committed": 1058,
+          "prepared": 2116,
+          "rejected": 13864,
+          "traces": 8448
+        }
+      },
+      "prepared": 49082,
+      "rejected": 77639,
+      "rows": 442104,
+      "setup_rejected": 54816,
+      "states": {
+        "alive": 748056
+      },
+      "traces": 83832,
+      "two_preparations_checkpoints": 14560,
+      "unclassified_differences": 0,
+      "workspace_blocked": 0
+    },
+    "fault": {
+      "aborted": 11855,
+      "committed": 15286,
+      "families": {
+        "CE_different": {
+          "aborted": 470,
+          "committed": 827,
+          "prepared": 3397,
+          "rejected": 1491,
+          "traces": 1912
+        },
+        "CE_same": {
+          "aborted": 468,
+          "committed": 819,
+          "prepared": 3383,
+          "rejected": 1491,
+          "traces": 1904
+        },
+        "CH_different": {
+          "aborted": 458,
+          "committed": 686,
+          "prepared": 3189,
+          "rejected": 1769,
+          "traces": 2082
+        },
+        "CH_same": {
+          "aborted": 466,
+          "committed": 590,
+          "prepared": 2942,
+          "rejected": 1674,
+          "traces": 1960
+        },
+        "EE_different": {
+          "aborted": 6,
+          "committed": 8,
+          "prepared": 22,
+          "rejected": 21,
+          "traces": 22
+        },
+        "EE_same": {
+          "aborted": 12,
+          "committed": 24,
+          "prepared": 60,
+          "rejected": 17,
+          "traces": 38
+        },
+        "HE_different": {
+          "aborted": 16,
+          "committed": 102,
+          "prepared": 335,
+          "rejected": 147,
+          "traces": 274
+        },
+        "HE_same": {
+          "aborted": 22,
+          "committed": 106,
+          "prepared": 349,
+          "rejected": 141,
+          "traces": 282
+        },
+        "HH_different": {
+          "aborted": 176,
+          "committed": 144,
+          "prepared": 700,
+          "rejected": 280,
+          "traces": 520
+        },
+        "HH_same": {
+          "aborted": 190,
+          "committed": 136,
+          "prepared": 681,
+          "rejected": 265,
+          "traces": 506
+        },
+        "forward": {
+          "aborted": 916,
+          "committed": 1430,
+          "prepared": 5991,
+          "rejected": 2727,
+          "traces": 3266
+        },
+        "function_member": {
+          "aborted": 1048,
+          "committed": 578,
+          "prepared": 3782,
+          "rejected": 1683,
+          "traces": 2018
+        },
+        "independent": {
+          "aborted": 906,
+          "committed": 1481,
+          "prepared": 5548,
+          "rejected": 2394,
+          "traces": 3034
+        },
+        "lifetime_array": {
+          "aborted": 56,
+          "committed": 66,
+          "prepared": 292,
+          "rejected": 134,
+          "traces": 148
+        },
+        "lifetime_function": {
+          "aborted": 80,
+          "committed": 90,
+          "prepared": 412,
+          "rejected": 194,
+          "traces": 208
+        },
+        "lifetime_mapping": {
+          "aborted": 68,
+          "committed": 78,
+          "prepared": 352,
+          "rejected": 164,
+          "traces": 178
+        },
+        "lifetime_object": {
+          "aborted": 32,
+          "committed": 42,
+          "prepared": 172,
+          "rejected": 74,
+          "traces": 88
+        },
+        "metadata": {
+          "aborted": 51,
+          "committed": 60,
+          "prepared": 318,
+          "rejected": 150,
+          "traces": 165
+        },
+        "mutual": {
+          "aborted": 932,
+          "committed": 1174,
+          "prepared": 5045,
+          "rejected": 2145,
+          "traces": 2778
+        },
+        "retired_member": {
+          "aborted": 1250,
+          "committed": 846,
+          "prepared": 5035,
+          "rejected": 2235,
+          "traces": 2708
+        },
+        "reverse": {
+          "aborted": 930,
+          "committed": 1356,
+          "prepared": 5368,
+          "rejected": 2288,
+          "traces": 2940
+        },
+        "same_destination_different": {
+          "aborted": 900,
+          "committed": 1502,
+          "prepared": 5576,
+          "rejected": 2408,
+          "traces": 3048
+        },
+        "same_destination_equal": {
+          "aborted": 918,
+          "committed": 1060,
+          "prepared": 4882,
+          "rejected": 2108,
+          "traces": 2668
+        },
+        "shared_dag": {
+          "aborted": 554,
+          "committed": 908,
+          "prepared": 3290,
+          "rejected": 1393,
+          "traces": 1774
+        },
+        "shared_source": {
+          "aborted": 930,
+          "committed": 1173,
+          "prepared": 5052,
+          "rejected": 2154,
+          "traces": 2782
+        }
+      },
+      "pairs": {
+        "CC": {
+          "aborted": 9571,
+          "committed": 11844,
+          "prepared": 51115,
+          "rejected": 22251,
+          "traces": 27803
+        },
+        "CE": {
+          "aborted": 938,
+          "committed": 1646,
+          "prepared": 6780,
+          "rejected": 2982,
+          "traces": 3816
+        },
+        "CH": {
+          "aborted": 924,
+          "committed": 1276,
+          "prepared": 6131,
+          "rejected": 3443,
+          "traces": 4042
+        },
+        "EE": {
+          "aborted": 18,
+          "committed": 32,
+          "prepared": 82,
+          "rejected": 38,
+          "traces": 60
+        },
+        "HE": {
+          "aborted": 38,
+          "committed": 208,
+          "prepared": 684,
+          "rejected": 288,
+          "traces": 556
+        },
+        "HH": {
+          "aborted": 366,
+          "committed": 280,
+          "prepared": 1381,
+          "rejected": 545,
+          "traces": 1026
+        }
+      },
+      "prepared": 66173,
+      "rejected": 29547,
+      "rows": 432569,
+      "setup_rejected": 0,
+      "states": {
+        "alive": 813335,
+        "freed": 107,
+        "pending": 4904,
+        "queued": 4107,
+        "shell": 5382
+      },
+      "traces": 37303,
+      "two_preparations_checkpoints": 29696,
+      "unclassified_differences": 0,
+      "workspace_blocked": 380
+    },
+    "interference": {
+      "aborted": 81279,
+      "committed": 74497,
+      "families": {
+        "CE_different": {
+          "aborted": 3992,
+          "committed": 3952,
+          "prepared": 7984,
+          "rejected": 872,
+          "traces": 4200
+        },
+        "CE_same": {
+          "aborted": 3992,
+          "committed": 3952,
+          "prepared": 7984,
+          "rejected": 872,
+          "traces": 4200
+        },
+        "CH_different": {
+          "aborted": 3992,
+          "committed": 3596,
+          "prepared": 7984,
+          "rejected": 1228,
+          "traces": 4200
+        },
+        "CH_same": {
+          "aborted": 3992,
+          "committed": 3596,
+          "prepared": 7984,
+          "rejected": 1228,
+          "traces": 4200
+        },
+        "EE_different": {
+          "aborted": 3824,
+          "committed": 3824,
+          "prepared": 7648,
+          "rejected": 1504,
+          "traces": 4200
+        },
+        "EE_same": {
+          "aborted": 3992,
+          "committed": 3992,
+          "prepared": 7984,
+          "rejected": 832,
+          "traces": 4200
+        },
+        "HE_different": {
+          "aborted": 3824,
+          "committed": 3468,
+          "prepared": 7648,
+          "rejected": 1860,
+          "traces": 4200
+        },
+        "HE_same": {
+          "aborted": 3908,
+          "committed": 3716,
+          "prepared": 7816,
+          "rejected": 1360,
+          "traces": 4200
+        },
+        "HH_different": {
+          "aborted": 3824,
+          "committed": 3112,
+          "prepared": 7648,
+          "rejected": 2216,
+          "traces": 4200
+        },
+        "HH_same": {
+          "aborted": 3824,
+          "committed": 3112,
+          "prepared": 7648,
+          "rejected": 2216,
+          "traces": 4200
+        },
+        "forward": {
+          "aborted": 4180,
+          "committed": 3782,
+          "prepared": 8360,
+          "rejected": 478,
+          "traces": 4200
+        },
+        "function_member": {
+          "aborted": 4240,
+          "committed": 3839,
+          "prepared": 8480,
+          "rejected": 1201,
+          "traces": 4440
+        },
+        "independent": {
+          "aborted": 4180,
+          "committed": 4140,
+          "prepared": 8360,
+          "rejected": 120,
+          "traces": 4200
+        },
+        "mutual": {
+          "aborted": 4168,
+          "committed": 3444,
+          "prepared": 8336,
+          "rejected": 852,
+          "traces": 4200
+        },
+        "retired_member": {
+          "aborted": 4223,
+          "committed": 3811,
+          "prepared": 8446,
+          "rejected": 1280,
+          "traces": 4440
+        },
+        "reverse": {
+          "aborted": 4168,
+          "committed": 3771,
+          "prepared": 8336,
+          "rejected": 525,
+          "traces": 4200
+        },
+        "same_destination_different": {
+          "aborted": 4180,
+          "committed": 3446,
+          "prepared": 8360,
+          "rejected": 814,
+          "traces": 4200
+        },
+        "same_destination_equal": {
+          "aborted": 4168,
+          "committed": 3416,
+          "prepared": 8336,
+          "rejected": 880,
+          "traces": 4200
+        },
+        "shared_dag": {
+          "aborted": 4440,
+          "committed": 4420,
+          "prepared": 8880,
+          "rejected": 20,
+          "traces": 4440
+        },
+        "shared_source": {
+          "aborted": 4168,
+          "committed": 4108,
+          "prepared": 8336,
+          "rejected": 188,
+          "traces": 4200
+        }
+      },
+      "pairs": {
+        "CC": {
+          "aborted": 42115,
+          "committed": 38177,
+          "prepared": 84230,
+          "rejected": 6358,
+          "traces": 42720
+        },
+        "CE": {
+          "aborted": 7984,
+          "committed": 7904,
+          "prepared": 15968,
+          "rejected": 1744,
+          "traces": 8400
+        },
+        "CH": {
+          "aborted": 7984,
+          "committed": 7192,
+          "prepared": 15968,
+          "rejected": 2456,
+          "traces": 8400
+        },
+        "EE": {
+          "aborted": 7816,
+          "committed": 7816,
+          "prepared": 15632,
+          "rejected": 2336,
+          "traces": 8400
+        },
+        "HE": {
+          "aborted": 7732,
+          "committed": 7184,
+          "prepared": 15464,
+          "rejected": 3220,
+          "traces": 8400
+        },
+        "HH": {
+          "aborted": 7648,
+          "committed": 6224,
+          "prepared": 15296,
+          "rejected": 4432,
+          "traces": 8400
+        }
+      },
+      "prepared": 162558,
+      "rejected": 20546,
+      "rows": 1304640,
+      "setup_rejected": 0,
+      "states": {
+        "alive": 2147280,
+        "freed": 3672,
+        "pending": 143068,
+        "queued": 111308,
+        "shell": 119232
+      },
+      "traces": 84720,
+      "two_preparations_checkpoints": 91232,
+      "unclassified_differences": 0,
+      "workspace_blocked": 0
+    },
+    "lifetime": {
+      "aborted": 64,
+      "committed": 64,
+      "families": {
+        "lifetime_array": {
+          "aborted": 16,
+          "committed": 16,
+          "prepared": 32,
+          "rejected": 0,
+          "traces": 16
+        },
+        "lifetime_function": {
+          "aborted": 16,
+          "committed": 16,
+          "prepared": 32,
+          "rejected": 0,
+          "traces": 16
+        },
+        "lifetime_mapping": {
+          "aborted": 16,
+          "committed": 16,
+          "prepared": 32,
+          "rejected": 0,
+          "traces": 16
+        },
+        "lifetime_object": {
+          "aborted": 16,
+          "committed": 16,
+          "prepared": 32,
+          "rejected": 0,
+          "traces": 16
+        }
+      },
+      "pairs": {
+        "CC": {
+          "aborted": 64,
+          "committed": 64,
+          "prepared": 128,
+          "rejected": 0,
+          "traces": 64
+        }
+      },
+      "prepared": 128,
+      "rejected": 0,
+      "rows": 1136,
+      "setup_rejected": 0,
+      "states": {
+        "alive": 1824,
+        "freed": 10,
+        "shell": 374
+      },
+      "traces": 64,
+      "two_preparations_checkpoints": 288,
+      "unclassified_differences": 0,
+      "workspace_blocked": 0
+    },
+    "metadata": {
+      "aborted": 24,
+      "committed": 24,
+      "families": {
+        "metadata": {
+          "aborted": 24,
+          "committed": 24,
+          "prepared": 48,
+          "rejected": 0,
+          "traces": 24
+        }
+      },
+      "pairs": {
+        "CC": {
+          "aborted": 24,
+          "committed": 24,
+          "prepared": 48,
+          "rejected": 0,
+          "traces": 24
+        }
+      },
+      "prepared": 48,
+      "rejected": 0,
+      "rows": 1360,
+      "setup_rejected": 0,
+      "states": {
+        "alive": 2696
+      },
+      "traces": 24,
+      "two_preparations_checkpoints": 60,
+      "unclassified_differences": 0,
+      "workspace_blocked": 0
+    }
+  },
+  "stage": "2BN",
+  "status": "pass"
+}

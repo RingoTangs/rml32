@@ -1,0 +1,34 @@
+{
+  "classification": "bounded Rust policy with strong Cell reachability; concrete metadata and physical revision refinements",
+  "maximum_simultaneous_preparations": 2,
+  "native_unknowns": 20,
+  "native_unknowns_promoted": 0,
+  "new_test_names": [
+    "boundary::lifecycle_pair_tests::two_plans_retain_one_source_payload_until_the_last_plan_is_consumed",
+    "boundary::lifecycle_pair_tests::cell_aliases_and_watches_never_duplicate_a_payload_owner",
+    "boundary::lifecycle_pair_tests::first_equal_write_invalidates_the_other_plan_and_keeps_the_first_result",
+    "boundary::lifecycle_pair_tests::one_copy_failure_preserves_the_other_head_or_execution_reservation",
+    "boundary::lifecycle_pair_tests::a_second_head_capacity_refusal_does_not_consume_the_first_reservation",
+    "boundary::lifecycle_pair_tests::invalid_creator_rejection_returns_only_that_unpublished_heads_resources",
+    "boundary::lifecycle_pair_tests::two_execution_preparations_queue_only_after_the_last_installed_lease_exits",
+    "boundary::lifecycle_pair_tests::failed_commit_releases_its_last_watched_cell_without_publishing_writes",
+    "boundary::lifecycle_pair_tests::retired_member_stays_empty_until_the_other_stale_plan_releases_its_cell",
+    "boundary::lifecycle_pair_tests::unpublished_outputs_are_private_until_publication",
+    "boundary::lifecycle_pair_tests::partial_object_maintenance_keeps_both_preparations_and_only_invalidates_cleaned_variables",
+    "serial_member_writes_release_old_payloads_without_rolling_back_the_first_write",
+    "independent_function_heads_each_hold_exactly_one_creator_responsibility",
+    "real_nested_frames_keep_pending_until_both_execution_leases_exit"
+  ],
+  "pairs": [
+    "CC",
+    "CH",
+    "CE",
+    "HH",
+    "HE",
+    "EE"
+  ],
+  "prior_path": "docs/stage2bm-interleaving-audit/case-coverage.json",
+  "prior_sha256": "f9a57462cd429f5f8b02d5334d5e81cfbb2b00c6474c35e5839f6131c443b9b6",
+  "public_overlap_api": false,
+  "stage": "2BN"
+}

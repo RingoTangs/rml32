@@ -1,0 +1,16 @@
+{
+  "stage": "2BN",
+  "pairs": ["CC", "CH", "CE", "HH", "HE", "EE"],
+  "maximum_simultaneous_preparations": 2,
+  "schedules_per_layout": 24,
+  "initialization_only_transaction": "Z",
+  "target_transaction_names": ["A", "B"],
+  "excluded_combinations": [
+    {"combination": "Freed with an ordinary owner or execution lease", "reason": "incompatible with the lifecycle invariant"},
+    {"combination": "source Cell expires while either plan still holds it", "reason": "the actual Rc<Cell> preserves its one payload owner"},
+    {"combination": "cross-transaction access to an unpublished output or header", "reason": "preparations have private outputs until successful publication"},
+    {"combination": "three simultaneous preparations", "reason": "outside the selected finite domain"},
+    {"combination": "public synchronous opcode exposes an intermediate prepare/commit interval", "reason": "only private deterministic test boundaries expose that interval"}
+  ],
+  "coverage_rule": "Setup and initialization are separate from target A/B preparation and termination. Serial schedules are controls, not overlapping-preparation coverage."
+}

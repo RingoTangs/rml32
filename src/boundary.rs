@@ -1295,6 +1295,10 @@ mod lifecycle_replacement_tests;
 mod lifecycle_interleaving_tests;
 
 #[cfg(test)]
+#[path = "lifecycle_pair_tests.rs"]
+mod lifecycle_pair_tests;
+
+#[cfg(test)]
 #[path = "lifecycle_managed_tests.rs"]
 mod lifecycle_managed_tests;
 

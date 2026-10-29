@@ -1,0 +1,14 @@
+{
+  "base_commit": "072aecfb5d111003676fe21e2c34be54bab9f8d2",
+  "baseline_files": 1203,
+  "execution_location": "reconstructed byte-frozen 2BM snapshot and nested fixed authorities",
+  "files_sha256": "f0ed4a752f979947fdb11bbfafda9dfe3ef8194fc3b4a1fb89678c73c0d6c614",
+  "historical_python_tests": 595,
+  "log_sha256": "797751a1c09cd09962f9ae652244ec9b4b4fde8a288b42f1184ecd7ade0093bd",
+  "nested_python_tests": 557,
+  "network_used": false,
+  "outer_python_tests": 38,
+  "overlay_sha256": "8959e803762cc7ab608f3d98ddd2f5ba20dd2712a28ac1e11c2a0e49598bb657",
+  "stage": "2BN",
+  "status": "pass"
+}

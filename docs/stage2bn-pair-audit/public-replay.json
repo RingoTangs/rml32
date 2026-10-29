@@ -1,0 +1,33 @@
+{
+  "log_sha256": "18a6214d22459dc21e3fc5f9be27f34bbeb32022ecbe5af3f32c569b7d675d01",
+  "observations_sha256": "130bc6f963894162cee9e2f2e7e5f991a54c67e0433b63679efe5951034668e8",
+  "stage": "2BN",
+  "status": "pass",
+  "summary": {
+    "accepted": 90,
+    "quota_refusals": {
+      "frames:nested": 54,
+      "frames:setup": 54,
+      "heads:first": 36,
+      "heads:release": 8,
+      "heads:second": 48,
+      "heads:setup": 54,
+      "members:first": 180,
+      "members:setup": 1116
+    },
+    "success_by_combination": {
+      "frames": 56,
+      "heads": 18,
+      "members-array-function-False": 2,
+      "members-array-function-True": 2,
+      "members-array-object-False": 2,
+      "members-array-object-True": 2,
+      "members-mapping-function-False": 2,
+      "members-mapping-function-True": 2,
+      "members-mapping-object-False": 2,
+      "members-mapping-object-True": 2
+    },
+    "traces": 1640,
+    "unclassified_differences": 0
+  }
+}
