@@ -47,7 +47,11 @@ def module(name,path):
 def boundary():
     base=load(HERE/'baseline.json')
     require(base['commit']=='c7a7d3b0cdb4634f18e9772493bad440921ca7bb' and len(base['files'])==1243,'baseline identity')
-    require(digest(subprocess.check_output(['git','ls-files','--stage','-z'],cwd=ROOT))==base['index_sha256'],'index changed')
+    # Commits made while a long replay runs legitimately replace the index.
+    # The source authority is the fixed commit and byte manifest, not HEAD's
+    # changing staging metadata. This verifier never writes the main index.
+    require(subprocess.run(['git','merge-base','--is-ancestor',base['commit'],'HEAD'],
+                           cwd=ROOT,capture_output=True).returncode==0,'baseline history changed')
     projection=module('_2bo_projection',ROOT/'docs/stage2bg-host-function-test/source_projection.py')
     changes=[];bodies=0
     for name,h in base['files'].items():
@@ -66,7 +70,8 @@ def boundary():
     actual=set(subprocess.check_output(['rg','--files','src','tests'],cwd=ROOT,text=True).splitlines())
     require(actual==expected,'source inventory changed')
     return dict(baseline_commit=base['commit'],baseline_files=1243,byte_frozen_files=1243-len(changes),
-                changed_files=sorted(changes),old_test_bodies_preserved=bodies,index_unchanged=True)
+                changed_files=sorted(changes),old_test_bodies_preserved=bodies,
+                baseline_index_sha256=base['index_sha256'],index_is_source_authority=False)
 
 def artifacts():
     files=ALLOWED|NEW_SOURCE
@@ -135,7 +140,7 @@ COMMANDS=[
     ('.',['cargo','fmt','--check']),
     ('.',['cargo','clippy','--locked','--offline','--all-targets','--','-D','warnings']),
     ('.',['python3','tests/compare_corpus.py','--report','target/stage2bo-corpus-validation.json']),
-    ('.',['python3','-B',PREFIX+'replay_current.py','--write']),
+    ('.',['python3','-B',PREFIX+'replay_current.py']),
     ('.',['python3','-B','-m','unittest','discover','-s',PREFIX.rstrip('/'),'-p','test_*.py']),
     ('.',['rustc','-Vv']),
     ('.',['rustup','target','list','--installed']),
@@ -186,8 +191,15 @@ def build(logs):
                 gates=GATES,corpus=corpus,artifact_sha256=artifacts())
 
 def main():
-    parser=argparse.ArgumentParser();parser.add_argument('--write',action='store_true');args=parser.parse_args()
+    parser=argparse.ArgumentParser();parser.add_argument('--write',action='store_true')
+    parser.add_argument('--replay',action='store_true',help='regenerate all 17 current-source driver results')
+    args=parser.parse_args()
+    require(not args.replay or args.write,'--replay requires --write')
     if args.write:
+        replay=module('_2bo_preflight_replay',HERE/'replay_current.py')
+        if args.replay:replay.run()
+        replay.verify()
+        boundary()
         snapshot();before={n:h for n,h in artifacts().items() if Path(n).name not in OUTPUTS}
         logs=[];observed={'debug':{},'release':{}}
         for cwd,argv in COMMANDS:
@@ -206,8 +218,9 @@ def main():
         # the corpus result is produced by its recorded command.
         after=artifacts();require(all(after.get(n)==h for n,h in before.items()),'artifacts changed during validation')
         raw=gzip.compress(encoded(logs),mtime=0)
+        (HERE/'validation-log.json.gz').write_bytes(raw)
         record=build(logs);record['log_sha256']=digest(raw)
-        (HERE/'validation-log.json.gz').write_bytes(raw);RECORD.write_bytes(encoded(record))
+        RECORD.write_bytes(encoded(record))
     else:
         record=load(RECORD);raw=(HERE/'validation-log.json.gz').read_bytes()
         require(digest(raw)==record['log_sha256'],'validation log identity')
