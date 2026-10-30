@@ -1,4 +1,4 @@
-//! Isolated execution of PC 0..25 of a Global initialization segment.
+//! Isolated execution of explicitly selected Global initialization slices.
 //!
 //! This is an execution capability, unlike `rml32-inspect`. It cannot resume
 //! beyond the prefix, install callbacks, or initialize a real service.
@@ -9,8 +9,32 @@ use crate::{
 };
 use serde::Serialize;
 use std::{cell::RefCell, fs, path::Path, rc::Rc};
+#[path = "startup_memory_fs.rs"]
+mod memory_fs;
 
 pub const PREFIX_END_PC: usize = 25;
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize)]
+#[serde(rename_all = "snake_case")]
+pub enum StartupSlice {
+    AllocationPrefix,
+    LogDirectory,
+}
+impl StartupSlice {
+    pub const fn end_pc(self) -> usize {
+        match self {
+            Self::AllocationPrefix => PREFIX_END_PC,
+            Self::LogDirectory => 28,
+        }
+    }
+    pub fn parse(name: &str) -> Option<Self> {
+        match name {
+            "allocate" => Some(Self::AllocationPrefix),
+            "log-dir" => Some(Self::LogDirectory),
+            _ => None,
+        }
+    }
+}
 
 /// Named, reproducible probe configuration; no implicit lifecycle defaults.
 #[derive(Debug, Clone, Copy)]
@@ -152,6 +176,40 @@ pub struct ProbeDependency {
     pub slot: u16,
     pub name: String,
 }
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize)]
+#[serde(rename_all = "snake_case")]
+pub enum ProbeDependencyKind {
+    GlobalFunction,
+    Efun,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize)]
+pub struct ProbeMkdirCall {
+    pub slot: u16,
+    pub name: String,
+    pub pc: usize,
+    pub offset: usize,
+    pub argument: crate::ByteString,
+    pub normalized: Option<crate::ByteString>,
+    /// The backend result; VM publication may subsequently fail.
+    pub result: Option<i32>,
+    pub error: Option<String>,
+}
+#[derive(Debug, Clone, PartialEq, Eq, Serialize)]
+#[serde(tag = "operation", content = "call", rename_all = "snake_case")]
+pub enum ProbeHostEvent {
+    AllocateArray(ProbeHostCall),
+    Mkdir(ProbeMkdirCall),
+}
+#[derive(Debug, Clone, PartialEq, Eq, Serialize)]
+pub struct ProbeFilesystemEntry {
+    pub path: crate::ByteString,
+    pub directory: bool,
+}
+#[derive(Debug, Clone, PartialEq, Eq, Serialize)]
+pub struct ProbeFilesystemSnapshot {
+    pub entries: Vec<ProbeFilesystemEntry>,
+}
 #[derive(Debug, Clone, PartialEq, Eq, Serialize)]
 pub struct StartupProbeReport {
     pub source: String,
@@ -167,6 +225,16 @@ pub struct StartupProbeReport {
     pub globals: Vec<ProbeValue>,
     pub next_dependency: Option<ProbeDependency>,
     pub configuration: serde_json::Value,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub slice: Option<StartupSlice>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub host_events: Option<Vec<ProbeHostEvent>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub filesystem: Option<ProbeFilesystemSnapshot>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub next_dependency_kind: Option<ProbeDependencyKind>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub next_dependency_reason: Option<String>,
 }
 
 fn error(kind: VmErrorKind, message: impl Into<String>) -> VmError {
@@ -191,19 +259,39 @@ pub struct StartupProbe {
     calls: Rc<RefCell<Vec<ProbeHostCall>>>,
     limits: StartupProbeLimits,
     failure: Option<VmError>,
+    slice: StartupSlice,
+    filesystem: Option<Rc<RefCell<memory_fs::MemoryDirectories>>>,
+    host_events: Option<Rc<RefCell<Vec<ProbeHostEvent>>>>,
+    next_dependency_kind: Option<ProbeDependencyKind>,
+    next_dependency_reason: Option<String>,
 }
 impl StartupProbe {
     /// Execute only the admitted prefix of a caller-supplied parsed image.
     /// This does not authenticate a mutable ProgramImage; `load` authenticates
     /// the five repository service members from their actual decompressed bytes.
     pub fn new(image: ProgramImage, limits: StartupProbeLimits) -> Result<Self, VmError> {
+        Self::new_with_slice(image, limits, StartupSlice::AllocationPrefix)
+    }
+    pub fn new_with_slice(
+        image: ProgramImage,
+        limits: StartupProbeLimits,
+        slice: StartupSlice,
+    ) -> Result<Self, VmError> {
         let source = format!("sha256:{}", image.sha256);
-        Self::prepare(image, limits, source)
+        Self::prepare(image, limits, source, slice)
     }
     pub fn load(
         root: &Path,
         service: StartupService,
         limits: StartupProbeLimits,
+    ) -> Result<Self, VmError> {
+        Self::load_with_slice(root, service, limits, StartupSlice::AllocationPrefix)
+    }
+    pub fn load_with_slice(
+        root: &Path,
+        service: StartupService,
+        limits: StartupProbeLimits,
+        slice: StartupSlice,
     ) -> Result<Self, VmError> {
         let source = service.source();
         let (package, member) = source.split_once(".pak/").unwrap();
@@ -220,21 +308,31 @@ impl StartupProbe {
         }
         let image = parse_program(&bytes, ProgramMode::Global)
             .map_err(|e| error(VmErrorKind::InvalidProgram, e.to_string()))?;
-        Self::prepare(image, limits, source.into())
+        Self::prepare(image, limits, source.into(), slice)
     }
     fn prepare(
         image: ProgramImage,
         limits: StartupProbeLimits,
         source: String,
+        slice: StartupSlice,
     ) -> Result<Self, VmError> {
-        let prepared = crate::prepared::prepare_startup_prefix(&image, &source)?;
+        let prepared = match slice {
+            StartupSlice::AllocationPrefix => {
+                crate::prepared::prepare_startup_prefix(&image, &source)?
+            }
+            StartupSlice::LogDirectory => {
+                crate::prepared::prepare_startup_slice(&image, &source, slice)?
+            }
+        };
         let nodes_offset = image.init.nodes_offset;
-        nodes_offset.checked_add(PREFIX_END_PC * 4).ok_or_else(|| {
-            error(
-                VmErrorKind::InvalidProgram,
-                "startup boundary offset overflow",
-            )
-        })?;
+        nodes_offset
+            .checked_add(slice.end_pc() * 4)
+            .ok_or_else(|| {
+                error(
+                    VmErrorKind::InvalidProgram,
+                    "startup boundary offset overflow",
+                )
+            })?;
         let mut store = ObjectStore::with_bounded_lifecycle(limits.values, limits.lifecycle)?;
         let mut globals = Vec::new();
         globals
@@ -244,6 +342,15 @@ impl StartupProbe {
         store.register_globals(&globals)?;
         let calls = Rc::new(RefCell::new(Vec::new()));
         let events = calls.clone();
+        let filesystem = if slice == StartupSlice::LogDirectory {
+            Some(Rc::new(RefCell::new(memory_fs::MemoryDirectories::new()?)))
+        } else {
+            None
+        };
+        let host_events = filesystem
+            .as_ref()
+            .map(|_| Rc::new(RefCell::new(Vec::new())));
+        let complete_events = host_events.clone();
         store.register_host_function(
             0,
             HostFunction {
@@ -272,6 +379,13 @@ impl StartupProbe {
                         offset: context.offset,
                         argument: size,
                     });
+                    if let Some(all) = &complete_events {
+                        let mut all = all.borrow_mut();
+                        crate::copy_plan::reserve(&mut all, 1).map_err(host_error)?;
+                        all.push(ProbeHostEvent::AllocateArray(
+                            events.last().unwrap().clone(),
+                        ));
+                    }
                     drop(events);
                     let count = usize::try_from(size).map_err(|_| {
                         host_error(error(VmErrorKind::Bounds, "negative array size"))
@@ -297,28 +411,139 @@ impl StartupProbe {
                 }),
             },
         )?;
+        if let (Some(directories), Some(all)) = (&filesystem, &host_events) {
+            let directories = directories.clone();
+            let all = all.clone();
+            store.register_host_function(
+                336,
+                HostFunction {
+                    name: "mkdir".into(),
+                    signature: HostSignature {
+                        required: vec![HostType::Bytes],
+                        optional: vec![],
+                        rest: None,
+                        returns: HostReturn::Exact(HostType::Int),
+                    },
+                    callback: Rc::new(move |context, scope, args| {
+                        let ValueSnapshot::Bytes(path) = args[0].snapshot().map_err(host_error)?
+                        else {
+                            return Err(host_error(error(
+                                VmErrorKind::UnsupportedType,
+                                "mkdir expects Bytes",
+                            )));
+                        };
+                        let index = {
+                            let mut events = all.borrow_mut();
+                            crate::copy_plan::reserve(&mut events, 1).map_err(host_error)?;
+                            let i = events.len();
+                            events.push(ProbeHostEvent::Mkdir(ProbeMkdirCall {
+                                slot: context.slot,
+                                name: "mkdir".into(),
+                                pc: context.pc,
+                                offset: context.offset,
+                                argument: crate::ByteString::new(&path),
+                                normalized: None,
+                                result: None,
+                                error: None,
+                            }));
+                            i
+                        };
+                        let invoke = || -> Result<HostResult, VmError> {
+                            let normalized = memory_fs::MemoryDirectories::normalize(&path)?;
+                            if let ProbeHostEvent::Mkdir(call) = &mut all.borrow_mut()[index] {
+                                call.normalized = Some(crate::ByteString::new(&normalized));
+                            }
+                            let result = directories.borrow_mut().mkdir(&normalized)?;
+                            if let ProbeHostEvent::Mkdir(call) = &mut all.borrow_mut()[index] {
+                                call.result = Some(result);
+                            }
+                            Ok(HostResult::Owned(scope.value(ValueInput::Int(result))?))
+                        };
+                        invoke().map_err(|e| {
+                            if let ProbeHostEvent::Mkdir(call) = &mut all.borrow_mut()[index] {
+                                call.error = Some(format!("{:?}", e.kind));
+                            }
+                            host_error(e)
+                        })
+                    }),
+                },
+            )?;
+        }
         let program = store.register_program(prepared)?;
         let mut vm = Vm::with_limits(store, limits.vm);
         vm.begin_startup_prefix(program)?;
-        let next_dependency = image
-            .init
-            .nodes
-            .iter()
-            .enumerate()
-            .skip(PREFIX_END_PC)
-            .find(|(_, n)| n.2 == 0x06)
-            .and_then(|(pc, n)| (n.0 == 336).then_some((pc, n)))
-            .map(|(pc, _)| {
-                Ok(ProbeDependency {
-                    pc,
-                    offset: nodes_offset.checked_add(pc * 4).ok_or_else(|| {
-                        error(VmErrorKind::InvalidProgram, "dependency offset overflow")
-                    })?,
-                    slot: 336,
-                    name: "mkdir".into(),
+        let mut next_dependency_kind = None;
+        let mut next_dependency_reason = None;
+        let next_dependency = if slice == StartupSlice::AllocationPrefix {
+            image
+                .init
+                .nodes
+                .iter()
+                .enumerate()
+                .skip(PREFIX_END_PC)
+                .find(|(_, n)| n.2 == 0x06)
+                .and_then(|(pc, n)| (n.0 == 336).then_some((pc, n)))
+                .map(|(pc, _)| {
+                    Ok(ProbeDependency {
+                        pc,
+                        offset: nodes_offset.checked_add(pc * 4).ok_or_else(|| {
+                            error(VmErrorKind::InvalidProgram, "dependency offset overflow")
+                        })?,
+                        slot: 336,
+                        name: "mkdir".into(),
+                    })
                 })
-            })
-            .transpose()?;
+                .transpose()?
+        } else {
+            image
+                .init
+                .nodes
+                .iter()
+                .enumerate()
+                .skip(slice.end_pc())
+                .find(|(_, n)| matches!(n.2, 0x06 | 0x07))
+                .and_then(|(pc, n)| (n.0 >= 0).then_some((pc, n)))
+                .map(|(pc, n)| {
+                    next_dependency_kind = Some(if n.2 == 0x07 {
+                        ProbeDependencyKind::GlobalFunction
+                    } else {
+                        ProbeDependencyKind::Efun
+                    });
+                    next_dependency_reason = Some(
+                        if n.2 == 0x07
+                            && image
+                                .functions
+                                .iter()
+                                .any(|f| f.index == Some(n.0) && f.attrib & 2 != 0)
+                        {
+                            "atomic_function_not_enabled"
+                        } else {
+                            "call_not_prepared"
+                        }
+                        .into(),
+                    );
+                    let name = if n.2 == 0x07 {
+                        image
+                            .functions
+                            .iter()
+                            .find(|f| f.index == Some(n.0))
+                            .and_then(|f| f.name.as_ref())
+                            .map(|s| String::from_utf8_lossy(s.c_bytes()).into_owned())
+                            .unwrap_or_else(|| "unprepared_global_function".into())
+                    } else {
+                        format!("unprepared_efun_{}", n.0)
+                    };
+                    Ok(ProbeDependency {
+                        pc,
+                        offset: nodes_offset.checked_add(pc * 4).ok_or_else(|| {
+                            error(VmErrorKind::InvalidProgram, "dependency offset overflow")
+                        })?,
+                        slot: n.0 as u16,
+                        name,
+                    })
+                })
+                .transpose()?
+        };
         Ok(Self {
             vm,
             source,
@@ -330,6 +555,11 @@ impl StartupProbe {
             calls,
             limits,
             failure: None,
+            slice,
+            filesystem,
+            host_events,
+            next_dependency_kind,
+            next_dependency_reason,
         })
     }
     pub fn run(&mut self, budget: usize) -> Result<StartupProbeOutcome, VmError> {
@@ -354,6 +584,15 @@ impl StartupProbe {
         let v = self.limits.values;
         let m = self.limits.vm;
         let l = self.limits.lifecycle;
+        let mut configuration = serde_json::json!({
+            "values": {"max_host_roots":v.max_host_roots,"max_graph_nodes":v.max_graph_nodes,"max_depth":v.max_depth,"max_items":v.max_items},
+            "vm": {"max_stack":m.max_stack,"max_frames":m.max_frames,"max_reference_cells":m.max_reference_cells},
+            "lifecycle": {"max_objects":l.max_objects,"max_function_heads":l.max_function_heads,
+                "max_ordinary_refs_per_object":l.max_ordinary_refs_per_object,"max_exec_refs_per_object":l.max_exec_refs_per_object,"max_owners_per_header":l.max_owners_per_header},
+        });
+        if let Some(fs) = &self.filesystem {
+            configuration["filesystem"] = serde_json::json!({"backend":"memory","max_nodes":fs.borrow().max_nodes,"max_path_bytes":memory_fs::MAX_PATH_BYTES});
+        }
         Ok(StartupProbeReport {
             source: self.source.clone(),
             sha256: self.sha256.clone(),
@@ -364,7 +603,7 @@ impl StartupProbe {
             stop_offset: self.nodes_offset + pc * 4,
             stop_reason: if self.failure.is_some() {
                 "failed"
-            } else if pc == PREFIX_END_PC {
+            } else if pc == self.slice.end_pc() {
                 "prefix_boundary"
             } else {
                 "budget_exhausted"
@@ -380,16 +619,19 @@ impl StartupProbe {
                 .map(ProbeValue::from_snapshot)
                 .collect::<Result<_, _>>()?,
             next_dependency: self.next_dependency.clone(),
-            configuration: serde_json::json!({
-                "values": {"max_host_roots":v.max_host_roots,"max_graph_nodes":v.max_graph_nodes,"max_depth":v.max_depth,"max_items":v.max_items},
-                "vm": {"max_stack":m.max_stack,"max_frames":m.max_frames,"max_reference_cells":m.max_reference_cells},
-                "lifecycle": {"max_objects":l.max_objects,"max_function_heads":l.max_function_heads,
-                    "max_ordinary_refs_per_object":l.max_ordinary_refs_per_object,"max_exec_refs_per_object":l.max_exec_refs_per_object,"max_owners_per_header":l.max_owners_per_header},
-            }),
+            configuration,
+            slice: (self.slice == StartupSlice::LogDirectory).then_some(self.slice),
+            host_events: self.host_events.as_ref().map(|v| v.borrow().clone()),
+            filesystem: self.filesystem.as_ref().map(|v| v.borrow().snapshot()),
+            next_dependency_kind: self.next_dependency_kind,
+            next_dependency_reason: self.next_dependency_reason.clone(),
         })
     }
 }
 
+#[cfg(test)]
+#[path = "startup_mkdir_tests.rs"]
+mod mkdir_tests;
 #[cfg(test)]
 #[path = "startup_probe_tests.rs"]
 mod tests;

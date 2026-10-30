@@ -103,6 +103,89 @@ fn code(p: &mut PreparedProgram) -> &mut Vec<Instruction> {
     Rc::make_mut(&mut p.initializations.as_mut().unwrap()[0].instructions)
 }
 
+fn directory_prepared() -> PreparedProgram {
+    let mut p = prepared();
+    p.initializations.as_mut().unwrap()[0].startup_slice =
+        Some(crate::startup_probe::StartupSlice::LogDirectory);
+    code(&mut p).extend([
+        Instruction {
+            opcode: 0x40,
+            operands: [0, 0],
+            offset: 200,
+        },
+        Instruction {
+            opcode: 6,
+            operands: [336, 1],
+            offset: 204,
+        },
+        Instruction {
+            opcode: 0x33,
+            operands: [0, 0],
+            offset: 208,
+        },
+    ]);
+    p
+}
+
+#[test]
+fn directory_runtime_rechecks_slot_permissions_after_preparation() {
+    for (opcode, operands) in [(6, [27, 1]), (6, [336, 2]), (7, [583, -126])] {
+        let mut p = directory_prepared();
+        code(&mut p)[26] = Instruction {
+            opcode,
+            operands,
+            offset: 204,
+        };
+        let (mut vm, calls) = vm(p);
+        let e = vm.run_startup_prefix(100).unwrap_err();
+        assert_eq!((e.kind, e.pc), (VmErrorKind::UnsupportedFeature, Some(26)));
+        assert_eq!(calls.get(), 1);
+    }
+}
+
+#[test]
+fn directory_runtime_uses_metadata_fence_even_if_more_code_is_appended() {
+    let mut p = directory_prepared();
+    code(&mut p).push(Instruction {
+        opcode: 6,
+        operands: [336, 1],
+        offset: 212,
+    });
+    let (mut vm, _) = vm(p);
+    let calls = Rc::new(std::cell::Cell::new(0));
+    let count = calls.clone();
+    vm.objects_mut()
+        .register_host_function(
+            336,
+            crate::host::HostFunction {
+                name: "guard_test_mkdir".into(),
+                signature: crate::HostSignature {
+                    required: vec![crate::HostType::Bytes],
+                    optional: vec![],
+                    rest: None,
+                    returns: crate::HostReturn::Exact(crate::HostType::Int),
+                },
+                callback: Rc::new(move |_, _| {
+                    count.set(count.get() + 1);
+                    crate::ownership::OwnedValue::new(Value::Int(1))
+                        .map(Some)
+                        .map_err(|e| crate::HostError {
+                            kind: e.kind,
+                            message: e.message.into(),
+                        })
+                }),
+            },
+        )
+        .unwrap();
+    assert!(vm.run_startup_prefix(100).unwrap());
+    assert_eq!(vm.frames[0].pc, 28);
+    assert_eq!(calls.get(), 1);
+    assert!(vm.stack.is_empty());
+    assert!(vm.completion.is_none());
+    assert_eq!(vm.run(1).unwrap_err().kind, VmErrorKind::Bounds);
+    assert_eq!(calls.get(), 1);
+}
+
 #[test]
 fn runtime_denies_forbidden_calls_and_control_transfer_after_preparation() {
     for (opcode, operands) in [

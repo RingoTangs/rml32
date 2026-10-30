@@ -1,13 +1,16 @@
-use rml32::startup_probe::{StartupProbe, StartupProbeLimits, StartupProbeOutcome, StartupService};
+use rml32::startup_probe::{
+    StartupProbe, StartupProbeLimits, StartupProbeOutcome, StartupService, StartupSlice,
+};
 use std::{
     io::{self, Write},
     path::PathBuf,
 };
-const HELP: &str = "rml32-startup-probe --service aaa|ccs|csa|dba|gs [--root DIRECTORY]\nExecutes only Global init PC 0..25 in an isolated Rust VM. Never starts a service.\n";
+const HELP: &str = "rml32-startup-probe --service aaa|ccs|csa|dba|gs [--root DIRECTORY] [--slice allocate|log-dir]\nExecutes Global init PC 0..25 (default), or 0..28 with memory-only mkdir. Never starts a service.\n";
 fn run() -> Result<i32, Box<dyn std::error::Error>> {
     let mut args = std::env::args().skip(1);
     let mut service = None;
     let mut root = None;
+    let mut slice = None;
     while let Some(arg) = args.next() {
         match arg.as_str() {
             "--help" | "-h" => {
@@ -28,6 +31,13 @@ fn run() -> Result<i32, Box<dyn std::error::Error>> {
                     return Ok(2);
                 }
             }
+            "--slice" if slice.is_none() => {
+                slice = args.next().as_deref().and_then(StartupSlice::parse);
+                if slice.is_none() {
+                    eprint!("{HELP}");
+                    return Ok(2);
+                }
+            }
             _ => {
                 eprint!("{HELP}");
                 return Ok(2);
@@ -38,12 +48,14 @@ fn run() -> Result<i32, Box<dyn std::error::Error>> {
         eprint!("{HELP}");
         return Ok(2);
     };
-    let mut probe = StartupProbe::load(
+    let slice = slice.unwrap_or(StartupSlice::AllocationPrefix);
+    let mut probe = StartupProbe::load_with_slice(
         &root.unwrap_or_else(|| PathBuf::from(".")),
         service,
         StartupProbeLimits::isolated(),
+        slice,
     )?;
-    if probe.run(25)? != StartupProbeOutcome::PrefixReached {
+    if probe.run(slice.end_pc())? != StartupProbeOutcome::PrefixReached {
         return Err("startup prefix did not reach its boundary".into());
     }
     let mut out = io::BufWriter::new(io::stdout().lock());

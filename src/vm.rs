@@ -395,6 +395,7 @@ impl Vm {
     }
     pub(crate) fn begin_startup_prefix(&mut self, program: ProgramId) -> Result<(), VmError> {
         let p = self.objects.program(program)?;
+        p.startup_slice()?;
         if p.kind != ProgramKind::Global
             || p.initializations.is_none()
             || !p.functions.is_empty()
@@ -454,18 +455,17 @@ impl Vm {
             return Err(e.clone());
         }
         let pc = self.startup_pc()?;
-        let remaining = crate::startup_probe::PREFIX_END_PC
-            .checked_sub(pc)
-            .ok_or_else(|| {
-                err(
-                    VmErrorKind::Bounds,
-                    "startup PC crossed its execution fence",
-                )
-            })?;
+        let end_pc = self.context()?.1.startup_slice()?.end_pc();
+        let remaining = end_pc.checked_sub(pc).ok_or_else(|| {
+            err(
+                VmErrorKind::Bounds,
+                "startup PC crossed its execution fence",
+            )
+        })?;
         if remaining > 0 {
             self.run(budget.min(remaining))?;
         }
-        let reached = self.startup_pc()? == crate::startup_probe::PREFIX_END_PC;
+        let reached = self.startup_pc()? == end_pc;
         if reached && !self.stack.is_empty() {
             let mut e = err(
                 VmErrorKind::InvalidProgram,
@@ -3114,14 +3114,15 @@ impl Vm {
                 FrameBody::Initialization(0)
             )
         ) {
-            if frame.pc >= crate::startup_probe::PREFIX_END_PC {
+            let slice = p.startup_slice()?;
+            if frame.pc >= slice.end_pc() {
                 return Err(err(
                     VmErrorKind::Bounds,
                     "startup prefix execution fence reached",
                 ));
             }
             if let Some(i) = f.instructions.get(frame.pc) {
-                crate::prepared::check_startup_instruction(i)?;
+                crate::prepared::check_startup_instruction(i, slice)?;
             }
         }
         let Instruction {

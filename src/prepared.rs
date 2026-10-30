@@ -84,6 +84,7 @@ pub(crate) struct PreparedInitialization {
     pub pool: Rc<Vec<Option<Value>>>,
     pub function_base: i16,
     pub variable_base: i16,
+    pub startup_slice: Option<crate::startup_probe::StartupSlice>,
 }
 /// Explicit capacity of a synthetic, store-wide global variable bank.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -120,6 +121,14 @@ pub struct PreparedProgram {
     pub(crate) methods: Option<BTreeMap<Vec<u8>, i16>>,
 }
 impl PreparedProgram {
+    pub(crate) fn startup_slice(&self) -> Result<crate::startup_probe::StartupSlice, VmError> {
+        self.initializations
+            .as_ref()
+            .and_then(|v| v.first())
+            .and_then(|i| i.startup_slice)
+            .filter(|_| self.kind == ProgramKind::Global)
+            .ok_or_else(|| err("missing startup slice permission"))
+    }
     pub fn source(&self) -> &str {
         &self.source
     }
@@ -895,12 +904,20 @@ fn prepare_code_program(
     })
 }
 
-/// The startup probe admits no control transfer and only the one-argument
-/// allocate_array ABI. This check is also applied before each executed node.
-pub(crate) fn check_startup_instruction(i: &Instruction) -> Result<(), VmError> {
+/// Each startup slice admits no control transfer and only its fixed
+/// one-argument efun permissions. Also checked before each executed node.
+pub(crate) fn check_startup_instruction(
+    i: &Instruction,
+    slice: crate::startup_probe::StartupSlice,
+) -> Result<(), VmError> {
     match i.opcode {
         0x03 | 0x18 | 0x33 | 0x36 | 0x3b | 0x40 => Ok(()),
         0x06 if i.operands == [0, 1] => Ok(()),
+        0x06 if slice == crate::startup_probe::StartupSlice::LogDirectory
+            && i.operands == [336, 1] =>
+        {
+            Ok(())
+        }
         _ => Err(unsupported(
             "instruction is outside the startup prefix permission",
         )),
@@ -910,6 +927,18 @@ pub(crate) fn check_startup_instruction(i: &Instruction) -> Result<(), VmError> 
 pub(crate) fn prepare_startup_prefix(
     image: &ProgramImage,
     source: &str,
+) -> Result<PreparedProgram, VmError> {
+    prepare_startup_slice(
+        image,
+        source,
+        crate::startup_probe::StartupSlice::AllocationPrefix,
+    )
+}
+
+pub(crate) fn prepare_startup_slice(
+    image: &ProgramImage,
+    source: &str,
+    slice: crate::startup_probe::StartupSlice,
 ) -> Result<PreparedProgram, VmError> {
     let build = || {
         if image.mode != ProgramMode::Global || !image.inherits.is_empty() {
@@ -926,10 +955,10 @@ pub(crate) fn prepare_startup_prefix(
             return Err(err("invalid startup Global capacities"));
         }
         let mut prefix = image.init.clone();
-        if prefix.nodes.len() < crate::startup_probe::PREFIX_END_PC {
+        if prefix.nodes.len() < slice.end_pc() {
             return Err(err("initialization is shorter than the startup prefix"));
         }
-        prefix.nodes.truncate(crate::startup_probe::PREFIX_END_PC);
+        prefix.nodes.truncate(slice.end_pc());
         // This is a separate opt-in code view. Reuse ordinary operand validation
         // for 06/36; it does not relax the existing Object initialization paths.
         let code = instructions(
@@ -947,7 +976,7 @@ pub(crate) fn prepare_startup_prefix(
             },
         )?;
         for (pc, i) in code.iter().enumerate() {
-            check_startup_instruction(i).map_err(|mut e| {
+            check_startup_instruction(i, slice).map_err(|mut e| {
                 e.pc = Some(pc);
                 e.offset = Some(i.offset);
                 e
@@ -988,6 +1017,7 @@ pub(crate) fn prepare_startup_prefix(
                 pool: Rc::new(strings),
                 function_base: image.function_base as i16,
                 variable_base: 0,
+                startup_slice: Some(slice),
             }]),
             init_order: vec![],
             lifecycles: None,
@@ -1411,6 +1441,7 @@ fn prepare_catalog(
                                 pool: pools[&c.key].clone(),
                                 function_base: c.function_base,
                                 variable_base: c.variable_base,
+                                startup_slice: None,
                             })
                         };
                         prepare().map_err(|mut e: VmError| {
